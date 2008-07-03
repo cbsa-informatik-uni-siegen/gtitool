@@ -397,7 +397,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     try
     {
       this.gui.setIconImage ( ImageIO.read ( getClass ().getResource (
-          "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
+          "/de/unisiegen/gtitool/ui/icon/large/gtitool.png" ) ) ); //$NON-NLS-1$
     }
     catch ( Exception exc )
     {

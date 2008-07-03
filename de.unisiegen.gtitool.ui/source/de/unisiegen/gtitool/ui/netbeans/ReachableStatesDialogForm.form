@@ -43,7 +43,7 @@
         <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonBeginStep">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-begin.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/begin.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
               <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="ReachableStatesDialog.BeginStep" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -56,7 +56,7 @@
         <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonPreviousStep">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
               <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="ReachableStatesDialog.PreviousStep" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -69,7 +69,7 @@
         <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonNextStep">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-forward.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/forward.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
               <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="ReachableStatesDialog.NextStep" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -82,7 +82,7 @@
         <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonAutoStep">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-autostep.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/autostep.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
               <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="ReachableStatesDialog.AutoStep" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -95,7 +95,7 @@
         <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonStop">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-stop.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/stop.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
               <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="ReachableStatesDialog.Stop" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -108,7 +108,7 @@
         <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonEndStep">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-end.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/end.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
               <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="ReachableStatesDialog.EndStep" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>

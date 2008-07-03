@@ -91,7 +91,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemStart = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModeStart" ) ); //$NON-NLS-1$
     this.jMenuItemStart.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupmenu/wordnavigation/start.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/navigation/small/start.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemStart.addActionListener ( new ActionListener ()
     {
 
@@ -114,7 +114,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
         .setIcon ( new ImageIcon (
             getClass ()
                 .getResource (
-                    "/de/unisiegen/gtitool/ui/icon/popupmenu/wordnavigation/backward.png" ) ) ); //$NON-NLS-1$
+                    "/de/unisiegen/gtitool/ui/icon/navigation/small/backward.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemPreviousStep.addActionListener ( new ActionListener ()
     {
 
@@ -137,7 +137,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
         .setIcon ( new ImageIcon (
             getClass ()
                 .getResource (
-                    "/de/unisiegen/gtitool/ui/icon/popupmenu/wordnavigation/forward.png" ) ) ); //$NON-NLS-1$
+                    "/de/unisiegen/gtitool/ui/icon/navigation/small/forward.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemNextStep.addActionListener ( new ActionListener ()
     {
 
@@ -157,7 +157,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemStop = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModeStop" ) ); //$NON-NLS-1$
     this.jMenuItemStop.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupmenu/wordnavigation/stop.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/navigation/small/stop.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemStop.addActionListener ( new ActionListener ()
     {
 

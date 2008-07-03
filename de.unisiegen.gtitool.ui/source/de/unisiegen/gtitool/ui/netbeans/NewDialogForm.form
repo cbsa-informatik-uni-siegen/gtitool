@@ -77,7 +77,7 @@
         <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelHeaderImage">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/new24.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/new.png"/>
             </Property>
           </Properties>
           <Constraints>

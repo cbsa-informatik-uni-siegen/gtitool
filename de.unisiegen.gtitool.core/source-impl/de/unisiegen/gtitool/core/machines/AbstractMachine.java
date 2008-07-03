@@ -259,21 +259,24 @@ public abstract class AbstractMachine implements Machine
   public AbstractMachine ( Alphabet alphabet, Alphabet pushDownAlphabet,
       boolean usePushDownAlphabet, ValidationElement ... validationElements )
   {
-    // Alphabet
+    // alphabet
     if ( alphabet == null )
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
     this.alphabet = alphabet;
-    // PushDownAlphabet
+
+    // push down alphabet
     if ( pushDownAlphabet == null )
     {
       throw new NullPointerException ( "push down alphabet is null" ); //$NON-NLS-1$
     }
     this.pushDownAlphabet = pushDownAlphabet;
-    // UsePushDownAlphabet
+
+    // use push down alphabet
     this.usePushDownAlphabet = usePushDownAlphabet;
-    // Validation elements
+
+    // validation elements
     if ( validationElements == null )
     {
       throw new NullPointerException ( "validation elements is null" ); //$NON-NLS-1$
@@ -284,21 +287,24 @@ public abstract class AbstractMachine implements Machine
       this.validationElementList.add ( current );
     }
 
-    // StateList
+    // state list
     this.stateList = new ArrayList < State > ();
     this.initialStateList = new ArrayList < State > ();
 
-    // TransitionList
+    // transition list
     this.transitionList = new ArrayList < Transition > ();
     this.initialTransitionList = new ArrayList < Transition > ();
 
-    // History
+    // stack
+    this.stack = new DefaultStack ();
+
+    // history
     this.history = new ArrayList < HistoryItem > ();
 
-    // CachedValueList
+    // cached value list
     this.cachedValueList = new ArrayList < ObjectTriple < Integer, Integer, Object >> ();
 
-    // AlphabetChangedListener
+    // alphabet changed listener
     this.alphabetChangedListener = new AlphabetChangedListener ()
     {
 
@@ -311,7 +317,7 @@ public abstract class AbstractMachine implements Machine
     };
     this.alphabet.addAlphabetChangedListener ( this.alphabetChangedListener );
 
-    // TransitionChangedListener
+    // transition changed listener
     this.transitionChangedListener = new TransitionChangedListener ()
     {
 
@@ -323,7 +329,7 @@ public abstract class AbstractMachine implements Machine
       }
     };
 
-    // StateChangedListener
+    // state changed listener
     this.stateChangedListener = new StateChangedListener ()
     {
 
@@ -334,7 +340,7 @@ public abstract class AbstractMachine implements Machine
       }
     };
 
-    // ModifyStatusChangedListener
+    // modify status changed listener
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
 
@@ -350,7 +356,7 @@ public abstract class AbstractMachine implements Machine
     this.pushDownAlphabet
         .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
 
-    // Reset modify
+    // reset modify
     resetModify ();
   }
 
@@ -3000,7 +3006,7 @@ public abstract class AbstractMachine implements Machine
     this.word = startWord;
     this.word.start ();
 
-    this.stack = new DefaultStack ();
+    this.stack.clear ();
 
     clearHistory ();
 

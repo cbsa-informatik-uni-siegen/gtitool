@@ -130,9 +130,9 @@ public final class SideBar < E extends Entity < E >> extends JComponent
     this.document = document;
     this.textComponent = textComponent;
     this.errorIcon = new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/error.gif" ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/error.png" ) ); //$NON-NLS-1$
     this.warningIcon = new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/warning.gif" ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/warning.png" ) ); //$NON-NLS-1$
     int imageWidth = this.errorIcon.getIconWidth ();
     this.proppertyChanged = false;
     setMinimumSize ( new Dimension ( imageWidth, imageWidth ) );

@@ -122,7 +122,7 @@
         <Component class="de.unisiegen.gtitool.ui.swing.JGTIButton" name="jGTIButtonMoveLeft">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/moveLeft.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/left.png"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="maximumHeight" type="int" value="32"/>
@@ -142,7 +142,7 @@
         <Component class="de.unisiegen.gtitool.ui.swing.JGTIButton" name="jGTIButtonMoveRight">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/moveRight.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/right.png"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="maximumHeight" type="int" value="32"/>

@@ -228,7 +228,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
 
         jPanelFormat.setLayout(new java.awt.GridBagLayout());
 
-        jGTILabelPortraitIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/portrait.png"))); // NOI18N
+        jGTILabelPortraitIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/portrait.png"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -254,7 +254,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 0);
         jPanelFormat.add(jGTIRadioLandscape, gridBagConstraints);
 
-        jGTILabelLandscapeIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/landscape.png"))); // NOI18N
+        jGTILabelLandscapeIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/landscape.png"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;

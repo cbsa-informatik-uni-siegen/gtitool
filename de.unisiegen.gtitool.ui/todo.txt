@@ -5,6 +5,7 @@ BM		- Drucken: Job-Name anpassen
 
 *** FEATURE ***
 
+CF		- Erreichbare Zustände in einem Graphen
 CF		- Bei Label die einen PrettyString enthalten den HTML Code verwenden
 CF		- PDA Machinen Tabelle editierbar machen
 CF		- Reguläre Ausdrücke eingeben und umwandeln können
@@ -16,7 +17,6 @@ CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen
 		  Potenzautomaten sehr leicht lahmlegen
 CF		- SplitView: Horizontale/Vertikale Teilung
 CF		- Eine Überprüfung einbauen, ob auf dem Server eine neue Version verfügbar ist
-CF		- Orderstruktur der Icons überarbeiten
 CF		- Wörter ausgeben, die erkannt werden
 CF		- Auswahl der Transition so gestalten, dass auch sehr viele gut aussehen
 

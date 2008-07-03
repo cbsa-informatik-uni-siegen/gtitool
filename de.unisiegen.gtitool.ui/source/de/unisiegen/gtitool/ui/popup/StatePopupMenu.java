@@ -112,7 +112,7 @@ public final class StatePopupMenu extends JPopupMenu
   {
     this.delete = new JMenuItem ( Messages.getString ( "MachinePanel.Delete" ) ); //$NON-NLS-1$
     this.delete.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupmenu/delete.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/delete.png" ) ) ); //$NON-NLS-1$
     this.delete.addActionListener ( new ActionListener ()
     {
 
@@ -190,7 +190,7 @@ public final class StatePopupMenu extends JPopupMenu
     this.configurate = new JMenuItem ( Messages
         .getString ( "MachinePanel.Configurate" ) ); //$NON-NLS-1$
     this.configurate.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupmenu/rename.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/rename.png" ) ) ); //$NON-NLS-1$
     this.configurate.addActionListener ( new ActionListener ()
     {
 

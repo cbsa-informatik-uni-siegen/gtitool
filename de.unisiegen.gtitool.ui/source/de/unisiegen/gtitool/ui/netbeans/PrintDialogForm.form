@@ -256,7 +256,7 @@
                 <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelPortraitIcon">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/portrait.png"/>
+                      <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/portrait.png"/>
                     </Property>
                   </Properties>
                   <Constraints>
@@ -299,7 +299,7 @@
                 <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelLandscapeIcon">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/landscape.png"/>
+                      <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/landscape.png"/>
                     </Property>
                   </Properties>
                   <Constraints>

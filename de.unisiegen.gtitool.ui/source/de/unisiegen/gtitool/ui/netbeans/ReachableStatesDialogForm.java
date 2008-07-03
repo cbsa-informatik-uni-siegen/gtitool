@@ -85,7 +85,7 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jGTIToolBarButtonBeginStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-begin.png"))); // NOI18N
+        jGTIToolBarButtonBeginStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/begin.png"))); // NOI18N
         jGTIToolBarButtonBeginStep.setToolTipText(bundle.getString("ReachableStatesDialog.BeginStep")); // NOI18N
         jGTIToolBarButtonBeginStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,7 +94,7 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
         });
         jGTIToolBarMain.add(jGTIToolBarButtonBeginStep);
 
-        jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png"))); // NOI18N
+        jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"))); // NOI18N
         jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("ReachableStatesDialog.PreviousStep")); // NOI18N
         jGTIToolBarButtonPreviousStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,7 +103,7 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
         });
         jGTIToolBarMain.add(jGTIToolBarButtonPreviousStep);
 
-        jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-forward.png"))); // NOI18N
+        jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/forward.png"))); // NOI18N
         jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("ReachableStatesDialog.NextStep")); // NOI18N
         jGTIToolBarButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,7 +112,7 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
         });
         jGTIToolBarMain.add(jGTIToolBarButtonNextStep);
 
-        jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-autostep.png"))); // NOI18N
+        jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/autostep.png"))); // NOI18N
         jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("ReachableStatesDialog.AutoStep")); // NOI18N
         jGTIToolBarToggleButtonAutoStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,7 +121,7 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
         });
         jGTIToolBarMain.add(jGTIToolBarToggleButtonAutoStep);
 
-        jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-stop.png"))); // NOI18N
+        jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/stop.png"))); // NOI18N
         jGTIToolBarButtonStop.setToolTipText(bundle.getString("ReachableStatesDialog.Stop")); // NOI18N
         jGTIToolBarButtonStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,7 +130,7 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
         });
         jGTIToolBarMain.add(jGTIToolBarButtonStop);
 
-        jGTIToolBarButtonEndStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-end.png"))); // NOI18N
+        jGTIToolBarButtonEndStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/end.png"))); // NOI18N
         jGTIToolBarButtonEndStep.setToolTipText(bundle.getString("ReachableStatesDialog.EndStep")); // NOI18N
         jGTIToolBarButtonEndStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

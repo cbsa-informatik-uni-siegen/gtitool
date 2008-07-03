@@ -157,7 +157,7 @@ public class TransitionDialogForm extends JDialog implements GUIClass <Transitio
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jGTIPanelMoveButtons.add(jGTIScrollPaneAlphabet, gridBagConstraints);
 
-        jGTIButtonMoveLeft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/moveLeft.png")));
+        jGTIButtonMoveLeft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/left.png")));
         jGTIButtonMoveLeft.setEnabled(false);
         jGTIButtonMoveLeft.setMaximumHeight(32);
         jGTIButtonMoveLeft.setMaximumWidth(32);
@@ -177,7 +177,7 @@ public class TransitionDialogForm extends JDialog implements GUIClass <Transitio
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelMoveButtons.add(jGTIButtonMoveLeft, gridBagConstraints);
 
-        jGTIButtonMoveRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/moveRight.png")));
+        jGTIButtonMoveRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/right.png")));
         jGTIButtonMoveRight.setEnabled(false);
         jGTIButtonMoveRight.setMaximumHeight(32);
         jGTIButtonMoveRight.setMaximumWidth(32);

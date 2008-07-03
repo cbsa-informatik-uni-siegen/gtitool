@@ -191,7 +191,7 @@
                           <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.Error" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                         </Property>
                         <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/error.gif"/>
+                          <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/error.png"/>
                         </Property>
                       </JTabbedPaneConstraints>
                     </Constraint>
@@ -220,7 +220,7 @@
                           <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.Warning" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                         </Property>
                         <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/warning.gif"/>
+                          <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/warning.png"/>
                         </Property>
                       </JTabbedPaneConstraints>
                     </Constraint>

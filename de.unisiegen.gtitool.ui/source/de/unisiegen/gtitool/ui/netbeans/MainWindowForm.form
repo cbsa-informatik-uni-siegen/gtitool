@@ -24,7 +24,7 @@
                   <KeyStroke key="Ctrl+N"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/new16.gif"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/new.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.NewMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -47,7 +47,7 @@
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/open16.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/open.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.OpenMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -69,7 +69,7 @@
                   <KeyStroke key="Ctrl+W"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/empty16.gif"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/empty.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.CloseMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -91,7 +91,7 @@
                   <KeyStroke key="Shift+Ctrl+W"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/empty16.gif"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/empty.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.CloseAllMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -115,7 +115,7 @@
                   <KeyStroke key="Ctrl+P"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/print16.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/print.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.PrintMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -139,7 +139,7 @@
                   <KeyStroke key="Ctrl+S"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/save16.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/save.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.SaveMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -158,7 +158,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemSaveAs">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/saveas16.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/saveAs.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.SaveAsMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -180,7 +180,7 @@
                   <KeyStroke key="Shift+Ctrl+S"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/saveAll16.gif"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/saveAll.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.SaveAllMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -201,7 +201,7 @@
             <Menu class="javax.swing.JMenu" name="jMenuRecentlyUsed">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/empty16.gif"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/empty.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.RecentlyUsedMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -219,7 +219,7 @@
                   <KeyStroke key="Ctrl+Q"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/empty16.gif"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/empty.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.QuitMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -250,7 +250,7 @@
                   <KeyStroke key="Ctrl+Z"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/edit-undo.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/undo.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.UndoMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -269,7 +269,7 @@
                   <KeyStroke key="Ctrl+Y"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/edit-redo.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/redo.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.RedoMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -287,7 +287,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemPreferences">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/preferences16.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/small/preferences.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.PreferencesMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -779,7 +779,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonNew">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/new24.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/new.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.NewToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -792,7 +792,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonOpen">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/open24.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/open.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.OpenToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -805,7 +805,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonSave">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/save24.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/save.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.SaveToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -818,7 +818,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonSaveAs">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/saveas24.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/saveAs.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.SaveAsToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -853,7 +853,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonUndo">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/edit-undo.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/undo.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.UndoToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -866,7 +866,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonRedo">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/edit-redo.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/redo.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.RedoToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -901,7 +901,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonEditDocument">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/edit-document.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/large/document.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.EditDocument" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -917,7 +917,7 @@
                   <ComponentRef name="toolbarButton"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_mouse.gif"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/machine/mouse.png"/>
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
@@ -934,7 +934,7 @@
                   <ComponentRef name="toolbarButton"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/state.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/machine/state.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.AddState" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -950,7 +950,7 @@
                   <ComponentRef name="toolbarButton"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/transition.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/machine/transition.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.AddTransition" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -966,7 +966,7 @@
                   <ComponentRef name="toolbarButton"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/startState.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/machine/start.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.StartState" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -982,7 +982,7 @@
                   <ComponentRef name="toolbarButton"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/finalState.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/machine/final.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.FinalState" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -995,7 +995,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonEnterWord">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enter-word.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/machine/word.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MainWindow.EnterWord" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -1008,7 +1008,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonAddProduction">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/add-production.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/grammar/large/add.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="GrammarPanel.AddProduction" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -1021,7 +1021,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonEditProduction">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/edit-production.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/grammar/large/edit.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="GrammarPanel.ProductionProperties" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -1034,7 +1034,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonDeleteProduction">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/delete-production.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/grammar/large/delete.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="GrammarPanel.DeleteProduction" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -1055,7 +1055,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonStart">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-start.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/start.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.WordModeStart" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -1068,7 +1068,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonPrevious">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.WordModePreviousStep" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -1081,7 +1081,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonNextStep">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-forward.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/forward.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.WordModeNextStep" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -1094,7 +1094,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonAutoStep">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-autostep.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/autostep.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.WordModeAutoStep" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -1107,7 +1107,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonStop">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-stop.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/stop.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="MachinePanel.WordModeStop" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>

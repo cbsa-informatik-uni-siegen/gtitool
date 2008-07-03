@@ -1149,7 +1149,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jToolBarFile.setBorderPainted(false);
         jToolBarFile.setOpaque(false);
 
-        jGTIToolBarButtonNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new24.png"))); // NOI18N
+        jGTIToolBarButtonNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/new.png"))); // NOI18N
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTIToolBarButtonNew.setToolTipText(bundle.getString("MainWindow.NewToolTip")); // NOI18N
         jGTIToolBarButtonNew.addActionListener(new java.awt.event.ActionListener() {
@@ -1159,7 +1159,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarFile.add(jGTIToolBarButtonNew);
 
-        jGTIToolBarButtonOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/open24.png"))); // NOI18N
+        jGTIToolBarButtonOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/open.png"))); // NOI18N
         jGTIToolBarButtonOpen.setToolTipText(bundle.getString("MainWindow.OpenToolTip")); // NOI18N
         jGTIToolBarButtonOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1168,7 +1168,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarFile.add(jGTIToolBarButtonOpen);
 
-        jGTIToolBarButtonSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/save24.png"))); // NOI18N
+        jGTIToolBarButtonSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/save.png"))); // NOI18N
         jGTIToolBarButtonSave.setToolTipText(bundle.getString("MainWindow.SaveToolTip")); // NOI18N
         jGTIToolBarButtonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1177,7 +1177,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarFile.add(jGTIToolBarButtonSave);
 
-        jGTIToolBarButtonSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas24.png"))); // NOI18N
+        jGTIToolBarButtonSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/saveAs.png"))); // NOI18N
         jGTIToolBarButtonSaveAs.setToolTipText(bundle.getString("MainWindow.SaveAsToolTip")); // NOI18N
         jGTIToolBarButtonSaveAs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1197,7 +1197,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jToolBarEdit.setBorderPainted(false);
         jToolBarEdit.setOpaque(false);
 
-        jGTIToolBarButtonUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/edit-undo.png"))); // NOI18N
+        jGTIToolBarButtonUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/undo.png"))); // NOI18N
         jGTIToolBarButtonUndo.setToolTipText(bundle.getString("MainWindow.UndoToolTip")); // NOI18N
         jGTIToolBarButtonUndo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1206,7 +1206,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarEdit.add(jGTIToolBarButtonUndo);
 
-        jGTIToolBarButtonRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/edit-redo.png"))); // NOI18N
+        jGTIToolBarButtonRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/redo.png"))); // NOI18N
         jGTIToolBarButtonRedo.setToolTipText(bundle.getString("MainWindow.RedoToolTip")); // NOI18N
         jGTIToolBarButtonRedo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1226,7 +1226,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jToolBarNavigation.setBorderPainted(false);
         jToolBarNavigation.setOpaque(false);
 
-        jGTIToolBarButtonEditDocument.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/edit-document.png"))); // NOI18N
+        jGTIToolBarButtonEditDocument.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/document.png"))); // NOI18N
         jGTIToolBarButtonEditDocument.setToolTipText(bundle.getString("MachinePanel.EditDocument")); // NOI18N
         jGTIToolBarButtonEditDocument.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1236,7 +1236,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jToolBarNavigation.add(jGTIToolBarButtonEditDocument);
 
         toolbarButton.add(jGTIToolBarToggleButtonMouse);
-        jGTIToolBarToggleButtonMouse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_mouse.gif"))); // NOI18N
+        jGTIToolBarToggleButtonMouse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/mouse.png"))); // NOI18N
         jGTIToolBarToggleButtonMouse.setSelected(true);
         jGTIToolBarToggleButtonMouse.setToolTipText(bundle.getString("MachinePanel.Mouse")); // NOI18N
         jGTIToolBarToggleButtonMouse.addItemListener(new java.awt.event.ItemListener() {
@@ -1247,7 +1247,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jToolBarNavigation.add(jGTIToolBarToggleButtonMouse);
 
         toolbarButton.add(jGTIToolBarToggleButtonAddState);
-        jGTIToolBarToggleButtonAddState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/state.png"))); // NOI18N
+        jGTIToolBarToggleButtonAddState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/state.png"))); // NOI18N
         jGTIToolBarToggleButtonAddState.setToolTipText(bundle.getString("MachinePanel.AddState")); // NOI18N
         jGTIToolBarToggleButtonAddState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1257,7 +1257,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jToolBarNavigation.add(jGTIToolBarToggleButtonAddState);
 
         toolbarButton.add(jGTIToolBarToggleButtonAddTransition);
-        jGTIToolBarToggleButtonAddTransition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/transition.png"))); // NOI18N
+        jGTIToolBarToggleButtonAddTransition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/transition.png"))); // NOI18N
         jGTIToolBarToggleButtonAddTransition.setToolTipText(bundle.getString("MachinePanel.AddTransition")); // NOI18N
         jGTIToolBarToggleButtonAddTransition.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1267,7 +1267,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jToolBarNavigation.add(jGTIToolBarToggleButtonAddTransition);
 
         toolbarButton.add(jGTIToolBarToggleButtonStartState);
-        jGTIToolBarToggleButtonStartState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/startState.png"))); // NOI18N
+        jGTIToolBarToggleButtonStartState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/start.png"))); // NOI18N
         jGTIToolBarToggleButtonStartState.setToolTipText(bundle.getString("MachinePanel.StartState")); // NOI18N
         jGTIToolBarToggleButtonStartState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1277,7 +1277,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jToolBarNavigation.add(jGTIToolBarToggleButtonStartState);
 
         toolbarButton.add(jGTIToolBarToggleButtonFinalState);
-        jGTIToolBarToggleButtonFinalState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/finalState.png"))); // NOI18N
+        jGTIToolBarToggleButtonFinalState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/final.png"))); // NOI18N
         jGTIToolBarToggleButtonFinalState.setToolTipText(bundle.getString("MachinePanel.FinalState")); // NOI18N
         jGTIToolBarToggleButtonFinalState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1286,7 +1286,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarNavigation.add(jGTIToolBarToggleButtonFinalState);
 
-        jGTIToolBarToggleButtonEnterWord.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enter-word.png"))); // NOI18N
+        jGTIToolBarToggleButtonEnterWord.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/word.png"))); // NOI18N
         jGTIToolBarToggleButtonEnterWord.setToolTipText(bundle.getString("MainWindow.EnterWord")); // NOI18N
         jGTIToolBarToggleButtonEnterWord.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1295,7 +1295,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarNavigation.add(jGTIToolBarToggleButtonEnterWord);
 
-        jGTIToolBarButtonAddProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/add-production.png"))); // NOI18N
+        jGTIToolBarButtonAddProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/grammar/large/add.png"))); // NOI18N
         jGTIToolBarButtonAddProduction.setToolTipText(bundle.getString("GrammarPanel.AddProduction")); // NOI18N
         jGTIToolBarButtonAddProduction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1304,7 +1304,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarNavigation.add(jGTIToolBarButtonAddProduction);
 
-        jGTIToolBarButtonEditProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/edit-production.png"))); // NOI18N
+        jGTIToolBarButtonEditProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/grammar/large/edit.png"))); // NOI18N
         jGTIToolBarButtonEditProduction.setToolTipText(bundle.getString("GrammarPanel.ProductionProperties")); // NOI18N
         jGTIToolBarButtonEditProduction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1313,7 +1313,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarNavigation.add(jGTIToolBarButtonEditProduction);
 
-        jGTIToolBarButtonDeleteProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/delete-production.png"))); // NOI18N
+        jGTIToolBarButtonDeleteProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/grammar/large/delete.png"))); // NOI18N
         jGTIToolBarButtonDeleteProduction.setToolTipText(bundle.getString("GrammarPanel.DeleteProduction")); // NOI18N
         jGTIToolBarButtonDeleteProduction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1326,7 +1326,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jSeparatorNavigation.setMaximumSize(new java.awt.Dimension(5, 32));
         jToolBarNavigation.add(jSeparatorNavigation);
 
-        jGTIToolBarButtonStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-start.png"))); // NOI18N
+        jGTIToolBarButtonStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/start.png"))); // NOI18N
         jGTIToolBarButtonStart.setToolTipText(bundle.getString("MachinePanel.WordModeStart")); // NOI18N
         jGTIToolBarButtonStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1335,7 +1335,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarNavigation.add(jGTIToolBarButtonStart);
 
-        jGTIToolBarButtonPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png"))); // NOI18N
+        jGTIToolBarButtonPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"))); // NOI18N
         jGTIToolBarButtonPrevious.setToolTipText(bundle.getString("MachinePanel.WordModePreviousStep")); // NOI18N
         jGTIToolBarButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1344,7 +1344,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarNavigation.add(jGTIToolBarButtonPrevious);
 
-        jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-forward.png"))); // NOI18N
+        jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/forward.png"))); // NOI18N
         jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("MachinePanel.WordModeNextStep")); // NOI18N
         jGTIToolBarButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1353,7 +1353,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarNavigation.add(jGTIToolBarButtonNextStep);
 
-        jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-autostep.png"))); // NOI18N
+        jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/autostep.png"))); // NOI18N
         jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("MachinePanel.WordModeAutoStep")); // NOI18N
         jGTIToolBarToggleButtonAutoStep.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1362,7 +1362,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarNavigation.add(jGTIToolBarToggleButtonAutoStep);
 
-        jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-stop.png"))); // NOI18N
+        jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/stop.png"))); // NOI18N
         jGTIToolBarButtonStop.setToolTipText(bundle.getString("MachinePanel.WordModeStop")); // NOI18N
         jGTIToolBarButtonStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1459,7 +1459,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.setText(bundle.getString("MainWindow.File")); // NOI18N
 
         jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new16.gif"))); // NOI18N
+        jMenuItemNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/new.png"))); // NOI18N
         jMenuItemNew.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.NewMnemonic").charAt(0));
         jMenuItemNew.setText(bundle.getString("MainWindow.New")); // NOI18N
         jMenuItemNew.addActionListener(new java.awt.event.ActionListener() {
@@ -1470,7 +1470,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.add(jMenuItemNew);
 
         jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/open16.png"))); // NOI18N
+        jMenuItemOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/open.png"))); // NOI18N
         jMenuItemOpen.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.OpenMnemonic").charAt(0));
         jMenuItemOpen.setText(bundle.getString("MainWindow.Open")); // NOI18N
         jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
@@ -1481,7 +1481,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.add(jMenuItemOpen);
 
         jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif"))); // NOI18N
+        jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
         jMenuItemClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CloseMnemonic").charAt(0));
         jMenuItemClose.setText(bundle.getString("MainWindow.Close")); // NOI18N
         jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {
@@ -1492,7 +1492,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.add(jMenuItemClose);
 
         jMenuItemCloseAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemCloseAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif"))); // NOI18N
+        jMenuItemCloseAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
         jMenuItemCloseAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CloseAllMnemonic").charAt(0));
         jMenuItemCloseAll.setText(bundle.getString("MainWindow.CloseAll")); // NOI18N
         jMenuItemCloseAll.addActionListener(new java.awt.event.ActionListener() {
@@ -1504,7 +1504,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.add(jSeparatorFile1);
 
         jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/print16.png"))); // NOI18N
+        jMenuItemPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/print.png"))); // NOI18N
         jMenuItemPrint.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.PrintMnemonic").charAt(0));
         jMenuItemPrint.setText(bundle.getString("MainWindow.Print")); // NOI18N
         jMenuItemPrint.addActionListener(new java.awt.event.ActionListener() {
@@ -1516,7 +1516,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.add(jSeparatorFile2);
 
         jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/save16.png"))); // NOI18N
+        jMenuItemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/save.png"))); // NOI18N
         jMenuItemSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveMnemonic").charAt(0));
         jMenuItemSave.setText(bundle.getString("MainWindow.Save")); // NOI18N
         jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
@@ -1526,7 +1526,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuFile.add(jMenuItemSave);
 
-        jMenuItemSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas16.png"))); // NOI18N
+        jMenuItemSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/saveAs.png"))); // NOI18N
         jMenuItemSaveAs.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveAsMnemonic").charAt(0));
         jMenuItemSaveAs.setText(bundle.getString("MainWindow.SaveAs")); // NOI18N
         jMenuItemSaveAs.addActionListener(new java.awt.event.ActionListener() {
@@ -1537,7 +1537,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.add(jMenuItemSaveAs);
 
         jMenuItemSaveAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemSaveAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveAll16.gif"))); // NOI18N
+        jMenuItemSaveAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/saveAll.png"))); // NOI18N
         jMenuItemSaveAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveAllMnemonic").charAt(0));
         jMenuItemSaveAll.setText(bundle.getString("MainWindow.SaveAll")); // NOI18N
         jMenuItemSaveAll.addActionListener(new java.awt.event.ActionListener() {
@@ -1548,14 +1548,14 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.add(jMenuItemSaveAll);
         jMenuFile.add(jSeparatorFile3);
 
-        jMenuRecentlyUsed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif"))); // NOI18N
+        jMenuRecentlyUsed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
         jMenuRecentlyUsed.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RecentlyUsedMnemonic").charAt(0));
         jMenuRecentlyUsed.setText(bundle.getString("MainWindow.RecentlyUsed")); // NOI18N
         jMenuFile.add(jMenuRecentlyUsed);
         jMenuFile.add(jSeparatorFile4);
 
         jMenuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemQuit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif"))); // NOI18N
+        jMenuItemQuit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
         jMenuItemQuit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.QuitMnemonic").charAt(0));
         jMenuItemQuit.setText(bundle.getString("MainWindow.Quit")); // NOI18N
         jMenuItemQuit.addActionListener(new java.awt.event.ActionListener() {
@@ -1571,7 +1571,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuEdit.setText(bundle.getString("MainWindow.Edit")); // NOI18N
 
         jMenuItemUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/edit-undo.png"))); // NOI18N
+        jMenuItemUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/undo.png"))); // NOI18N
         jMenuItemUndo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.UndoMnemonic").charAt(0));
         jMenuItemUndo.setText(bundle.getString("MainWindow.Undo")); // NOI18N
         jMenuItemUndo.addActionListener(new java.awt.event.ActionListener() {
@@ -1582,7 +1582,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuEdit.add(jMenuItemUndo);
 
         jMenuItemRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/edit-redo.png"))); // NOI18N
+        jMenuItemRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/redo.png"))); // NOI18N
         jMenuItemRedo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RedoMnemonic").charAt(0));
         jMenuItemRedo.setText(bundle.getString("MainWindow.Redo")); // NOI18N
         jMenuItemRedo.addActionListener(new java.awt.event.ActionListener() {
@@ -1593,7 +1593,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuEdit.add(jMenuItemRedo);
         jMenuEdit.add(jSeparatorEdit);
 
-        jMenuItemPreferences.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/preferences16.png"))); // NOI18N
+        jMenuItemPreferences.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/preferences.png"))); // NOI18N
         jMenuItemPreferences.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.PreferencesMnemonic").charAt(0));
         jMenuItemPreferences.setText(bundle.getString("MainWindow.Preferences")); // NOI18N
         jMenuItemPreferences.addActionListener(new java.awt.event.ActionListener() {

@@ -112,7 +112,7 @@ public final class ProductionPopupMenu extends JPopupMenu
 
     this.add = new JMenuItem ( Messages.getString ( "ProductionPopupMenu.Add" ) ); //$NON-NLS-1$
     this.add.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupmenu/new-production.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/grammar/small/add.png" ) ) ); //$NON-NLS-1$
     this.add.addActionListener ( new ActionListener ()
     {
 
@@ -135,7 +135,7 @@ public final class ProductionPopupMenu extends JPopupMenu
     this.config = new JMenuItem ( Messages
         .getString ( "ProductionPopupMenu.Properties" ) ); //$NON-NLS-1$
     this.config.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupmenu/rename.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/rename.png" ) ) ); //$NON-NLS-1$
     this.config.addActionListener ( new ActionListener ()
     {
 
@@ -163,7 +163,7 @@ public final class ProductionPopupMenu extends JPopupMenu
     this.delete = new JMenuItem ( Messages
         .getString ( "ProductionPopupMenu.Delete" ) ); //$NON-NLS-1$
     this.delete.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupmenu/delete.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/delete.png" ) ) ); //$NON-NLS-1$
     this.delete.addActionListener ( new ActionListener ()
     {
 

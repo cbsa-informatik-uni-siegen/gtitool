@@ -133,7 +133,7 @@ public final class TabPopupMenu extends JPopupMenu
     // New
     this.jMenuItemNew = new JMenuItem ( Messages.getString ( "MainWindow.New" ) ); //$NON-NLS-1$
     this.jMenuItemNew.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/new16.gif" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/new.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemNew.setMnemonic ( Messages.getString (
         "MainWindow.NewMnemonic" ) //$NON-NLS-1$
         .charAt ( 0 ) );
@@ -154,7 +154,7 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemOpen = new JMenuItem ( Messages
         .getString ( "MainWindow.Open" ) ); //$NON-NLS-1$
     this.jMenuItemOpen.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/open16.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/open.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemOpen.setMnemonic ( Messages.getString (
         "MainWindow.OpenMnemonic" ) //$NON-NLS-1$
         .charAt ( 0 ) );
@@ -175,7 +175,7 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemClose = new JMenuItem ( Messages
         .getString ( "MainWindow.Close" ) ); //$NON-NLS-1$
     this.jMenuItemClose.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/empty16.gif" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/empty.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemClose.setMnemonic ( Messages.getString (
         "MainWindow.CloseMnemonic" ) //$NON-NLS-1$
         .charAt ( 0 ) );
@@ -200,7 +200,7 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemSave = new JMenuItem ( Messages
         .getString ( "MainWindow.Save" ) ); //$NON-NLS-1$
     this.jMenuItemSave.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/save16.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/save.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemSave.setMnemonic ( Messages.getString (
         "MainWindow.SaveMnemonic" ) //$NON-NLS-1$
         .charAt ( 0 ) );
@@ -223,7 +223,7 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemSaveAs = new JMenuItem ( Messages
         .getString ( "MainWindow.SaveAs" ) ); //$NON-NLS-1$
     this.jMenuItemSaveAs.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/saveas16.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/saveAs.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemSaveAs.setMnemonic ( Messages.getString (
         "MainWindow.SaveAsMnemonic" ) //$NON-NLS-1$
         .charAt ( 0 ) );
@@ -248,7 +248,7 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemMoveToLeftEditor = new JMenuItem ( Messages
         .getString ( "MainWindow.MoveToLeftEditor" ) ); //$NON-NLS-1$
     this.jMenuItemMoveToLeftEditor.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/empty16.gif" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/empty.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemMoveToLeftEditor.setMnemonic ( Messages.getString (
         "MainWindow.MoveToLeftEditorMnemonic" ) //$NON-NLS-1$
         .charAt ( 0 ) );
@@ -271,7 +271,7 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemMoveToRightEditor = new JMenuItem ( Messages
         .getString ( "MainWindow.MoveToRightEditor" ) ); //$NON-NLS-1$
     this.jMenuItemMoveToRightEditor.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/empty16.gif" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/empty.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemMoveToRightEditor.setMnemonic ( Messages.getString (
         "MainWindow.MoveToRightEditorMnemonic" ) //$NON-NLS-1$
         .charAt ( 0 ) );

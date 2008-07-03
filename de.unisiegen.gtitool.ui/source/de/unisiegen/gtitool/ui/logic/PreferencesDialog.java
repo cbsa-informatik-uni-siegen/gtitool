@@ -1277,7 +1277,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreAlphabet.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreAlphabet.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreAlphabet.addActionListener ( new ActionListener ()
     {
 
@@ -1341,7 +1341,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreAutoStep.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreAutoStep.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreAutoStep.addActionListener ( new ActionListener ()
     {
 
@@ -1517,7 +1517,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreColorList.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreColorList.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreColorList.addActionListener ( new ActionListener ()
     {
 
@@ -1730,7 +1730,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreLanguage.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreLanguage.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreLanguage.addActionListener ( new ActionListener ()
     {
 
@@ -1835,7 +1835,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreLookAndFeel.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreLookAndFeel.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreLookAndFeel.addActionListener ( new ActionListener ()
     {
 
@@ -1916,7 +1916,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreMouseSelection.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreMouseSelection.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreMouseSelection.addActionListener ( new ActionListener ()
     {
 
@@ -1993,7 +1993,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreNonterminalSymbolSet.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreNonterminalSymbolSet.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreNonterminalSymbolSet
         .addActionListener ( new ActionListener ()
         {
@@ -2066,7 +2066,7 @@ public final class PreferencesDialog implements
     jMenuItemRestorePDAMode.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestorePDAMode.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestorePDAMode.addActionListener ( new ActionListener ()
     {
 
@@ -2145,7 +2145,7 @@ public final class PreferencesDialog implements
     jMenuItemRestorePushDownAlphabet.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestorePushDownAlphabet.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestorePushDownAlphabet.addActionListener ( new ActionListener ()
     {
 
@@ -2200,7 +2200,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreUsePushDownAlphabet.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreUsePushDownAlphabet.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreUsePushDownAlphabet
         .addActionListener ( new ActionListener ()
         {
@@ -2265,7 +2265,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreTerminalSymbolSet.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreTerminalSymbolSet.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreTerminalSymbolSet.addActionListener ( new ActionListener ()
     {
 
@@ -2335,7 +2335,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreTerminalSymbolSet.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreTerminalSymbolSet.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreTerminalSymbolSet.addActionListener ( new ActionListener ()
     {
 
@@ -2405,7 +2405,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreTranstion.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreTranstion.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreTranstion.addActionListener ( new ActionListener ()
     {
 
@@ -2476,7 +2476,7 @@ public final class PreferencesDialog implements
     jMenuItemRestoreZoomFactor.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     jMenuItemRestoreZoomFactor.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
     jMenuItemRestoreZoomFactor.addActionListener ( new ActionListener ()
     {
 

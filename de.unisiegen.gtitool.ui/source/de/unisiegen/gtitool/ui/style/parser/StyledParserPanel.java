@@ -319,7 +319,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.jMenuItemUndo.setMnemonic ( Messages.getString (
         "MainWindow.UndoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.jMenuItemUndo.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/edit-undo.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/undo.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemUndo.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_X,
         InputEvent.CTRL_MASK ) );
     this.jMenuItemUndo.addActionListener ( new ActionListener ()
@@ -340,7 +340,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.jMenuItemRedo.setMnemonic ( Messages.getString (
         "MainWindow.RedoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.jMenuItemRedo.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/edit-redo.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/redo.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemRedo.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_X,
         InputEvent.CTRL_MASK ) );
     this.jMenuItemRedo.addActionListener ( new ActionListener ()
@@ -363,7 +363,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.jMenuItemCut.setMnemonic ( Messages.getString (
         "MainWindow.CutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.jMenuItemCut.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/cut16.gif" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/cut.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemCut.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_X,
         InputEvent.CTRL_MASK ) );
     this.jMenuItemCut.addActionListener ( new ActionListener ()
@@ -398,7 +398,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.jMenuItemCopy.setMnemonic ( Messages.getString (
         "MainWindow.CopyMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.jMenuItemCopy.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/copy16.gif" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/copy.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemCopy.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_C,
         InputEvent.CTRL_MASK ) );
     this.jMenuItemCopy.addActionListener ( new ActionListener ()
@@ -420,7 +420,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.jMenuItemPaste.setMnemonic ( Messages.getString (
         "MainWindow.PasteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.jMenuItemPaste.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/paste16.gif" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/small/paste.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemPaste.setAccelerator ( KeyStroke.getKeyStroke (
         KeyEvent.VK_V, InputEvent.CTRL_MASK ) );
     this.jMenuItemPaste.addActionListener ( new ActionListener ()

@@ -165,7 +165,7 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
         jGTIScrollPaneErrors.setViewportView(jGTITableErrors);
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/error.gif")), jGTIScrollPaneErrors); // NOI18N
+        jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/error.png")), jGTIScrollPaneErrors); // NOI18N
 
         jGTIScrollPaneWarnings.setBorder(null);
 
@@ -181,7 +181,7 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
         });
         jGTIScrollPaneWarnings.setViewportView(jGTITableWarnings);
 
-        jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Warning"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/warning.gif")), jGTIScrollPaneWarnings); // NOI18N
+        jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Warning"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/warning.png")), jGTIScrollPaneWarnings); // NOI18N
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

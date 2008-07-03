@@ -98,7 +98,7 @@ public class NewDialogForm extends JDialog implements GUIClass <NewDialog>
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 5);
         jGTIPanelHeader.add(jGTILabelHeaderSubTitle, gridBagConstraints);
 
-        jGTILabelHeaderImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new24.png")));
+        jGTILabelHeaderImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/new.png")));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;

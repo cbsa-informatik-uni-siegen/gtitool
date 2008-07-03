@@ -1,5 +1,5 @@
 *** TODO ***
-
+CF		- Erlaubte Terminalzeichen erweitern
 
 *** FEATURE ***
 

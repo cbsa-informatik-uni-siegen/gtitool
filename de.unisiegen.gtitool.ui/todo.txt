@@ -3,6 +3,7 @@
 CF		- Zweite Ansicht leer, wird ausgeblendet -> Exception
 CF		- Transitions-Dialog zeigt falsches Ergebniss an
 CF		- Größe eines Zustandes mit Transition in sich selbst anpassen
+BM		- Drucken: Es fehlt eine Button Group für die erreichbaren Zustände
 
 *** FEATURE ***
 

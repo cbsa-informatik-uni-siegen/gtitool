@@ -70,6 +70,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         buttonGroupPageFormat = new javax.swing.ButtonGroup();
         buttonGroupConvertMachine = new javax.swing.ButtonGroup();
         buttonGroupMininizeMachine = new javax.swing.ButtonGroup();
+        buttonGroupReachableStates = new javax.swing.ButtonGroup();
         jGTIPanelPrinter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTILabelPrinter = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIComboBoxPrinter = new de.unisiegen.gtitool.ui.swing.JGTIComboBox();
@@ -266,7 +267,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 0, 5);
         jGTIPanelPrinter.add(jGTIPanelMinimizeMachine, gridBagConstraints);
 
-        buttonGroupMachinePanel.add(jGTIRadioButtonReachableStatesGraph);
+        buttonGroupReachableStates.add(jGTIRadioButtonReachableStatesGraph);
         jGTIRadioButtonReachableStatesGraph.setSelected(true);
         jGTIRadioButtonReachableStatesGraph.setText(bundle.getString("PrintDialog.PrintMachine")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -276,7 +277,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jGTIPanelReachableStates.add(jGTIRadioButtonReachableStatesGraph, gridBagConstraints);
 
-        buttonGroupMachinePanel.add(jGTIRadioButtonReachableStatesTable);
+        buttonGroupReachableStates.add(jGTIRadioButtonReachableStatesTable);
         jGTIRadioButtonReachableStatesTable.setText(bundle.getString("PrintDialog.PrintTable")); // NOI18N
         jGTIRadioButtonReachableStatesTable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -512,6 +513,7 @@ private void jGTIRadioButtonReachableStatesTableActionPerformed(java.awt.event.A
     public javax.swing.ButtonGroup buttonGroupMachinePanel;
     public javax.swing.ButtonGroup buttonGroupMininizeMachine;
     public javax.swing.ButtonGroup buttonGroupPageFormat;
+    public javax.swing.ButtonGroup buttonGroupReachableStates;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrint;
     public de.unisiegen.gtitool.ui.swing.JGTIComboBox jGTIComboBoxPrinter;

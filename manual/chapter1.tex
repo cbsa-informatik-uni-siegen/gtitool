@@ -5,12 +5,17 @@ Vorlesungsunterlagen durchgehen:\vspace{10pt}
 
 
 \begin{tabular}{lcr}
-G = ($\Sigma, N, S, P )\epsilon\ mit $\\
-	$\Sigma = \{0, 1, x, y, -, +, *, (, )\}$\\
-	$N = {E}$\\
-	$S=E$\\ 
-	$P = \{E \to 0,\ E \to 1,\ E \to x,\ E \to y,\ E \to (-E),$\\
-	$\ \ \ \ \ \ \ \ E \to (E + E),\ E \to (E - E),\ E \to (E $*$ E)\}$\\
+G = ($\Sigma, N, S, P )\ mit $\\
+	$\Sigma = \{\TerminalSymbol{0}, \TerminalSymbol{1}, \TerminalSymbol{x},
+	\TerminalSymbol{y}, \TerminalSymbol{-}, \TerminalSymbol{+},
+	\TerminalSymbol{*}, \TerminalSymbol{()}, \TerminalSymbol{)}\}$\\ $N =
+	\{\StartSymbol{E}\}$\\ $S=\StartSymbol{E}$\\ 
+	$P = \{\StartSymbol{E} \to \TerminalSymbol{0},\ \StartSymbol{E} \to \TerminalSymbol{1},\ 
+	\StartSymbol{E}	\to \TerminalSymbol{x},\ \StartSymbol{E} \to \TerminalSymbol{y},\ 
+	\StartSymbol{E} \to (\TerminalSymbol{-}\StartSymbol{E}),$\\ 
+	$\ \ \ \ \ \ \ \ \StartSymbol{E} \to (\StartSymbol{E} \TerminalSymbol{+}
+	\StartSymbol{E}),\ \StartSymbol{E} \to (\StartSymbol{E} \TerminalSymbol{-} \StartSymbol{E}),\
+	\StartSymbol{E} \to (\StartSymbol{E} \TerminalSymbol{*} \StartSymbol{E})\}$\\
 \end{tabular}
 
 \section{Neue Grammatik Datei anlegen}
@@ -26,23 +31,24 @@ Grammatik"', welches wir auswählen und wieder mit "`Weiter"' bestätigen.\vspac
 Als nächstes müssen wir die benötigten Nichtterminalzeichen (N),
 Terminalzeichen ($\Sigma$) und das Startzeichen (S) angeben.  Als Zeichen
 können alle Symbole werwendet werden, die nicht zur Syntax der Eingabe gehören.
-Das bedeutet "`$,$"', "`$\{$"`,"'$\}$"' und "`$"$"' können nicht verwendet
-werden.\vspace{10pt}
+Das bedeutet \Symbol{,}, \Symbol{\{}, \Symbol{\}} und \Symbol{"}
+können nicht verwendet werden.\vspace{10pt}
 
 In dem Dialog sind an allen Stellen schon vordefinierte Werte eingetragen.
 Dabei handelt es sich um die Vorgaben die man als Standardwerte in den Einstellung eingetragen hat.
 
 Wie man diese Standardwerte ändert kann man in Kapitel $4$ nachlesen. Wir tragen
 jetzt als erstes die von uns benötigten Nichtterminalzeichen ein. Dabei handelt
-es sich bei uns lediglich um das Symbol "`E"'. Also schreiben wir in das Feld
-"`\{E\}"'.\vspace{10pt}
+es sich bei uns lediglich um das Symbol \StartSymbol{E}. Also schreiben wir in
+das Feld "`\{\StartSymbol{E}\}"'.\vspace{10pt}
 
-Als nächstes wollen wir das Startzeichen festlegen. Das ist bei uns das "`E"'
+Als nächstes wollen wir das Startzeichen festlegen. Das ist bei uns das \StartSymbol{E}
 was wir in dem Feld für das Startzeichen schreiben.\\
 Zum Schluss müssen wir noch die Terminalzeichen festlegen. Dazu tragen
-wir in das entsprechende Feld "`\{0, 1, x, y, -, +, *, (, )\}"' ein.\\
-Damit haben wir alle benötigten Information eingegeben und können die neue
-Grammatik durch klick auf "`Fertig"' erstellen.\vspace{10pt}
+wir in das entsprechende Feld "`\{\TerminalSymbol{0}, \TerminalSymbol{1},
+\TerminalSymbol{x}, \TerminalSymbol{y}, \TerminalSymbol{-}, \TerminalSymbol{+},
+\TerminalSymbol{*}, \TerminalSymbol{(}, \TerminalSymbol{)}\}"' ein.\\ Damit
+haben wir alle benötigten Information eingegeben und können die neue Grammatik durch klick auf "`Fertig"' erstellen.\vspace{10pt}
 
 Alle Einstellungen die wir gerade im letzen Dialog für die neue Datei getroffen
 haben lassen sich über "`Dokument editieren"'
@@ -60,9 +66,9 @@ können diesen Schritt überspringen.\vspace{10pt}
 
 Jetzt müssen wir noch das Produktions Wort angeben. Als Hilfestellung wird in
 dem Dialog angezeigt welche Nichtterminalzeichen und Terminalzeichen uns zur
-Verfügung stehen. Wir fangen an mit der Produktion "`$E \to 0$"'. Also geben
-wir als Produktions Wort "`0"' ein. Als weitere Hilfestellung wird im unteren
-Dialog die resultierende Produktion im ganzen angezeigt. Wir bestätigen den
+Verfügung stehen. Wir fangen an mit der Produktion "`$\StartSymbol{E} \to
+\TerminalSymbol{0}$"'. Also geben wir als Produktions Wort \TerminalSymbol{0}
+ein. Als weitere Hilfestellung wird im unteren Dialog die resultierende Produktion im ganzen angezeigt. Wir bestätigen den
 Dialog noch mit "`Ok"' und die neue Produktion erscheint in unserer Liste.\vspace{10pt}
 
 Wir können die Produktion selbstverständlich auch editieren und wieder löschen.

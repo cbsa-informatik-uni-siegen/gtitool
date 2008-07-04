@@ -1,3 +1,29 @@
+\usepackage{color}
+
 \newcommand{\important}[2]{{#1}\index{#2}}
 \newcommand{\gtitool}[0]{GTI Tool\ }
 \newcommand{\gtitools}[0]{GTI Tools\ }
+
+% ColorSymbol: color of expression text
+\definecolor{ColorSymbol}{rgb}{0.0,0.0,0.5}
+
+% ColorNonterminalSymbol: color of expression text
+\definecolor{ColorNonterminalSymbol}{rgb}{0.0,0.5,1.0}
+
+% ColorStartSymbol: color of expression text
+\definecolor{ColorStartSymbol}{rgb}{0.5,0.0,1.0}
+
+% ColorTerminalSymbol: color of expression text
+\definecolor{ColorTerminalSymbol}{rgb}{0.0,0.0,0.5}
+
+%Symbol{Symbol}
+\newcommand{\Symbol}[1]{\textbf{\color{ColorSymbol}#1}}
+
+%NonterminalSymbol{Symbol}
+\newcommand{\NonterminalSymbol}[1]{\textbf{\color{ColorNonterminalSymbol}#1}}
+
+%StartSymbol{Symbol}
+\newcommand{\StartSymbol}[1]{\textbf{\color{ColorStartSymbol}#1}}
+
+%TerminalSymbol{Symbol}
+\newcommand{\TerminalSymbol}[1]{\textbf{\color{ColorTerminalSymbol}#1}}

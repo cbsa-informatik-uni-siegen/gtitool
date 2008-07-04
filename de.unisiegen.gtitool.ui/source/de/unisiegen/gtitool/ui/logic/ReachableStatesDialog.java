@@ -95,11 +95,6 @@ public final class ReachableStatesDialog implements
   private enum Step
   {
     /**
-     * The activate start {@link State} step.
-     */
-    ACTIVATE_START_STATE,
-
-    /**
      * The activate next {@link State} step.
      */
     ACTIVATE_NEXT_STATE,
@@ -108,6 +103,11 @@ public final class ReachableStatesDialog implements
      * The activate reachable {@link State}s step.
      */
     ACTIVATE_REACHABLE_STATES,
+
+    /**
+     * The activate start {@link State} step.
+     */
+    ACTIVATE_START_STATE,
 
     /**
      * The finish step.
@@ -155,18 +155,6 @@ public final class ReachableStatesDialog implements
   {
 
     /**
-     * The active {@link Step}.
-     */
-    private Step activeStep;
-
-
-    /**
-     * The {@link State} which must be calculated.
-     */
-    private ArrayList < State > activeToCalculateStates;
-
-
-    /**
      * The {@link State}s which are calculated.
      */
     private ArrayList < State > activeCalculatedStates;
@@ -185,15 +173,9 @@ public final class ReachableStatesDialog implements
 
 
     /**
-     * The active {@link Transition}s of the original {@link JGTIGraph}.
+     * The active {@link Step}.
      */
-    private ArrayList < Transition > activeTransitionsOriginal;
-
-
-    /**
-     * The active {@link Transition}s of the result {@link JGTIGraph}.
-     */
-    private ArrayList < Transition > activeTransitionsResult;
+    private Step activeStep;
 
 
     /**
@@ -206,6 +188,24 @@ public final class ReachableStatesDialog implements
      * The active {@link Symbol}s of the result {@link JGTIGraph}.
      */
     private ArrayList < Symbol > activeSymbolsResult;
+
+
+    /**
+     * The {@link State} which must be calculated.
+     */
+    private ArrayList < State > activeToCalculateStates;
+
+
+    /**
+     * The active {@link Transition}s of the original {@link JGTIGraph}.
+     */
+    private ArrayList < Transition > activeTransitionsOriginal;
+
+
+    /**
+     * The active {@link Transition}s of the result {@link JGTIGraph}.
+     */
+    private ArrayList < Transition > activeTransitionsResult;
 
 
     /**
@@ -389,69 +389,9 @@ public final class ReachableStatesDialog implements
 
 
   /**
-   * The {@link ReachableStatesDialogForm}.
+   * The reachable {@link Color}.
    */
-  private ReachableStatesDialogForm gui;
-
-
-  /**
-   * The parent {@link JFrame}.
-   */
-  private JFrame parent;
-
-
-  /**
-   * The original {@link JGTIGraph} containing the diagramm.
-   */
-  private JGTIGraph jGTIGraphOriginal;
-
-
-  /**
-   * The {@link MachinePanel}.
-   */
-  private MachinePanel machinePanel;
-
-
-  /**
-   * The original {@link DefaultMachineModel}.
-   */
-  private DefaultMachineModel modelOriginal;
-
-
-  /**
-   * The result {@link DefaultMachineModel}.
-   */
-  private DefaultMachineModel modelResult;
-
-
-  /**
-   * The original {@link Machine}.
-   */
-  private Machine machineOriginal;
-
-
-  /**
-   * The result {@link Machine}.
-   */
-  private Machine machineResult;
-
-
-  /**
-   * The current {@link Step}.
-   */
-  private Step step = null;
-
-
-  /**
-   * Flag that indicates if the end is reached.
-   */
-  private boolean endReached = false;
-
-
-  /**
-   * The {@link StepItem} list.
-   */
-  private ArrayList < StepItem > stepItemList = new ArrayList < StepItem > ();
+  private final static Color REACHABLE_COLOR = Color.YELLOW;
 
 
   /**
@@ -461,27 +401,95 @@ public final class ReachableStatesDialog implements
 
 
   /**
-   * The {@link ReachableStatesTableModel}.
-   */
-  private ReachableStatesTableModel reachableStatesTableModel;
-
-
-  /**
-   * The {@link State} which must be calculated.
-   */
-  private ArrayList < State > toCalculateStates = new ArrayList < State > ();
-
-
-  /**
    * The {@link State}s which are calculated.
    */
   private ArrayList < State > calculatedStates = new ArrayList < State > ();
 
 
   /**
-   * The reachable {@link Color}.
+   * Flag that indicates if the end is reached.
    */
-  private final static Color REACHABLE_COLOR = Color.YELLOW;
+  private boolean endReached = false;
+
+
+  
+  /**
+   * The {@link ReachableStatesDialogForm}.
+   */
+  private ReachableStatesDialogForm gui;
+
+
+  /**
+   * The original {@link JGTIGraph} containing the diagramm.
+   */
+  private JGTIGraph jGTIGraphOriginal;
+
+
+  /**
+   * The original {@link Machine}.
+   */
+  private Machine machineOriginal;
+
+
+  /**
+   * The {@link MachinePanel}.
+   */
+  private MachinePanel machinePanel;
+
+
+  /**
+   * The result {@link Machine}.
+   */
+  private Machine machineResult;
+
+
+  /**
+   * The original {@link DefaultMachineModel}.
+   */
+  private DefaultMachineModel modelOriginal;
+
+
+  
+  /**
+   * The result {@link DefaultMachineModel}.
+   */
+  private DefaultMachineModel modelResult;
+
+
+  /**
+   * The parent {@link JFrame}.
+   */
+  private JFrame parent;
+
+
+  /**
+   * The {@link ReachableStatesTableModel}.
+   */
+  private ReachableStatesTableModel reachableStatesTableModel;
+
+
+  /**
+   * The current {@link Step}.
+   */
+  private Step step = null;
+
+
+  /**
+   * The {@link StepItem} list.
+   */
+  private ArrayList < StepItem > stepItemList = new ArrayList < StepItem > ();
+
+
+  /**
+   * The {@link ReachableStatesTableColumnModel}.
+   */
+  private ReachableStatesTableColumnModel tableColumnModel = new ReachableStatesTableColumnModel();
+
+
+  /**
+   * The {@link State} which must be calculated.
+   */
+  private ArrayList < State > toCalculateStates = new ArrayList < State > ();
 
 
   /**
@@ -728,6 +736,54 @@ public final class ReachableStatesDialog implements
 
 
   /**
+   * Returns the {@link MachinePanel}.
+   *
+   * @return The {@link MachinePanel}.
+   * @see #machinePanel
+   */
+  public MachinePanel getMachinePanel ()
+  {
+    return this.machinePanel;
+  }
+
+
+  /**
+   * Returns the modelOriginal.
+   *
+   * @return The modelOriginal.
+   * @see #modelOriginal
+   */
+  public DefaultMachineModel getModelOriginal ()
+  {
+    return this.modelOriginal;
+  }
+
+
+  /**
+   * Returns the reachableStatesTableModel.
+   *
+   * @return The reachableStatesTableModel.
+   * @see #reachableStatesTableModel
+   */
+  public ReachableStatesTableModel getReachableStatesTableModel ()
+  {
+    return this.reachableStatesTableModel;
+  }
+
+
+  /**
+   * Returns the tableColumnModel.
+   *
+   * @return The tableColumnModel.
+   * @see #tableColumnModel
+   */
+  public ReachableStatesTableColumnModel getTableColumnModel ()
+  {
+    return this.tableColumnModel;
+  }
+
+
+  /**
    * Handles the action on the auto step button.
    */
   public final void handleAutoStep ()
@@ -831,6 +887,16 @@ public final class ReachableStatesDialog implements
 
 
   /**
+   * Handle the print action.
+   */
+  public void handlePrint ()
+  {
+    PrintDialog dialog = new PrintDialog ( this.parent, this );
+    dialog.show ();
+  }
+
+
+  /**
    * Handles the action on the stop button.
    */
   public final void handleStop ()
@@ -884,7 +950,6 @@ public final class ReachableStatesDialog implements
     this.modelResult.getGraphModel ().cellsChanged (
         DefaultGraphModel.getAll ( this.modelResult.getGraphModel () ) );
   }
-
 
   /**
    * Performs the next step.
@@ -1124,7 +1189,7 @@ public final class ReachableStatesDialog implements
     }
   }
 
-
+  
   /**
    * Performs the previous step.
    * 
@@ -1239,6 +1304,7 @@ public final class ReachableStatesDialog implements
   }
 
 
+  
   /**
    * Shows the {@link ReachableStatesDialogForm}.
    */
@@ -1252,7 +1318,7 @@ public final class ReachableStatesDialog implements
     this.reachableStatesTableModel = new ReachableStatesTableModel ();
     this.gui.jGTITableOutline.setModel ( this.reachableStatesTableModel );
     this.gui.jGTITableOutline
-        .setColumnModel ( new ReachableStatesTableColumnModel () );
+        .setColumnModel ( this.tableColumnModel);
     this.gui.jGTITableOutline.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableOutline.getSelectionModel ().setSelectionMode (
         ListSelectionModel.SINGLE_SELECTION );

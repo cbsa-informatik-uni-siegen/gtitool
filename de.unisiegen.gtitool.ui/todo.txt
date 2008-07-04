@@ -1,6 +1,5 @@
 *** TODO ***
 
-BM		- Drucken auf dem Reachable States Dialog implementieren
 
 *** FEATURE ***
 

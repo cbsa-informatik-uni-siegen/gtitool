@@ -88,6 +88,10 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         jGTIRadioButtonMinimizeMachineMinimizedGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIRadioButtonMinimizeMachineTable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIPanelMinimizeMachineSpace = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIPanelReachableStates = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIRadioButtonReachableStatesGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonReachableStatesTable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIPanelMachineSpace1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelColumn0 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelColumn1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelPageSetup = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
@@ -261,6 +265,44 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 0, 5);
         jGTIPanelPrinter.add(jGTIPanelMinimizeMachine, gridBagConstraints);
+
+        buttonGroupMachinePanel.add(jGTIRadioButtonReachableStatesGraph);
+        jGTIRadioButtonReachableStatesGraph.setSelected(true);
+        jGTIRadioButtonReachableStatesGraph.setText(bundle.getString("PrintDialog.PrintMachine")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        jGTIPanelReachableStates.add(jGTIRadioButtonReachableStatesGraph, gridBagConstraints);
+
+        buttonGroupMachinePanel.add(jGTIRadioButtonReachableStatesTable);
+        jGTIRadioButtonReachableStatesTable.setText(bundle.getString("PrintDialog.PrintTable")); // NOI18N
+        jGTIRadioButtonReachableStatesTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIRadioButtonReachableStatesTableActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        jGTIPanelReachableStates.add(jGTIRadioButtonReachableStatesTable, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        jGTIPanelReachableStates.add(jGTIPanelMachineSpace1, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 0, 5);
+        jGTIPanelPrinter.add(jGTIPanelReachableStates, gridBagConstraints);
 
         jGTIPanelColumn0.setMinimumSize(new java.awt.Dimension(100, 5));
         jGTIPanelColumn0.setPreferredSize(new java.awt.Dimension(100, 5));
@@ -460,6 +502,10 @@ private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//
   this.logic.handleCancel();
 }//GEN-LAST:event_jGTIButtonCancelActionPerformed
 
+private void jGTIRadioButtonReachableStatesTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIRadioButtonReachableStatesTableActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_jGTIRadioButtonReachableStatesTableActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.ButtonGroup buttonGroupConvertMachine;
@@ -480,11 +526,13 @@ private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelFormat;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMachine;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMachineSpace;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMachineSpace1;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMargins;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMinimizeMachine;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMinimizeMachineSpace;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPageSetup;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPrinter;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelReachableStates;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonConvertMachineConvertedGraph;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonConvertMachineOriginalGraph;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonConvertMachineTable;
@@ -495,6 +543,8 @@ private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMinimizeMachineOriginalGraph;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMinimizeMachineTable;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonPortrait;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonReachableStatesGraph;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonReachableStatesTable;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioLandscape;
     public javax.swing.JLabel jLabelMarginBottom;
     public javax.swing.JLabel jLabelMarginLeft;

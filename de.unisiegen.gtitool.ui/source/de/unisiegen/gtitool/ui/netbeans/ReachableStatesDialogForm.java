@@ -71,6 +71,7 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
         jGTITableOutline = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonPrint = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
@@ -199,6 +200,21 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
+        jGTIButtonPrint.setText(bundle.getString("PrintDialog.Print")); // NOI18N
+        jGTIButtonPrint.setToolTipText(bundle.getString("PrintDialog.PrintToolTip")); // NOI18N
+        jGTIButtonPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIButtonPrintActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
+        getContentPane().add(jGTIButtonPrint, gridBagConstraints);
+
         setSize(new java.awt.Dimension(960, 600));
     }// </editor-fold>//GEN-END:initComponents
 
@@ -237,10 +253,15 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
       this.logic.handleCancel();
     }//GEN-LAST:event_formWindowClosing
+
+    private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonPrintActionPerformed
+          this.logic.handlePrint();
+    }//GEN-LAST:event_jGTIButtonPrintActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrint;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneGraph;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOutline;

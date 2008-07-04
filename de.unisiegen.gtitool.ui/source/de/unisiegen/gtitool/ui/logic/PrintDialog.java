@@ -239,6 +239,12 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
+   * The {@link ReachableStatesDialog}.
+   */
+  private ReachableStatesDialog reachableStatesDialog;
+
+
+  /**
    * The {@link JGTITable}.
    */
   private JGTITable table = null;
@@ -371,6 +377,27 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     this.gui.jGTIPanelMinimizeMachine.setVisible ( true );
     this.gui.jGTIRadioButtonMinimizeMachineMinimizedGraph
         .setVisible ( this.minimizeMachineDialog.isEndReached () );
+
+    initialize ();
+  }
+
+
+  /**
+   * Allocates a new {@link PrintDialog}.
+   * 
+   * @param parent The parent {@link JFrame}.
+   * @param reachableStatesDialog The {@link ReachableStatesDialog}.
+   */
+  public PrintDialog ( JFrame parent,
+      ReachableStatesDialog reachableStatesDialog )
+  {
+    logger.debug ( "PrintDialog", "allocate a new print dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.parent = parent;
+    this.gui = new PrintDialogForm ( this, parent );
+    this.reachableStatesDialog = reachableStatesDialog;
+
+    hideChooseComponents ();
+    this.gui.jGTIPanelReachableStates.setVisible ( true );
 
     initialize ();
   }
@@ -703,6 +730,10 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     {
       printHistoryDialog ();
     }
+    else if ( this.reachableStatesDialog != null )
+    {
+      printReachableStatesDialog ();
+    }
 
     logger.debug ( "handlePrint", "printed" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
@@ -716,6 +747,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     this.gui.jGTIPanelMachine.setVisible ( false );
     this.gui.jGTIPanelConvertMachine.setVisible ( false );
     this.gui.jGTIPanelMinimizeMachine.setVisible ( false );
+    this.gui.jGTIPanelReachableStates.setVisible ( false );
   }
 
 
@@ -830,20 +862,19 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
     try
     {
-      String name = this.convertMachineDialog.getMachinePanel ().getFile () != null ? this.convertMachineDialog
-          .getMachinePanel ().getFile ().getName ()
-          : this.convertMachineDialog.getMachinePanel ().getName ();
       if ( this.gui.jGTIRadioButtonConvertMachineOriginalGraph.isSelected () )
       {
         printJGraph ( this.convertMachineDialog.getModelOriginal ()
-            .getJGTIGraph (), name
+            .getJGTIGraph (), this.convertMachineDialog.getMachinePanel ()
+            .getName ()
             + " " + Messages.getString ( "PrintDialog.Original" ) ); //$NON-NLS-1$//$NON-NLS-2$
       }
       else if ( this.gui.jGTIRadioButtonConvertMachineConvertedGraph
           .isSelected () )
       {
         printJGraph ( this.convertMachineDialog.getModelConverted ()
-            .getJGTIGraph (), name
+            .getJGTIGraph (), this.convertMachineDialog.getMachinePanel ()
+            .getName ()
             + " " + Messages.getString ( "PrintDialog.Converted" ) ); //$NON-NLS-1$//$NON-NLS-2$
       }
 
@@ -857,7 +888,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table.setModel ( this.tableModel );
         this.table.setColumnModel ( this.tableColumnModel );
 
-        printTableModel ( name + " " //$NON-NLS-1$
+        printTableModel ( this.convertMachineDialog.getMachinePanel ()
+            .getName ()
+            + " " //$NON-NLS-1$
             + Messages.getString ( "PrintDialog.ConvertMachine" ) ); //$NON-NLS-1$
       }
 
@@ -885,7 +918,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       this.table.setModel ( this.tableModel );
       this.table.setColumnModel ( this.tableColumnModel );
 
-      printTableModel ( this.grammarPanel.getFile ().getName () );
+      printTableModel ( this.grammarPanel.getName () );
     }
     catch ( PrinterException exc )
     {
@@ -910,10 +943,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       this.table.setModel ( this.tableModel );
       this.table.setColumnModel ( this.tableColumnModel );
 
-      String name = this.historyDialog.getMachinePanel ().getFile () != null ? this.historyDialog
-          .getMachinePanel ().getFile ().getName ()
-          : this.historyDialog.getMachinePanel ().getName ();
-      printTableModel ( name + " " + Messages.getString ( "MainWindow.History" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+      printTableModel ( this.historyDialog.getMachinePanel ().getName ()
+          + " " + Messages.getString ( "MainWindow.History" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     catch ( PrinterException exc )
@@ -980,13 +1011,10 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
   {
     try
     {
-
-      String name = this.machinePanel.getFile () != null ? this.machinePanel
-          .getFile ().getName () : this.convertMachineDialog.getMachinePanel ()
-          .getName ();
       if ( this.gui.jGTIRadioButtonMachineGraph.isSelected () )
       {
-        printJGraph ( this.machinePanel.getJGTIGraph (), name );
+        printJGraph ( this.machinePanel.getJGTIGraph (),
+            this.convertMachineDialog.getMachinePanel ().getName () );
       }
       else if ( this.gui.jGTIRadioButtonMachinePDATable.isSelected () )
       {
@@ -996,7 +1024,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table.setModel ( this.tableModel );
         this.table.setColumnModel ( this.tableColumnModel );
 
-        printTableModel ( name
+        printTableModel ( this.convertMachineDialog.getMachinePanel ()
+            .getName ()
             + " " + Messages.getString ( "PrintDialog.PDATable" ) ); //$NON-NLS-1$ //$NON-NLS-2$
       }
       else
@@ -1006,7 +1035,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table = new JGTITable ();
         this.table.setModel ( this.tableModel );
         this.table.setColumnModel ( this.tableColumnModel );
-        printTableModel ( name
+        printTableModel ( this.convertMachineDialog.getMachinePanel ()
+            .getName ()
             + " " + Messages.getString ( "PrintDialog.Table" ) ); //$NON-NLS-1$ //$NON-NLS-2$
       }
     }
@@ -1027,20 +1057,19 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
   {
     try
     {
-      String name = this.minimizeMachineDialog.getMachinePanel ().getFile () != null ? this.minimizeMachineDialog
-          .getMachinePanel ().getFile ().getName ()
-          : this.convertMachineDialog.getMachinePanel ().getName ();
       if ( this.gui.jGTIRadioButtonMinimizeMachineOriginalGraph.isSelected () )
       {
         printJGraph ( this.minimizeMachineDialog.getModelOriginal ()
-            .getJGTIGraph (), name
+            .getJGTIGraph (), this.minimizeMachineDialog.getMachinePanel ()
+            .getName ()
             + " " + Messages.getString ( "PrintDialog.Original" ) ); //$NON-NLS-1$//$NON-NLS-2$
       }
       else if ( this.gui.jGTIRadioButtonMinimizeMachineMinimizedGraph
           .isSelected () )
       {
         printJGraph ( this.minimizeMachineDialog.getModelMinimized ()
-            .getJGTIGraph (), name
+            .getJGTIGraph (), this.minimizeMachineDialog.getMachinePanel ()
+            .getName ()
             + " " + Messages.getString ( "PrintDialog.Minimized" ) ); //$NON-NLS-1$//$NON-NLS-2$
       }
 
@@ -1054,8 +1083,57 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table.setModel ( this.tableModel );
         this.table.setColumnModel ( this.tableColumnModel );
 
-        printTableModel ( name
+        printTableModel ( this.minimizeMachineDialog.getMachinePanel ()
+            .getName ()
             + " " + Messages.getString ( "PrintDialog.MinimizeMachine" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+      }
+
+    }
+    catch ( PrinterException exc )
+    {
+      InfoDialog dialog = new InfoDialog ( this.parent, Messages
+          .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrint" ) ); //$NON-NLS-1$
+      dialog.show ();
+    }
+  }
+
+
+  /**
+   * Handles print {@link ReachableStatesDialog}.
+   */
+  private void printReachableStatesDialog ()
+  {
+    try
+    {
+
+      if ( this.gui.jGTIRadioButtonReachableStatesGraph.isSelected () )
+      {
+        printJGraph ( this.reachableStatesDialog.getModelOriginal ()
+            .getJGTIGraph (), this.reachableStatesDialog.getMachinePanel ()
+            .getName ()
+            + " " //$NON-NLS-1$
+            + Messages.getString ( "PrintDialog.ReachableStates" ) //$NON-NLS-1$
+            + " " //$NON-NLS-1$
+            + Messages.getString ( "PrintDialog.Original" ) ); //$NON-NLS-1$
+      }
+
+      else if ( this.gui.jGTIRadioButtonReachableStatesTable.isSelected () )
+      {
+        this.tableModel = this.reachableStatesDialog
+            .getReachableStatesTableModel ();
+        this.tableColumnModel = this.reachableStatesDialog
+            .getTableColumnModel ();
+        this.table = new JGTITable ();
+        this.table.setModel ( this.tableModel );
+        this.table.setColumnModel ( this.tableColumnModel );
+
+        printTableModel ( this.reachableStatesDialog.getMachinePanel ()
+            .getName ()
+            + " " //$NON-NLS-1$
+            + Messages.getString ( "PrintDialog.ReachableStates" ) //$NON-NLS-1$
+            + " " //$NON-NLS-1$
+            + Messages.getString ( "PrintDialog.Table" ) ); //$NON-NLS-1$
       }
 
     }

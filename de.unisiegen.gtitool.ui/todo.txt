@@ -1,5 +1,8 @@
 *** TODO ***
 
+CF		- Zweite Ansicht leer, wird ausgeblendet -> Exception
+CF		- Transitions-Dialog zeigt falsches Ergebniss an
+CF		- Größe eines Zustandes mit Transition in sich selbst anpassen
 
 *** FEATURE ***
 
@@ -23,4 +26,4 @@ BM		- Neues AutoLayout
 BM		- Farben beim Minimieren dynamisch berechnen
 
 		- LaTeX Export
-		- Benutzerfreundlichkeit
+		- Benutzerinteraktionen einbauen

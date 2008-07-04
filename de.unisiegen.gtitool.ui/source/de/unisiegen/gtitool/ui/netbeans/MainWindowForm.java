@@ -850,6 +850,18 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
 
     /**
+     * Returns the jMenuItemExportPicture.
+     *
+     * @return The jMenuItemExportPicture.
+     * @see #jMenuItemExportPicture
+     */
+    public final JMenuItem getJMenuItemExportPicture ()
+    {
+      return this.jMenuItemExportPicture;
+    }
+
+
+    /**
      * Returns the jMenuItemReorderStateNames.
      *
      * @return The jMenuItemReorderStateNames.
@@ -1099,6 +1111,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemMinimize = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
+        jMenuItemExportPicture = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
         jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuItemReachableStates = new javax.swing.JMenuItem();
@@ -1778,7 +1791,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
         jMenuExtras.setText(bundle.getString("MainWindow.Extras")); // NOI18N
 
-        jMenuItemExchange.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExchangeMnemonic").charAt(0));
+        jMenuItemExchange.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.Exchange").charAt(0));
         jMenuItemExchange.setText(bundle.getString("MainWindow.Exchange")); // NOI18N
         jMenuItemExchange.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1786,6 +1799,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
             }
         });
         jMenuExtras.add(jMenuItemExchange);
+
+        jMenuItemExportPicture.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExportPictureMnemonic").charAt(0));
+        jMenuItemExportPicture.setText(bundle.getString("MainWindow.ExportPicture")); // NOI18N
+        jMenuItemExportPicture.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemExportPictureActionPerformed(evt);
+            }
+        });
+        jMenuExtras.add(jMenuItemExportPicture);
         jMenuExtras.add(jSeparatorExtras);
 
         jMenuItemHistory.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HistoryMnemonic").charAt(0));
@@ -2088,6 +2110,10 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 private void jMenuItemPrinthandleClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPrinthandleClose
   this.logic.handlePrint();
 }//GEN-LAST:event_jMenuItemPrinthandleClose
+
+private void jMenuItemExportPictureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExportPictureActionPerformed
+  this.logic.handleExportPicture();
+}//GEN-LAST:event_jMenuItemExportPictureActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2146,6 +2172,7 @@ private void jMenuItemPrinthandleClose(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JMenuItem jMenuItemEditMachine;
     private javax.swing.JMenuItem jMenuItemEnterWord;
     private javax.swing.JMenuItem jMenuItemExchange;
+    private javax.swing.JMenuItem jMenuItemExportPicture;
     private javax.swing.JMenuItem jMenuItemHistory;
     private javax.swing.JMenuItem jMenuItemMinimize;
     private javax.swing.JMenuItem jMenuItemNFA;

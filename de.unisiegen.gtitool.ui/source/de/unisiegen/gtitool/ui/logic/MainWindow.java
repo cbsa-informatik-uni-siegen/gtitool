@@ -298,6 +298,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_REACHABLE_STATES,
 
     /**
+     * The export picture enabled button state.
+     */
+    ENABLED_EXPORT_PICTURE,
+
+    /**
      * The reorder state names enabled button state.
      */
     ENABLED_REORDER_STATE_NAMES,
@@ -425,6 +430,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_RECENTLY_USED );
     removeButtonState ( ButtonState.ENABLED_MINIMIZE );
     removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+    removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
     removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
     removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
@@ -1028,6 +1034,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_REACHABLE_STATES );
       this.gui.getJMenuItemReachableStates ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_EXPORT_PICTURE ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_EXPORT_PICTURE ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_EXPORT_PICTURE );
+      this.gui.getJMenuItemExportPicture ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REORDER_STATE_NAMES ) )
         && ( !this.buttonStateList
@@ -1787,6 +1800,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
+   * Handles the export picture event.
+   */
+  public final void handleExportPicture ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof MachinePanel )
+    {
+      MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      machinePanel.handleExportPicture ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
    * Handles the history event.
    */
   public final void handleHistory ()
@@ -1808,7 +1840,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   /**
    * Handles the minimize {@link Machine} event.
    */
-  public void handleMinimize ()
+  public final void handleMinimize ()
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
@@ -2085,7 +2117,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
     }
-
   }
 
 
@@ -3081,6 +3112,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_HISTORY );
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
       removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+      removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
       removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
       removeButtonState ( ButtonState.ENABLED_SAVE );
     }
@@ -3149,6 +3181,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_PRINT );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
         addButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
+        addButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
 
         // word navigation mode
         if ( machinePanel.getMachineMode ().equals (
@@ -3267,6 +3300,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
         removeButtonState ( ButtonState.ENABLED_MINIMIZE );
         removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+        removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
         removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
       }
@@ -4516,6 +4550,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_REACHABLE_STATES );
       this.gui.getJMenuItemReachableStates ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_EXPORT_PICTURE ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_EXPORT_PICTURE );
+      this.gui.getJMenuItemExportPicture ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_REORDER_STATE_NAMES ) )
     {

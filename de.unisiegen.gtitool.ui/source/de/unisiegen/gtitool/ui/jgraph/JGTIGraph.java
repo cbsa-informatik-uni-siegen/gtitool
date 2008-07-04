@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.jgraph;
 
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -12,6 +13,7 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Transition;
 
 
 /**
@@ -61,54 +63,6 @@ public final class JGTIGraph extends JGraph implements Printable
 
 
   /**
-   * Sets the marginBottom.
-   * 
-   * @param marginBottom The marginBottom to set.
-   * @see #marginBottom
-   */
-  public void setMarginBottom ( int marginBottom )
-  {
-    this.marginBottom = marginBottom;
-  }
-
-
-  /**
-   * Sets the marginRight.
-   * 
-   * @param marginRight The marginRight to set.
-   * @see #marginRight
-   */
-  public void setMarginRight ( int marginRight )
-  {
-    this.marginRight = marginRight;
-  }
-
-
-  /**
-   * Sets the marginLeft.
-   * 
-   * @param marginLeft The marginLeft to set.
-   * @see #marginLeft
-   */
-  public void setMarginLeft ( int marginLeft )
-  {
-    this.marginLeft = marginLeft;
-  }
-
-
-  /**
-   * Sets the marginTop.
-   * 
-   * @param marginTop The marginTop to set.
-   * @see #marginTop
-   */
-  public void setMarginTop ( int marginTop )
-  {
-    this.marginTop = marginTop;
-  }
-
-
-  /**
    * The left margin.
    */
   private int marginLeft = 50;
@@ -133,9 +87,9 @@ public final class JGTIGraph extends JGraph implements Printable
 
 
   /**
-   * Calculate the width and heigth of the graph.
+   * Calculates the width and heigth of the graph.
    */
-  private void calculateGraphSize ()
+  private final void calculateGraphSize ()
   {
     for ( Object object : DefaultGraphModel.getAll ( getModel () ) )
     {
@@ -195,6 +149,52 @@ public final class JGTIGraph extends JGraph implements Printable
       }
     }
     return null;
+  }
+
+
+  /**
+   * Returns the used bounds.
+   * 
+   * @return The used bounds.
+   */
+  public final Rectangle getUsedBounds ()
+  {
+    int minX = Integer.MAX_VALUE;
+    int maxX = 0;
+    int minY = Integer.MAX_VALUE;
+    int maxY = 0;
+
+    for ( Object object : DefaultGraphModel.getAll ( getModel () ) )
+    {
+      if ( object instanceof DefaultStateView )
+      {
+        DefaultStateView current = ( DefaultStateView ) object;
+
+        // TODOCF remove after changing the state height
+        boolean found = false;
+        for ( Transition currentTransition : current.getState ()
+            .getTransitionBegin () )
+        {
+          if ( currentTransition.getStateEnd () == current.getState () )
+          {
+            found = true;
+            break;
+          }
+        }
+
+        int x = ( int ) current.getPositionX ();
+        int y = ( int ) current.getPositionY () - ( found ? 36 : 0 );
+        int width = ( int ) current.getWidth ();
+        int height = ( int ) current.getHeight () + ( found ? 36 : 0 );
+
+        minX = Math.min ( minX, x );
+        maxX = Math.max ( maxX, x + width );
+        minY = Math.min ( minY, y );
+        maxY = Math.max ( maxY, y + height );
+      }
+    }
+
+    return new Rectangle ( minX, minY, maxX - minX, maxY - minY );
   }
 
 
@@ -263,7 +263,57 @@ public final class JGTIGraph extends JGraph implements Printable
 
     printAll ( graphics );
     if ( print )
+    {
       return Printable.PAGE_EXISTS;
+    }
     return Printable.NO_SUCH_PAGE;
+  }
+
+
+  /**
+   * Sets the marginBottom.
+   * 
+   * @param marginBottom The marginBottom to set.
+   * @see #marginBottom
+   */
+  public final void setMarginBottom ( int marginBottom )
+  {
+    this.marginBottom = marginBottom;
+  }
+
+
+  /**
+   * Sets the marginLeft.
+   * 
+   * @param marginLeft The marginLeft to set.
+   * @see #marginLeft
+   */
+  public final void setMarginLeft ( int marginLeft )
+  {
+    this.marginLeft = marginLeft;
+  }
+
+
+  /**
+   * Sets the marginRight.
+   * 
+   * @param marginRight The marginRight to set.
+   * @see #marginRight
+   */
+  public final void setMarginRight ( int marginRight )
+  {
+    this.marginRight = marginRight;
+  }
+
+
+  /**
+   * Sets the marginTop.
+   * 
+   * @param marginTop The marginTop to set.
+   * @see #marginTop
+   */
+  public final void setMarginTop ( int marginTop )
+  {
+    this.marginTop = marginTop;
   }
 }

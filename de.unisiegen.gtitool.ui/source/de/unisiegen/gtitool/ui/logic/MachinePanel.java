@@ -2,6 +2,8 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -13,14 +15,17 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.CellEditor;
 import javax.swing.JPanel;
@@ -1276,6 +1281,99 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     ExchangeDialog exchangeDialog = new ExchangeDialog ( this.mainWindowForm
         .getLogic (), this.model.getElement (), this.file );
     exchangeDialog.show ();
+  }
+
+
+  /**
+   * Handles the export picture event.
+   */
+  public final void handleExportPicture ()
+  {
+    FileFilter fileFilter = new FileFilter ()
+    {
+
+      @Override
+      public boolean accept ( File acceptedFile )
+      {
+        if ( acceptedFile.isDirectory () )
+        {
+          return true;
+        }
+        if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\.png" ) ) //$NON-NLS-1$
+        {
+          return true;
+        }
+        return false;
+      }
+
+
+      @Override
+      public String getDescription ()
+      {
+        return Messages.getString ( "MachinePanel.ExportPicturePNG" ) //$NON-NLS-1$
+            + " (*.png)"; //$NON-NLS-1$
+      }
+    };
+
+    SaveDialog saveDialog = new SaveDialog ( this.mainWindowForm,
+        PreferenceManager.getInstance ().getWorkingPath (), fileFilter,
+        fileFilter );
+    saveDialog.show ();
+
+    if ( ( !saveDialog.isConfirmed () )
+        || ( saveDialog.getSelectedFile () == null ) )
+    {
+      return;
+    }
+
+    if ( saveDialog.getSelectedFile ().exists () )
+    {
+      ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
+          Messages.getString ( "MachinePanel.FileExists", saveDialog //$NON-NLS-1$
+              .getSelectedFile ().getName () ), Messages
+              .getString ( "MachinePanel.ExportPicture" ), true, true, false ); //$NON-NLS-1$
+      confirmDialog.show ();
+      if ( confirmDialog.isNotConfirmed () )
+      {
+        return;
+      }
+    }
+
+    String filename = saveDialog.getSelectedFile ().toString ().toLowerCase ()
+        .matches ( ".+\\.png" ) ? saveDialog.getSelectedFile ().toString () //$NON-NLS-1$
+        : saveDialog.getSelectedFile ().toString () + ".png"; //$NON-NLS-1$
+
+    PreferenceManager.getInstance ().setWorkingPath (
+        saveDialog.getCurrentDirectory ().getAbsolutePath () );
+
+    Rectangle usedBounds = this.jGTIGraph.getUsedBounds ();
+
+    System.err.println (usedBounds);
+    
+    int inset = 20;
+    int width = usedBounds.width + 2 * inset;
+    int height = usedBounds.height + 2 * inset;
+
+    BufferedImage image = new BufferedImage ( width, height,
+        BufferedImage.TYPE_INT_RGB );
+    Graphics graphics = image.getGraphics ();
+
+    graphics.fillRect ( 0, 0, width, height );
+    graphics.translate ( inset - usedBounds.x, inset - usedBounds.y );
+    this.jGTIGraph.paintAll ( graphics );
+    graphics.dispose ();
+
+    try
+    {
+      ImageIO.write ( image, "PNG", new File ( filename ) ); //$NON-NLS-1$
+    }
+    catch ( IOException exc )
+    {
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, Messages
+          .getString ( "MachinePanel.ExportPictureError" ), Messages//$NON-NLS-1$
+          .getString ( "MachinePanel.ExportPictureErrorTitle" ) );//$NON-NLS-1$
+      infoDialog.show ();
+    }
   }
 
 

@@ -113,18 +113,6 @@ public final class MinimizeMachineDialog implements
 
 
   /**
-   * Returns the endReached.
-   * 
-   * @return The endReached.
-   * @see #endReached
-   */
-  public boolean isEndReached ()
-  {
-    return this.endReached;
-  }
-
-
-  /**
    * The {@link MinimizeMachineDialogForm}.
    */
   private MinimizeMachineDialogForm gui;
@@ -650,6 +638,16 @@ public final class MinimizeMachineDialog implements
 
 
   /**
+   * Handle print action.
+   */
+  public void handlePrint ()
+  {
+    PrintDialog dialog = new PrintDialog ( this.mainWindowForm, this );
+    dialog.show ();
+  }
+
+
+  /**
    * Handles the start action.
    */
   private final void handleStart ()
@@ -698,6 +696,18 @@ public final class MinimizeMachineDialog implements
             DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
       }
     }
+  }
+
+
+  /**
+   * Returns the endReached.
+   * 
+   * @return The endReached.
+   * @see #endReached
+   */
+  public boolean isEndReached ()
+  {
+    return this.endReached;
   }
 
 
@@ -790,15 +800,5 @@ public final class MinimizeMachineDialog implements
     }
     this.gui.setBounds ( rect );
     this.gui.setVisible ( true );
-  }
-
-
-  /**
-   * Handle print action.
-   */
-  public void handlePrint ()
-  {
-    PrintDialog dialog = new PrintDialog ( this.mainWindowForm, this );
-    dialog.show ();
   }
 }

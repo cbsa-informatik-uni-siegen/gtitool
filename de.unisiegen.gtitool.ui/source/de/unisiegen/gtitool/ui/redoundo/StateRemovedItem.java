@@ -83,10 +83,14 @@ public final class StateRemovedItem extends RedoUndoItem
     // add transitions
     for ( DefaultTransitionView current : this.transitions )
     {
-      if (current.getSourceView ().getChildCount () == 0)
+      if ( current.getSourceView ().getChildCount () == 0 )
+      {
         current.getSourceView ().addPort ();
-      if (current.getTargetView ().getChildCount () == 0)
+      }
+      if ( current.getTargetView ().getChildCount () == 0 )
+      {
         current.getTargetView ().addPort ();
+      }
       this.model.createTransitionView ( current.getTransition (), current
           .getSourceView (), current.getTargetView (), false, false, true );
     }

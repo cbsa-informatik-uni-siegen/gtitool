@@ -52,7 +52,7 @@ public final class ConsoleColumnModel extends DefaultTableColumnModel implements
     this.messageColumn.setPreferredWidth ( 200 );
     this.messageColumn.setMinWidth ( 200 );
     this.messageColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
-    this.addColumn ( this.messageColumn );
+    addColumn ( this.messageColumn );
 
     // Description
     this.descriptionColumn = new TableColumn (
@@ -62,7 +62,7 @@ public final class ConsoleColumnModel extends DefaultTableColumnModel implements
     this.descriptionColumn.setPreferredWidth ( 800 );
     this.descriptionColumn
         .setCellRenderer ( new PrettyStringTableCellRenderer () );
-    this.addColumn ( this.descriptionColumn );
+    addColumn ( this.descriptionColumn );
 
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );

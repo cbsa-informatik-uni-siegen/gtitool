@@ -219,9 +219,9 @@ public final class HistoryPathComponent extends JLabel
     FontMetrics metrics = g.getFontMetrics ();
     char [] prettyString = state.toPrettyString ().toString ().toCharArray ();
     int result = 0;
-    for ( int i = 0 ; i < prettyString.length ; i++ )
+    for ( char element : prettyString )
     {
-      result += metrics.charWidth ( prettyString [ i ] );
+      result += metrics.charWidth ( element );
     }
     return result;
   }
@@ -262,9 +262,9 @@ public final class HistoryPathComponent extends JLabel
       g.setFont ( font );
       g.setColor ( currentToken.getColor () );
       char [] chars = currentToken.getChar ();
-      for ( int i = 0 ; i < chars.length ; i++ )
+      for ( char c : chars )
       {
-        result += metrics.charWidth ( chars [ i ] );
+        result += metrics.charWidth ( c );
       }
     }
     return result + ( 2 * SPACE_WIDTH );

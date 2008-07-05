@@ -53,7 +53,7 @@ public final class JGTIScrollPane extends JScrollPane
       jTableHeader.setTable ( jTable );
       jTableHeader.setResizingAllowed ( false );
       jTableHeader.setReorderingAllowed ( false );
-      this.setCorner ( ScrollPaneConstants.UPPER_RIGHT_CORNER, jTableHeader );
+      setCorner ( ScrollPaneConstants.UPPER_RIGHT_CORNER, jTableHeader );
     }
   }
 }

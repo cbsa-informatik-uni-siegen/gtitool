@@ -31,6 +31,22 @@ public class StateList < E > extends ArrayList < E >
 
 
   /**
+   * Constructs a list containing the elements of the specified collection, in
+   * the order they are returned by the collection's iterator. The
+   * <tt>ArrayList</tt> instance has an initial capacity of 110% the size of the
+   * specified collection.
+   * 
+   * @param collection the collection whose elements are to be placed into this
+   *          list.
+   * @throws NullPointerException if the specified collection is null.
+   */
+  public StateList ( Collection < E > collection )
+  {
+    super ( collection );
+  }
+
+
+  /**
    * Constructs an empty list with the specified initial capacity.
    * 
    * @param initialCapacity the initial capacity of the list.
@@ -44,22 +60,6 @@ public class StateList < E > extends ArrayList < E >
 
 
   /**
-   * Constructs a list containing the elements of the specified collection, in
-   * the order they are returned by the collection's iterator. The
-   * <tt>ArrayList</tt> instance has an initial capacity of 110% the size of
-   * the specified collection.
-   * 
-   * @param collection the collection whose elements are to be placed into this
-   *          list.
-   * @throws NullPointerException if the specified collection is null.
-   */
-  public StateList ( Collection < E > collection )
-  {
-    super ( collection );
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see java.util.AbstractCollection#toString()
@@ -68,11 +68,13 @@ public class StateList < E > extends ArrayList < E >
   public String toString ()
   {
     StringBuilder builder = new StringBuilder ();
-    for ( int i = 0 ; i < this.size () ; i++ )
+    for ( int i = 0 ; i < size () ; i++ )
     {
-      builder.append ( this.get ( i ) );
-      if ( i < this.size () - 1 )
+      builder.append ( get ( i ) );
+      if ( i < size () - 1 )
+      {
         builder.append ( ", " ); //$NON-NLS-1$
+      }
     }
     return builder.toString ();
   }

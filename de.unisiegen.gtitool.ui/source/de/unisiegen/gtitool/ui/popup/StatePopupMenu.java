@@ -117,8 +117,8 @@ public final class StatePopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         StatePopupMenu.this.machinePanel
             .deleteState ( StatePopupMenu.this.state );
@@ -132,8 +132,8 @@ public final class StatePopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         StatePopupMenu.this.state.getState ().setStartState (
             !StatePopupMenu.this.state.getState ().isStartState () );
@@ -153,10 +153,11 @@ public final class StatePopupMenu extends JPopupMenu
         StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
         StateChangedItem item = new StateChangedItem (
-            StatePopupMenu.this.model.getJGTIGraph (), StatePopupMenu.this.state
-                .getState (), StatePopupMenu.this.state.getState ().getName (),
-            !StatePopupMenu.this.state.getState ().isStartState (),
-            StatePopupMenu.this.state.getState ().isFinalState () );
+            StatePopupMenu.this.model.getJGTIGraph (),
+            StatePopupMenu.this.state.getState (), StatePopupMenu.this.state
+                .getState ().getName (), !StatePopupMenu.this.state.getState ()
+                .isStartState (), StatePopupMenu.this.state.getState ()
+                .isFinalState () );
         StatePopupMenu.this.machinePanel.getRedoUndoHandler ().addItem ( item );
       }
     } );
@@ -169,18 +170,19 @@ public final class StatePopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         StatePopupMenu.this.state.getState ().setFinalState (
             !StatePopupMenu.this.state.getState ().isFinalState () );
         StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
         StateChangedItem item = new StateChangedItem (
-            StatePopupMenu.this.model.getJGTIGraph (), StatePopupMenu.this.state
-                .getState (), StatePopupMenu.this.state.getState ().getName (),
-            StatePopupMenu.this.state.getState ().isStartState (),
-            !StatePopupMenu.this.state.getState ().isFinalState () );
+            StatePopupMenu.this.model.getJGTIGraph (),
+            StatePopupMenu.this.state.getState (), StatePopupMenu.this.state
+                .getState ().getName (), StatePopupMenu.this.state.getState ()
+                .isStartState (), !StatePopupMenu.this.state.getState ()
+                .isFinalState () );
         StatePopupMenu.this.machinePanel.getRedoUndoHandler ().addItem ( item );
       }
     } );
@@ -195,8 +197,8 @@ public final class StatePopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         StateConfigDialog dialog = new StateConfigDialog (
             StatePopupMenu.this.parent, StatePopupMenu.this.machinePanel,

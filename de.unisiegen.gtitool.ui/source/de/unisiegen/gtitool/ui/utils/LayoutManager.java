@@ -163,7 +163,6 @@ public final class LayoutManager
     int rowSize = ( int ) Math.ceil ( Math.sqrt ( this.model
         .getStateViewList ().size () ) );
 
-
     int count = 0;
     int pos = 0;
     for ( DefaultStateView current : states )
@@ -224,7 +223,7 @@ public final class LayoutManager
     prelayout ();
 
     doLayoutInternal ();
-    
+
     finishLayout ();
 
     this.model.getGraphModel ().cellsChanged (

@@ -169,8 +169,9 @@ public final class StateConfigDialog implements
     State activeState = this.gui.styledStateParserPanel.getParsedObject ();
     this.stateName = ( activeState == null ? null : activeState.getName () );
 
-    if ( this.stateName != null
+    if ( ( this.stateName != null )
         && !this.stateName.equals ( this.state.getName () ) )
+    {
       try
       {
         this.state.setName ( this.stateName );
@@ -181,17 +182,19 @@ public final class StateConfigDialog implements
       {
         exc.printStackTrace ();
       }
+    }
 
     this.state.setFinalState ( this.gui.jGTICheckBoxFinalState.isSelected () );
     this.state.setStartState ( this.gui.jGTICheckBoxStartState.isSelected () );
     this.model.getGraphModel ().cellsChanged ( new Object []
     { this.state } );
     if ( !this.oldName.equals ( this.state.getName () )
-        || this.oldStartState != this.state.isStartState ()
-        || this.oldFinalState != this.state.isFinalState () )
+        || ( this.oldStartState != this.state.isStartState () )
+        || ( this.oldFinalState != this.state.isFinalState () ) )
     {
-      StateChangedItem item = new StateChangedItem ( this.model.getJGTIGraph (),
-          this.state, this.oldName, this.oldStartState, this.oldFinalState );
+      StateChangedItem item = new StateChangedItem (
+          this.model.getJGTIGraph (), this.state, this.oldName,
+          this.oldStartState, this.oldFinalState );
       this.machinePanel.getRedoUndoHandler ().addItem ( item );
     }
     this.gui.dispose ();

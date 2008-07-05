@@ -74,18 +74,6 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
   /**
    * Allocate a new {@link DefaultGrammarModel}.
    * 
-   * @param grammar The {@link Grammar}
-   */
-  public DefaultGrammarModel ( Grammar grammar )
-  {
-    this.grammar = grammar;
-    initializeModifyStatusChangedListener ();
-  }
-
-
-  /**
-   * Allocate a new {@link DefaultGrammarModel}.
-   * 
    * @param element The {@link Element}.
    * @param overwrittenMachineType The overwritten machine type which is used
    *          instead of the loaded machine type if it is not null.
@@ -154,8 +142,9 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
 
     }
 
-    if ( nonterminalSymbolSet == null || terminalSymbolSet == null
-        || grammarType == null || startSymbol == null || !foundGrammarVersion )
+    if ( ( nonterminalSymbolSet == null ) || ( terminalSymbolSet == null )
+        || ( grammarType == null ) || ( startSymbol == null )
+        || !foundGrammarVersion )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
@@ -204,6 +193,18 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
 
 
   /**
+   * Allocate a new {@link DefaultGrammarModel}.
+   * 
+   * @param grammar The {@link Grammar}
+   */
+  public DefaultGrammarModel ( Grammar grammar )
+  {
+    this.grammar = grammar;
+    initializeModifyStatusChangedListener ();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
@@ -233,6 +234,33 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
       RedoUndoItem item = new ProductionsListChangedItem ( this.grammar,
           productions );
       this.redoUndoHandler.addItem ( item );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the modify status has changed.
+   * 
+   * @param forceModify True if the modify is forced, otherwise false.
+   */
+  private final void fireModifyStatusChanged ( boolean forceModify )
+  {
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    if ( forceModify )
+    {
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( true );
+      }
+    }
+    else
+    {
+      boolean newModifyStatus = isModified ();
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( newModifyStatus );
+      }
     }
   }
 
@@ -274,6 +302,25 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
 
 
   /**
+   * Initializes the {@link ModifyStatusChangedListener}.
+   */
+  private final void initializeModifyStatusChangedListener ()
+  {
+    this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void modifyStatusChanged ( boolean modified )
+      {
+        fireModifyStatusChanged ( modified );
+      }
+    };
+    this.grammar
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#isModified()
@@ -281,6 +328,18 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
   public final boolean isModified ()
   {
     return this.grammar.isModified ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -303,64 +362,6 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
   public final void resetModify ()
   {
     this.grammar.resetModify ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
-   */
-  public final void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
-  }
-
-
-  /**
-   * Initializes the {@link ModifyStatusChangedListener}.
-   */
-  private final void initializeModifyStatusChangedListener ()
-  {
-    this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void modifyStatusChanged ( boolean modified )
-      {
-        fireModifyStatusChanged ( modified );
-      }
-    };
-    this.grammar
-        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-  }
-
-
-  /**
-   * Let the listeners know that the modify status has changed.
-   * 
-   * @param forceModify True if the modify is forced, otherwise false.
-   */
-  private final void fireModifyStatusChanged ( boolean forceModify )
-  {
-    ModifyStatusChangedListener [] listeners = this.listenerList
-        .getListeners ( ModifyStatusChangedListener.class );
-    if ( forceModify )
-    {
-      for ( ModifyStatusChangedListener current : listeners )
-      {
-        current.modifyStatusChanged ( true );
-      }
-    }
-    else
-    {
-      boolean newModifyStatus = isModified ();
-      for ( ModifyStatusChangedListener current : listeners )
-      {
-        current.modifyStatusChanged ( newModifyStatus );
-      }
-    }
   }
 
 

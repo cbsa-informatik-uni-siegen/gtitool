@@ -14,7 +14,8 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
  * The table model for the convert machine outline.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: MinimizeMachineTableModel.java 996 2008-06-15 13:51:25Z fehler
+ *          $
  */
 public final class MinimizeMachineTableModel extends AbstractTableModel
 {
@@ -41,11 +42,12 @@ public final class MinimizeMachineTableModel extends AbstractTableModel
    * The data of this table model
    */
   private ArrayList < PrettyString > data;
-  
+
+
   /**
    * List of the {@link Transition}s.
    */
-  private ArrayList < ArrayList<Transition>> transitionsList = new ArrayList < ArrayList<Transition> >();
+  private ArrayList < ArrayList < Transition >> transitionsList = new ArrayList < ArrayList < Transition > > ();
 
 
   /**
@@ -63,7 +65,8 @@ public final class MinimizeMachineTableModel extends AbstractTableModel
    * @param prettyString The {@link PrettyString}s of the row.
    * @param transitions The {@link Transition}s.
    */
-  public final void addRow ( PrettyString prettyString, ArrayList<Transition> transitions )
+  public final void addRow ( PrettyString prettyString,
+      ArrayList < Transition > transitions )
   {
     this.data.add ( prettyString );
     this.transitionsList.add ( transitions );
@@ -148,6 +151,18 @@ public final class MinimizeMachineTableModel extends AbstractTableModel
 
 
   /**
+   * Return the {@link Transition}s for the given row.
+   * 
+   * @param row The row of interest.
+   * @return The {@link Transition}s of the given row.
+   */
+  public ArrayList < Transition > getTransitionsAt ( int row )
+  {
+    return this.transitionsList.get ( row );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see TableModel#getValueAt(int, int)
@@ -202,17 +217,5 @@ public final class MinimizeMachineTableModel extends AbstractTableModel
       this.transitionsList.remove ( index );
       fireTableRowsDeleted ( index, index );
     }
-  }
-
-
-  /**
-   * Return the {@link Transition}s for the given row.
-   *
-   * @param row The row of interest.
-   * @return The {@link Transition}s of the given row.
-   */
-  public ArrayList < Transition > getTransitionsAt ( int row )
-  {
-    return this.transitionsList.get ( row );
   }
 }

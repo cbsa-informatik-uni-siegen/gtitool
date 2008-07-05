@@ -515,7 +515,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     {
       double newWidth = StateView.getWidth ( current.getState () );
       double newHeight = StateView.getHeight ( current.getState () );
-      if ( current.getWidth () != newWidth || current.getHeight () != newHeight )
+      if ( ( current.getWidth () != newWidth )
+          || ( current.getHeight () != newHeight ) )
       {
         GraphConstants.setBounds ( current.getAttributes (),
             new Rectangle2D.Double ( current.getPositionX (), current

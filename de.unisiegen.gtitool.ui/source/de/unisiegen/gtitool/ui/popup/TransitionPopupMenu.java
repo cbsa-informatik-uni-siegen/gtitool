@@ -119,8 +119,8 @@ public final class TransitionPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         TransitionPopupMenu.this.parent.getLogic ().deleteTransition (
             TransitionPopupMenu.this.transition );
@@ -136,8 +136,8 @@ public final class TransitionPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         JFrame window = ( JFrame ) SwingUtilities
             .getWindowAncestor ( TransitionPopupMenu.this.parent );

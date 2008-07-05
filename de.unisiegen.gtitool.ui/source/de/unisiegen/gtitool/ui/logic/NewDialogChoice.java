@@ -58,7 +58,7 @@ public final class NewDialogChoice implements LogicClass < NewDialogChoiceForm >
   public NewDialogChoice ( NewDialog parent )
   {
     this.parent = parent;
-    this.gui = new NewDialogChoiceForm (this);
+    this.gui = new NewDialogChoiceForm ( this );
   }
 
 

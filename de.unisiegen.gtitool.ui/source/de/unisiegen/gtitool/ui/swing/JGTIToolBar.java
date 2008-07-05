@@ -18,6 +18,7 @@ public final class JGTIToolBar extends JToolBar
    */
   private static final long serialVersionUID = -2802419904461779950L;
 
+
   /**
    * Allocates a new {@link JGTIToolBar}.
    */

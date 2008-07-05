@@ -275,8 +275,8 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void adjustmentValueChanged ( @SuppressWarnings ( "unused" )
-          AdjustmentEvent event )
+          public void adjustmentValueChanged (
+              @SuppressWarnings ( "unused" ) AdjustmentEvent event )
           {
             while ( ( ConfirmDialog.this.rows < 10 )
                 && ( ConfirmDialog.this.gui.jGTIScrollPaneInfo

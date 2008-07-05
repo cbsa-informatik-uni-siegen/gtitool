@@ -157,8 +157,8 @@ public final class JGTIList extends JList implements DropTargetListener
    * 
    * @see DropTargetListener#dragExit(DropTargetEvent)
    */
-  public final void dragExit ( @SuppressWarnings ( "unused" )
-  DropTargetEvent event )
+  public final void dragExit (
+      @SuppressWarnings ( "unused" ) DropTargetEvent event )
   {
     this.dropPoint = null;
     repaint ();

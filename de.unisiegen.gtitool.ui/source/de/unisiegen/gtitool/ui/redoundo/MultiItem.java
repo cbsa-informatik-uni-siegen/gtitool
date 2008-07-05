@@ -48,6 +48,17 @@ public final class MultiItem extends RedoUndoItem
 
 
   /**
+   * Return the size of this item.
+   * 
+   * @return the size of this item.
+   */
+  public int size ()
+  {
+    return this.itemList.size ();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see RedoUndoItem#undo()
@@ -59,14 +70,5 @@ public final class MultiItem extends RedoUndoItem
     {
       current.undo ();
     }
-  }
-  
-  /**
-   * Return the size of this item.
-   *
-   * @return the size of this item.
-   */
-  public int size(){
-    return this.itemList.size ();
   }
 }

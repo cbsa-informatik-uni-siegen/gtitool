@@ -46,15 +46,15 @@ public final class RecentlyUsedMenuItem extends JMenuItem
   {
     this.mainWindow = mainWindow;
     this.file = file;
-    this.setText ( this.file.getName () );
+    setText ( this.file.getName () );
 
-    this.setText ( this.file.getName () );
-    this.addActionListener ( new ActionListener ()
+    setText ( this.file.getName () );
+    addActionListener ( new ActionListener ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         RecentlyUsedMenuItem.this.mainWindow.openFile (
             RecentlyUsedMenuItem.this.file, true );

@@ -12,7 +12,8 @@ import javax.swing.table.TableCellRenderer;
  * The {@link HistoryPath} {@link TableCellRenderer}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: HistoryPathTableCellRenderer.java 1031 2008-06-25 16:57:06Z
+ *          fehler $
  */
 public final class HistoryPathTableCellRenderer extends
     DefaultTableCellRenderer

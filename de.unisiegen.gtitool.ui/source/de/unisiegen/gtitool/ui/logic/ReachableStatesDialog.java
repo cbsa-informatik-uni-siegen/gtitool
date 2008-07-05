@@ -412,7 +412,6 @@ public final class ReachableStatesDialog implements
   private boolean endReached = false;
 
 
-  
   /**
    * The {@link ReachableStatesDialogForm}.
    */
@@ -449,7 +448,6 @@ public final class ReachableStatesDialog implements
   private DefaultMachineModel modelOriginal;
 
 
-  
   /**
    * The result {@link DefaultMachineModel}.
    */
@@ -483,7 +481,7 @@ public final class ReachableStatesDialog implements
   /**
    * The {@link ReachableStatesTableColumnModel}.
    */
-  private ReachableStatesTableColumnModel tableColumnModel = new ReachableStatesTableColumnModel();
+  private ReachableStatesTableColumnModel tableColumnModel = new ReachableStatesTableColumnModel ();
 
 
   /**
@@ -737,7 +735,7 @@ public final class ReachableStatesDialog implements
 
   /**
    * Returns the {@link MachinePanel}.
-   *
+   * 
    * @return The {@link MachinePanel}.
    * @see #machinePanel
    */
@@ -749,7 +747,7 @@ public final class ReachableStatesDialog implements
 
   /**
    * Returns the modelOriginal.
-   *
+   * 
    * @return The modelOriginal.
    * @see #modelOriginal
    */
@@ -761,7 +759,7 @@ public final class ReachableStatesDialog implements
 
   /**
    * Returns the reachableStatesTableModel.
-   *
+   * 
    * @return The reachableStatesTableModel.
    * @see #reachableStatesTableModel
    */
@@ -773,7 +771,7 @@ public final class ReachableStatesDialog implements
 
   /**
    * Returns the tableColumnModel.
-   *
+   * 
    * @return The tableColumnModel.
    * @see #tableColumnModel
    */
@@ -950,6 +948,7 @@ public final class ReachableStatesDialog implements
     this.modelResult.getGraphModel ().cellsChanged (
         DefaultGraphModel.getAll ( this.modelResult.getGraphModel () ) );
   }
+
 
   /**
    * Performs the next step.
@@ -1189,7 +1188,7 @@ public final class ReachableStatesDialog implements
     }
   }
 
-  
+
   /**
    * Performs the previous step.
    * 
@@ -1304,7 +1303,6 @@ public final class ReachableStatesDialog implements
   }
 
 
-  
   /**
    * Shows the {@link ReachableStatesDialogForm}.
    */
@@ -1317,8 +1315,7 @@ public final class ReachableStatesDialog implements
     // outline
     this.reachableStatesTableModel = new ReachableStatesTableModel ();
     this.gui.jGTITableOutline.setModel ( this.reachableStatesTableModel );
-    this.gui.jGTITableOutline
-        .setColumnModel ( this.tableColumnModel);
+    this.gui.jGTITableOutline.setColumnModel ( this.tableColumnModel );
     this.gui.jGTITableOutline.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableOutline.getSelectionModel ().setSelectionMode (
         ListSelectionModel.SINGLE_SELECTION );

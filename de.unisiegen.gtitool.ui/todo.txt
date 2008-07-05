@@ -2,7 +2,6 @@
 
 CF		- Transitions-Dialog zeigt falsches Ergebniss an
 CF		- Größe eines Zustandes mit Transition in sich selbst anpassen
-CF		- New Dialog: Keller Komponenten ausblenden
 
 *** FEATURE ***
 

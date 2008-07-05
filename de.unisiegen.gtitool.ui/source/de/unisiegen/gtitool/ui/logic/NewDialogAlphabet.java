@@ -5,6 +5,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogAlphabetForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -57,9 +58,8 @@ public final class NewDialogAlphabet implements
         .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          Alphabet newAlphabet )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
           {
             setButtonStatus ();
           }
@@ -68,9 +68,8 @@ public final class NewDialogAlphabet implements
         .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          Alphabet newAlphabet )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
           {
             setButtonStatus ();
           }
@@ -156,7 +155,7 @@ public final class NewDialogAlphabet implements
   /**
    * Sets the status of the buttons.
    */
-  private final void setButtonStatus ()
+  public final void setButtonStatus ()
   {
     if ( ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .getParsedObject () == null )
@@ -168,6 +167,39 @@ public final class NewDialogAlphabet implements
     else
     {
       this.gui.jGTIButtonFinished.setEnabled ( true );
+    }
+
+    if ( !this.parent.getMachineChoice ().equals (
+        NewDialogMachineChoice.Choice.PDA ) )
+    {
+      if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.SHOW ) )
+      {
+        // do nothing
+      }
+      else if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.HIDE ) )
+      {
+        this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+            .setEnabled ( false );
+        this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+            .setEnabled ( false );
+      }
+      else
+      {
+        throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
+      }
+    }
+    else
+    {
+      this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+          .setEnabled ( true );
+      if ( this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+          .isSelected () )
+      {
+        this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+            .setEnabled ( true );
+      }
     }
   }
 }

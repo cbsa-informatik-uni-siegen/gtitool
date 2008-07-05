@@ -21,17 +21,6 @@ public final class InfoDialog implements LogicClass < InfoDialogForm >
 {
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see LogicClass#getGUI()
-   */
-  public final InfoDialogForm getGUI ()
-  {
-    return this.gui;
-  }
-
-
-  /**
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger.getLogger ( InfoDialog.class );
@@ -81,6 +70,30 @@ public final class InfoDialog implements LogicClass < InfoDialogForm >
 
 
   /**
+   * Centers the dialog.
+   */
+  private final void centerDialog ()
+  {
+    int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+        - ( this.gui.getWidth () / 2 );
+    int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+        - ( this.gui.getHeight () / 2 );
+    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final InfoDialogForm getGUI ()
+  {
+    return this.gui;
+  }
+
+
+  /**
    * Closes the {@link InfoDialogForm}.
    */
   public final void handleClose ()
@@ -106,8 +119,8 @@ public final class InfoDialog implements LogicClass < InfoDialogForm >
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void adjustmentValueChanged ( @SuppressWarnings ( "unused" )
-          AdjustmentEvent event )
+          public void adjustmentValueChanged (
+              @SuppressWarnings ( "unused" ) AdjustmentEvent event )
           {
             while ( ( InfoDialog.this.rows < 10 )
                 && ( InfoDialog.this.gui.jGTIScrollPaneInfo
@@ -127,18 +140,5 @@ public final class InfoDialog implements LogicClass < InfoDialogForm >
 
     centerDialog ();
     this.gui.setVisible ( true );
-  }
-
-
-  /**
-   * Centers the dialog.
-   */
-  private final void centerDialog ()
-  {
-    int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-        - ( this.gui.getWidth () / 2 );
-    int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-        - ( this.gui.getHeight () / 2 );
-    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
   }
 }

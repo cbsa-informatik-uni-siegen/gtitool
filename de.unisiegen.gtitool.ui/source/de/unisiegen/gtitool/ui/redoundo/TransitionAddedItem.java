@@ -63,7 +63,8 @@ public final class TransitionAddedItem extends RedoUndoItem
     {
       this.stateView.addPort ();
       this.model.getMachine ().addState ( this.stateView.getState () );
-      this.model.getJGTIGraph ().getGraphLayoutCache ().insert ( this.stateView );
+      this.model.getJGTIGraph ().getGraphLayoutCache ()
+          .insert ( this.stateView );
       this.model.getStateViewList ().add ( this.stateView );
     }
 

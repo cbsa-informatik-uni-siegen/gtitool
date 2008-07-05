@@ -45,7 +45,7 @@ public final class PDATableColumnModel extends DefaultTableColumnModel
         .getString ( "MachinePanel.StackOperation" ) ); //$NON-NLS-1$
     this.transitionColumn
         .setCellRenderer ( new StackOperationTableCellRenderer () );
-    this.addColumn ( this.transitionColumn );
+    addColumn ( this.transitionColumn );
 
     // language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
@@ -59,9 +59,9 @@ public final class PDATableColumnModel extends DefaultTableColumnModel
    */
   public final void languageChanged ()
   {
-    this.removeColumn ( this.transitionColumn );
+    removeColumn ( this.transitionColumn );
     this.transitionColumn.setHeaderValue ( Messages
         .getString ( "MachinePanel.StackOperation" ) ); //$NON-NLS-1$
-    this.addColumn ( this.transitionColumn );
+    addColumn ( this.transitionColumn );
   }
 }

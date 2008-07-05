@@ -40,8 +40,7 @@ public final class GTITool
 
 
   /**
-   * Allocates a new {@link GTITool}, sets the look and feel and starts the
-   * gui.
+   * Allocates a new {@link GTITool}, sets the look and feel and starts the gui.
    * 
    * @param arguments The command line arguments.
    */

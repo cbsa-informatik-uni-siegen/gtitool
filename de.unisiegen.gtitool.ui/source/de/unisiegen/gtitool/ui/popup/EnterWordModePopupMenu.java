@@ -110,11 +110,9 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     // previous step
     this.jMenuItemPreviousStep = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModePreviousStep" ) ); //$NON-NLS-1$
-    this.jMenuItemPreviousStep
-        .setIcon ( new ImageIcon (
-            getClass ()
-                .getResource (
-                    "/de/unisiegen/gtitool/ui/icon/navigation/small/backward.png" ) ) ); //$NON-NLS-1$
+    this.jMenuItemPreviousStep.setIcon ( new ImageIcon ( getClass ()
+        .getResource (
+            "/de/unisiegen/gtitool/ui/icon/navigation/small/backward.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemPreviousStep.addActionListener ( new ActionListener ()
     {
 
@@ -133,11 +131,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     // next step
     this.jMenuItemNextStep = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModeNextStep" ) ); //$NON-NLS-1$
-    this.jMenuItemNextStep
-        .setIcon ( new ImageIcon (
-            getClass ()
-                .getResource (
-                    "/de/unisiegen/gtitool/ui/icon/navigation/small/forward.png" ) ) ); //$NON-NLS-1$
+    this.jMenuItemNextStep.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/navigation/small/forward.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemNextStep.addActionListener ( new ActionListener ()
     {
 

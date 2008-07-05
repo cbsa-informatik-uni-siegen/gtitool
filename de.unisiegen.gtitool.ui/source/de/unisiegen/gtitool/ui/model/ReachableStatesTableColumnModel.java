@@ -42,6 +42,6 @@ public final class ReachableStatesTableColumnModel extends
     this.outlineColumn.setHeaderValue ( Messages
         .getString ( "ReachableStatesDialog.Outline" ) ); //$NON-NLS-1$
     this.outlineColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
-    this.addColumn ( this.outlineColumn );
+    addColumn ( this.outlineColumn );
   }
 }

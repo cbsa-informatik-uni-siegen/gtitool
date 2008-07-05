@@ -180,7 +180,7 @@ public final class SaveDialog implements LogicClass < SaveDialogForm >
       throw new RuntimeException ( "ui is not a BasicFileChooserUI" ); //$NON-NLS-1$
     }
 
-    if ( getSelectedFile () != null && !getSelectedFile ().isDirectory () )
+    if ( ( getSelectedFile () != null ) && !getSelectedFile ().isDirectory () )
     {
       this.confirmed = true;
       this.gui.dispose ();

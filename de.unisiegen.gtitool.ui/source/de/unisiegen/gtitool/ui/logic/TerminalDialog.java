@@ -79,8 +79,8 @@ public final class TerminalDialog implements LogicClass < TerminalDialogForm >
         .addParseableChangedListener ( new ParseableChangedListener < TerminalSymbolSet > ()
         {
 
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          TerminalSymbolSet newTerminalSymbolSet )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) TerminalSymbolSet newTerminalSymbolSet )
           {
             setButtonStatus ();
           }
@@ -90,8 +90,8 @@ public final class TerminalDialog implements LogicClass < TerminalDialogForm >
         .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbolSet > ()
         {
 
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          NonterminalSymbolSet newNonterminalSymbolSet )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) NonterminalSymbolSet newNonterminalSymbolSet )
           {
             setButtonStatus ();
           }
@@ -101,8 +101,8 @@ public final class TerminalDialog implements LogicClass < TerminalDialogForm >
         .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbol > ()
         {
 
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          NonterminalSymbol newNonterminalSymbol )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) NonterminalSymbol newNonterminalSymbol )
           {
             setButtonStatus ();
           }

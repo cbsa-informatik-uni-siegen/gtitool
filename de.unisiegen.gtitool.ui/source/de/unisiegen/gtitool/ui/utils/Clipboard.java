@@ -100,9 +100,9 @@ public final class Clipboard implements ClipboardOwner
   /**
    * {@inheritDoc}
    */
-  public final void lostOwnership ( @SuppressWarnings ( UNUSED )
-  java.awt.datatransfer.Clipboard clipboard, @SuppressWarnings ( UNUSED )
-  Transferable contents )
+  public final void lostOwnership (
+      @SuppressWarnings ( UNUSED ) java.awt.datatransfer.Clipboard clipboard,
+      @SuppressWarnings ( UNUSED ) Transferable contents )
   {
     // Do Nothing
   }

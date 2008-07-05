@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.jgraph;
 
 
-
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -111,6 +110,17 @@ public final class DefaultTransitionView extends DefaultEdge implements
 
 
   /**
+   * Returns the tooltip text for this cell.
+   * 
+   * @return the tooltip text for this cell.
+   */
+  public String getToolTipString ()
+  {
+    return null;
+  }
+
+
+  /**
    * Getter for this {@link Transition}.
    * 
    * @return The {@link Transition} of this view.
@@ -131,14 +141,4 @@ public final class DefaultTransitionView extends DefaultEdge implements
   {
     return this.transition.hashCode ();
   }
-  
-  
-  /**
-   * Returns the tooltip text for this cell.
-   *
-   * @return the tooltip text for this cell.
-   */
-  public String getToolTipString() {
-    return null;
- }
 }

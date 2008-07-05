@@ -12,7 +12,8 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
  * The {@link ConvertMachineTableColumnModel}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: ConvertMachineTableColumnModel.java 980 2008-06-11 23:38:13Z
+ *          fehler $
  */
 public final class ConvertMachineTableColumnModel extends
     DefaultTableColumnModel
@@ -42,6 +43,6 @@ public final class ConvertMachineTableColumnModel extends
     this.outlineColumn.setHeaderValue ( Messages
         .getString ( "ConvertMachineDialog.Outline" ) ); //$NON-NLS-1$
     this.outlineColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
-    this.addColumn ( this.outlineColumn );
+    addColumn ( this.outlineColumn );
   }
 }

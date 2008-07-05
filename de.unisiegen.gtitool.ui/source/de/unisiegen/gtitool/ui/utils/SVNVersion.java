@@ -181,9 +181,9 @@ public final class SVNVersion
     if ( file.isDirectory () )
     {
       File [] files = file.listFiles ();
-      for ( int i = 0 ; i < files.length ; i++ )
+      for ( File file2 : files )
       {
-        newVersion = getVersion ( files [ i ] );
+        newVersion = getVersion ( file2 );
         version = newVersion > version ? newVersion : version;
       }
     }
@@ -218,21 +218,26 @@ public final class SVNVersion
           for ( int i = 0 ; i < line.length () ; i++ )
           {
             char currentChar = chars [ i ];
-            if ( currentChar == CHAR_0 || currentChar == CHAR_1
-                || currentChar == CHAR_2 || currentChar == CHAR_3
-                || currentChar == CHAR_4 || currentChar == CHAR_5
-                || currentChar == CHAR_6 || currentChar == CHAR_7
-                || currentChar == CHAR_8 || currentChar == CHAR_9 )
+            if ( ( currentChar == CHAR_0 ) || ( currentChar == CHAR_1 )
+                || ( currentChar == CHAR_2 ) || ( currentChar == CHAR_3 )
+                || ( currentChar == CHAR_4 ) || ( currentChar == CHAR_5 )
+                || ( currentChar == CHAR_6 ) || ( currentChar == CHAR_7 )
+                || ( currentChar == CHAR_8 ) || ( currentChar == CHAR_9 ) )
             {
               String s = String.valueOf ( currentChar );
               for ( int j = i + 1 ; j < line.length () ; j++ )
               {
                 char currentNextChar = chars [ j ];
-                if ( currentNextChar == CHAR_0 || currentNextChar == CHAR_1
-                    || currentNextChar == CHAR_2 || currentNextChar == CHAR_3
-                    || currentNextChar == CHAR_4 || currentNextChar == CHAR_5
-                    || currentNextChar == CHAR_6 || currentNextChar == CHAR_7
-                    || currentNextChar == CHAR_8 || currentNextChar == CHAR_9 )
+                if ( ( currentNextChar == CHAR_0 )
+                    || ( currentNextChar == CHAR_1 )
+                    || ( currentNextChar == CHAR_2 )
+                    || ( currentNextChar == CHAR_3 )
+                    || ( currentNextChar == CHAR_4 )
+                    || ( currentNextChar == CHAR_5 )
+                    || ( currentNextChar == CHAR_6 )
+                    || ( currentNextChar == CHAR_7 )
+                    || ( currentNextChar == CHAR_8 )
+                    || ( currentNextChar == CHAR_9 ) )
                 {
                   s += String.valueOf ( currentNextChar );
                 }

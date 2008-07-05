@@ -44,7 +44,7 @@ public final class GrammarColumnModel extends DefaultTableColumnModel implements
         .getString ( "GrammarPanel.Productions" ) ); //$NON-NLS-1$
     this.productionColumn
         .setCellRenderer ( new PrettyStringTableCellRenderer () );
-    this.addColumn ( this.productionColumn );
+    addColumn ( this.productionColumn );
 
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
@@ -58,9 +58,9 @@ public final class GrammarColumnModel extends DefaultTableColumnModel implements
    */
   public void languageChanged ()
   {
-    this.removeColumn ( this.productionColumn );
+    removeColumn ( this.productionColumn );
     this.productionColumn.setHeaderValue ( Messages
         .getString ( "GrammarPanel.Productions" ) ); //$NON-NLS-1$
-    this.addColumn ( this.productionColumn );
+    addColumn ( this.productionColumn );
   }
 }

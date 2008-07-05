@@ -122,6 +122,26 @@ public class Minimizer
 
 
   /**
+   * The predefined {@link Color}s of the groups.
+   */
+  Color [] colors = new Color []
+  { Color.blue, Color.cyan, Color.lightGray, Color.green, Color.magenta,
+      Color.yellow, Color.orange, Color.pink, Color.white, Color.darkGray };
+
+
+  /**
+   * Flag indicates if begin reached.
+   */
+  private boolean begin = true;
+
+
+  /**
+   * List of the {@link Transition}s.
+   */
+  private ArrayList < Transition > transitions = new ArrayList < Transition > ();
+
+
+  /**
    * Allocate a new {@link Minimizer}.
    * 
    * @param model The {@link DefaultMachineModel}.
@@ -167,6 +187,64 @@ public class Minimizer
 
 
   /**
+   * Create a new {@link PrettyString}.
+   * 
+   * @param states the list of the {@link DefaultStateView}s.
+   * @return The created {@link PrettyString}.
+   */
+  private PrettyString createPrettyString (
+      ArrayList < DefaultStateView > states )
+  {
+    PrettyString prettyString = new PrettyString ();
+
+    prettyString.addPrettyToken ( new PrettyToken ( Messages
+        .getString ( "MinimizeMachineDialog.PrettyString" ) //$NON-NLS-1$
+        + " ", Style.NONE ) ); //$NON-NLS-1$
+
+    for ( int i = 0 ; i < states.size () ; i++ )
+    {
+      if ( i != 0 )
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
+      }
+      prettyString.addPrettyPrintable ( states.get ( i ).getState () );
+    }
+    return prettyString;
+  }
+
+
+  /**
+   * Returns the groups.
+   * 
+   * @return The groups.
+   * @see #activeGroups
+   */
+  public ArrayList < ArrayList < DefaultStateView >> getGroups ()
+  {
+    return this.activeGroups;
+  }
+
+
+  /**
+   * Highlight the groups
+   */
+  private void highlightGroups ()
+  {
+    for ( ArrayList < DefaultStateView > group : this.activeGroups )
+    {
+      for ( DefaultStateView current : group )
+      {
+        int index = ( this.activeGroups.indexOf ( group ) ) % 10;
+        current.setOverwrittenColor ( this.colors [ index ] );
+      }
+    }
+
+    this.model.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.model.getGraphModel () ) );
+  }
+
+
+  /**
    * Minimize the given {@link Machine}.
    */
   public void initialize ()
@@ -207,6 +285,18 @@ public class Minimizer
 
 
   /**
+   * Returns the begin.
+   * 
+   * @return The begin.
+   * @see #begin
+   */
+  public boolean isBegin ()
+  {
+    return this.begin;
+  }
+
+
+  /**
    * Returns true if minimization operation finished.
    * 
    * @return true if minimization operation finished.
@@ -215,61 +305,6 @@ public class Minimizer
   {
     return this.finished;
   }
-
-
-  /**
-   * The predefined {@link Color}s of the groups.
-   */
-  Color [] colors = new Color []
-  { Color.blue, Color.cyan, Color.lightGray, Color.green, Color.magenta,
-      Color.yellow, Color.orange, Color.pink, Color.white, Color.darkGray };
-
-
-  /**
-   * Handle previous step of the minimization.
-   */
-  public void previousStep ()
-  {
-    this.nextStep.push ( this.activeMinimizeItem );
-    this.activeMinimizeItem = this.previousSteps.pop ();
-    this.activeGroups = this.activeMinimizeItem.groups;
-
-    highlightGroups ();
-
-    this.begin = this.previousSteps.isEmpty ();
-    this.finished = false;
-  }
-
-
-  /**
-   * Handle next step of the minimization.
-   */
-  public void nextStep ()
-  {
-    this.previousSteps.push ( this.activeMinimizeItem );
-    this.activeMinimizeItem = this.nextStep.pop ();
-    this.activeGroups = this.activeMinimizeItem.groups;
-
-    highlightGroups ();
-
-    this.begin = false;
-    this.finished = this.nextStep.isEmpty ();
-
-    this.dialog.addOutlineComment ( this.activeMinimizeItem.prettyString,
-        this.activeMinimizeItem.transitionList );
-  }
-
-
-  /**
-   * Flag indicates if begin reached.
-   */
-  private boolean begin = true;
-
-
-  /**
-   * List of the {@link Transition}s.
-   */
-  private ArrayList < Transition > transitions = new ArrayList < Transition > ();
 
 
   /**
@@ -308,7 +343,7 @@ public class Minimizer
       this.previousSteps.push ( new MinimizeItem ( oldGroup,
           createPrettyString ( this.newGroupStates ), transitionList ) );
       this.newGroupStates = new ArrayList < DefaultStateView > ();
-      this.minimize ();
+      minimize ();
       return;
     }
 
@@ -316,48 +351,37 @@ public class Minimizer
 
 
   /**
-   * Create a new {@link PrettyString}.
-   * 
-   * @param states the list of the {@link DefaultStateView}s.
-   * @return The created {@link PrettyString}.
+   * Handle next step of the minimization.
    */
-  private PrettyString createPrettyString (
-      ArrayList < DefaultStateView > states )
+  public void nextStep ()
   {
-    PrettyString prettyString = new PrettyString ();
+    this.previousSteps.push ( this.activeMinimizeItem );
+    this.activeMinimizeItem = this.nextStep.pop ();
+    this.activeGroups = this.activeMinimizeItem.groups;
 
-    prettyString.addPrettyToken ( new PrettyToken ( Messages
-        .getString ( "MinimizeMachineDialog.PrettyString" ) //$NON-NLS-1$
-        + " ", Style.NONE ) ); //$NON-NLS-1$
+    highlightGroups ();
 
-    for ( int i = 0 ; i < states.size () ; i++ )
-    {
-      if ( i != 0 )
-      {
-        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
-      }
-      prettyString.addPrettyPrintable ( states.get ( i ).getState () );
-    }
-    return prettyString;
+    this.begin = false;
+    this.finished = this.nextStep.isEmpty ();
+
+    this.dialog.addOutlineComment ( this.activeMinimizeItem.prettyString,
+        this.activeMinimizeItem.transitionList );
   }
 
 
   /**
-   * Highlight the groups
+   * Handle previous step of the minimization.
    */
-  private void highlightGroups ()
+  public void previousStep ()
   {
-    for ( ArrayList < DefaultStateView > group : this.activeGroups )
-    {
-      for ( DefaultStateView current : group )
-      {
-        int index = ( this.activeGroups.indexOf ( group ) ) % 10;
-        current.setOverwrittenColor ( this.colors [ index ] );
-      }
-    }
+    this.nextStep.push ( this.activeMinimizeItem );
+    this.activeMinimizeItem = this.previousSteps.pop ();
+    this.activeGroups = this.activeMinimizeItem.groups;
 
-    this.model.getGraphModel ().cellsChanged (
-        DefaultGraphModel.getAll ( this.model.getGraphModel () ) );
+    highlightGroups ();
+
+    this.begin = this.previousSteps.isEmpty ();
+    this.finished = false;
   }
 
 
@@ -418,30 +442,6 @@ public class Minimizer
       this.newGroupStates.clear ();
     }
     group.removeAll ( this.newGroupStates );
-  }
-
-
-  /**
-   * Returns the groups.
-   * 
-   * @return The groups.
-   * @see #activeGroups
-   */
-  public ArrayList < ArrayList < DefaultStateView >> getGroups ()
-  {
-    return this.activeGroups;
-  }
-
-
-  /**
-   * Returns the begin.
-   * 
-   * @return The begin.
-   * @see #begin
-   */
-  public boolean isBegin ()
-  {
-    return this.begin;
   }
 
 }

@@ -7,10 +7,12 @@ import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.grammars.rg.DefaultRG;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
+import de.unisiegen.gtitool.ui.logic.NewDialogMachineChoice.Choice;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
@@ -114,6 +116,17 @@ public final class NewDialog implements LogicClass < NewDialogForm >
   public final NewDialogForm getGUI ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the {@link Machine} choice.
+   * 
+   * @return The {@link Machine} choice.
+   */
+  public final Choice getMachineChoice ()
+  {
+    return this.machineChoice.getUserChoice ();
   }
 
 
@@ -234,6 +247,8 @@ public final class NewDialog implements LogicClass < NewDialogForm >
   {
     this.newDialogAlphabet.getGUI ().setVisible ( true );
     this.machineChoice.getGUI ().setVisible ( false );
+
+    this.newDialogAlphabet.setButtonStatus ();
   }
 
 

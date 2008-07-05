@@ -141,8 +141,8 @@ public final class TabPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         TabPopupMenu.this.mainWindow.handleNew ();
       }
@@ -162,8 +162,8 @@ public final class TabPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         TabPopupMenu.this.mainWindow.handleOpen ();
       }
@@ -183,8 +183,8 @@ public final class TabPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         TabPopupMenu.this.mainWindow.handleClose ();
       }
@@ -208,8 +208,8 @@ public final class TabPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         TabPopupMenu.this.mainWindow.handleSave ();
       }
@@ -231,8 +231,8 @@ public final class TabPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         TabPopupMenu.this.mainWindow.handleSaveAs ();
       }
@@ -259,8 +259,8 @@ public final class TabPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         TabPopupMenu.this.mainWindow.handleSecondViewMoveToLeft ();
       }
@@ -282,8 +282,8 @@ public final class TabPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         TabPopupMenu.this.mainWindow.handleSecondViewMoveToRight ();
       }

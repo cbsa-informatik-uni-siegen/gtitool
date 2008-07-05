@@ -74,8 +74,8 @@ public final class ColorChooserDialog implements
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void stateChanged ( @SuppressWarnings ( "unused" )
-          ChangeEvent event )
+          public void stateChanged (
+              @SuppressWarnings ( "unused" ) ChangeEvent event )
           {
             updatePreview ();
           }

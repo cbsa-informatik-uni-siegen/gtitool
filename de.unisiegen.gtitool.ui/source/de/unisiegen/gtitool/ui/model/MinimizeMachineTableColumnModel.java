@@ -12,7 +12,8 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
  * The {@link MinimizeMachineTableColumnModel}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: MinimizeMachineTableColumnModel.java 996 2008-06-15 13:51:25Z
+ *          fehler $
  */
 public final class MinimizeMachineTableColumnModel extends
     DefaultTableColumnModel
@@ -42,6 +43,6 @@ public final class MinimizeMachineTableColumnModel extends
     this.outlineColumn.setHeaderValue ( Messages
         .getString ( "MinimizeMachineDialog.Outline" ) ); //$NON-NLS-1$
     this.outlineColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
-    this.addColumn ( this.outlineColumn );
+    addColumn ( this.outlineColumn );
   }
 }

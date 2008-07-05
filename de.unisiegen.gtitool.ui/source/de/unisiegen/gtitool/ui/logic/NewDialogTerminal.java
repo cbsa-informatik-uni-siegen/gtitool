@@ -43,7 +43,7 @@ public final class NewDialogTerminal implements
   public NewDialogTerminal ( NewDialog parent )
   {
     this.parent = parent;
-    this.gui = new NewDialogTerminalForm (this);
+    this.gui = new NewDialogTerminalForm ( this );
 
     this.gui.terminalPanelForm.setNonterminalSymbolSet ( PreferenceManager
         .getInstance ().getNonterminalSymbolSetItem ()
@@ -61,8 +61,8 @@ public final class NewDialogTerminal implements
         .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbolSet > ()
         {
 
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          NonterminalSymbolSet newNonterminalSymbolSet )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) NonterminalSymbolSet newNonterminalSymbolSet )
           {
             setButtonStatus ();
           }
@@ -71,8 +71,8 @@ public final class NewDialogTerminal implements
         .addParseableChangedListener ( new ParseableChangedListener < TerminalSymbolSet > ()
         {
 
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          TerminalSymbolSet newTerminalSymbolSet )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) TerminalSymbolSet newTerminalSymbolSet )
           {
             setButtonStatus ();
           }
@@ -82,8 +82,8 @@ public final class NewDialogTerminal implements
         .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbol > ()
         {
 
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          NonterminalSymbol newNonterminalSymbol )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) NonterminalSymbol newNonterminalSymbol )
           {
             setButtonStatus ();
           }

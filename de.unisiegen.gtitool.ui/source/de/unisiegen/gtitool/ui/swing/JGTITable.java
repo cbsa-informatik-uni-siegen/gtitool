@@ -160,8 +160,8 @@ public final class JGTITable extends JTable implements DropTargetListener
    * 
    * @see DropTargetListener#dragExit(DropTargetEvent)
    */
-  public final void dragExit ( @SuppressWarnings ( "unused" )
-  DropTargetEvent dte )
+  public final void dragExit (
+      @SuppressWarnings ( "unused" ) DropTargetEvent dte )
   {
     this.dropPoint = null;
     repaint ();
@@ -178,8 +178,7 @@ public final class JGTITable extends JTable implements DropTargetListener
     try
     {
       JGTITableModelRows rows = ( JGTITableModelRows ) event.getTransferable ()
-          .getTransferData (
-              JGTITableModelRowsTransferable.dataFlavor );
+          .getTransferData ( JGTITableModelRowsTransferable.dataFlavor );
       if ( !this.allowedDndSources.contains ( rows.getSource () ) )
       {
         event.rejectDrag ();

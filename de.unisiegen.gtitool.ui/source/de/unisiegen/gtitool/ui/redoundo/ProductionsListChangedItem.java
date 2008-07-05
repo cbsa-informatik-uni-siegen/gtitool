@@ -11,7 +11,8 @@ import de.unisiegen.gtitool.core.grammars.Grammar;
  * Representation of {@link RedoUndoItem} for {@link Production} added action.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: ProductionsListChangedItem.java 847 2008-04-25 11:19:56Z fehler
+ *          $
  */
 public final class ProductionsListChangedItem extends RedoUndoItem
 {

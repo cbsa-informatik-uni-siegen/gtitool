@@ -868,6 +868,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     if ( confirmedDialog.isConfirmed () )
     {
       this.model.removeTransition ( transition, true );
+      performCellsChanged ();
     }
   }
 

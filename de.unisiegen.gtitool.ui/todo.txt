@@ -1,6 +1,5 @@
 *** TODO ***
 
-CF		- Transitions-Dialog zeigt falsches Ergebniss an
 BM		- In Revision 1088 wurden String korrigiert, was auch richtig ist. Diese
 		  Strings werden aber nicht nur an den richtigen Stellen verwendet, sondern
 		  auch zum Beispiel im PopupMenu auf Zuständen, wo es keinen Sinn macht.

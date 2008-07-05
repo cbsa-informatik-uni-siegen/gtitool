@@ -705,8 +705,9 @@ public final class TransitionDialog implements
 
     try
     {
-      this.gui.styledTransitionParserPanel.setText ( new DefaultTransition (
-          this.pushDownWordRead, this.pushDownWordWrite, symbols ) );
+      Transition newTransition = new DefaultTransition ( this.pushDownWordRead,
+          this.pushDownWordWrite, symbols );
+      this.gui.styledTransitionParserPanel.setText ( newTransition );
     }
     catch ( TransitionException exc )
     {
@@ -717,7 +718,6 @@ public final class TransitionDialog implements
 
     this.gui.jGTIListAlphabet.setModel ( this.modelAlphabet );
     this.gui.jGTIListChangeOverSet.setModel ( this.modelChangeOverSet );
-    this.gui.styledTransitionParserPanel.setText ( new DefaultTransition () );
 
     // Set the push down alphabet
     this.gui.styledAlphabetParserPanelPushDownAlphabet

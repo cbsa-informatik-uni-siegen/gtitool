@@ -1255,7 +1255,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         toolbarButton.add(jGTIToolBarToggleButtonStartState);
         jGTIToolBarToggleButtonStartState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/start.png"))); // NOI18N
-        jGTIToolBarToggleButtonStartState.setToolTipText(bundle.getString("MachinePanel.StartState")); // NOI18N
+        jGTIToolBarToggleButtonStartState.setToolTipText(bundle.getString("MachinePanel.AddStartState")); // NOI18N
         jGTIToolBarToggleButtonStartState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToolBarToggleButtonStartStateItemStateChanged(evt);
@@ -1265,7 +1265,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         toolbarButton.add(jGTIToolBarToggleButtonFinalState);
         jGTIToolBarToggleButtonFinalState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/final.png"))); // NOI18N
-        jGTIToolBarToggleButtonFinalState.setToolTipText(bundle.getString("MachinePanel.FinalState")); // NOI18N
+        jGTIToolBarToggleButtonFinalState.setToolTipText(bundle.getString("MachinePanel.AddFinalState")); // NOI18N
         jGTIToolBarToggleButtonFinalState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToolBarToggleButtonFinalStateItemStateChanged(evt);

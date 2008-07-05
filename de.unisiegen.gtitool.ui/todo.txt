@@ -3,6 +3,7 @@ CF		- Status der Menüitems ist falsch.
 		  Zum reproduzieren: Einen Automaten und eine Grammtik öffnen. Bei dem Automaten
 		  Wortnavigation aktivieren. Jetzt zur Grammatik wechseln. Ausführen -> Automat bearbeiten
 		  -> Exception
+CF		- Bei der Wortnavigation werden die Kellerkomponenten nicht ausgeblendet.
 
 *** FEATURE ***
 

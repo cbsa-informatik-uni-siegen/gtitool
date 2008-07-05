@@ -1266,6 +1266,29 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     clearHighlight ();
     this.machineMode = MachineMode.ENTER_WORD;
+
+    if ( !this.machine.getMachineType ().equals ( MachineType.PDA ) )
+    {
+      if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.SHOW ) )
+      {
+        // do nothing
+      }
+      else if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.HIDE ) )
+      {
+        this.gui.wordPanel.jGTILabelStack.setEnabled ( false );
+        this.gui.wordPanel.styledStackParserPanel.setEnabled ( false );
+        this.gui.wordPanel.jGTILabelPushDownAlphabet.setEnabled ( false );
+        this.gui.wordPanel.styledAlphabetParserPanelPushDown
+            .setEnabled ( false );
+      }
+      else
+      {
+        throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
+      }
+    }
+
     this.jGTIGraph.clearSelection ();
     this.gui.wordPanel.setVisible ( true );
     this.jGTIGraph.setEnabled ( false );
@@ -2287,15 +2310,34 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           new PDAModeChangedListener ()
           {
 
+            @SuppressWarnings ( "synthetic-access" )
             public void pdaModeChanged ( PDAModeItem newValue )
             {
               if ( newValue.equals ( PDAModeItem.SHOW ) )
               {
                 setVisiblePDATable ( true );
+
+                MachinePanel.this.gui.wordPanel.jGTILabelStack
+                    .setEnabled ( true );
+                MachinePanel.this.gui.wordPanel.styledStackParserPanel
+                    .setEnabled ( true );
+                MachinePanel.this.gui.wordPanel.jGTILabelPushDownAlphabet
+                    .setEnabled ( true );
+                MachinePanel.this.gui.wordPanel.styledAlphabetParserPanelPushDown
+                    .setEnabled ( true );
               }
               else if ( newValue.equals ( PDAModeItem.HIDE ) )
               {
                 setVisiblePDATable ( false );
+
+                MachinePanel.this.gui.wordPanel.jGTILabelStack
+                    .setEnabled ( false );
+                MachinePanel.this.gui.wordPanel.styledStackParserPanel
+                    .setEnabled ( false );
+                MachinePanel.this.gui.wordPanel.jGTILabelPushDownAlphabet
+                    .setEnabled ( false );
+                MachinePanel.this.gui.wordPanel.styledAlphabetParserPanelPushDown
+                    .setEnabled ( false );
               }
               else
               {

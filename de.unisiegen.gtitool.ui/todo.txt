@@ -1,7 +1,5 @@
 *** TODO ***
 
-CF		- Bei der Wortnavigation werden die Kellerkomponenten nicht ausgeblendet.
-
 
 *** FEATURE ***
 

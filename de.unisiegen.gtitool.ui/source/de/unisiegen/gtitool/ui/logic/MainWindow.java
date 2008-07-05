@@ -3302,6 +3302,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
         removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
+        removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
         removeButtonState ( ButtonState.ENABLED_HISTORY );
         removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
         removeButtonState ( ButtonState.ENABLED_MINIMIZE );

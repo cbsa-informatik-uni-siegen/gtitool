@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+	$Id$
+	
+	Copyright (c) 2007-2008 Christian Fehler
+-->
+<project name="gtitool.thesis" default="dist" basedir=".">
+
+	<!-- dist -->
+	<target name="dist" description="Dist thesis">
+		<exec dir="${basedir}" os="Linux" executable="latex">
+			<arg value="thesis.tex" />
+		</exec>
+		<exec dir="${basedir}" os="Linux" executable="latex">
+			<arg value="thesis.tex" />
+		</exec>
+		<exec dir="${basedir}" os="Linux" executable="dvips">
+			<arg value="-o" />
+			<arg value="thesis.ps" />
+			<arg value="thesis.dvi" />
+		</exec>
+		<exec dir="${basedir}" os="Linux" executable="ps2pdf">
+			<arg value="thesis.ps" />
+		</exec>
+		<delete>
+			<fileset dir="${basedir}">
+				<include name="*.toc" />
+				<include name="*.aux" />
+				<include name="*.out" />
+				<include name="*.log" />
+				<include name="*.dvi" />
+				<include name="*.ps" />
+			</fileset>
+		</delete>
+		<echo message="Dist thesis finished" />
+	</target>
+</project>

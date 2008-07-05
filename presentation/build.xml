@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+	$Id$
+	
+	Copyright (c) 2007-2008 Christian Fehler
+-->
+<project name="gtitool.presentation" default="dist" basedir=".">
+
+	<!-- dist -->
+	<target name="dist" description="Dist presentation">
+		<exec dir="${basedir}" os="Linux" executable="latex">
+			<arg value="presentation.tex" />
+		</exec>
+		<exec dir="${basedir}" os="Linux" executable="latex">
+			<arg value="presentation.tex" />
+		</exec>
+		<exec dir="${basedir}" os="Linux" executable="dvips">
+			<arg value="-o" />
+			<arg value="presentation.ps" />
+			<arg value="presentation.dvi" />
+		</exec>
+		<exec dir="${basedir}" os="Linux" executable="ps2pdf">
+			<arg value="presentation.ps" />
+		</exec>
+		<delete>
+			<fileset dir="${basedir}">
+				<include name="*.toc" />
+				<include name="*.aux" />
+				<include name="*.out" />
+				<include name="*.log" />
+				<include name="*.dvi" />
+				<include name="*.ps" />
+			</fileset>
+		</delete>
+		<echo message="Dist presentation finished" />
+	</target>
+</project>

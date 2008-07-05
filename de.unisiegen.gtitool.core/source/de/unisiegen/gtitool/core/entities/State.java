@@ -204,6 +204,16 @@ public interface State extends Entity < State >, Storable, Modifyable
 
 
   /**
+   * Returns true if a {@link Transition} is present which starts and ends in
+   * this {@link State}, otherwise false.
+   * 
+   * @return True if a {@link Transition} is present which starts and ends in
+   *         this {@link State}, otherwise false.
+   */
+  public boolean isLoopTransition ();
+
+
+  /**
    * Returns true if this {@link State} is a power {@link State}, otherwise
    * false.
    * 

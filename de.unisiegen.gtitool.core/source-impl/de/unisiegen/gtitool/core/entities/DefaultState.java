@@ -749,6 +749,24 @@ public final class DefaultState implements State
   /**
    * {@inheritDoc}
    * 
+   * @see State#isLoopTransition()
+   */
+  public final boolean isLoopTransition ()
+  {
+    for ( Transition currentTransition : this.transitionBeginList )
+    {
+      if ( currentTransition.getStateEnd () == this )
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Modifyable#isModified()
    */
   public final boolean isModified ()

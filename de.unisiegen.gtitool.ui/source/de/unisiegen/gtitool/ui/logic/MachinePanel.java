@@ -1348,8 +1348,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     Rectangle usedBounds = this.jGTIGraph.getUsedBounds ();
 
-    System.err.println ( usedBounds );
-
     int inset = 20;
     int width = usedBounds.width + 2 * inset;
     int height = usedBounds.height + 2 * inset;

@@ -13,7 +13,6 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.core.entities.Transition;
 
 
 /**
@@ -170,22 +169,10 @@ public final class JGTIGraph extends JGraph implements Printable
       {
         DefaultStateView current = ( DefaultStateView ) object;
 
-        // TODOCF remove after changing the state height
-        boolean found = false;
-        for ( Transition currentTransition : current.getState ()
-            .getTransitionBegin () )
-        {
-          if ( currentTransition.getStateEnd () == current.getState () )
-          {
-            found = true;
-            break;
-          }
-        }
-
         int x = ( int ) current.getPositionX ();
-        int y = ( int ) current.getPositionY () - ( found ? 36 : 0 );
+        int y = ( int ) current.getPositionY ();
         int width = ( int ) current.getWidth ();
-        int height = ( int ) current.getHeight () + ( found ? 36 : 0 );
+        int height = ( int ) current.getHeight ();
 
         minX = Math.min ( minX, x );
         maxX = Math.max ( maxX, x + width );

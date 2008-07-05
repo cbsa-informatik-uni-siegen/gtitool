@@ -279,11 +279,6 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
 
         buttonGroupReachableStates.add(jGTIRadioButtonReachableStatesTable);
         jGTIRadioButtonReachableStatesTable.setText(bundle.getString("PrintDialog.PrintTable")); // NOI18N
-        jGTIRadioButtonReachableStatesTable.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIRadioButtonReachableStatesTableActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -502,10 +497,6 @@ private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//G
 private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
   this.logic.handleCancel();
 }//GEN-LAST:event_jGTIButtonCancelActionPerformed
-
-private void jGTIRadioButtonReachableStatesTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIRadioButtonReachableStatesTableActionPerformed
-// TODO add your handling code here:
-}//GEN-LAST:event_jGTIRadioButtonReachableStatesTableActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -241,7 +241,8 @@ public final class StateView extends VertexView
       }
       int b = this.borderWidth;
 
-      int offset = state.isStartState () ? START_OFFSET : 0;
+      int offsetX = state.isStartState () ? START_OFFSET : 0;
+      int offsetY = state.isLoopTransition () ? LOOP_TRANSITION_OFFSET : 0;
 
       Graphics2D g2 = ( Graphics2D ) g;
       Dimension d = getSize ();
@@ -294,26 +295,26 @@ public final class StateView extends VertexView
         {
           if ( state.isFinalState () )
           {
-            g.fillRoundRect ( offset + b + 3, b + 3, d.width - b - 8 - offset,
-                d.height - b - 8, 50, 50 );
+            g.fillRoundRect ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
+                - offsetX, d.height - b - 8 - offsetY, 50, 50 );
           }
           else
           {
-            g.fillRoundRect ( offset + b - 1, b - 1, d.width - b - offset,
-                d.height - b, 50, 50 );
+            g.fillRoundRect ( offsetX + b - 1, offsetY + b - 1, d.width - b
+                - offsetX, d.height - b - offsetY, 50, 50 );
           }
         }
         else
         {
           if ( state.isFinalState () )
           {
-            g.fillOval ( offset + b + 3, b + 3, d.width - b - 8 - offset,
-                d.height - b - 8 );
+            g.fillOval ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
+                - offsetX, d.height - b - 8 - offsetY );
           }
           else
           {
-            g.fillOval ( offset + b - 1, b - 1, d.width - b - offset, d.height
-                - b );
+            g.fillOval ( offsetX + b - 1, offsetY + b - 1, d.width - b
+                - offsetX, d.height - b - offsetY );
           }
         }
       }
@@ -327,16 +328,17 @@ public final class StateView extends VertexView
         g.setFont ( getFont () );
         FontMetrics metrics = g.getFontMetrics ();
 
-        int dx = offset + ( ( d.width - offset ) / 2 )
+        int dx = offsetX + ( ( d.width - offsetX ) / 2 )
             - ( metrics.stringWidth ( state.toString () ) / 2 ) - 1;
-        int dy = ( d.height / 2 ) + ( metrics.getHeight () / 2 ) - 3;
+        int dy = offsetY + ( ( d.height - offsetY ) / 2 )
+            + ( metrics.getHeight () / 2 ) - 3;
 
         PrettyString prettyString = new PrettyString ();
         prettyString.addPrettyString ( state.toPrettyString () );
 
         int insets = state.isFinalState () ? 20 : 10;
         // short version
-        if ( ( metrics.stringWidth ( state.toString () ) + insets ) > ( d.width - offset ) )
+        if ( ( metrics.stringWidth ( state.toString () ) + insets ) > ( d.width - offsetX ) )
         {
           state.setShortNameUsed ( true );
 
@@ -344,7 +346,7 @@ public final class StateView extends VertexView
           String dots = " ..."; //$NON-NLS-1$
           PrettyToken lastPrettyToken = null;
           while ( ( !prettyString.isEmpty () )
-              && ( ( metrics.stringWidth ( prettyString.toString () + dots ) + 2 * dx ) > ( d.width - offset ) ) )
+              && ( ( metrics.stringWidth ( prettyString.toString () + dots ) + 2 * dx ) > ( d.width - offsetX ) ) )
           {
             lastPrettyToken = prettyString.removeLastPrettyToken ();
           }
@@ -356,7 +358,7 @@ public final class StateView extends VertexView
             String addText = ""; //$NON-NLS-1$
             while ( ( i < chars.length )
                 && ( ( metrics.stringWidth ( prettyString.toString () + addText
-                    + dots ) + 2 * dx ) <= ( d.width - offset ) ) )
+                    + dots ) + 2 * dx ) <= ( d.width - offsetX ) ) )
             {
               addText += chars [ i ];
               i++ ;
@@ -371,13 +373,13 @@ public final class StateView extends VertexView
                 lastPrettyToken.getStyle () ) );
           }
 
-          dx += offset;
+          dx += offsetX;
 
           // center the dots if there are no pretty tokens
           if ( prettyString.isEmpty () )
           {
             dots = "..."; //$NON-NLS-1$
-            dx = offset + ( ( d.width - offset ) / 2 )
+            dx = offsetX + ( ( d.width - offsetX ) / 2 )
                 - ( metrics.stringWidth ( dots ) / 2 ) - 1;
           }
 
@@ -432,22 +434,22 @@ public final class StateView extends VertexView
 
         if ( state.isPowerState () )
         {
-          g.drawRoundRect ( offset + b - 1, b - 1, d.width - b - offset,
-              d.height - b, 50, 50 );
+          g.drawRoundRect ( offsetX + b - 1, offsetY + b - 1, d.width - b
+              - offsetX, d.height - b - offsetY, 50, 50 );
           if ( state.isFinalState () )
           {
-            g.drawRoundRect ( offset + b + 3, b + 3, d.width - b - 8 - offset,
-                d.height - b - 8, 50, 50 );
+            g.drawRoundRect ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
+                - offsetX, d.height - b - 8 - offsetY, 50, 50 );
           }
         }
         else
         {
-          g.drawOval ( offset + b - 1, b - 1, d.width - b - offset, d.height
-              - b );
+          g.drawOval ( offsetX + b - 1, offsetY + b - 1, d.width - b - offsetX,
+              d.height - b - offsetY );
           if ( state.isFinalState () )
           {
-            g.drawOval ( offset + b + 3, b + 3, d.width - b - 8 - offset,
-                d.height - b - 8 );
+            g.drawOval ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
+                - offsetX, d.height - b - 8 - offsetY );
           }
         }
       }
@@ -457,22 +459,22 @@ public final class StateView extends VertexView
 
         if ( state.isPowerState () )
         {
-          g.drawRoundRect ( offset + b - 1, b - 1, d.width - b - offset,
-              d.height - b, 50, 50 );
+          g.drawRoundRect ( offsetX + b - 1, offsetY + b - 1, d.width - b
+              - offsetX, d.height - b - offsetY, 50, 50 );
           if ( state.isFinalState () )
           {
-            g.drawRoundRect ( offset + b + 3, b + 3, d.width - b - 8 - offset,
-                d.height - b - 8, 50, 50 );
+            g.drawRoundRect ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
+                - offsetX, d.height - b - 8 - offsetY, 50, 50 );
           }
         }
         else
         {
-          g.drawOval ( offset + b - 1, b - 1, d.width - b - offset, d.height
-              - b );
+          g.drawOval ( offsetX + b - 1, offsetY + b - 1, d.width - b - offsetX,
+              d.height - b - offsetY );
           if ( state.isFinalState () )
           {
-            g.drawOval ( offset + b + 3, b + 3, d.width - b - 8 - offset,
-                d.height - b - 8 );
+            g.drawOval ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
+                - offsetX, d.height - b - 8 - offsetY );
           }
         }
       }
@@ -481,15 +483,20 @@ public final class StateView extends VertexView
         g.setFont ( getFont ().deriveFont ( Font.BOLD ) );
         g.setColor ( this.preferenceTransition );
 
-        g.drawLine ( 0, 35, START_OFFSET, 35 );
+        g.drawLine ( 0, offsetY + 35, START_OFFSET, offsetY + 35 );
 
-        g.drawLine ( START_OFFSET - 2, 34, START_OFFSET - 2, 36 );
-        g.drawLine ( START_OFFSET - 3, 33, START_OFFSET - 3, 37 );
-        g.drawLine ( START_OFFSET - 4, 32, START_OFFSET - 4, 38 );
-        g.drawLine ( START_OFFSET - 5, 31, START_OFFSET - 5, 39 );
-        g.drawLine ( START_OFFSET - 6, 30, START_OFFSET - 6, 40 );
+        g.drawLine ( START_OFFSET - 2, offsetY + 34, START_OFFSET - 2,
+            offsetY + 36 );
+        g.drawLine ( START_OFFSET - 3, offsetY + 33, START_OFFSET - 3,
+            offsetY + 37 );
+        g.drawLine ( START_OFFSET - 4, offsetY + 32, START_OFFSET - 4,
+            offsetY + 38 );
+        g.drawLine ( START_OFFSET - 5, offsetY + 31, START_OFFSET - 5,
+            offsetY + 39 );
+        g.drawLine ( START_OFFSET - 6, offsetY + 30, START_OFFSET - 6,
+            offsetY + 40 );
 
-        g.drawString ( "Start", 10, 30 ); //$NON-NLS-1$
+        g.drawString ( "Start", 10, offsetY + 30 ); //$NON-NLS-1$
       }
     }
   }
@@ -508,6 +515,12 @@ public final class StateView extends VertexView
 
 
   /**
+   * The loop {@link Transition} offset.
+   */
+  public final static int LOOP_TRANSITION_OFFSET = 36;
+
+
+  /**
    * Returns the height.
    * 
    * @param state The {@link State}.
@@ -515,11 +528,14 @@ public final class StateView extends VertexView
    */
   public static final int getHeight ( State state )
   {
-    if ( state.isPowerState () )
+    int width = 70;
+
+    if ( state.isLoopTransition () )
     {
-      return 70;
+      width += LOOP_TRANSITION_OFFSET;
     }
-    return 70;
+
+    return width;
   }
 
 
@@ -598,6 +614,11 @@ public final class StateView extends VertexView
       {
         x = r.getX () + START_OFFSET;
         a = ( r.getWidth () - START_OFFSET + 1 ) / 2;
+      }
+      if ( state.isLoopTransition () )
+      {
+        y = r.getY () + LOOP_TRANSITION_OFFSET;
+        b = ( r.getHeight () - LOOP_TRANSITION_OFFSET + 1 ) / 2;
       }
     }
 

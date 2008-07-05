@@ -126,8 +126,9 @@ public class DefaultEdge extends DefaultGraphCell implements Edge {
 			CellView sourceParent = (edge.getSource() != null) ? edge
 					.getSource().getParentView() : edge.getSourceParentView();
 			if (sourceParent != null) {
-			  // begin modify
-        int offset = 0;
+			  // MODIFYBEGIN
+        int offsetX = 0;
+        int offsetY = 0 ;
         if ( sourceParent instanceof StateView )
         {
           StateView stateView = ( StateView ) sourceParent;
@@ -138,28 +139,33 @@ public class DefaultEdge extends DefaultGraphCell implements Edge {
             State state = defaultStateView.getState ();
             if ( state.isStartState () )
             {
-              offset = StateView.START_OFFSET;
+              offsetX = StateView.START_OFFSET;
+            }
+            if ( state.isLoopTransition () )
+            {
+              offsetY = StateView.LOOP_TRANSITION_OFFSET;
             }
           }
         }
 
         Point2D from = AbstractCellView.getCenterPoint ( sourceParent );
         Rectangle2D rect = sourceParent.getBounds ();
-        double width = rect.getWidth () - offset;
-        double height2 = rect.getHeight () / 2;
+        double width = rect.getWidth () - offsetX;
+        double height2 = (rect.getHeight () - offsetY) / 2;
+        
         double loopWidth = 10;
         double loopHeight = 15;
         newPoints.add ( edge.getAttributes ().createPoint (
-            from.getX () + offset / 2 - loopWidth,
-            from.getY () - height2 - loopHeight * 1.2 ) );
+            from.getX () + offsetX / 2 - loopWidth,
+            from.getY () + offsetY / 2 - height2 - loopHeight * 1.2 ) );
         newPoints.add ( edge.getAttributes ().createPoint (
-            from.getX () + offset / 2,
-            from.getY () - height2 - 1.5 * loopHeight ) );
+            from.getX () + offsetX / 2,
+            from.getY () + offsetY / 2 - height2 - 1.5 * loopHeight ) );
         newPoints.add ( edge.getAttributes ().createPoint (
-            from.getX () + offset / 2 + loopWidth,
-            from.getY () - height2 - loopHeight * 1.2 ) );
+            from.getX () + offsetX / 2 + loopWidth,
+            from.getY () + offsetY / 2 - height2 - loopHeight * 1.2 ) );
         newPoints.add ( edge.getTarget () );
-			  // end modify
+			  // MODIFYEND
 				return newPoints;
 			}
 			return null;

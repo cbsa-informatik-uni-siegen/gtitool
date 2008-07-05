@@ -2970,15 +2970,21 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .removeEditorPanel ( editorPanel );
         this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
             .addEditorPanel ( editorPanel );
-
       }
 
       // set the selected editor panel
       if ( this.jGTIMainSplitPane.getActiveEditor ().equals (
           ActiveEditor.RIGHT_EDITOR ) )
       {
-        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
-            .setSelectedEditorPanel ( selectedEditorPanel );
+        if ( selectedEditorPanel != null )
+        {
+          this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+              .setSelectedEditorPanel ( selectedEditorPanel );
+        }
+        else
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+        }
       }
     }
 

@@ -1,5 +1,8 @@
 *** TODO ***
-
+CF		- Status der Menüitems ist falsch. 
+		  Zum reproduzieren: Einen Automaten und eine Grammtik öffnen. Bei dem Automaten
+		  Wortnavigation aktivieren. Jetzt zur Grammatik wechseln. Ausführen -> Automat bearbeiten
+		  -> Exception
 BM		- In Revision 1088 wurden String korrigiert, was auch richtig ist. Diese
 		  Strings werden aber nicht nur an den richtigen Stellen verwendet, sondern
 		  auch zum Beispiel im PopupMenu auf Zuständen, wo es keinen Sinn macht.

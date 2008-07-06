@@ -1,3 +1,63 @@
 \chapter{Wie erstelle ich einen Kellerautomaten?}
 
-TODO CF
+
+Wie ein normaler Automat angelegt wird, wurde bereits besprochen. In diesem
+Kapitel geht es darum einen Kellerautomaten anzulegen der die Sprache $a^n b^n$
+für $n \geq 0$ erkennt. Als erstes muss der Neu-Dialog geöffnet werden, im ersten
+Tab muss der "`Automat"' gewählt werden, anschließend der "`Kellerautomat"'. Für
+das Beispiel muss sowohl als Eingabe- wie auch als Kelleralphabet das Alphabet
+\{\Symbol{a}, \Symbol{b}\} gewählt werden. Dazu kann das Alphabet bei beiden
+Eingabefeldern einzeln eingestellt werden, oder nur bei "`Eingabe Alphabet"',
+wobei dann der Haken bei "`Keller Alphabet"' entfernt werden muss. Dadurch werden
+automatisch die gleichen Alphabete verwendet.\vspace{10pt}
+
+Ist die Datei angelegt, muss überlegt werden, welche Zustände und Übergänge
+benötigt werden, um die Sprache zu erkennen. Dabei kommt man dazu, dass
+mindestens folgende Zustände und Übergänge nötig sind, um die Sprache zu
+erkennen:
+
+\begin{itemize}
+  \item Ein Zustand \State{z0} der sowohl Start, wie auch akzeptierenden
+  Zustand ist
+  \item Ein Zustand \State{z1}
+  \item Ein akzeptierender Zustand \State{z2}
+  \item Einen Übergang von \State{z0} nach \State{z1} der das erste Symbol
+  \Symbol{a} vom Eingabewort liest und auf den Keller schreibt
+  \item Einen Übergang von \State{z1} nach \State{z1} der alle weiteren Symbole
+  \Symbol{a} vom Eingabewort liest und auf den Keller schreibt
+  \item Einen Übergang von \State{z1} nach \State{z2} der das erste \Symbol{b}
+  vom Eingabeband liest und das oberste \Symbol{a} vom Keller löscht.
+  \item Einen Übergang von \State{z2} nach \State{z2} der alle weiteren
+  Symbole \Symbol{b} vom Eingabewort liest und die entsprechenden Symbole
+  \Symbol{a} vom Keller löscht
+\end{itemize}
+
+Bei der Wort Navigation muss sich somit ergeben, damit das Wort akzeptiert wird,
+dass das Eingabewort komplett gelesen wurde und sich der Automat entweder im
+Zustand \State{z0} befindet, was bedeutet, dass das Eingabewort leer war, oder,
+dass sich der Automat im Zustand \State{z2} befindet und der Keller leer
+ist.\vspace{10pt}
+
+Wie die Zustände und Übergänge angelegt werden, wurde bereits in diesem Handbuch
+beschrieben, deshalb wird an dieser Stelle nur auf die Besonderheiten des
+Kellerautomaten eingegangen. Es werden insgesamt vier Übergänge benötigt, um die
+Sprache zu erkennen. Alle Übergänge müssen Veränderungen am Keller durchführen.
+Wir nehmen als Beispiel den Übergang von \State{z0} nach \State{z1}, bei dem das
+Symbol \Symbol{a} vom Eingabeband gelesen und auf den Keller geschrieben werden
+muss. Beim Anlegen oder Editeren dieser Transition besteht die Möglichkeit das
+"`Keller Lese-Wort"' und das "`Keller Schreib-Wort"' zu editieren. In diesem Fall
+soll das Symbol \Symbol{a} auf den Keller geschrieben werden, es muss also beim
+"`Keller Schreib-Wort"' das Symbol \Symbol{a} eingetragen werden. Das "`Keller
+Lese-Wort"' muss leer bleiben, da nichts vom Keller gelesen werden
+soll.\vspace{10pt}
+
+Wurden auf diese Weise alle Zustände und Übergange angelegt, kann der Automat
+validiert werden und sollte keine Fehler mehr aufweisen. Bei der Wort
+Navigation ist jetzt nicht nur das Eingabewort interessant, sondern auch der
+dargestellte Keller. Wird zum Beispiel das Wort \Word{aaabbb} gewählt, wird im
+ersten Schritt das Symbol \Symbol{a} gelesen und auf den Keller geschrieben.
+Anschließend werden die restlichen zwei Symbole \Symbol{a} auf den Keller
+gepackt und anschließend durch die Übergänge von \State{z1} nach \State{z2}
+bzw. von \State{z2} nach \State{z2} wieder entfernt. Am Ende wurde das
+komplette Wort \Word{aaabbb} gelesen, der Automat befindet sich im Zustand
+\State{z2} und der Keller ist leer, das Wort wird somit akzeptiert.

@@ -2,6 +2,8 @@
 
 BM		- Beim Minimieren: Entfernen der nicht erreichbaren Zustände als einzelnen
           Schritt einführen.
+CF		- Finaler Zustand/Akzeptierender Zustand vereinheitlichen
+CF		- Bei der Wort Navigation angeben, ob das Wort erkannt wird
 
 *** FEATURE ***
 

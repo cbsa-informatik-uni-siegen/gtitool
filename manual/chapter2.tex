@@ -11,13 +11,13 @@ auf "`Weiter"'.\vspace{10pt}
 
 Im nächsten Dialog werden wir gefragt von welchem Typ unser neuer
 Automat sein soll. In unserem Beispiel handelt es sich um eine
-"`$\epsilon$-NDEA"', welches wir auswählen und wieder mit "`Weiter"'
+"`$\epsilon$-NDEA"', welches wir auswählen und mit "`Weiter"'
 bestätigen.\vspace{10pt}
 
-Als nächstes müssen wir das gewünschte Alphabet für den neuen Automaten
+Dann müssen wir das gewünschte Alphabet für den neuen Automaten
 angeben. Im Alphabet können alle Symbole werwendet werden, die nicht zur Syntax
 der Eingabe gehören. Das bedeutet \Symbol{,}, \Symbol{\{}, \Symbol{\}} und
-\SymbolEmpty{} können nicht verwendet werden.\vspace{10pt}
+\SymbolEmpty{} können hier nicht verwendet werden.\vspace{10pt}
 
 In dem Dialog sind an allen Stellen schon vordefinierte Werte eingetragen.
 Dabei handelt es sich um die Vorgaben die man als Standardwerte in den
@@ -54,33 +54,32 @@ wechseln. Den Konfigurationsdialog erreicht man dann über Doppelklick oder das
 Kontextmenü. Über das Kontextmenü lässt sich ein Zustand auch wieder
 löschen.\vspace{10pt}
 
-Auf diese Weise lassen sich alle Zustände anlegen die für den Beispiel
-Automaten benötigt werden. Nachdem wir alle Zustände angelegt haben, fehlen
-noch die Übergänge zwischen den Zuständen. Daher wechseln wir in den "`Neuer
-Übergang"' Modus. Um jetzt einen neuen Übergang anzulegen klicken wir auf einen
-Zustand und ziehen, bei gedrückter Maustaste, die Maus auf einen anderen
-Zustand. Beim loslassen öffnet sich der Konfigurationsdialog für Übergänge. In
-diesem Dialog ziehen wir jetzt die Symbole die in dem Übergang enthalten
-sein sollen aus der linken Liste mit allen Symbolen in die Rechte Liste, welche
-die Übergangsmenge representiert. Als Hilfestellung wird im unteren Dialog der
-entstehende Übergang angezeigt. Nach bestätigen durch "`Ok"' wird der
-Übergang angelegt.\vspace{10pt}
+Auf diese Weise lassen sich alle Zustände anlegen die für den Beispielautomaten
+benötigt werden. Nachdem wir alle Zustände angelegt haben, fehlen noch die
+Übergänge zwischen den Zuständen. Daher wechseln wir in den "`Neuer Übergang"'
+Modus. Um jetzt einen neuen Übergang anzulegen klicken wir auf einen Zustand 
+und ziehen, bei gedrückter Maustaste, die Maus auf einen anderen Zustand. Beim
+loslassen öffnet sich der Konfigurationsdialog für Übergänge. In diesem Dialog 
+ziehen wir jetzt die Symbole die in dem Übergang enthalten sein sollen aus der 
+linken Liste mit allen Symbolen in die Rechte Liste, welche die Übergangsmenge
+repräsentiert. Als Hilfestellung wird im unteren Dia\-log der entstehende
+Übergang angezeigt. Nach bestätigen durch "`Ok"' wird der Übergang angelegt.\vspace{10pt}
 
 Die Übergänge lassen sich auf die gleiche Weise bearbeiten und löschen wie
-es bei den Zuständen möglich ist. Es gibt allerdings eine Besonderheit beim
-Anlegen von Übergängen. Wenn man die Maus nicht über einem Zustand, sondern
-über einem leeren Bereich loslässt, wird beim Anlegen des Übergangs auch ein
-neuer Zustand angelegt.\vspace{10pt}
+es bei den Zuständen möglich ist. Es gibt allerdings eine Besonderheit. Wenn
+man die Maus anstatt über einem Zustand, über einem leeren Bereich
+loslässt, wird beim Anlegen des Übergangs zusätzlich ein neuer Zustand
+angelegt.\vspace{10pt}
 
-Auf diese Weise legen wir alle Übergänge an, welche für den Beispielautomaten
-benötigt werden. Wenn wir damit fertig sind, können wir den Automaten noch
-validieren, um zu sehen ob uns beim Anlegen der Zustände und Übergänge
-irgendwelche Fehler unterlaufen sind. Diese Funktion
-erreicht man über das Kontextmenü oder über den Menüpunkt "`Ausführen"'.
+Diesen Vorgang wiederholen wir jetzt für alle Übergänge, die
+für den Beispielautomaten benötigt werden. Wenn wir damit fertig sind, können
+wir den Automaten noch validieren, um zu sehen ob uns beim Anlegen der Zustände
+und Übergänge irgendwelche Fehler unterlaufen sind. Diese Funktion erreicht man
+über das Kontextmenü oder über den Menüpunkt "`Ausführen"'.
 
 \section{Was fange ich mit einem fertigen Automat an?}
 
-Wenn man einen Automaten erstellt hat gibt es folgende
+Für einen erstellten Automaten gibt es folgende
 Ver\-wen\-dungs\-möglich\-keiten:
 
 \begin{itemize}
@@ -133,7 +132,56 @@ Ver\-wen\-dungs\-möglich\-keiten:
    
 \subsection{Minimieren}
   
-  TODO BM
+  Es besteht auch die Möglichkeit sich aus einem DFA den minimalen Automaten
+  berechnen zu lassen. Für diese Funktion darf der Automat allerdings keine
+  Fehler mehr enthalten, was wir durch eine Validierung ausschließen können.
+  Das Minimieren startet man über den Menüpunkt "`Ausführen"' und
+  "`Minimieren"'.\vspace{10pt}
+  
+  Es öffnet sich ein neuer Dialog mit einer Ansicht des Automaten und einer
+  Tabelle. In der Automatenansicht werden immer die Zustände in der selben
+  Farbe dargestellt, welche sich in einer Äquivalenzklasse befinden. Also
+  haben Initial alle akzeptierenden Zustände die gleiche Farbe, und alle nicht
+  akzeptierenden Zustände.\vspace{10pt}
+  
+  Man kann jetzt durch klicken auf "`Schritt vor"' die Äquivalenzklassen weiter
+  verfeinern. In der Tabelle wird angegeben welche Zustände in eine eigene
+  Äquivalenzklasse gekommen sind, und diese werden auch jetzt in einer anderen
+  Farbe dargestellt. Gleichzeitig werden auch die Übergänge hervorgehoben,
+  welche bei diesem Verfeinerungsschritt eine Rolle gespielt haben. Dabei
+  beziehen sich die hervorgehobenen Übergänge immer auf den aktuell
+  ausgewählten Tabelleneintrag.\vspace{10pt}
+  
+  Auf diese Weise kann man den Automaten jetzt Schritt für Schritt weiter
+  verfeinern, bis keine Verfeinerung der Äquivalenzklassen mehr möglich ist.
+  Wenn das der Fall ist, wird auch eine zweite Automatenansicht eingeblendet,
+  in der man den entstandenen minimierten Automaten sehen kann. Durch
+  bestätigen mit "`Ok"' wird jetzt eine neue Datei mit dem minimierten
+  Automaten erstellt, mit welcher man dann weiter arbeiten kann.\vspace{10pt}
+  
+  Natürlich kann der Minimierungsprozess jederzeit abgebrochen werden. In
+  diesem Fall wird keine neue Datei angelegt, und man kann den
+  Ausgangsautomaten weiter bearbeiten. \vspace{10pt}
+  
+  Wenn man in den Navigationsbereich des Dialogs schaut, stellt man fest, das
+  noch weitere Button verfügbar sind, auf welche jetzt noch nicht eingegangen
+  wurde. Zunächst einmal gibt es die Button "`Bis zum Ende vor"' und "`An den
+  Anfang zurück"'. Mit "`Bis zum Ende vor"' kann man alle Zwischenschritte
+  überspringen, und gelangt direkt zur Ansicht des minimalen Automaten. "`An den
+  Anfang zurück"' bewirkt genau das Gegenteil, und springt zur Ausgangsansicht
+  zurück. Dann gibt es noch einen "`Schritt zurück"' Button, welcher einzelne
+  Verfeinerungsschritte rückgängig macht. Und schlussendlich gibt es noch einen
+  Button "`Automatische Schritte"', welcher nach einer kurzen Verzögerung
+  automatisch den nächsten Schritt macht, bis der Minimierungsprozess
+  abgeschlossen ist. Diese Funktion kann durch den "`Stop"' Button wieder
+  deaktiviert werden.\vspace{10pt}
+  
+  Wenn man die neue Datei mit dem minimalen Automaten erstellen möchte, ohne
+  sich die Minimierung im Details anzuschauen, besteht jederzeit die
+  Möglich\-keit den Dialog mit "`Ok zu bestätigen. Die Minimierung wird dann im
+  Hintergrund beendet, und man gelangt sofort zur Ansicht des neu entstandenen
+  Automaten, und kann mit diesem weiterarbeiten.
+  
   
 \subsection{Umwandeln in\ldots}
   

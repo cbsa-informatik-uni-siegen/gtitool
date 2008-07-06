@@ -1,5 +1,7 @@
 *** TODO ***
 
+BM		- Beim Minimieren: Entfernen der nicht erreichbaren Zustände als einzelnen
+          Schritt einführen.
 
 *** FEATURE ***
 

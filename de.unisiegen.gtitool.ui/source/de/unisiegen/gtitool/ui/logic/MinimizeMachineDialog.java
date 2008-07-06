@@ -308,7 +308,7 @@ public final class MinimizeMachineDialog implements
         state.setStartState ( startState );
         state.setFinalState ( current.get ( 0 ).getState ().isFinalState () );
         DefaultStateView stateView = this.modelMinimized.createStateView (
-            current.get ( 0 ).getPositionX (), current.get ( 0 )
+            current.get ( 0 ).getPositionX () + 100, current.get ( 0 )
                 .getPositionY (), state, false );
         stateView.setOverwrittenColor ( current.get ( 0 )
             .getOverwrittenColor () );

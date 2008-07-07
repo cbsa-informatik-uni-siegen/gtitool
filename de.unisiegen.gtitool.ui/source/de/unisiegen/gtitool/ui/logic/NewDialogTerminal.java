@@ -47,11 +47,10 @@ public final class NewDialogTerminal implements
 
     this.gui.terminalPanelForm.setNonterminalSymbolSet ( PreferenceManager
         .getInstance ().getNonterminalSymbolSetItem ()
-        .getStandardNonterminalSymbolSet () );
+        .getNonterminalSymbolSet () );
 
     this.gui.terminalPanelForm.setTerminalSymbolSet ( PreferenceManager
-        .getInstance ().getTerminalSymbolSetItem ()
-        .getStandardTerminalSymbolSet () );
+        .getInstance ().getTerminalSymbolSetItem ().getTerminalSymbolSet () );
 
     this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
         .setText ( PreferenceManager.getInstance ().getStartSymbolItem ()

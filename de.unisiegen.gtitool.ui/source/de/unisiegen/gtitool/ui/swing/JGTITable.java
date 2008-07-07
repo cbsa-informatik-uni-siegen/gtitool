@@ -15,12 +15,14 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -118,6 +120,50 @@ public final class JGTITable extends JTable implements DropTargetListener
       }
     } );
     setDropTarget ( new DropTarget ( this, this ) );
+
+    // disable cut, copy and paste
+    getActionMap ().put ( "cut", new AbstractAction () { //$NON-NLS-1$
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = 2442639750331718901L;
+
+
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent e )
+          {
+            // do nothing
+          }
+        } );
+    getActionMap ().put ( "copy", new AbstractAction () { //$NON-NLS-1$
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = 4781268710775959195L;
+
+
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent e )
+          {
+            // do nothing
+          }
+        } );
+    getActionMap ().put ( "paste", new AbstractAction () { //$NON-NLS-1$
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = 8934656186755813050L;
+
+
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent e )
+          {
+            // do nothing
+          }
+        } );
   }
 
 

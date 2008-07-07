@@ -1164,22 +1164,22 @@ public final class ReachableStatesDialog implements
       throw new RuntimeException ( "unsupported step" ); //$NON-NLS-1$
     }
 
+    for ( State current : this.machineResult.getState () )
+    {
+      if ( current.isActive () )
+      {
+        DefaultStateView originalState = this.modelOriginal
+            .getStateViewForState ( current );
+        if ( !originalState.getState ().isActive () )
+        {
+          originalState.setOverwrittenColor ( REACHABLE_COLOR );
+        }
+      }
+    }
+
     if ( manualStep )
     {
       setStatus ();
-
-      for ( State current : this.machineResult.getState () )
-      {
-        if ( current.isActive () )
-        {
-          DefaultStateView originalState = this.modelOriginal
-              .getStateViewForState ( current );
-          if ( !originalState.getState ().isActive () )
-          {
-            originalState.setOverwrittenColor ( REACHABLE_COLOR );
-          }
-        }
-      }
 
       this.modelOriginal.getGraphModel ().cellsChanged (
           DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );

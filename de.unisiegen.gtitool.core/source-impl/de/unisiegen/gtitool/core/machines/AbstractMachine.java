@@ -778,33 +778,13 @@ public abstract class AbstractMachine implements Machine
   private final ArrayList < MachineException > checkStateNotReachable ()
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
-    for ( State current : this.getState () )
+
+    for ( State current : getNotReachableStates () )
     {
-      if ( ( current.getTransitionEnd ().size () == 0 )
-          && ( !current.isStartState () ) )
-      {
-        machineExceptionList.add ( new MachineStateNotReachableException (
-            current ) );
-      }
-      else
-      {
-        boolean warning = true;
-        for ( Transition currentTransition : current.getTransitionEnd () )
-        {
-          if ( ! ( ( currentTransition.getStateBegin () == current ) && ( currentTransition
-              .getStateEnd () == current ) ) )
-          {
-            warning = false;
-            break;
-          }
-        }
-        if ( warning && ( !current.isStartState () ) )
-        {
-          machineExceptionList.add ( new MachineStateNotReachableException (
-              current ) );
-        }
-      }
+      machineExceptionList.add ( new MachineStateNotReachableException (
+          current ) );
     }
+
     return machineExceptionList;
   }
 
@@ -1227,6 +1207,25 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
+   * @see Machine#getNotReachableStates()
+   */
+  public final ArrayList < State > getNotReachableStates ()
+  {
+    ArrayList < State > reachable = getReachableStates ();
+    ArrayList < State > notReachable = new ArrayList < State > ();
+    notReachable.addAll ( this.stateList );
+
+    for ( State current : reachable )
+    {
+      notReachable.remove ( current );
+    }
+    return notReachable;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Machine#getNotRemoveableSymbolsFromAlphabet()
    */
   public final TreeSet < Symbol > getNotRemoveableSymbolsFromAlphabet ()
@@ -1371,6 +1370,43 @@ public abstract class AbstractMachine implements Machine
   public final Alphabet getPushDownAlphabet ()
   {
     return this.pushDownAlphabet;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#getReachableStates()
+   */
+  public final ArrayList < State > getReachableStates ()
+  {
+    ArrayList < State > reachable = new ArrayList < State > ();
+    ArrayList < State > todoList = new ArrayList < State > ();
+
+    for ( State current : this.stateList )
+    {
+      if ( current.isStartState () )
+      {
+        todoList.add ( current );
+      }
+    }
+
+    while ( todoList.size () > 0 )
+    {
+      State currentState = todoList.remove ( 0 );
+      reachable.add ( currentState );
+
+      for ( Transition currentTransition : currentState.getTransitionBegin () )
+      {
+        State endState = currentTransition.getStateEnd ();
+        if ( !todoList.contains ( endState ) && !reachable.contains ( endState ) )
+        {
+          todoList.add ( endState );
+        }
+      }
+    }
+
+    return reachable;
   }
 
 

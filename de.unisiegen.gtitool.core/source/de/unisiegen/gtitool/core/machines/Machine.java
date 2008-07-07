@@ -267,6 +267,14 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
+   * Returns the not reachable {@link State} list.
+   * 
+   * @return The not reachable {@link State} list.
+   */
+  public ArrayList < State > getNotReachableStates ();
+
+
+  /**
    * Returns the {@link Symbol}s which are not removeable from the
    * {@link Alphabet}.
    * 
@@ -300,6 +308,14 @@ public interface Machine extends InputEntity, Serializable, TableModel,
    * @return The push down {@link Alphabet}.
    */
   public Alphabet getPushDownAlphabet ();
+
+
+  /**
+   * Returns the reachable {@link State} list.
+   * 
+   * @return The reachable {@link State} list.
+   */
+  public ArrayList < State > getReachableStates ();
 
 
   /**

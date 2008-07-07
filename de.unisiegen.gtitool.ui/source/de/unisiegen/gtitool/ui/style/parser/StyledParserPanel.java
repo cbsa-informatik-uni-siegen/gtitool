@@ -55,6 +55,58 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
 {
 
   /**
+   * The accepted status.
+   * 
+   * @author Christian Fehler
+   */
+  public enum AcceptedStatus
+  {
+    /**
+     * The none status.
+     */
+    NONE ( Color.BLACK ),
+
+    /**
+     * The accepted status.
+     */
+    ACCEPTED ( Color.GREEN ),
+
+    /**
+     * The not accepted status.
+     */
+    NOT_ACCEPTED ( Color.RED );
+
+    /**
+     * The used {@link Color}.
+     */
+    private Color color;
+
+
+    /**
+     * Allocates a new {@link AcceptedStatus}.
+     * 
+     * @param color The {@link Color}.
+     */
+    private AcceptedStatus ( Color color )
+    {
+      this.color = color;
+    }
+
+
+    /**
+     * Returns the color.
+     * 
+     * @return The color.
+     * @see #color
+     */
+    public final Color getColor ()
+    {
+      return this.color;
+    }
+  }
+
+
+  /**
    * The history of parsed objects.
    * 
    * @author Christian Fehler
@@ -296,6 +348,12 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
    * The {@link StyledParserPanel}.
    */
   private StyledParserPanel < E > synchronizedStyledParserPanel = null;
+
+
+  /**
+   * The {@link AcceptedStatus}.
+   */
+  private AcceptedStatus acceptedStatus = AcceptedStatus.NONE;
 
 
   /**
@@ -938,6 +996,18 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
 
 
   /**
+   * Sets the {@link AcceptedStatus}.
+   * 
+   * @param acceptedStatus The {@link AcceptedStatus} to set.
+   */
+  public final void setAcceptedStatus ( AcceptedStatus acceptedStatus )
+  {
+    this.acceptedStatus = acceptedStatus;
+    setErrorIndicator ( false );
+  }
+
+
+  /**
    * Sets the cell editor flag.
    * 
    * @param cellEditor The cell editor flag.
@@ -1024,13 +1094,30 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
    */
   private final void setErrorIndicator ( boolean error )
   {
-    if ( ( this.document.getParsedObject () == null ) || error )
+    if ( this.acceptedStatus.equals ( AcceptedStatus.NONE ) )
     {
-      this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
+      if ( ( this.document.getParsedObject () == null ) || error )
+      {
+        this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
+      }
+      else
+      {
+        this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
+      }
+    }
+    else if ( this.acceptedStatus.equals ( AcceptedStatus.ACCEPTED ) )
+    {
+      this.jScrollPane.setBorder ( new LineBorder ( AcceptedStatus.ACCEPTED
+          .getColor () ) );
+    }
+    else if ( this.acceptedStatus.equals ( AcceptedStatus.NOT_ACCEPTED ) )
+    {
+      this.jScrollPane.setBorder ( new LineBorder ( AcceptedStatus.NOT_ACCEPTED
+          .getColor () ) );
     }
     else
     {
-      this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
+      throw new RuntimeException ( "unsupported accepted status" ); //$NON-NLS-1$
     }
   }
 

@@ -105,6 +105,7 @@ import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.style.StyledStateSetParserPanel;
 import de.unisiegen.gtitool.ui.style.editor.ParserTableCellEditor;
+import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.AcceptedStatus;
 
 
 /**
@@ -1850,6 +1851,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       cancelAutoStepTimer ();
     }
 
+    updateAcceptedState ();
+
     this.mainWindowForm.getLogic ().updateWordNavigationStates ();
   }
 
@@ -1905,6 +1908,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       System.exit ( 1 );
       return;
     }
+
+    updateAcceptedState ();
   }
 
 
@@ -1935,6 +1940,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();
     }
+
+    updateAcceptedState ();
   }
 
 
@@ -1970,6 +1977,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.mainWindowForm.getLogic ().updateWordNavigationStates ();
     performCellsChanged ();
 
+    updateAcceptedState ();
+
     return true;
   }
 
@@ -1981,6 +1990,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     cancelAutoStepTimer ();
 
+    this.machineMode = MachineMode.ENTER_WORD;
     clearHighlight ();
 
     this.machine.stop ();
@@ -1993,6 +2003,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.mainWindowForm.getLogic ().addButtonState (
         ButtonState.ENABLED_NAVIGATION_START );
     performCellsChanged ();
+
+    updateAcceptedState ();
 
     this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();
     this.gui.wordPanel.styledWordParserPanel.setEditable ( true );
@@ -3372,6 +3384,32 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         .getAutoStepInterval ();
     this.autoStepTimer.schedule ( new AutoStepTimerTask (), delayed ? time : 0,
         time );
+  }
+
+
+  /**
+   * Updates the {@link AcceptedStatus}.
+   */
+  private final void updateAcceptedState ()
+  {
+    if ( this.machineMode.equals ( MachineMode.WORD_NAVIGATION ) )
+    {
+      if ( this.machine.isWordAccepted () )
+      {
+        this.gui.wordPanel.styledWordParserPanel
+            .setAcceptedStatus ( AcceptedStatus.ACCEPTED );
+      }
+      else
+      {
+        this.gui.wordPanel.styledWordParserPanel
+            .setAcceptedStatus ( AcceptedStatus.NOT_ACCEPTED );
+      }
+    }
+    else
+    {
+      this.gui.wordPanel.styledWordParserPanel
+          .setAcceptedStatus ( AcceptedStatus.NONE );
+    }
   }
 
 

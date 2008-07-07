@@ -1883,6 +1883,11 @@ public abstract class AbstractMachine implements Machine
    */
   public final boolean isWordAccepted ()
   {
+    if ( this.stack.size () > 0 )
+    {
+      return false;
+    }
+
     for ( State current : this.stateList )
     {
       if ( current.isActive () && current.isFinalState () )
@@ -1890,6 +1895,7 @@ public abstract class AbstractMachine implements Machine
         return true;
       }
     }
+
     return false;
   }
 

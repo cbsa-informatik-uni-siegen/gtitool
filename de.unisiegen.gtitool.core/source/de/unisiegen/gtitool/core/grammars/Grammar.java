@@ -138,6 +138,14 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
 
 
   /**
+   * Returns the not reachable {@link NonterminalSymbol} list.
+   * 
+   * @return The not reachable {@link NonterminalSymbol} list.
+   */
+  public ArrayList < NonterminalSymbol > getNotReachableNonterminalSymbols ();
+
+
+  /**
    * Returns the {@link NonterminalSymbol}s which are not removeable from the
    * {@link NonterminalSymbolSet}.
    * 
@@ -172,6 +180,14 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
    * @return the specified {@link Production}.
    */
   public Production getProductionAt ( int index );
+
+
+  /**
+   * Returns the reachable {@link NonterminalSymbol} list.
+   * 
+   * @return The reachable {@link NonterminalSymbol} list.
+   */
+  public ArrayList < NonterminalSymbol > getReachableNonterminalSymbols ();
 
 
   /**

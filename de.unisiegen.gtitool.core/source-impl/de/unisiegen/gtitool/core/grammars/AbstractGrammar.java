@@ -8,6 +8,7 @@ import javax.swing.event.EventListenerList;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
@@ -208,27 +209,12 @@ public abstract class AbstractGrammar implements Grammar
   {
     ArrayList < GrammarException > grammarExceptionList = new ArrayList < GrammarException > ();
 
-    for ( NonterminalSymbol currentNonterminalSymbol : this.nonterminalSymbolSet )
+    for ( NonterminalSymbol current : getNotReachableNonterminalSymbols () )
     {
-      boolean used = false;
-      loopProduction : for ( Production currentProduction : this.productions )
-      {
-        for ( ProductionWordMember symbol : currentProduction
-            .getProductionWord () )
-        {
-          if ( currentNonterminalSymbol.equals ( symbol ) )
-          {
-            used = true;
-            break loopProduction;
-          }
-        }
-      }
-      if ( !used && !currentNonterminalSymbol.equals ( this.startSymbol ) )
-      {
-        grammarExceptionList.add ( new GrammarNonterminalNotReachableException (
-            currentNonterminalSymbol ) );
-      }
+      grammarExceptionList.add ( new GrammarNonterminalNotReachableException (
+          current ) );
     }
+
     return grammarExceptionList;
   }
 
@@ -393,6 +379,29 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Grammar#getNotReachableNonterminalSymbols()
+   */
+  public final ArrayList < NonterminalSymbol > getNotReachableNonterminalSymbols ()
+  {
+    ArrayList < NonterminalSymbol > reachable = getReachableNonterminalSymbols ();
+    ArrayList < NonterminalSymbol > notReachable = new ArrayList < NonterminalSymbol > ();
+
+    for ( NonterminalSymbol current : this.nonterminalSymbolSet )
+    {
+      notReachable.add ( current );
+    }
+
+    for ( NonterminalSymbol current : reachable )
+    {
+      notReachable.remove ( current );
+    }
+    return notReachable;
+  }
+
+
+  /**
    * Returns the {@link NonterminalSymbol}s which are not removeable from the
    * {@link NonterminalSymbolSet}.
    * 
@@ -461,6 +470,58 @@ public abstract class AbstractGrammar implements Grammar
   public Production getProductionAt ( int index )
   {
     return this.productions.get ( index );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Grammar#getReachableNonterminalSymbols()
+   */
+  public final ArrayList < NonterminalSymbol > getReachableNonterminalSymbols ()
+  {
+    ArrayList < NonterminalSymbol > reachable = new ArrayList < NonterminalSymbol > ();
+    ArrayList < NonterminalSymbol > todoList = new ArrayList < NonterminalSymbol > ();
+
+    for ( NonterminalSymbol current : this.nonterminalSymbolSet )
+    {
+      if ( current.isStart () )
+      {
+        todoList.add ( current );
+      }
+    }
+
+    while ( todoList.size () > 0 )
+    {
+      NonterminalSymbol currentNonterminalSymbol = todoList.remove ( 0 );
+      reachable.add ( currentNonterminalSymbol );
+
+      ArrayList < Production > productionList = new ArrayList < Production > ();
+      for ( Production currentProduction : this.productions )
+      {
+        if ( currentProduction.getNonterminalSymbol ().equals (
+            currentNonterminalSymbol ) )
+        {
+          productionList.add ( currentProduction );
+
+          for ( ProductionWordMember currentMember : currentProduction
+              .getProductionWord () )
+          {
+            if ( currentMember instanceof DefaultNonterminalSymbol )
+            {
+              DefaultNonterminalSymbol currentNonterminalMember = ( DefaultNonterminalSymbol ) currentMember;
+              if ( !todoList.contains ( currentNonterminalMember )
+                  && !reachable.contains ( currentNonterminalMember ) )
+              {
+                todoList.add ( currentNonterminalMember );
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return reachable;
   }
 
 

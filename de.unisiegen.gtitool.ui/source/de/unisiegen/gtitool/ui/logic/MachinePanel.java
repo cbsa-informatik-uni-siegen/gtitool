@@ -1012,7 +1012,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @return The {@link TableColumnModel} of the machine.
    */
-  public TableColumnModel getMachineTableColumnModel ()
+  public final TableColumnModel getMachineTableColumnModel ()
   {
     return this.machine.getTableColumnModel ();
   }
@@ -1023,7 +1023,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @return The {@link TableModel} of the machine.
    */
-  public TableModel getMachineTableModel ()
+  public final TableModel getMachineTableModel ()
   {
     return this.machine;
   }

@@ -1829,6 +1829,22 @@ public abstract class AbstractMachine implements Machine
       return false;
     }
 
+    // save the new active states
+    ArrayList < State > newActiveStates = new ArrayList < State > ();
+    for ( State current : this.stateList )
+    {
+      if ( current.isActive () )
+      {
+        newActiveStates.add ( current );
+      }
+    }
+
+    if ( newActiveStates.size () == 0 )
+    {
+      previousSymbol ();
+      return false;
+    }
+
     previousSymbol ();
     return true;
   }

@@ -88,6 +88,7 @@ Ver\-wen\-dungs\-möglich\-keiten:
   \item Minimieren
   \item Umwandeln in\ldots
   \item Umwandeln in\ldots (Potenzmenge)
+  \item Erreichbare Zustände
 \end{itemize}
 
 \subsection{Vorlage für\ldots}
@@ -178,7 +179,7 @@ Ver\-wen\-dungs\-möglich\-keiten:
   
   Wenn man die neue Datei mit dem minimalen Automaten erstellen möchte, ohne
   sich die Minimierung im Details anzuschauen, besteht jederzeit die
-  Möglich\-keit den Dialog mit "`Ok zu bestätigen. Die Minimierung wird dann im
+  Möglich\-keit den Dialog mit "`Ok"' zu bestätigen. Die Minimierung wird dann im
   Hintergrund beendet, und man gelangt sofort zur Ansicht des neu entstandenen
   Automaten, und kann mit diesem weiterarbeiten.
   
@@ -190,5 +191,30 @@ Ver\-wen\-dungs\-möglich\-keiten:
 \subsection{Umwandeln in\ldots (Potenzmenge)}
   
   TODO CF
-  
-  
+
+
+\subsection{Ereichbare Zustände}
+
+Über den Menüeintrag "`Extras"' kann der Punkt "`Erreichbare Zustände"'
+ausgewählt werden. In dem erscheinenden Dialog kann, wie in den anderen auch,
+durch die einzelnen Schritte navigiert werden. Es geht hierbei darum in möglichst
+kleinen Schritten zu erkennen, welche Zustände erreichbar sind und welche nicht.
+Der verwendete Algorithmus geht dabei in folgenden drei Schritten vor:
+
+\begin{itemize}
+  \item Ein Zustand, der noch nicht berechnet wurde, wird ausgewählt (am Anfang
+  wird mit dem Start Zustand begonnen)
+  \item Die von dem ausgewählten Zustand aus zu erreichenden Zustände werden
+  hervorgehoben und falls sie noch nicht berechnet wurden, zu der Menge der noch
+  zu berechnenden Zustände hinzugefügt
+  \item Die bis jetzt ereichbaren Zustände werden hervorgehoben. Die Menge der
+  noch nicht berechneten Zustände angezeigt 
+\end{itemize}
+
+Der Algorithmus läuft so lange, bis die Menge der noch nicht berechneten Zustände
+leer ist. Am Ende werden alle erreichbaren Zustände farblich hervorgehoben. Wie
+in den anderen Dialogen besteht jederzeit die Möglichkeit den Dialog abzubrechen,
+wobei er dann einfach geschlossen wird. Man hat auch jederzeit die Möglichkeit
+mit einem Klick auf "`OK"' die nicht erreichbaren Zustände zu berechnen und eine
+Datei anzulegen, die diese nicht erreichbaren Zustände nicht enthält. Dabei
+werden auch alle beteiligten Übergänge nicht mit übernommen.

@@ -1,6 +1,5 @@
 CF		- Convert
 CF		- Conver (Power set)
-CF		- Reachable states
 CF		- Machine Tabelle editieren
 CF		- Beispiele für Bilder vorbereiten
 CF		- Beispiel zur Auswahl eines Überganges

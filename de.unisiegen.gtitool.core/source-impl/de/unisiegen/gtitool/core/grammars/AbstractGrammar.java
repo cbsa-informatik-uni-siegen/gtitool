@@ -72,6 +72,12 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
+   * The start {@link NonterminalSymbol}.
+   */
+  private NonterminalSymbol initialStartNonterminalSymbol = null;
+
+
+  /**
    * The {@link ModifyStatusChangedListener}.
    */
   private ModifyStatusChangedListener modifyStatusChangedListener;
@@ -106,7 +112,6 @@ public abstract class AbstractGrammar implements Grammar
     this.terminalSymbolSet = terminalSymbolSet;
     this.startSymbol = startSymbol;
 
-    // ModifyStatusChangedListener
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
 
@@ -117,7 +122,12 @@ public abstract class AbstractGrammar implements Grammar
       }
     };
 
-    // Validation elements
+    this.nonterminalSymbolSet
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+    this.terminalSymbolSet
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+
+    // validation elements
     if ( validationElements == null )
     {
       throw new NullPointerException ( "validation elements is null" ); //$NON-NLS-1$
@@ -127,6 +137,9 @@ public abstract class AbstractGrammar implements Grammar
     {
       this.validationElementList.add ( current );
     }
+
+    // reset modify
+    resetModify ();
   }
 
 
@@ -601,14 +614,22 @@ public abstract class AbstractGrammar implements Grammar
         return true;
       }
     }
+
     if ( this.nonterminalSymbolSet.isModified () )
     {
       return true;
     }
+
     if ( this.terminalSymbolSet.isModified () )
     {
       return true;
     }
+
+    if ( !this.initialStartNonterminalSymbol.equals ( this.startSymbol ) )
+    {
+      return true;
+    }
+
     for ( Production current : this.productions )
     {
       if ( current.isModified () )
@@ -665,8 +686,11 @@ public abstract class AbstractGrammar implements Grammar
   {
     this.initialProductions.clear ();
     this.initialProductions.addAll ( this.productions );
+
     this.nonterminalSymbolSet.resetModify ();
     this.terminalSymbolSet.resetModify ();
+
+    this.initialStartNonterminalSymbol = this.startSymbol;
 
     for ( Production current : this.productions )
     {
@@ -691,12 +715,14 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.grammars.Grammar#setStartSymbol(NonterminalSymbol)
+   * @see Grammar#setStartSymbol(NonterminalSymbol)
    */
   public void setStartSymbol ( NonterminalSymbol startSymbol )
   {
     this.startSymbol = startSymbol;
     updateStartSymbol ();
+
+    fireModifyStatusChanged ( false );
   }
 
 

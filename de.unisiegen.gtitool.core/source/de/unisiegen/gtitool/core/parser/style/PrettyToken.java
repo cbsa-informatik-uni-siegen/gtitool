@@ -54,6 +54,25 @@ public final class PrettyToken
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
+   */
+  @Override
+  public final boolean equals ( Object other )
+  {
+    if ( other instanceof PrettyToken )
+    {
+      PrettyToken prettyToken = ( PrettyToken ) other;
+      return this.text.equals ( prettyToken.text )
+          && this.style.equals ( prettyToken.style );
+    }
+
+    return false;
+  }
+
+
+  /**
    * Returns the char array.
    * 
    * @return The char array.
@@ -98,6 +117,18 @@ public final class PrettyToken
   public final String getText ()
   {
     return this.text;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#hashCode()
+   */
+  @Override
+  public final int hashCode ()
+  {
+    return 11 * this.text.hashCode () + 13 * this.style.hashCode ();
   }
 
 

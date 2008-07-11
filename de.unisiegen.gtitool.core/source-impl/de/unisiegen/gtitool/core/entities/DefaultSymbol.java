@@ -1,12 +1,16 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import javax.swing.event.EventListenerList;
+
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.PrettyString.PrettyStringMode;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -59,6 +63,18 @@ public final class DefaultSymbol implements Symbol
    * Flag that indicates if this {@link Symbol} is a epsilon {@link Symbol}.
    */
   private boolean epsilon;
+
+
+  /**
+   * The cached {@link PrettyString}.
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -141,6 +157,18 @@ public final class DefaultSymbol implements Symbol
   /**
    * {@inheritDoc}
    * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( Symbol other )
@@ -186,6 +214,22 @@ public final class DefaultSymbol implements Symbol
       return this.name.equals ( symbol.name );
     }
     return false;
+  }
+
+
+  /**
+   * Let the listeners know that the {@link PrettyString} has changed.
+   */
+  private final void firePrettyStringChanged ()
+  {
+    this.cachedPrettyString = null;
+
+    PrettyStringChangedListener [] listeners = this.listenerList
+        .getListeners ( PrettyStringChangedListener.class );
+    for ( PrettyStringChangedListener current : listeners )
+    {
+      current.prettyStringChanged ();
+    }
   }
 
 
@@ -287,11 +331,27 @@ public final class DefaultSymbol implements Symbol
   /**
    * {@inheritDoc}
    * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Symbol#setActive(boolean)
    */
   public final void setActive ( boolean active )
   {
-    this.active = active;
+    if ( this.active != active )
+    {
+      this.active = active;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -302,7 +362,11 @@ public final class DefaultSymbol implements Symbol
    */
   public final void setError ( boolean error )
   {
-    this.error = error;
+    if ( this.error != error )
+    {
+      this.error = error;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -323,7 +387,12 @@ public final class DefaultSymbol implements Symbol
     {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
     }
-    this.name = name;
+
+    if ( ( this.name == null ) || !this.name.equals ( name ) )
+    {
+      this.name = name;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -345,46 +414,50 @@ public final class DefaultSymbol implements Symbol
    */
   public final PrettyString toPrettyString ()
   {
-    PrettyString prettyString = new PrettyString ();
-
-    if ( this.epsilon )
+    if ( ( this.cachedPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      if ( this.error )
+      this.cachedPrettyString = new PrettyString ();
+
+      if ( this.epsilon )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
-            Style.SYMBOL_ERROR ) );
-      }
-      else if ( this.active )
-      {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
-            Style.SYMBOL_ACTIVE ) );
+        if ( this.error )
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
+              Style.SYMBOL_ERROR ) );
+        }
+        else if ( this.active )
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
+              Style.SYMBOL_ACTIVE ) );
+        }
+        else
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+              "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+        }
       }
       else
       {
-        prettyString
-            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-      }
-    }
-    else
-    {
-      if ( this.error )
-      {
-        prettyString.addPrettyToken ( new PrettyToken ( this.name,
-            Style.SYMBOL_ERROR ) );
-      }
-      else if ( this.active )
-      {
-        prettyString.addPrettyToken ( new PrettyToken ( this.name,
-            Style.SYMBOL_ACTIVE ) );
-      }
-      else
-      {
-        prettyString
-            .addPrettyToken ( new PrettyToken ( this.name, Style.SYMBOL ) );
+        if ( this.error )
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+              Style.SYMBOL_ERROR ) );
+        }
+        else if ( this.active )
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+              Style.SYMBOL_ACTIVE ) );
+        }
+        else
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+              Style.SYMBOL ) );
+        }
       }
     }
 
-    return prettyString;
+    return this.cachedPrettyString;
   }
 
 
@@ -395,21 +468,6 @@ public final class DefaultSymbol implements Symbol
    */
   @Override
   public final String toString ()
-  {
-    if ( this.epsilon )
-    {
-      return "\u03B5"; //$NON-NLS-1$
-    }
-    return this.name;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public final String toStringDebug ()
   {
     if ( this.epsilon )
     {

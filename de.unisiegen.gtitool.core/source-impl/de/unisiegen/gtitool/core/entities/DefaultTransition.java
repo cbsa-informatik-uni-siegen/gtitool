@@ -8,7 +8,9 @@ import java.util.TreeSet;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -17,6 +19,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.PrettyString.PrettyStringMode;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -151,18 +154,65 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * The cached stack {@link PrettyString}.
+   */
+  private PrettyString cachedStackPrettyString = null;
+
+
+  /**
+   * The cached {@link PrettyString}.
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
+   * The {@link PrettyStringChangedListener}.
+   */
+  private PrettyStringChangedListener prettyStringChangedListener;
+
+
+  /**
    * Allocates a new {@link DefaultTransition}.
    */
   public DefaultTransition ()
   {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
     // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
-    this.symbolSet.add ( new DefaultSymbol () );
+
+    try
+    {
+      add ( new DefaultSymbol () );
+    }
+    catch ( TransitionException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
 
     this.initialSymbolSet = new TreeSet < Symbol > ();
-    this.initialSymbolSet.add ( new DefaultSymbol () );
 
-    // Reset modify
+    try
+    {
+      add ( new DefaultSymbol () );
+    }
+    catch ( TransitionException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+
     resetModify ();
   }
 
@@ -192,6 +242,16 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
     this.symbolSet = new TreeSet < Symbol > ();
     this.initialSymbolSet = new TreeSet < Symbol > ();
 
@@ -214,7 +274,6 @@ public final class DefaultTransition implements Transition
     }
     add ( symbols );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -244,29 +303,32 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
     this.symbolSet = new TreeSet < Symbol > ();
     this.initialSymbolSet = new TreeSet < Symbol > ();
 
-    // Alphabet
     setAlphabet ( alphabet );
-    // PushDownAlphabet
     setPushDownAlphabet ( pushDownAlphabet );
-    // PushDownWordRead
     setPushDownWordRead ( pushDownWordRead );
-    // PushDownWordWrite
     setPushDownWordWrite ( pushDownWordWrite );
-    // StateBegin
     setStateBegin ( stateBegin );
-    // StateEnd
     setStateEnd ( stateEnd );
-    // Symbols
+
     if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     add ( symbols );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -285,6 +347,16 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException, StoreException
   {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
     // Check if the element is correct
     if ( !element.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
     {
@@ -367,7 +439,6 @@ public final class DefaultTransition implements Transition
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     }
 
-    // Reset modify
     resetModify ();
   }
 
@@ -390,21 +461,28 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
     this.symbolSet = new TreeSet < Symbol > ();
     this.initialSymbolSet = new TreeSet < Symbol > ();
 
-    // PushDownWordRead
     setPushDownWordRead ( pushDownWordRead );
-    // PushDownWordWrite
     setPushDownWordWrite ( pushDownWordWrite );
-    // Symbols
+
     if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     add ( symbols );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -426,21 +504,28 @@ public final class DefaultTransition implements Transition
       Symbol ... symbols ) throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
     this.symbolSet = new TreeSet < Symbol > ();
     this.initialSymbolSet = new TreeSet < Symbol > ();
 
-    // PushDownWordRead
     setPushDownWordRead ( pushDownWordRead );
-    // PushDownWordWrite
     setPushDownWordWrite ( pushDownWordWrite );
-    // Symbols
+
     if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     add ( symbols );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -500,11 +585,21 @@ public final class DefaultTransition implements Transition
     // the symbol must be cloned because of the different possible styles
     if ( symbol.isEpsilon () )
     {
-      this.symbolSet.add ( new DefaultSymbol () );
+      Symbol newSymbol = new DefaultSymbol ();
+
+      newSymbol
+          .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      this.symbolSet.add ( newSymbol );
     }
     else
     {
-      this.symbolSet.add ( new DefaultSymbol ( symbol.getName () ) );
+      Symbol newSymbol = new DefaultSymbol ( symbol.getName () );
+
+      newSymbol
+          .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      this.symbolSet.add ( newSymbol );
     }
 
     fireTransitionChanged ();
@@ -541,6 +636,18 @@ public final class DefaultTransition implements Transition
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
   }
 
 
@@ -611,6 +718,23 @@ public final class DefaultTransition implements Transition
     for ( ModifyStatusChangedListener current : listeners )
     {
       current.modifyStatusChanged ( newModifyStatus );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the {@link PrettyString} has changed.
+   */
+  private final void firePrettyStringChanged ()
+  {
+    this.cachedPrettyString = null;
+    this.cachedStackPrettyString = null;
+
+    PrettyStringChangedListener [] listeners = this.listenerList
+        .getListeners ( PrettyStringChangedListener.class );
+    for ( PrettyStringChangedListener current : listeners )
+    {
+      current.prettyStringChanged ();
     }
   }
 
@@ -941,9 +1065,15 @@ public final class DefaultTransition implements Transition
     {
       throw new IllegalArgumentException ( "symbol is not in this transition" ); //$NON-NLS-1$
     }
+
+    symbol
+        .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+
     this.symbolSet.remove ( symbol );
+
     fireTransitionChanged ();
     fireModifyStatusChanged ();
+    firePrettyStringChanged ();
   }
 
 
@@ -980,6 +1110,18 @@ public final class DefaultTransition implements Transition
   /**
    * {@inheritDoc}
    * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Transition#removeTransitionChangedListener(TransitionChangedListener)
    */
   public final void removeTransitionChangedListener (
@@ -998,6 +1140,12 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    for ( Symbol current : this.symbolSet )
+    {
+      current
+          .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+    }
+
     this.symbolSet.clear ();
     add ( symbols );
   }
@@ -1012,6 +1160,12 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    for ( Symbol current : this.symbolSet )
+    {
+      current
+          .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+    }
+
     this.symbolSet.clear ();
     add ( symbol );
   }
@@ -1026,6 +1180,12 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    for ( Symbol current : this.symbolSet )
+    {
+      current
+          .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+    }
+
     this.symbolSet.clear ();
     add ( symbols );
   }
@@ -1056,7 +1216,11 @@ public final class DefaultTransition implements Transition
    */
   public final void setActive ( boolean active )
   {
-    this.active = active;
+    if ( this.active != active )
+    {
+      this.active = active;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -1086,7 +1250,11 @@ public final class DefaultTransition implements Transition
    */
   public final void setError ( boolean error )
   {
-    this.error = error;
+    if ( this.error != error )
+    {
+      this.error = error;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -1142,8 +1310,32 @@ public final class DefaultTransition implements Transition
     {
       throw new NullPointerException ( "push down word read is null" ); //$NON-NLS-1$
     }
-    this.pushDownWordRead = pushDownWordRead;
-    fireModifyStatusChanged ();
+
+    if ( this.pushDownWordRead == null )
+    {
+      pushDownWordRead
+          .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      this.pushDownWordRead = pushDownWordRead;
+
+      fireModifyStatusChanged ();
+      firePrettyStringChanged ();
+      return;
+    }
+
+    if ( !this.pushDownWordRead.equals ( pushDownWordRead ) )
+    {
+      this.pushDownWordRead
+          .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      pushDownWordRead
+          .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      this.pushDownWordRead = pushDownWordRead;
+
+      fireModifyStatusChanged ();
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -1158,8 +1350,32 @@ public final class DefaultTransition implements Transition
     {
       throw new NullPointerException ( "push down word write is null" ); //$NON-NLS-1$
     }
-    this.pushDownWordWrite = pushDownWordWrite;
-    fireModifyStatusChanged ();
+
+    if ( this.pushDownWordWrite == null )
+    {
+      pushDownWordWrite
+          .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      this.pushDownWordWrite = pushDownWordWrite;
+
+      fireModifyStatusChanged ();
+      firePrettyStringChanged ();
+      return;
+    }
+
+    if ( !this.pushDownWordWrite.equals ( pushDownWordWrite ) )
+    {
+      this.pushDownWordWrite
+          .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      pushDownWordWrite
+          .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      this.pushDownWordWrite = pushDownWordWrite;
+
+      fireModifyStatusChanged ();
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -1170,7 +1386,11 @@ public final class DefaultTransition implements Transition
    */
   public final void setSelected ( boolean selected )
   {
-    this.selected = selected;
+    if ( this.selected != selected )
+    {
+      this.selected = selected;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -1259,49 +1479,59 @@ public final class DefaultTransition implements Transition
       throw new RuntimeException ( "symbol set is empty" ); //$NON-NLS-1$
     }
 
-    PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-    boolean first = true;
-    for ( Symbol current : this.symbolSet )
+    if ( ( this.cachedPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      if ( !first )
+      this.cachedPrettyString = new PrettyString ();
+      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          "{", Style.NONE ) ); //$NON-NLS-1$
+      boolean first = true;
+      for ( Symbol current : this.symbolSet )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        if ( !first )
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+              ", ", Style.NONE ) ); //$NON-NLS-1$
+        }
+        first = false;
+        this.cachedPrettyString.addPrettyPrintable ( current );
       }
-      first = false;
-      prettyString.addPrettyPrintable ( current );
-    }
-    prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          "}", Style.NONE ) ); //$NON-NLS-1$
 
-    if ( ( this.pushDownWordRead.size () > 0 )
-        || ( this.pushDownWordWrite.size () > 0 ) )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
-      if ( this.pushDownWordRead.size () == 0 )
+      if ( ( this.pushDownWordRead.size () > 0 )
+          || ( this.pushDownWordWrite.size () > 0 ) )
       {
-        prettyString
-            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+            " ", Style.NONE ) ); //$NON-NLS-1$
+        if ( this.pushDownWordRead.size () == 0 )
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+              "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+        }
+        else
+        {
+          this.cachedPrettyString.addPrettyPrintable ( this.pushDownWordRead );
+        }
+        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+            "\u2191", Style.KEYWORD ) ); //$NON-NLS-1$
+        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+            " ", Style.NONE ) ); //$NON-NLS-1$
+        if ( this.pushDownWordWrite.size () == 0 )
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+              "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+        }
+        else
+        {
+          this.cachedPrettyString.addPrettyPrintable ( this.pushDownWordWrite );
+        }
+        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+            "\u2193", Style.KEYWORD ) ); //$NON-NLS-1$
       }
-      else
-      {
-        prettyString.addPrettyPrintable ( this.pushDownWordRead );
-      }
-      prettyString
-          .addPrettyToken ( new PrettyToken ( "\u2191", Style.KEYWORD ) ); //$NON-NLS-1$
-      prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
-      if ( this.pushDownWordWrite.size () == 0 )
-      {
-        prettyString
-            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-      }
-      else
-      {
-        prettyString.addPrettyPrintable ( this.pushDownWordWrite );
-      }
-      prettyString
-          .addPrettyToken ( new PrettyToken ( "\u2193", Style.KEYWORD ) ); //$NON-NLS-1$
     }
-    return prettyString;
+
+    return this.cachedPrettyString;
   }
 
 
@@ -1317,63 +1547,82 @@ public final class DefaultTransition implements Transition
       throw new RuntimeException ( "symbol set is empty" ); //$NON-NLS-1$
     }
 
-    // does not use the active style of symbols
-    PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( "(", Style.NONE ) ); //$NON-NLS-1$
-    prettyString.addPrettyPrintable ( this.stateBegin );
-    prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-
-    prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-    boolean first = true;
-    for ( Symbol current : this.symbolSet )
+    if ( ( this.cachedStackPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      if ( !first )
+      // does not use the active style of symbols
+      this.cachedStackPrettyString = new PrettyString ();
+      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+          "(", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedStackPrettyString.addPrettyPrintable ( this.stateBegin );
+      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+          ", ", Style.NONE ) ); //$NON-NLS-1$
+
+      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+          "{", Style.NONE ) ); //$NON-NLS-1$
+      boolean first = true;
+      for ( Symbol current : this.symbolSet )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        if ( !first )
+        {
+          this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+              ", ", Style.NONE ) ); //$NON-NLS-1$
+        }
+        first = false;
+        if ( current.isEpsilon () )
+        {
+          this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+              "\u03B5", //$NON-NLS-1$
+              Style.SYMBOL ) );
+        }
+        else
+        {
+          this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+              current.getName (), Style.SYMBOL ) );
+        }
       }
-      first = false;
-      if ( current.isEpsilon () )
+      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+          "}", Style.NONE ) ); //$NON-NLS-1$
+
+      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+          ", ", Style.NONE ) ); //$NON-NLS-1$
+      if ( getPushDownWordRead ().size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
-            Style.SYMBOL ) );
+        this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+            "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( current.getName (),
-            Style.SYMBOL ) );
+        this.cachedStackPrettyString
+            .addPrettyPrintable ( this.pushDownWordRead );
+      }
+      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+          "), (", Style.NONE ) ); //$NON-NLS-1$
+
+      this.cachedStackPrettyString.addPrettyPrintable ( this.stateEnd );
+      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+          ", ", Style.NONE ) ); //$NON-NLS-1$
+      if ( getPushDownWordWrite ().size () == 0 )
+      {
+        this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+            "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+      }
+      else
+      {
+        this.cachedStackPrettyString
+            .addPrettyPrintable ( this.pushDownWordWrite );
+      }
+      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+          ")", Style.NONE ) ); //$NON-NLS-1$
+
+      if ( this.selected )
+      {
+        this.cachedStackPrettyString
+            .overwriteColor ( Style.TRANSITION_SELECTED );
       }
     }
-    prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
 
-    prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-    if ( getPushDownWordRead ().size () == 0 )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-    }
-    else
-    {
-      prettyString.addPrettyPrintable ( this.pushDownWordRead );
-    }
-    prettyString.addPrettyToken ( new PrettyToken ( "), (", Style.NONE ) ); //$NON-NLS-1$
-
-    prettyString.addPrettyPrintable ( this.stateEnd );
-    prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-    if ( getPushDownWordWrite ().size () == 0 )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-    }
-    else
-    {
-      prettyString.addPrettyPrintable ( this.pushDownWordWrite );
-    }
-    prettyString.addPrettyToken ( new PrettyToken ( ")", Style.NONE ) ); //$NON-NLS-1$
-
-    if ( this.selected )
-    {
-      prettyString.overwriteColor ( Style.TRANSITION_SELECTED );
-    }
-
-    return prettyString;
+    return this.cachedStackPrettyString;
   }
 
 
@@ -1428,23 +1677,6 @@ public final class DefaultTransition implements Transition
       }
       result.append ( "\u2193" ); //$NON-NLS-1$
     }
-    return result.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toStringDebug()
-   */
-  public final String toStringDebug ()
-  {
-    String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
-    StringBuilder result = new StringBuilder ();
-    result.append ( "Alphabet:    " + this.alphabet.toString () + lineBreak ); //$NON-NLS-1$
-    result.append ( "Begin state: " + this.stateBegin.toString () + lineBreak ); //$NON-NLS-1$
-    result.append ( "End state:   " + this.stateEnd.toString () + lineBreak ); //$NON-NLS-1$
-    result.append ( "Symbols:     " + this.symbolSet.toString () ); //$NON-NLS-1$
     return result.toString ();
   }
 }

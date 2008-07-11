@@ -60,12 +60,6 @@ public interface StateSet extends Entity < StateSet >, Storable, Modifyable,
 
 
   /**
-   * Removes all {@link State}s.
-   */
-  public void clear ();
-
-
-  /**
    * Returns true if this {@link StateSet} contains the specified {@link State}.
    * 
    * @param nonterminalSymbol {@link State} whose presence in this

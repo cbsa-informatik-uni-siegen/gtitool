@@ -96,7 +96,8 @@ public final class PrettyStringComponent extends JLabel
   public final String getToolTipText (
       @SuppressWarnings ( "unused" ) MouseEvent event )
   {
-    if ( this.prettyString.toString ().equals ( "" ) ) //$NON-NLS-1$
+    if ( this.prettyString.toString ().equals ( "" ) || //$NON-NLS-1$
+        !this.prettyString.isShortVersion () )
     {
       return null;
     }
@@ -147,6 +148,8 @@ public final class PrettyStringComponent extends JLabel
     // short version
     if ( metrics.stringWidth ( this.prettyString.toString () ) > getWidth () )
     {
+      this.prettyString.setShortVersion ( true );
+
       String dots = " ..."; //$NON-NLS-1$
       PrettyToken lastPrettyToken = null;
       while ( ( !usedPrettyString.isEmpty () )
@@ -184,6 +187,10 @@ public final class PrettyStringComponent extends JLabel
       }
 
       usedPrettyString.addPrettyToken ( new PrettyToken ( dots, Style.NONE ) );
+    }
+    else
+    {
+      this.prettyString.setShortVersion ( false );
     }
 
     int dx = 0;

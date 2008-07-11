@@ -7,12 +7,14 @@ import java.util.Iterator;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.PrettyString.PrettyStringMode;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -62,13 +64,36 @@ public final class DefaultProductionWord implements ProductionWord
 
 
   /**
+   * The cached {@link PrettyString}.
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
+   * The {@link PrettyStringChangedListener}.
+   */
+  private PrettyStringChangedListener prettyStringChangedListener;
+
+
+  /**
    * Allocates a new {@link DefaultProductionWord}.
    */
   public DefaultProductionWord ()
   {
-    // ProductionWordMember
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
     this.productionWordMemberList = new ArrayList < ProductionWordMember > ();
     this.initialProductionWordMemberList = new ArrayList < ProductionWordMember > ();
+
+    resetModify ();
   }
 
 
@@ -81,6 +106,7 @@ public final class DefaultProductionWord implements ProductionWord
   public DefaultProductionWord ( Element element ) throws StoreException
   {
     this ();
+
     // Check if the element is correct
     if ( !element.getName ().equals ( "ProductionWord" ) ) //$NON-NLS-1$
     {
@@ -112,8 +138,8 @@ public final class DefaultProductionWord implements ProductionWord
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
-    this.initialProductionWordMemberList
-        .addAll ( this.productionWordMemberList );
+
+    resetModify ();
   }
 
 
@@ -126,14 +152,15 @@ public final class DefaultProductionWord implements ProductionWord
       Iterable < ProductionWordMember > productionWordMembers )
   {
     this ();
+
     // ProductionWordMember
     if ( productionWordMembers == null )
     {
       throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
     }
     add ( productionWordMembers );
-    this.initialProductionWordMemberList
-        .addAll ( this.productionWordMemberList );
+
+    resetModify ();
   }
 
 
@@ -151,8 +178,8 @@ public final class DefaultProductionWord implements ProductionWord
       throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
     }
     add ( productionWordMembers );
-    this.initialProductionWordMemberList
-        .addAll ( this.productionWordMemberList );
+
+    resetModify ();
   }
 
 
@@ -187,7 +214,13 @@ public final class DefaultProductionWord implements ProductionWord
     {
       throw new NullPointerException ( "production word member is null" ); //$NON-NLS-1$
     }
+
+    productionWordMember
+        .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
     this.productionWordMemberList.add ( productionWordMember );
+
+    firePrettyStringChanged ();
   }
 
 
@@ -218,6 +251,18 @@ public final class DefaultProductionWord implements ProductionWord
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
   }
 
 
@@ -271,6 +316,22 @@ public final class DefaultProductionWord implements ProductionWord
           .equals ( defaultProductionWord.productionWordMemberList );
     }
     return false;
+  }
+
+
+  /**
+   * Let the listeners know that the {@link PrettyString} has changed.
+   */
+  private final void firePrettyStringChanged ()
+  {
+    this.cachedPrettyString = null;
+
+    PrettyStringChangedListener [] listeners = this.listenerList
+        .getListeners ( PrettyStringChangedListener.class );
+    for ( PrettyStringChangedListener current : listeners )
+    {
+      current.prettyStringChanged ();
+    }
   }
 
 
@@ -377,6 +438,18 @@ public final class DefaultProductionWord implements ProductionWord
   /**
    * {@inheritDoc}
    * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Modifyable#resetModify()
    */
   public final void resetModify ()
@@ -416,20 +489,25 @@ public final class DefaultProductionWord implements ProductionWord
    */
   public final PrettyString toPrettyString ()
   {
-    PrettyString prettyString = new PrettyString ();
-    if ( this.productionWordMemberList.size () == 0 )
+    if ( ( this.cachedPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      prettyString.addPrettyToken ( new PrettyToken (
-          "\u03B5", Style.TERMINAL_SYMBOL ) ); //$NON-NLS-1$
-    }
-    else
-    {
-      for ( ProductionWordMember current : this.productionWordMemberList )
+      this.cachedPrettyString = new PrettyString ();
+      if ( this.productionWordMemberList.size () == 0 )
       {
-        prettyString.addPrettyPrintable ( current );
+        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+            "\u03B5", Style.TERMINAL_SYMBOL ) ); //$NON-NLS-1$
+      }
+      else
+      {
+        for ( ProductionWordMember current : this.productionWordMemberList )
+        {
+          this.cachedPrettyString.addPrettyPrintable ( current );
+        }
       }
     }
-    return prettyString;
+
+    return this.cachedPrettyString;
   }
 
 
@@ -451,41 +529,6 @@ public final class DefaultProductionWord implements ProductionWord
       for ( ProductionWordMember current : this.productionWordMemberList )
       {
         result.append ( current.getName () );
-      }
-    }
-    return result.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public final String toStringDebug ()
-  {
-    StringBuilder result = new StringBuilder ();
-    if ( this.productionWordMemberList.size () == 0 )
-    {
-      result.append ( "\u03B5" ); //$NON-NLS-1$
-    }
-    else
-    {
-      for ( ProductionWordMember current : this.productionWordMemberList )
-      {
-        result.append ( current.getName () );
-        if ( current instanceof NonterminalSymbol )
-        {
-          result.append ( "{N:" + current.getParserOffset () + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        else if ( current instanceof TerminalSymbol )
-        {
-          result.append ( "{T:" + current.getParserOffset () + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        else
-        {
-          throw new RuntimeException ( "unknown member" ); //$NON-NLS-1$
-        }
       }
     }
     return result.toString ();

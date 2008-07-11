@@ -7,6 +7,9 @@ import java.awt.Component;
 
 /**
  * The theme interface which stores different values.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
  */
 public interface Theme
 {

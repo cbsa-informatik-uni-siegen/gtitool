@@ -9,6 +9,7 @@ import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetMoreThanOneSymbolException;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -17,6 +18,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.PrettyString.PrettyStringMode;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -66,15 +68,36 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
+   * The cached {@link PrettyString}.
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
+   * The {@link PrettyStringChangedListener}.
+   */
+  private PrettyStringChangedListener prettyStringChangedListener;
+
+
+  /**
    * Allocates a new {@link DefaultAlphabet}.
    */
   public DefaultAlphabet ()
   {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
     // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
     this.initialSymbolSet = new TreeSet < Symbol > ();
 
-    // Reset modify
     resetModify ();
   }
 
@@ -91,6 +114,7 @@ public final class DefaultAlphabet implements Alphabet
       StoreException
   {
     this ();
+
     // Check if the element is correct
     if ( !element.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
     {
@@ -119,7 +143,6 @@ public final class DefaultAlphabet implements Alphabet
       }
     }
 
-    // Reset modify
     resetModify ();
   }
 
@@ -135,6 +158,7 @@ public final class DefaultAlphabet implements Alphabet
       throws AlphabetException
   {
     this ();
+
     // Symbols
     if ( symbols == null )
     {
@@ -142,7 +166,6 @@ public final class DefaultAlphabet implements Alphabet
     }
     add ( symbols );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -157,6 +180,7 @@ public final class DefaultAlphabet implements Alphabet
   public DefaultAlphabet ( Symbol ... symbols ) throws AlphabetException
   {
     this ();
+
     // Symbols
     if ( symbols == null )
     {
@@ -164,7 +188,6 @@ public final class DefaultAlphabet implements Alphabet
     }
     add ( symbols );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -223,9 +246,14 @@ public final class DefaultAlphabet implements Alphabet
       negativeSymbols.add ( symbol );
       throw new AlphabetMoreThanOneSymbolException ( this, negativeSymbols );
     }
+
+    symbol.addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
     this.symbolSet.add ( symbol );
+
     fireAlphabetChanged ();
     fireModifyStatusChanged ();
+    firePrettyStringChanged ();
   }
 
 
@@ -278,6 +306,18 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
    * Checks the {@link Symbol} list for {@link Symbol}s with the same name.
    * 
    * @param symbols The {@link Symbol} list.
@@ -320,6 +360,12 @@ public final class DefaultAlphabet implements Alphabet
    */
   public final void clear ()
   {
+    for ( Symbol current : this.symbolSet )
+    {
+      current
+          .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+    }
+
     this.symbolSet.clear ();
     fireAlphabetChanged ();
     fireModifyStatusChanged ();
@@ -413,6 +459,22 @@ public final class DefaultAlphabet implements Alphabet
     for ( ModifyStatusChangedListener current : listeners )
     {
       current.modifyStatusChanged ( newModifyStatus );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the {@link PrettyString} has changed.
+   */
+  private final void firePrettyStringChanged ()
+  {
+    this.cachedPrettyString = null;
+
+    PrettyStringChangedListener [] listeners = this.listenerList
+        .getListeners ( PrettyStringChangedListener.class );
+    for ( PrettyStringChangedListener current : listeners )
+    {
+      current.prettyStringChanged ();
     }
   }
 
@@ -538,9 +600,15 @@ public final class DefaultAlphabet implements Alphabet
     {
       throw new IllegalArgumentException ( "symbol is not in this alphabet" ); //$NON-NLS-1$
     }
+
+    symbol
+        .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+
     this.symbolSet.remove ( symbol );
+
     fireAlphabetChanged ();
     fireModifyStatusChanged ();
+    firePrettyStringChanged ();
   }
 
 
@@ -589,6 +657,18 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * {@inheritDoc}
    * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Modifyable#resetModify()
    */
   public final void resetModify ()
@@ -627,21 +707,29 @@ public final class DefaultAlphabet implements Alphabet
    */
   public final PrettyString toPrettyString ()
   {
-    PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-    Iterator < Symbol > iterator = this.symbolSet.iterator ();
-    boolean first = true;
-    while ( iterator.hasNext () )
+    if ( ( this.cachedPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      if ( !first )
+      this.cachedPrettyString = new PrettyString ();
+      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          "{", Style.NONE ) ); //$NON-NLS-1$
+      Iterator < Symbol > iterator = this.symbolSet.iterator ();
+      boolean first = true;
+      while ( iterator.hasNext () )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        if ( !first )
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+              ", ", Style.NONE ) ); //$NON-NLS-1$
+        }
+        first = false;
+        this.cachedPrettyString.addPrettyPrintable ( iterator.next () );
       }
-      first = false;
-      prettyString.addPrettyPrintable ( iterator.next () );
+      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          "}", Style.NONE ) ); //$NON-NLS-1$
     }
-    prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
-    return prettyString;
+
+    return this.cachedPrettyString;
   }
 
 
@@ -652,31 +740,6 @@ public final class DefaultAlphabet implements Alphabet
    */
   @Override
   public final String toString ()
-  {
-    StringBuilder result = new StringBuilder ();
-    result.append ( "{" ); //$NON-NLS-1$
-    Iterator < Symbol > iterator = this.symbolSet.iterator ();
-    boolean first = true;
-    while ( iterator.hasNext () )
-    {
-      if ( !first )
-      {
-        result.append ( ", " ); //$NON-NLS-1$
-      }
-      first = false;
-      result.append ( iterator.next () );
-    }
-    result.append ( "}" ); //$NON-NLS-1$
-    return result.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public final String toStringDebug ()
   {
     StringBuilder result = new StringBuilder ();
     result.append ( "{" ); //$NON-NLS-1$

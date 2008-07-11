@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetMoreThanOneSymbolException;
@@ -17,6 +18,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.PrettyString.PrettyStringMode;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -67,15 +69,36 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
+   * The cached {@link PrettyString}.
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
+   * The {@link PrettyStringChangedListener}.
+   */
+  private PrettyStringChangedListener prettyStringChangedListener;
+
+
+  /**
    * Allocates a new {@link DefaultTerminalSymbolSet}.
    */
   public DefaultTerminalSymbolSet ()
   {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
     // TerminalSymbol
     this.terminalSymbolSet = new TreeSet < TerminalSymbol > ();
     this.initialTerminalSymbolSet = new TreeSet < TerminalSymbol > ();
 
-    // Reset modify
     resetModify ();
   }
 
@@ -92,6 +115,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       throws TerminalSymbolSetException, StoreException
   {
     this ();
+
     // Check if the element is correct
     if ( !element.getName ().equals ( "TerminalSymbolSet" ) ) //$NON-NLS-1$
     {
@@ -121,7 +145,6 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       }
     }
 
-    // Reset modify
     resetModify ();
   }
 
@@ -137,6 +160,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       throws TerminalSymbolSetException
   {
     this ();
+
     // TerminalSymbols
     if ( terminalSymbols == null )
     {
@@ -144,7 +168,6 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     }
     add ( terminalSymbols );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -160,6 +183,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       throws TerminalSymbolSetException
   {
     this ();
+
     // TerminalSymbols
     if ( terminalSymbols == null )
     {
@@ -167,7 +191,6 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     }
     add ( terminalSymbols );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -228,9 +251,15 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       throw new TerminalSymbolSetMoreThanOneSymbolException ( this,
           negativeSymbols );
     }
+
+    terminalSymbol
+        .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
     this.terminalSymbolSet.add ( terminalSymbol );
+
     fireTerminalSymbolSetChanged ();
     fireModifyStatusChanged ();
+    firePrettyStringChanged ();
   }
 
 
@@ -268,6 +297,18 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
   }
 
 
@@ -330,6 +371,12 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
    */
   public final void clear ()
   {
+    for ( TerminalSymbol current : this.terminalSymbolSet )
+    {
+      current
+          .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+    }
+
     this.terminalSymbolSet.clear ();
     fireTerminalSymbolSetChanged ();
     fireModifyStatusChanged ();
@@ -410,6 +457,22 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     for ( ModifyStatusChangedListener current : listeners )
     {
       current.modifyStatusChanged ( newModifyStatus );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the {@link PrettyString} has changed.
+   */
+  private final void firePrettyStringChanged ()
+  {
+    this.cachedPrettyString = null;
+
+    PrettyStringChangedListener [] listeners = this.listenerList
+        .getListeners ( PrettyStringChangedListener.class );
+    for ( PrettyStringChangedListener current : listeners )
+    {
+      current.prettyStringChanged ();
     }
   }
 
@@ -550,9 +613,15 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       throw new IllegalArgumentException (
           "terminal symbol is not in this terminal symbol set" ); //$NON-NLS-1$
     }
+
+    terminalSymbol
+        .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+
     this.terminalSymbolSet.remove ( terminalSymbol );
+
     fireTerminalSymbolSetChanged ();
     fireModifyStatusChanged ();
+    firePrettyStringChanged ();
   }
 
 
@@ -583,6 +652,18 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
   }
 
 
@@ -640,21 +721,29 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
    */
   public final PrettyString toPrettyString ()
   {
-    PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-    Iterator < TerminalSymbol > iterator = this.terminalSymbolSet.iterator ();
-    boolean first = true;
-    while ( iterator.hasNext () )
+    if ( ( this.cachedPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      if ( !first )
+      this.cachedPrettyString = new PrettyString ();
+      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          "{", Style.NONE ) ); //$NON-NLS-1$
+      Iterator < TerminalSymbol > iterator = this.terminalSymbolSet.iterator ();
+      boolean first = true;
+      while ( iterator.hasNext () )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        if ( !first )
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+              ", ", Style.NONE ) ); //$NON-NLS-1$
+        }
+        first = false;
+        this.cachedPrettyString.addPrettyPrintable ( iterator.next () );
       }
-      first = false;
-      prettyString.addPrettyPrintable ( iterator.next () );
+      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          "}", Style.NONE ) ); //$NON-NLS-1$
     }
-    prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
-    return prettyString;
+
+    return this.cachedPrettyString;
   }
 
 
@@ -665,31 +754,6 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
    */
   @Override
   public final String toString ()
-  {
-    StringBuilder result = new StringBuilder ();
-    result.append ( "{" ); //$NON-NLS-1$
-    Iterator < TerminalSymbol > iterator = this.terminalSymbolSet.iterator ();
-    boolean first = true;
-    while ( iterator.hasNext () )
-    {
-      if ( !first )
-      {
-        result.append ( ", " ); //$NON-NLS-1$
-      }
-      first = false;
-      result.append ( iterator.next () );
-    }
-    result.append ( "}" ); //$NON-NLS-1$
-    return result.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public final String toStringDebug ()
   {
     StringBuilder result = new StringBuilder ();
     result.append ( "{" ); //$NON-NLS-1$

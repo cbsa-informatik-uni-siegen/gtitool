@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
@@ -15,6 +16,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.PrettyString.PrettyStringMode;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -162,6 +164,12 @@ public final class DefaultState implements State
 
 
   /**
+   * The cached {@link PrettyString}.
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
    * Allocates a new {@link DefaultState}.
    * 
    * @param alphabet The {@link Alphabet} of this {@link DefaultState}.
@@ -180,7 +188,6 @@ public final class DefaultState implements State
     this ( alphabet, pushDownAlphabet, "DEFAULTNAME", startState, finalState ); //$NON-NLS-1$
     this.canSetDefaultName = true;
 
-    // Reset modify
     resetModify ();
   }
 
@@ -204,16 +211,11 @@ public final class DefaultState implements State
       throws StateException
   {
     this ( name );
-    // Alphabet
     setAlphabet ( alphabet );
-    // PushDownAlphabet
     setPushDownAlphabet ( pushDownAlphabet );
-    // StartState
     setStartState ( startState );
-    // FinalState
     setFinalState ( finalState );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -348,7 +350,6 @@ public final class DefaultState implements State
       }
     }
 
-    // Reset modify
     resetModify ();
   }
 
@@ -376,7 +377,6 @@ public final class DefaultState implements State
     // DefaultName
     this.canSetDefaultName = false;
 
-    // Reset modify
     resetModify ();
   }
 
@@ -390,6 +390,18 @@ public final class DefaultState implements State
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
   }
 
 
@@ -497,6 +509,22 @@ public final class DefaultState implements State
     for ( ModifyStatusChangedListener current : listeners )
     {
       current.modifyStatusChanged ( newModifyStatus );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the {@link PrettyString} has changed.
+   */
+  private final void firePrettyStringChanged ()
+  {
+    this.cachedPrettyString = null;
+
+    PrettyStringChangedListener [] listeners = this.listenerList
+        .getListeners ( PrettyStringChangedListener.class );
+    for ( PrettyStringChangedListener current : listeners )
+    {
+      current.prettyStringChanged ();
     }
   }
 
@@ -840,6 +868,18 @@ public final class DefaultState implements State
   /**
    * {@inheritDoc}
    * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see State#removeStateChangedListener(StateChangedListener)
    */
   public final void removeStateChangedListener ( StateChangedListener listener )
@@ -907,7 +947,11 @@ public final class DefaultState implements State
    */
   public final void setActive ( boolean active )
   {
-    this.active = active;
+    if ( this.active != active )
+    {
+      this.active = active;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -951,6 +995,7 @@ public final class DefaultState implements State
       {
         exc.printStackTrace ();
         System.exit ( 1 );
+        return;
       }
     }
   }
@@ -963,7 +1008,11 @@ public final class DefaultState implements State
    */
   public final void setError ( boolean error )
   {
-    this.error = error;
+    if ( this.error != error )
+    {
+      this.error = error;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -974,8 +1023,12 @@ public final class DefaultState implements State
    */
   public final void setFinalState ( boolean finalState )
   {
-    this.finalState = finalState;
-    fireModifyStatusChanged ();
+    if ( this.finalState != finalState )
+    {
+      this.finalState = finalState;
+      fireModifyStatusChanged ();
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -1010,9 +1063,13 @@ public final class DefaultState implements State
       throw new StateEmptyNameException ();
     }
 
-    this.name = name;
-    fireStateChanged ();
-    fireModifyStatusChanged ();
+    if ( ( this.name == null ) || !this.name.equals ( name ) )
+    {
+      this.name = name;
+      fireStateChanged ();
+      fireModifyStatusChanged ();
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -1049,7 +1106,11 @@ public final class DefaultState implements State
    */
   public final void setSelected ( boolean selected )
   {
-    this.selected = selected;
+    if ( this.selected != selected )
+    {
+      this.selected = selected;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -1071,8 +1132,12 @@ public final class DefaultState implements State
    */
   public final void setStartState ( boolean startState )
   {
-    this.startState = startState;
-    fireModifyStatusChanged ();
+    if ( this.startState != startState )
+    {
+      this.startState = startState;
+      fireModifyStatusChanged ();
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -1083,62 +1148,70 @@ public final class DefaultState implements State
    */
   public final PrettyString toPrettyString ()
   {
-    PrettyString prettyString = new PrettyString ();
-    if ( this.selected )
+    if ( ( this.cachedPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      prettyString.addPrettyToken ( new PrettyToken ( this.name,
-          Style.STATE_SELECTED ) );
-    }
-    else
-    {
-      // name after a conversion
-      if ( this.name.charAt ( 0 ) == '{' )
+      this.cachedPrettyString = new PrettyString ();
+      if ( this.selected )
       {
-        String stateSet = this.name.substring ( 1, this.name.length () - 1 );
-
-        String [] splitStateSet = stateSet.split ( "," ); //$NON-NLS-1$
-
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-        boolean first = true;
-        for ( String current : splitStateSet )
-        {
-          String newName = current;
-
-          // remove spaces
-          while ( newName.charAt ( 0 ) == ' ' )
-          {
-            newName = newName.substring ( 1 );
-          }
-          while ( newName.charAt ( newName.length () - 1 ) == ' ' )
-          {
-            newName = newName.substring ( 0, newName.length () - 1 );
-          }
-
-          if ( !first )
-          {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          }
-          first = false;
-
-          prettyString
-              .addPrettyToken ( new PrettyToken ( newName, Style.STATE ) );
-        }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+            Style.STATE_SELECTED ) );
       }
-      // empty set name
-      else if ( this.name.equals ( "\u2205" ) ) //$NON-NLS-1$
-      {
-        prettyString
-            .addPrettyToken ( new PrettyToken ( this.name, Style.NONE ) );
-      }
-      // normal name
       else
       {
-        prettyString
-            .addPrettyToken ( new PrettyToken ( this.name, Style.STATE ) );
+        // name after a conversion
+        if ( this.name.charAt ( 0 ) == '{' )
+        {
+          String stateSet = this.name.substring ( 1, this.name.length () - 1 );
+
+          String [] splitStateSet = stateSet.split ( "," ); //$NON-NLS-1$
+
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+              "{", Style.NONE ) ); //$NON-NLS-1$
+          boolean first = true;
+          for ( String current : splitStateSet )
+          {
+            String newName = current;
+
+            // remove spaces
+            while ( newName.charAt ( 0 ) == ' ' )
+            {
+              newName = newName.substring ( 1 );
+            }
+            while ( newName.charAt ( newName.length () - 1 ) == ' ' )
+            {
+              newName = newName.substring ( 0, newName.length () - 1 );
+            }
+
+            if ( !first )
+            {
+              this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+                  ", ", Style.NONE ) ); //$NON-NLS-1$
+            }
+            first = false;
+
+            this.cachedPrettyString.addPrettyToken ( new PrettyToken ( newName,
+                Style.STATE ) );
+          }
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+              "}", Style.NONE ) ); //$NON-NLS-1$
+        }
+        // empty set name
+        else if ( this.name.equals ( "\u2205" ) ) //$NON-NLS-1$
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+              Style.NONE ) );
+        }
+        // normal name
+        else
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+              Style.STATE ) );
+        }
       }
     }
-    return prettyString;
+
+    return this.cachedPrettyString;
   }
 
 

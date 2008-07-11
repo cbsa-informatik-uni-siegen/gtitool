@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.parser.style;
 
 
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+
+
 /**
  * The {@link PrettyPrintable} interface.
  * 
@@ -9,6 +12,24 @@ package de.unisiegen.gtitool.core.parser.style;
  */
 public interface PrettyPrintable
 {
+
+  /**
+   * Adds the given {@link PrettyStringChangedListener}.
+   * 
+   * @param listener The {@link PrettyStringChangedListener}.
+   */
+  public void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener );
+
+
+  /**
+   * Removes the given {@link PrettyStringChangedListener}.
+   * 
+   * @param listener The {@link PrettyStringChangedListener}.
+   */
+  public void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener );
+
 
   /**
    * Returns the {@link PrettyString}.

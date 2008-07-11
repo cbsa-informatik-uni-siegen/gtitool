@@ -4,12 +4,16 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.event.EventListenerList;
+
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyString.PrettyStringMode;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
@@ -58,10 +62,38 @@ public final class DefaultWord implements Word
 
 
   /**
+   * The cached {@link PrettyString}.
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
+
+
+  /**
+   * The {@link PrettyStringChangedListener}.
+   */
+  private PrettyStringChangedListener prettyStringChangedListener;
+
+
+  /**
    * Allocates a new {@link DefaultWord}.
    */
   public DefaultWord ()
   {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
     // SymbolList
     this.symbolList = new ArrayList < Symbol > ();
   }
@@ -76,6 +108,7 @@ public final class DefaultWord implements Word
   public DefaultWord ( Element element ) throws StoreException
   {
     this ();
+
     // Check if the element is correct
     if ( !element.getName ().equals ( "Word" ) ) //$NON-NLS-1$
     {
@@ -115,6 +148,7 @@ public final class DefaultWord implements Word
   public DefaultWord ( Iterable < Symbol > symbols )
   {
     this ();
+
     // Symbols
     if ( symbols == null )
     {
@@ -132,6 +166,7 @@ public final class DefaultWord implements Word
   public DefaultWord ( Symbol ... symbols )
   {
     this ();
+
     // Symbols
     if ( symbols == null )
     {
@@ -171,7 +206,12 @@ public final class DefaultWord implements Word
     {
       throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
     }
+
+    symbol.addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
     this.symbolList.add ( symbol );
+
+    firePrettyStringChanged ();
   }
 
 
@@ -190,6 +230,18 @@ public final class DefaultWord implements Word
     {
       add ( current );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
   }
 
 
@@ -252,6 +304,22 @@ public final class DefaultWord implements Word
       return this.symbolList.equals ( defaultWord.symbolList );
     }
     return false;
+  }
+
+
+  /**
+   * Let the listeners know that the {@link PrettyString} has changed.
+   */
+  private final void firePrettyStringChanged ()
+  {
+    this.cachedPrettyString = null;
+
+    PrettyStringChangedListener [] listeners = this.listenerList
+        .getListeners ( PrettyStringChangedListener.class );
+    for ( PrettyStringChangedListener current : listeners )
+    {
+      current.prettyStringChanged ();
+    }
   }
 
 
@@ -420,6 +488,18 @@ public final class DefaultWord implements Word
   /**
    * {@inheritDoc}
    * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
@@ -457,12 +537,17 @@ public final class DefaultWord implements Word
    */
   public final PrettyString toPrettyString ()
   {
-    PrettyString prettyString = new PrettyString ();
-    for ( Symbol current : this.symbolList )
+    if ( ( this.cachedPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      prettyString.addPrettyPrintable ( current );
+      this.cachedPrettyString = new PrettyString ();
+      for ( Symbol current : this.symbolList )
+      {
+        this.cachedPrettyString.addPrettyPrintable ( current );
+      }
     }
-    return prettyString;
+
+    return this.cachedPrettyString;
   }
 
 
@@ -473,22 +558,6 @@ public final class DefaultWord implements Word
    */
   @Override
   public final String toString ()
-  {
-    StringBuilder result = new StringBuilder ();
-    for ( Symbol current : this.symbolList )
-    {
-      result.append ( current.getName () );
-    }
-    return result.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public final String toStringDebug ()
   {
     StringBuilder result = new StringBuilder ();
     for ( Symbol current : this.symbolList )

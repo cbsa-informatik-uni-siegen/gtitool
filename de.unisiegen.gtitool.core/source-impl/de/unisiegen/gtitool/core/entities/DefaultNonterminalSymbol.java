@@ -1,12 +1,16 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import javax.swing.event.EventListenerList;
+
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.PrettyString.PrettyStringMode;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -54,6 +58,18 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
    * @see #setParserOffset(ParserOffset)
    */
   private ParserOffset parserOffset = NO_PARSER_OFFSET;
+
+
+  /**
+   * The cached {@link PrettyString}.
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -118,6 +134,18 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   /**
    * {@inheritDoc}
    * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( NonterminalSymbol other )
@@ -140,6 +168,22 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
       return this.name.equals ( defaultSymbol.name );
     }
     return false;
+  }
+
+
+  /**
+   * Let the listeners know that the {@link PrettyString} has changed.
+   */
+  private final void firePrettyStringChanged ()
+  {
+    this.cachedPrettyString = null;
+
+    PrettyStringChangedListener [] listeners = this.listenerList
+        .getListeners ( PrettyStringChangedListener.class );
+    for ( PrettyStringChangedListener current : listeners )
+    {
+      current.prettyStringChanged ();
+    }
   }
 
 
@@ -211,13 +255,29 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
    *{@inheritDoc}
    * 
    * @see NonterminalSymbol#setError(boolean)
    */
   public final void setError ( boolean error )
   {
-    this.error = error;
+    if ( this.error != error )
+    {
+      this.error = error;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -232,7 +292,12 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
     {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
     }
-    this.name = name;
+
+    if ( ( this.name == null ) || !this.name.equals ( name ) )
+    {
+      this.name = name;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -254,7 +319,11 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
    */
   public final void setStart ( boolean start )
   {
-    this.start = start;
+    if ( this.start != start )
+    {
+      this.start = start;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -265,23 +334,29 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
    */
   public final PrettyString toPrettyString ()
   {
-    PrettyString prettyString = new PrettyString ();
-    if ( this.error )
+    if ( ( this.cachedPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      prettyString.addPrettyToken ( new PrettyToken ( this.name,
-          Style.NONTERMINAL_SYMBOL_ERROR ) );
+      this.cachedPrettyString = new PrettyString ();
+
+      if ( this.error )
+      {
+        this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+            Style.NONTERMINAL_SYMBOL_ERROR ) );
+      }
+      else if ( this.start )
+      {
+        this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+            Style.START_NONTERMINAL_SYMBOL ) );
+      }
+      else
+      {
+        this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+            Style.NONTERMINAL_SYMBOL ) );
+      }
     }
-    else if ( this.start )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( this.name,
-          Style.START_NONTERMINAL_SYMBOL ) );
-    }
-    else
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( this.name,
-          Style.NONTERMINAL_SYMBOL ) );
-    }
-    return prettyString;
+
+    return this.cachedPrettyString;
   }
 
 
@@ -292,17 +367,6 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
    */
   @Override
   public final String toString ()
-  {
-    return this.name;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public final String toStringDebug ()
   {
     return this.name;
   }

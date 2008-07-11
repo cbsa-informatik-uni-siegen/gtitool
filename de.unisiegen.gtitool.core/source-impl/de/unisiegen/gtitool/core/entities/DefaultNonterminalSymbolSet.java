@@ -9,6 +9,7 @@ import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetMoreThanOneSymbolException;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -17,6 +18,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.PrettyString.PrettyStringMode;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -67,15 +69,36 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
+   * The cached {@link PrettyString}.
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
+   * The {@link PrettyStringChangedListener}.
+   */
+  private PrettyStringChangedListener prettyStringChangedListener;
+
+
+  /**
    * Allocates a new {@link DefaultNonterminalSymbolSet}.
    */
   public DefaultNonterminalSymbolSet ()
   {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
     // NonterminalSymbol
     this.nonterminalSymbolSet = new TreeSet < NonterminalSymbol > ();
     this.initialTerminalSymbolSet = new TreeSet < NonterminalSymbol > ();
 
-    // Reset modify
     resetModify ();
   }
 
@@ -92,6 +115,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
       throws NonterminalSymbolSetException, StoreException
   {
     this ();
+
     // Check if the element is correct
     if ( !element.getName ().equals ( "NonterminalSymbolSet" ) ) //$NON-NLS-1$
     {
@@ -121,7 +145,6 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
       }
     }
 
-    // Reset modify
     resetModify ();
   }
 
@@ -138,6 +161,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
       throws NonterminalSymbolSetException
   {
     this ();
+
     // NonterminalSymbols
     if ( nonterminalSymbols == null )
     {
@@ -145,7 +169,6 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     }
     add ( nonterminalSymbols );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -161,6 +184,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
       throws NonterminalSymbolSetException
   {
     this ();
+
     // NonterminalSymbols
     if ( nonterminalSymbols == null )
     {
@@ -168,7 +192,6 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     }
     add ( nonterminalSymbols );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -229,9 +252,15 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
       throw new NonterminalSymbolSetMoreThanOneSymbolException ( this,
           negativeSymbols );
     }
+
+    nonterminalSymbol
+        .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
     this.nonterminalSymbolSet.add ( nonterminalSymbol );
+
     fireNonterminalSymbolSetChanged ();
     fireModifyStatusChanged ();
+    firePrettyStringChanged ();
   }
 
 
@@ -286,6 +315,18 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
    * Checks the {@link NonterminalSymbol} list for {@link NonterminalSymbol}s
    * with the same name.
    * 
@@ -333,7 +374,12 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
    */
   public final void clear ()
   {
-    this.nonterminalSymbolSet.clear ();
+    for ( NonterminalSymbol current : this.nonterminalSymbolSet )
+    {
+      current
+          .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+    }
+
     fireNonterminalSymbolSetChanged ();
     fireModifyStatusChanged ();
   }
@@ -427,6 +473,22 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     for ( NonterminalSymbolSetChangedListener current : listeners )
     {
       current.nonterminalSymbolSetChanged ( this );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the {@link PrettyString} has changed.
+   */
+  private final void firePrettyStringChanged ()
+  {
+    this.cachedPrettyString = null;
+
+    PrettyStringChangedListener [] listeners = this.listenerList
+        .getListeners ( PrettyStringChangedListener.class );
+    for ( PrettyStringChangedListener current : listeners )
+    {
+      current.prettyStringChanged ();
     }
   }
 
@@ -554,9 +616,15 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
       throw new IllegalArgumentException (
           "nonterminal symbol is not in this nonterminal symbol set" ); //$NON-NLS-1$
     }
+
+    nonterminalSymbol
+        .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+
     this.nonterminalSymbolSet.remove ( nonterminalSymbol );
+
     fireNonterminalSymbolSetChanged ();
     fireModifyStatusChanged ();
+    firePrettyStringChanged ();
   }
 
 
@@ -606,6 +674,18 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   /**
    * {@inheritDoc}
    * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Modifyable#resetModify()
    */
   public final void resetModify ()
@@ -644,22 +724,30 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
    */
   public final PrettyString toPrettyString ()
   {
-    PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-    Iterator < NonterminalSymbol > iterator = this.nonterminalSymbolSet
-        .iterator ();
-    boolean first = true;
-    while ( iterator.hasNext () )
+    if ( ( this.cachedPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      if ( !first )
+      this.cachedPrettyString = new PrettyString ();
+      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          "{", Style.NONE ) ); //$NON-NLS-1$
+      Iterator < NonterminalSymbol > iterator = this.nonterminalSymbolSet
+          .iterator ();
+      boolean first = true;
+      while ( iterator.hasNext () )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        if ( !first )
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+              ", ", Style.NONE ) ); //$NON-NLS-1$
+        }
+        first = false;
+        this.cachedPrettyString.addPrettyPrintable ( iterator.next () );
       }
-      first = false;
-      prettyString.addPrettyPrintable ( iterator.next () );
+      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          "}", Style.NONE ) ); //$NON-NLS-1$
     }
-    prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
-    return prettyString;
+
+    return this.cachedPrettyString;
   }
 
 
@@ -670,32 +758,6 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
    */
   @Override
   public final String toString ()
-  {
-    StringBuilder result = new StringBuilder ();
-    result.append ( "{" ); //$NON-NLS-1$
-    Iterator < NonterminalSymbol > iterator = this.nonterminalSymbolSet
-        .iterator ();
-    boolean first = true;
-    while ( iterator.hasNext () )
-    {
-      if ( !first )
-      {
-        result.append ( ", " ); //$NON-NLS-1$
-      }
-      first = false;
-      result.append ( iterator.next () );
-    }
-    result.append ( "}" ); //$NON-NLS-1$
-    return result.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public final String toStringDebug ()
   {
     StringBuilder result = new StringBuilder ();
     result.append ( "{" ); //$NON-NLS-1$

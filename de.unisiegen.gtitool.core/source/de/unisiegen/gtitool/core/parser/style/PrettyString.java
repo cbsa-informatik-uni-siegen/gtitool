@@ -17,6 +17,38 @@ public final class PrettyString implements Iterable < PrettyToken >
 {
 
   /**
+   * The {@link PrettyString} mode enum.
+   * 
+   * @author Christian Fehler
+   */
+  public enum PrettyStringMode
+  {
+
+    /**
+     * The {@link PrettyString} caching is active.
+     */
+    CACHING_ON,
+
+    /**
+     * The {@link PrettyString} caching is deactive.
+     */
+    CACHING_OFF;
+  }
+
+
+  /**
+   * The {@link PrettyStringMode}.
+   */
+  public static final PrettyStringMode MODE = PrettyStringMode.CACHING_ON;
+
+
+  /**
+   * Flag that indicates if the short version is used.
+   */
+  private boolean shortVersion = false;
+
+
+  /**
    * The beginning of the html.
    */
   private static final String HTML_BEGIN = "<html>"; //$NON-NLS-1$
@@ -155,6 +187,24 @@ public final class PrettyString implements Iterable < PrettyToken >
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
+   */
+  @Override
+  public final boolean equals ( Object other )
+  {
+    if ( other instanceof PrettyString )
+    {
+      PrettyString prettyString = ( PrettyString ) other;
+      return this.prettyTokenList.equals ( prettyString.prettyTokenList );
+    }
+
+    return false;
+  }
+
+
+  /**
    * Returns the {@link PrettyToken} list.
    * 
    * @return The {@link PrettyToken} list.
@@ -178,6 +228,18 @@ public final class PrettyString implements Iterable < PrettyToken >
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#hashCode()
+   */
+  @Override
+  public final int hashCode ()
+  {
+    return this.prettyTokenList.hashCode ();
+  }
+
+
+  /**
    * Returns true if the {@link PrettyToken} list is empty, otherwise false.
    * 
    * @return True if the {@link PrettyToken} list is empty, otherwise false.
@@ -185,6 +247,18 @@ public final class PrettyString implements Iterable < PrettyToken >
   public final boolean isEmpty ()
   {
     return this.prettyTokenList.isEmpty ();
+  }
+
+
+  /**
+   * Returns the short version flag.
+   * 
+   * @return The short version flag.
+   * @see #shortVersion
+   */
+  public final boolean isShortVersion ()
+  {
+    return this.shortVersion;
   }
 
 
@@ -263,6 +337,18 @@ public final class PrettyString implements Iterable < PrettyToken >
         return;
       }
     }
+  }
+
+
+  /**
+   * Sets the short version flag.
+   * 
+   * @param shortVersion The short version flag to set.
+   * @see #shortVersion
+   */
+  public final void setShortVersion ( boolean shortVersion )
+  {
+    this.shortVersion = shortVersion;
   }
 
 

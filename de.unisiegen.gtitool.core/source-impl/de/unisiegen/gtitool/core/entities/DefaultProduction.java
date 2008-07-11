@@ -4,12 +4,14 @@ package de.unisiegen.gtitool.core.entities;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.PrettyString.PrettyStringMode;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -77,6 +79,18 @@ public final class DefaultProduction implements Production
 
 
   /**
+   * The cached {@link PrettyString}.
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
+   * The {@link PrettyStringChangedListener}.
+   */
+  private PrettyStringChangedListener prettyStringChangedListener;
+
+
+  /**
    * Allocates a new {@link DefaultProduction}.
    * 
    * @param element The {@link Element}.
@@ -84,17 +98,26 @@ public final class DefaultProduction implements Production
    */
   public DefaultProduction ( Element element ) throws StoreException
   {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
 
     for ( Element current : element.getElement () )
     {
       if ( current.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
       {
-        this.nonterminalSymbol = new DefaultNonterminalSymbol ( current );
+        setNonterminalSymbol ( new DefaultNonterminalSymbol ( current ) );
       }
 
       else if ( current.getName ().equals ( "ProductionWord" ) ) //$NON-NLS-1$
       {
-        this.productionWord = new DefaultProductionWord ( current );
+        setProductionWord ( new DefaultProductionWord ( current ) );
       }
       else
       {
@@ -122,8 +145,18 @@ public final class DefaultProduction implements Production
   public DefaultProduction ( NonterminalSymbol nonterminalSymbol,
       ProductionWord productionWord )
   {
-    this.nonterminalSymbol = nonterminalSymbol;
-    this.productionWord = productionWord;
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
+    setNonterminalSymbol ( nonterminalSymbol );
+    setProductionWord ( productionWord );
 
     resetModify ();
   }
@@ -138,6 +171,18 @@ public final class DefaultProduction implements Production
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
   }
 
 
@@ -236,6 +281,22 @@ public final class DefaultProduction implements Production
 
 
   /**
+   * Let the listeners know that the {@link PrettyString} has changed.
+   */
+  private final void firePrettyStringChanged ()
+  {
+    this.cachedPrettyString = null;
+
+    PrettyStringChangedListener [] listeners = this.listenerList
+        .getListeners ( PrettyStringChangedListener.class );
+    for ( PrettyStringChangedListener current : listeners )
+    {
+      current.prettyStringChanged ();
+    }
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Storable#getElement()
@@ -312,14 +373,18 @@ public final class DefaultProduction implements Production
    */
   public final boolean isModified ()
   {
-    if ( !this.productionWord.equals ( this.initialProductionWord ) )
+    if ( ( this.productionWord != null )
+        && !this.productionWord.equals ( this.initialProductionWord ) )
     {
       return true;
     }
-    if ( !this.nonterminalSymbol.equals ( this.initialNonterminalSymbol ) )
+
+    if ( ( this.nonterminalSymbol != null )
+        && !this.nonterminalSymbol.equals ( this.initialNonterminalSymbol ) )
     {
       return true;
     }
+
     return false;
   }
 
@@ -333,6 +398,18 @@ public final class DefaultProduction implements Production
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
   }
 
 
@@ -358,7 +435,11 @@ public final class DefaultProduction implements Production
    */
   public final void setError ( boolean error )
   {
-    this.error = error;
+    if ( this.error != error )
+    {
+      this.error = error;
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -369,8 +450,31 @@ public final class DefaultProduction implements Production
    */
   public void setNonterminalSymbol ( NonterminalSymbol nonterminalSymbol )
   {
-    this.nonterminalSymbol = nonterminalSymbol;
-    fireModifyStatusChanged ();
+    if ( this.nonterminalSymbol == null )
+    {
+      nonterminalSymbol
+          .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      this.nonterminalSymbol = nonterminalSymbol;
+
+      fireModifyStatusChanged ();
+      firePrettyStringChanged ();
+      return;
+    }
+
+    if ( !this.nonterminalSymbol.equals ( nonterminalSymbol ) )
+    {
+      this.nonterminalSymbol
+          .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      nonterminalSymbol
+          .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      this.nonterminalSymbol = nonterminalSymbol;
+
+      fireModifyStatusChanged ();
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -392,8 +496,31 @@ public final class DefaultProduction implements Production
    */
   public void setProductionWord ( ProductionWord productionWord )
   {
-    this.productionWord = productionWord;
-    fireModifyStatusChanged ();
+    if ( this.productionWord == null )
+    {
+      productionWord
+          .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      this.productionWord = productionWord;
+
+      fireModifyStatusChanged ();
+      firePrettyStringChanged ();
+      return;
+    }
+
+    if ( !this.productionWord.equals ( productionWord ) )
+    {
+      this.productionWord
+          .removePrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      productionWord
+          .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
+      this.productionWord = productionWord;
+
+      fireModifyStatusChanged ();
+      firePrettyStringChanged ();
+    }
   }
 
 
@@ -404,21 +531,29 @@ public final class DefaultProduction implements Production
    */
   public final PrettyString toPrettyString ()
   {
-    PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyPrintable ( this.nonterminalSymbol );
-    prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
-    if ( this.error )
+    if ( ( this.cachedPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      prettyString.addPrettyToken ( new PrettyToken ( "\u2192", //$NON-NLS-1$
-          Style.PRODUCTION_ERROR ) );
+      this.cachedPrettyString = new PrettyString ();
+      this.cachedPrettyString.addPrettyPrintable ( this.nonterminalSymbol );
+      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          " ", Style.NONE ) ); //$NON-NLS-1$
+      if ( this.error )
+      {
+        this.cachedPrettyString.addPrettyToken ( new PrettyToken ( "\u2192", //$NON-NLS-1$
+            Style.PRODUCTION_ERROR ) );
+      }
+      else
+      {
+        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+            "\u2192", Style.NONE ) ); //$NON-NLS-1$
+      }
+      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          " ", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedPrettyString.addPrettyPrintable ( this.productionWord );
     }
-    else
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( "\u2192", Style.NONE ) ); //$NON-NLS-1$
-    }
-    prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
-    prettyString.addPrettyPrintable ( this.productionWord );
-    return prettyString;
+
+    return this.cachedPrettyString;
   }
 
 
@@ -432,17 +567,5 @@ public final class DefaultProduction implements Production
   {
     return this.nonterminalSymbol.toString () + " \u2192 " //$NON-NLS-1$
         + this.productionWord.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toStringDebug()
-   */
-  public final String toStringDebug ()
-  {
-    return this.nonterminalSymbol.toStringDebug () + " \u2192 " + //$NON-NLS-1$
-        this.productionWord.toStringDebug ();
   }
 }

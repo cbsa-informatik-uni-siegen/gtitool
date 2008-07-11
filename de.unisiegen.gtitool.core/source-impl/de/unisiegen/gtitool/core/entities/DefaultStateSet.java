@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.StateSetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.stateset.StateSetException;
@@ -18,6 +19,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.PrettyString.PrettyStringMode;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -67,15 +69,36 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
+   * The cached {@link PrettyString}.
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
+   * The {@link PrettyStringChangedListener}.
+   */
+  private PrettyStringChangedListener prettyStringChangedListener;
+
+
+  /**
    * Allocates a new {@link DefaultStateSet}.
    */
   public DefaultStateSet ()
   {
-    // State
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+
+    // state
     this.stateSet = new ArrayList < State > ();
     this.initialStateSet = new TreeSet < State > ();
 
-    // Reset modify
     resetModify ();
   }
 
@@ -91,7 +114,8 @@ public final class DefaultStateSet implements StateSet
       StoreException
   {
     this ();
-    // Check if the element is correct
+
+    // check if the element is correct
     if ( !element.getName ().equals ( "StateSet" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException (
@@ -99,14 +123,14 @@ public final class DefaultStateSet implements StateSet
               + Messages.QUOTE + " is not a nonterminal symbol set" ); //$NON-NLS-1$
     }
 
-    // Attribute
+    // attribute
     if ( element.getAttribute ().size () > 0 )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
 
-    // Element
+    // element
     for ( Element current : element.getElement () )
     {
       if ( current.getName ().equals ( "State" ) ) //$NON-NLS-1$
@@ -120,7 +144,6 @@ public final class DefaultStateSet implements StateSet
       }
     }
 
-    // Reset modify
     resetModify ();
   }
 
@@ -135,14 +158,14 @@ public final class DefaultStateSet implements StateSet
   public DefaultStateSet ( Iterable < State > states ) throws StateSetException
   {
     this ();
-    // States
+
+    // states
     if ( states == null )
     {
       throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
     }
     add ( states );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -157,14 +180,14 @@ public final class DefaultStateSet implements StateSet
   public DefaultStateSet ( State ... states ) throws StateSetException
   {
     this ();
-    // States
+
+    // states
     if ( states == null )
     {
       throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
     }
     add ( states );
 
-    // Reset modify
     resetModify ();
   }
 
@@ -205,9 +228,14 @@ public final class DefaultStateSet implements StateSet
     {
       throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
     }
+
+    state.addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
     this.stateSet.add ( state );
+
     fireStateSetChanged ();
     fireModifyStatusChanged ();
+    firePrettyStringChanged ();
   }
 
 
@@ -244,6 +272,18 @@ public final class DefaultStateSet implements StateSet
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
   }
 
 
@@ -292,19 +332,6 @@ public final class DefaultStateSet implements StateSet
       }
       throw new StateSetMoreThanOneStateException ( this, negativeSymbols );
     }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see StateSet#clear()
-   */
-  public final void clear ()
-  {
-    this.stateSet.clear ();
-    fireStateSetChanged ();
-    fireModifyStatusChanged ();
   }
 
 
@@ -381,6 +408,22 @@ public final class DefaultStateSet implements StateSet
     for ( ModifyStatusChangedListener current : listeners )
     {
       current.modifyStatusChanged ( newModifyStatus );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the {@link PrettyString} has changed.
+   */
+  private final void firePrettyStringChanged ()
+  {
+    this.cachedPrettyString = null;
+
+    PrettyStringChangedListener [] listeners = this.listenerList
+        .getListeners ( PrettyStringChangedListener.class );
+    for ( PrettyStringChangedListener current : listeners )
+    {
+      current.prettyStringChanged ();
     }
   }
 
@@ -520,9 +563,14 @@ public final class DefaultStateSet implements StateSet
     {
       throw new IllegalArgumentException ( "state is not in this state set" ); //$NON-NLS-1$
     }
+
+    state.removePrettyStringChangedListener ( this.prettyStringChangedListener );
+
     this.stateSet.remove ( state );
+
     fireStateSetChanged ();
     fireModifyStatusChanged ();
+    firePrettyStringChanged ();
   }
 
 
@@ -553,6 +601,18 @@ public final class DefaultStateSet implements StateSet
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(PrettyStringChangedListener)
+   */
+  public final void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
   }
 
 
@@ -609,19 +669,24 @@ public final class DefaultStateSet implements StateSet
    */
   public final PrettyString toPrettyString ()
   {
-    PrettyString prettyString = new PrettyString ();
-    Iterator < State > iterator = this.stateSet.iterator ();
-    boolean first = true;
-    while ( iterator.hasNext () )
+    if ( ( this.cachedPrettyString == null )
+        || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      if ( !first )
+      this.cachedPrettyString = new PrettyString ();
+      Iterator < State > iterator = this.stateSet.iterator ();
+      boolean first = true;
+      while ( iterator.hasNext () )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        if ( !first )
+        {
+          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+              ", ", Style.NONE ) ); //$NON-NLS-1$
+        }
+        first = false;
+        this.cachedPrettyString.addPrettyPrintable ( iterator.next () );
       }
-      first = false;
-      prettyString.addPrettyPrintable ( iterator.next () );
     }
-    return prettyString;
+    return this.cachedPrettyString;
   }
 
 
@@ -632,29 +697,6 @@ public final class DefaultStateSet implements StateSet
    */
   @Override
   public final String toString ()
-  {
-    StringBuilder result = new StringBuilder ();
-    Iterator < State > iterator = this.stateSet.iterator ();
-    boolean first = true;
-    while ( iterator.hasNext () )
-    {
-      if ( !first )
-      {
-        result.append ( ", " ); //$NON-NLS-1$
-      }
-      first = false;
-      result.append ( iterator.next () );
-    }
-    return result.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public final String toStringDebug ()
   {
     StringBuilder result = new StringBuilder ();
     Iterator < State > iterator = this.stateSet.iterator ();

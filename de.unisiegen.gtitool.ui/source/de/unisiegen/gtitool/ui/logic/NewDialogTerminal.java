@@ -97,7 +97,8 @@ public final class NewDialogTerminal implements
    */
   public TerminalSymbolSet geTerminalSymbolSet ()
   {
-    return this.gui.terminalPanelForm.getTerminalSymbolSet ();
+    return this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
+        .getParsedObject ();
   }
 
 
@@ -119,7 +120,8 @@ public final class NewDialogTerminal implements
    */
   public NonterminalSymbolSet getNonterminalSymbolSet ()
   {
-    return this.gui.terminalPanelForm.getNonterminalSymbolSet ();
+    return this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
+        .getParsedObject ();
   }
 
 

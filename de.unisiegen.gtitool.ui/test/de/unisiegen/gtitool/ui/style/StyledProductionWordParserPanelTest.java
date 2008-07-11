@@ -58,7 +58,7 @@ public class StyledProductionWordParserPanelTest
             {
               if ( newProductionWord != null )
               {
-                System.out.println ( newProductionWord.toStringDebug () );
+                System.out.println ( newProductionWord.toString () );
               }
             }
           } );

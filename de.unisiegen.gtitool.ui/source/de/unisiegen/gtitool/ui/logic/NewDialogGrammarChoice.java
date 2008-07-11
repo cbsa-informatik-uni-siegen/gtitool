@@ -47,7 +47,9 @@ public final class NewDialogGrammarChoice implements
   private Choice actualChoice = Choice.REGULAR;
 
 
-  /** The parent Dialog containing this panel */
+  /**
+   * The parent Dialog containing this panel.
+   */
   private NewDialog parent;
 
 

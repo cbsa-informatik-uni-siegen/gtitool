@@ -58,7 +58,7 @@ public class StyledProductionParserPanelTest
             {
               if ( newProduction != null )
               {
-                System.out.println ( newProduction.toStringDebug () );
+                System.out.println ( newProduction.toString () );
               }
             }
           } );

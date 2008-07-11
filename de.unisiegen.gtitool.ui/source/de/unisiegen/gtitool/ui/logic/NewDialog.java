@@ -5,9 +5,12 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
+import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.grammars.rg.DefaultRG;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
@@ -17,9 +20,9 @@ import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
@@ -174,6 +177,10 @@ public final class NewDialog implements LogicClass < NewDialogForm >
             new DefaultMachineModel ( new DefaultDFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
+
+        PreferenceManager.getInstance ().setLastChoosenEntityType (
+            MachineType.DFA );
+
         this.gui.dispose ();
       }
       else if ( this.machineChoice.getUserChoice ().equals (
@@ -183,6 +190,10 @@ public final class NewDialog implements LogicClass < NewDialogForm >
             new DefaultMachineModel ( new DefaultNFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
+
+        PreferenceManager.getInstance ().setLastChoosenEntityType (
+            MachineType.NFA );
+
         this.gui.dispose ();
       }
       else if ( this.machineChoice.getUserChoice ().equals (
@@ -192,6 +203,10 @@ public final class NewDialog implements LogicClass < NewDialogForm >
             new DefaultMachineModel ( new DefaultENFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
+
+        PreferenceManager.getInstance ().setLastChoosenEntityType (
+            MachineType.ENFA );
+
         this.gui.dispose ();
       }
       else if ( this.machineChoice.getUserChoice ().equals (
@@ -201,6 +216,10 @@ public final class NewDialog implements LogicClass < NewDialogForm >
             new DefaultMachineModel ( new DefaultPDA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
+
+        PreferenceManager.getInstance ().setLastChoosenEntityType (
+            MachineType.PDA );
+
         this.gui.dispose ();
       }
     }
@@ -214,6 +233,10 @@ public final class NewDialog implements LogicClass < NewDialogForm >
                 .getNonterminalSymbolSet (), this.newDialogTerminal
                 .geTerminalSymbolSet (), this.newDialogTerminal
                 .getStartSymbol () ) ), null );
+
+        PreferenceManager.getInstance ().setLastChoosenEntityType (
+            GrammarType.CFG );
+
         this.gui.dispose ();
       }
       else if ( this.grammarChoice.getUserChoice ().equals (
@@ -224,6 +247,10 @@ public final class NewDialog implements LogicClass < NewDialogForm >
                 .getNonterminalSymbolSet (), this.newDialogTerminal
                 .geTerminalSymbolSet (), this.newDialogTerminal
                 .getStartSymbol () ) ), null );
+
+        PreferenceManager.getInstance ().setLastChoosenEntityType (
+            GrammarType.RG );
+
         this.gui.dispose ();
       }
     }
@@ -315,21 +342,63 @@ public final class NewDialog implements LogicClass < NewDialogForm >
         this.gridBagConstraints );
     this.gui.jGTIPanelBody.add ( this.grammarChoice.getGUI (),
         this.gridBagConstraints );
-    this.grammarChoice.getGUI ().setVisible ( false );
+
     this.gui.jGTIPanelBody.add ( this.machineChoice.getGUI (),
         this.gridBagConstraints );
-    this.machineChoice.getGUI ().setVisible ( false );
     this.gui.jGTIPanelBody.add ( this.newDialogAlphabet.getGUI (),
         this.gridBagConstraints );
-    this.newDialogAlphabet.getGUI ().setVisible ( false );
     this.gui.jGTIPanelBody.add ( this.newDialogTerminal.getGUI (),
         this.gridBagConstraints );
+
+    this.grammarChoice.getGUI ().setVisible ( false );
+    this.machineChoice.getGUI ().setVisible ( false );
+    this.newDialogAlphabet.getGUI ().setVisible ( false );
     this.newDialogTerminal.getGUI ().setVisible ( false );
+
+    EntityType entityType = PreferenceManager.getInstance ()
+        .getLastChoosenEntityType ();
+
+    if ( entityType.equals ( MachineType.DFA ) )
+    {
+      this.newDialogChoice.getGUI ().jGTIRadioButtonMachine.setSelected ( true );
+      this.machineChoice.getGUI ().jGTIRadioButtonDFA.setSelected ( true );
+    }
+    else if ( entityType.equals ( MachineType.NFA ) )
+    {
+      this.newDialogChoice.getGUI ().jGTIRadioButtonMachine.setSelected ( true );
+      this.machineChoice.getGUI ().jGTIRadioButtonNFA.setSelected ( true );
+    }
+    else if ( entityType.equals ( MachineType.ENFA ) )
+    {
+      this.newDialogChoice.getGUI ().jGTIRadioButtonMachine.setSelected ( true );
+      this.machineChoice.getGUI ().jGTIRadioButtonENFA.setSelected ( true );
+    }
+    else if ( entityType.equals ( MachineType.PDA ) )
+    {
+      this.newDialogChoice.getGUI ().jGTIRadioButtonMachine.setSelected ( true );
+      this.machineChoice.getGUI ().jGTIRadioButtonPDA.setSelected ( true );
+    }
+    else if ( entityType.equals ( GrammarType.RG ) )
+    {
+      this.newDialogChoice.getGUI ().jGTIRadioButtonGrammar.setSelected ( true );
+      this.grammarChoice.getGUI ().jGTIRadioButtonRegularGrammar
+          .setSelected ( true );
+    }
+    else if ( entityType.equals ( GrammarType.CFG ) )
+    {
+      this.newDialogChoice.getGUI ().jGTIRadioButtonGrammar.setSelected ( true );
+      this.grammarChoice.getGUI ().jGTIRadioButtonContextFreeGrammar
+          .setSelected ( true );
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported entity type" ); //$NON-NLS-1$
+    }
   }
 
 
   /**
-   * Shows the {@link AboutDialogForm}.
+   * Shows the {@link NewDialog}.
    */
   public final void show ()
   {

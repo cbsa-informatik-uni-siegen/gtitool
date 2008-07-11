@@ -11,6 +11,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
+import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
@@ -290,6 +293,12 @@ public final class PreferenceManager extends
 
 
   /**
+   * The default {@link EntityType}.
+   */
+  public static final EntityType DEFAULT_ENTITY_TYPE = MachineType.DFA;
+
+
+  /**
    * The default zoom factor value.
    */
   public static final ZoomFactorItem DEFAULT_ZOOM_FACTOR_ITEM = ZoomFactorItem.ZOOM_100;
@@ -546,6 +555,45 @@ public final class PreferenceManager extends
   public final String getHost ()
   {
     return this.preferences.get ( "Host", DEFAULT_HOST ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the last choosen {@link EntityType}.
+   * 
+   * @return The last choosen {@link EntityType}.
+   */
+  public final EntityType getLastChoosenEntityType ()
+  {
+    String entityType = this.preferences.get ( "LastChoosenEntityType", //$NON-NLS-1$
+        DEFAULT_ENTITY_TYPE.toString () );
+
+    if ( entityType.equals ( MachineType.DFA.toString () ) )
+    {
+      return MachineType.DFA;
+    }
+    else if ( entityType.equals ( MachineType.NFA.toString () ) )
+    {
+      return MachineType.NFA;
+    }
+    else if ( entityType.equals ( MachineType.ENFA.toString () ) )
+    {
+      return MachineType.ENFA;
+    }
+    else if ( entityType.equals ( MachineType.PDA.toString () ) )
+    {
+      return MachineType.PDA;
+    }
+    else if ( entityType.equals ( GrammarType.RG.toString () ) )
+    {
+      return GrammarType.RG;
+    }
+    else if ( entityType.equals ( GrammarType.CFG.toString () ) )
+    {
+      return GrammarType.CFG;
+    }
+
+    return DEFAULT_ENTITY_TYPE;
   }
 
 
@@ -1040,6 +1088,20 @@ public final class PreferenceManager extends
     logger.debug ( "setHost", "set the host to " + Messages.QUOTE + host //$NON-NLS-1$//$NON-NLS-2$
         + Messages.QUOTE );
     this.preferences.put ( "Host", host ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the last choosen {@link EntityType}.
+   * 
+   * @param entityType The last choosen {@link EntityType}.
+   */
+  public final void setLastChoosenEntityType ( EntityType entityType )
+  {
+    logger.debug ( "setLastChoosenEntityType",//$NON-NLS-1$
+        "set last choosen entity type to " + Messages.QUOTE + entityType//$NON-NLS-1$
+            + Messages.QUOTE );
+    this.preferences.put ( "LastChoosenEntityType", entityType.toString () ); //$NON-NLS-1$
   }
 
 

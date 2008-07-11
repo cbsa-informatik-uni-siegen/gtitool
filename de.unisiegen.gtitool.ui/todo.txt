@@ -9,7 +9,7 @@ BM		- Auf der Machine gibt es jetzt zwei Methoden getNotReachableStates und
 		  Problem werden. Ich kann nur bei der anderen Stelle keine geklonte Machine
 		  gebrauchen, deshalb musst du das machen.
 BM		- Redo/Undo für Änderungen am Alphabet (Grammatik und Machine)
-CF		- Im Neu-Dialog speichern was zuletzt aktiviert war
+
 
 *** FEATURE ***
 

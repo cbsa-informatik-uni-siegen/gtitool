@@ -13,8 +13,6 @@
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="libdir" value="${basedir}/lib" />
-	<property name="docdir" value="${basedir}/doc" />
-	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="sourceimpldir" value="${basedir}/source-impl" />
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
@@ -199,21 +197,5 @@
 	<target name="parser-word">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/word/word.flex" destdir="${sourcegenerateddir}" nobak="yes" />
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/word/word.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/word" package="de.unisiegen.gtitool.core.parser.word" parser="WordAbstractParser" symbols="WordTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
-	</target>
-
-	<!-- javadoc -->
-	<target name="javadoc" description="Generate the javadoc">
-		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" classpath="${javacup.basedir}/source; ${jflex.basedir}/source; ${logger.basedir}/source" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
-			<fileset dir="${sourcedir}">
-				<include name="**/*.java" />
-			</fileset>
-			<fileset dir="${sourceimpldir}">
-				<include name="**/*.java" />
-			</fileset>
-			<fileset dir="${sourcegenerateddir}">
-				<include name="**/*.java" />
-			</fileset>
-			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
-		</javadoc>
 	</target>
 </project>

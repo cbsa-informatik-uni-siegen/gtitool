@@ -10,24 +10,14 @@
 	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
 	<property file="${buildfilesdir}/build.properties" />
 	<property name="distdir" value="${basedir}/dist" />
-	<property name="distcupdir" value="${distdir}/cup" />
-	<property name="libdir" value="${basedir}/lib" />
 	<property name="localbuildfilesdir" value="${basedir}/buildfiles" />
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="classesdir" value="${distdir}/classes" />
-	<property name="docdir" value="${basedir}/doc" />
-	<property name="javadocdir" value="${docdir}/javadoc" />
-	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
-	<property name="core.docdir" value="${core.basedir}/doc" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
 	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
 
-	<!-- task -->
-	<taskdef classname="JFlex.anttask.JFlexTask" name="jflex.jflex" classpath="${libdir}/jflex.jar" />
-	<taskdef classname="java_cup.AntTask" name="jflex.cup" classpath="${libdir}/java-cup.jar" />
-
 	<!-- dist -->
-	<target name="dist" depends="dist-preclean,dist-jflex,dist-cup,dist-compile,dist-jar,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
 		<echo message="Distribution ready in ${distdir}" />
 	</target>
 
@@ -39,18 +29,8 @@
 		<mkdir dir="${distdir}" />
 	</target>
 
-	<!-- dist jflex -->
-	<target name="dist-jflex">
-		<jflex.jflex file="${sourcedir}/JFlex/LexScan.flex" skeleton="${localbuildfilesdir}/skeleton.nested" />
-	</target>
-
-	<!-- dist cup -->
-	<target name="dist-cup">
-		<jflex.cup file="${sourcedir}/JFlex/LexParse.cup" dir="${sourcedir}/JFlex" interface="true" parser="LexParse" />
-	</target>
-
 	<!-- dist compile -->
-	<target name="dist-compile" depends="dist-jflex,dist-cup">
+	<target name="dist-compile" >
 		<delete dir="${classesdir}" includeemptydirs="true" />
 		<mkdir dir="${classesdir}" />
 		<javac debug="off" destdir="${classesdir}" encoding="UTF-8" source="1.5" target="1.5">
@@ -83,16 +63,5 @@
 	<!-- dist clean -->
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
-		<delete dir="${distcupdir}" />
-	</target>
-
-	<!-- javadoc -->
-	<target name="javadoc" description="Generate the javadoc">
-		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" classpath="${libdir}/ant.jar; ${libdir}/java-cup.jar; ${libdir}/JFlex.jar" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
-			<fileset dir="${sourcedir}">
-				<include name="**/*.java" />
-			</fileset>
-			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
-		</javadoc>
 	</target>
 </project>

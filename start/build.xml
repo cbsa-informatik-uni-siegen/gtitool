@@ -12,11 +12,8 @@
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="classesdir" value="${distdir}/classes" />
-	<property name="docdir" value="${basedir}/doc" />
 	<property name="executerdir" value="${buildfilesdir}/executer" />
-	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
-	<property name="core.docdir" value="${core.basedir}/doc" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
 	<property name="ui.basedir" value="${basedir}/../de.unisiegen.gtitool.ui" />
 	<property name="ui.distdir" value="${ui.basedir}/dist" />
@@ -192,16 +189,6 @@
 	<!-- dist clean -->
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
-	</target>
-
-	<!-- javadoc -->
-	<target name="javadoc" description="Generate the javadoc">
-		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.1" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
-			<fileset dir="${sourcedir}">
-				<include name="**/*.java" />
-			</fileset>
-			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
-		</javadoc>
 	</target>
 
 	<!-- svn-keywords -->

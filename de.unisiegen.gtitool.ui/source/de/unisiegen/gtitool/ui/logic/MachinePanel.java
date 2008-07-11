@@ -1532,9 +1532,21 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       int index = this.gui.jGTITableMachine.getSelectedRow ();
       if ( index != -1 )
       {
+        State state = this.machine.getState ( index );
         ArrayList < State > stateList = new ArrayList < State > ( 1 );
-        stateList.add ( this.machine.getState ( index ) );
+        stateList.add ( state );
         highlightStateActive ( stateList );
+
+        ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
+        highlightTransitionActive ( state.getTransitionBegin () );
+        for ( Transition currentTransition : state.getTransitionBegin () )
+        {
+          for ( Symbol currentSymbol : currentTransition )
+          {
+            symbolList.add ( currentSymbol );
+          }
+        }
+        highlightSymbolActive ( symbolList );
       }
     }
   }

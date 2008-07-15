@@ -2229,7 +2229,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   /**
    * Initializes the {@link Machine} table.
    */
-  private final void initializeMachineTable ()
+  public final void initializeMachineTable ()
   {
     this.gui.jGTITableMachine.setModel ( this.machine );
     this.gui.jGTITableMachine.setColumnModel ( this.machine

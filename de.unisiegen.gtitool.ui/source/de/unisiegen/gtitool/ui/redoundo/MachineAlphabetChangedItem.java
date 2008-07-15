@@ -7,6 +7,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.ui.logic.MachinePanel;
 
 
 /**
@@ -73,19 +74,27 @@ public final class MachineAlphabetChangedItem extends RedoUndoItem
 
 
   /**
+   * The {@link MachinePanel}.
+   */
+  private MachinePanel machinePanel;
+
+
+  /**
    * Allocates a new {@link MachineAlphabetChangedItem}.
    * 
+   * @param machinePanel The {@link MachinePanel}. 
    * @param machine The {@link Machine}.
    * @param newAlphabet The new {@link Alphabet}.
    * @param newPushDownAlphabet The new push down {@link Alphabet}.
    * @param oldUsePushDown The old use push down alphabet value.
    * @param newUsePushDown The new use push down alphabet value.
    */
-  public MachineAlphabetChangedItem ( Machine machine, Alphabet newAlphabet,
-      Alphabet newPushDownAlphabet, boolean oldUsePushDown,
-      boolean newUsePushDown )
+  public MachineAlphabetChangedItem ( MachinePanel machinePanel,
+      Machine machine, Alphabet newAlphabet, Alphabet newPushDownAlphabet,
+      boolean oldUsePushDown, boolean newUsePushDown )
   {
     super ();
+    this.machinePanel = machinePanel;
     this.machine = machine;
     this.alphabet = machine.getAlphabet ();
     this.pushDownAlphabet = machine.getPushDownAlphabet ();
@@ -143,6 +152,7 @@ public final class MachineAlphabetChangedItem extends RedoUndoItem
       this.pushDownAlphabet.add ( this.symbolsToAddPushDown );
       this.pushDownAlphabet.remove ( this.symbolsToRemovePushDown );
       this.machine.setUsePushDownAlphabet ( this.newUsePushDown );
+      this.machinePanel.initializeMachineTable ();
     }
     catch ( AlphabetException exc )
     {
@@ -167,6 +177,7 @@ public final class MachineAlphabetChangedItem extends RedoUndoItem
       this.pushDownAlphabet.remove ( this.symbolsToAddPushDown );
       this.pushDownAlphabet.add ( this.symbolsToRemovePushDown );
       this.machine.setUsePushDownAlphabet ( this.oldUsePushDown );
+      this.machinePanel.initializeMachineTable ();
     }
     catch ( AlphabetException exc )
     {

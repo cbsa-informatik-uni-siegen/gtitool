@@ -161,7 +161,7 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
                 .getParsedObject () ) )
     {
       this.machinePanel.getRedoUndoHandler ().addItem (
-          new MachineAlphabetChangedItem ( this.machine,
+          new MachineAlphabetChangedItem ( this.machinePanel, this.machine,
               this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
                   .getParsedObject (),
               this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown

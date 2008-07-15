@@ -1,15 +1,5 @@
 *** TODO ***
 
-BM		- Beim Minimieren: Entfernen der nicht erreichbaren Zustände als einzelnen
-          Schritt einführen.
-BM		- Auf der Machine gibt es jetzt zwei Methoden getNotReachableStates und
-		  getReachableStates, die dir das richtige Ergebnis liefern. Du kannst 
-		  einfach das MachineModel per getElement klonen und die Zustände entfernen,
-		  haben ja dann auf der geklonten Version die gleiche ID, sollte also kein
-		  Problem werden. Ich kann nur bei der anderen Stelle keine geklonte Machine
-		  gebrauchen, deshalb musst du das machen.
-
-
 *** FEATURE ***
 
 CF		- Doppeltes Handling aus dem Popupmenüs entfernen

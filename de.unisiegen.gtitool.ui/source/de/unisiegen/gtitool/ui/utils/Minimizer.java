@@ -7,12 +7,9 @@ import java.util.Stack;
 
 import org.jgraph.graph.DefaultGraphModel;
 
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.exceptions.StatesInvolvedException;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNotReachableException;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
@@ -74,33 +71,9 @@ public class Minimizer
 
 
   /**
-   * Flag indicates if minimization operation finished.
-   */
-  private boolean finished = false;
-
-
-  /**
-   * The old groups needed for previous step.
-   */
-  private Stack < MinimizeItem > previousSteps = new Stack < MinimizeItem > ();
-
-
-  /**
-   * The old groups needed for previous step.
-   */
-  private Stack < MinimizeItem > nextStep = new Stack < MinimizeItem > ();
-
-
-  /**
    * The {@link DefaultStateView} groups.
    */
   private ArrayList < ArrayList < DefaultStateView > > activeGroups = new ArrayList < ArrayList < DefaultStateView > > ();
-
-
-  /**
-   * The {@link DefaultMachineModel}.
-   */
-  private DefaultMachineModel model;
 
 
   /**
@@ -110,15 +83,9 @@ public class Minimizer
 
 
   /**
-   * The states for a new group.
+   * Flag indicates if begin reached.
    */
-  private ArrayList < DefaultStateView > newGroupStates = new ArrayList < DefaultStateView > ();
-
-
-  /**
-   * The {@link MinimizeMachineDialog}.
-   */
-  private MinimizeMachineDialog dialog;
+  private boolean begin = true;
 
 
   /**
@@ -130,9 +97,45 @@ public class Minimizer
 
 
   /**
-   * Flag indicates if begin reached.
+   * The {@link MinimizeMachineDialog}.
    */
-  private boolean begin = true;
+  private MinimizeMachineDialog dialog;
+
+
+  /**
+   * Flag indicates if minimization operation finished.
+   */
+  private boolean finished = false;
+
+
+  /**
+   * The {@link DefaultMachineModel}.
+   */
+  private DefaultMachineModel model;
+
+
+  /**
+   * The states for a new group.
+   */
+  private ArrayList < DefaultStateView > newGroupStates = new ArrayList < DefaultStateView > ();
+
+
+  /**
+   * The old groups needed for previous step.
+   */
+  private Stack < MinimizeItem > nextStep = new Stack < MinimizeItem > ();
+
+
+  /**
+   * The not reachable states.
+   */
+  private ArrayList < DefaultStateView > notReachable = new ArrayList < DefaultStateView > ();
+
+
+  /**
+   * The old groups needed for previous step.
+   */
+  private Stack < MinimizeItem > previousSteps = new Stack < MinimizeItem > ();
 
 
   /**
@@ -166,11 +169,17 @@ public class Minimizer
     {
       if ( current.getState ().isFinalState () )
       {
-        finalStates.add ( current );
+        if ( !this.notReachable.contains ( current ) )
+        {
+          finalStates.add ( current );
+        }
       }
       else
       {
-        notFinalStates.add ( current );
+        if ( !this.notReachable.contains ( current ) )
+        {
+          notFinalStates.add ( current );
+        }
       }
     }
 
@@ -203,9 +212,14 @@ public class Minimizer
 
     for ( int i = 0 ; i < states.size () ; i++ )
     {
-      if ( i != 0 )
+      if ( i != 0 && i < ( states.size () - 1 ) )
       {
         prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
+      }
+      if ( i != 0 && i == ( states.size () - 1 ) )
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( " " + Messages //$NON-NLS-1$
+            .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
       }
       prettyString.addPrettyPrintable ( states.get ( i ).getState () );
     }
@@ -230,12 +244,39 @@ public class Minimizer
    */
   private void highlightGroups ()
   {
+    if ( this.activeGroups.size () == 1 )
+    {
+      return;
+    }
     for ( ArrayList < DefaultStateView > group : this.activeGroups )
     {
+      Color color = null;
+      boolean notReachableGroup = true;
       for ( DefaultStateView current : group )
       {
+        notReachableGroup = this.notReachable.contains ( current );
+      }
+
+      if ( notReachableGroup )
+      {
+        color = Color.white;
+      }
+      else
+      {
         int index = ( this.activeGroups.indexOf ( group ) ) % 10;
-        current.setOverwrittenColor ( this.colors [ index ] );
+        color = this.colors [ index ];
+      }
+
+      if ( group.containsAll ( this.notReachable ) )
+      {
+        for ( DefaultStateView current : group )
+        {
+          current.setOverwrittenColor ( Color.white );
+        }
+      }
+      for ( DefaultStateView current : group )
+      {
+        current.setOverwrittenColor ( color );
       }
     }
 
@@ -249,10 +290,62 @@ public class Minimizer
    */
   public void initialize ()
   {
-    removeNotReachableStates ();
+    ArrayList < ArrayList < DefaultStateView > > oldGroups = new ArrayList < ArrayList < DefaultStateView > > ();
+    ArrayList < DefaultStateView > tmpList = new ArrayList < DefaultStateView > ();
+    tmpList.addAll ( this.model.getStateViewList () );
+    oldGroups.add ( tmpList );
+    this.activeMinimizeItem = new MinimizeItem ( oldGroups, null,
+        new ArrayList < Transition > () );
+    this.previousSteps.push ( this.activeMinimizeItem );
+
+    oldGroups = new ArrayList < ArrayList < DefaultStateView > > ();
+    tmpList = new ArrayList < DefaultStateView > ();
+    tmpList.addAll ( this.model.getStateViewList () );
+    for ( State current : this.model.getMachine ().getNotReachableStates () )
+    {
+      DefaultStateView defaultStateView = this.model.getStateById ( current
+          .getId () );
+      tmpList.remove ( defaultStateView );
+      this.notReachable.add ( defaultStateView );
+    }
+    oldGroups.add ( tmpList );
+    oldGroups.add ( this.notReachable );
+
+    PrettyString prettyString = new PrettyString ();
+    if ( this.notReachable.size () > 0 )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( Messages
+          .getString ( "MinimizeMachineDialog.PrettyStringNotReachable" ) //$NON-NLS-1$
+          + " ", Style.NONE ) ); //$NON-NLS-1$
+      for ( int i = 0 ; i < this.notReachable.size () ; i++ )
+      {
+        if ( i != 0 && i < ( this.notReachable.size () - 1 ) )
+        {
+          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
+        }
+        if ( i != 0 && i == ( this.notReachable.size () - 1 ) )
+        {
+          prettyString.addPrettyToken ( new PrettyToken ( " " + Messages //$NON-NLS-1$
+              .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
+        }
+        prettyString.addPrettyPrintable ( this.notReachable.get ( i )
+            .getState () );
+      }
+    }
+    else
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( Messages
+          .getString ( "MinimizeMachineDialog.PrettyStringAllReachable" ) //$NON-NLS-1$
+          , Style.NONE ) );
+
+    }
+    this.activeMinimizeItem = new MinimizeItem ( oldGroups, prettyString,
+        new ArrayList < Transition > () );
+    this.previousSteps.push ( this.activeMinimizeItem );
+
     createInitialGroups ();
 
-    ArrayList < ArrayList < DefaultStateView > > oldGroups = new ArrayList < ArrayList < DefaultStateView > > ();
+    oldGroups = new ArrayList < ArrayList < DefaultStateView > > ();
     for ( ArrayList < DefaultStateView > current : this.activeGroups )
     {
       ArrayList < DefaultStateView > tmpGroup = new ArrayList < DefaultStateView > ();
@@ -261,7 +354,38 @@ public class Minimizer
       oldGroups.add ( tmpGroup );
     }
 
-    this.activeMinimizeItem = new MinimizeItem ( oldGroups, null,
+    prettyString = new PrettyString ();
+    if ( this.activeGroups.size () > 1 )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( Messages
+          .getString ( "MinimizeMachineDialog.PrettyStringFinalStates" ) //$NON-NLS-1$
+          + " ", Style.NONE ) ); //$NON-NLS-1$
+
+      ArrayList < DefaultStateView > states = new ArrayList < DefaultStateView > ();
+
+      states.addAll ( this.activeGroups.get ( 1 ) );
+
+      for ( int i = 0 ; i < states.size () ; i++ )
+      {
+        if ( i != 0 && i < ( states.size () - 1 ) )
+        {
+          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
+        }
+        if ( i != 0 && i == ( states.size () - 1 ) )
+        {
+          prettyString.addPrettyToken ( new PrettyToken ( " " + Messages //$NON-NLS-1$
+              .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
+        }
+        prettyString.addPrettyPrintable ( states.get ( i ).getState () );
+      }
+    }
+    else
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( Messages
+          .getString ( "MinimizeMachineDialog.PrettyStringNoFinalStates" ) //$NON-NLS-1$
+          , Style.NONE ) );
+    }
+    this.activeMinimizeItem = new MinimizeItem ( oldGroups, prettyString,
         new ArrayList < Transition > () );
     this.previousSteps.push ( this.activeMinimizeItem );
 
@@ -382,31 +506,6 @@ public class Minimizer
 
     this.begin = this.previousSteps.isEmpty ();
     this.finished = false;
-  }
-
-
-  /**
-   * Remove the not reachable states.
-   */
-  private void removeNotReachableStates ()
-  {
-    try
-    {
-      this.model.getMachine ().validate ();
-    }
-    catch ( MachineValidationException exc )
-    {
-      for ( MachineException machineException : exc.getMachineException () )
-      {
-
-        if ( machineException instanceof MachineStateNotReachableException )
-        {
-          StatesInvolvedException exception = ( StatesInvolvedException ) machineException;
-          this.model.removeState ( this.model.getStateViewForState ( exception
-              .getState ().get ( 0 ) ), true );
-        }
-      }
-    }
   }
 
 

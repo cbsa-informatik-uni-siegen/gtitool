@@ -123,7 +123,7 @@ public final class Start
     jTextAreaInfo.setBorder ( null );
     jTextAreaInfo.setLineWrap ( true );
     jTextAreaInfo.setWrapStyleWord ( true );
-    jTextAreaInfo.setText ( Messages.getString ( "JavaVersion.Message", false, //$NON-NLS-1$
+    jTextAreaInfo.setText ( Messages.getString ( "JavaVersion.Message", //$NON-NLS-1$
         new Object []
         { new Double ( this.currentJavaVersion ),
             new Double ( MIN_JAVA_VERSION ) } ) );

@@ -1,7 +1,5 @@
 *** TODO ***
 
-CF		- Quotation Marks entfernen
-
 
 *** FEATURE ***
 

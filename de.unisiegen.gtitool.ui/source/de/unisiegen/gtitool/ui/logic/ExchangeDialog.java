@@ -294,8 +294,7 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
                 appendMessage ( Messages
                     .getString ( "ExchangeDialog.ReceiveFileDescription" ), //$NON-NLS-1$
                     false );
-                appendMessage ( Messages.QUOTE + exchange.getDescription ()
-                    + Messages.QUOTE, false );
+                appendMessage ( exchange.getDescription (), false );
               }
               ExchangeDialog.this.mainWindow.handleNew (
                   exchange.getElement (), false );

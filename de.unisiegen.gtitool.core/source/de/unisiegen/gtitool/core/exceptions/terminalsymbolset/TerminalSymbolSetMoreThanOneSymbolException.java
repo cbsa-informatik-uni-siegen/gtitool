@@ -43,7 +43,8 @@ public final class TerminalSymbolSetMoreThanOneSymbolException extends
         .getPrettyString ( "TerminalSymbolSetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
         "TerminalSymbolSetException.MoreThanOneSymbolDescription", //$NON-NLS-1$
-        terminalSymbolList.get ( 0 ), terminalSymbolSet ) );
+        terminalSymbolList.get ( 0 ).toPrettyString (), terminalSymbolSet
+            .toPrettyString () ) );
   }
 
 

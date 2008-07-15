@@ -51,9 +51,9 @@ public final class GrammarDuplicateProductionException extends GrammarException
     // Message and description
     setPrettyMessage ( Messages
         .getPrettyString ( "GrammarDuplicatProductionException.Message" ) ); //$NON-NLS-1$
-    setPrettyDescription ( Messages
-        .getPrettyString (
-            "GrammarDuplicatProductionException.Description", productionList.get ( 0 ) ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
+        "GrammarDuplicatProductionException.Description", productionList.get ( //$NON-NLS-1$
+            0 ).toPrettyString () ) );
   }
 
 

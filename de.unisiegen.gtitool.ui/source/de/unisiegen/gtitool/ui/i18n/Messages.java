@@ -6,7 +6,6 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -54,33 +53,11 @@ public final class Messages
    * the core project.
    * 
    * @param key The key for the desired string.
-   * @param useQuote Flag that indicates if the quotation marks should be used.
    * @param arguments The optional arguments.
    * @return The string for the given key.
    */
   public final static PrettyString getPrettyString ( String key,
-      boolean useQuote, PrettyPrintable ... arguments )
-  {
-    PrettyString [] prettyStrings = new PrettyString [ arguments.length ];
-    for ( int i = 0 ; i < arguments.length ; i++ )
-    {
-      prettyStrings [ i ] = arguments [ i ].toPrettyString ();
-    }
-    return getPrettyString ( key, useQuote, prettyStrings );
-  }
-
-
-  /**
-   * Gets a {@link PrettyString} for the given key from the resource bundle of
-   * the core project.
-   * 
-   * @param key The key for the desired string.
-   * @param useQuote Flag that indicates if the quotation marks should be used.
-   * @param arguments The optional arguments.
-   * @return The string for the given key.
-   */
-  public final static PrettyString getPrettyString ( String key,
-      boolean useQuote, PrettyString ... arguments )
+      PrettyString ... arguments )
   {
     try
     {
@@ -90,25 +67,7 @@ public final class Messages
           resourceBundle.getString ( key ), Style.NONE ) );
       for ( int i = 0 ; i < arguments.length ; i++ )
       {
-        if ( arguments [ i ] == null )
-        {
-          continue;
-        }
-        if ( useQuote )
-        {
-          PrettyString newPrettyString = new PrettyString ();
-          newPrettyString
-              .addPrettyToken ( new PrettyToken ( QUOTE, Style.NONE ) );
-          newPrettyString.addPrettyString ( arguments [ i ] );
-          newPrettyString
-              .addPrettyToken ( new PrettyToken ( QUOTE, Style.NONE ) );
-
-          message.replace ( "{" + i + "}", newPrettyString ); //$NON-NLS-1$//$NON-NLS-2$
-        }
-        else
-        {
-          message.replace ( "{" + i + "}", arguments [ i ] ); //$NON-NLS-1$//$NON-NLS-2$
-        }
+        message.replace ( "{" + i + "}", arguments [ i ] ); //$NON-NLS-1$//$NON-NLS-2$
       }
       return message;
     }
@@ -126,30 +85,13 @@ public final class Messages
 
 
   /**
-   * Gets a {@link PrettyString} for the given key from the resource bundle of
-   * the core project.
-   * 
-   * @param key The key for the desired string.
-   * @param arguments The optional arguments.
-   * @return The string for the given key.
-   */
-  public final static PrettyString getPrettyString ( String key,
-      PrettyPrintable ... arguments )
-  {
-    return getPrettyString ( key, true, arguments );
-  }
-
-
-  /**
    * Gets a string for the given key from the resource bundle of the ui project.
    * 
    * @param key The key for the desired string.
-   * @param useQuote Flag that indicates if the quotation marks should be used.
    * @param arguments The optional arguments.
    * @return The string for the given key.
    */
-  public final static String getString ( String key, boolean useQuote,
-      Object ... arguments )
+  public final static String getString ( String key, Object ... arguments )
   {
     try
     {
@@ -162,16 +104,8 @@ public final class Messages
         {
           continue;
         }
-        if ( useQuote )
-        {
-          message = message.replace ( "{" + i + "}", //$NON-NLS-1$ //$NON-NLS-2$
-              QUOTE + arguments [ i ].toString () + QUOTE );
-        }
-        else
-        {
-          message = message.replace ( "{" + i + "}", //$NON-NLS-1$ //$NON-NLS-2$
-              arguments [ i ].toString () );
-        }
+        message = message.replace ( "{" + i + "}", //$NON-NLS-1$ //$NON-NLS-2$
+            arguments [ i ].toString () );
       }
       return message;
     }
@@ -185,18 +119,5 @@ public final class Messages
       logger.error ( "getString", "illegal argument exception", exc ); //$NON-NLS-1$ //$NON-NLS-2$
       return key;
     }
-  }
-
-
-  /**
-   * Gets a string for the given key from the resource bundle of the ui project.
-   * 
-   * @param key The key for the desired string.
-   * @param arguments The optional arguments.
-   * @return The string for the given key.
-   */
-  public final static String getString ( String key, Object ... arguments )
-  {
-    return getString ( key, true, arguments );
   }
 }

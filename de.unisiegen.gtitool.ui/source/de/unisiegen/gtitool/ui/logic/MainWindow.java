@@ -3589,7 +3589,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             1,
             Messages.getString (
                 machinePanelSelected ? "MachinePanel.WarningFound" //$NON-NLS-1$
-                    : "GrammarPanel.WarningFound", false, new Integer ( //$NON-NLS-1$
+                    : "GrammarPanel.WarningFound", new Integer ( //$NON-NLS-1$
                     warningCount ) ) );
       }
       return true;
@@ -3610,33 +3610,33 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         message = Messages.getString (
             machinePanelSelected ? "MainWindow.ErrorWarningMachineCount1" //$NON-NLS-1$
-                : "MainWindow.ErrorWarningGrammarCount1", false, String //$NON-NLS-1$
+                : "MainWindow.ErrorWarningGrammarCount1", String //$NON-NLS-1$
                 .valueOf ( warningCount ) );
       }
       else if ( ( errorCount > 1 ) && ( warningCount == 1 ) )
       {
         message = Messages.getString (
             machinePanelSelected ? "MainWindow.ErrorWarningMachineCount2" //$NON-NLS-1$
-                : "MainWindow.ErrorWarningGrammarCount2", false, String //$NON-NLS-1$
+                : "MainWindow.ErrorWarningGrammarCount2", String //$NON-NLS-1$
                 .valueOf ( errorCount ) );
       }
       else
       {
         message = Messages.getString (
             machinePanelSelected ? "MainWindow.ErrorWarningMachineCount3" //$NON-NLS-1$
-                : "MainWindow.ErrorWarningGrammarCount3", false, String //$NON-NLS-1$
+                : "MainWindow.ErrorWarningGrammarCount3", String //$NON-NLS-1$
                 .valueOf ( errorCount ), String.valueOf ( warningCount ) );
       }
 
       // Update the titles
       panel.getJTabbedPaneConsole ().setTitleAt ( 0,
           Messages.getString ( machinePanelSelected ? "MachinePanel.ErrorFound" //$NON-NLS-1$
-              : "GrammarPanel.ErrorFound", false, new Integer ( errorCount ) ) ); //$NON-NLS-1$
+              : "GrammarPanel.ErrorFound", new Integer ( errorCount ) ) ); //$NON-NLS-1$
       panel.getJTabbedPaneConsole ().setTitleAt (
           1,
           Messages.getString (
               machinePanelSelected ? "MachinePanel.WarningFound" //$NON-NLS-1$
-                  : "GrammarPanel.WarningFound", false, new Integer ( //$NON-NLS-1$
+                  : "GrammarPanel.WarningFound", new Integer ( //$NON-NLS-1$
                   warningCount ) ) );
 
       // Select the error tab
@@ -3660,14 +3660,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         message = Messages.getString (
             machinePanelSelected ? "MainWindow.ErrorMachineCount"//$NON-NLS-1$
-                : "MainWindow.ErrorGrammarCount", false, String//$NON-NLS-1$
+                : "MainWindow.ErrorGrammarCount", String//$NON-NLS-1$
                 .valueOf ( errorCount ) );
       }
 
       // Update the titles
       panel.getJTabbedPaneConsole ().setTitleAt ( 0,
           Messages.getString ( machinePanelSelected ? "MachinePanel.ErrorFound"//$NON-NLS-1$
-              : "GrammarPanel.ErrorFound", false, new Integer ( errorCount ) ) );//$NON-NLS-1$
+              : "GrammarPanel.ErrorFound", new Integer ( errorCount ) ) );//$NON-NLS-1$
       panel.getJTabbedPaneConsole ().setTitleAt ( 1,
           Messages.getString ( machinePanelSelected ? "MachinePanel.Warning"//$NON-NLS-1$
               : "GrammarPanel.Warning" ) );//$NON-NLS-1$
@@ -3692,7 +3692,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         message = Messages.getString (
             machinePanelSelected ? "MainWindow.WarningMachineCount"//$NON-NLS-1$
-                : "MainWindow.WarningGrammarCount", false, String//$NON-NLS-1$
+                : "MainWindow.WarningGrammarCount", String//$NON-NLS-1$
                 .valueOf ( warningCount ) );
       }
 
@@ -3704,7 +3704,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           1,
           Messages.getString (
               machinePanelSelected ? "MachinePanel.WarningFound"//$NON-NLS-1$
-                  : "GrammarPanel.WarningFound", false, new Integer ( //$NON-NLS-1$
+                  : "GrammarPanel.WarningFound", new Integer ( //$NON-NLS-1$
                   warningCount ) ) );
 
       // Select the warning tab

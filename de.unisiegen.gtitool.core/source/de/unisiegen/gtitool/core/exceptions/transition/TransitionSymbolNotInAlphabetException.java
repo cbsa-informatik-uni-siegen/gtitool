@@ -57,7 +57,7 @@ public final class TransitionSymbolNotInAlphabetException extends
         .getPrettyString ( "TransitionSymbolNotInAlphabetException.Message" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
         "TransitionSymbolNotInAlphabetException.Description", symbolList.get ( //$NON-NLS-1$
-            0 ), alphabet ) );
+            0 ).toPrettyString (), alphabet.toPrettyString () ) );
   }
 
 

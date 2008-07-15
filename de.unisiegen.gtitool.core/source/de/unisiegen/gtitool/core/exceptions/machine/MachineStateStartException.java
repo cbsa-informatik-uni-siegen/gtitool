@@ -69,11 +69,7 @@ public final class MachineStateStartException extends MachineException
       PrettyString prettyString = new PrettyString ();
       for ( int i = 0 ; i < stateList.size () ; i++ )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( Messages.QUOTE,
-            Style.NONE ) );
         prettyString.addPrettyPrintable ( stateList.get ( i ) );
-        prettyString.addPrettyToken ( new PrettyToken ( Messages.QUOTE,
-            Style.NONE ) );
         if ( i < stateList.size () - 2 )
         {
           prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
@@ -85,7 +81,7 @@ public final class MachineStateStartException extends MachineException
         }
       }
       setPrettyDescription ( Messages.getPrettyString (
-          "MachineStateStartException.MoreThanOneStartStateDescription", true, //$NON-NLS-1$
+          "MachineStateStartException.MoreThanOneStartStateDescription", //$NON-NLS-1$
           prettyString ) );
     }
   }

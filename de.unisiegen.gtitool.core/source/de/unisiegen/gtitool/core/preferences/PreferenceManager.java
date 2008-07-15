@@ -1677,11 +1677,13 @@ public class PreferenceManager
    */
   public final void setColorItemNonterminalSymbolError ( ColorItem colorItem )
   {
-    logger.debug ( "setColorItemNonterminalSymbolError",//$NON-NLS-1$ 
-        "set color of the error nonterminal symbol to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$ 
-            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$ 
-            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$ 
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+    logger
+        .debug (
+            "setColorItemNonterminalSymbolError",//$NON-NLS-1$ 
+            "set color of the error nonterminal symbol to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$ 
+                + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$ 
+                + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$ 
+                + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
     this.preferences.putInt ( "Preferences.ColorNonterminalSymbolError", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
@@ -2235,11 +2237,10 @@ public class PreferenceManager
    */
   public final void setPushDownAlphabetItem ( AlphabetItem pushDownAlphabetItem )
   {
-    logger
-        .debug ( "setPushDownAlphabetItem", "set the push down alphabet to " //$NON-NLS-1$//$NON-NLS-2$
-            + Messages.QUOTE
-            + pushDownAlphabetItem.getAlphabet ()
-            + Messages.QUOTE );
+    logger.debug ( "setPushDownAlphabetItem", "set the push down alphabet to " //$NON-NLS-1$//$NON-NLS-2$
+        + Messages.QUOTE
+        + pushDownAlphabetItem.getAlphabet ()
+        + Messages.QUOTE );
 
     // Delete old data
     String end = "no item found"; //$NON-NLS-1$

@@ -51,7 +51,8 @@ public final class MachineStateNotReachableException extends MachineException
     setPrettyMessage ( Messages
         .getPrettyString ( "MachineStateNotReachableException.Message" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
-        "MachineStateNotReachableException.Description", this.state ) ); //$NON-NLS-1$
+        "MachineStateNotReachableException.Description", this.state //$NON-NLS-1$
+            .toPrettyString () ) );
   }
 
 

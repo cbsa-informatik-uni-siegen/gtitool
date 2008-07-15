@@ -120,8 +120,9 @@ public final class Clipboard implements ClipboardOwner
     {
       String text = ( String ) transfer
           .getTransferData ( DataFlavor.stringFlavor );
-      logger.debug ( "paste", "paste " + Messages.QUOTE + text + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
-          + " from the clipboard" ); //$NON-NLS-1$
+      logger.debug (
+          "paste", "paste " + Messages.QUOTE + text + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
+              + " from the clipboard" ); //$NON-NLS-1$
       return text;
     }
     catch ( UnsupportedFlavorException e )

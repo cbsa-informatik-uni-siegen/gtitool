@@ -55,7 +55,7 @@ public final class MachineTransitionStackOperationsException extends
         .getPrettyString ( "MachineTransitionStackOperationsException.Message" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
         "MachineTransitionStackOperationsException.Description", //$NON-NLS-1$
-        this.transition ) );
+        this.transition.toPrettyString () ) );
   }
 
 

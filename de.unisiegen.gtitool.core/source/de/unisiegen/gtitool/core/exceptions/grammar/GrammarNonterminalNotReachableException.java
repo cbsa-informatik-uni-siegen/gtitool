@@ -51,7 +51,7 @@ public final class GrammarNonterminalNotReachableException extends
         .getPrettyString ( "GrammarNonterminalNotReachableException.Message" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
         "GrammarNonterminalNotReachableException.Description", //$NON-NLS-1$
-        nonterminalSymbol ) );
+        nonterminalSymbol.toPrettyString () ) );
   }
 
 

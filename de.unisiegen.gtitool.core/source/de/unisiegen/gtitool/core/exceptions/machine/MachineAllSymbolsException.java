@@ -81,7 +81,8 @@ public final class MachineAllSymbolsException extends MachineException
           .getPrettyString ( "MachineAllSymbolsException.SingleMessage" ) ); //$NON-NLS-1$
       setPrettyDescription ( Messages.getPrettyString (
           "MachineAllSymbolsException.SingleDescription", //$NON-NLS-1$
-          this.state, this.symbolSet.first () ) );
+          this.state.toPrettyString (), this.symbolSet.first ()
+              .toPrettyString () ) );
     }
     else
     {
@@ -91,17 +92,7 @@ public final class MachineAllSymbolsException extends MachineException
       while ( iter.hasNext () )
       {
         Symbol current = iter.next ();
-        if ( index > 0 )
-        {
-          prettyString.addPrettyToken ( new PrettyToken ( Messages.QUOTE,
-              Style.NONE ) );
-        }
         prettyString.addPrettyPrintable ( current );
-        if ( index < this.symbolSet.size () - 1 )
-        {
-          prettyString.addPrettyToken ( new PrettyToken ( Messages.QUOTE,
-              Style.NONE ) );
-        }
         if ( index < this.symbolSet.size () - 2 )
         {
           prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
@@ -116,7 +107,7 @@ public final class MachineAllSymbolsException extends MachineException
       setPrettyMessage ( Messages
           .getPrettyString ( "MachineAllSymbolsException.MultiMessage" ) ); //$NON-NLS-1$
       setPrettyDescription ( Messages.getPrettyString (
-          "MachineAllSymbolsException.MultiDescription", true, this.state //$NON-NLS-1$
+          "MachineAllSymbolsException.MultiDescription", this.state //$NON-NLS-1$
               .toPrettyString (), prettyString ) );
     }
   }

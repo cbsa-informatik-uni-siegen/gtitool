@@ -40,8 +40,8 @@ public final class AlphabetMoreThanOneSymbolException extends AlphabetException
     setPrettyMessage ( Messages
         .getPrettyString ( "AlphabetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
-        "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( 0 ), //$NON-NLS-1$
-        alphabet ) );
+        "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( 0 ) //$NON-NLS-1$
+            .toPrettyString (), alphabet.toPrettyString () ) );
   }
 
 

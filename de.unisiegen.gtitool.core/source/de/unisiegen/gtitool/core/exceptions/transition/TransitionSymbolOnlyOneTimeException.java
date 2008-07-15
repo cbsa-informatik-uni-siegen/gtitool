@@ -42,8 +42,9 @@ public final class TransitionSymbolOnlyOneTimeException extends
     setPrettyMessage ( Messages
         .getPrettyString ( "TransitionSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
-        "TransitionSymbolOnlyOneTimeException.Description", symbolList //$NON-NLS-1$
-            .get ( 0 ), transition.getStateBegin (), transition.getStateEnd () ) );
+        "TransitionSymbolOnlyOneTimeException.Description", symbolList.get ( 0 ) //$NON-NLS-1$
+            .toPrettyString (), transition.getStateBegin ().toPrettyString (),
+        transition.getStateEnd ().toPrettyString () ) );
   }
 
 

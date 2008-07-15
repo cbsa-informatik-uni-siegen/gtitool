@@ -55,7 +55,8 @@ public final class MachineStateNameException extends MachineException implements
     setPrettyMessage ( Messages
         .getPrettyString ( "MachineStateNameException.Message" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
-        "MachineStateNameException.Description", stateList.get ( 0 ) ) ); //$NON-NLS-1$
+        "MachineStateNameException.Description", stateList.get ( 0 ) //$NON-NLS-1$
+            .toPrettyString () ) );
   }
 
 

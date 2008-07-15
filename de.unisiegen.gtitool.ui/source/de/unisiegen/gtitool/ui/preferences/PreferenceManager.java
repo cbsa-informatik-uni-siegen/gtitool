@@ -1163,10 +1163,12 @@ public final class PreferenceManager extends
       MinimizeMachineDialogForm dialog )
   {
     Rectangle bounds = dialog.getBounds ();
-    logger.debug ( "setMinimizeMachineDialogPreferences",//$NON-NLS-1$
-        "set minimize machine dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
-            + bounds.x + ", " + "y=" + bounds.y + ", " + "width="//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            + bounds.width + ", " + "height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger
+        .debug ( "setMinimizeMachineDialogPreferences",//$NON-NLS-1$
+            "set minimize machine dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
+                + bounds.x + ", " + "y=" + bounds.y + ", " + "width="//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                + bounds.width
+                + ", " + "height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "MinimizeMachineDialog.XPosition", bounds.x ); //$NON-NLS-1$
     this.preferences.putInt ( "MinimizeMachineDialog.YPosition", bounds.y ); //$NON-NLS-1$
     this.preferences.putInt ( "MinimizeMachineDialog.Width", bounds.width ); //$NON-NLS-1$

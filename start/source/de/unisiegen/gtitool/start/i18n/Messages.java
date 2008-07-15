@@ -15,22 +15,14 @@ public final class Messages
 {
 
   /**
-   * The quotation mark.
-   */
-  public static final String QUOTE = "'"; //$NON-NLS-1$
-
-
-  /**
    * Gets a string for the given key from the resource bundle of the start
    * project.
    * 
    * @param key The key for the desired string.
-   * @param useQuote Flag that indicates if the quotation marks should be used.
    * @param arguments The optional arguments.
    * @return The string for the given key.
    */
-  public final static String getString ( String key, boolean useQuote,
-      Object [] arguments )
+  public final static String getString ( String key, Object [] arguments )
   {
     try
     {
@@ -43,16 +35,8 @@ public final class Messages
         {
           continue;
         }
-        if ( useQuote )
-        {
-          message = message.replace ( "{" + i + "}", //$NON-NLS-1$ //$NON-NLS-2$
-              QUOTE + arguments [ i ].toString () + QUOTE );
-        }
-        else
-        {
-          message = message.replace ( "{" + i + "}", //$NON-NLS-1$ //$NON-NLS-2$
-              arguments [ i ].toString () );
-        }
+        message = message.replace ( "{" + i + "}", //$NON-NLS-1$ //$NON-NLS-2$
+            arguments [ i ].toString () );
       }
       return message;
     }
@@ -66,19 +50,5 @@ public final class Messages
       exc.printStackTrace ();
       return key;
     }
-  }
-
-
-  /**
-   * Gets a string for the given key from the resource bundle of the start
-   * project.
-   * 
-   * @param key The key for the desired string.
-   * @param arguments The optional arguments.
-   * @return The string for the given key.
-   */
-  public final static String getString ( String key, Object [] arguments )
-  {
-    return getString ( key, true, arguments );
   }
 }

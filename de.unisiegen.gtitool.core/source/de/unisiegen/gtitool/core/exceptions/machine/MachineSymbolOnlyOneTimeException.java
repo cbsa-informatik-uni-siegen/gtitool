@@ -87,8 +87,8 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
     setPrettyMessage ( Messages
         .getPrettyString ( "MachineSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
-        "MachineSymbolOnlyOneTimeException.Description", state, //$NON-NLS-1$
-        symbols.get ( 0 ) ) );
+        "MachineSymbolOnlyOneTimeException.Description", state //$NON-NLS-1$
+            .toPrettyString (), symbols.get ( 0 ).toPrettyString () ) );
   }
 
 

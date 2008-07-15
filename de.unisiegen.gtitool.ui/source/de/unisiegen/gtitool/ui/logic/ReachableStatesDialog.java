@@ -998,8 +998,10 @@ public final class ReachableStatesDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyString ( Messages.getPrettyString (
-          "ReachableStatesDialog.ActivateStartState", false, startState ) ); //$NON-NLS-1$
+      prettyString
+          .addPrettyString ( Messages
+              .getPrettyString (
+                  "ReachableStatesDialog.ActivateStartState", startState.toPrettyString () ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
 
       this.step = Step.ACTIVATE_REACHABLE_STATES;
@@ -1018,8 +1020,10 @@ public final class ReachableStatesDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyString ( Messages.getPrettyString (
-          "ReachableStatesDialog.ActivateNextState", false, nextState ) ); //$NON-NLS-1$
+      prettyString
+          .addPrettyString ( Messages
+              .getPrettyString (
+                  "ReachableStatesDialog.ActivateNextState", nextState.toPrettyString () ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
 
       this.step = Step.ACTIVATE_REACHABLE_STATES;
@@ -1133,14 +1137,14 @@ public final class ReachableStatesDialog implements
       PrettyString prettyString = new PrettyString ();
       if ( this.toCalculateStates.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( Messages.getString (
-            "ReachableStatesDialog.FinishAll", false ), Style.NONE ) ); //$NON-NLS-1$
+        prettyString.addPrettyToken ( new PrettyToken ( Messages
+            .getString ( "ReachableStatesDialog.FinishAll" ), Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
         prettyString.addPrettyString ( Messages.getPrettyString (
-            "ReachableStatesDialog.Finish", false, this.calculatedStates //$NON-NLS-1$
-                .get ( this.calculatedStates.size () - 1 ) ) );
+            "ReachableStatesDialog.Finish", this.calculatedStates //$NON-NLS-1$
+                .get ( this.calculatedStates.size () - 1 ).toPrettyString () ) );
         prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
         prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;

@@ -41,7 +41,7 @@ public final class StateSetMoreThanOneStateException extends StateSetException
         .getPrettyString ( "StateSetException.MoreThanOneStateMessage" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
         "StateSetException.MoreThanOneStateDescription", //$NON-NLS-1$
-        stateList.get ( 0 ), stateSet ) );
+        stateList.get ( 0 ).toPrettyString (), stateSet.toPrettyString () ) );
   }
 
 

@@ -40,7 +40,7 @@ public final class WordFinishedException extends WordException
     else
     {
       setPrettyDescription ( Messages.getPrettyString (
-          "WordException.FinishedDescription", word ) ); //$NON-NLS-1$
+          "WordException.FinishedDescription", word.toPrettyString () ) ); //$NON-NLS-1$
     }
   }
 

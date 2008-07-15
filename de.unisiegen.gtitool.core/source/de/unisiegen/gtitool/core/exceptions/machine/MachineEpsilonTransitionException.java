@@ -53,7 +53,8 @@ public final class MachineEpsilonTransitionException extends MachineException
         .getPrettyString ( "MachineEpsilonTransitionException.Message" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
         "MachineEpsilonTransitionException.Description", this.transition //$NON-NLS-1$
-            .getStateBegin (), this.transition.getStateEnd () ) );
+            .getStateBegin ().toPrettyString (), this.transition.getStateEnd ()
+            .toPrettyString () ) );
   }
 
 

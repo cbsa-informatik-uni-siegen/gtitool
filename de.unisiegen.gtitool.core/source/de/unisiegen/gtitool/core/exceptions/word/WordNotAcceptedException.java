@@ -42,7 +42,7 @@ public final class WordNotAcceptedException extends WordException
     else
     {
       setPrettyDescription ( Messages.getPrettyString (
-          "WordException.NotAcceptedDescription", word ) ); //$NON-NLS-1$
+          "WordException.NotAcceptedDescription", word.toPrettyString () ) ); //$NON-NLS-1$
     }
   }
 

@@ -65,7 +65,7 @@ public final class GrammarRegularGrammarException extends GrammarException
         .getPrettyString ( "GrammarRegularGrammarException.Message" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
         "GrammarRegularGrammarException.Description", //$NON-NLS-1$
-        this.production ) );
+        this.production.toPrettyString () ) );
   }
 
 

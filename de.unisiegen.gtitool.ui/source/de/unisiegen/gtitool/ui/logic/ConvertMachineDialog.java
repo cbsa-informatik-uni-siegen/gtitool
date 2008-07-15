@@ -1216,8 +1216,7 @@ public final class ConvertMachineDialog implements
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
 
-        this.gui.setTitle ( Messages.getString (
-            "ConvertMachineDialog.Title", false, //$NON-NLS-1$
+        this.gui.setTitle ( Messages.getString ( "ConvertMachineDialog.Title", //$NON-NLS-1$
             Messages.getString ( "ConvertMachineDialog.NFA" ), Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.DFA" ) ) );//$NON-NLS-1$
         break;
@@ -1230,7 +1229,7 @@ public final class ConvertMachineDialog implements
                 .isUsePushDownAlphabet () ) );
 
         this.gui.setTitle ( Messages.getString (
-            "ConvertMachineDialog.CompleteTitle", false, Messages//$NON-NLS-1$
+            "ConvertMachineDialog.CompleteTitle", Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.NFA" ), Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.DFA" ) ) );//$NON-NLS-1$
         break;
@@ -1242,8 +1241,7 @@ public final class ConvertMachineDialog implements
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
 
-        this.gui.setTitle ( Messages.getString (
-            "ConvertMachineDialog.Title", false,//$NON-NLS-1$
+        this.gui.setTitle ( Messages.getString ( "ConvertMachineDialog.Title", //$NON-NLS-1$
             Messages.getString ( "ConvertMachineDialog.ENFA" ), Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.NFA" ) ) );//$NON-NLS-1$
         break;
@@ -1256,7 +1254,7 @@ public final class ConvertMachineDialog implements
                 .isUsePushDownAlphabet () ) );
 
         this.gui.setTitle ( Messages.getString (
-            "ConvertMachineDialog.CompleteTitle", false, Messages//$NON-NLS-1$
+            "ConvertMachineDialog.CompleteTitle", Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.ENFA" ), Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.NFA" ) ) );//$NON-NLS-1$
         break;
@@ -1268,8 +1266,7 @@ public final class ConvertMachineDialog implements
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
 
-        this.gui.setTitle ( Messages.getString (
-            "ConvertMachineDialog.Title", false,//$NON-NLS-1$
+        this.gui.setTitle ( Messages.getString ( "ConvertMachineDialog.Title", //$NON-NLS-1$
             Messages.getString ( "ConvertMachineDialog.ENFA" ), Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.DFA" ) ) );//$NON-NLS-1$
         break;
@@ -1282,7 +1279,7 @@ public final class ConvertMachineDialog implements
                 .isUsePushDownAlphabet () ) );
 
         this.gui.setTitle ( Messages.getString (
-            "ConvertMachineDialog.CompleteTitle", false, Messages//$NON-NLS-1$
+            "ConvertMachineDialog.CompleteTitle", Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.ENFA" ), Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.DFA" ) ) );//$NON-NLS-1$
         break;
@@ -1769,8 +1766,10 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyString ( Messages.getPrettyString (
-          "ConvertMachineDialog.ActivateStartState", false, startState ) ); //$NON-NLS-1$
+      prettyString
+          .addPrettyString ( Messages
+              .getPrettyString (
+                  "ConvertMachineDialog.ActivateStartState", startState.toPrettyString () ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
 
       switch ( this.convertMachineType )
@@ -1958,7 +1957,7 @@ public final class ConvertMachineDialog implements
       // outline
       PrettyString prettyString = new PrettyString ();
       prettyString.addPrettyString ( Messages.getPrettyString (
-          "ConvertMachineDialog.AddStartState", false, stateFound ) ); //$NON-NLS-1$
+          "ConvertMachineDialog.AddStartState", stateFound.toPrettyString () ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
 
       this.step = Step.ACTIVATE_SYMBOLS;
@@ -2438,9 +2437,11 @@ public final class ConvertMachineDialog implements
 
             // outline
             PrettyString prettyString = new PrettyString ();
-            prettyString.addPrettyToken ( new PrettyToken ( Messages.getString (
-                "ConvertMachineDialog.AddStateAndTransitionEmptySet", false ), //$NON-NLS-1$
-                Style.NONE ) );
+            prettyString
+                .addPrettyToken ( new PrettyToken (
+                    Messages
+                        .getString ( "ConvertMachineDialog.AddStateAndTransitionEmptySet" ), //$NON-NLS-1$
+                    Style.NONE ) );
             addOutlineComment ( prettyString );
 
             if ( manualStep )
@@ -2597,9 +2598,10 @@ public final class ConvertMachineDialog implements
         // outline
         PrettyString prettyString = new PrettyString ();
         prettyString.addPrettyString ( Messages.getPrettyString (
-            "ConvertMachineDialog.AddStateAndTransitionAdd", false, //$NON-NLS-1$
-            transition.getStateBegin (), transition.getStateEnd (), transition
-                .getSymbol ( 0 ) ) );
+            "ConvertMachineDialog.AddStateAndTransitionAdd", //$NON-NLS-1$
+            transition.getStateBegin ().toPrettyString (), transition
+                .getStateEnd ().toPrettyString (), transition.getSymbol ( 0 )
+                .toPrettyString () ) );
         addOutlineComment ( prettyString );
       }
       else
@@ -2630,9 +2632,10 @@ public final class ConvertMachineDialog implements
         // outline
         PrettyString prettyString = new PrettyString ();
         prettyString.addPrettyString ( Messages.getPrettyString (
-            "ConvertMachineDialog.AddStateAndTransitionModify", false, //$NON-NLS-1$
-            symbol, foundTransition.getStateBegin (), foundTransition
-                .getStateEnd () ) );
+            "ConvertMachineDialog.AddStateAndTransitionModify", //$NON-NLS-1$
+            symbol.toPrettyString (), foundTransition.getStateBegin ()
+                .toPrettyString (), foundTransition.getStateEnd ()
+                .toPrettyString () ) );
         addOutlineComment ( prettyString );
       }
 
@@ -2675,8 +2678,9 @@ public final class ConvertMachineDialog implements
         // outline
         PrettyString prettyString = new PrettyString ();
         prettyString.addPrettyString ( Messages.getPrettyString (
-            "ConvertMachineDialog.FinishNextState", false,//$NON-NLS-1$
-            this.currentActiveSymbol, this.currentActiveState ) );
+            "ConvertMachineDialog.FinishNextState", //$NON-NLS-1$
+            this.currentActiveSymbol.toPrettyString (), this.currentActiveState
+                .toPrettyString () ) );
         addOutlineComment ( prettyString );
 
         for ( int i = 0 ; i < this.machineConverted.getState ().size () ; i++ )
@@ -2734,8 +2738,8 @@ public final class ConvertMachineDialog implements
         // outline
         PrettyString prettyString = new PrettyString ();
         prettyString.addPrettyString ( Messages.getPrettyString (
-            "ConvertMachineDialog.FinishNextSymbol", false, //$NON-NLS-1$
-            this.currentActiveSymbol ) );
+            "ConvertMachineDialog.FinishNextSymbol", //$NON-NLS-1$
+            this.currentActiveSymbol.toPrettyString () ) );
         addOutlineComment ( prettyString );
 
         this.currentActiveSymbol = this.machineConverted.getAlphabet ().get (

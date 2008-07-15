@@ -1,5 +1,3 @@
-CF		- Convert
-CF		- Conver (Power set)
+CF		- Convert (Power set)
 CF		- Machine Tabelle editieren
-CF		- Beispiele für Bilder vorbereiten
 CF		- Beispiel zur Auswahl eines Überganges

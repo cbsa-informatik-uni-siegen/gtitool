@@ -73,7 +73,7 @@ angelegt.\vspace{10pt}
 
 Sollten die Zustände nicht ganz so optimal plaziert sein, kann man
 versuchen über die Autolayout Funktion ein besseres Ergebnis zu
-erreichen. Diese ist über "`Ausführen" und "`Autolayout" oder über
+erreichen. Diese ist über "`Ausführen"' und "`Autolayout"' oder über
 das Kontextmenü erreichbar.\vspace{10pt}
 
 Diesen Vorgang wiederholen wir jetzt für alle Übergänge, die
@@ -197,11 +197,115 @@ Ver\-wen\-dungs\-möglich\-keiten:
   
 \subsection{Umwandeln in\ldots}
   
-  TODO CF
-  
+Es besteht auch die Möglichkeit zwischen verschiedenen Automatentypen
+umzuwandeln. Dabei stehen drei Umwandlungen zur Verfügung, die sich in den
+verwendeten Schritten unterscheiden.
+
+\begin{itemize}
+  \item NDEA $\to$ DEA
+  \item $\epsilon$-NDEA $\to$ DEA
+  \item $\epsilon$-NDEA $\to$ NDEA
+\end{itemize}
+
+Betrachten wir als erstes einen einfachen NDEA mit zwei Zuständen \State{z0} und
+\State{z1} und zwei Übergängen, der auf dem Alphabet \{\Symbol{a}, \Symbol{b}\}
+arbeitet. Der Zustand \State{z0} ist ein Start-Zustand, der Zustand \State{z1}
+ein akzeptierender Zustand. Der erste Übergang besteht zwischen \State{z0} und
+\State{z1} mit Symbol \Symbol{a}, der zweite geht von \State{z0} in sich selbst
+über, ebenfalls mit \Symbol{a}. Der Automat erkennt somit Wörter von der Form
+$a^n$ für $n \geq 1$. Über den Menüeintrag "`Umwandeln in\ldots"' kann ausgewählt
+werden, in welchen Automaten umgewandelt wird. Da wir einen NDEA angelegt haben,
+ist hier nur der DEA verfügbar. Wird dieser ausgewählt, steht die schon aus
+anderen Ansichten bekannte Oberfläche zur Verfügung. Auch hier kann in einzelnen
+Schritten, sowie automatisch navigiert werden. Wird der Dialog mit "`OK"'
+bestätigt, steht in der Hauptansicht der umgewandelte Automat zur Verfügung. Mit
+"`Abbrechen"' wird der Dialog einfach nur geschlossen.\vspace{10pt}
+
+Werden die Schritte einzeln durchgegangen, ergibt sich folgender Ablauf:
+
+\begin{enumerate}
+  \item Der Start-Zustand \State{z0} wird aktiviert.
+  \item In der unteren Ansicht wird der Start-Zustand \{\State{z0}\} angelegt.
+  \item Die Übergänge mit dem ersten Symbol aus dem Alphabet, also \Symbol{a},
+  werden hervorgehoben, um anzuzeigen welche Zustände mit dem Symbol zu
+  erreichen sind.
+  \item In unserem Beispiel sind das die Zustände \State{z0} und \State{z1},
+  die hervorgehoben werden.
+  \item In der unteren Ansicht wird ein Übergang von \{\State{z0}\} nach
+  \{\State{z0}, \State{z1}\} mit Symbol \Symbol{a} angelegt. Da dieser zweite
+  Zustand in unserem Beispiel noch nicht existiert, wird er angelegt.
+  \item Dieser Schritt zeigt an, dass das Symbol \Symbol{a} fertiggestellt ist.
+  \item Da für den Zustand \{\State{z0}\} noch nicht alle Symbole betrachtet
+  wurden, wird er aktiviert.
+  \item Es wird die gleiche Berechnung wie bei Schritt drei durchgeführt,
+  allerdings für Symbol \Symbol{b}. Da es in unserem Beispiel keinen Übergang
+  von den betroffen Zuständen, bei uns nur \State{z0}, gibt, werden in der
+  oberen Ansicht keine Übergänge hervorgehoben.
+  \item Wie in Schritt vier werden die mit Symbol \State{b} erreichbaren
+  Zustände in der oberen Ansicht hervorgehoben. In unserem Beispiel existiert
+  kein Übergang von \State{z0} mit Symbol \Symbol{b}, deshalb werden in der
+  oberen Ansicht keine Zustände hervorgehoben.
+  \item Da wir in diesem Beispiel in einen DEA umwandeln, wird auch für diesen
+  Fall ein Zustand angelegt und zwar der nicht akzeptierende Zustand
+  \State{$\emptyset$}. Wird dieser Zustand während der Wort Navigation
+  erreicht, kann das Wort nicht mehr akzeptiert werden. Aus diesem Grund wird
+  direkt der Übergang von diesem Zustand in sich selbst mit allen Symbolen des
+  Alphabetes angelegt.
+  \item Wie in Schritt sechs wird angezeigt, dass das Symbol \Symbol{b} fertig
+  verarbeitet wurde. Da dieses Symbol das letzte im Alphabet ist, ist der
+  Zustand \{\State{z0}\} fertiggestellt.
+  \item In diesem Schritt wird der nächste, bis jetzt noch nicht verarbeitete,
+  Zustand \{\State{z0}, \State{z1}\} in der unteren Ansicht hervorgehoben, gleichzeitig
+  werden in der oberen Ansicht die entsprechenden Zustände \State{z0} und
+  \State{z1} hervorgehoben.
+  \item Es folgt wieder das Hervorheben der Übergänge mit dem Symbol
+  \Symbol{a}, wie dies in Schritt drei der Fall war.
+  \item Wie in Schritt vier werden die Zustände \State{z0} und \State{z1}
+  hervorgehoben.
+  \item In Schritt fünf wurde der Übergang zum Zustand \{\State{z0},
+  \State{z1}\} mit Symbol \Symbol{a} angelegt, gleiches geschieht jetzt in
+  diesem Schritt, da wir allerdings im Moment den gleichen Zustand bearbeitet,
+  wird der Übergang von diesem Zustand in sich selbst angelegt.
+  \item Das Symbol \Symbol{a} ist fertiggestellt.
+  \item Da der Zustand \{\State{z0}, \State{z1}\} noch nicht fertiggestellt
+  ist, wird er in beiden Ansichten wie gehabt hervorgehoben.
+  \item Alle Übergänge die von den Zuständen \State{z0} und \State{z1} mit
+  Symbol \Symbol{b} ausgehen, werden hervorgehoben. In unserem Beispiel kommt
+  das nicht vor.
+  \item Die mit dem Symbol \Symbol{b} erreichbaren Zustände werden
+  hervorgehoben, in unserem Beispiel ist das wieder kein Zustand.
+  \item Deshalb wird in diesem Schritt wieder ein Übergang mit Symbol
+  \Symbol{b} zu dem Zustand \State{$\emptyset$} angelegt.
+  \item Der Zustand \{\State{z0}, \State{z1}\} ist mit dem letzten Symbol
+  \Symbol{b} fertiggestellt. Da keine weiteren Zustände hinzugekommen sind, ist
+  die Umwandlung fertiggestellt.
+\end{enumerate}
+
+Bei Betrachten des entstehenden DFA's erkennt man, dass dieser die gleichen
+Wörter erkennt wie der ursprüngliche NFA. Der Dialog kann mit "`OK"' bestätigt
+werden, womit ein neuer DFA angelegt wird. Es ist jetzt möglich die Namen der
+Zustände neu zu vergeben, wenn man mit dem Automaten weiterarbeiten möchte und
+nicht die längeren Namen dargestellt haben möchte. Dazu kann man im Menü
+"`Extras"' den Eintrag "`Zustandsnamen neu vergeben"' anklicken, wodurch die
+Zustandsnamen neu, nach dem Muster \State{z0}, \State{z1} \ldots, vergeben
+werden.\vspace{10pt}
+
+Zu den anderen zwei Umwandlungarten gibt es noch kleinere Änderungen, die bei dem
+durchgespielten Beispiel nicht betrachtet werden konnten. Wird ein
+$\epsilon$-NDEA in einen NDEA umgewandelt, entfällt das Anlegen des Zustandes
+\State{$\emptyset$}, es wird einfach kein Übergang mit dem entsprechenden Symbol
+angelegt, da bei einem NFA nicht alle Symbole vorhanden sein müssen. Wird ein
+$\epsilon$-NDEA umgewandelt, kommen jeweils zwei Schritte dazu. So wird nach dem
+Aktivieren der alten Zustände, bei unserem Beispiel die Schritte eins, sieben,
+etc., der $\epsilon$-Abschluss berechnet, es werden also auch alle Zustände
+aktiviert, die mit $\epsilon$-Übergängen zu erreichen sind. Gleiches gilt für das
+Anzeigen der neuen Zustände, bei unserem Beispiel in den Schritten vier, neun
+etc., auch hier werden in einem einzelnen Schritt alle Zustände hervorgehoben,
+die mit $\epsilon$-Übergängen zu erreichen sind.
+
+
 \subsection{Umwandeln in\ldots (Potenzmenge)}
-  
-  TODO CF
+TODO CF
 
 
 \subsection{Ereichbare Zustände}

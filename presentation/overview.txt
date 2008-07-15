@@ -1,20 +1,34 @@
-- Einstellungen (Sprache, Look and Feel, Zoom Faktor, Farben, Alphabete, Maus Einstellungen)
-- Dateien anlegen (DEA, NDEA, ENDEA, Kellerautomat, RG, CFG)
+*** Erweiterungen ***
 
-- Automaten anlegen und modifizieren
-- Wort eingeben
-- Zustands Pfad
-- Auto Layout
-- Automat minimieren
-- Automat konvertieren
-- Automaten Tabelle bearbeiten
+- Erreichbare Zustände
+- Automaten umwandeln (Potenzmenge)
+- Anpassung der erlaubten Symbole, Terminalzeichen und Nichtterminalzeichen
+- Exportieren des Automatengraphen
+- Zweite Ansicht
+- Epsilon wird als eigenständiges Symbol verwendet
+- Nur ein Übergang zwischen zwei Zuständen pro Richtung
+- Die Namen der Zustände neu vergeben
+- Umsortieren der Tabs
+- Ausblenden der Kellerautomat Komponenten
+- Kellerautomat Navigation erweitert, falls nicht deterministisch
+- Keller wird von rechts aufgebaut
+- PrettyString Behandlung verbessert (ToolTip)
+- Drucken aller Komponenten
+- Minimieren angepasst
+- Redo/Undo erweitert
 
 
-- Grammatik anlegen und modifizieren
-- Grammatik konvertieren
+*** Features ***
 
-- Vorlage für ...
-- Austausch von Dateien
-- Validieren Konsole
-- Tabelle PDA
-- Redo, Undo
+- Benutzerinteraktion erhöhen
+- Reguläre Ausdrücke
+- Neues AutoLayout
+- Wörter ausgeben, die erkannt werden
+- Eingabe von mehreren Wörten auf Akzeptanz überprüfen
+- LaTeX Export
+- Popupmenü auf der Machine Tabelle (Anlegen und Löschen von Zuständen)
+- Berechnungen in einem eigenen Thread durchführen (z. B. Potenzautomat)
+- ToolTip auf den Redo/Undo Menüeintrag
+- Parser anlegen (Kellerautomaten Tabelle, Grammatik Tabelle)
+- Automatische Überprüfung auf Updates
+- Abwärtskompatibilität zwischen verschiedenen Automaten und Grammatik Versionen

@@ -914,7 +914,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    */
   public final void handleToolbarEditDocument ()
   {
-    TerminalDialog terminalDialog = new TerminalDialog ( this.mainWindowForm,
+    TerminalDialog terminalDialog = new TerminalDialog ( this.mainWindowForm, this,
         this.grammar );
     terminalDialog.show ();
     // Must be repainted because of the maybe changed start symbol.

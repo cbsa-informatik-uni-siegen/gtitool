@@ -8,7 +8,6 @@ BM		- Auf der Machine gibt es jetzt zwei Methoden getNotReachableStates und
 		  haben ja dann auf der geklonten Version die gleiche ID, sollte also kein
 		  Problem werden. Ich kann nur bei der anderen Stelle keine geklonte Machine
 		  gebrauchen, deshalb musst du das machen.
-BM		- Redo/Undo für Änderungen am Alphabet (Grammatik und Machine)
 
 
 *** FEATURE ***

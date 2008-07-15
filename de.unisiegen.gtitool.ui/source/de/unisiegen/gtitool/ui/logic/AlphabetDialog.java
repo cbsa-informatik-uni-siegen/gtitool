@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.AlphabetDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
+import de.unisiegen.gtitool.ui.redoundo.MachineAlphabetChangedItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -45,15 +46,24 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
 
 
   /**
+   * The {@link MachinePanel}.
+   */
+  private MachinePanel machinePanel;
+
+
+  /**
    * Create a new {@link AlphabetDialog}
    * 
    * @param parent The parent frame.
+   * @param machinePanel The {@link MachinePanel}.
    * @param machine The {@link Machine} of this dialog.
    */
-  public AlphabetDialog ( JFrame parent, Machine machine )
+  public AlphabetDialog ( JFrame parent, MachinePanel machinePanel,
+      Machine machine )
   {
     this.parent = parent;
     this.machine = machine;
+    this.machinePanel = machinePanel;
     this.gui = new AlphabetDialogForm ( this, parent );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .setText ( this.machine.getAlphabet () );
@@ -141,6 +151,24 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
   public final void handleOk ()
   {
     this.gui.setVisible ( false );
+    if ( ( this.machine.isUsePushDownAlphabet () != this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+        .isSelected () )
+        || !this.machine.getAlphabet ().equals (
+            this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+                .getParsedObject () )
+        || !this.machine.getPushDownAlphabet ().equals (
+            this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+                .getParsedObject () ) )
+    {
+      this.machinePanel.getRedoUndoHandler ().addItem (
+          new MachineAlphabetChangedItem ( this.machine,
+              this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+                  .getParsedObject (),
+              this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+                  .getParsedObject (), this.machine.isUsePushDownAlphabet (),
+              this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+                  .isSelected () ) );
+    }
     performAlphabetChange ( this.machine.getAlphabet (),
         this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
             .getParsedObject () );

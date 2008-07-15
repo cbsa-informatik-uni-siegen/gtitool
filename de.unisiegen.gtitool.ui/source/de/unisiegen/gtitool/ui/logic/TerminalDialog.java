@@ -5,9 +5,9 @@ import java.util.TreeSet;
 
 import javax.swing.JFrame;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
@@ -15,6 +15,7 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetE
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.TerminalDialogForm;
+import de.unisiegen.gtitool.ui.redoundo.GrammarSymbolsChangedItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -47,14 +48,23 @@ public final class TerminalDialog implements LogicClass < TerminalDialogForm >
 
 
   /**
+   * The {@link GrammarPanel}.
+   */
+  private GrammarPanel grammarPanel;
+
+
+  /**
    * Create a new {@link TerminalDialog}
    * 
    * @param parent The parent frame.
+   * @param grammarPanel The {@link GrammarPanel}.
    * @param grammar The {@link Grammar} of this dialog.
    */
-  public TerminalDialog ( JFrame parent, Grammar grammar )
+  public TerminalDialog ( JFrame parent, GrammarPanel grammarPanel,
+      Grammar grammar )
   {
     this.parent = parent;
+    this.grammarPanel = grammarPanel;
     this.grammar = grammar;
     this.gui = new TerminalDialogForm ( this, parent );
 
@@ -136,6 +146,29 @@ public final class TerminalDialog implements LogicClass < TerminalDialogForm >
   public final void handleOk ()
   {
     this.gui.setVisible ( false );
+    if ( !this.grammar.getNonterminalSymbolSet ().equals (
+        this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
+            .getParsedObject () )
+        || !this.grammar.getTerminalSymbolSet ().equals (
+            this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
+                .getParsedObject () )
+        || !this.grammar.getStartSymbol ().equals (
+            this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+                .getParsedObject () ) )
+    {
+      this.grammarPanel
+          .getRedoUndoHandler ()
+          .addItem (
+              new GrammarSymbolsChangedItem (
+                  this.grammar,
+                  this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
+                      .getParsedObject (),
+                  this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
+                      .getParsedObject (),
+                  this.grammar.getStartSymbol (),
+                  this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+                      .getParsedObject () ) );
+    }
     performNonterminalSymbolChange ( this.grammar.getNonterminalSymbolSet (),
         this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
             .getParsedObject () );
@@ -150,7 +183,7 @@ public final class TerminalDialog implements LogicClass < TerminalDialogForm >
 
 
   /**
-   * Preforms the {@link Alphabet} change.
+   * Preforms the {@link Symbol} change.
    * 
    * @param oldNonterminalSymbols The old {@link NonterminalSymbolSet}.
    * @param newNonterminalSymbols The new {@link NonterminalSymbolSet}.
@@ -189,7 +222,7 @@ public final class TerminalDialog implements LogicClass < TerminalDialogForm >
 
 
   /**
-   * Preforms the {@link Alphabet} change.
+   * Performs the {@link Symbol} change.
    * 
    * @param oldTerminalSymbols The old {@link TerminalSymbolSet}.
    * @param newTerminalSymbols The new {@link TerminalSymbolSet}.

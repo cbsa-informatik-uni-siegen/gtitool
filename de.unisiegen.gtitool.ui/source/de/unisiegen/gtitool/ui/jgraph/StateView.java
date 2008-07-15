@@ -334,7 +334,7 @@ public final class StateView extends VertexView
             + ( metrics.getHeight () / 2 ) - 3;
 
         PrettyString prettyString = new PrettyString ();
-        prettyString.addPrettyString ( state.toPrettyString () );
+        prettyString.add ( state.toPrettyString () );
 
         int insets = state.isFinalState () ? 20 : 10;
         // short version
@@ -369,7 +369,7 @@ public final class StateView extends VertexView
               addText = addText.substring ( 0, addText.length () - 1 );
             }
 
-            prettyString.addPrettyToken ( new PrettyToken ( addText,
+            prettyString.add ( new PrettyToken ( addText,
                 lastPrettyToken.getStyle () ) );
           }
 
@@ -383,7 +383,7 @@ public final class StateView extends VertexView
                 - ( metrics.stringWidth ( dots ) / 2 ) - 1;
           }
 
-          prettyString.addPrettyToken ( new PrettyToken ( dots, Style.NONE ) );
+          prettyString.add ( new PrettyToken ( dots, Style.NONE ) );
         }
         // normal version
         else

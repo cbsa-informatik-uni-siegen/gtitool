@@ -36,8 +36,8 @@ public class StyledStateSetParserPanelTest
 
       ArrayList < State > stateList = new ArrayList < State > ();
       stateList.add ( new DefaultState ( "z0" ) ); //$NON-NLS-1$
-      stateList.add ( new DefaultState ( "z1" ) );//$NON-NLS-1$
-      stateList.add ( new DefaultState ( "z2" ) );//$NON-NLS-1$
+      stateList.add ( new DefaultState ( "{z1}" ) );//$NON-NLS-1$
+      stateList.add ( new DefaultState ( "{z2, z3}" ) );//$NON-NLS-1$
 
       StyledStateSetParserPanel styledStateSetParserPanel = new StyledStateSetParserPanel ();
       styledStateSetParserPanel.setStateList ( stateList );

@@ -310,12 +310,12 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
       this.cachedPrettyString = new PrettyString ();
       if ( this.error )
       {
-        this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+        this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.TERMINAL_SYMBOL_ERROR ) );
       }
       else
       {
-        this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+        this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.TERMINAL_SYMBOL ) );
       }
     }

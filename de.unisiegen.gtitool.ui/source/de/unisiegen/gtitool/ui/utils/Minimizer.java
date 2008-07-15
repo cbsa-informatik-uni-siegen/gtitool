@@ -206,7 +206,7 @@ public class Minimizer
   {
     PrettyString prettyString = new PrettyString ();
 
-    prettyString.addPrettyToken ( new PrettyToken ( Messages
+    prettyString.add ( new PrettyToken ( Messages
         .getString ( "MinimizeMachineDialog.PrettyString" ) //$NON-NLS-1$
         + " ", Style.NONE ) ); //$NON-NLS-1$
 
@@ -214,14 +214,14 @@ public class Minimizer
     {
       if ( i != 0 && i < ( states.size () - 1 ) )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
+        prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
       }
       if ( i != 0 && i == ( states.size () - 1 ) )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( " " + Messages //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( " " + Messages //$NON-NLS-1$
             .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
       }
-      prettyString.addPrettyPrintable ( states.get ( i ).getState () );
+      prettyString.add ( states.get ( i ).getState () );
     }
     return prettyString;
   }
@@ -314,27 +314,27 @@ public class Minimizer
     PrettyString prettyString = new PrettyString ();
     if ( this.notReachable.size () > 0 )
     {
-      prettyString.addPrettyToken ( new PrettyToken ( Messages
+      prettyString.add ( new PrettyToken ( Messages
           .getString ( "MinimizeMachineDialog.PrettyStringNotReachable" ) //$NON-NLS-1$
           + " ", Style.NONE ) ); //$NON-NLS-1$
       for ( int i = 0 ; i < this.notReachable.size () ; i++ )
       {
         if ( i != 0 && i < ( this.notReachable.size () - 1 ) )
         {
-          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
+          prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
         }
         if ( i != 0 && i == ( this.notReachable.size () - 1 ) )
         {
-          prettyString.addPrettyToken ( new PrettyToken ( " " + Messages //$NON-NLS-1$
+          prettyString.add ( new PrettyToken ( " " + Messages //$NON-NLS-1$
               .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
         }
-        prettyString.addPrettyPrintable ( this.notReachable.get ( i )
+        prettyString.add ( this.notReachable.get ( i )
             .getState () );
       }
     }
     else
     {
-      prettyString.addPrettyToken ( new PrettyToken ( Messages
+      prettyString.add ( new PrettyToken ( Messages
           .getString ( "MinimizeMachineDialog.PrettyStringAllReachable" ) //$NON-NLS-1$
           , Style.NONE ) );
 
@@ -357,7 +357,7 @@ public class Minimizer
     prettyString = new PrettyString ();
     if ( this.activeGroups.size () > 1 )
     {
-      prettyString.addPrettyToken ( new PrettyToken ( Messages
+      prettyString.add ( new PrettyToken ( Messages
           .getString ( "MinimizeMachineDialog.PrettyStringFinalStates" ) //$NON-NLS-1$
           + " ", Style.NONE ) ); //$NON-NLS-1$
 
@@ -369,19 +369,19 @@ public class Minimizer
       {
         if ( i != 0 && i < ( states.size () - 1 ) )
         {
-          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
+          prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
         }
         if ( i != 0 && i == ( states.size () - 1 ) )
         {
-          prettyString.addPrettyToken ( new PrettyToken ( " " + Messages //$NON-NLS-1$
+          prettyString.add ( new PrettyToken ( " " + Messages //$NON-NLS-1$
               .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
         }
-        prettyString.addPrettyPrintable ( states.get ( i ).getState () );
+        prettyString.add ( states.get ( i ).getState () );
       }
     }
     else
     {
-      prettyString.addPrettyToken ( new PrettyToken ( Messages
+      prettyString.add ( new PrettyToken ( Messages
           .getString ( "MinimizeMachineDialog.PrettyStringNoFinalStates" ) //$NON-NLS-1$
           , Style.NONE ) );
     }

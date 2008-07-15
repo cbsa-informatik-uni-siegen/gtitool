@@ -535,22 +535,19 @@ public final class DefaultProduction implements Production
         || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
       this.cachedPrettyString = new PrettyString ();
-      this.cachedPrettyString.addPrettyPrintable ( this.nonterminalSymbol );
-      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-          " ", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedPrettyString.add ( this.nonterminalSymbol );
+      this.cachedPrettyString.add ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
       if ( this.error )
       {
-        this.cachedPrettyString.addPrettyToken ( new PrettyToken ( "\u2192", //$NON-NLS-1$
+        this.cachedPrettyString.add ( new PrettyToken ( "\u2192", //$NON-NLS-1$
             Style.PRODUCTION_ERROR ) );
       }
       else
       {
-        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-            "\u2192", Style.NONE ) ); //$NON-NLS-1$
+        this.cachedPrettyString.add ( new PrettyToken ( "\u2192", Style.NONE ) ); //$NON-NLS-1$
       }
-      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-          " ", Style.NONE ) ); //$NON-NLS-1$
-      this.cachedPrettyString.addPrettyPrintable ( this.productionWord );
+      this.cachedPrettyString.add ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedPrettyString.add ( this.productionWord );
     }
 
     return this.cachedPrettyString;

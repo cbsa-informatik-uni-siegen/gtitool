@@ -1177,7 +1177,7 @@ public final class DefaultState implements State
       this.cachedPrettyString = new PrettyString ();
       if ( this.selected )
       {
-        this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+        this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.STATE_SELECTED ) );
       }
       else
@@ -1189,8 +1189,7 @@ public final class DefaultState implements State
 
           String [] splitStateSet = stateSet.split ( "," ); //$NON-NLS-1$
 
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-              "{", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
           boolean first = true;
           for ( String current : splitStateSet )
           {
@@ -1208,27 +1207,26 @@ public final class DefaultState implements State
 
             if ( !first )
             {
-              this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-                  ", ", Style.NONE ) ); //$NON-NLS-1$
+              this.cachedPrettyString
+                  .add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
             }
             first = false;
 
-            this.cachedPrettyString.addPrettyToken ( new PrettyToken ( newName,
+            this.cachedPrettyString.add ( new PrettyToken ( newName,
                 Style.STATE ) );
           }
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-              "}", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
         }
         // empty set name
         else if ( this.name.equals ( "\u2205" ) ) //$NON-NLS-1$
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
-              Style.NONE ) );
+          this.cachedPrettyString
+              .add ( new PrettyToken ( this.name, Style.NONE ) );
         }
         // normal name
         else
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+          this.cachedPrettyString.add ( new PrettyToken ( this.name,
               Style.STATE ) );
         }
       }

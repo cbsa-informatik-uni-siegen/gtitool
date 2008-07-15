@@ -679,11 +679,10 @@ public final class DefaultStateSet implements StateSet
       {
         if ( !first )
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-              ", ", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         first = false;
-        this.cachedPrettyString.addPrettyPrintable ( iterator.next () );
+        this.cachedPrettyString.add ( iterator.next () );
       }
     }
     return this.cachedPrettyString;

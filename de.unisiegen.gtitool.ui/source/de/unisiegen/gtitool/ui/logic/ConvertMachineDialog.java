@@ -1767,7 +1767,7 @@ public final class ConvertMachineDialog implements
       // outline
       PrettyString prettyString = new PrettyString ();
       prettyString
-          .addPrettyString ( Messages
+          .add ( Messages
               .getPrettyString (
                   "ConvertMachineDialog.ActivateStartState", startState.toPrettyString () ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
@@ -1822,50 +1822,50 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken ( Messages
+      prettyString.add ( new PrettyToken ( Messages
           .getString ( "ConvertMachineDialog.ActivateStartClosureState" ) //$NON-NLS-1$
           + " (", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeStateList.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : activeStateList )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
 
-      prettyString.addPrettyToken ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.add ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeClosureStateList.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : activeClosureStateList )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
       addOutlineComment ( prettyString );
 
@@ -1956,7 +1956,7 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyString ( Messages.getPrettyString (
+      prettyString.add ( Messages.getPrettyString (
           "ConvertMachineDialog.AddStartState", stateFound.toPrettyString () ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
 
@@ -1985,27 +1985,27 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken ( Messages
+      prettyString.add ( new PrettyToken ( Messages
           .getString ( "ConvertMachineDialog.ActivateOldState" ) //$NON-NLS-1$
           + " ", Style.NONE ) ); //$NON-NLS-1$
       if ( activeStateList.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : activeStateList )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
       addOutlineComment ( prettyString );
 
@@ -2071,48 +2071,48 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken ( Messages
+      prettyString.add ( new PrettyToken ( Messages
           .getString ( "ConvertMachineDialog.ActivateOldClosureState" ) //$NON-NLS-1$
           + " (", Style.NONE ) ); //$NON-NLS-1$
       if ( activeStateList.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : activeStateList )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
-      prettyString.addPrettyToken ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.add ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeClosureStateList.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : activeClosureStateList )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
       addOutlineComment ( prettyString );
 
@@ -2153,31 +2153,31 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken ( Messages
+      prettyString.add ( new PrettyToken ( Messages
           .getString ( "ConvertMachineDialog.ActivateSymbols" ) //$NON-NLS-1$
           + " (", Style.NONE ) ); //$NON-NLS-1$
       if ( activeStateList.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : activeStateList )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
-      prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-      prettyString.addPrettyPrintable ( this.currentActiveSymbol );
-      prettyString.addPrettyToken ( new PrettyToken ( ")", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.add ( this.currentActiveSymbol );
+      prettyString.add ( new PrettyToken ( ")", Style.NONE ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
 
       this.step = Step.ACTIVATE_NEW_STATES;
@@ -2227,50 +2227,50 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken ( Messages
+      prettyString.add ( new PrettyToken ( Messages
           .getString ( "ConvertMachineDialog.ActivateNewStates" )//$NON-NLS-1$
           + " (", Style.NONE ) );//$NON-NLS-1$
       if ( oldActiveStateList.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : oldActiveStateList )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
 
-      prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-      prettyString.addPrettyPrintable ( this.currentActiveSymbol );
-      prettyString.addPrettyToken ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.add ( this.currentActiveSymbol );
+      prettyString.add ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
       if ( newActiveStateList.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : newActiveStateList )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
       addOutlineComment ( prettyString );
 
@@ -2334,50 +2334,50 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken ( Messages
+      prettyString.add ( new PrettyToken ( Messages
           .getString ( "ConvertMachineDialog.ActivateNewClosureStates" ) //$NON-NLS-1$
           + " (", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeStateList.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : activeStateList )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
 
-      prettyString.addPrettyToken ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.add ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeClosureStateList.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : activeClosureStateList )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
       addOutlineComment ( prettyString );
 
@@ -2438,7 +2438,7 @@ public final class ConvertMachineDialog implements
             // outline
             PrettyString prettyString = new PrettyString ();
             prettyString
-                .addPrettyToken ( new PrettyToken (
+                .add ( new PrettyToken (
                     Messages
                         .getString ( "ConvertMachineDialog.AddStateAndTransitionEmptySet" ), //$NON-NLS-1$
                     Style.NONE ) );
@@ -2597,7 +2597,7 @@ public final class ConvertMachineDialog implements
 
         // outline
         PrettyString prettyString = new PrettyString ();
-        prettyString.addPrettyString ( Messages.getPrettyString (
+        prettyString.add ( Messages.getPrettyString (
             "ConvertMachineDialog.AddStateAndTransitionAdd", //$NON-NLS-1$
             transition.getStateBegin ().toPrettyString (), transition
                 .getStateEnd ().toPrettyString (), transition.getSymbol ( 0 )
@@ -2631,7 +2631,7 @@ public final class ConvertMachineDialog implements
 
         // outline
         PrettyString prettyString = new PrettyString ();
-        prettyString.addPrettyString ( Messages.getPrettyString (
+        prettyString.add ( Messages.getPrettyString (
             "ConvertMachineDialog.AddStateAndTransitionModify", //$NON-NLS-1$
             symbol.toPrettyString (), foundTransition.getStateBegin ()
                 .toPrettyString (), foundTransition.getStateEnd ()
@@ -2677,7 +2677,7 @@ public final class ConvertMachineDialog implements
       {
         // outline
         PrettyString prettyString = new PrettyString ();
-        prettyString.addPrettyString ( Messages.getPrettyString (
+        prettyString.add ( Messages.getPrettyString (
             "ConvertMachineDialog.FinishNextState", //$NON-NLS-1$
             this.currentActiveSymbol.toPrettyString (), this.currentActiveState
                 .toPrettyString () ) );
@@ -2737,7 +2737,7 @@ public final class ConvertMachineDialog implements
       {
         // outline
         PrettyString prettyString = new PrettyString ();
-        prettyString.addPrettyString ( Messages.getPrettyString (
+        prettyString.add ( Messages.getPrettyString (
             "ConvertMachineDialog.FinishNextSymbol", //$NON-NLS-1$
             this.currentActiveSymbol.toPrettyString () ) );
         addOutlineComment ( prettyString );

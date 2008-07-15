@@ -143,7 +143,7 @@ public final class PrettyString implements Iterable < PrettyToken >
   public PrettyString ( PrettyToken prettyToken )
   {
     this ();
-    addPrettyToken ( prettyToken );
+    add ( prettyToken );
   }
 
 
@@ -152,11 +152,11 @@ public final class PrettyString implements Iterable < PrettyToken >
    * 
    * @param prettyPrintable The {@link PrettyPrintable} to add.
    */
-  public final void addPrettyPrintable ( PrettyPrintable prettyPrintable )
+  public final void add ( PrettyPrintable prettyPrintable )
   {
     for ( PrettyToken current : prettyPrintable.toPrettyString () )
     {
-      this.prettyTokenList.add ( current );
+      this.prettyTokenList.add ( current.clone () );
     }
   }
 
@@ -166,7 +166,7 @@ public final class PrettyString implements Iterable < PrettyToken >
    * 
    * @param prettyString The {@link PrettyString} to add.
    */
-  public final void addPrettyString ( PrettyString prettyString )
+  public final void add ( PrettyString prettyString )
   {
     for ( PrettyToken current : prettyString )
     {
@@ -180,7 +180,7 @@ public final class PrettyString implements Iterable < PrettyToken >
    * 
    * @param prettyToken The {@link PrettyToken} to add.
    */
-  public final void addPrettyToken ( PrettyToken prettyToken )
+  public final void add ( PrettyToken prettyToken )
   {
     this.prettyTokenList.add ( prettyToken );
   }
@@ -283,7 +283,7 @@ public final class PrettyString implements Iterable < PrettyToken >
   {
     for ( PrettyToken current : this.prettyTokenList )
     {
-      current.overwrite ( newStyle.getColor () );
+      current.overwrite ( newStyle == null ? null : newStyle.getColor () );
     }
   }
 

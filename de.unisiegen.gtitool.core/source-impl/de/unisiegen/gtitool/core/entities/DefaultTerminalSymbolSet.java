@@ -725,22 +725,19 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
         || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
       this.cachedPrettyString = new PrettyString ();
-      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-          "{", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
       Iterator < TerminalSymbol > iterator = this.terminalSymbolSet.iterator ();
       boolean first = true;
       while ( iterator.hasNext () )
       {
         if ( !first )
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-              ", ", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         first = false;
-        this.cachedPrettyString.addPrettyPrintable ( iterator.next () );
+        this.cachedPrettyString.add ( iterator.next () );
       }
-      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-          "}", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
     }
 
     return this.cachedPrettyString;

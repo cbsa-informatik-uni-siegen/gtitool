@@ -44,7 +44,6 @@ non terminal State[]				state_list_comma;
  *********/
 
 non terminal 						epsilon;
-non terminal						state_set_error;
 non terminal						state_list_comma_error;
 non terminal						power_state_error;
 non terminal						power_state_list_comma_error;
@@ -54,19 +53,7 @@ non terminal						power_state_list_comma_error;
  * State Set *
  *************/
 
-state_set						::= LCBRACE:l power_state_list_comma:pslc RCBRACE:r
-									{:
-									   try
-									   {
-									     RESULT = new DefaultStateSet(pslc);
-									   }
-									   catch (StateSetException ecx)
-									   {
-									     ParserMultiException.throwStateSetException(ecx.getState());
-									   }
-									   RESULT.setParserOffset(new ParserOffset(lleft, rright));
-									:}
-								|	power_state_list_comma:pslc
+state_set						::= power_state_list_comma:pslc
 									{:
 									   try
 									   {
@@ -82,37 +69,6 @@ state_set						::= LCBRACE:l power_state_list_comma:pslc RCBRACE:r
 									{:
 									   RESULT = new DefaultStateSet();
 									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
-									:}
-								|	state_set_error
-									{: :}
-								;
-
-state_set_error					::= LCBRACE:l epsilon
-									{:
-									   ErrorHandling.expect ( "State Set", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
-									:}
-								|	LCBRACE:l power_state_list_comma:pslc epsilon
-									{:
-									   ErrorHandling.expect ( "State Set", "}", lleft, pslcright, "}" );
-									:}
-								|	LCBRACE:l power_state_list_comma:pslc COMMA:c epsilon
-									{:
-									   ErrorHandling.expect ( "State Set", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
-									:}
-								/* one missing token - comma */
-								|	LCBRACE:l power_state_list_comma:pslc STATE:s
-									{:
-									   ErrorHandling.expect ( "State Set", ", ", lleft, pslcright, "," );
-									:}
-								/* one missing token - symbol */
-								|	LCBRACE:l COMMA:c
-									{:
-									   ErrorHandling.expect ( "State Set", "s", lleft, lright, "s" );
-									:}
-								/* one missing token - symbol */
-								|	LCBRACE:l RCBRACE:r
-									{:
-									   ErrorHandling.expect ( "State Set", "s", lleft, lright, "s" );
 									:}
 								;
 

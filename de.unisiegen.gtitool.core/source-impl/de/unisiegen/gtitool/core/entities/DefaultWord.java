@@ -543,7 +543,7 @@ public final class DefaultWord implements Word
       this.cachedPrettyString = new PrettyString ();
       for ( Symbol current : this.symbolList )
       {
-        this.cachedPrettyString.addPrettyPrintable ( current );
+        this.cachedPrettyString.add ( current );
       }
     }
 

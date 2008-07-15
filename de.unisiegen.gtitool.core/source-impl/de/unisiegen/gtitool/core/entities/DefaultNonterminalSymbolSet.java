@@ -728,8 +728,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
         || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
       this.cachedPrettyString = new PrettyString ();
-      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-          "{", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
       Iterator < NonterminalSymbol > iterator = this.nonterminalSymbolSet
           .iterator ();
       boolean first = true;
@@ -737,14 +736,12 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
       {
         if ( !first )
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-              ", ", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         first = false;
-        this.cachedPrettyString.addPrettyPrintable ( iterator.next () );
+        this.cachedPrettyString.add ( iterator.next () );
       }
-      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-          "}", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
     }
 
     return this.cachedPrettyString;

@@ -999,7 +999,7 @@ public final class ReachableStatesDialog implements
       // outline
       PrettyString prettyString = new PrettyString ();
       prettyString
-          .addPrettyString ( Messages
+          .add ( Messages
               .getPrettyString (
                   "ReachableStatesDialog.ActivateStartState", startState.toPrettyString () ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
@@ -1021,7 +1021,7 @@ public final class ReachableStatesDialog implements
       // outline
       PrettyString prettyString = new PrettyString ();
       prettyString
-          .addPrettyString ( Messages
+          .add ( Messages
               .getPrettyString (
                   "ReachableStatesDialog.ActivateNextState", nextState.toPrettyString () ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
@@ -1089,28 +1089,28 @@ public final class ReachableStatesDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken ( Messages
+      prettyString.add ( new PrettyToken ( Messages
           .getString ( "ReachableStatesDialog.ActivateReachableStates" ) //$NON-NLS-1$
           + " ", Style.NONE ) ); //$NON-NLS-1$
 
       if ( reachableStates.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : reachableStates )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
       addOutlineComment ( prettyString );
 
@@ -1137,27 +1137,27 @@ public final class ReachableStatesDialog implements
       PrettyString prettyString = new PrettyString ();
       if ( this.toCalculateStates.size () == 0 )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( Messages
+        prettyString.add ( new PrettyToken ( Messages
             .getString ( "ReachableStatesDialog.FinishAll" ), Style.NONE ) ); //$NON-NLS-1$
       }
       else
       {
-        prettyString.addPrettyString ( Messages.getPrettyString (
+        prettyString.add ( Messages.getPrettyString (
             "ReachableStatesDialog.Finish", this.calculatedStates //$NON-NLS-1$
                 .get ( this.calculatedStates.size () - 1 ).toPrettyString () ) );
-        prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
-        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         boolean first = true;
         for ( State current : this.toCalculateStates )
         {
           if ( !first )
           {
-            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
           }
           first = false;
-          prettyString.addPrettyPrintable ( current );
+          prettyString.add ( current );
         }
-        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
       addOutlineComment ( prettyString );
 

@@ -423,17 +423,17 @@ public final class DefaultSymbol implements Symbol
       {
         if ( this.error )
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
+          this.cachedPrettyString.add ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
               Style.SYMBOL_ERROR ) );
         }
         else if ( this.active )
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
+          this.cachedPrettyString.add ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
               Style.SYMBOL_ACTIVE ) );
         }
         else
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          this.cachedPrettyString.add ( new PrettyToken (
               "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
         }
       }
@@ -441,17 +441,17 @@ public final class DefaultSymbol implements Symbol
       {
         if ( this.error )
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+          this.cachedPrettyString.add ( new PrettyToken ( this.name,
               Style.SYMBOL_ERROR ) );
         }
         else if ( this.active )
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+          this.cachedPrettyString.add ( new PrettyToken ( this.name,
               Style.SYMBOL_ACTIVE ) );
         }
         else
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken ( this.name,
+          this.cachedPrettyString.add ( new PrettyToken ( this.name,
               Style.SYMBOL ) );
         }
       }

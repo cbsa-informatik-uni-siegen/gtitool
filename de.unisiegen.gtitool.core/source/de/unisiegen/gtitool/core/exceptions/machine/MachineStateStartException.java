@@ -69,14 +69,14 @@ public final class MachineStateStartException extends MachineException
       PrettyString prettyString = new PrettyString ();
       for ( int i = 0 ; i < stateList.size () ; i++ )
       {
-        prettyString.addPrettyPrintable ( stateList.get ( i ) );
+        prettyString.add ( stateList.get ( i ) );
         if ( i < stateList.size () - 2 )
         {
-          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+          prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         if ( i == stateList.size () - 2 )
         {
-          prettyString.addPrettyToken ( new PrettyToken ( " " //$NON-NLS-1$
+          prettyString.add ( new PrettyToken ( " " //$NON-NLS-1$
               + Messages.getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$
         }
       }

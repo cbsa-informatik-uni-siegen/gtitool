@@ -495,14 +495,14 @@ public final class DefaultProductionWord implements ProductionWord
       this.cachedPrettyString = new PrettyString ();
       if ( this.productionWordMemberList.size () == 0 )
       {
-        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+        this.cachedPrettyString.add ( new PrettyToken (
             "\u03B5", Style.TERMINAL_SYMBOL ) ); //$NON-NLS-1$
       }
       else
       {
         for ( ProductionWordMember current : this.productionWordMemberList )
         {
-          this.cachedPrettyString.addPrettyPrintable ( current );
+          this.cachedPrettyString.add ( current );
         }
       }
     }

@@ -92,14 +92,14 @@ public final class MachineAllSymbolsException extends MachineException
       while ( iter.hasNext () )
       {
         Symbol current = iter.next ();
-        prettyString.addPrettyPrintable ( current );
+        prettyString.add ( current );
         if ( index < this.symbolSet.size () - 2 )
         {
-          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+          prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         if ( index == this.symbolSet.size () - 2 )
         {
-          prettyString.addPrettyToken ( new PrettyToken ( " " //$NON-NLS-1$
+          prettyString.add ( new PrettyToken ( " " //$NON-NLS-1$
               + Messages.getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         index++ ;

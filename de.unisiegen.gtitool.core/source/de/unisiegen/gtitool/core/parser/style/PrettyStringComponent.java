@@ -143,7 +143,7 @@ public final class PrettyStringComponent extends JLabel
     FontMetrics metrics = g.getFontMetrics ();
 
     PrettyString usedPrettyString = new PrettyString ();
-    usedPrettyString.addPrettyString ( this.prettyString );
+    usedPrettyString.add ( this.prettyString );
 
     // short version
     if ( metrics.stringWidth ( this.prettyString.toString () ) > getWidth () )
@@ -176,8 +176,8 @@ public final class PrettyStringComponent extends JLabel
           addText = addText.substring ( 0, addText.length () - 1 );
         }
 
-        usedPrettyString.addPrettyToken ( new PrettyToken ( addText,
-            lastPrettyToken.getStyle () ) );
+        usedPrettyString.add ( new PrettyToken ( addText, lastPrettyToken
+            .getStyle () ) );
       }
 
       // if empty do not use the first space
@@ -186,7 +186,7 @@ public final class PrettyStringComponent extends JLabel
         dots = "..."; //$NON-NLS-1$
       }
 
-      usedPrettyString.addPrettyToken ( new PrettyToken ( dots, Style.NONE ) );
+      usedPrettyString.add ( new PrettyToken ( dots, Style.NONE ) );
     }
     else
     {

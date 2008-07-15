@@ -10,7 +10,7 @@ import java.awt.Color;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class PrettyToken
+public final class PrettyToken implements Cloneable
 {
 
   /**
@@ -50,6 +50,20 @@ public final class PrettyToken
 
     this.text = text;
     this.style = style;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#clone()
+   */
+  @Override
+  public final PrettyToken clone ()
+  {
+    PrettyToken newPrettyToken = new PrettyToken ( this.text, this.style );
+    newPrettyToken.overwrite ( this.overwrittenColor );
+    return newPrettyToken;
   }
 
 

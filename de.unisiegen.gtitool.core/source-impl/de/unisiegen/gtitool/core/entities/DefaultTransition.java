@@ -1473,51 +1473,46 @@ public final class DefaultTransition implements Transition
         || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
       this.cachedPrettyString = new PrettyString ();
-      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-          "{", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
       boolean first = true;
       for ( Symbol current : this.symbolSet )
       {
         if ( !first )
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-              ", ", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         first = false;
-        this.cachedPrettyString.addPrettyPrintable ( current );
+        this.cachedPrettyString.add ( current );
       }
-      this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-          "}", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
 
       if ( ( this.pushDownWordRead.size () > 0 )
           || ( this.pushDownWordWrite.size () > 0 ) )
       {
-        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-            " ", Style.NONE ) ); //$NON-NLS-1$
+        this.cachedPrettyString.add ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
         if ( this.pushDownWordRead.size () == 0 )
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          this.cachedPrettyString.add ( new PrettyToken (
               "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
         }
         else
         {
-          this.cachedPrettyString.addPrettyPrintable ( this.pushDownWordRead );
+          this.cachedPrettyString.add ( this.pushDownWordRead );
         }
-        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-            "\u2191", Style.KEYWORD ) ); //$NON-NLS-1$
-        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-            " ", Style.NONE ) ); //$NON-NLS-1$
+        this.cachedPrettyString
+            .add ( new PrettyToken ( "\u2191", Style.KEYWORD ) ); //$NON-NLS-1$
+        this.cachedPrettyString.add ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
         if ( this.pushDownWordWrite.size () == 0 )
         {
-          this.cachedPrettyString.addPrettyToken ( new PrettyToken (
+          this.cachedPrettyString.add ( new PrettyToken (
               "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
         }
         else
         {
-          this.cachedPrettyString.addPrettyPrintable ( this.pushDownWordWrite );
+          this.cachedPrettyString.add ( this.pushDownWordWrite );
         }
-        this.cachedPrettyString.addPrettyToken ( new PrettyToken (
-            "\u2193", Style.KEYWORD ) ); //$NON-NLS-1$
+        this.cachedPrettyString
+            .add ( new PrettyToken ( "\u2193", Style.KEYWORD ) ); //$NON-NLS-1$
       }
     }
 
@@ -1542,73 +1537,67 @@ public final class DefaultTransition implements Transition
     {
       // does not use the active style of symbols
       this.cachedStackPrettyString = new PrettyString ();
-      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
-          "(", Style.NONE ) ); //$NON-NLS-1$
-      this.cachedStackPrettyString.addPrettyPrintable ( this.stateBegin );
-      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
-          ", ", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedStackPrettyString.add ( new PrettyToken ( "(", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedStackPrettyString.add ( this.stateBegin );
+      this.cachedStackPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
 
-      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
-          "{", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedStackPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
       boolean first = true;
       for ( Symbol current : this.symbolSet )
       {
         if ( !first )
         {
-          this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
-              ", ", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedStackPrettyString
+              .add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         first = false;
         if ( current.isEpsilon () )
         {
-          this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
-              "\u03B5", //$NON-NLS-1$
+          this.cachedStackPrettyString.add ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
               Style.SYMBOL ) );
         }
         else
         {
-          this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
-              current.getName (), Style.SYMBOL ) );
+          this.cachedStackPrettyString.add ( new PrettyToken ( current
+              .getName (), Style.SYMBOL ) );
         }
       }
-      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
-          "}", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedStackPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
 
-      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
-          ", ", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedStackPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
       if ( getPushDownWordRead ().size () == 0 )
       {
-        this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+        this.cachedStackPrettyString.add ( new PrettyToken (
             "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
       }
       else
       {
-        this.cachedStackPrettyString
-            .addPrettyPrintable ( this.pushDownWordRead );
+        this.cachedStackPrettyString.add ( this.pushDownWordRead );
       }
-      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
-          "), (", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedStackPrettyString
+          .add ( new PrettyToken ( "), (", Style.NONE ) ); //$NON-NLS-1$
 
-      this.cachedStackPrettyString.addPrettyPrintable ( this.stateEnd );
-      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
-          ", ", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedStackPrettyString.add ( this.stateEnd );
+      this.cachedStackPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
       if ( getPushDownWordWrite ().size () == 0 )
       {
-        this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
+        this.cachedStackPrettyString.add ( new PrettyToken (
             "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
       }
       else
       {
-        this.cachedStackPrettyString
-            .addPrettyPrintable ( this.pushDownWordWrite );
+        this.cachedStackPrettyString.add ( this.pushDownWordWrite );
       }
-      this.cachedStackPrettyString.addPrettyToken ( new PrettyToken (
-          ")", Style.NONE ) ); //$NON-NLS-1$
+      this.cachedStackPrettyString.add ( new PrettyToken ( ")", Style.NONE ) ); //$NON-NLS-1$
 
       if ( this.selected )
       {
         this.cachedStackPrettyString
             .overwriteColor ( Style.TRANSITION_SELECTED );
+      }
+      else
+      {
+        this.cachedStackPrettyString.overwriteColor ( null );
       }
     }
 

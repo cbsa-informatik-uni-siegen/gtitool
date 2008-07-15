@@ -1750,8 +1750,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final void handleToolbarEditDocument ()
   {
-    AlphabetDialog alphabetDialog = new AlphabetDialog ( this.mainWindowForm, this,
-        this.machine );
+    AlphabetDialog alphabetDialog = new AlphabetDialog ( this.mainWindowForm,
+        this, this.machine );
     alphabetDialog.show ();
     initializeMachineTable ();
   }

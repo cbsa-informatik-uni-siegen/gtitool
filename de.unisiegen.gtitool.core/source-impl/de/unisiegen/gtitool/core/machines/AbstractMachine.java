@@ -333,9 +333,14 @@ public abstract class AbstractMachine implements Machine
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void stateChanged ( @SuppressWarnings ( "unused" ) State newState )
+      public void stateChanged ( boolean nameChanged,
+          @SuppressWarnings ( "unused" ) boolean startChanged,
+          @SuppressWarnings ( "unused" ) boolean loopTransitionChanged )
       {
-        fireTableDataChanged ();
+        if ( nameChanged )
+        {
+          fireTableDataChanged ();
+        }
       }
     };
 
@@ -2507,8 +2512,15 @@ public abstract class AbstractMachine implements Machine
     this.transitionList.remove ( transition );
     for ( State current : this.stateList )
     {
-      current.getTransitionBegin ().remove ( transition );
-      current.getTransitionEnd ().remove ( transition );
+      if ( current.getTransitionBegin ().contains ( transition ) )
+      {
+        current.removeTransitionBegin ( transition );
+      }
+
+      if ( current.getTransitionEnd ().contains ( transition ) )
+      {
+        current.removeTransitionEnd ( transition );
+      }
     }
     fireTableDataChanged ();
     transition

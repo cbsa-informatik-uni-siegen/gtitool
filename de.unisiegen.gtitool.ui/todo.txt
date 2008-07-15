@@ -1,6 +1,5 @@
 *** TODO ***
 
-CF		- x und y Position anpassen, wenn Start-Zustand oder Loop Transition
 CF		- Quotation Marks entfernen
 
 

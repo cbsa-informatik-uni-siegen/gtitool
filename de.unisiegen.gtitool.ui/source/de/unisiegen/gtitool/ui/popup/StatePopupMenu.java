@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
 
 import de.unisiegen.gtitool.core.entities.State;
@@ -19,12 +18,11 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.StateConfigDialog;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
 
 
 /**
- * A Popup Menu for {@link State}s
+ * A {@link JPopupMenu} for {@link State}s
  * 
  * @author Benjamin Mies
  * @version $Id$
@@ -137,21 +135,10 @@ public final class StatePopupMenu extends JPopupMenu
       {
         StatePopupMenu.this.state.getState ().setStartState (
             !StatePopupMenu.this.state.getState ().isStartState () );
-        if ( StatePopupMenu.this.state.getState ().isStartState () )
-        {
-          GraphConstants.setBackground ( StatePopupMenu.this.state
-              .getAttributes (), PreferenceManager.getInstance ()
-              .getColorItemStateStart ().getColor () );
-        }
-        else
-        {
-          GraphConstants.setBackground ( StatePopupMenu.this.state
-              .getAttributes (), PreferenceManager.getInstance ()
-              .getColorItemStateBackground ().getColor () );
-        }
 
         StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
+
         StateChangedItem item = new StateChangedItem (
             StatePopupMenu.this.model.getJGTIGraph (),
             StatePopupMenu.this.state.getState (), StatePopupMenu.this.state
@@ -175,8 +162,10 @@ public final class StatePopupMenu extends JPopupMenu
       {
         StatePopupMenu.this.state.getState ().setFinalState (
             !StatePopupMenu.this.state.getState ().isFinalState () );
+
         StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
+
         StateChangedItem item = new StateChangedItem (
             StatePopupMenu.this.model.getJGTIGraph (),
             StatePopupMenu.this.state.getState (), StatePopupMenu.this.state

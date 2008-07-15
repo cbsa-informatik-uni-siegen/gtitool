@@ -15,6 +15,7 @@ import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -135,6 +136,40 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
     this.graphModel = graphModel;
     this.state = state;
+
+    this.state.addStateChangedListener ( new StateChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void stateChanged (
+          @SuppressWarnings ( "unused" ) boolean nameChanged,
+          boolean startChanged, boolean loopTransitionChanged )
+      {
+        if ( startChanged )
+        {
+          if ( DefaultStateView.this.state.isStartState () )
+          {
+            moveRelative ( -StateView.START_OFFSET, 0 );
+          }
+          else
+          {
+            moveRelative ( StateView.START_OFFSET, 0 );
+          }
+        }
+
+        if ( loopTransitionChanged )
+        {
+          if ( DefaultStateView.this.state.isLoopTransition () )
+          {
+            moveRelative ( 0, -StateView.LOOP_TRANSITION_OFFSET );
+          }
+          else
+          {
+            moveRelative ( 0, StateView.LOOP_TRANSITION_OFFSET );
+          }
+        }
+      }
+    } );
 
     this.graphModel.addGraphModelListener ( new GraphModelListener ()
     {
@@ -399,6 +434,26 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
     Rectangle2D bounds = GraphConstants.getBounds ( getAttributes () );
     bounds.setRect ( x, y, bounds.getWidth (), bounds.getHeight () );
+    GraphConstants.setBounds ( getAttributes (), bounds );
+  }
+
+
+  /**
+   * Moves this {@link DefaultStateView} relative to the current position.
+   * 
+   * @param x The x offset value.
+   * @param y The y offset value.
+   */
+  public final void moveRelative ( double x, double y )
+  {
+    this.ignoreStateMove = true;
+
+    Rectangle2D bounds = GraphConstants.getBounds ( getAttributes () );
+
+    double newX = bounds.getX () + x < 0 ? 0 : bounds.getX () + x;
+    double newY = bounds.getY () + y < 0 ? 0 : bounds.getY () + y;
+
+    bounds.setRect ( newX, newY, bounds.getWidth (), bounds.getHeight () );
     GraphConstants.setBounds ( getAttributes (), bounds );
   }
 

@@ -437,7 +437,15 @@ public final class DefaultState implements State
       throw new IllegalArgumentException (
           "transition begins not in this state" ); //$NON-NLS-1$
     }
+
+    boolean oldTransitionLoop = isLoopTransition ();
     this.transitionBeginList.add ( transition );
+    boolean newTransitionLoop = isLoopTransition ();
+
+    if ( oldTransitionLoop != newTransitionLoop )
+    {
+      fireStateChanged ( false, false, true );
+    }
   }
 
 
@@ -531,14 +539,20 @@ public final class DefaultState implements State
 
   /**
    * Let the listeners know that the {@link State} has changed.
+   * 
+   * @param nameChanged Flag that indicates if the name has changed.
+   * @param startChanged Flag that indicates if the start value has changed.
+   * @param loopTransitionChanged Flag that indicates if the loop
+   *          {@link Transition} value has changed.
    */
-  private final void fireStateChanged ()
+  private final void fireStateChanged ( boolean nameChanged,
+      boolean startChanged, boolean loopTransitionChanged )
   {
     StateChangedListener [] listeners = this.listenerList
         .getListeners ( StateChangedListener.class );
     for ( StateChangedListener current : listeners )
     {
-      current.stateChanged ( this );
+      current.stateChanged ( nameChanged, startChanged, loopTransitionChanged );
     }
   }
 
@@ -904,7 +918,15 @@ public final class DefaultState implements State
       throw new IllegalArgumentException (
           "transition begins not in this state" ); //$NON-NLS-1$
     }
+
+    boolean oldTransitionLoop = isLoopTransition ();
     this.transitionBeginList.remove ( transition );
+    boolean newTransitionLoop = isLoopTransition ();
+
+    if ( oldTransitionLoop != newTransitionLoop )
+    {
+      fireStateChanged ( false, false, true );
+    }
   }
 
 
@@ -1066,7 +1088,7 @@ public final class DefaultState implements State
     if ( ( this.name == null ) || !this.name.equals ( name ) )
     {
       this.name = name;
-      fireStateChanged ();
+      fireStateChanged ( true, false, false );
       fireModifyStatusChanged ();
       firePrettyStringChanged ();
     }
@@ -1135,6 +1157,7 @@ public final class DefaultState implements State
     if ( this.startState != startState )
     {
       this.startState = startState;
+      fireStateChanged ( false, true, false );
       fireModifyStatusChanged ();
       firePrettyStringChanged ();
     }

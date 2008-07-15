@@ -1712,11 +1712,7 @@ public final class ConvertMachineDialog implements
     }
 
     setStatus ();
-
-    this.modelOriginal.getGraphModel ().cellsChanged (
-        DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
-    this.modelConverted.getGraphModel ().cellsChanged (
-        DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
+    updateGraph ();
   }
 
 
@@ -1733,11 +1729,7 @@ public final class ConvertMachineDialog implements
     }
 
     setStatus ();
-
-    this.modelOriginal.getGraphModel ().cellsChanged (
-        DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
-    this.modelConverted.getGraphModel ().cellsChanged (
-        DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
+    updateGraph ();
   }
 
 
@@ -2454,13 +2446,7 @@ public final class ConvertMachineDialog implements
             if ( manualStep )
             {
               setStatus ();
-
-              this.modelOriginal.getGraphModel ().cellsChanged (
-                  DefaultGraphModel.getAll ( this.modelOriginal
-                      .getGraphModel () ) );
-              this.modelConverted.getGraphModel ().cellsChanged (
-                  DefaultGraphModel.getAll ( this.modelConverted
-                      .getGraphModel () ) );
+              updateGraph ();
             }
             return;
           }
@@ -2766,11 +2752,7 @@ public final class ConvertMachineDialog implements
     if ( manualStep )
     {
       setStatus ();
-
-      this.modelOriginal.getGraphModel ().cellsChanged (
-          DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
-      this.modelConverted.getGraphModel ().cellsChanged (
-          DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
+      updateGraph ();
     }
   }
 
@@ -2854,11 +2836,7 @@ public final class ConvertMachineDialog implements
     if ( manualStep )
     {
       setStatus ();
-
-      this.modelOriginal.getGraphModel ().cellsChanged (
-          DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
-      this.modelConverted.getGraphModel ().cellsChanged (
-          DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
+      updateGraph ();
     }
   }
 
@@ -2951,5 +2929,17 @@ public final class ConvertMachineDialog implements
     int time = PreferenceManager.getInstance ().getAutoStepItem ()
         .getAutoStepInterval ();
     this.autoStepTimer.schedule ( new AutoStepTimerTask (), time, time );
+  }
+
+
+  /**
+   * Updates the {@link JGTIGraph}s.
+   */
+  private final void updateGraph ()
+  {
+    this.modelOriginal.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
+    this.modelConverted.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
   }
 }

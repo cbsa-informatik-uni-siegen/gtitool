@@ -593,6 +593,7 @@ public final class DefaultTransition implements Transition
 
     fireTransitionChanged ();
     fireModifyStatusChanged ();
+    firePrettyStringChanged ();
   }
 
 

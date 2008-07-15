@@ -19,9 +19,10 @@ angeben. Im Alphabet können alle Symbole werwendet werden, die nicht zur Syntax
 der Eingabe gehören. Das bedeutet \Symbol{,}, \Symbol{\{}, \Symbol{\}} und
 \SymbolEmpty{} können hier nicht verwendet werden.\vspace{10pt}
 
-In dem Dialog sind an allen Stellen schon vordefinierte Werte eingetragen.
-Dabei handelt es sich um die Vorgaben die man als Standardwerte in den
-Einstellung eingetragen hat. Wie man diese Standardwerte ändert kann man in Kapitel $4$ nachlesen.\vspace{10pt}
+In dem Dialog sind an allen Stellen schon vordefinierte Werte eingetragen. Dabei
+handelt es sich um die Vorgaben die man als Standardwerte in den Einstellung
+eingetragen hat. Wie man diese Standardwerte ändert kann man in Kapitel
+\ref{Preferences} nachlesen.\vspace{10pt}
 
 Wir müssen noch die von uns benötigten Symbole angeben. Dazu tragen wir in das
 Feld Alphabet \{\Symbol{0},\ \Symbol{1},\ \Symbol{2},\ \Symbol{3},\
@@ -195,7 +196,7 @@ Ver\-wen\-dungs\-möglich\-keiten:
   Automaten, und kann mit diesem weiterarbeiten.
   
   
-\subsection{Umwandeln in\ldots}
+\subsection{Umwandeln in\ldots}\label{ConvertTo}
   
 Es besteht auch die Möglichkeit zwischen verschiedenen Automatentypen
 umzuwandeln. Dabei stehen drei Umwandlungen zur Verfügung, die sich in den
@@ -305,10 +306,17 @@ die mit $\epsilon$-Übergängen zu erreichen sind.
 
 
 \subsection{Umwandeln in\ldots (Potenzmenge)}
-TODO CF
+Der einzige Unterschied zwischen den Menüpunkten "`Umwandeln in\ldots"' und
+"`Umwandeln in\ldots (Potenzmenge)"' ist, dass alle Zustände bereits zu Beginn
+angelegt werden, auch solche, die nicht benötigt werden, die also nicht
+erreichbar sind. In dem in Abschnitt \ref{ConvertTo} gewählten Beispiel wäre das
+der Zustand \{\State{z1}\}, da dieser nicht zu erreichen ist und nur einen
+Übergang mit allen Symbolen zu dem Zustand \State{$\emptyset$} hat. Wie solche
+Zustände im Anschluss entfernt werden können, kann im Abschnitt
+\ref{ReachableStates} nachgelesen werden.
 
 
-\subsection{Ereichbare Zustände}
+\subsection{Ereichbare Zustände}\label{ReachableStates}
 
 Über den Menüeintrag "`Extras"' kann der Punkt "`Erreichbare Zustände"'
 ausgewählt werden. In dem erscheinenden Dialog kann, wie in den anderen auch,

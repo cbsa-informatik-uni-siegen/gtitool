@@ -1,3 +1,2 @@
-CF		- Convert (Power set)
 CF		- Machine Tabelle editieren
 CF		- Beispiel zur Auswahl eines Überganges

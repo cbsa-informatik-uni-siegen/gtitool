@@ -186,7 +186,6 @@ public final class DefaultTransition implements Transition
       }
     };
 
-    // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
 
     try
@@ -201,17 +200,7 @@ public final class DefaultTransition implements Transition
     }
 
     this.initialSymbolSet = new TreeSet < Symbol > ();
-
-    try
-    {
-      add ( new DefaultSymbol () );
-    }
-    catch ( TransitionException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
+    this.initialSymbolSet.add ( new DefaultSymbol () );
 
     resetModify ();
   }

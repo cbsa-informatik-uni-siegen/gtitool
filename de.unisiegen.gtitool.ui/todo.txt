@@ -1,5 +1,9 @@
 *** TODO ***
 
+CF		- x und y Position anpassen, wenn Start-Zustand oder Loop Transition
+CF		- Quotation Marks entfernen
+
+
 *** FEATURE ***
 
 CF		- Doppeltes Handling aus dem Popupmenüs entfernen

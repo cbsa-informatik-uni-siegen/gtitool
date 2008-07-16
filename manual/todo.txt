@@ -1,2 +1,6 @@
 CF		- Machine Tabelle editieren
-CF		- Beispiel zur Auswahl eines Überganges
+CF		- Bilder einfügen
+CF		- Rechtschreibung korrigieren
+
+BM		- Bilder einfügen
+BM		- Rechtschreibung korrigieren

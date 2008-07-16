@@ -1,4 +1,4 @@
-\chapter{Wie erstelle ich einen Kellerautomaten?}
+\chapter{Wie erstelle ich einen Kellerautomaten?}\label{PDA}
 
 
 Wie ein normaler Automat angelegt wird, wurde bereits besprochen. In diesem
@@ -51,6 +51,9 @@ soll das Symbol \Symbol{a} auf den Keller geschrieben werden, es muss also beim
 Lese-Wort"' muss leer bleiben, da nichts vom Keller gelesen werden
 soll.\vspace{10pt}
 
+
+\section{Navigation}
+
 Wurden auf diese Weise alle Zustände und Übergange angelegt, kann der Automat
 validiert werden und sollte keine Fehler mehr aufweisen. Bei der Wort
 Navigation ist jetzt nicht nur das Eingabewort interessant, sondern auch der
@@ -61,3 +64,43 @@ gepackt und anschließend durch die Übergänge von \State{z1} nach \State{z2}
 bzw. von \State{z2} nach \State{z2} wieder entfernt. Am Ende wurde das
 komplette Wort \Word{aaabbb} gelesen, der Automat befindet sich im Zustand
 \State{z2} und der Keller ist leer, das Wort wird somit akzeptiert.
+
+
+\section{Kellerautomat aus Grammatik erstellen}
+
+Im folgenden soll ein Sonderfall der Navigation mit dem Kellerautomat betrachtet
+werden. Dazu muss die Grammatik erstellt werden, die Wörter der Form $a^n b^n$
+für $n \geq 0$ erkennt. Wie in Kapitel \ref{Grammar} angegeben, müssen die beiden
+Produktionen \StartSymbol{E} $\to$ \TerminalSymbol{$\epsilon$} und
+\StartSymbol{E} $\to$ \TerminalSymbol{a}\StartSymbol{E}\TerminalSymbol{b}
+angelegt werden. Anschließend wandeln wir die Grammatik in einen
+Kellerautomaten um, dies erfolgt mit "`Umwandel in\ldots"' im Menüpunkt
+"`Ausführen"'. Bei dieser Art der Umwandlung entsteht immer ein Kellerautomat
+mit zwei Zuständen \State{s} und \State{f}. Der Unterschied zu normalen
+Automaten ist, dass jetzt vom Zustand \State{f} mehrere Übergänge in sich
+selbst existieren, so dass eine Beschriftung des Überganges keinen Sinn hätte.
+Welche Übergänge genau vorhanden sind, kann in der "`Keller Operationen"'
+Tabelle nachgesehen werden.\vspace{10pt}
+
+Wird für diesen Automaten die Wordnavigation mit dem Wort \Word{aabb} gestartet,
+ergibt sich im zweiten Schritt der Navigation, dass der Übergang der verwendet
+werden kann, nicht mehr eindeutig ist. Oben auf dem Keller befindet sich das
+Nichtterminalzeichen \StartSymbol{E}, welches entweder durch
+\TerminalSymbol{$\epsilon$} oder durch
+\TerminalSymbol{a}\StartSymbol{E}\TerminalSymbol{b} ersetzt werden könnte. Da
+wir das Wort \Word{aabb} erkennen wollen, muss der Übergang \StartSymbol{E}
+$\to$ \TerminalSymbol{a}\StartSymbol{E}\TerminalSymbol{b} ausgewählt werden.
+Der nächste Schritt ist wieder eindeutig, da nur der Übergang ausgewählt werden
+kann, der \TerminalSymbol{a} vom Eingabewort liest und \TerminalSymbol{a} vom
+Keller entfernt. Im nächsten Schritt muss wieder ausgewählt werden, welcher
+Übergang verwendet werden soll. Da als nächstes Terminalzeichen wieder ein
+\TerminalSymbol{a} auf dem Eingabewort steht, muss wieder der Übergang \StartSymbol{E}
+$\to$ \TerminalSymbol{a}\StartSymbol{E}\TerminalSymbol{b} ausgewählt werden.
+Genau wie zuvor ist der nächste Schritt wieder eindeuting. Da als nächstes das
+Terminalzeichen \TerminalSymbol{b} auf dem Keller steht, muss diesmal der
+Übergang \StartSymbol{E} $\to$ \TerminalSymbol{$\epsilon$} ausgewählt werden.
+Durch diesen Übergang wird das oben auf dem Keller stehende
+Nichtterminalzeichen \StartSymbol{E} entfernt. Mit den nächsten zwei
+eindeutigen Schritten werden die Terminalzeichen \TerminalSymbol{b} auf dem
+Eingabewort gelesen und vom Keller entfernt. Da am Ende der Keller leer ist und
+der Zustand \State{f} aktiv ist, wird das Wort akzeptiert.

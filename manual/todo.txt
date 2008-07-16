@@ -1,4 +1,3 @@
-CF		- Machine Tabelle editieren
 CF		- Bilder einfügen
 CF		- Rechtschreibung korrigieren
 

@@ -83,19 +83,44 @@ wir den Automaten noch validieren, um zu sehen ob uns beim Anlegen der Zustände
 und Übergänge irgendwelche Fehler unterlaufen sind. Diese Funktion erreicht man
 über das Kontextmenü oder über den Menüpunkt "`Ausführen"'.
 
-\section{Was fange ich mit einem fertigen Automat an?}
+\section{Was fange ich mit einem Automaten an?}
 
-Für einen erstellten Automaten gibt es folgende
-Ver\-wen\-dungs\-möglich\-keiten:
+Für einen erstellten Automaten gibt es folgende in diesem Kapitel besprochende
+Ver\-wen\-dungs\-möglich\-keiten.
 
-\begin{itemize}
-  \item Vorlage für\ldots
-  \item Wortnavigation
-  \item Minimieren
-  \item Umwandeln in\ldots
-  \item Umwandeln in\ldots (Potenzmenge)
-  \item Erreichbare Zustände
-\end{itemize}
+
+\subsection{Bearbeiten per Übergangstabelle}
+
+Die Übergänge eines Automaten können über die Tabelle bearbeitet werden, so ist
+es möglich neue Übergänge anzulegen, Übergänge zu löschen, bestehende um
+Symbole zu erweitern oder Symbole von ihnen zu entfernen.\vspace{10pt}
+
+Betrachten wir ein einfaches Beispiel. Wir legen zwei Zustände \State{z0} und
+\State{z1} an und arbeiten auf dem Alphabet \{\Symbol{0}, \Symbol{1}\}. Die
+Übergangstabelle besteht somit aus vier Spalten, in der ersten Spalte werden die
+Zustände dargestellt, in der zweiten die Übergänge mit \Symbol{$\epsilon$} und in
+den anderen die Symbole des Alphabets, also in unserem Fall je eine Spalte für
+\Symbol{0} und \Symbol{1}.\vspace{10pt}
+
+Um von \State{z0} nach \State{z1} einen $\epsilon$-Übergang anzulegen muss die
+erste Zeile mit \State{z0} bearbeitet werden, da ein $\epsilon$-Übergang
+angelegt werden soll, muss die zweite Spalte bearbeitet werden. Um dies
+umzusetzen, muss auf die entsprechende Zelle doppelt geklickt werden. Es steht
+ein Parser zur Verfügung in den disjunkte, mit Komma getrennte Zustände eingetragen
+werden können. Die Zustande müssen natürlich vorhanden sein. In useren Beispiel
+tragen wir also in der zweiten Spalte, erste Zeile den Zustand \State{z1} ein
+und bestätigen die Eingabe mit Enter. Es wird wie erwartet ein
+$\epsilon$-Übergang von \State{z0} nach \State{z1} angelegt.\vspace{10pt}
+
+Als nächstes sollen zwei Übergänge auf einmal mit Symbol \Symbol{0} angelegt
+werden. Beide sollen von Zustand \State{z1} ausgehen, der erste soll bei
+\State{z0} enden, der zweite bei \State{z1}. Um dies umzusetzen muss die Zeile
+von \State{z1} und die Spalte von \Symbol{0} bearbeitet werden. Da der Übergang
+zu den beiden Zuständen gehen soll, muss \State{z0}, \State{z1} eingetragen
+werden.\vspace{10pt}
+
+Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
+
 
 \subsection{Vorlage für\ldots}
   
@@ -106,75 +131,73 @@ Ver\-wen\-dungs\-möglich\-keiten:
   
 \subsection{Wortnavigation}
   
-  Wir können für einen Automaten eine Wortnavigation starten. Das bedeutet,
-  dass wir ein Wort eingeben können, welches wir den Automaten verarbeiten
-  lassen wollen, und dann Symbolweise vor und zurück navigieren können. Dabei
-  werden die aktuell aktiven Zustände und Übergänge farblich hervorgehoben. Am
-  Ende können wir dann sehen, ob der Automat das von uns gewählte Wort
-  akzeptiert oder nicht.\vspace{10pt}
+  Wir können für einen Automaten eine Wortnavigation starten. Das bedeutet, dass
+  wir ein Wort eingeben können, welches wir den Automaten verarbeiten lassen
+  wollen, und dann Symbolweise vor und zurück navigieren können. Dabei werden die
+  aktuell aktiven Zustände und Übergänge farblich hervorgehoben. Am Ende können
+  wir dann sehen, ob der Automat das von uns gewählte Wort akzeptiert oder
+  nicht.\vspace{10pt}
   
-  Während man sich im Wortnavigationsmodus
-  befindet lässt sich der Automat nicht weiter bearbeiten. Das bedeutet
-  wir können Zustände und Übergänge weder anlegegen noch löschen
-  oder bearbeiten. Dies ist erst nach verlassen dieses Moudus wieder
-  möglich.\vspace{10pt}
+  Während man sich im Wortnavigationsmodus befindet lässt sich der Automat nicht
+  weiter bearbeiten. Das bedeutet wir können Zustände und Übergänge weder
+  anlegegen noch löschen oder bearbeiten. Dies ist erst nach verlassen dieses
+  Moudus wieder möglich.\vspace{10pt}
   
   Zur Wortnavigation gelangt man über den Menüpunkt "`Ausführen"' und "`Wort
-  eingeben"', oder direkt über den Togglebutton in der Toolbar. In dem
-  Feld "`Wort"' können wir jetzt ein beliebiges Wort eingeben. Als
-  Hilfestellung sehen wir rechts neben dem Eingabefeld das aktuelle Alphabet
-  mit den gültigen Symbolen.\vspace{10pt}
+  eingeben"', oder direkt über den Togglebutton in der Toolbar. In dem Feld
+  "`Wort"' können wir jetzt ein beliebiges Wort eingeben. Als Hilfestellung sehen
+  wir rechts neben dem Eingabefeld das aktuelle Alphabet mit den gültigen
+  Symbolen.\vspace{10pt}
   
-  Nachdem wir das Wort eingegeben haben startet man die Navigation über
-  "`Start"' ind der Toolbar oder im Kontextmenü. Jetzt kann man mit "`Schritt
-  vor"' und "`Schritt zurück durch das Wort navigieren. Es existiert auch noch
-  ein automatischer Modus. Dabei wird nach einer kurzen Verzögerung das nächste
+  Nachdem wir das Wort eingegeben haben startet man die Navigation über "`Start"'
+  ind der Toolbar oder im Kontextmenü. Jetzt kann man mit "`Schritt vor"' und
+  "`Schritt zurück durch das Wort navigieren. Es existiert auch noch ein
+  automatischer Modus. Dabei wird nach einer kurzen Verzögerung das nächste
   Symbol gelesen. Dieser Modus lässt sich durch den Togglebutton "`Automatische
   Schritte"' aktivieren und deaktivieren.\vspace{10pt}
   
-  Wenn man wissen möchte, über welche Pfade man zu den momentan aktiven
-  Zuständen gelangt ist, kann man sich dies über "`Extras"' und
-  "`Zustandspfad"' anzeigen lassen. Es öffnet sich ein neuer Dialog, mit einer
-  Tabelle in welcher für jeden aktiven Zustand der aktuelle Pfad angezeigt
-  wird.\vspace{10pt}
+  Wenn man wissen möchte, über welche Pfade man zu den momentan aktiven Zuständen
+  gelangt ist, kann man sich dies über "`Extras"' und "`Zustandspfad"' anzeigen
+  lassen. Es öffnet sich ein neuer Dialog, mit einer Tabelle in welcher für jeden
+  aktiven Zustand der aktuelle Pfad angezeigt wird.\vspace{10pt}
   
   Um die Wortnavigation zu beenden klickt man einfach wieder auf "`Wort
   eingeben"' in der Toolbar oder man wählt im Menü "`Ausführen"' den Punkt
-  "`Automat bearbeiten"'. Jetzt befinden wir uns wieder im normalen Modus und
-  wir können den Automaten wieder normal bearbeiten.
+  "`Automat bearbeiten"'. Jetzt befinden wir uns wieder im normalen Modus und wir
+  können den Automaten wieder normal bearbeiten.
    
 \subsection{Minimieren}
   
   Es besteht auch die Möglichkeit sich aus einem DFA den minimalen Automaten
   berechnen zu lassen. Für diese Funktion darf der Automat allerdings keine
-  Fehler mehr enthalten, was wir durch eine Validierung ausschließen können.
-  Das Minimieren startet man über den Menüpunkt "`Ausführen"' und
+  Fehler mehr enthalten, was wir durch eine Validierung ausschließen können. Das
+  Minimieren startet man über den Menüpunkt "`Ausführen"' und
   "`Minimieren"'.\vspace{10pt}
   
   Es öffnet sich ein neuer Dialog mit einer Ansicht des Automaten und einer
-  Tabelle. In der Automatenansicht werden immer die Zustände in der selben
-  Farbe dargestellt, welche sich in einer Äquivalenzklasse befinden. Also
-  haben Initial alle akzeptierenden Zustände die gleiche Farbe, und alle nicht
-  akzeptierenden Zustände.\vspace{10pt}
+  Tabelle. In der Automatenansicht werden immer die Zustände in der selben Farbe
+  dargestellt, welche sich in einer Äquivalenzklasse befinden. Also haben Initial
+  alle akzeptierenden Zustände die gleiche Farbe, und alle nicht akzeptierenden
+  Zustände.\vspace{10pt}
   
   Man kann jetzt durch klicken auf "`Schritt vor"' die Äquivalenzklassen weiter
   verfeinern. In der Tabelle wird angegeben welche Zustände in eine eigene
   Äquivalenzklasse gekommen sind, und diese werden auch jetzt in einer anderen
-  Farbe dargestellt. Gleichzeitig werden auch die Übergänge hervorgehoben,
-  welche bei diesem Verfeinerungsschritt eine Rolle gespielt haben. Dabei
-  beziehen sich die hervorgehobenen Übergänge immer auf den aktuell
-  ausgewählten Tabelleneintrag.\vspace{10pt}
+  Farbe dargestellt. Gleichzeitig werden auch die Übergänge hervorgehoben, welche
+  bei diesem Verfeinerungsschritt eine Rolle gespielt haben. Dabei beziehen sich
+  die hervorgehobenen Übergänge immer auf den aktuell ausgewählten
+  Tabelleneintrag.\vspace{10pt}
   
   Auf diese Weise kann man den Automaten jetzt Schritt für Schritt weiter
-  verfeinern, bis keine Verfeinerung der Äquivalenzklassen mehr möglich ist.
-  Wenn das der Fall ist, wird auch eine zweite Automatenansicht eingeblendet,
-  in der man den entstandenen minimierten Automaten sehen kann. Durch
-  bestätigen mit "`Ok"' wird jetzt eine neue Datei mit dem minimierten
-  Automaten erstellt, mit welcher man dann weiter arbeiten kann.\vspace{10pt}
+  verfeinern, bis keine Verfeinerung der Äquivalenzklassen mehr möglich ist. Wenn
+  das der Fall ist, wird auch eine zweite Automatenansicht eingeblendet, in der
+  man den entstandenen minimierten Automaten sehen kann. Durch bestätigen mit
+  "`Ok"' wird jetzt eine neue Datei mit dem minimierten Automaten erstellt, mit
+  welcher man dann weiter arbeiten kann.\vspace{10pt}
   
-  Natürlich kann der Minimierungsprozess jederzeit abgebrochen werden. In
-  diesem Fall wird keine neue Datei angelegt, und man kann den
-  Ausgangsautomaten weiter bearbeiten. \vspace{10pt}
+  Natürlich kann der Minimierungsprozess jederzeit abgebrochen werden. In diesem
+  Fall wird keine neue Datei angelegt, und man kann den Ausgangsautomaten weiter
+  bearbeiten. \vspace{10pt}
   
   Wenn man in den Navigationsbereich des Dialogs schaut, stellt man fest, das
   noch weitere Button verfügbar sind, auf welche jetzt noch nicht eingegangen
@@ -189,11 +212,11 @@ Ver\-wen\-dungs\-möglich\-keiten:
   abgeschlossen ist. Diese Funktion kann durch den "`Stop"' Button wieder
   deaktiviert werden.\vspace{10pt}
   
-  Wenn man die neue Datei mit dem minimalen Automaten erstellen möchte, ohne
-  sich die Minimierung im Details anzuschauen, besteht jederzeit die
-  Möglich\-keit den Dialog mit "`Ok"' zu bestätigen. Die Minimierung wird dann im
-  Hintergrund beendet, und man gelangt sofort zur Ansicht des neu entstandenen
-  Automaten, und kann mit diesem weiterarbeiten.
+  Wenn man die neue Datei mit dem minimalen Automaten erstellen möchte, ohne sich
+  die Minimierung im Details anzuschauen, besteht jederzeit die Möglich\-keit den
+  Dialog mit "`Ok"' zu bestätigen. Die Minimierung wird dann im Hintergrund
+  beendet, und man gelangt sofort zur Ansicht des neu entstandenen Automaten, und
+  kann mit diesem weiterarbeiten.
   
   
 \subsection{Umwandeln in\ldots}\label{ConvertTo}

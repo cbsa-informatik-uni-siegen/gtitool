@@ -35,8 +35,6 @@
   - source
 - jar files:
   - lib/ant.jar
-  - lib/java-cup.jar
-  - lib/jflex.jar
 
 
 *** gtitool.jgraph ***

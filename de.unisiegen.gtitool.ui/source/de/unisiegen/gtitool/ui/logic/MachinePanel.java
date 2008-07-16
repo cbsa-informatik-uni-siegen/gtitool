@@ -680,14 +680,18 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
   /**
    * Cancels the auto step {@link Timer}.
+   * 
+   * @return Returns true if the timer was canceled, otherwise false.
    */
-  public final void cancelAutoStepTimer ()
+  public final boolean cancelAutoStepTimer ()
   {
     if ( this.autoStepTimer != null )
     {
       this.autoStepTimer.cancel ();
       this.autoStepTimer = null;
+      return true;
     }
+    return false;
   }
 
 
@@ -1878,19 +1882,31 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       if ( this.machine.isUserInputNeeded () )
       {
-        cancelAutoStepTimer ();
+        boolean running = cancelAutoStepTimer ();
 
         ChooseTransitionDialog dialog = new ChooseTransitionDialog (
             this.mainWindowForm, this.machine.getPossibleTransitions () );
         dialog.show ();
 
-        startAutoStepTimer ( true );
+        if ( running )
+        {
+          startAutoStepTimer ( true );
+        }
 
         this.machine.nextSymbol ( dialog.getChoosenTransition () );
       }
       else
       {
         this.machine.nextSymbol ();
+      }
+
+      ArrayList < State > activeStateList = new ArrayList < State > ();
+      for ( State current : this.machine.getState () )
+      {
+        if ( current.isActive () )
+        {
+          activeStateList.add ( current );
+        }
       }
 
       // update stack

@@ -1823,6 +1823,13 @@ public abstract class AbstractMachine implements Machine
       return false;
     }
 
+    // special case for the pda navigation
+    if ( this.getMachineType ().equals ( MachineType.PDA )
+        && getPossibleTransitions ().size () > 0 )
+    {
+      return true;
+    }
+
     // the exception is thrown if the word is finished
     try
     {

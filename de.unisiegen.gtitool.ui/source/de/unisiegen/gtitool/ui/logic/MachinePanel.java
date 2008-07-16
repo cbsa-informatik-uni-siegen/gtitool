@@ -3446,9 +3446,30 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final void updateMachineTableStatus ()
   {
+    // disable if the names are not unique or the special pda with more than one
+    // loop transition is used
     if ( this.machine.isEveryStateUnique () )
     {
-      this.gui.jGTITableMachine.setEnabled ( true );
+      int number;
+      boolean found = false;
+      for ( State current : this.machine.getState () )
+      {
+        number = 0;
+        for ( Transition currentTransition : current.getTransitionBegin () )
+        {
+          if ( currentTransition.getStateEnd () == current )
+          {
+            number++ ;
+          }
+        }
+        if ( number >= 2 )
+        {
+          found = true;
+          break;
+        }
+      }
+
+      this.gui.jGTITableMachine.setEnabled ( !found );
     }
     else
     {

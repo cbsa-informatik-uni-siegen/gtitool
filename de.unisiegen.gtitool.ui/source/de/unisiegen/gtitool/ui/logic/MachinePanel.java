@@ -1474,7 +1474,22 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
             1 );
         Transition transition = this.model.getPDATableModel ().getTransition (
             index );
+
         transitionList.add ( transition );
+        if ( transition.getStateBegin () == transition.getStateEnd () )
+        {
+          for ( Transition current : transition.getStateBegin ()
+              .getTransitionBegin () )
+          {
+            if ( ( current.getStateBegin () == transition.getStateBegin () )
+                && ( current.getStateEnd () == transition.getStateEnd () )
+                && ( current != transition ) )
+            {
+              transitionList.add ( current );
+            }
+          }
+        }
+
         highlightTransitionActive ( transitionList );
 
         ArrayList < Symbol > symbolList = new ArrayList < Symbol > ( transition

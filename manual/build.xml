@@ -11,11 +11,6 @@
 		<exec dir="${basedir}" os="Linux" executable="pdflatex">
 			<arg value="manual.tex" />
 		</exec>
-		<exec dir="${basedir}" os="Linux" executable="makeindex">
-			<arg value="manual.idx" />
-			<arg value="-o" />
-			<arg value="manual.ind" />
-		</exec>
 		<exec dir="${basedir}" os="Linux" executable="pdflatex">
 			<arg value="manual.tex" />
 		</exec>

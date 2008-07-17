@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MachineModel machineType="ENFA" machineVersion="1018" usePushDownAlphabet="false">
+  <Alphabet>
+    <Symbol name="0" epsilon="false"/>
+    <Symbol name="1" epsilon="false"/>
+  </Alphabet>
+  <PushDownAlphabet>
+    <Symbol name="0" epsilon="false"/>
+    <Symbol name="1" epsilon="false"/>
+  </PushDownAlphabet>
+  <StateView x="16.0" y="47.0">
+    <State id="0" name="z0" startState="true" finalState="false">
+      <TransitionBegin id="0"/>
+      <TransitionBegin id="5"/>
+      <TransitionEnd id="5"/>
+    </State>
+  </StateView>
+  <StateView x="168.0" y="11.0">
+    <State id="1" name="z1" startState="false" finalState="false">
+      <TransitionBegin id="1"/>
+      <TransitionBegin id="8"/>
+      <TransitionEnd id="0"/>
+      <TransitionEnd id="12"/>
+    </State>
+  </StateView>
+  <StateView x="39.0" y="177.0">
+    <State id="2" name="z2" startState="false" finalState="false">
+      <TransitionBegin id="2"/>
+      <TransitionBegin id="6"/>
+      <TransitionEnd id="7"/>
+    </State>
+  </StateView>
+  <StateView x="184.0" y="193.0">
+    <State id="3" name="z3" startState="false" finalState="false">
+      <TransitionBegin id="3"/>
+      <TransitionBegin id="9"/>
+      <TransitionEnd id="1"/>
+      <TransitionEnd id="2"/>
+      <TransitionEnd id="4"/>
+      <TransitionEnd id="11"/>
+    </State>
+  </StateView>
+  <StateView x="295.0" y="66.0">
+    <State id="4" name="z4" startState="false" finalState="false">
+      <TransitionBegin id="4"/>
+      <TransitionBegin id="12"/>
+    </State>
+  </StateView>
+  <StateView x="512.0" y="46.0">
+    <State id="5" name="z5" startState="false" finalState="false">
+      <TransitionBegin id="11"/>
+      <TransitionEnd id="3"/>
+      <TransitionEnd id="8"/>
+      <TransitionEnd id="10"/>
+    </State>
+  </StateView>
+  <StateView x="140.0" y="316.0">
+    <State id="6" name="z6" startState="false" finalState="false">
+      <TransitionBegin id="7"/>
+      <TransitionEnd id="6"/>
+    </State>
+  </StateView>
+  <StateView x="324.0" y="255.0">
+    <State id="7" name="z7" startState="false" finalState="false">
+      <TransitionBegin id="10"/>
+      <TransitionEnd id="9"/>
+    </State>
+  </StateView>
+  <TransitionView>
+    <Transition id="0" stateBeginId="0" stateEndId="1">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="1" epsilon="false"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="1" stateBeginId="1" stateEndId="3">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="1" epsilon="false"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="2" stateBeginId="2" stateEndId="3">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="1" epsilon="false"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="3" stateBeginId="3" stateEndId="5">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="1" epsilon="false"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="4" stateBeginId="4" stateEndId="3">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="&quot;epsilon&quot;" epsilon="true"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="5" stateBeginId="0" stateEndId="0">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="&quot;epsilon&quot;" epsilon="true"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="6" stateBeginId="2" stateEndId="6">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="&quot;epsilon&quot;" epsilon="true"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="7" stateBeginId="6" stateEndId="2">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="&quot;epsilon&quot;" epsilon="true"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="8" stateBeginId="1" stateEndId="5">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="1" epsilon="false"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="9" stateBeginId="3" stateEndId="7">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="1" epsilon="false"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="10" stateBeginId="7" stateEndId="5">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="1" epsilon="false"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="11" stateBeginId="5" stateEndId="3">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="&quot;epsilon&quot;" epsilon="true"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="12" stateBeginId="4" stateEndId="1">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="&quot;epsilon&quot;" epsilon="true"/>
+    </Transition>
+  </TransitionView>
+</MachineModel>

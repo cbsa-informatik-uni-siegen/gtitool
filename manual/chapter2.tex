@@ -112,6 +112,13 @@ tragen wir also in der zweiten Spalte, erste Zeile den Zustand \State{z1} ein
 und bestätigen die Eingabe mit Enter. Es wird wie erwartet ein
 $\epsilon$-Übergang von \State{z0} nach \State{z1} angelegt.\vspace{10pt}
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{images/machine_table.png}
+\caption{Übergangstabelle bearbeiten}
+\end{center}
+\end{figure}
+
 Als nächstes sollen zwei Übergänge auf einmal mit Symbol \Symbol{0} angelegt
 werden. Beide sollen von Zustand \State{z1} ausgehen, der erste soll bei
 \State{z0} enden, der zweite bei \State{z1}. Um dies umzusetzen muss die Zeile
@@ -356,6 +363,13 @@ Der verwendete Algorithmus geht dabei in folgenden drei Schritten vor:
   \item Die bis jetzt ereichbaren Zustände werden hervorgehoben. Die Menge der
   noch nicht berechneten Zustände angezeigt 
 \end{itemize}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{images/reachable_states.png}
+\caption{Ereichbare Zustände}
+\end{center}
+\end{figure}
 
 Der Algorithmus läuft so lange, bis die Menge der noch nicht berechneten Zustände
 leer ist. Am Ende werden alle erreichbaren Zustände farblich hervorgehoben. Wie

@@ -1,8 +1,20 @@
 *** TODO ***
 
+CF		- GUI vom Productions Dialog ausbessert
+CF		- Grafik-Export verschieben (Handbuch)
+CF		- Abbrechen bei Kelleroperationen
+CF		- Mitteilung anzeigen, wenn Navigation fertig
+CF		- Wort eingeben -> rechtbündig (optional)
+
+BM		- Minimieren: Nicht erreichbare Zustände rauswerfen (Handbuch)
+BM		- Produktion per Doppelklick anlegen können
+BM		- Aktuelle Konfiguration darstellen (Edit-Dialog)
+BM		- Drucken: Minimieren (Breite stimmt nicht bei Potenz-Zuständen)
+
 
 *** FEATURE ***
 
+CF		- Wörter ausgeben, die erkannt werden
 CF		- Doppeltes Handling aus dem Popupmenüs entfernen
 CF		- Bei Label die einen PrettyString enthalten den HTML Code verwenden
 CF		- PDA Machinen Tabelle editierbar machen
@@ -13,13 +25,13 @@ CF		- Tastaturbefehle einbauen
 CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen
 CF		- SplitView: Horizontale/Vertikale Teilung
 CF		- Eine Überprüfung einbauen, ob auf dem Server eine neue Version verfügbar ist
-CF		- Wörter ausgeben, die erkannt werden
 CF		- Auswahl der Transition so gestalten, dass auch sehr viele gut aussehen
 CF		- Parser muss Code formatieren können (PrettyPrinter)
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout
 BM		- Farben beim Minimieren dynamisch berechnen
+BM		- Drucken (Mehrere Komponenten pro Seite)
 
 		- LaTeX Export
 		- Benutzerinteraktionen einbauen

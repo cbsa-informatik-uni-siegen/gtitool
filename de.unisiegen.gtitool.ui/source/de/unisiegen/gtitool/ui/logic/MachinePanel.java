@@ -1903,6 +1903,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
             this.mainWindowForm, this.machine.getPossibleTransitions () );
         dialog.show ();
 
+        if ( !dialog.isConfirmed () )
+        {
+          return;
+        }
+
         if ( running )
         {
           startAutoStepTimer ( true );

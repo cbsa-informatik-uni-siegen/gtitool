@@ -119,6 +119,7 @@ public final class ChooseTransitionDialog implements
    */
   public final void handleCancel ()
   {
+    this.confirmed = false;
     this.gui.dispose ();
   }
 
@@ -129,8 +130,6 @@ public final class ChooseTransitionDialog implements
   public final void handleOk ()
   {
     this.confirmed = true;
-    this.gui.setVisible ( false );
-
     this.gui.dispose ();
   }
 

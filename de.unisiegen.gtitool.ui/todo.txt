@@ -1,9 +1,7 @@
 *** TODO ***
 
-CF		- Abbrechen bei Kelleroperationen
 CF		- Mitteilung anzeigen, wenn Navigation fertig
 CF		- Wort eingeben -> rechtbündig (optional)
-CF		- Probleme mit dem Loop Routing beheben
 
 BM		- Minimieren: Nicht erreichbare Zustände rauswerfen (Handbuch)
 BM		- Produktion per Doppelklick anlegen können
@@ -29,6 +27,7 @@ CF		- SplitView: Horizontale/Vertikale Teilung
 CF		- Eine Überprüfung einbauen, ob auf dem Server eine neue Version verfügbar ist
 CF		- Auswahl der Transition so gestalten, dass auch sehr viele gut aussehen
 CF		- Parser muss Code formatieren können (PrettyPrinter)
+CF		- Probleme mit dem Loop Routing beheben
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout

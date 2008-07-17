@@ -63,6 +63,7 @@ public class ChooseTransitionDialogForm extends JDialog implements GUIClass <Cho
         jGTILabelHeader = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIPanelTransitions = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
@@ -80,6 +81,7 @@ public class ChooseTransitionDialogForm extends JDialog implements GUIClass <Cho
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
@@ -87,6 +89,7 @@ public class ChooseTransitionDialogForm extends JDialog implements GUIClass <Cho
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -106,8 +109,22 @@ public class ChooseTransitionDialogForm extends JDialog implements GUIClass <Cho
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
+
+        jGTIButtonCancel.setText(bundle.getString("ChooseTransitionDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setToolTipText(bundle.getString("ChooseTransitionDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIButtonCancelActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
+        getContentPane().add(jGTIButtonCancel, gridBagConstraints);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-400)/2, (screenSize.height-300)/2, 400, 300);
@@ -121,7 +138,12 @@ public class ChooseTransitionDialogForm extends JDialog implements GUIClass <Cho
         this.logic.handleCancel();
     }//GEN-LAST:event_formWindowClosing
 
+private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
+        this.logic.handleCancel();
+}//GEN-LAST:event_jGTIButtonCancelActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelHeader;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelTransitions;

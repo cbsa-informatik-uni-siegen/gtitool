@@ -1,6 +1,5 @@
 *** TODO ***
 
-CF		- Grafik-Export verschieben (Handbuch)
 CF		- Abbrechen bei Kelleroperationen
 CF		- Mitteilung anzeigen, wenn Navigation fertig
 CF		- Wort eingeben -> rechtbündig (optional)

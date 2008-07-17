@@ -3962,6 +3962,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.SaveAll" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemSaveAll ().setMnemonic (
         Messages.getString ( "MainWindow.SaveAllMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // ExportPicture
+    MainWindow.this.gui.getJMenuItemExportPicture ().setText (
+        Messages.getString ( "MainWindow.ExportPicture" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemExportPicture ().setMnemonic (
+        Messages.getString ( "MainWindow.ExportPictureMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // RecentlyUsed
     MainWindow.this.gui.getJMenuRecentlyUsed ().setText (
         Messages.getString ( "MainWindow.RecentlyUsed" ) ); //$NON-NLS-1$

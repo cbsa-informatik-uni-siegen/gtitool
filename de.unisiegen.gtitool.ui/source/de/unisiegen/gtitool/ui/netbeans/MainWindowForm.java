@@ -1071,8 +1071,10 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemSaveAs = new javax.swing.JMenuItem();
         jMenuItemSaveAll = new javax.swing.JMenuItem();
         jSeparatorFile3 = new javax.swing.JSeparator();
-        jMenuRecentlyUsed = new javax.swing.JMenu();
+        jMenuItemExportPicture = new javax.swing.JMenuItem();
         jSeparatorFile4 = new javax.swing.JSeparator();
+        jMenuRecentlyUsed = new javax.swing.JMenu();
+        jSeparatorFile5 = new javax.swing.JSeparator();
         jMenuItemQuit = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
         jMenuItemUndo = new javax.swing.JMenuItem();
@@ -1111,7 +1113,6 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemMinimize = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
-        jMenuItemExportPicture = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
         jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuItemReachableStates = new javax.swing.JMenuItem();
@@ -1517,11 +1518,21 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.add(jMenuItemSaveAll);
         jMenuFile.add(jSeparatorFile3);
 
+        jMenuItemExportPicture.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExportPictureMnemonic").charAt(0));
+        jMenuItemExportPicture.setText(bundle.getString("MainWindow.ExportPicture")); // NOI18N
+        jMenuItemExportPicture.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemExportPictureActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemExportPicture);
+        jMenuFile.add(jSeparatorFile4);
+
         jMenuRecentlyUsed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
         jMenuRecentlyUsed.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RecentlyUsedMnemonic").charAt(0));
         jMenuRecentlyUsed.setText(bundle.getString("MainWindow.RecentlyUsed")); // NOI18N
         jMenuFile.add(jMenuRecentlyUsed);
-        jMenuFile.add(jSeparatorFile4);
+        jMenuFile.add(jSeparatorFile5);
 
         jMenuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemQuit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
@@ -1799,15 +1810,6 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
             }
         });
         jMenuExtras.add(jMenuItemExchange);
-
-        jMenuItemExportPicture.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExportPictureMnemonic").charAt(0));
-        jMenuItemExportPicture.setText(bundle.getString("MainWindow.ExportPicture")); // NOI18N
-        jMenuItemExportPicture.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemExportPictureActionPerformed(evt);
-            }
-        });
-        jMenuExtras.add(jMenuItemExportPicture);
         jMenuExtras.add(jSeparatorExtras);
 
         jMenuItemHistory.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HistoryMnemonic").charAt(0));
@@ -2202,6 +2204,7 @@ private void jMenuItemExportPictureActionPerformed(java.awt.event.ActionEvent ev
     private javax.swing.JSeparator jSeparatorFile2;
     private javax.swing.JSeparator jSeparatorFile3;
     private javax.swing.JSeparator jSeparatorFile4;
+    private javax.swing.JSeparator jSeparatorFile5;
     private javax.swing.JSeparator jSeparatorFileEdit;
     private javax.swing.JSeparator jSeparatorNavigation;
     private javax.swing.JSeparator jSeparatorView;

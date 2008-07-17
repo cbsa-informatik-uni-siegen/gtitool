@@ -1,5 +1,2 @@
-CF		- Bilder einfügen
-CF		- Rechtschreibung korrigieren
-
-BM		- Bilder einfügen
-BM		- Rechtschreibung korrigieren
+BM		- Wort-Navigation - Akzeptiertes Wort
+BM		- Minimieren überarbeiten

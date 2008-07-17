@@ -107,15 +107,15 @@ das Kontextmenü erreichbar.
 
 \section{Was fange ich mit einem Automaten an?}
 
-Für einen erstellten Automaten gibt es folgende in diesem Kapitel besprochende
+Für einen erstellten Automaten gibt es folgende
 Ver\-wen\-dungs\-möglich\-keiten.
 
 
 \subsection{Bearbeiten per Übergangstabelle}
 
-Die Übergänge eines Automaten können über die Tabelle bearbeitet werden, so ist
-es möglich neue Übergänge anzulegen, Übergänge zu löschen, bestehende um
-Symbole zu erweitern oder Symbole von ihnen zu entfernen.\vspace{10pt}
+Die Übergänge eines Automaten können über die Tabelle bearbeitet werden. Es ist
+möglich neue Übergänge anzulegen. Bestehende Übergänge können gelöscht oder
+editiert werden.\vspace{10pt}
 
 Betrachten wir ein einfaches Beispiel. Wir legen zwei Zustände \State{z0} und
 \State{z1} an und arbeiten auf dem Alphabet \{\Symbol{0}, \Symbol{1}\}. Die
@@ -125,25 +125,25 @@ den anderen die Symbole des Alphabets, also in unserem Fall je eine Spalte für
 \Symbol{0} und \Symbol{1}.\vspace{10pt}
 
 Um von \State{z0} nach \State{z1} einen $\epsilon$-Übergang anzulegen muss die
-erste Zeile mit \State{z0} bearbeitet werden, da ein $\epsilon$-Übergang
-angelegt werden soll, muss die zweite Spalte bearbeitet werden. Um dies
-umzusetzen, muss auf die entsprechende Zelle doppelt geklickt werden. Es steht
-ein Parser zur Verfügung in den disjunkte, mit Komma getrennte Zustände eingetragen
-werden können. Die Zustande müssen natürlich vorhanden sein. In useren Beispiel
-tragen wir also in der zweiten Spalte, erste Zeile den Zustand \State{z1} ein
-und bestätigen die Eingabe mit Enter. Es wird wie erwartet ein
-$\epsilon$-Übergang von \State{z0} nach \State{z1} angelegt.\vspace{10pt}
+erste Zeile mit \State{z0} bearbeitet werden, da ein $\epsilon$-Übergang angelegt
+werden soll, muss die zweite Spalte bearbeitet werden. Um dies umzusetzen, muss
+auf die entsprechende Zelle doppelt geklickt werden. Es steht ein Parser zur
+Verfügung, in den mit Komma getrennte Zustände eingetragen werden können. Die
+Zustande müssen natürlich vorhanden sein. In userem Beispiel tragen wir also in
+der zweiten Spalte, ersten Zeile den Zustand \State{z1} ein und bestätigen die
+Eingabe mit Enter. Es wird wie erwartet ein $\epsilon$-Übergang von \State{z0}
+nach \State{z1} angelegt.\vspace{10pt}
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=12cm]{images/machine_table.png}
-\caption{Übergangstabelle bearbeiten}
+\caption{Automat - Übergangstabelle bearbeiten}
 \end{center}
 \end{figure}
 
 Als nächstes sollen zwei Übergänge auf einmal mit Symbol \Symbol{0} angelegt
 werden. Beide sollen von Zustand \State{z1} ausgehen, der erste soll bei
-\State{z0} enden, der zweite bei \State{z1}. Um dies umzusetzen muss die Zeile
+\State{z0} enden, der zweite bei \State{z1}. Um dies umzusetzen, muss die Zeile
 von \State{z1} und die Spalte von \Symbol{0} bearbeitet werden. Da der Übergang
 zu den beiden Zuständen gehen soll, muss \State{z0}, \State{z1} eingetragen
 werden.\vspace{10pt}
@@ -300,7 +300,7 @@ bestätigt, steht in der Hauptansicht der umgewandelte Automat zur Verfügung. M
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=12cm]{images/convert_to.png}
-\caption{Umwandeln in\ldots}
+\caption{Automat - Umwandeln in\ldots}
 \end{center}
 \end{figure}
 
@@ -310,7 +310,7 @@ Werden die Schritte einzeln durchgegangen, ergibt sich folgender Ablauf:
   \item Der Start-Zustand \State{z0} wird aktiviert.
   \item In der unteren Ansicht wird der Start-Zustand \{\State{z0}\} angelegt.
   \item Die Übergänge mit dem ersten Symbol aus dem Alphabet, also \Symbol{a},
-  werden hervorgehoben, um anzuzeigen welche Zustände mit dem Symbol zu
+  werden hervorgehoben, um anzuzeigen, welche Zustände mit dem Symbol zu
   erreichen sind.
   \item In unserem Beispiel sind das die Zustände \State{z0} und \State{z1},
   die hervorgehoben werden.
@@ -333,7 +333,8 @@ Werden die Schritte einzeln durchgegangen, ergibt sich folgender Ablauf:
   \State{$\emptyset$}. Wird dieser Zustand während der Wort Navigation
   erreicht, kann das Wort nicht mehr akzeptiert werden. Aus diesem Grund wird
   direkt der Übergang von diesem Zustand in sich selbst mit allen Symbolen des
-  Alphabetes angelegt.
+  Alphabets angelegt. Es wird ein Übergang mit Symbol \Symbol{b} zu diesem
+  Zustand \State{$\emptyset$} angelegt.
   \item Wie in Schritt sechs wird angezeigt, dass das Symbol \Symbol{b} fertig
   verarbeitet wurde. Da dieses Symbol das letzte im Alphabet ist, ist der
   Zustand \{\State{z0}\} fertiggestellt.
@@ -352,7 +353,7 @@ Werden die Schritte einzeln durchgegangen, ergibt sich folgender Ablauf:
   \item Das Symbol \Symbol{a} ist fertiggestellt.
   \item Da der Zustand \{\State{z0}, \State{z1}\} noch nicht fertiggestellt
   ist, wird er in beiden Ansichten wie gehabt hervorgehoben.
-  \item Alle Übergänge die von den Zuständen \State{z0} und \State{z1} mit
+  \item Alle Übergänge, die von den Zuständen \State{z0} und \State{z1} mit
   Symbol \Symbol{b} ausgehen, werden hervorgehoben. In unserem Beispiel kommt
   das nicht vor.
   \item Die mit dem Symbol \Symbol{b} erreichbaren Zustände werden
@@ -377,34 +378,37 @@ Zu den anderen zwei Umwandlungarten gibt es noch kleinere Änderungen, die bei d
 durchgespielten Beispiel nicht betrachtet werden konnten. Wird ein
 $\epsilon$-NDEA in einen NDEA umgewandelt, entfällt das Anlegen des Zustandes
 \State{$\emptyset$}, es wird einfach kein Übergang mit dem entsprechenden Symbol
-angelegt, da bei einem NFA nicht alle Symbole vorhanden sein müssen. Wird ein
-$\epsilon$-NDEA umgewandelt, kommen jeweils zwei Schritte dazu. So wird nach dem
-Aktivieren der alten Zustände, bei unserem Beispiel die Schritte eins, sieben,
-etc., der $\epsilon$-Abschluss berechnet, es werden also auch alle Zustände
-aktiviert, die mit $\epsilon$-Übergängen zu erreichen sind. Gleiches gilt für das
-Anzeigen der neuen Zustände, bei unserem Beispiel in den Schritten vier, neun
-etc., auch hier werden in einem einzelnen Schritt alle Zustände hervorgehoben,
-die mit $\epsilon$-Übergängen zu erreichen sind.
+angelegt, da bei einem NFA nicht alle Symbole vorhanden sein
+müssen.\vspace{10pt}
+
+Wird ein $\epsilon$-NDEA umgewandelt, kommen jeweils zwei Schritte dazu. So wird
+nach dem Aktivieren der alten Zustände, bei unserem Beispiel die Schritte eins,
+sieben, etc., der $\epsilon$-Abschluss berechnet, es werden also auch alle
+Zustände aktiviert, die mit $\epsilon$-Übergängen zu erreichen sind. Gleiches
+gilt für das Anzeigen der neuen Zustände, bei unserem Beispiel in den Schritten
+vier, neun etc., auch hier werden in einem einzelnen Schritt alle Zustände
+hervorgehoben, die mit $\epsilon$-Übergängen zu erreichen sind.
 
 
 \subsection{Umwandeln in\ldots (Potenzmenge)}
 Der einzige Unterschied zwischen den Menüpunkten "`Umwandeln in\ldots"' und
-"`Umwandeln in\ldots (Potenzmenge)"' ist, dass alle Zustände bereits zu Beginn
-angelegt werden, auch solche, die nicht benötigt werden, die also nicht
-erreichbar sind. In dem in Abschnitt \ref{ConvertTo} gewählten Beispiel wäre das
-der Zustand \{\State{z1}\}, da dieser nicht zu erreichen ist und nur einen
-Übergang mit allen Symbolen zu dem Zustand \State{$\emptyset$} hat. Wie solche
-Zustände im Anschluss entfernt werden können, kann im Abschnitt
-\ref{ReachableStates} nachgelesen werden.
+"`Umwandeln in\ldots (Potenzmenge)"' ist, dass alle Zustände bei Verwendung der
+Potenzmenge bereits zu Beginn angelegt werden, auch solche, die nicht benötigt
+werden, die also nicht erreichbar sind. In dem in Abschnitt \ref{ConvertTo}
+gewählten Beispiel wäre das der Zustand \{\State{z1}\}, da dieser nicht zu
+erreichen ist und nur einen Übergang mit allen Symbolen zu dem Zustand
+\State{$\emptyset$} hat. Wie solche Zustände im Anschluss entfernt werden können,
+kann im Abschnitt \ref{ReachableStates} nachgelesen werden.
 
 
-\subsection{Ereichbare Zustände}\label{ReachableStates}
+\subsection{Erreichbare Zustände}\label{ReachableStates}
 
 Über den Menüeintrag "`Extras"' kann der Punkt "`Erreichbare Zustände"'
 ausgewählt werden. In dem erscheinenden Dialog kann, wie in den anderen auch,
-durch die einzelnen Schritte navigiert werden. Es geht hierbei darum in möglichst
-kleinen Schritten zu erkennen, welche Zustände erreichbar sind und welche nicht.
-Der verwendete Algorithmus geht dabei in folgenden drei Schritten vor:
+durch die einzelnen Schritte navigiert werden. Es geht hierbei darum, in
+möglichst kleinen Schritten zu erkennen, welche Zustände erreichbar sind und
+welche nicht. Der verwendete Algorithmus geht dabei in folgenden drei Schritten
+vor:
 
 \begin{itemize}
   \item Ein Zustand, der noch nicht berechnet wurde, wird ausgewählt (am Anfang
@@ -419,7 +423,7 @@ Der verwendete Algorithmus geht dabei in folgenden drei Schritten vor:
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=12cm]{images/reachable_states.png}
-\caption{Ereichbare Zustände}
+\caption{Automat - Erreichbare Zustände}
 \end{center}
 \end{figure}
 
@@ -427,6 +431,5 @@ Der Algorithmus läuft so lange, bis die Menge der noch nicht berechneten Zustä
 leer ist. Am Ende werden alle erreichbaren Zustände farblich hervorgehoben. Wie
 in den anderen Dialogen besteht jederzeit die Möglichkeit den Dialog abzubrechen,
 wobei er dann einfach geschlossen wird. Man hat auch jederzeit die Möglichkeit
-mit einem Klick auf "`OK"' die nicht erreichbaren Zustände zu berechnen und eine
-Datei anzulegen, die diese nicht erreichbaren Zustände nicht enthält. Dabei
-werden auch alle beteiligten Übergänge nicht mit übernommen.
+mit einem Klick auf "`OK"' die komplette Berechnung durchzuführen, und einen
+Automaten anzulegen, der nur noch die erreichbaren Zustände enthält.

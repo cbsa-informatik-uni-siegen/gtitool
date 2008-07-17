@@ -179,6 +179,21 @@ public final class JGTIGraph extends JGraph implements Printable
         minY = Math.min ( minY, y );
         maxY = Math.max ( maxY, y + height );
       }
+      else if ( object instanceof DefaultTransitionView )
+      {
+        DefaultTransitionView current = ( DefaultTransitionView ) object;
+        Rectangle bounds = current.getTransition ().getLabelBounds ();
+
+        int x = bounds.x;
+        int y = bounds.y;
+        int width = bounds.width;
+        int height = bounds.height;
+
+        minX = Math.min ( minX, x );
+        maxX = Math.max ( maxX, x + width );
+        minY = Math.min ( minY, y );
+        maxY = Math.max ( maxY, y + height );
+      }
     }
 
     return new Rectangle ( minX, minY, maxX - minX, maxY - minY );

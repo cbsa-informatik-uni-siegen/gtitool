@@ -854,6 +854,13 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
           dx += this.metrics.charWidth ( chars [ i ] );
         }
       }
+      
+      transition.setLabelBounds ( new Rectangle (
+          (int)(p.getX() + offset)-sw / 2 - 1,
+          (int)p.getY() - sh / 2 - 1,
+          sw + 2,
+          sh + 2));
+      
       // MODIFYEND
       
       if (applyTransform) {

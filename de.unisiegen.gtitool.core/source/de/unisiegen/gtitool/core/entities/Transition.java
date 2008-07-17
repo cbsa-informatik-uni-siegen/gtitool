@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.awt.Rectangle;
 import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
@@ -132,6 +133,14 @@ public interface Transition extends Entity < Transition >, Storable,
    * @return The id.
    */
   public int getId ();
+
+
+  /**
+   * Returns the label bounds.
+   * 
+   * @return The label bounds.
+   */
+  public Rectangle getLabelBounds ();
 
 
   /**
@@ -365,6 +374,14 @@ public interface Transition extends Entity < Transition >, Storable,
    * @param id The id to set.
    */
   public void setId ( int id );
+
+
+  /**
+   * Sets the label bounds.
+   * 
+   * @param labelBounds The label bounds.
+   */
+  public void setLabelBounds ( Rectangle labelBounds );
 
 
   /**

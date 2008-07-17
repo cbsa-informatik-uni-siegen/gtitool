@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -169,6 +170,12 @@ public final class DefaultTransition implements Transition
    * The {@link PrettyStringChangedListener}.
    */
   private PrettyStringChangedListener prettyStringChangedListener;
+
+
+  /**
+   * The label rectangle.
+   */
+  public Rectangle labelBounds = new Rectangle ();
 
 
   /**
@@ -794,6 +801,17 @@ public final class DefaultTransition implements Transition
   /**
    * {@inheritDoc}
    * 
+   * @see Transition#getLabelBounds()
+   */
+  public final Rectangle getLabelBounds ()
+  {
+    return this.labelBounds;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
@@ -1260,6 +1278,17 @@ public final class DefaultTransition implements Transition
       throw new IllegalArgumentException ( "id is already setted" ); //$NON-NLS-1$
     }
     this.id = id;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Transition#setLabelBounds(Rectangle)
+   */
+  public final void setLabelBounds ( Rectangle labelBounds )
+  {
+    this.labelBounds = labelBounds;
   }
 
 

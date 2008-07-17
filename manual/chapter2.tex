@@ -3,6 +3,12 @@
 Wir wollen uns ahand des folgenden Beispiels anschauen wie ein Automat erstellt
 wird:\vspace{10pt}
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{images/enfa_example.png}
+\end{center}
+\end{figure}
+
 \section{Neue Automat Datei anlegen}
 
 Am Anfang müssen wir dazu erst einmal den "`Neu\ldots"' Dialog öffnen. Dort
@@ -31,8 +37,15 @@ Feld Alphabet \{\Symbol{0},\ \Symbol{1},\ \Symbol{2},\ \Symbol{3},\
 können den neuen Automaten durch klick auf "`Fertig"' erstellen.\vspace{10pt}
 \vspace{10pt} 
 
-Das für den Automaten angegebene Alphabet lässt sich jeder Zeit über "`Dokument
-editieren"' nächträglich ändern.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=8cm]{images/new_dialog_machine.png}
+\caption{Automat - Toolbar}
+\end{center}
+\end{figure}
+
+Das für den Automaten angegebene Alphabet lässt sich jeder Zeit über den Button
+"`Dokument editieren"' nächträglich ändern.
 
 \section{Zustände und Übergänge anlegen}
 
@@ -45,7 +58,15 @@ auswählen. Folgende Modi sind in der Toolbar verfügbar:
   \item Neuer Übergang
   \item Neuer Start Zustand
   \item Neuer Akzeptierender Zustand
+  \item Wortnavigation
 \end{itemize}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=4cm]{images/machine_toolbar.png}
+\caption{Automat - Toolbar}
+\end{center}
+\end{figure}
 
 Da wir zu Beginn den Startzustand anlegen wollen wählen wir "`Neuer Akzeptierender
 Zustand"' und klicken auf eine freie Fläche um den Zustand dort zu erstellen.
@@ -145,6 +166,14 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
   wir dann sehen, ob der Automat das von uns gewählte Wort akzeptiert oder
   nicht.\vspace{10pt}
   
+    
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{images/dfa_navigation.png}
+\caption{Automat - Wortnavigation}
+\end{center}
+\end{figure}
+  
   Während man sich im Wortnavigationsmodus befindet lässt sich der Automat nicht
   weiter bearbeiten. Das bedeutet wir können Zustände und Übergänge weder
   anlegegen noch löschen oder bearbeiten. Dies ist erst nach verlassen dieses
@@ -162,11 +191,19 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
   automatischer Modus. Dabei wird nach einer kurzen Verzögerung das nächste
   Symbol gelesen. Dieser Modus lässt sich durch den Togglebutton "`Automatische
   Schritte"' aktivieren und deaktivieren.\vspace{10pt}
-  
+
   Wenn man wissen möchte, über welche Pfade man zu den momentan aktiven Zuständen
   gelangt ist, kann man sich dies über "`Extras"' und "`Zustandspfad"' anzeigen
   lassen. Es öffnet sich ein neuer Dialog, mit einer Tabelle in welcher für jeden
-  aktiven Zustand der aktuelle Pfad angezeigt wird.\vspace{10pt}
+  aktiven Zustand der aktuelle Pfad angezeigt wird. Dabei wird als erstes der
+  kürzeste Pfad angezeigt, und dann alle weiteren Pfade.\vspace{10pt}
+  
+    \begin{figure}[h]
+  \begin{center}
+  \includegraphics[width=12cm]{images/history_path.png}
+  \caption{Automat - Minimieren}
+  \end{center}
+  \end{figure}
   
   Um die Wortnavigation zu beenden klickt man einfach wieder auf "`Wort
   eingeben"' in der Toolbar oder man wählt im Menü "`Ausführen"' den Punkt
@@ -180,6 +217,13 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
   Fehler mehr enthalten, was wir durch eine Validierung ausschließen können. Das
   Minimieren startet man über den Menüpunkt "`Ausführen"' und
   "`Minimieren"'.\vspace{10pt}
+  
+  \begin{figure}[h]
+  \begin{center}
+  \includegraphics[width=12cm]{images/minimize.png}
+  \caption{Automat - Minimieren}
+  \end{center}
+  \end{figure}
   
   Es öffnet sich ein neuer Dialog mit einer Ansicht des Automaten und einer
   Tabelle. In der Automatenansicht werden immer die Zustände in der selben Farbe

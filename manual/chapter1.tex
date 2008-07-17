@@ -8,7 +8,7 @@ Vorlesungsunterlagen durchgehen:\vspace{10pt}
 G = ($\Sigma, N, S, P )\ mit $\\
 	$\Sigma = \{\TerminalSymbol{0}, \TerminalSymbol{1}, \TerminalSymbol{x},
 	\TerminalSymbol{y}, \TerminalSymbol{-}, \TerminalSymbol{+},
-	\TerminalSymbol{*}, \TerminalSymbol{()}, \TerminalSymbol{)}\}$\\ $N =
+	\TerminalSymbol{*}, \TerminalSymbol{(}, \TerminalSymbol{)}\}$\\ $N =
 	\{\StartSymbol{E}\}$\\ $S=\StartSymbol{E}$\\ 
 	$P = \{\StartSymbol{E} \to \TerminalSymbol{0},\ \StartSymbol{E} \to \TerminalSymbol{1},\ 
 	\StartSymbol{E}	\to \TerminalSymbol{x},\ \StartSymbol{E} \to \TerminalSymbol{y},\ 
@@ -52,6 +52,13 @@ wir in das entsprechende Feld "`\{\TerminalSymbol{0}, \TerminalSymbol{1},
 \TerminalSymbol{*}, \TerminalSymbol{(}, \TerminalSymbol{)}\}"' ein.\\ Damit
 haben wir alle benötigten Information eingegeben und können die neue Grammatik durch klick auf "`Fertig"' erstellen.\vspace{10pt}
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=8cm]{images/new_dialog_grammar.png}
+\caption{Grammatik - Neu Dialog}
+\end{center}
+\end{figure}
+
 Alle Einstellungen die wir gerade im letzen Dialog für die neue Datei getroffen
 haben lassen sich über "`Dokument editieren"'
 
@@ -73,6 +80,13 @@ Verfügung stehen. Wir fangen an mit der Produktion "`$\StartSymbol{E} \to
 ein. Als weitere Hilfestellung wird im unteren Dialog die resultierende Produktion im ganzen angezeigt. Wir bestätigen den
 Dialog noch mit "`Ok"' und die neue Produktion erscheint in unserer Liste.\vspace{10pt}
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=8cm]{images/production_dialog.png}
+\caption{Grammatik - Produktions Dialog}
+\end{center}
+\end{figure}
+
 Wir können die Produktion selbstverständlich auch editieren und wieder löschen.
 Beide Funktionen sind über das Kontextmenü für die ausgewählte Produktion
 verfügbar.\vspace{10pt}
@@ -82,6 +96,13 @@ alle Produktionen angelegt haben sind wir auch mit dem anlegen der Grammatik
 fertig. Es besteht jetzt noch die Möglichkeit die Grammatik zu validieren, um
 zu sehen, ob man beim Erstellen irgendwelche Fehler gemacht hat. Diese Funktion
 erreicht man über das Kontextmenü oder über den Menüpunkt "`Ausführen"'.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=8cm]{images/cfg_example.png}
+\caption{Grammatik - Kontextfreie Grammatik}
+\end{center}
+\end{figure}
 
 \section{Was fange ich mit einer Grammatik an?}
 

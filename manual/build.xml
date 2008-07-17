@@ -8,19 +8,16 @@
 
 	<!-- dist -->
 	<target name="dist" description="Dist manual">
-		<exec dir="${basedir}" os="Linux" executable="latex">
+		<exec dir="${basedir}" os="Linux" executable="pdflatex">
 			<arg value="manual.tex" />
 		</exec>
-		<exec dir="${basedir}" os="Linux" executable="latex">
-			<arg value="manual.tex" />
-		</exec>
-		<exec dir="${basedir}" os="Linux" executable="dvips">
+		<exec dir="${basedir}" os="Linux" executable="makeindex">
+			<arg value="manual.idx" />
 			<arg value="-o" />
-			<arg value="manual.ps" />
-			<arg value="manual.dvi" />
+			<arg value="manual.ind" />
 		</exec>
-		<exec dir="${basedir}" os="Linux" executable="ps2pdf">
-			<arg value="manual.ps" />
+		<exec dir="${basedir}" os="Linux" executable="pdflatex">
+			<arg value="manual.tex" />
 		</exec>
 		<delete>
 			<fileset dir="${basedir}">

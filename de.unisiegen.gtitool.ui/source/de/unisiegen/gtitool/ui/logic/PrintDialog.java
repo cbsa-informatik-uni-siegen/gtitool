@@ -1013,8 +1013,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     {
       if ( this.gui.jGTIRadioButtonMachineGraph.isSelected () )
       {
-        printJGraph ( this.machinePanel.getJGTIGraph (),
-            this.convertMachineDialog.getMachinePanel ().getName () );
+        printJGraph ( this.machinePanel.getJGTIGraph (), this.machinePanel
+            .getName () );
       }
       else if ( this.gui.jGTIRadioButtonMachinePDATable.isSelected () )
       {
@@ -1024,8 +1024,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table.setModel ( this.tableModel );
         this.table.setColumnModel ( this.tableColumnModel );
 
-        printTableModel ( this.convertMachineDialog.getMachinePanel ()
-            .getName ()
+        printTableModel ( this.machinePanel.getName ()
             + " " + Messages.getString ( "PrintDialog.PDATable" ) ); //$NON-NLS-1$ //$NON-NLS-2$
       }
       else
@@ -1035,8 +1034,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table = new JGTITable ();
         this.table.setModel ( this.tableModel );
         this.table.setColumnModel ( this.tableColumnModel );
-        printTableModel ( this.convertMachineDialog.getMachinePanel ()
-            .getName ()
+        printTableModel ( this.machinePanel.getName ()
             + " " + Messages.getString ( "PrintDialog.Table" ) ); //$NON-NLS-1$ //$NON-NLS-2$
       }
     }

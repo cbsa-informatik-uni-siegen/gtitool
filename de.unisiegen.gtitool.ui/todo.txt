@@ -1,6 +1,5 @@
 *** TODO ***
 
-CF		- GUI vom Productions Dialog ausbessert
 CF		- Grafik-Export verschieben (Handbuch)
 CF		- Abbrechen bei Kelleroperationen
 CF		- Mitteilung anzeigen, wenn Navigation fertig

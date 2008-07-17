@@ -5,11 +5,13 @@ CF		- Grafik-Export verschieben (Handbuch)
 CF		- Abbrechen bei Kelleroperationen
 CF		- Mitteilung anzeigen, wenn Navigation fertig
 CF		- Wort eingeben -> rechtbündig (optional)
+CF		- Beim Bild Export müssen große Transitionen berücksichtigt werden
 
 BM		- Minimieren: Nicht erreichbare Zustände rauswerfen (Handbuch)
 BM		- Produktion per Doppelklick anlegen können
 BM		- Aktuelle Konfiguration darstellen (Edit-Dialog)
 BM		- Drucken: Minimieren (Breite stimmt nicht bei Potenz-Zuständen)
+BM		- Beim Drucken müssen große Transitionen berücksichtigt werden
 
 
 *** FEATURE ***
@@ -35,3 +37,4 @@ BM		- Drucken (Mehrere Komponenten pro Seite)
 
 		- LaTeX Export
 		- Benutzerinteraktionen einbauen
+		- Automat in Regulären Ausdruck umwandeln

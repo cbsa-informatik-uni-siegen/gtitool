@@ -53,21 +53,61 @@ Das für den Automaten angegebene Alphabet, lässt sich jeder Zeit über den But
 Um einen Automaten zu bearbeiten, müssen wir zuerst den entsprechenden Modus
 auswählen. Folgende Modi sind in der Toolbar verfügbar:
 
-\begin{itemize}
-  \item Maus Modus
-  \item Neuer Zustand
-  \item Neuer Übergang
-  \item Neuer Start Zustand
-  \item Neuer Akzeptierender Zustand
-  \item Wort eingeben
-\end{itemize}
+\begin{figure}[h!]
+  \begin{center}
+    \begin{minipage}[t]{1cm}
+      \includegraphics[width=0.4cm]{images/machineToolbar/mouse.png}
+    \end{minipage}
+    \begin{minipage}[t]{5cm}
+      Maus Modus
+    \end{minipage}
+  \end{center}
+\end{figure} 
 
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=4cm]{images/machine_toolbar.png}
-\caption{Automat - Toolbar}
-\end{center}
+\begin{figure}[h!]
+  \begin{center}
+    \begin{minipage}[t]{1cm}
+      \includegraphics[width=0.5cm]{images/machineToolbar/state.png}
+    \end{minipage}
+    \begin{minipage}[t]{5cm}
+      Neuer Zustand
+    \end{minipage}
+  \end{center}
+\end{figure} 
+
+\begin{figure}[h!]
+  \begin{center}
+    \begin{minipage}[t]{1cm}
+      \includegraphics[width=0.5cm]{images/machineToolbar/transition.png}
+    \end{minipage}
+    \begin{minipage}[t]{5cm}
+      Neuer Übergang
+    \end{minipage}
+  \end{center}
+\end{figure} 
+
+\begin{figure}[h!]
+  \begin{center}
+    \begin{minipage}[t]{1cm}
+      \includegraphics[width=0.5cm]{images/machineToolbar/start.png}
+    \end{minipage}
+    \begin{minipage}[t]{5cm}
+      Neuer Start Zustand
+    \end{minipage}
+  \end{center}
 \end{figure}
+
+\begin{figure}[h!]
+  \begin{center}
+    \begin{minipage}[t]{1cm}
+      \includegraphics[width=0.5cm]{images/machineToolbar/final.png}
+    \end{minipage}
+    \begin{minipage}[t]{5cm}
+      Neuer Akzeptierender Zustand
+    \end{minipage}
+  \end{center}
+\end{figure} 
+
 
 Da wir zu Beginn den Startzustand anlegen wollen wählen, wir "`Neuer
 Start Zustand"' und klicken auf eine freie Fläche um den Zustand dort zu
@@ -165,20 +205,25 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
   wollen, und können dann schrittweise vor und zurück navigieren. Dabei
   werden die aktuell aktiven Zustände und Übergänge farblich hervorgehoben. Am Ende können
   wir dann sehen, ob der Automat das von uns gewählte Wort akzeptiert oder
-  nicht.\vspace{10pt}
-  
-    
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=12cm]{images/dfa_navigation.png}
-\caption{Automat - Wortnavigation}
-\end{center}
-\end{figure}
+  nicht. Dies wird über ein Statusfeld im unteren Fenster
+  signalisiert. Es gibt auch die Möglichkeit zu erkennen ob ein
+  Wort zu einem früheren Zeitpunkt der Navigation akzeptiert würde.
+  Dies kann man ahand eines Rahmens um das aktuelle Wort Feld
+  erkennen. Ein roter Rahmen steht dafür, dass das Wort bis zum
+  aktuellen Symbol von unserem Automat nicht akzeptiert wird, ein grüner Rahmen
+  hingegen gibt zu verstehen, dass es akzeptiert wird.\vspace{10pt}
   
   Während man sich im Wortnavigationsmodus befindet lässt sich der Automat nicht
   weiter bearbeiten. Das bedeutet wir können Zustände und Übergänge weder
   anlegegen noch löschen oder bearbeiten. Dies ist erst nach Verlassen dieses
   Modus wieder möglich.\vspace{10pt}
+  
+  \begin{figure}[h]
+  \begin{center}
+  \includegraphics[width=12cm]{images/dfa_navigation.png}
+  \caption{Automat - Wortnavigation}
+  \end{center}
+  \end{figure}
   
   Zur Wortnavigation gelangt man über den Menüpunkt "`Ausführen"' und "`Wort
   eingeben"', oder direkt über den Button in der Toolbar. In dem Feld
@@ -219,18 +264,24 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
   Minimieren startet man über den Menüpunkt "`Ausführen"' und
   "`Minimieren"'.\vspace{10pt}
   
-  \begin{figure}[h]
+  Es öffnet sich ein neuer Dialog mit einer Ansicht des Automaten und einer
+  Tabelle. Der Automat sieht im Moment noch genau wie unser Ausgangsautomat
+  aus. Wenn man allerdings jetzt auf "`Schritt vor"' klickt, werden als erster
+  Schritt alle nicht erreichbaren Zustände entfernt. In der Outline wird
+  angegeben, um welche Zustände es sich dabei handelt. Der zweite Schritt
+  besteht darin, die erste Einteilung der Äquivalenzklassen vorzunehmen. Dazu
+  unterteilen wir die Zustände des Automaten in akzeptierende und nicht
+  akzeptierende Zustände. In der Automatenansicht werden immer die Zustände in
+  der selben Farbe dargestellt, welche sich in einer Äquivalenzklasse befinden.
+  Also haben jetzt alle akzeptierenden Zustände die gleiche Farbe, und alle
+  nicht akzeptierenden Zustände.\vspace{10pt}
+  
+  \begin{figure}[h!]
   \begin{center}
   \includegraphics[width=12cm]{images/minimize.png}
   \caption{Automat - Minimieren}
   \end{center}
   \end{figure}
-  
-  Es öffnet sich ein neuer Dialog mit einer Ansicht des Automaten und einer
-  Tabelle. In der Automatenansicht werden immer die Zustände in der selben Farbe
-  dargestellt, welche sich in einer Äquivalenzklasse befinden. Also haben Initial
-  alle akzeptierenden Zustände die gleiche Farbe, und alle nicht akzeptierenden
-  Zustände.\vspace{10pt}
   
   Man kann jetzt durch klicken auf "`Schritt vor"' die Äquivalenzklassen weiter
   verfeinern. In der Outline wird angegeben, welche Zustände in eine eigene
@@ -297,7 +348,7 @@ Schritten, sowie automatisch navigiert werden. Wird der Dialog mit "`OK"'
 bestätigt, steht in der Hauptansicht der umgewandelte Automat zur Verfügung. Mit
 "`Abbrechen"' wird der Dialog einfach nur geschlossen.\vspace{10pt}
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \begin{center}
 \includegraphics[width=12cm]{images/convert_to.png}
 \caption{Automat - Umwandeln in\ldots}
@@ -420,7 +471,7 @@ vor:
   noch nicht berechneten Zustände angezeigt 
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \begin{center}
 \includegraphics[width=12cm]{images/reachable_states.png}
 \caption{Automat - Erreichbare Zustände}

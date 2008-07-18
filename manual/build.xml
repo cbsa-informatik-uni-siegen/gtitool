@@ -6,24 +6,32 @@
 -->
 <project name="gtitool.manual" default="dist" basedir=".">
 
+	<!-- property -->
+	<property name="sourcedir" value="${basedir}/source" />
+	<property name="builddir" value="${basedir}/build" />
+
 	<!-- dist -->
 	<target name="dist" description="Dist manual">
-		<exec dir="${basedir}" os="Linux" executable="pdflatex">
-			<arg value="manual.tex" />
-		</exec>
-		<exec dir="${basedir}" os="Linux" executable="pdflatex">
-			<arg value="manual.tex" />
-		</exec>
+		<!-- delete -->
 		<delete>
-			<fileset dir="${basedir}">
-				<include name="*.toc" />
-				<include name="*.aux" />
-				<include name="*.out" />
-				<include name="*.log" />
-				<include name="*.dvi" />
-				<include name="*.ps" />
-			</fileset>
+			<fileset dir="${builddir}" includes="**/*" />
 		</delete>
+		<!-- pdf latex -->
+		<copy todir="${builddir}">
+			<fileset dir="${sourcedir}">
+				<include name="*.tex" />
+			</fileset>
+		</copy>
+		<!-- pdf latex -->
+		<exec dir="${builddir}" os="Linux" executable="pdflatex">
+			<arg value="manual.tex" />
+		</exec>
+		<exec dir="${builddir}" os="Linux" executable="pdflatex">
+			<arg value="manual.tex" />
+		</exec>
+		<!-- copy -->
+		<copy file="${builddir}/manual.pdf" todir="${basedir}" />
+		<!-- message -->
 		<echo message="Dist manual finished" />
 	</target>
 </project>

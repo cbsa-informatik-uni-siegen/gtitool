@@ -915,9 +915,20 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    */
   public final void handleToolbarEditDocument ()
   {
-    TerminalDialog terminalDialog = new TerminalDialog ( this.mainWindowForm, this,
-        this.grammar );
+    TerminalDialog terminalDialog = new TerminalDialog ( this.mainWindowForm,
+        this, this.grammar );
     terminalDialog.show ();
+    
+    // Update the configuration in the view
+    this.gui.styledTerminalSymbolSetParserPanel.setText ( this.grammar
+        .getTerminalSymbolSet () );
+
+    this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.grammar
+        .getNonterminalSymbolSet () );
+    
+    this.gui.styledStartNonterminalSymbolParserPanel.setText ( this.grammar
+        .getStartSymbol () );
+    
     // Must be repainted because of the maybe changed start symbol.
     this.gui.jGTITableGrammar.repaint ();
   }
@@ -1057,6 +1068,15 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
             handleConsoleTableValueChanged ( event );
           }
         } );
+
+    this.gui.styledTerminalSymbolSetParserPanel.setText ( this.grammar
+        .getTerminalSymbolSet () );
+
+    this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.grammar
+        .getNonterminalSymbolSet () );
+    
+    this.gui.styledStartNonterminalSymbolParserPanel.setText ( this.grammar
+        .getStartSymbol () );
   }
 
 

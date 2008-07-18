@@ -1,7 +1,7 @@
 *** TODO ***
 
-CF		- Mitteilung anzeigen, wenn Navigation fertig
-CF		- Wort eingeben -> rechtbündig (optional)
+CF		- Mitteilung anzeigen, wenn Navigation fertig (Handbuch)
+CF		- Wort rechtbündig eingeben (Handbuch)
 
 BM		- Minimieren: Nicht erreichbare Zustände rauswerfen (Handbuch)
 BM		- Aktuelle Konfiguration darstellen (Edit-Dialog)

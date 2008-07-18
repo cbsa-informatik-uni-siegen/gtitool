@@ -11,6 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
@@ -34,8 +35,10 @@ import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
+import de.unisiegen.gtitool.ui.preferences.item.WordModeItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 import de.unisiegen.gtitool.ui.preferences.listener.PDAModeChangedListener;
+import de.unisiegen.gtitool.ui.preferences.listener.WordModeChangedListener;
 import de.unisiegen.gtitool.ui.preferences.listener.ZoomFactorChangedListener;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane.ActiveEditor;
 
@@ -60,6 +63,12 @@ public final class PreferenceManager extends
    * The default {@link PDAModeItem}.
    */
   public static final PDAModeItem DEFAULT_PDA_MODE_ITEM = PDAModeItem.SHOW;
+
+
+  /**
+   * The default {@link WordModeItem}.
+   */
+  public static final WordModeItem DEFAULT_WORD_MODE_ITEM = WordModeItem.LEFT;
 
 
   /**
@@ -365,6 +374,18 @@ public final class PreferenceManager extends
 
 
   /**
+   * Adds the given {@link WordModeChangedListener}.
+   * 
+   * @param listener The {@link WordModeChangedListener}.
+   */
+  public final void addWordModeChangedListener (
+      WordModeChangedListener listener )
+  {
+    this.listenerList.add ( WordModeChangedListener.class, listener );
+  }
+
+
+  /**
    * Adds the given {@link ZoomFactorChangedListener}.
    * 
    * @param listener The {@link ZoomFactorChangedListener}.
@@ -388,6 +409,22 @@ public final class PreferenceManager extends
     for ( PDAModeChangedListener current : listeners )
     {
       current.pdaModeChanged ( pdaModeItem );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the {@link Word} mode has changed.
+   * 
+   * @param wordModeItem The new {@link WordModeItem}.
+   */
+  public final void fireWordModeChanged ( WordModeItem wordModeItem )
+  {
+    WordModeChangedListener [] listeners = this.listenerList
+        .getListeners ( WordModeChangedListener.class );
+    for ( WordModeChangedListener current : listeners )
+    {
+      current.wordModeChanged ( wordModeItem );
     }
   }
 
@@ -871,6 +908,20 @@ public final class PreferenceManager extends
 
 
   /**
+   * Returns the {@link WordModeItem}.
+   * 
+   * @return The {@link WordModeItem}.
+   */
+  public final WordModeItem getWordModeItem ()
+  {
+    int index = this.preferences.getInt (
+        "PreferencesDialog.WordModeItem.Index", //$NON-NLS-1$
+        DEFAULT_WORD_MODE_ITEM.getIndex () );
+    return WordModeItem.create ( index );
+  }
+
+
+  /**
    * Returns the working path.
    * 
    * @return The working path.
@@ -902,6 +953,18 @@ public final class PreferenceManager extends
       PDAModeChangedListener listener )
   {
     this.listenerList.remove ( PDAModeChangedListener.class, listener );
+  }
+
+
+  /**
+   * Removes the given {@link WordModeChangedListener}.
+   * 
+   * @param listener The {@link WordModeChangedListener}.
+   */
+  public final void removeWordModeChangedListener (
+      WordModeChangedListener listener )
+  {
+    this.listenerList.remove ( WordModeChangedListener.class, listener );
   }
 
 
@@ -1163,12 +1226,10 @@ public final class PreferenceManager extends
       MinimizeMachineDialogForm dialog )
   {
     Rectangle bounds = dialog.getBounds ();
-    logger
-        .debug ( "setMinimizeMachineDialogPreferences",//$NON-NLS-1$
-            "set minimize machine dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
-                + bounds.x + ", " + "y=" + bounds.y + ", " + "width="//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                + bounds.width
-                + ", " + "height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "setMinimizeMachineDialogPreferences",//$NON-NLS-1$
+        "set minimize machine dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.x + ", " + "y=" + bounds.y + ", " + "width="//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            + bounds.width + ", " + "height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "MinimizeMachineDialog.XPosition", bounds.x ); //$NON-NLS-1$
     this.preferences.putInt ( "MinimizeMachineDialog.YPosition", bounds.y ); //$NON-NLS-1$
     this.preferences.putInt ( "MinimizeMachineDialog.Width", bounds.width ); //$NON-NLS-1$
@@ -1423,6 +1484,20 @@ public final class PreferenceManager extends
         + Messages.QUOTE + visible + Messages.QUOTE );
     this.preferences.putBoolean ( "MachinePanel.TableVisible", //$NON-NLS-1$
         visible );
+  }
+
+
+  /**
+   * Sets the {@link WordModeItem}.
+   * 
+   * @param wordModeItem The {@link WordModeItem}.
+   */
+  public final void setWordModeItem ( WordModeItem wordModeItem )
+  {
+    logger.debug ( "setWordModeItem", "set word mode item to "//$NON-NLS-1$//$NON-NLS-2$
+        + Messages.QUOTE + wordModeItem.getIndex () + Messages.QUOTE );
+    this.preferences.putInt ( "PreferencesDialog.WordModeItem.Index", //$NON-NLS-1$
+        wordModeItem.getIndex () );
   }
 
 

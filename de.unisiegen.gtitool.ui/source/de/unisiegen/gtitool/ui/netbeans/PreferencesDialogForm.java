@@ -64,6 +64,8 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         jGTIComboBoxLanguage = new de.unisiegen.gtitool.ui.swing.JGTIComboBox();
         jGTILabelLookAndFeel = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIComboBoxLookAndFeel = new de.unisiegen.gtitool.ui.swing.JGTIComboBox();
+        jGTILabelWordMode = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTIComboBoxWordMode = new de.unisiegen.gtitool.ui.swing.JGTIComboBox();
         jGTILabelZoom = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTISliderZoom = new de.unisiegen.gtitool.ui.swing.JGTISlider();
         jGTIPanelGeneralColumn0 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
@@ -125,7 +127,6 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         jGTILabelLookAndFeel.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.LookAndFeelMnemonic").charAt(0));
         jGTILabelLookAndFeel.setLabelFor(jGTIComboBoxLookAndFeel);
         jGTILabelLookAndFeel.setText(bundle.getString("PreferencesDialog.LookAndFeel")); // NOI18N
-        jGTILabelLookAndFeel.setToolTipText(bundle.getString("PreferencesDialog.LookAndFeel")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -142,12 +143,31 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
         jGTIPanelGeneral.add(jGTIComboBoxLookAndFeel, gridBagConstraints);
 
+        jGTILabelWordMode.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.WordModeMnemonic").charAt(0));
+        jGTILabelWordMode.setLabelFor(jGTIComboBoxWordMode);
+        jGTILabelWordMode.setText(bundle.getString("PreferencesDialog.WordMode")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 5);
+        jGTIPanelGeneral.add(jGTILabelWordMode, gridBagConstraints);
+
+        jGTIComboBoxWordMode.setToolTipText(bundle.getString("PreferencesDialog.WordModeToolTip")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
+        jGTIPanelGeneral.add(jGTIComboBoxWordMode, gridBagConstraints);
+
         jGTILabelZoom.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.ZoomMnemonic").charAt(0));
         jGTILabelZoom.setLabelFor(jGTISliderAutoStep);
         jGTILabelZoom.setText(bundle.getString("PreferencesDialog.Zoom")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
         jGTIPanelGeneral.add(jGTILabelZoom, gridBagConstraints);
@@ -160,7 +180,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         jGTISliderZoom.setValue(100);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
@@ -170,13 +190,13 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         jGTIPanelGeneralColumn0.setPreferredSize(new java.awt.Dimension(200, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
         jGTIPanelGeneral.add(jGTIPanelGeneralColumn0, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -431,12 +451,14 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
     public de.unisiegen.gtitool.ui.swing.JGTIComboBox jGTIComboBoxMouseSelection;
     public de.unisiegen.gtitool.ui.swing.JGTIComboBox jGTIComboBoxPDAMode;
     public de.unisiegen.gtitool.ui.swing.JGTIComboBox jGTIComboBoxTransition;
+    public de.unisiegen.gtitool.ui.swing.JGTIComboBox jGTIComboBoxWordMode;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelAutoStep;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelLanguage;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelLookAndFeel;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelMouseSelection;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelPDAMode;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelTransition;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelWordMode;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelZoom;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelAlphabet;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelColor;

@@ -241,11 +241,6 @@ public final class StyledParserDocument < E extends Entity < E > > extends
         .getColorItemParserError ().getColor () );
     StyleConstants.setBold ( set, true );
     StyleConstants.setUnderline ( set, true );
-    if ( this.rightAlignment )
-    {
-      StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
-      setParagraphAttributes ( 0, getLength () - 1, set, false );
-    }
     return set;
   }
 
@@ -260,11 +255,6 @@ public final class StyledParserDocument < E extends Entity < E > > extends
     SimpleAttributeSet set = new SimpleAttributeSet ();
     StyleConstants.setBackground ( set, PreferenceManager.getInstance ()
         .getColorItemParserHighlighting ().getColor () );
-    if ( this.rightAlignment )
-    {
-      StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
-      setParagraphAttributes ( 0, getLength () - 1, set, false );
-    }
     return set;
   }
 
@@ -279,11 +269,6 @@ public final class StyledParserDocument < E extends Entity < E > > extends
     SimpleAttributeSet set = new SimpleAttributeSet ();
     StyleConstants.setForeground ( set, Color.BLACK );
     StyleConstants.setBold ( set, false );
-    if ( this.rightAlignment )
-    {
-      StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
-      setParagraphAttributes ( 0, getLength () - 1, set, false );
-    }
     return set;
   }
 
@@ -298,11 +283,6 @@ public final class StyledParserDocument < E extends Entity < E > > extends
     SimpleAttributeSet set = new SimpleAttributeSet ();
     StyleConstants.setBackground ( set, PreferenceManager.getInstance ()
         .getColorItemParserWarning ().getColor () );
-    if ( this.rightAlignment )
-    {
-      StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
-      setParagraphAttributes ( 0, getLength () - 1, set, false );
-    }
     return set;
   }
 
@@ -412,7 +392,22 @@ public final class StyledParserDocument < E extends Entity < E > > extends
     this.externExceptionList.clear ();
 
     this.parsedObject = null;
+
     setCharacterAttributes ( 0, getLength (), getAttributeSetNormal (), true );
+
+    if ( this.rightAlignment )
+    {
+      SimpleAttributeSet set = new SimpleAttributeSet ();
+      StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
+      setParagraphAttributes ( 0, getLength () - 1, set, true );
+    }
+    else
+    {
+      SimpleAttributeSet set = new SimpleAttributeSet ();
+      StyleConstants.setAlignment ( set, StyleConstants.ALIGN_LEFT );
+      setParagraphAttributes ( 0, getLength () - 1, set, true );
+    }
+
     try
     {
       /*
@@ -443,11 +438,6 @@ public final class StyledParserDocument < E extends Entity < E > > extends
             StyleConstants.setForeground ( set, newStyle.getColor () );
             StyleConstants.setBold ( set, newStyle.isBold () );
             StyleConstants.setItalic ( set, newStyle.isItalic () );
-            if ( this.rightAlignment )
-            {
-              StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
-              setParagraphAttributes ( 0, getLength () - 1, set, false );
-            }
           }
           // Use the normal scanner style
           else
@@ -455,11 +445,6 @@ public final class StyledParserDocument < E extends Entity < E > > extends
             StyleConstants.setForeground ( set, style.getColor () );
             StyleConstants.setBold ( set, style.isBold () );
             StyleConstants.setItalic ( set, style.isItalic () );
-            if ( this.rightAlignment )
-            {
-              StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
-              setParagraphAttributes ( 0, getLength () - 1, set, false );
-            }
           }
           setCharacterAttributes ( offset + symbol.left, symbol.right
               - symbol.left, set, true );

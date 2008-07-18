@@ -11,8 +11,7 @@ import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
  * The listener interface for receiving {@link PDA} mode changes.
  * 
  * @author Christian Fehler
- * @version $Id: ZoomFactorChangedListener.java 430 2008-01-11 10:40:45Z fehler
- *          $
+ * @version $Id$
  */
 public interface PDAModeChangedListener extends EventListener
 {

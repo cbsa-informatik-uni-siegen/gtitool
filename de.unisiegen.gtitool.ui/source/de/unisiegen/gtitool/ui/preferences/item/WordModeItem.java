@@ -1,59 +1,59 @@
 package de.unisiegen.gtitool.ui.preferences.item;
 
 
-import de.unisiegen.gtitool.core.machines.pda.PDA;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
- * Indicates {@link PDA} mode is choosen.
+ * Indicates {@link Word} mode is choosen.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public enum PDAModeItem
+public enum WordModeItem
 {
   /**
-   * Show all components.
+   * The {@link Word} is displayed left aligned.
    */
-  SHOW ( 0, "PreferencesDialog.PDAModeShow" ), //$NON-NLS-1$
+  LEFT ( 0, "PreferencesDialog.WordModeLeft" ), //$NON-NLS-1$
 
   /**
-   * Show only if a PDA is choosen.
+   * The {@link Word} is displayed right aligned.
    */
-  HIDE ( 1, "PreferencesDialog.PDAModeHide" ); //$NON-NLS-1$
+  RIGHT ( 1, "PreferencesDialog.WordModeRight" ); //$NON-NLS-1$
 
   /**
    * The {@link Logger} for this enum.
    */
-  private static final Logger logger = Logger.getLogger ( PDAModeItem.class );
+  private static final Logger logger = Logger.getLogger ( WordModeItem.class );
 
 
   /**
-   * Creates a new {@link PDAModeItem} of the given index, or throws an
+   * Creates a new {@link WordModeItem} of the given index, or throws an
    * exception if the index is not supported.
    * 
    * @param index The index.
-   * @return A new {@link PDAModeItem}.
+   * @return A new {@link WordModeItem}.
    */
-  public final static PDAModeItem create ( int index )
+  public final static WordModeItem create ( int index )
   {
     switch ( index )
     {
       case 0 :
       {
-        return SHOW;
+        return LEFT;
       }
       case 1 :
       {
-        return HIDE;
+        return RIGHT;
       }
       default :
       {
-        logger.error ( "create", "pda mode index not supported" ); //$NON-NLS-1$ //$NON-NLS-2$
-        return PreferenceManager.DEFAULT_PDA_MODE_ITEM;
+        logger.error ( "create", "word mode index not supported" ); //$NON-NLS-1$ //$NON-NLS-2$
+        return PreferenceManager.DEFAULT_WORD_MODE_ITEM;
       }
     }
   }
@@ -72,12 +72,12 @@ public enum PDAModeItem
 
 
   /**
-   * Allocates a new {@link PDAModeItem}.
+   * Allocates a new {@link WordModeItem}.
    * 
    * @param index The index.
    * @param title The title.
    */
-  private PDAModeItem ( int index, String title )
+  private WordModeItem ( int index, String title )
   {
     this.index = index;
     this.title = title;

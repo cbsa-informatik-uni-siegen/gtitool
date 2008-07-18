@@ -98,7 +98,9 @@ import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
+import de.unisiegen.gtitool.ui.preferences.item.WordModeItem;
 import de.unisiegen.gtitool.ui.preferences.listener.PDAModeChangedListener;
+import de.unisiegen.gtitool.ui.preferences.listener.WordModeChangedListener;
 import de.unisiegen.gtitool.ui.redoundo.MultiItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
@@ -515,6 +517,46 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     addListener ();
     addGraphListener ();
+
+    if ( PreferenceManager.getInstance ().getWordModeItem ().equals (
+        WordModeItem.LEFT ) )
+    {
+      this.gui.wordPanel.styledWordParserPanel.setRightAlignment ( false );
+    }
+    else if ( PreferenceManager.getInstance ().getWordModeItem ().equals (
+        WordModeItem.RIGHT ) )
+    {
+      this.gui.wordPanel.styledWordParserPanel.setRightAlignment ( true );
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported word mode" ); //$NON-NLS-1$
+    }
+    PreferenceManager.getInstance ().addWordModeChangedListener (
+        new WordModeChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void wordModeChanged ( WordModeItem newValue )
+          {
+            if ( newValue.equals ( WordModeItem.LEFT ) )
+            {
+              MachinePanel.this.gui.wordPanel.styledWordParserPanel
+                  .setRightAlignment ( false );
+            }
+            else if ( newValue.equals ( WordModeItem.RIGHT ) )
+            {
+              MachinePanel.this.gui.wordPanel.styledWordParserPanel
+                  .setRightAlignment ( true );
+            }
+            else
+            {
+              throw new RuntimeException ( "unsupported word mode" ); //$NON-NLS-1$
+            }
+
+            MachinePanel.this.gui.wordPanel.styledWordParserPanel.parse ();
+          }
+        } );
 
     this.gui.wordPanel.styledWordParserPanel.parse ();
 

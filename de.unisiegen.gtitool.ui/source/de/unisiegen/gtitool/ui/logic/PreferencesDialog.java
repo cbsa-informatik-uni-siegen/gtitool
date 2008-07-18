@@ -38,6 +38,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
@@ -56,6 +57,7 @@ import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
 import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
+import de.unisiegen.gtitool.ui.preferences.item.WordModeItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
@@ -429,6 +431,68 @@ public final class PreferencesDialog implements
     public final TransitionItem getSelectedItem ()
     {
       return ( TransitionItem ) super.getSelectedItem ();
+    }
+  }
+
+
+  /**
+   * The {@link Word} mode {@link ComboBoxModel}.
+   * 
+   * @author Christian Fehler
+   */
+  protected final class WordModeComboBoxModel extends DefaultComboBoxModel
+  {
+
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = -8664380439078177232L;
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#addElement(Object)
+     */
+    @Override
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
+    {
+      throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * Adds the given item.
+     * 
+     * @param wordModeItem The {@link WordModeItem} to add.
+     */
+    public final void addElement ( WordModeItem wordModeItem )
+    {
+      super.addElement ( wordModeItem );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getElementAt(int)
+     */
+    @Override
+    public final WordModeItem getElementAt ( int index )
+    {
+      return ( WordModeItem ) super.getElementAt ( index );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getSelectedItem()
+     */
+    @Override
+    public final WordModeItem getSelectedItem ()
+    {
+      return ( WordModeItem ) super.getSelectedItem ();
     }
   }
 
@@ -814,6 +878,12 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The initial {@link WordModeItem}.
+   */
+  private WordModeItem initialWordModeItem;
+
+
+  /**
    * The initial {@link NonterminalSymbolSetItem}.
    */
   private NonterminalSymbolSetItem initialNonterminalSymbolSetItem;
@@ -892,6 +962,12 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The {@link Word} mode {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuWordMode;
+
+
+  /**
    * The {@link Transition} {@link JPopupMenu}.
    */
   private JPopupMenu jPopupMenuTransition;
@@ -931,6 +1007,12 @@ public final class PreferencesDialog implements
    * The {@link PDAModeComboBoxModel}.
    */
   private PDAModeComboBoxModel pdaModeComboBoxModel;
+
+
+  /**
+   * The {@link WordModeComboBoxModel}.
+   */
+  private WordModeComboBoxModel wordModeComboBoxModel;
 
 
   /**
@@ -1132,11 +1214,12 @@ public final class PreferencesDialog implements
             de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_LANGUAGE_TITLE,
             new Locale (
                 de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_LANGUAGE_LANGUAGE ) ) );
-
     this.gui.jGTIComboBoxLookAndFeel.setSelectedItem ( new LookAndFeelItem (
         PreferenceManager.DEFAULT_LOOK_AND_FEEL_NAME,
         PreferenceManager.DEFAULT_LOOK_AND_FEEL_CLASS_NAME ) );
-
+    this.gui.jGTIComboBoxWordMode
+        .setSelectedIndex ( PreferenceManager.DEFAULT_WORD_MODE_ITEM
+            .getIndex () );
     this.gui.jGTISliderZoom
         .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM.getFactor () );
 
@@ -1149,6 +1232,8 @@ public final class PreferencesDialog implements
     this.gui.jGTIComboBoxMouseSelection
         .setSelectedIndex ( PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM
             .getIndex () );
+    this.gui.jGTIComboBoxPDAMode
+        .setSelectedIndex ( PreferenceManager.DEFAULT_PDA_MODE_ITEM.getIndex () );
     this.gui.jGTISliderAutoStep
         .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM
             .getAutoStepInterval () );
@@ -1228,6 +1313,7 @@ public final class PreferencesDialog implements
      */
     initLanguage ();
     initLookAndFeel ();
+    initWordMode ();
     initZoomFactor ();
     /*
      * View
@@ -1767,7 +1853,6 @@ public final class PreferencesDialog implements
       {
         if ( event.isPopupTrigger () )
         {
-
           PreferencesDialog.this.jPopupMenuLanguage.show ( event
               .getComponent (), event.getX (), event.getY () );
         }
@@ -2461,6 +2546,82 @@ public final class PreferencesDialog implements
 
 
   /**
+   * Initializes the {@link Word} mode.
+   */
+  private final void initWordMode ()
+  {
+    this.wordModeComboBoxModel = new WordModeComboBoxModel ();
+    this.wordModeComboBoxModel.addElement ( WordModeItem.create ( 0 ) );
+    this.wordModeComboBoxModel.addElement ( WordModeItem.create ( 1 ) );
+    this.gui.jGTIComboBoxWordMode.setModel ( this.wordModeComboBoxModel );
+
+    this.initialWordModeItem = PreferenceManager.getInstance ()
+        .getWordModeItem ();
+    this.gui.jGTIComboBoxWordMode.setSelectedItem ( this.initialWordModeItem );
+
+    // PopupMenu
+    this.jPopupMenuWordMode = new JPopupMenu ();
+    final JMenuItem jMenuItemRestoreWordMode = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreWordMode.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreWordMode.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/small/refresh.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreWordMode.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
+      {
+        PreferencesDialog.this.gui.jGTIComboBoxWordMode
+            .setSelectedIndex ( PreferenceManager.DEFAULT_WORD_MODE_ITEM
+                .getIndex () );
+      }
+    } );
+    this.jPopupMenuWordMode.add ( jMenuItemRestoreWordMode );
+    this.gui.jGTIComboBoxWordMode.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuWordMode.show ( event
+              .getComponent (), event.getX (), event.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuWordMode.show ( event
+              .getComponent (), event.getX (), event.getY () );
+        }
+      }
+    } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          public void languageChanged ()
+          {
+            jMenuItemRestoreWordMode.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreWordMode.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
+  }
+
+
+  /**
    * Initializes the zoom factor.
    */
   private final void initZoomFactor ()
@@ -2539,21 +2700,25 @@ public final class PreferencesDialog implements
   {
     // Title
     this.gui.setTitle ( Messages.getString ( "PreferencesDialog.Title" ) ); //$NON-NLS-1$
+
     // General
     this.gui.jGTITabbedPane.setTitleAt ( GENERAL_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabGeneral" ) ); //$NON-NLS-1$
     this.gui.jGTITabbedPane.setToolTipTextAt ( GENERAL_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabGeneralToolTip" ) ); //$NON-NLS-1$
+
     // View
     this.gui.jGTITabbedPane.setTitleAt ( VIEW_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabView" ) ); //$NON-NLS-1$
     this.gui.jGTITabbedPane.setToolTipTextAt ( VIEW_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabViewToolTip" ) ); //$NON-NLS-1$
+
     // Colors
     this.gui.jGTITabbedPane.setTitleAt ( COLOR_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabColors" ) ); //$NON-NLS-1$
     this.gui.jGTITabbedPane.setToolTipTextAt ( COLOR_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabColorsToolTip" ) ); //$NON-NLS-1$
+
     // Alphabet
     this.gui.jGTITabbedPane.setTitleAt ( ALPHABET_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabAlphabet" ) ); //$NON-NLS-1$
@@ -2563,6 +2728,7 @@ public final class PreferencesDialog implements
         .getString ( "PreferencesDialog.InputAlphabet" ) ); //$NON-NLS-1$
     this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet.setText ( Messages
         .getString ( "PreferencesDialog.PushDownAlphabet" ) ); //$NON-NLS-1$
+
     // Grammar
     this.gui.jGTITabbedPane.setTitleAt ( GRAMMAR_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabGrammar" ) ); //$NON-NLS-1$
@@ -2574,6 +2740,7 @@ public final class PreferencesDialog implements
         .getString ( "TerminalPanel.StartSymbol" ) ); //$NON-NLS-1$
     this.gui.terminalPanelForm.jGTILabelTerminalSymbols.setText ( Messages
         .getString ( "TerminalPanel.TerminalSymbols" ) ); //$NON-NLS-1$
+
     // Accept
     this.gui.jGTIButtonAccept.setText ( Messages
         .getString ( "PreferencesDialog.Accept" ) ); //$NON-NLS-1$
@@ -2581,6 +2748,7 @@ public final class PreferencesDialog implements
         "PreferencesDialog.AcceptMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTIButtonAccept.setToolTipText ( Messages
         .getString ( "PreferencesDialog.AcceptToolTip" ) ); //$NON-NLS-1$
+
     // Ok
     this.gui.jGTIButtonOk.setText ( Messages
         .getString ( "PreferencesDialog.Ok" ) ); //$NON-NLS-1$
@@ -2588,6 +2756,7 @@ public final class PreferencesDialog implements
         "PreferencesDialog.OkMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTIButtonOk.setToolTipText ( Messages
         .getString ( "PreferencesDialog.OkToolTip" ) ); //$NON-NLS-1$
+
     // Cancel
     this.gui.jGTIButtonCancel.setText ( Messages
         .getString ( "PreferencesDialog.Cancel" ) ); //$NON-NLS-1$
@@ -2595,6 +2764,7 @@ public final class PreferencesDialog implements
         "PreferencesDialog.CancelMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTIButtonCancel.setToolTipText ( Messages
         .getString ( "PreferencesDialog.CancelToolTip" ) ); //$NON-NLS-1$
+
     // Language
     this.gui.jGTILabelLanguage.setText ( Messages
         .getString ( "PreferencesDialog.Language" ) ); //$NON-NLS-1$
@@ -2602,6 +2772,7 @@ public final class PreferencesDialog implements
         "PreferencesDialog.LanguageMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTIComboBoxLanguage.setToolTipText ( Messages
         .getString ( "PreferencesDialog.LanguageToolTip" ) ); //$NON-NLS-1$
+
     // Look and feel
     this.gui.jGTILabelLookAndFeel.setText ( Messages
         .getString ( "PreferencesDialog.LookAndFeel" ) ); //$NON-NLS-1$    
@@ -2609,6 +2780,15 @@ public final class PreferencesDialog implements
         "PreferencesDialog.LookAndFeelMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
     this.gui.jGTIComboBoxLookAndFeel.setToolTipText ( Messages
         .getString ( "PreferencesDialog.LookAndFeelToolTip" ) ); //$NON-NLS-1$
+
+    // word mode
+    this.gui.jGTILabelWordMode.setText ( Messages
+        .getString ( "PreferencesDialog.WordMode" ) ); //$NON-NLS-1$    
+    this.gui.jGTILabelWordMode.setDisplayedMnemonic ( Messages.getString (
+        "PreferencesDialog.WordModeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+    this.gui.jGTIComboBoxWordMode.setToolTipText ( Messages
+        .getString ( "PreferencesDialog.WordModeToolTip" ) ); //$NON-NLS-1$
+
     // Zoom
     this.gui.jGTILabelZoom.setText ( Messages
         .getString ( "PreferencesDialog.Zoom" ) ); //$NON-NLS-1$    
@@ -2616,6 +2796,7 @@ public final class PreferencesDialog implements
         "PreferencesDialog.ZoomMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
     this.gui.jGTISliderZoom.setToolTipText ( Messages
         .getString ( "PreferencesDialog.ZoomToolTip" ) ); //$NON-NLS-1$
+
     // Auto Step
     this.gui.jGTILabelAutoStep.setText ( Messages
         .getString ( "PreferencesDialog.AutoStep" ) ); //$NON-NLS-1$    
@@ -2623,6 +2804,7 @@ public final class PreferencesDialog implements
         "PreferencesDialog.AutoStepMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
     this.gui.jGTISliderAutoStep.setToolTipText ( Messages
         .getString ( "PreferencesDialog.AutoStepToolTip" ) ); //$NON-NLS-1$
+
     // Mouse selection
     this.gui.jGTILabelMouseSelection.setText ( Messages
         .getString ( "PreferencesDialog.MouseSelection" ) ); //$NON-NLS-1$    
@@ -2630,13 +2812,15 @@ public final class PreferencesDialog implements
         "PreferencesDialog.MouseSelectionMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
     this.gui.jGTIComboBoxMouseSelection.setToolTipText ( Messages
         .getString ( "PreferencesDialog.MouseSelectionToolTip" ) ); //$NON-NLS-1$
-    // PDA mode
+
+    // pda mode
     this.gui.jGTILabelPDAMode.setText ( Messages
         .getString ( "PreferencesDialog.PDAMode" ) ); //$NON-NLS-1$    
     this.gui.jGTILabelPDAMode.setDisplayedMnemonic ( Messages.getString (
         "PreferencesDialog.PDAModeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
     this.gui.jGTIComboBoxPDAMode.setToolTipText ( Messages
         .getString ( "PreferencesDialog.PDAModeToolTip" ) ); //$NON-NLS-1$
+
     // Restore
     this.gui.jGTIButtonRestore.setText ( Messages
         .getString ( "PreferencesDialog.Restore" ) ); //$NON-NLS-1$
@@ -2650,66 +2834,79 @@ public final class PreferencesDialog implements
         .getString ( "Preferences.ColorStateCaption" ) ); //$NON-NLS-1$
     this.colorItemState.setDescription ( Messages
         .getString ( "Preferences.ColorStateDescription" ) ); //$NON-NLS-1$
+
     // State background
     this.colorItemStateBackground.setCaption ( Messages
         .getString ( "Preferences.ColorStateBackgroundCaption" ) ); //$NON-NLS-1$
     this.colorItemStateBackground.setDescription ( Messages
         .getString ( "Preferences.ColorStateBackgroundDescription" ) ); //$NON-NLS-1$
+
     // State selected
     this.colorItemStateSelected.setCaption ( Messages
         .getString ( "Preferences.ColorStateSelectedCaption" ) ); //$NON-NLS-1$
     this.colorItemStateSelected.setDescription ( Messages
         .getString ( "Preferences.ColorStateSelectedDescription" ) ); //$NON-NLS-1$
+
     // State start
     this.colorItemStateStart.setCaption ( Messages
         .getString ( "Preferences.ColorStateStartCaption" ) ); //$NON-NLS-1$
     this.colorItemStateStart.setDescription ( Messages
         .getString ( "Preferences.ColorStateStartDescription" ) ); //$NON-NLS-1$
+
     // State final
     this.colorItemStateFinal.setCaption ( Messages
         .getString ( "Preferences.ColorStateFinalCaption" ) ); //$NON-NLS-1$
     this.colorItemStateFinal.setDescription ( Messages
         .getString ( "Preferences.ColorStateFinalDescription" ) ); //$NON-NLS-1$
+
     // State active
     this.colorItemStateActive.setCaption ( Messages
         .getString ( "Preferences.ColorStateActiveCaption" ) ); //$NON-NLS-1$
     this.colorItemStateActive.setDescription ( Messages
         .getString ( "Preferences.ColorStateActiveDescription" ) ); //$NON-NLS-1$
+
     // State error
     this.colorItemStateError.setCaption ( Messages
         .getString ( "Preferences.ColorStateErrorCaption" ) ); //$NON-NLS-1$
     this.colorItemStateError.setDescription ( Messages
         .getString ( "Preferences.ColorStateErrorDescription" ) ); //$NON-NLS-1$
+
     // Transition
     this.colorItemTransition.setCaption ( Messages
         .getString ( "Preferences.ColorTransitionCaption" ) ); //$NON-NLS-1$
     this.colorItemTransition.setDescription ( Messages
         .getString ( "Preferences.ColorTransitionDescription" ) ); //$NON-NLS-1$
+
     // Transition selected
     this.colorItemTransitionSelected.setCaption ( Messages
         .getString ( "Preferences.ColorTransitionSelectedCaption" ) ); //$NON-NLS-1$
     this.colorItemTransitionSelected.setDescription ( Messages
         .getString ( "Preferences.ColorTransitionSelectedDescription" ) ); //$NON-NLS-1$
+
     // Transition active
     this.colorItemTransitionActive.setCaption ( Messages
         .getString ( "Preferences.ColorTransitionActiveCaption" ) ); //$NON-NLS-1$
     this.colorItemTransitionActive.setDescription ( Messages
         .getString ( "Preferences.ColorTransitionActiveDescription" ) ); //$NON-NLS-1$
+
     // Transition error
     this.colorItemTransitionError.setCaption ( Messages
         .getString ( "Preferences.ColorTransitionErrorCaption" ) ); //$NON-NLS-1$
     this.colorItemTransitionError.setDescription ( Messages
         .getString ( "Preferences.ColorTransitionErrorDescription" ) ); //$NON-NLS-1$
+
     // Symbol
     this.colorItemSymbol.setCaption ( Messages
         .getString ( "Preferences.ColorSymbolCaption" ) ); //$NON-NLS-1$
     this.colorItemSymbol.setDescription ( Messages
         .getString ( "Preferences.ColorSymbolDescription" ) ); //$NON-NLS-1$
+
     // Symbol active
     this.colorItemSymbolActive.setCaption ( Messages
         .getString ( "Preferences.ColorSymbolActiveCaption" ) ); //$NON-NLS-1$
     this.colorItemSymbolActive.setDescription ( Messages
         .getString ( "Preferences.ColorSymbolActiveDescription" ) ); //$NON-NLS-1$
+
     // Symbol error
     this.colorItemSymbolError.setCaption ( Messages
         .getString ( "Preferences.ColorSymbolErrorCaption" ) ); //$NON-NLS-1$
@@ -2751,16 +2948,19 @@ public final class PreferencesDialog implements
         .getString ( "Preferences.ColorParserKeywordCaption" ) ); //$NON-NLS-1$
     this.colorItemParserKeyword.setDescription ( Messages
         .getString ( "Preferences.ColorParserKeywordDescription" ) ); //$NON-NLS-1$
+
     // Parser error
     this.colorItemParserError.setCaption ( Messages
         .getString ( "Preferences.ColorParserErrorCaption" ) ); //$NON-NLS-1$
     this.colorItemParserError.setDescription ( Messages
         .getString ( "Preferences.ColorParserErrorDescription" ) ); //$NON-NLS-1$
+
     // Parser warning
     this.colorItemParserWarning.setCaption ( Messages
         .getString ( "Preferences.ColorParserWarningCaption" ) ); //$NON-NLS-1$
     this.colorItemParserWarning.setDescription ( Messages
         .getString ( "Preferences.ColorParserWarningDescription" ) ); //$NON-NLS-1$
+
     // Parser highlighting
     this.colorItemParserHighlighting.setCaption ( Messages
         .getString ( "Preferences.ColorParserHighlightingCaption" ) ); //$NON-NLS-1$
@@ -2832,6 +3032,7 @@ public final class PreferencesDialog implements
     // General
     saveLanguage ();
     saveLookAndFeel ();
+    saveWordMode ();
     saveZoomFactor ();
 
     // View
@@ -3334,7 +3535,7 @@ public final class PreferencesDialog implements
 
 
   /**
-   * Saves the data of the pda mode.
+   * Saves the data of the {@link PDA} mode.
    */
   private final void savePDAMode ()
   {
@@ -3416,6 +3617,24 @@ public final class PreferencesDialog implements
           .create ( this.gui.jGTIComboBoxTransition.getSelectedIndex () );
       PreferenceManager.getInstance ().setTransitionItem (
           this.initialTransitionItem );
+    }
+  }
+
+
+  /**
+   * Saves the data of the {@link Word} mode.
+   */
+  private final void saveWordMode ()
+  {
+    if ( this.initialWordModeItem.getIndex () != this.gui.jGTIComboBoxWordMode
+        .getSelectedIndex () )
+    {
+      this.initialWordModeItem = WordModeItem
+          .create ( this.gui.jGTIComboBoxWordMode.getSelectedIndex () );
+      PreferenceManager.getInstance ().setWordModeItem (
+          this.initialWordModeItem );
+      PreferenceManager.getInstance ().fireWordModeChanged (
+          this.initialWordModeItem );
     }
   }
 

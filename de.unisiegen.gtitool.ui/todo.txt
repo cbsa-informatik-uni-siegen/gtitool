@@ -4,12 +4,7 @@ CF		- Mitteilung anzeigen, wenn Navigation fertig
 CF		- Wort eingeben -> rechtbündig (optional)
 
 BM		- Minimieren: Nicht erreichbare Zustände rauswerfen (Handbuch)
-BM		- Produktion per Doppelklick anlegen können
 BM		- Aktuelle Konfiguration darstellen (Edit-Dialog)
-BM		- Drucken: Minimieren (Breite stimmt nicht bei Potenz-Zuständen)
-BM		- Beim Drucken müssen große Transitionen berücksichtigt werden, ist
-		  bereits für das Exportieren eines Bilder implementiert, siehe
-		  JGTIGraph.getUsedBounds()
 
 
 *** FEATURE ***

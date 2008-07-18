@@ -895,6 +895,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       int rowIndex = this.gui.jGTITableGrammar.rowAtPoint ( event.getPoint () );
       if ( rowIndex == -1 )
       {
+        handleAddProduction ();
         return;
       }
       Production production = this.grammar.getProductionAt ( rowIndex );

@@ -86,26 +86,6 @@ public final class JGTIGraph extends JGraph implements Printable
 
 
   /**
-   * Calculates the width and heigth of the graph.
-   */
-  private final void calculateGraphSize ()
-  {
-    for ( Object object : DefaultGraphModel.getAll ( getModel () ) )
-    {
-      if ( object instanceof DefaultStateView )
-      {
-        DefaultStateView current = ( DefaultStateView ) object;
-
-        this.graphWidth = Math.max ( current.getPositionX ()
-            + current.getWidth (), this.graphWidth );
-        this.graphHeight = Math.max ( current.getPositionY ()
-            + current.getHeight (), this.graphHeight );
-      }
-    }
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see JGraph#getToolTipText(MouseEvent)
@@ -224,16 +204,15 @@ public final class JGTIGraph extends JGraph implements Printable
       int height = pageHeight - this.marginBottom - this.marginTop;
       graphics.setClip ( this.marginLeft, this.marginTop, width, height );
     }
-    this.graphWidth = 0;
-    this.graphHeight = 0;
-
-    calculateGraphSize ();
+    Rectangle rect = getUsedBounds ();
+    this.graphWidth = rect.getWidth () + rect.x;
+    this.graphHeight = rect.getHeight () + rect.y;
 
     int x = 0;
 
     int y = 0;
 
-    if ( ( pageIndex * pageWidth ) < this.graphWidth )
+    if ( ( pageIndex * ( pageWidth - this.marginRight - this.marginLeft ) ) < this.graphWidth )
     {
       x = - ( pageIndex * pageWidth );
       x = x

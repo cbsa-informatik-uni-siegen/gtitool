@@ -71,7 +71,8 @@ public class GrammarPanelForm extends JPanel implements GUIClass <GrammarPanel>
 
         setLayout(new java.awt.GridBagLayout());
 
-        styledTerminalSymbolSetParserPanel.setEnabled(false);
+        styledTerminalSymbolSetParserPanel.setCopyable(true);
+        styledTerminalSymbolSetParserPanel.setEditable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -89,7 +90,8 @@ public class GrammarPanelForm extends JPanel implements GUIClass <GrammarPanel>
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         add(jGTILabelTerminalSymbols, gridBagConstraints);
 
-        styledStartNonterminalSymbolParserPanel.setEnabled(false);
+        styledStartNonterminalSymbolParserPanel.setCopyable(true);
+        styledStartNonterminalSymbolParserPanel.setEditable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -106,7 +108,8 @@ public class GrammarPanelForm extends JPanel implements GUIClass <GrammarPanel>
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         add(jGTILabelStartSymbol, gridBagConstraints);
 
-        styledNonterminalSymbolSetParserPanel.setEnabled(false);
+        styledNonterminalSymbolSetParserPanel.setCopyable(true);
+        styledNonterminalSymbolSetParserPanel.setEditable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;

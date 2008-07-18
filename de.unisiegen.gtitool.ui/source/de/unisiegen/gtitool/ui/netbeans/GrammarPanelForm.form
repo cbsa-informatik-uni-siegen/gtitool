@@ -17,7 +17,8 @@
   <SubComponents>
     <Component class="de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel" name="styledTerminalSymbolSetParserPanel">
       <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="copyable" type="boolean" value="true"/>
+        <Property name="editable" type="boolean" value="false"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -39,7 +40,8 @@
     </Component>
     <Component class="de.unisiegen.gtitool.ui.style.StyledStartNonterminalSymbolParserPanel" name="styledStartNonterminalSymbolParserPanel">
       <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="copyable" type="boolean" value="true"/>
+        <Property name="editable" type="boolean" value="false"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -61,7 +63,8 @@
     </Component>
     <Component class="de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel" name="styledNonterminalSymbolSetParserPanel">
       <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="copyable" type="boolean" value="true"/>
+        <Property name="editable" type="boolean" value="false"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

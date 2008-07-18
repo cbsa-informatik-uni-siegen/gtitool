@@ -706,6 +706,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   public final void handleRedo ()
   {
     this.redoUndoHandler.redo ();
+    updateConfiguration ();
     this.gui.repaint ();
     fireModifyStatusChanged ( false );
   }
@@ -918,17 +919,9 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     TerminalDialog terminalDialog = new TerminalDialog ( this.mainWindowForm,
         this, this.grammar );
     terminalDialog.show ();
-    
-    // Update the configuration in the view
-    this.gui.styledTerminalSymbolSetParserPanel.setText ( this.grammar
-        .getTerminalSymbolSet () );
 
-    this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.grammar
-        .getNonterminalSymbolSet () );
-    
-    this.gui.styledStartNonterminalSymbolParserPanel.setText ( this.grammar
-        .getStartSymbol () );
-    
+    updateConfiguration ();
+
     // Must be repainted because of the maybe changed start symbol.
     this.gui.jGTITableGrammar.repaint ();
   }
@@ -940,6 +933,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   public final void handleUndo ()
   {
     this.redoUndoHandler.undo ();
+    updateConfiguration ();
     this.gui.repaint ();
     fireModifyStatusChanged ( false );
   }
@@ -1069,12 +1063,21 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
           }
         } );
 
+    updateConfiguration ();
+  }
+
+
+  /**
+   * Update the grammar configuration.
+   */
+  private void updateConfiguration ()
+  {
     this.gui.styledTerminalSymbolSetParserPanel.setText ( this.grammar
         .getTerminalSymbolSet () );
 
     this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.grammar
         .getNonterminalSymbolSet () );
-    
+
     this.gui.styledStartNonterminalSymbolParserPanel.setText ( this.grammar
         .getStartSymbol () );
   }
@@ -1182,6 +1185,12 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         .getString ( "GrammarPanel.Error" ) ); //$NON-NLS-1$
     this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
         .getString ( "GrammarPanel.Warning" ) ); //$NON-NLS-1$
+    this.gui.jGTILabelNonterminalSymbols.setText ( Messages
+        .getString ( "TerminalPanel.NonterminalSymbols" ) ); //$NON-NLS-1$
+    this.gui.jGTILabelStartSymbol.setText ( Messages
+        .getString ( "TerminalPanel.StartSymbol" ) ); //$NON-NLS-1$
+    this.gui.jGTILabelTerminalSymbols.setText ( Messages
+        .getString ( "TerminalPanel.TerminalSymbols" ) ); //$NON-NLS-1$
   }
 
 

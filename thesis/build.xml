@@ -9,6 +9,8 @@
 	<!-- property -->
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="builddir" value="${basedir}/build" />
+	<property name="distdir" value="${basedir}/dist" />
+	<property name="outputfile" value="thesis" />
 
 	<!-- dist -->
 	<target name="dist" description="Dist thesis">
@@ -24,13 +26,13 @@
 		</copy>
 		<!-- pdf latex -->
 		<exec dir="${builddir}" os="Linux" executable="pdflatex">
-			<arg value="thesis.tex" />
+			<arg value="${outputfile}.tex" />
 		</exec>
 		<exec dir="${builddir}" os="Linux" executable="pdflatex">
-			<arg value="thesis.tex" />
+			<arg value="${outputfile}.tex" />
 		</exec>
 		<!-- copy -->
-		<copy file="${builddir}/thesis.pdf" todir="${basedir}" />
+		<copy file="${builddir}/${outputfile}.pdf" todir="${distdir}" />
 		<!-- message -->
 		<echo message="Dist thesis finished" />
 	</target>

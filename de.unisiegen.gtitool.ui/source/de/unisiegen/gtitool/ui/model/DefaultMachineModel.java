@@ -897,8 +897,10 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * 
    * @param stateView The {@link DefaultStateView} that should be removed.
    * @param createUndoStep Flag signals if an undo step should be created.
+   * 
+   * @return The {@link RedoUndoItem}.
    */
-  public final void removeState ( DefaultStateView stateView,
+  public final RedoUndoItem removeState ( DefaultStateView stateView,
       boolean createUndoStep )
   {
     ArrayList < DefaultTransitionView > removeList = new ArrayList < DefaultTransitionView > ();
@@ -925,11 +927,12 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     stateView
         .removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
 
+    RedoUndoItem item = new StateRemovedItem ( this, stateView, removeList );
     if ( ( this.redoUndoHandler != null ) && createUndoStep )
     {
-      RedoUndoItem item = new StateRemovedItem ( this, stateView, removeList );
       this.redoUndoHandler.addItem ( item );
     }
+    return item;
   }
 
 

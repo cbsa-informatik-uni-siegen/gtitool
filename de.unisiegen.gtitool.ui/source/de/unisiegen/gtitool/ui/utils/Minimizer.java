@@ -18,6 +18,8 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.MinimizeMachineDialog;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.redoundo.MultiItem;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 
 
 /**
@@ -48,6 +50,12 @@ public class Minimizer
 
 
     /**
+     * The {@link RedoUndoItem}.
+     */
+    public RedoUndoItem redoUndoItem;
+
+
+    /**
      * List of the {@link Transition}s.
      */
     public ArrayList < Transition > transitionList;
@@ -59,13 +67,16 @@ public class Minimizer
      * @param groups The actual groups for this step.
      * @param prettyString The {@link PrettyString} for this row.
      * @param transitionList List of the {@link Transition}s.
+     * @param redoUndoItem The {@link RedoUndoItem}.
      */
     public MinimizeItem ( ArrayList < ArrayList < DefaultStateView > > groups,
-        PrettyString prettyString, ArrayList < Transition > transitionList )
+        PrettyString prettyString, ArrayList < Transition > transitionList,
+        RedoUndoItem redoUndoItem )
     {
       this.groups = groups;
       this.prettyString = prettyString;
       this.transitionList = transitionList;
+      this.redoUndoItem = redoUndoItem;
     }
   }
 
@@ -295,7 +306,7 @@ public class Minimizer
     tmpList.addAll ( this.model.getStateViewList () );
     oldGroups.add ( tmpList );
     this.activeMinimizeItem = new MinimizeItem ( oldGroups, null,
-        new ArrayList < Transition > () );
+        new ArrayList < Transition > (), null );
     this.previousSteps.push ( this.activeMinimizeItem );
 
     oldGroups = new ArrayList < ArrayList < DefaultStateView > > ();
@@ -328,8 +339,7 @@ public class Minimizer
           prettyString.add ( new PrettyToken ( " " + Messages //$NON-NLS-1$
               .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
         }
-        prettyString.add ( this.notReachable.get ( i )
-            .getState () );
+        prettyString.add ( this.notReachable.get ( i ).getState () );
       }
     }
     else
@@ -339,8 +349,14 @@ public class Minimizer
           , Style.NONE ) );
 
     }
+    MultiItem item = new MultiItem ();
+    for ( DefaultStateView current : this.notReachable )
+    {
+      item.addItem ( this.model.removeState ( current, false ) );
+    }
+    item.undo ();
     this.activeMinimizeItem = new MinimizeItem ( oldGroups, prettyString,
-        new ArrayList < Transition > () );
+        new ArrayList < Transition > (), item );
     this.previousSteps.push ( this.activeMinimizeItem );
 
     createInitialGroups ();
@@ -386,7 +402,7 @@ public class Minimizer
           , Style.NONE ) );
     }
     this.activeMinimizeItem = new MinimizeItem ( oldGroups, prettyString,
-        new ArrayList < Transition > () );
+        new ArrayList < Transition > (), null );
     this.previousSteps.push ( this.activeMinimizeItem );
 
     minimize ();
@@ -394,7 +410,7 @@ public class Minimizer
     // Add a final step to show the new machine.
     this.previousSteps.push ( new MinimizeItem ( getGroups (), Messages
         .getPrettyString ( "MinimizeMachineDialog.FinalPrettyString" ), //$NON-NLS-1$
-        new ArrayList < Transition > () ) );
+        new ArrayList < Transition > (), null ) );
 
     while ( this.previousSteps.size () > 1 )
     {
@@ -465,7 +481,7 @@ public class Minimizer
       ArrayList < Transition > transitionList = new ArrayList < Transition > ();
       transitionList.addAll ( this.transitions );
       this.previousSteps.push ( new MinimizeItem ( oldGroup,
-          createPrettyString ( this.newGroupStates ), transitionList ) );
+          createPrettyString ( this.newGroupStates ), transitionList, null ) );
       this.newGroupStates = new ArrayList < DefaultStateView > ();
       minimize ();
       return;
@@ -483,6 +499,11 @@ public class Minimizer
     this.activeMinimizeItem = this.nextStep.pop ();
     this.activeGroups = this.activeMinimizeItem.groups;
 
+    if ( this.activeMinimizeItem.redoUndoItem != null )
+    {
+      this.activeMinimizeItem.redoUndoItem.redo ();
+    }
+
     highlightGroups ();
 
     this.begin = false;
@@ -498,6 +519,10 @@ public class Minimizer
    */
   public void previousStep ()
   {
+    if ( this.activeMinimizeItem.redoUndoItem != null )
+    {
+      this.activeMinimizeItem.redoUndoItem.undo ();
+    }
     this.nextStep.push ( this.activeMinimizeItem );
     this.activeMinimizeItem = this.previousSteps.pop ();
     this.activeGroups = this.activeMinimizeItem.groups;

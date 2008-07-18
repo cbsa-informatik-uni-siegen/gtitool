@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MachineModel machineType="PDA" machineVersion="1018" usePushDownAlphabet="true">
+  <Alphabet>
+    <Symbol name="a" epsilon="false"/>
+    <Symbol name="b" epsilon="false"/>
+  </Alphabet>
+  <PushDownAlphabet>
+    <Symbol name="E" epsilon="false"/>
+    <Symbol name="F" epsilon="false"/>
+    <Symbol name="a" epsilon="false"/>
+    <Symbol name="b" epsilon="false"/>
+  </PushDownAlphabet>
+  <StateView x="18.0" y="15.0">
+    <State id="0" name="s" startState="true" finalState="false">
+      <TransitionBegin id="0"/>
+    </State>
+  </StateView>
+  <StateView x="202.0" y="78.0">
+    <State id="1" name="f" startState="false" finalState="true">
+      <TransitionBegin id="1"/>
+      <TransitionBegin id="2"/>
+      <TransitionBegin id="3"/>
+      <TransitionBegin id="4"/>
+      <TransitionEnd id="0"/>
+      <TransitionEnd id="1"/>
+      <TransitionEnd id="2"/>
+      <TransitionEnd id="3"/>
+      <TransitionEnd id="4"/>
+    </State>
+  </StateView>
+  <TransitionView>
+    <Transition id="0" stateBeginId="0" stateEndId="1">
+      <PushDownWordRead/>
+      <PushDownWordWrite>
+        <Symbol name="E" epsilon="false"/>
+      </PushDownWordWrite>
+      <Symbol name="&quot;epsilon&quot;" epsilon="true"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="1" stateBeginId="1" stateEndId="1">
+      <PushDownWordRead>
+        <Symbol name="a" epsilon="false"/>
+      </PushDownWordRead>
+      <PushDownWordWrite/>
+      <Symbol name="a" epsilon="false"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="2" stateBeginId="1" stateEndId="1">
+      <PushDownWordRead>
+        <Symbol name="b" epsilon="false"/>
+      </PushDownWordRead>
+      <PushDownWordWrite/>
+      <Symbol name="b" epsilon="false"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="3" stateBeginId="1" stateEndId="1">
+      <PushDownWordRead>
+        <Symbol name="E" epsilon="false"/>
+      </PushDownWordRead>
+      <PushDownWordWrite/>
+      <Symbol name="&quot;epsilon&quot;" epsilon="true"/>
+    </Transition>
+  </TransitionView>
+  <TransitionView>
+    <Transition id="4" stateBeginId="1" stateEndId="1">
+      <PushDownWordRead>
+        <Symbol name="E" epsilon="false"/>
+      </PushDownWordRead>
+      <PushDownWordWrite>
+        <Symbol name="a" epsilon="false"/>
+        <Symbol name="E" epsilon="false"/>
+        <Symbol name="b" epsilon="false"/>
+      </PushDownWordWrite>
+      <Symbol name="&quot;epsilon&quot;" epsilon="true"/>
+    </Transition>
+  </TransitionView>
+</MachineModel>

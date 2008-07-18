@@ -246,6 +246,20 @@ public final class StyledParserDocument < E extends Entity < E > > extends
 
 
   /**
+   * Returns the hide highlighted {@link Entity} set.
+   * 
+   * @return The hide highlighted {@link Entity} set.
+   */
+  private final SimpleAttributeSet getAttributeSetHideHighlightedParseableEntity ()
+  {
+    SimpleAttributeSet set = new SimpleAttributeSet ();
+    StyleConstants.setBackground ( set, Color.WHITE );
+    StyleConstants.setForeground ( set, Color.WHITE );
+    return set;
+  }
+
+
+  /**
    * Returns the highlighted {@link Entity} set.
    * 
    * @return The highlighted {@link Entity} set.
@@ -321,9 +335,20 @@ public final class StyledParserDocument < E extends Entity < E > > extends
   private final void highlightedParseableEntities ()
   {
     parse ();
+
+    SimpleAttributeSet highlightedParseableEntitySet;
+
+    if ( this.rightAlignment )
+    {
+      highlightedParseableEntitySet = getAttributeSetHideHighlightedParseableEntity ();
+    }
+    else
+    {
+      highlightedParseableEntitySet = getAttributeSetHighlightedParseableEntity ();
+    }
+
     for ( Entity < ? > current : this.highlightedParseableEntityList )
     {
-      SimpleAttributeSet highlightedParseableEntitySet = getAttributeSetHighlightedParseableEntity ();
       highlightedParseableEntitySet.addAttribute ( "highlighting", current ); //$NON-NLS-1$
       if ( ( current.getParserOffset ().getStart () < 0 )
           && ( current.getParserOffset ().getEnd () < 0 ) )

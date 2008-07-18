@@ -1,7 +1,9 @@
 *** TODO ***
 
-CF		- Mitteilung anzeigen, wenn Navigation fertig (Handbuch)
-CF		- Wort rechtbündig eingeben (Handbuch)
+CF		- Mitteilung anzeigen, wenn Navigation fertig (Handbuch - Bilder)
+CF		- Word Panel in das SplitPane setzen (Handbuch - Bilder)
+CF		- Probleme mit dem Loop Routing beheben (Handbuch - Bilder)
+
 
 *** FEATURE ***
 
@@ -18,7 +20,6 @@ CF		- SplitView: Horizontale/Vertikale Teilung
 CF		- Eine Überprüfung einbauen, ob auf dem Server eine neue Version verfügbar ist
 CF		- Auswahl der Transition so gestalten, dass auch sehr viele gut aussehen
 CF		- Parser muss Code formatieren können (PrettyPrinter)
-CF		- Probleme mit dem Loop Routing beheben
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout

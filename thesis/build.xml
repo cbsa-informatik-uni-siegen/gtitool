@@ -6,32 +6,32 @@
 -->
 <project name="gtitool.thesis" default="dist" basedir=".">
 
+	<!-- property -->
+	<property name="sourcedir" value="${basedir}/source" />
+	<property name="builddir" value="${basedir}/build" />
+
 	<!-- dist -->
 	<target name="dist" description="Dist thesis">
-		<exec dir="${basedir}" os="Linux" executable="latex">
-			<arg value="thesis.tex" />
-		</exec>
-		<exec dir="${basedir}" os="Linux" executable="latex">
-			<arg value="thesis.tex" />
-		</exec>
-		<exec dir="${basedir}" os="Linux" executable="dvips">
-			<arg value="-o" />
-			<arg value="thesis.ps" />
-			<arg value="thesis.dvi" />
-		</exec>
-		<exec dir="${basedir}" os="Linux" executable="ps2pdf">
-			<arg value="thesis.ps" />
-		</exec>
+		<!-- delete -->
 		<delete>
-			<fileset dir="${basedir}">
-				<include name="*.toc" />
-				<include name="*.aux" />
-				<include name="*.out" />
-				<include name="*.log" />
-				<include name="*.dvi" />
-				<include name="*.ps" />
-			</fileset>
+			<fileset dir="${builddir}" includes="**/*" />
 		</delete>
+		<!-- copy -->
+		<copy todir="${builddir}">
+			<fileset dir="${sourcedir}">
+				<include name="*.tex" />
+			</fileset>
+		</copy>
+		<!-- pdf latex -->
+		<exec dir="${builddir}" os="Linux" executable="pdflatex">
+			<arg value="thesis.tex" />
+		</exec>
+		<exec dir="${builddir}" os="Linux" executable="pdflatex">
+			<arg value="thesis.tex" />
+		</exec>
+		<!-- copy -->
+		<copy file="${builddir}/thesis.pdf" todir="${basedir}" />
+		<!-- message -->
 		<echo message="Dist thesis finished" />
 	</target>
 </project>

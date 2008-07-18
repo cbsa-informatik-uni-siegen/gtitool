@@ -16,7 +16,7 @@
 		<delete>
 			<fileset dir="${builddir}" includes="**/*" />
 		</delete>
-		<!-- pdf latex -->
+		<!-- copy -->
 		<copy todir="${builddir}">
 			<fileset dir="${sourcedir}">
 				<include name="*.tex" />

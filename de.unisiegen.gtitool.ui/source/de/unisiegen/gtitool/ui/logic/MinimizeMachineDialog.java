@@ -167,9 +167,9 @@ public final class MinimizeMachineDialog implements
 
 
   /**
-   * Flag indicates if we want to handle the devider location event.
+   * Flag indicates if we want to handle the divider location event.
    */
-  private boolean setDeviderLocation = true;
+  private boolean setDividerLocation = true;
 
 
   /**
@@ -206,8 +206,8 @@ public final class MinimizeMachineDialog implements
     this.machinePanel = machinePanel;
     this.gui = new MinimizeMachineDialogForm ( this, mainWindowForm );
 
-    this.setDeviderLocation = false;
     this.gui.jGTISplitPaneGraph.setRightComponent ( null );
+    this.gui.jGTISplitPaneGraph.setDividerSize ( 0 );
 
     try
     {
@@ -572,9 +572,11 @@ public final class MinimizeMachineDialog implements
 
     if ( this.endReached )
     {
-      this.setDeviderLocation = false;
       this.gui.jGTISplitPaneGraph
           .setRightComponent ( this.gui.jGTIScrollPaneConverted );
+      this.gui.jGTISplitPaneGraph.setDividerSize ( 3 );
+      this.gui.jGTISplitPaneGraph.setDividerLocation ( PreferenceManager
+          .getInstance ().getDividerLocationMinimizeMachine () );
     }
   }
 
@@ -620,8 +622,9 @@ public final class MinimizeMachineDialog implements
 
     if ( this.endReached )
     {
-      this.setDeviderLocation = false;
+      this.setDividerLocation = false;
       this.gui.jGTISplitPaneGraph.setRightComponent ( null );
+      this.gui.jGTISplitPaneGraph.setDividerSize ( 0 );
     }
     this.minimizer.previousStep ();
     this.beginReached = this.minimizer.isBegin ();
@@ -731,16 +734,15 @@ public final class MinimizeMachineDialog implements
           @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent event )
           {
-            if ( MinimizeMachineDialog.this.setDeviderLocation )
+            if ( MinimizeMachineDialog.this.setDividerLocation
+                && ( MinimizeMachineDialog.this.gui.jGTISplitPaneGraph
+                    .getRightComponent () != null ) )
             {
               PreferenceManager.getInstance ()
                   .setDividerLocationMinimizeMachine (
                       ( ( Integer ) event.getNewValue () ).intValue () );
             }
-            else
-            {
-              MinimizeMachineDialog.this.setDeviderLocation = true;
-            }
+            MinimizeMachineDialog.this.setDividerLocation = true;
           }
         } );
     this.gui.jGTISplitPaneOutline.setDividerLocation ( PreferenceManager

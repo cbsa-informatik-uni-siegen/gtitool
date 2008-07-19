@@ -20,6 +20,7 @@ CF		- SplitView: Horizontale/Vertikale Teilung
 CF		- Eine Überprüfung einbauen, ob auf dem Server eine neue Version verfügbar ist
 CF		- Auswahl der Transition so gestalten, dass auch sehr viele gut aussehen
 CF		- Parser muss Code formatieren können (PrettyPrinter)
+CF		- Logik des Reachable States Dialogs neu schreiben
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout

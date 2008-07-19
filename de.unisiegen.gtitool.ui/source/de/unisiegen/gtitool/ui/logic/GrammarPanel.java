@@ -178,8 +178,9 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     initialize ();
     initializeSecondView ();
 
-    this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
-        .getInstance ().getDividerLocationConsole () );
+    int dividerLocationConsole = this.gui.jGTISplitPaneConsole.getHeight ()
+        - PreferenceManager.getInstance ().getDividerLocationConsole ();
+    this.gui.jGTISplitPaneConsole.setDividerLocation ( dividerLocationConsole );
     setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
         .getState () );
     this.gui.jGTISplitPaneConsole.addPropertyChangeListener (
@@ -187,12 +188,18 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void propertyChange ( PropertyChangeEvent event )
+          public void propertyChange ( @SuppressWarnings("unused") PropertyChangeEvent event )
           {
-            if ( GrammarPanel.this.setDividerLocationConsole )
+            if ( GrammarPanel.this.setDividerLocationConsole
+                && GrammarPanel.this.mainWindowForm
+                    .getJCheckBoxMenuItemConsole ().isSelected () )
             {
+              int newDividerLocation = GrammarPanel.this.gui.jGTISplitPaneConsole
+                  .getHeight ()
+                  - GrammarPanel.this.gui.jGTISplitPaneConsole
+                      .getDividerLocation ();
               PreferenceManager.getInstance ().setDividerLocationConsole (
-                  ( ( Integer ) event.getNewValue () ).intValue () );
+                  newDividerLocation );
             }
             GrammarPanel.this.setDividerLocationConsole = true;
           }
@@ -1310,8 +1317,11 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       this.gui.jGTISplitPaneConsole
           .setRightComponent ( this.gui.jGTITabbedPaneConsole );
       this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
-      this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
-          .getInstance ().getDividerLocationConsole () );
+
+      int dividerLocationConsole = this.gui.jGTISplitPaneConsole.getHeight ()
+          - PreferenceManager.getInstance ().getDividerLocationConsole ();
+      this.gui.jGTISplitPaneConsole
+          .setDividerLocation ( dividerLocationConsole );
     }
     else
     {

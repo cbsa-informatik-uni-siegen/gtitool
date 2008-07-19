@@ -157,11 +157,13 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
     addMouseMotionListener ( new MouseMotionAdapter ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseDragged ( MouseEvent event )
       {
         if ( getDragEnabled ()
-            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 ) )
+            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 )
+            && ( getTabIndex ( event.getPoint ().x, event.getPoint ().y ) != -1 ) )
         {
           TransferHandler transferHandler = getTransferHandler ();
           transferHandler.exportAsDrag ( JGTITabbedPane.this, event,
@@ -241,6 +243,21 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
         this.dropPoint = null;
         repaint ();
         return;
+      }
+
+      // reject the drag if the mouse is not beside the tabs
+      if ( getTabCount () > 0 )
+      {
+        Rectangle bounds = getUI ().getTabBounds ( this, 0 );
+        Point point = event.getLocation ();
+
+        if ( ( point.y < bounds.y ) || ( point.y > bounds.y + bounds.height ) )
+        {
+          event.rejectDrag ();
+          this.dropPoint = null;
+          repaint ();
+          return;
+        }
       }
     }
     catch ( UnsupportedFlavorException exc )

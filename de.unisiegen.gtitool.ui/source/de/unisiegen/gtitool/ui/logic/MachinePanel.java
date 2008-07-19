@@ -944,7 +944,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   private final void fireModifyStatusChanged ( boolean forceModify )
   {
     clearValidationMessages ();
-    clearHighlight ();
 
     // is needed if a cell is deleted
     updateSelected ();

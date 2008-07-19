@@ -1665,6 +1665,24 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
     removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
+
+    if ( machinePanel.isUndoAble () )
+    {
+      addButtonState ( ButtonState.ENABLED_UNDO );
+    }
+    else
+    {
+      removeButtonState ( ButtonState.ENABLED_UNDO );
+    }
+
+    if ( machinePanel.isRedoAble () )
+    {
+      addButtonState ( ButtonState.ENABLED_REDO );
+    }
+    else
+    {
+      removeButtonState ( ButtonState.ENABLED_REDO );
+    }
   }
 
 
@@ -1726,6 +1744,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
       removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+      removeButtonState ( ButtonState.ENABLED_UNDO );
+      removeButtonState ( ButtonState.ENABLED_REDO );
     }
   }
 
@@ -3203,6 +3223,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
           removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
+          removeButtonState ( ButtonState.ENABLED_UNDO );
+          removeButtonState ( ButtonState.ENABLED_REDO );
 
           addButtonState ( ButtonState.SELECTED_ENTER_WORD );
 
@@ -3226,6 +3248,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
           removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
+          removeButtonState ( ButtonState.ENABLED_UNDO );
+          removeButtonState ( ButtonState.ENABLED_REDO );
 
           addButtonState ( ButtonState.SELECTED_ENTER_WORD );
           addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
@@ -3251,6 +3275,24 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
 
           addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+
+          if ( machinePanel.isUndoAble () )
+          {
+            addButtonState ( ButtonState.ENABLED_UNDO );
+          }
+          else
+          {
+            removeButtonState ( ButtonState.ENABLED_UNDO );
+          }
+
+          if ( machinePanel.isRedoAble () )
+          {
+            addButtonState ( ButtonState.ENABLED_REDO );
+          }
+          else
+          {
+            removeButtonState ( ButtonState.ENABLED_REDO );
+          }
         }
         else
         {
@@ -3306,28 +3348,28 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
         removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
+
+        if ( grammarPanel.isUndoAble () )
+        {
+          addButtonState ( ButtonState.ENABLED_UNDO );
+        }
+        else
+        {
+          removeButtonState ( ButtonState.ENABLED_UNDO );
+        }
+
+        if ( grammarPanel.isRedoAble () )
+        {
+          addButtonState ( ButtonState.ENABLED_REDO );
+        }
+        else
+        {
+          removeButtonState ( ButtonState.ENABLED_REDO );
+        }
       }
       else
       {
         throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-      }
-
-      if ( panel.isUndoAble () )
-      {
-        addButtonState ( ButtonState.ENABLED_UNDO );
-      }
-      else
-      {
-        removeButtonState ( ButtonState.ENABLED_UNDO );
-      }
-
-      if ( panel.isRedoAble () )
-      {
-        addButtonState ( ButtonState.ENABLED_REDO );
-      }
-      else
-      {
-        removeButtonState ( ButtonState.ENABLED_REDO );
       }
 
       // Save status

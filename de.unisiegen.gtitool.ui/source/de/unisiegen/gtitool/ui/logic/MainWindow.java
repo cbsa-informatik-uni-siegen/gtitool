@@ -1633,8 +1633,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleEditMachine ()
   {
-    logger.debug ( "handleEnterWord", //$NON-NLS-1$
-        "handle enter word" ); //$NON-NLS-1$
+    logger.debug ( "handleEditMachine", //$NON-NLS-1$
+        "handle edit machine" ); //$NON-NLS-1$
 
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
@@ -1645,8 +1645,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleEditMachine ();
-    machinePanel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
-        .isSelected () );
 
     addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
     addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
@@ -1711,7 +1709,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( handleValidate ( false ) )
     {
       machinePanel.handleEnterWord ();
-      machinePanel.setVisibleConsole ( false );
 
       addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
       addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
@@ -1720,7 +1717,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
       removeButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
-      removeButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
       removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
       removeButtonState ( ButtonState.ENABLED_VALIDATE );
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );

@@ -1,7 +1,6 @@
 *** TODO ***
 
 CF		- Mitteilung anzeigen, wenn Navigation fertig (Handbuch - Bilder)
-CF		- Word Panel in das SplitPane setzen (Handbuch - Bilder)
 
 
 *** FEATURE ***

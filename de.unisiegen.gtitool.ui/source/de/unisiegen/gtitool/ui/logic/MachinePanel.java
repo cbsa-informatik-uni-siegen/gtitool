@@ -467,7 +467,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           {
             if ( MachinePanel.this.setDividerLocationConsole
                 && MachinePanel.this.mainWindowForm
-                    .getJCheckBoxMenuItemConsole ().isSelected () )
+                    .getJCheckBoxMenuItemConsole ().isSelected ()
+                && MachinePanel.this.machineMode
+                    .equals ( MachineMode.EDIT_MACHINE ) )
             {
               int newDividerLocation = MachinePanel.this.gui.jGTISplitPaneConsole
                   .getHeight ()
@@ -538,12 +540,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     if ( PreferenceManager.getInstance ().getWordModeItem ().equals (
         WordModeItem.LEFT ) )
     {
-      this.gui.wordPanel.styledWordParserPanel.setRightAlignment ( false );
+      this.gui.wordPanelForm.styledWordParserPanel.setRightAlignment ( false );
     }
     else if ( PreferenceManager.getInstance ().getWordModeItem ().equals (
         WordModeItem.RIGHT ) )
     {
-      this.gui.wordPanel.styledWordParserPanel.setRightAlignment ( true );
+      this.gui.wordPanelForm.styledWordParserPanel.setRightAlignment ( true );
     }
     else
     {
@@ -558,12 +560,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           {
             if ( newValue.equals ( WordModeItem.LEFT ) )
             {
-              MachinePanel.this.gui.wordPanel.styledWordParserPanel
+              MachinePanel.this.gui.wordPanelForm.styledWordParserPanel
                   .setRightAlignment ( false );
             }
             else if ( newValue.equals ( WordModeItem.RIGHT ) )
             {
-              MachinePanel.this.gui.wordPanel.styledWordParserPanel
+              MachinePanel.this.gui.wordPanelForm.styledWordParserPanel
                   .setRightAlignment ( true );
             }
             else
@@ -571,11 +573,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
               throw new RuntimeException ( "unsupported word mode" ); //$NON-NLS-1$
             }
 
-            MachinePanel.this.gui.wordPanel.styledWordParserPanel.parse ();
+            MachinePanel.this.gui.wordPanelForm.styledWordParserPanel.parse ();
           }
         } );
 
-    this.gui.wordPanel.styledWordParserPanel.parse ();
+    this.gui.wordPanelForm.styledWordParserPanel.parse ();
 
     // Update the machine table status
     updateMachineTableStatus ();
@@ -1312,10 +1314,15 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     handleWordStop ();
 
+    setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
+        .isSelected () );
+
     this.machineMode = MachineMode.EDIT_MACHINE;
+
+    this.jGTIGraph.setEnabled ( true );
     this.jGTIGraph.removeMouseListener ( this.enterWordModeMouse );
-    this.gui.wordPanel.setVisible ( false );
-    this.model.getJGTIGraph ().setEnabled ( true );
+
+    setWordConsole ( false );
 
     clearHighlight ();
 
@@ -1341,10 +1348,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       else if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
           PDAModeItem.HIDE ) )
       {
-        this.gui.wordPanel.jGTILabelStack.setEnabled ( false );
-        this.gui.wordPanel.styledStackParserPanel.setEnabled ( false );
-        this.gui.wordPanel.jGTILabelPushDownAlphabet.setEnabled ( false );
-        this.gui.wordPanel.styledAlphabetParserPanelPushDown
+        this.gui.wordPanelForm.jGTILabelStack.setEnabled ( false );
+        this.gui.wordPanelForm.styledStackParserPanel.setEnabled ( false );
+        this.gui.wordPanelForm.jGTILabelPushDownAlphabet.setEnabled ( false );
+        this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
             .setEnabled ( false );
       }
       else
@@ -1353,11 +1360,14 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       }
     }
 
+    setVisibleConsole ( false );
+
     this.jGTIGraph.clearSelection ();
-    this.gui.wordPanel.setVisible ( true );
     this.jGTIGraph.setEnabled ( false );
     this.jGTIGraph.addMouseListener ( this.enterWordModeMouse );
-    this.gui.wordPanel.requestFocus ();
+
+    setWordConsole ( true );
+    this.gui.wordPanelForm.requestFocus ();
   }
 
 
@@ -1989,7 +1999,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       }
 
       // update stack
-      this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
+      this.gui.wordPanelForm.styledStackParserPanel.setText ( this.machine
           .getStack () );
 
       // update button states
@@ -2000,12 +2010,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
       try
       {
-        this.gui.wordPanel.styledWordParserPanel
+        this.gui.wordPanelForm.styledWordParserPanel
             .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
       }
       catch ( WordResetedException exc )
       {
-        this.gui.wordPanel.styledWordParserPanel
+        this.gui.wordPanelForm.styledWordParserPanel
             .setHighlightedParseableEntity ();
       }
     }
@@ -2027,7 +2037,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     this.machine.previousSymbol ();
 
-    this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
+    this.gui.wordPanelForm.styledStackParserPanel.setText ( this.machine
         .getStack () );
 
     this.mainWindowForm.getLogic ().updateWordNavigationStates ();
@@ -2036,16 +2046,18 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     // after the last previous step the current symbol is not defined
     try
     {
-      this.gui.wordPanel.styledWordParserPanel
+      this.gui.wordPanelForm.styledWordParserPanel
           .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
     }
     catch ( WordResetedException exc )
     {
-      this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();
+      this.gui.wordPanelForm.styledWordParserPanel
+          .setHighlightedParseableEntity ();
     }
     catch ( WordFinishedException exc )
     {
-      this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();
+      this.gui.wordPanelForm.styledWordParserPanel
+          .setHighlightedParseableEntity ();
     }
 
     updateAcceptedState ();
@@ -2059,7 +2071,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final boolean handleWordStart ()
   {
-    if ( this.gui.wordPanel.styledWordParserPanel.getParsedObject () == null )
+    if ( this.gui.wordPanelForm.styledWordParserPanel.getParsedObject () == null )
     {
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, Messages
           .getString ( "MachinePanel.WordModeNoWordEntered" ), Messages //$NON-NLS-1$
@@ -2071,14 +2083,15 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.machineMode = MachineMode.WORD_NAVIGATION;
     clearHighlight ();
 
-    this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
-    this.gui.wordPanel.styledAlphabetParserPanelInput.setCopyable ( false );
-    this.gui.wordPanel.styledAlphabetParserPanelPushDown.setCopyable ( false );
+    this.gui.wordPanelForm.styledWordParserPanel.setEditable ( false );
+    this.gui.wordPanelForm.styledAlphabetParserPanelInput.setCopyable ( false );
+    this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
+        .setCopyable ( false );
 
-    this.machine.start ( this.gui.wordPanel.styledWordParserPanel
+    this.machine.start ( this.gui.wordPanelForm.styledWordParserPanel
         .getParsedObject () );
 
-    this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
+    this.gui.wordPanelForm.styledStackParserPanel.setText ( this.machine
         .getStack () );
 
     this.mainWindowForm.getLogic ().updateWordNavigationStates ();
@@ -2102,7 +2115,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     this.machine.stop ();
 
-    this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
+    this.gui.wordPanelForm.styledStackParserPanel.setText ( this.machine
         .getStack () );
 
     this.mainWindowForm.getLogic ().removeButtonState (
@@ -2113,10 +2126,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     updateAcceptedState ();
 
-    this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();
-    this.gui.wordPanel.styledWordParserPanel.setEditable ( true );
-    this.gui.wordPanel.styledAlphabetParserPanelInput.setCopyable ( true );
-    this.gui.wordPanel.styledAlphabetParserPanelPushDown.setCopyable ( true );
+    this.gui.wordPanelForm.styledWordParserPanel
+        .setHighlightedParseableEntity ();
+    this.gui.wordPanelForm.styledWordParserPanel.setEditable ( true );
+    this.gui.wordPanelForm.styledAlphabetParserPanelInput.setCopyable ( true );
+    this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
+        .setCopyable ( true );
   }
 
 
@@ -2314,9 +2329,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
         } );
 
-    this.gui.wordPanel.setVisible ( false );
-    this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );
-    this.gui.wordPanel.setPushDownAlphabet ( this.machine
+    setWordConsole ( false );
+    this.gui.wordPanelForm.setAlphabet ( this.machine.getAlphabet () );
+    this.gui.wordPanelForm.setPushDownAlphabet ( this.machine
         .getPushDownAlphabet () );
   }
 
@@ -2436,26 +2451,26 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
               {
                 setVisiblePDATable ( true );
 
-                MachinePanel.this.gui.wordPanel.jGTILabelStack
+                MachinePanel.this.gui.wordPanelForm.jGTILabelStack
                     .setEnabled ( true );
-                MachinePanel.this.gui.wordPanel.styledStackParserPanel
+                MachinePanel.this.gui.wordPanelForm.styledStackParserPanel
                     .setEnabled ( true );
-                MachinePanel.this.gui.wordPanel.jGTILabelPushDownAlphabet
+                MachinePanel.this.gui.wordPanelForm.jGTILabelPushDownAlphabet
                     .setEnabled ( true );
-                MachinePanel.this.gui.wordPanel.styledAlphabetParserPanelPushDown
+                MachinePanel.this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
                     .setEnabled ( true );
               }
               else if ( newValue.equals ( PDAModeItem.HIDE ) )
               {
                 setVisiblePDATable ( false );
 
-                MachinePanel.this.gui.wordPanel.jGTILabelStack
+                MachinePanel.this.gui.wordPanelForm.jGTILabelStack
                     .setEnabled ( false );
-                MachinePanel.this.gui.wordPanel.styledStackParserPanel
+                MachinePanel.this.gui.wordPanelForm.styledStackParserPanel
                     .setEnabled ( false );
-                MachinePanel.this.gui.wordPanel.jGTILabelPushDownAlphabet
+                MachinePanel.this.gui.wordPanelForm.jGTILabelPushDownAlphabet
                     .setEnabled ( false );
-                MachinePanel.this.gui.wordPanel.styledAlphabetParserPanelPushDown
+                MachinePanel.this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
                     .setEnabled ( false );
               }
               else
@@ -3471,6 +3486,32 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * Sets the visibility of the {@link Word} console.
+   * 
+   * @param visible Visible or not visible.
+   */
+  private final void setWordConsole ( boolean visible )
+  {
+    if ( visible )
+    {
+      if ( this.gui.jGTISplitPaneWord.getRightComponent () == null )
+      {
+        this.gui.jGTISplitPaneWord.setRightComponent ( this.gui.wordPanelForm );
+        this.gui.jGTISplitPaneWord.setDividerSize ( 3 );
+      }
+    }
+    else
+    {
+      if ( this.gui.jGTISplitPaneWord.getRightComponent () != null )
+      {
+        this.gui.jGTISplitPaneWord.setRightComponent ( null );
+        this.gui.jGTISplitPaneWord.setDividerSize ( 0 );
+      }
+    }
+  }
+
+
+  /**
    * Set the zoom factor for this panel
    * 
    * @param factor the new zoom factor
@@ -3508,18 +3549,18 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       if ( this.machine.isWordAccepted () )
       {
-        this.gui.wordPanel.styledWordParserPanel
+        this.gui.wordPanelForm.styledWordParserPanel
             .setAcceptedStatus ( AcceptedStatus.ACCEPTED );
       }
       else
       {
-        this.gui.wordPanel.styledWordParserPanel
+        this.gui.wordPanelForm.styledWordParserPanel
             .setAcceptedStatus ( AcceptedStatus.NOT_ACCEPTED );
       }
     }
     else
     {
-      this.gui.wordPanel.styledWordParserPanel
+      this.gui.wordPanelForm.styledWordParserPanel
           .setAcceptedStatus ( AcceptedStatus.NONE );
     }
   }

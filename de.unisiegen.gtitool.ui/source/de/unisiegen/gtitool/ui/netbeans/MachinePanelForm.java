@@ -56,6 +56,7 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
         java.awt.GridBagConstraints gridBagConstraints;
 
         toolbarButton = new javax.swing.ButtonGroup();
+        jGTISplitPaneWord = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTISplitPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTIPanelMachine = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTISplitPaneTable = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
@@ -73,9 +74,12 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
         jGTITableErrors = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIScrollPaneWarnings = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableWarnings = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        wordPanel = new de.unisiegen.gtitool.ui.netbeans.WordPanelForm();
+        wordPanelForm = new de.unisiegen.gtitool.ui.netbeans.WordPanelForm();
 
         setLayout(new java.awt.GridBagLayout());
+
+        jGTISplitPaneWord.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jGTISplitPaneWord.setResizeWeight(1.0);
 
         jGTISplitPaneConsole.setDividerLocation(200);
         jGTISplitPaneConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -193,19 +197,16 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
 
         jGTISplitPaneConsole.setRightComponent(jGTIPanelConsole);
 
+        jGTISplitPaneWord.setLeftComponent(jGTISplitPaneConsole);
+        jGTISplitPaneWord.setRightComponent(wordPanelForm);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        add(jGTISplitPaneConsole, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        add(wordPanel, gridBagConstraints);
+        add(jGTISplitPaneWord, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jGTITableMachinePDAMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableMachinePDAMouseExited
@@ -254,13 +255,14 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneConsole;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPanePDATable;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneTable;
+    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneWord;
     public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPaneConsole;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableErrors;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableMachine;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableMachinePDA;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableWarnings;
     public javax.swing.ButtonGroup toolbarButton;
-    public de.unisiegen.gtitool.ui.netbeans.WordPanelForm wordPanel;
+    public de.unisiegen.gtitool.ui.netbeans.WordPanelForm wordPanelForm;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -178,9 +178,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     initialize ();
     initializeSecondView ();
 
-    int dividerLocationConsole = this.gui.jGTISplitPaneConsole.getHeight ()
-        - PreferenceManager.getInstance ().getDividerLocationConsole ();
-    this.gui.jGTISplitPaneConsole.setDividerLocation ( dividerLocationConsole );
+    this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
+        .getInstance ().getDividerLocationConsole ().getFirst ().intValue () );
     setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
         .getState () );
     this.gui.jGTISplitPaneConsole.addPropertyChangeListener (
@@ -188,7 +187,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void propertyChange ( @SuppressWarnings("unused") PropertyChangeEvent event )
+          public void propertyChange (
+              @SuppressWarnings ( "unused" ) PropertyChangeEvent event )
           {
             if ( GrammarPanel.this.setDividerLocationConsole
                 && GrammarPanel.this.mainWindowForm
@@ -199,7 +199,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
                   - GrammarPanel.this.gui.jGTISplitPaneConsole
                       .getDividerLocation ();
               PreferenceManager.getInstance ().setDividerLocationConsole (
-                  newDividerLocation );
+                  GrammarPanel.this.gui.jGTISplitPaneConsole
+                      .getDividerLocation (), newDividerLocation );
             }
             GrammarPanel.this.setDividerLocationConsole = true;
           }
@@ -1075,22 +1076,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
-   * Update the grammar configuration.
-   */
-  private void updateConfiguration ()
-  {
-    this.gui.styledTerminalSymbolSetParserPanel.setText ( this.grammar
-        .getTerminalSymbolSet () );
-
-    this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.grammar
-        .getNonterminalSymbolSet () );
-
-    this.gui.styledStartNonterminalSymbolParserPanel.setText ( this.grammar
-        .getStartSymbol () );
-  }
-
-
-  /**
    * Initializes the second view .
    */
   private final void initializeSecondView ()
@@ -1319,7 +1304,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
 
       int dividerLocationConsole = this.gui.jGTISplitPaneConsole.getHeight ()
-          - PreferenceManager.getInstance ().getDividerLocationConsole ();
+          - PreferenceManager.getInstance ().getDividerLocationConsole ()
+              .getSecond ().intValue ();
       this.gui.jGTISplitPaneConsole
           .setDividerLocation ( dividerLocationConsole );
     }
@@ -1329,5 +1315,21 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       this.gui.jGTISplitPaneConsole.setRightComponent ( null );
       this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
     }
+  }
+
+
+  /**
+   * Update the grammar configuration.
+   */
+  private void updateConfiguration ()
+  {
+    this.gui.styledTerminalSymbolSetParserPanel.setText ( this.grammar
+        .getTerminalSymbolSet () );
+
+    this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.grammar
+        .getNonterminalSymbolSet () );
+
+    this.gui.styledStartNonterminalSymbolParserPanel.setText ( this.grammar
+        .getStartSymbol () );
   }
 }

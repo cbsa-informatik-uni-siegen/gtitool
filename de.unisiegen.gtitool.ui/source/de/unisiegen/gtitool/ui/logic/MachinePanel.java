@@ -449,12 +449,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     intitializeMouseAdapter ();
 
-    /*
-     * Divider Location
-     */
-    int dividerLocationConsole = this.gui.jGTISplitPaneConsole.getHeight ()
-        - PreferenceManager.getInstance ().getDividerLocationConsole ();
-    this.gui.jGTISplitPaneConsole.setDividerLocation ( dividerLocationConsole );
+    MachinePanel.this.gui.jGTISplitPaneConsole
+        .setDividerLocation ( PreferenceManager.getInstance ()
+            .getDividerLocationConsole ().getFirst ().intValue () );
     setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
         .getState () );
     this.gui.jGTISplitPaneConsole.addPropertyChangeListener (
@@ -476,16 +473,15 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
                   - MachinePanel.this.gui.jGTISplitPaneConsole
                       .getDividerLocation ();
               PreferenceManager.getInstance ().setDividerLocationConsole (
-                  newDividerLocation );
+                  MachinePanel.this.gui.jGTISplitPaneConsole
+                      .getDividerLocation (), newDividerLocation );
             }
             MachinePanel.this.setDividerLocationConsole = true;
           }
         } );
 
-    int dividerLocationTable = this.gui.jGTISplitPaneTable.getWidth ()
-        - PreferenceManager.getInstance ().getDividerLocationTable ();
-    this.gui.jGTISplitPaneTable.setDividerLocation ( dividerLocationTable );
-
+    this.gui.jGTISplitPaneTable.setDividerLocation ( PreferenceManager
+        .getInstance ().getDividerLocationTable ().getFirst ().intValue () );
     setVisibleTable ( this.mainWindowForm.getJCheckBoxMenuItemTable ()
         .getState () );
     this.gui.jGTISplitPaneTable.addPropertyChangeListener (
@@ -505,7 +501,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
                   - MachinePanel.this.gui.jGTISplitPaneTable
                       .getDividerLocation ();
               PreferenceManager.getInstance ().setDividerLocationTable (
-                  newDividerLocation );
+                  MachinePanel.this.gui.jGTISplitPaneTable
+                      .getDividerLocation (), newDividerLocation );
             }
             MachinePanel.this.setDividerLocationTable = true;
           }
@@ -3404,7 +3401,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
 
         int dividerLocationConsole = this.gui.jGTISplitPaneConsole.getHeight ()
-            - PreferenceManager.getInstance ().getDividerLocationConsole ();
+            - PreferenceManager.getInstance ().getDividerLocationConsole ()
+                .getSecond ().intValue ();
         this.gui.jGTISplitPaneConsole
             .setDividerLocation ( dividerLocationConsole );
       }
@@ -3469,7 +3467,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         this.gui.jGTISplitPaneTable.setDividerSize ( 3 );
 
         int dividerLocationTable = this.gui.jGTISplitPaneTable.getWidth ()
-            - PreferenceManager.getInstance ().getDividerLocationTable ();
+            - PreferenceManager.getInstance ().getDividerLocationTable ()
+                .getSecond ().intValue ();
         this.gui.jGTISplitPaneTable.setDividerLocation ( dividerLocationTable );
       }
     }

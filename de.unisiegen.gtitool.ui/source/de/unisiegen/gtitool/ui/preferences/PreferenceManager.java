@@ -481,10 +481,16 @@ public final class PreferenceManager extends
    * 
    * @return The console divider location.
    */
-  public final int getDividerLocationConsole ()
+  public final ObjectPair < Integer, Integer > getDividerLocationConsole ()
   {
-    return this.preferences.getInt ( "MachinePanel.DividerConsole", //$NON-NLS-1$
-        DEFAULT_DIVIDER_LOCATION_CONSOLE );
+    Integer firstLocation = new Integer ( this.preferences.getInt (
+        "MachinePanel.DividerConsole0", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_CONSOLE ) );
+    Integer secondLocation = new Integer ( this.preferences.getInt (
+        "MachinePanel.DividerConsole1", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_CONSOLE ) );
+
+    return new ObjectPair < Integer, Integer > ( firstLocation, secondLocation );
   }
 
 
@@ -577,10 +583,16 @@ public final class PreferenceManager extends
    * 
    * @return The table divider location.
    */
-  public final int getDividerLocationTable ()
+  public final ObjectPair < Integer, Integer > getDividerLocationTable ()
   {
-    return this.preferences.getInt ( "MachinePanel.DividerTable", //$NON-NLS-1$
-        DEFAULT_DIVIDER_LOCATION_TABLE );
+    Integer firstLocation = new Integer ( this.preferences.getInt (
+        "MachinePanel.DividerTable0", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_TABLE ) );
+    Integer secondLocation = new Integer ( this.preferences.getInt (
+        "MachinePanel.DividerTable1", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_TABLE ) );
+
+    return new ObjectPair < Integer, Integer > ( firstLocation, secondLocation );
   }
 
 
@@ -1019,14 +1031,18 @@ public final class PreferenceManager extends
   /**
    * Sets the console divider location.
    * 
-   * @param location The console divider location.
+   * @param firstLocation The first console divider location.
+   * @param secondLocation The second console divider location.
    */
-  public final void setDividerLocationConsole ( int location )
+  public final void setDividerLocationConsole ( int firstLocation,
+      int secondLocation )
   {
     logger.debug ( "setDividerLocationConsole",//$NON-NLS-1$
-        "set console divider location to " + Messages.QUOTE + location //$NON-NLS-1$
+        "set console divider location to " + Messages.QUOTE + firstLocation //$NON-NLS-1$
+            + Messages.QUOTE + " and " + Messages.QUOTE + secondLocation //$NON-NLS-1$
             + Messages.QUOTE );
-    this.preferences.putInt ( "MachinePanel.DividerConsole", location ); //$NON-NLS-1$
+    this.preferences.putInt ( "MachinePanel.DividerConsole0", firstLocation ); //$NON-NLS-1$
+    this.preferences.putInt ( "MachinePanel.DividerConsole1", secondLocation ); //$NON-NLS-1$
   }
 
 
@@ -1131,13 +1147,19 @@ public final class PreferenceManager extends
   /**
    * Sets the table divider location.
    * 
-   * @param location The table divider location.
+   * @param firstLocation The first table divider location.
+   * @param secondLocation The second table divider location.
    */
-  public final void setDividerLocationTable ( int location )
+  public final void setDividerLocationTable ( int firstLocation,
+      int secondLocation )
   {
-    logger.debug ( "setDividerLocationTable", "set table divider location to "//$NON-NLS-1$//$NON-NLS-2$
-        + Messages.QUOTE + location + Messages.QUOTE );
-    this.preferences.putInt ( "MachinePanel.DividerTable", location ); //$NON-NLS-1$
+    logger.debug ( "setDividerLocationTable",//$NON-NLS-1$
+        "set table divider location to " + Messages.QUOTE + firstLocation //$NON-NLS-1$
+            + Messages.QUOTE + " and " + Messages.QUOTE + secondLocation //$NON-NLS-1$
+            + Messages.QUOTE );
+
+    this.preferences.putInt ( "MachinePanel.DividerTable0", firstLocation ); //$NON-NLS-1$
+    this.preferences.putInt ( "MachinePanel.DividerTable1", secondLocation ); //$NON-NLS-1$
   }
 
 

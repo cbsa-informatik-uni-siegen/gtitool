@@ -369,8 +369,8 @@ public final class StateView extends VertexView
               addText = addText.substring ( 0, addText.length () - 1 );
             }
 
-            prettyString.add ( new PrettyToken ( addText,
-                lastPrettyToken.getStyle () ) );
+            prettyString.add ( new PrettyToken ( addText, lastPrettyToken
+                .getStyle () ) );
           }
 
           dx += offsetX;
@@ -515,9 +515,10 @@ public final class StateView extends VertexView
 
 
   /**
-   * The loop {@link Transition} offset.
+   * The loop {@link Transition} offset. Disabled because of problems with the
+   * parallel edge renderer.
    */
-  public final static int LOOP_TRANSITION_OFFSET = 36;
+  public final static int LOOP_TRANSITION_OFFSET = 0;
 
 
   /**

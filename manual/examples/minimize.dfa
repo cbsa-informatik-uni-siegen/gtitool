@@ -9,13 +9,13 @@
     <Symbol name="0" epsilon="false"/>
     <Symbol name="1" epsilon="false"/>
   </PushDownAlphabet>
-  <StateView x="0.0" y="229.0">
+  <StateView x="4.0" y="228.0">
     <State id="0" name="z0" startState="true" finalState="false">
       <TransitionBegin id="0"/>
       <TransitionBegin id="3"/>
     </State>
   </StateView>
-  <StateView x="92.0" y="0.0">
+  <StateView x="91.0" y="39.0">
     <State id="1" name="z1" startState="false" finalState="false">
       <TransitionBegin id="1"/>
       <TransitionBegin id="2"/>

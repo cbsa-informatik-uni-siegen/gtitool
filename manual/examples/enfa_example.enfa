@@ -29,7 +29,7 @@
     <Symbol name="8" epsilon="false"/>
     <Symbol name="9" epsilon="false"/>
   </PushDownAlphabet>
-  <StateView x="8.0" y="226.0">
+  <StateView x="0.0" y="226.0">
     <State id="0" name="s" startState="true" finalState="false">
       <TransitionBegin id="0"/>
       <TransitionBegin id="8"/>
@@ -48,7 +48,7 @@
       <TransitionEnd id="1"/>
     </State>
   </StateView>
-  <StateView x="387.0" y="8.0">
+  <StateView x="386.0" y="39.0">
     <State id="3" name="q2" startState="false" finalState="false">
       <TransitionBegin id="4"/>
       <TransitionBegin id="5"/>
@@ -63,7 +63,7 @@
       <TransitionEnd id="5"/>
     </State>
   </StateView>
-  <StateView x="756.0" y="18.0">
+  <StateView x="751.0" y="43.0">
     <State id="5" name="q4" startState="false" finalState="true">
       <TransitionBegin id="7"/>
       <TransitionEnd id="6"/>

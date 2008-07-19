@@ -126,8 +126,9 @@ public class WordPanelForm extends JPanel implements LanguageChangedListener
         styledStackParserPanel = new de.unisiegen.gtitool.ui.style.StyledStackParserPanel();
         jGTILabelPushDownAlphabet = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
-        jGTIPanelColumn1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIPanelColumn2 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTILabelStatus = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTIColumn0 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIColumn1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -144,6 +145,7 @@ public class WordPanelForm extends JPanel implements LanguageChangedListener
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         add(styledWordParserPanel, gridBagConstraints);
@@ -183,8 +185,9 @@ public class WordPanelForm extends JPanel implements LanguageChangedListener
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         add(styledStackParserPanel, gridBagConstraints);
 
         jGTILabelPushDownAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -204,36 +207,42 @@ public class WordPanelForm extends JPanel implements LanguageChangedListener
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 0, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         add(styledAlphabetParserPanelPushDown, gridBagConstraints);
 
-        jGTIPanelColumn1.setMinimumSize(new java.awt.Dimension(100, 16));
-        jGTIPanelColumn1.setPreferredSize(new java.awt.Dimension(100, 16));
+        jGTILabelStatus.setText(bundle.getString("WordPanel.StatusEmpty")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 0, 16);
+        add(jGTILabelStatus, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        add(jGTIPanelColumn1, gridBagConstraints);
+        add(jGTIColumn0, gridBagConstraints);
 
-        jGTIPanelColumn2.setMinimumSize(new java.awt.Dimension(200, 16));
-        jGTIPanelColumn2.setPreferredSize(new java.awt.Dimension(200, 16));
+        jGTIColumn1.setMinimumSize(new java.awt.Dimension(250, 5));
+        jGTIColumn1.setPreferredSize(new java.awt.Dimension(250, 5));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.25;
-        add(jGTIPanelColumn2, gridBagConstraints);
+        add(jGTIColumn1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIColumn0;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIColumn1;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelAlphabet;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelPushDownAlphabet;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelStack;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelStatus;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelWord;
-    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelColumn1;
-    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelColumn2;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelInput;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelPushDown;
     public de.unisiegen.gtitool.ui.style.StyledStackParserPanel styledStackParserPanel;

@@ -1,7 +1,5 @@
 *** TODO ***
 
-CF		- Mitteilung anzeigen, wenn Navigation fertig (Handbuch - Bilder)
-
 
 *** FEATURE ***
 

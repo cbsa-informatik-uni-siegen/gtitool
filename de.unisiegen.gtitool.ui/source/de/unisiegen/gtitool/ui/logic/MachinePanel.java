@@ -3550,17 +3550,56 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       {
         this.gui.wordPanelForm.styledWordParserPanel
             .setAcceptedStatus ( AcceptedStatus.ACCEPTED );
+
+        Word word = new DefaultWord ();
+        try
+        {
+          word.add ( this.machine.getReadedSymbols () );
+        }
+        catch ( WordFinishedException exc )
+        {
+          // do nothing
+        }
+        catch ( WordResetedException exc )
+        {
+          // do nothing
+        }
+
+        this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+            .getPrettyString ( "WordPanel.StatusAccepted", //$NON-NLS-1$
+                word.toPrettyString () ).toHTMLString () );
       }
       else
       {
         this.gui.wordPanelForm.styledWordParserPanel
             .setAcceptedStatus ( AcceptedStatus.NOT_ACCEPTED );
+
+        Word word = new DefaultWord ();
+        try
+        {
+          word.add ( this.machine.getReadedSymbols () );
+        }
+        catch ( WordFinishedException exc )
+        {
+          // do nothing
+        }
+        catch ( WordResetedException exc )
+        {
+          // do nothing
+        }
+
+        this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+            .getPrettyString ( "WordPanel.StatusNotAccepted", //$NON-NLS-1$
+                word.toPrettyString () ).toHTMLString () );
       }
     }
     else
     {
       this.gui.wordPanelForm.styledWordParserPanel
           .setAcceptedStatus ( AcceptedStatus.NONE );
+
+      this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+          .getString ( "WordPanel.StatusEmpty" ) ); //$NON-NLS-1$
     }
   }
 

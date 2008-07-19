@@ -40,27 +40,19 @@
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
 
 	<!-- dist -->
-	<target name="dist" depends="dist-core,dist-jgraph,dist-tinylaf,version,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
-		<mkdir dir="${gtitooldir}" />
-		<!-- copy files -->
-		<copy todir="${gtitooldir}">
-			<fileset dir="${core.distdir}" includes="*.jar" />
-			<fileset dir="${jgraph.distdir}" includes="*.jar" />
-			<fileset dir="${tinylaf.distdir}" includes="*.jar" />
-			<fileset dir="${distdir}" includes="*.jar" />
-		</copy>
-		<!-- move files -->
-		<move todir="${distdir}">
-			<fileset dir="${gtitooldir}" includes="*" />
-		</move>
-		<!-- delete dir -->
-		<delete dir="${gtitooldir}" includeemptydirs="true" />
+	<target name="dist" depends="dist-core,dist-jgraph,dist-tinylaf,version,dist-preclean,dist-compile,dist-jar,dist-clean,dist-internal" description="Build distribution">
 		<!-- message -->
 		<echo message="Distribution ready in ${distdir}" />
 	</target>
-	
+
 	<!-- dist dev -->
-	<target name="dist-dev" depends="dist-core,dist-jgraph,dist-tinylaf,version-dev,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+	<target name="dist-dev" depends="dist-core,dist-jgraph,dist-tinylaf,version-dev,dist-preclean,dist-compile,dist-jar,dist-clean,dist-internal" description="Build distribution">
+		<!-- message -->
+		<echo message="Distribution ready in ${distdir}" />
+	</target>
+
+	<!-- dist internal -->
+	<target name="dist-internal">
 		<mkdir dir="${gtitooldir}" />
 		<!-- copy files -->
 		<copy todir="${gtitooldir}">
@@ -75,8 +67,6 @@
 		</move>
 		<!-- delete dir -->
 		<delete dir="${gtitooldir}" includeemptydirs="true" />
-		<!-- message -->
-		<echo message="Distribution ready in ${distdir}" />
 	</target>
 
 	<!-- dist core -->

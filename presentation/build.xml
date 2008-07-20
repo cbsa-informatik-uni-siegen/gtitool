@@ -9,6 +9,7 @@
 	<!-- property -->
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="builddir" value="${basedir}/build" />
+	<property name="myslidesdir" value="${basedir}/myslides" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="outputfile" value="presentation" />
 
@@ -19,9 +20,12 @@
 			<fileset dir="${builddir}" includes="**/*" />
 		</delete>
 		<!-- copy -->
+		<copy file="${myslidesdir}/myslides" tofile="${builddir}/myslides.cls" />
+		<copy file="${myslidesdir}/affiliation" tofile="${builddir}/affiliation.cfg" />
+		<copy file="${myslidesdir}/calc" tofile="${builddir}/calc.sty" />
 		<copy todir="${builddir}">
 			<fileset dir="${sourcedir}">
-				<include name="*.tex" />
+				<include name="*" />
 			</fileset>
 		</copy>
 		<!-- pdf latex -->
@@ -33,6 +37,10 @@
 		</exec>
 		<!-- copy -->
 		<copy file="${builddir}/${outputfile}.pdf" todir="${distdir}" />
+		<!-- delete -->
+		<delete>
+			<fileset dir="${builddir}" includes="**/*" />
+		</delete>
 		<!-- message -->
 		<echo message="Dist presentation finished" />
 	</target>

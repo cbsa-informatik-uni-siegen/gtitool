@@ -21,7 +21,7 @@
 		<!-- copy -->
 		<copy todir="${builddir}">
 			<fileset dir="${sourcedir}">
-				<include name="*.tex" />
+				<include name="*" />
 			</fileset>
 		</copy>
 		<!-- pdf latex -->
@@ -33,6 +33,10 @@
 		</exec>
 		<!-- copy -->
 		<copy file="${builddir}/${outputfile}.pdf" todir="${distdir}" />
+		<!-- delete -->
+		<delete>
+			<fileset dir="${builddir}" includes="**/*" />
+		</delete>
 		<!-- message -->
 		<echo message="Dist thesis finished" />
 	</target>

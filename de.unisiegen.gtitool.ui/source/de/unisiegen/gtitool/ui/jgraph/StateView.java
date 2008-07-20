@@ -603,10 +603,19 @@ public final class StateView extends VertexView
   {
     Rectangle2D r = getBounds ();
 
+    boolean powerSet = false;
+    if ( getCell () instanceof DefaultStateView )
+    {
+      State state = ( ( DefaultStateView ) getCell () ).getState ();
+      powerSet = state.isPowerState ();
+    }
+
     double x = r.getX ();
     double y = r.getY ();
     double a = ( r.getWidth () + 1 ) / 2;
     double b = ( r.getHeight () + 1 ) / 2;
+    int width = ( int ) r.getWidth ();
+    int height = ( int ) r.getHeight ();
 
     if ( getCell () instanceof DefaultStateView )
     {
@@ -615,11 +624,13 @@ public final class StateView extends VertexView
       {
         x = r.getX () + START_OFFSET;
         a = ( r.getWidth () - START_OFFSET + 1 ) / 2;
+        width -= START_OFFSET;
       }
       if ( state.isLoopTransition () )
       {
         y = r.getY () + LOOP_TRANSITION_OFFSET;
         b = ( r.getHeight () - LOOP_TRANSITION_OFFSET + 1 ) / 2;
+        height -= LOOP_TRANSITION_OFFSET;
       }
     }
 
@@ -675,6 +686,53 @@ public final class StateView extends VertexView
       yout = yout2;
     }
 
+    if ( powerSet )
+    {
+      int checkX = ( int ) ( xout - x );
+      int checkY = ( int ) ( yout - y );
+
+      if ( ( checkX >= a ) && ( checkY <= b ) )
+      {
+        while ( !isAllowedTopRight ( checkX, checkY, width -1) )
+        {
+          xout = xout + 1;
+          yout = yout - 1;
+          checkX = ( int ) ( xout - x );
+          checkY = ( int ) ( yout - y );
+        }
+      }
+      else if ( ( checkX <= a ) && ( checkY <= b ) )
+      {
+        while ( !isAllowedTopLeft ( checkX, checkY ) )
+        {
+          xout = xout - 1;
+          yout = yout - 1;
+          checkX = ( int ) ( xout - x );
+          checkY = ( int ) ( yout - y );
+        }
+      }
+      else if ( ( checkX <= a ) && ( checkY >= b ) )
+      {
+        while ( !isAllowedBottomLeft ( checkX, checkY, height-1 ) )
+        {
+          xout = xout - 1;
+          yout = yout + 1;
+          checkX = ( int ) ( xout - x );
+          checkY = ( int ) ( yout - y );
+        }
+      }
+      else if ( ( checkX >= a ) && ( checkY >= b ) )
+      {
+        while ( !isAllowedBottomRight ( checkX, checkY, width-1, height-1 ) )
+        {
+          xout = xout + 1;
+          yout = yout + 1;
+          checkX = ( int ) ( xout - x );
+          checkY = ( int ) ( yout - y );
+        }
+      }
+    }
+
     return getAttributes ().createPoint ( xout, yout );
   }
 
@@ -688,5 +746,144 @@ public final class StateView extends VertexView
   public final CellViewRenderer getRenderer ()
   {
     return this.ellipseRenderer;
+  }
+
+
+  /**
+   * Returns true if the given point is allowed, otherwise false.
+   * 
+   * @param x The x value.
+   * @param y The y value.
+   * @param height The height.
+   * @return True if the given point is allowed, otherwise false.
+   */
+  private final boolean isAllowedBottomLeft ( int x, int y, int height )
+  {
+    if ( ( ( x == 1 ) && ( y < height - 17 ) )
+        || ( ( x == 2 ) && ( y < height - 14 ) )
+        || ( ( x == 3 ) && ( y < height - 12 ) )
+        || ( ( x == 4 ) && ( y < height - 11 ) )
+        || ( ( x == 5 ) && ( y < height - 10 ) )
+        || ( ( x == 6 ) && ( y < height - 8 ) )
+        || ( ( x == 7 ) && ( y < height - 7 ) )
+        || ( ( x == 8 ) && ( y < height - 6 ) )
+        || ( ( x == 9 ) && ( y < height - 5 ) )
+        || ( ( x == 10 ) && ( y < height - 5 ) )
+        || ( ( x == 11 ) && ( y < height - 4 ) )
+        || ( ( x == 12 ) && ( y < height - 3 ) )
+        || ( ( x == 13 ) && ( y < height - 2 ) )
+        || ( ( x == 14 ) && ( y < height - 2 ) )
+        || ( ( x == 15 ) && ( y < height - 1 ) )
+        || ( ( x == 16 ) && ( y < height - 1 ) )
+        || ( ( x == 17 ) && ( y < height - 1 ) )
+        || ( ( x == 18 ) && ( y < height - 0 ) )
+        || ( ( x == 19 ) && ( y < height - 0 ) )
+        || ( ( x >= 20 ) && ( y < height - 0 ) ) )
+    {
+      return false;
+    }
+    return true;
+  }
+
+
+  /**
+   * Returns true if the given point is allowed, otherwise false.
+   * 
+   * @param x The x value.
+   * @param y The y value.
+   * @param width The width.
+   * @param height The height.
+   * @return True if the given point is allowed, otherwise false.
+   */
+  private final boolean isAllowedBottomRight ( int x, int y, int width,
+      int height )
+  {
+    if ( ( ( x == width - 1 ) && ( y < height - 17 ) )
+        || ( ( x == width - 2 ) && ( y < height - 14 ) )
+        || ( ( x == width - 3 ) && ( y < height - 12 ) )
+        || ( ( x == width - 4 ) && ( y < height - 11 ) )
+        || ( ( x == width - 5 ) && ( y < height - 10 ) )
+        || ( ( x == width - 6 ) && ( y < height - 8 ) )
+        || ( ( x == width - 7 ) && ( y < height - 7 ) )
+        || ( ( x == width - 8 ) && ( y < height - 6 ) )
+        || ( ( x == width - 9 ) && ( y < height - 5 ) )
+        || ( ( x == width - 10 ) && ( y < height - 5 ) )
+        || ( ( x == width - 11 ) && ( y < height - 4 ) )
+        || ( ( x == width - 12 ) && ( y < height - 3 ) )
+        || ( ( x == width - 13 ) && ( y < height - 2 ) )
+        || ( ( x == width - 14 ) && ( y < height - 2 ) )
+        || ( ( x == width - 15 ) && ( y < height - 1 ) )
+        || ( ( x == width - 16 ) && ( y < height - 1 ) )
+        || ( ( x == width - 17 ) && ( y < height - 1 ) )
+        || ( ( x == width - 18 ) && ( y < height - 0 ) )
+        || ( ( x == width - 19 ) && ( y < height - 0 ) )
+        || ( ( x <= width - 20 ) && ( y < height - 0 ) ) )
+    {
+      return false;
+    }
+    return true;
+  }
+
+
+  /**
+   * Returns true if the given point is allowed, otherwise false.
+   * 
+   * @param x The x value.
+   * @param y The y value.
+   * @return True if the given point is allowed, otherwise false.
+   */
+  private final boolean isAllowedTopLeft ( int x, int y )
+  {
+    if ( ( ( x == 1 ) && ( y > 17 ) ) || ( ( x == 2 ) && ( y > 14 ) )
+        || ( ( x == 3 ) && ( y > 12 ) ) || ( ( x == 4 ) && ( y > 11 ) )
+        || ( ( x == 5 ) && ( y > 10 ) ) || ( ( x == 6 ) && ( y > 8 ) )
+        || ( ( x == 7 ) && ( y > 7 ) ) || ( ( x == 8 ) && ( y > 6 ) )
+        || ( ( x == 9 ) && ( y > 5 ) ) || ( ( x == 10 ) && ( y > 5 ) )
+        || ( ( x == 11 ) && ( y > 4 ) ) || ( ( x == 12 ) && ( y > 3 ) )
+        || ( ( x == 13 ) && ( y > 2 ) ) || ( ( x == 14 ) && ( y > 2 ) )
+        || ( ( x == 15 ) && ( y > 1 ) ) || ( ( x == 16 ) && ( y > 1 ) )
+        || ( ( x == 17 ) && ( y > 1 ) ) || ( ( x == 18 ) && ( y > 0 ) )
+        || ( ( x == 19 ) && ( y > 0 ) ) || ( ( x >= 20 ) && ( y > 0 ) ) )
+    {
+      return false;
+    }
+    return true;
+  }
+
+
+  /**
+   * Returns true if the given point is allowed, otherwise false.
+   * 
+   * @param x The x value.
+   * @param y The y value.
+   * @param width The width.
+   * @return True if the given point is allowed, otherwise false.
+   */
+  private final boolean isAllowedTopRight ( int x, int y, int width )
+  {
+    if ( ( ( x == width - 1 ) && ( y > 17 ) )
+        || ( ( x == width - 2 ) && ( y > 14 ) )
+        || ( ( x == width - 3 ) && ( y > 12 ) )
+        || ( ( x == width - 4 ) && ( y > 11 ) )
+        || ( ( x == width - 5 ) && ( y > 10 ) )
+        || ( ( x == width - 6 ) && ( y > 8 ) )
+        || ( ( x == width - 7 ) && ( y > 7 ) )
+        || ( ( x == width - 8 ) && ( y > 6 ) )
+        || ( ( x == width - 9 ) && ( y > 5 ) )
+        || ( ( x == width - 10 ) && ( y > 5 ) )
+        || ( ( x == width - 11 ) && ( y > 4 ) )
+        || ( ( x == width - 12 ) && ( y > 3 ) )
+        || ( ( x == width - 13 ) && ( y > 2 ) )
+        || ( ( x == width - 14 ) && ( y > 2 ) )
+        || ( ( x == width - 15 ) && ( y > 1 ) )
+        || ( ( x == width - 16 ) && ( y > 1 ) )
+        || ( ( x == width - 17 ) && ( y > 1 ) )
+        || ( ( x == width - 18 ) && ( y > 0 ) )
+        || ( ( x == width - 19 ) && ( y > 0 ) )
+        || ( ( x <= width - 20 ) && ( y > 0 ) ) )
+    {
+      return false;
+    }
+    return true;
   }
 }

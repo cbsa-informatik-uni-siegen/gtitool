@@ -28,9 +28,9 @@ $\ \ \ \ \ \ \ \ \StartSymbol{E} \to (\StartSymbol{E} \TerminalSymbol{+}
 
 \section{Neue Grammatik Datei anlegen}
 
-Am Anfang müssen wir dazu erst einmal den "`Neu\ldots"' Dialog öffnen. Dort
-wählen wir aus, dass wir eine Grammatik erstellen wollen und klicken auf
-"`Weiter"'.\vspace{10pt}
+Am Anfang müssen wir dazu erst einmal den "`Neu\ldots"' Dialog öffnen. Zu finden
+ist dieser in der Toolbar oder im Menüeintrag "`Datei"'. Dort wählen wir aus,
+dass wir eine Grammatik erstellen wollen und klicken auf "`Weiter"'.\vspace{10pt}
 
 Im nächsten Dialog werden wir gefragt von welchem Typ unsere neue Grammatik
 sein soll. In unserem Beispiel handelt es sich um eine "`Kontextfreie
@@ -69,13 +69,13 @@ durch Klick auf "`Fertig"' erstellen.\vspace{10pt}
 \end{center}
 \end{figure}
 
-Alle Einstellungen die wir gerade im letzen Dialog für die neue Datei getroffen
-haben lassen sich über "`Dokument editieren"' nachträglich ändern.
+Alle Einstellungen, die wir gerade im letzen Dialog für die neue Datei getroffen
+haben, lassen sich über "`Dokument editieren"' nachträglich ändern.
 
 \section{Anlegen von Produktionen}
 
 Um eine neue Produktion anzulegen, können wir den entsprechenden Button in der
-Toolbar verwenden, oder über den Kontextmenüeintrag gehen.\vspace{10pt}
+Toolbar verwenden oder über den Kontextmenüeintrag gehen.\vspace{10pt}
 
 Im Dialog für neue Produktionen müssen wir zunächst einmal angeben, für welches
 Nichtterminalzeichen wir eine Produktion anlegen möchten. Dieses können wir aus
@@ -84,7 +84,7 @@ ein Nichtterminalzeichen haben, ist schon das richtige ausgewählt, und wir
 können diesen Schritt überspringen.\vspace{10pt}
 
 Jetzt müssen wir noch das Produktions Wort angeben. Als Hilfestellung wird in dem
-Dialog angezeigt welche Nichtterminalzeichen und Terminalzeichen uns zur
+Dialog angezeigt, welche Nichtterminalzeichen und Terminalzeichen uns zur
 Verfügung stehen. Wir fangen an mit der Produktion "`$\StartSymbol{E} \to
 (\StartSymbol{E} \TerminalSymbol{+} \StartSymbol{E})$"'. Also geben wir als
 Produktions Wort "`(\StartSymbol{E} \TerminalSymbol{+} \StartSymbol{E})"' ein.
@@ -119,22 +119,23 @@ erreicht man über das Kontextmenü oder über den Menüpunkt "`Ausführen"'.
 \section{Was fange ich mit einer Grammatik an?}
 
 Wir haben jetzt eine Grammatik angelegt und stellen uns jetzt vielleicht die
-Frage was wir damit eigentlich anfangen können. Es bestehen zur Zeit zwei
+Frage, was wir damit eigentlich anfangen können. Es bestehen zur Zeit zwei
 Verwendungsmöglichkeiten für eine Grammatik.\vspace{10pt}
 
 Zunächst einmal kann man die Grammatik als Vorlage für eine neue Grammatik
 nutzen. Das ist zum Beispiel sinnvoll, wenn wir eine kontextfreie Grammatik
-haben, und jetzt eine reguläre Grammatik mit den gleichen Produktionen
+haben und jetzt eine reguläre Grammatik mit den gleichen Produktionen
 erstellen wollen. Dazu öffnet man den Menüpunkt "`Ausführen"' und wählt unter
 "`Vorlage für\ldots"' den gewünschten Typ der neuen Datei aus.
 Dabei ist zu beachten, dass die Grammatik nicht konvertiert wird,
 sondern nur als Vorlage verwendet wird.\vspace{10pt}
 
 Die andere Verwendungsmöglichkeit beinhaltet, sich aus der Grammatik einen
-ent\-sprechen\-den Automaten generieren zu lassen. Es besteht die Möglichkeit
+ent\-sprechen\-den Automaten generieren zu lassen. Es besteht die Möglichkeit,
 sich für eine reguläre Grammatik den entsprechenden NDEA, und für eine
 kontextfreie Grammatik den entsprechenden Kellerautomat erzeugen zu
-lassen.\vspace{10pt}
+lassen. Zu finden ist die Umwandlung im Menüeintrag "`Ausführen"'
+unter "`Umwandeln in\ldots"'.\vspace{10pt}
 
 Es ist zu beachten, dass beim Umwandeln einer Grammatik keine
 Validierungsfehler vorhanden sein dürfen. Bei der Funktion "`Vorlage

@@ -23,7 +23,7 @@ Am Anfang müssen wir dazu erst einmal den "`Neu\ldots"' Dialog öffnen. Dort
 wählen wir aus, dass wir einen Automaten erstellen wollen und klicken
 auf "`Weiter"'.\vspace{10pt}
 
-Im nächsten Dialog werden wir gefragt von welchem Typ unser neuer
+Im nächsten Dialog werden wir gefragt, von welchem Typ unser neuer
 Automat sein soll. In unserem Beispiel handelt es sich um einen
 "`$\epsilon$-NDEA"', welchen wir auswählen und mit "`Weiter"'
 bestätigen.\vspace{10pt}
@@ -36,7 +36,7 @@ Zeichen sind, müssen in Anführungszeichen angegeben werden.\vspace{10pt}
 
 In dem Dialog sind an allen Stellen schon vordefinierte Werte eingetragen. Dabei
 handelt es sich um die Vorgaben, die man als Standardwerte in den Einstellung
-eingetragen hat. Wie man diese Standardwerte ändert kann man in Kapitel
+eingetragen hat. Wie man diese Standardwerte ändert, kann man in Kapitel
 \ref{Preferences} nachlesen.\vspace{10pt}
 
 Wir müssen noch die von uns benötigten Symbole angeben. Dazu tragen wir in das
@@ -117,12 +117,12 @@ auswählen. Folgende Modi sind in der Toolbar verfügbar:
 \end{figure} 
 
 
-Da wir zu Beginn den Startzustand anlegen wollen wählen, wir "`Neuer
-Start Zustand"' und klicken auf eine freie Fläche um den Zustand dort zu
-erstellen. Um den Zustand nachträglich zu bearbeiten müssen wir in den Maus
-Modus wechseln. Den Konfigurationsdialog erreicht man dann über Doppelklick oder das
-Kontextmenü. Über das Kontextmenü lässt sich ein Zustand
-auch wieder löschen.\vspace{10pt}
+Da wir zu Beginn den Startzustand anlegen wollen, wählen wir "`Neuer Start
+Zustand"' und klicken auf eine freie Fläche im unteren Teil, um den Zustand dort
+zu erstellen. Um den Zustand nachträglich zu bearbeiten, müssen wir in den Maus
+Modus wechseln. Den Konfigurationsdialog erreicht man dann über Doppelklick oder
+das Kontextmenü. Über das Kontextmenü lässt sich ein Zustand auch wieder
+löschen.\vspace{10pt}
 
 Auf diese Weise lassen sich alle Zustände anlegen, die für den Beispielautomaten
 benötigt werden. Nachdem wir alle Zustände angelegt haben, fehlen noch die
@@ -137,19 +137,19 @@ der linken Liste mit allen Symbolen in die rechte Liste, welche die
 angelegt.\vspace{10pt}
 
 Die Übergänge lassen sich auf die gleiche Weise bearbeiten und löschen, wie
-es bei den Zuständen möglich ist. Es gibt allerdings eine Besonderheit. Wenn
+es bei den Zuständen möglich ist. Es gibt allerdings eine Besonderheit: Wenn
 man die Maus anstatt über einem Zustand, über einem leeren Bereich
 loslässt, entsteht beim Anlegen des Übergangs zusätzlich ein neuer Zustand.\vspace{10pt}
 
 Diesen Vorgang wiederholen wir jetzt für alle Übergänge, die
 für den Beispielautomaten benötigt werden. Wenn wir damit fertig sind, können
-wir den Automaten noch validieren, um zu sehen ob uns beim Anlegen der Zustände
+wir den Automaten noch validieren, um zu sehen, ob uns beim Anlegen der Zustände
 und Übergänge irgendwelche Fehler unterlaufen sind. Diese Funktion erreicht man
 über das Kontextmenü oder über den Menüpunkt "`Ausführen"'.\vspace{10pt}
 
 
 Sollten die Zustände nicht ganz so optimal plaziert sein, kann man
-versuchen über die Autolayout Funktion ein besseres Ergebnis zu
+versuchen, über die Autolayout Funktion ein besseres Ergebnis zu
 erreichen. Diese ist über "`Ausführen"' und "`Auto Layout"' oder über
 das Kontextmenü erreichbar.
 
@@ -161,9 +161,9 @@ Ver\-wen\-dungs\-möglich\-keiten.
 
 \subsection{Bearbeiten per Übergangstabelle}
 
-Die Übergänge eines Automaten können über die Tabelle bearbeitet werden. Es ist
-möglich neue Übergänge anzulegen. Bestehende Übergänge können gelöscht oder
-editiert werden.\vspace{10pt}
+Die Übergänge eines Automaten können über die Tabelle bearbeitet werden. Diese
+ist im rechten Teil des Fensters zu finden. Es ist möglich, neue Übergänge
+anzulegen. Bestehende Übergänge können gelöscht oder editiert werden.\vspace{10pt}
 
 Betrachten wir ein einfaches Beispiel. Wir legen zwei Zustände \State{z0} und
 \State{z1} an und arbeiten auf dem Alphabet \{\Symbol{0}, \Symbol{1}\}. Die
@@ -172,14 +172,14 @@ Zustände dargestellt, in der zweiten die Übergänge mit \Symbol{$\epsilon$} un
 den anderen die Symbole des Alphabets, also in unserem Fall je eine Spalte für
 \Symbol{0} und \Symbol{1}.\vspace{10pt}
 
-Um von \State{z0} nach \State{z1} einen $\epsilon$-Übergang anzulegen muss die
+Um von \State{z0} nach \State{z1} einen $\epsilon$-Übergang anzulegen, muss die
 erste Zeile mit \State{z0} bearbeitet werden, da ein $\epsilon$-Übergang angelegt
 werden soll, muss die zweite Spalte bearbeitet werden. Um dies umzusetzen, muss
 auf die entsprechende Zelle doppelt geklickt werden. Es steht ein Parser zur
 Verfügung, in den mit Komma getrennte Zustände eingetragen werden können. Die
-Zustande müssen natürlich vorhanden sein. In userem Beispiel tragen wir also in
+Zustände müssen natürlich vorhanden sein. In userem Beispiel tragen wir also in
 der zweiten Spalte, ersten Zeile den Zustand \State{z1} ein und bestätigen die
-Eingabe mit Enter. Es wird wie erwartet ein $\epsilon$-Übergang von \State{z0}
+Eingabe mit Enter. Es wird, wie erwartet, ein $\epsilon$-Übergang von \State{z0}
 nach \State{z1} angelegt.\vspace{10pt}
 
 \begin{figure}[h]
@@ -210,19 +210,18 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
   
   Wir können für einen Automaten eine Wortnavigation starten. Das bedeutet, dass
   wir ein Wort eingeben können, welches wir den Automaten verarbeiten lassen
-  wollen, und können dann schrittweise vor und zurück navigieren. Dabei
-  werden die aktuell aktiven Zustände und Übergänge farblich hervorgehoben. Am Ende können
-  wir dann sehen, ob der Automat das von uns gewählte Wort akzeptiert oder
-  nicht. Dies wird über ein Statusfeld im unteren Fenster
-  signalisiert. Es gibt auch die Möglichkeit zu erkennen ob ein
-  Wort zu einem früheren Zeitpunkt der Navigation akzeptiert würde.
-  Dies kann man ahand eines Rahmens um das aktuelle Wort Feld
-  erkennen. Ein roter Rahmen steht dafür, dass das Wort bis zum
+  wollen, und können dann schrittweise vor und zurück navigieren. Dabei werden
+  die aktuell aktiven Zustände und Übergänge farblich hervorgehoben. Am Ende
+  können wir dann sehen, ob der Automat das von uns gewählte Wort akzeptiert oder
+  nicht. Dies wird über ein Statusfeld im unteren Fenster signalisiert. Es gibt
+  auch die Möglichkeit, zu erkennen, ob ein Wort zu einem früheren Zeitpunkt der
+  Navigation akzeptiert würde. Dies kann man anhand eines Rahmens um das aktuelle
+  Wort Feld erkennen. Ein roter Rahmen steht dafür, dass das Wort bis zum
   aktuellen Symbol von unserem Automat nicht akzeptiert wird, ein grüner Rahmen
   hingegen gibt zu verstehen, dass es akzeptiert wird.\vspace{10pt}
   
-  Während man sich im Wortnavigationsmodus befindet lässt sich der Automat nicht
-  weiter bearbeiten. Das bedeutet wir können Zustände und Übergänge weder
+  Während man sich im Wortnavigationsmodus befindet, lässt sich der Automat nicht
+  weiter bearbeiten. Das bedeutet, wir können Zustände und Übergänge weder
   anlegegen noch löschen oder bearbeiten. Dies ist erst nach Verlassen dieses
   Modus wieder möglich.\vspace{10pt}
   
@@ -234,13 +233,13 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
   \end{figure}
   
   Zur Wortnavigation gelangt man über den Menüpunkt "`Ausführen"' und "`Wort
-  eingeben"', oder direkt über den Button in der Toolbar. In dem Feld
+  eingeben"' oder direkt über den Button in der Toolbar. In dem Feld
   "`Wort"' können wir jetzt ein Wort eingeben. Als Hilfestellung sehen
   wir rechts neben dem Eingabefeld das aktuelle Alphabet mit den gültigen
   Symbolen.\vspace{10pt}
   
-  Nachdem wir das Wort eingegeben haben startet man die Navigation über "`Start"'
-  in der Toolbar oder im Kontextmenü. Jetzt kann man mit "`Schritt vor"' und
+  Nachdem wir das Wort eingegeben haben, startet man die Navigation über
+  "`Start"' in der Toolbar oder im Kontextmenü. Jetzt kann man mit "`Schritt vor"' und
   "`Schritt zurück"' durch das Wort navigieren. Es existiert auch noch ein
   automatischer Modus. Dabei wird nach einer kurzen Verzögerung das nächste
   Symbol gelesen. Dieser Modus lässt sich durch den Button "`Automatische
@@ -248,8 +247,8 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
 
   Wenn man wissen möchte, über welche Pfade man zu den momentan aktiven Zuständen
   gelangt ist, kann man sich dies über "`Extras"' und "`Zustands Pfad"' anzeigen
-  lassen. Es öffnet sich ein neuer Dialog, mit einer Tabelle in welcher für jeden
-  aktiven Zustand der aktuelle Pfad angezeigt wird. Dabei wird als erstes der
+  lassen. Es öffnet sich ein neuer Dialog mit einer Tabelle, in welcher für
+  jeden aktiven Zustand der aktuelle Pfad angezeigt wird. Dabei wird als erstes der
   kürzeste Pfad angezeigt, und dann alle weiteren.\vspace{10pt}
   
     \begin{figure}[h]
@@ -259,7 +258,7 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
   \end{center}
   \end{figure}
   
-  Um die Wortnavigation zu beenden klickt man einfach wieder auf den Button
+  Um die Wortnavigation zu beenden, klickt man einfach wieder auf den Button
   "`Wort eingeben"' in der Toolbar oder man wählt im Menü "`Ausführen"' den
   Punkt "`Automat bearbeiten"'. Jetzt befinden wir uns wieder im normalen Modus
   und wir können den Automaten wieder normal bearbeiten.
@@ -281,8 +280,9 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
   unterteilen wir die Zustände des Automaten in akzeptierende und nicht
   akzeptierende Zustände. In der Automatenansicht werden immer die Zustände in
   der selben Farbe dargestellt, welche sich in einer Äquivalenzklasse befinden.
-  Also haben jetzt alle akzeptierenden Zustände die gleiche Farbe, und alle
-  nicht akzeptierenden Zustände.\vspace{10pt}
+  Jetzt haben alle nicht akzeptierenden Zustände die gleiche Farbe. Gleiches 
+  gilt für alle akzeptierenden Zustände, welche natürlich in einer anderen
+  Farbe dargestellt werden.\vspace{10pt}
   
   \begin{figure}[h!]
   \begin{center}
@@ -291,7 +291,7 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
   \end{center}
   \end{figure}
   
-  Man kann jetzt durch klicken auf "`Schritt vor"' die Äquivalenzklassen weiter
+  Man kann jetzt durch Klicken auf "`Schritt vor"' die Äquivalenzklassen weiter
   verfeinern. In der Outline wird angegeben, welche Zustände in eine eigene
   Äquivalenzklasse gekommen sind, und diese werden jetzt auch in einer anderen
   Farbe dargestellt. Gleichzeitig werden auch die Übergänge hervorgehoben, welche
@@ -326,7 +326,7 @@ Das Löschen und Erweitern von Übergängen erfolgt analog dazu.
   Wenn man die neue Datei mit dem minimalen Automaten erstellen möchte, ohne sich
   die Minimierung im Details anzuschauen, besteht jederzeit die Möglich\-keit den
   Dialog mit "`OK"' zu bestätigen. Die Minimierung wird dann im Hintergrund
-  beendet, und man gelangt sofort zur Ansicht des neu entstandenen Automaten, und
+  beendet, und man gelangt sofort zur Ansicht des neu entstandenen Automaten und
   kann mit diesem weiterarbeiten.
   
   
@@ -348,13 +348,14 @@ arbeitet. Der Zustand \State{z0} ist ein Start-Zustand, der Zustand \State{z1}
 ein akzeptierender Zustand. Der erste Übergang besteht zwischen \State{z0} und
 \State{z1} mit Symbol \Symbol{a}, der zweite geht von \State{z0} in sich selbst
 über, ebenfalls mit \Symbol{a}. Der Automat erkennt somit Wörter von der Form
-$a^n$ für $n \geq 1$. Über den Menüeintrag "`Umwandeln in\ldots"' kann ausgewählt
-werden, in welchen Automaten umgewandelt wird. Da wir einen NDEA angelegt haben,
-ist hier nur der DEA verfügbar. Wird dieser ausgewählt, steht die schon aus
-anderen Ansichten bekannte Oberfläche zur Verfügung. Auch hier kann in einzelnen
-Schritten, sowie automatisch navigiert werden. Wird der Dialog mit "`OK"'
-bestätigt, steht in der Hauptansicht der umgewandelte Automat zur Verfügung. Mit
-"`Abbrechen"' wird der Dialog einfach nur geschlossen.\vspace{10pt}
+$a^n$ für $n \geq 1$. Über den Eintrag "`Umwandeln in\ldots"' im Menüeintrag
+"`Ausführen"' kann ausgewählt werden, in welchen Automaten umgewandelt wird. Da
+wir einen NDEA angelegt haben, ist hier nur der DEA verfügbar. Wird dieser
+ausgewählt, steht die schon aus anderen Ansichten bekannte Oberfläche zur
+Verfügung. Auch hier kann in einzelnen Schritten, sowie automatisch navigiert
+werden. Wird der Dialog mit "`OK"' bestätigt, steht in der Hauptansicht der
+umgewandelte Automat zur Verfügung. Mit "`Abbrechen"' wird der Dialog einfach nur
+geschlossen.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}
@@ -426,7 +427,7 @@ Werden die Schritte einzeln durchgegangen, ergibt sich folgender Ablauf:
 
 Bei Betrachten des entstehenden DFA's erkennt man, dass dieser die gleichen
 Wörter erkennt wie der ursprüngliche NFA. Der Dialog kann mit "`OK"' bestätigt
-werden, womit ein neuer DFA angelegt wird. Es ist jetzt möglich die Namen der
+werden, womit ein neuer DFA angelegt wird. Es ist jetzt möglich, die Namen der
 Zustände neu zu vergeben, wenn man mit dem Automaten weiterarbeiten möchte und
 nicht die längeren Namen dargestellt haben möchte. Dazu kann man im Menü
 "`Extras"' den Eintrag "`Zustandsnamen neu vergeben"' anklicken, wodurch die
@@ -490,5 +491,5 @@ Der Algorithmus läuft so lange, bis die Menge der noch nicht berechneten Zustä
 leer ist. Am Ende werden alle erreichbaren Zustände farblich hervorgehoben. Wie
 in den anderen Dialogen besteht jederzeit die Möglichkeit den Dialog abzubrechen,
 wobei er dann einfach geschlossen wird. Man hat auch jederzeit die Möglichkeit
-mit einem Klick auf "`OK"' die komplette Berechnung durchzuführen, und einen
+mit einem Klick auf "`OK"' die komplette Berechnung durchzuführen und einen
 Automaten anzulegen, der nur noch die erreichbaren Zustände enthält.

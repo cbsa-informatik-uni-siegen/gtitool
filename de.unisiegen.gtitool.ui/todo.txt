@@ -1,5 +1,7 @@
 *** TODO ***
 
+CF		- Verhindern, dass zu lange Texte eingefügt werden können
+
 
 *** FEATURE ***
 

@@ -405,9 +405,19 @@ public class EdgeView extends AbstractCellView {
 					getCenterPoint(targetParentView),
 					getNearestPoint(index == 0));
 		} else if (obj instanceof PortView)
-			// Port Location Seen From This Edge
-			return ((PortView) obj).getLocation(this,
-					getNearestPoint(index == 0));
+		{
+		  // Port Location Seen From This Edge
+			
+		  // MODIFYBEGIN
+      PortView portView = ( PortView ) obj;
+
+      return portView.getParentView ().getPerimeterPoint ( this, null,
+          getNearestPoint ( index == 0 ) );
+
+      // return ((PortView) obj).getLocation(this,
+      // getNearestPoint(index == 0));
+      // MODIFYEND
+		}
 		else if (obj instanceof CellView) {
 			// Should not happen
 			Rectangle2D r = ((CellView) obj).getBounds();

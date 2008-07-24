@@ -17,6 +17,8 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.PortView;
 
+import de.unisiegen.gtitool.core.entities.State;
+
 @SuppressWarnings ( "all" )
 public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting {
 
@@ -71,60 +73,91 @@ public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting {
 		// If there is only 1 edge between the two vertices, we don't need this
 		// special routing
 		if (edges.length >= 2) {
+		  // MODIFYBEGIN
+      // Find the end point positions
+      Point2D from = ( ( PortView ) edge.getSource () ).getLocation ();
+      Point2D to = ( ( PortView ) edge.getTarget () ).getLocation ();
 
-			// Find the end point positions
-			Point2D from = ((PortView) edge.getSource()).getLocation();
-			Point2D to = ((PortView) edge.getTarget()).getLocation();
+      if ( from != null && to != null )
+      {
+        double fromX = from.getX ();
+        double fromY = from.getY ();
+        double toX = to.getX ();
+        double toY = to.getY ();
 
-			if (from != null && to != null) {
-				// calculate mid-point of the main edge
-				double midX = Math.min(from.getX(), to.getX())
-						+ Math.abs((from.getX() - to.getX()) / 2);
-				double midY = Math.min(from.getY(), to.getY())
-						+ Math.abs((from.getY() - to.getY()) / 2);
+        StateView stateViewFrom = ( StateView ) ( ( PortView ) edge
+            .getSource () ).getParentView ();
+        if ( stateViewFrom.getCell () instanceof DefaultStateView )
+        {
+          DefaultStateView defaultStateView = ( DefaultStateView ) stateViewFrom
+              .getCell ();
+          State state = defaultStateView.getState ();
 
-				// compute the normal slope. The normal of a slope is the
-				// negative
-				// inverse of the original slope.
-				double m = (from.getY() - to.getY())
-						/ (from.getX() - to.getX());
-				
-				// MODIFYBEGIN
-				// bug fix
+          if ( state.isStartState () )
+          {
+            fromX += StateView.START_OFFSET / 2;
+          }
+          if ( state.isLoopTransition () )
+          {
+            fromY += StateView.LOOP_TRANSITION_OFFSET / 2;
+          }
+        }
+
+        StateView stateViewTo = ( StateView ) ( ( PortView ) edge.getTarget () )
+            .getParentView ();
+        if ( stateViewTo.getCell () instanceof DefaultStateView )
+        {
+          DefaultStateView defaultStateView = ( DefaultStateView ) stateViewTo
+              .getCell ();
+          State state = defaultStateView.getState ();
+
+          if ( state.isStartState () )
+          {
+            toX += StateView.START_OFFSET / 2;
+          }
+          if ( state.isLoopTransition () )
+          {
+            toY += StateView.LOOP_TRANSITION_OFFSET / 2;
+          }
+        }
+
+        // calculate mid-point of the main edge
+        double midX = Math.min ( fromX, toX ) + Math.abs ( ( fromX - toX ) / 2 );
+        double midY = Math.min ( fromY, toY ) + Math.abs ( ( fromY - toY ) / 2 );
+
+        // compute the normal slope. The normal of a slope is the
+        // negative
+        // inverse of the original slope.
+        double m = ( fromY - toY ) / ( fromX - toX );
+
+        // bug fix
         if ( m == 0 )
         {
-          //System.err.println ("bugfix");
+          // System.err.println ("bugfix");
           m = -0.0000000001;
         }
+
+        double theta = Math.atan ( -1 / m );
+
+        // modify the location of the control point along the axis of
+        // the
+        // normal using the edge position
+        double r = edgeSeparation * ( Math.floor ( position / 2 ) + 1 );
+        if ( ( position % 2 ) == 0 )
+        {
+          r = -r;
+        }
+
+        // convert polar coordinates to cartesian and translate axis to
+        // the
+        // mid-point
+        double ex = r * Math.cos ( theta ) + midX;
+        double ey = r * Math.sin ( theta ) + midY;
+        Point2D controlPoint = new Point2D.Double ( ex, ey );
+
+        // add the control point to the points list
+        newPoints.add ( controlPoint );
         // MODIFYEND
-				
-				double theta = Math.atan(-1 / m);
-
-				// modify the location of the control point along the axis of
-				// the
-				// normal using the edge position
-				double r = edgeSeparation * (Math.floor(position / 2) + 1);
-				if ((position % 2) == 0) {
-					r = -r;
-				}
-
-				// convert polar coordinates to cartesian and translate axis to
-				// the
-				// mid-point
-				double ex = r * Math.cos(theta) + midX;
-				double ey = r * Math.sin(theta) + midY;
-				Point2D controlPoint = new Point2D.Double(ex, ey);
-				
-				//System.err.println ("m: "+m);
-				//System.err.println ("theta: "+theta);
-				//System.err.println ("midX: "+midX);
-				//System.err.println ("midY: "+midY);
-				//System.err.println ("r: "+r);
-				//System.err.println ("ex: "+ex);
-				//System.err.println ("ey: "+ey);
-
-				// add the control point to the points list
-				newPoints.add(controlPoint);
 			}
 		}
 		newPoints.add(edge.getTarget());

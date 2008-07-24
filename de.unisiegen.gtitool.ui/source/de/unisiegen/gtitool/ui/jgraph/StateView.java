@@ -601,11 +601,10 @@ public final class StateView extends VertexView
   {
     Rectangle2D r = getBounds ();
 
-    boolean powerSet = false;
+    State state = null;
     if ( getCell () instanceof DefaultStateView )
     {
-      State state = ( ( DefaultStateView ) getCell () ).getState ();
-      powerSet = state.isPowerState ();
+      state = ( ( DefaultStateView ) getCell () ).getState ();
     }
 
     boolean loopTransition = edge.getSource ().getParentView () == edge
@@ -644,21 +643,40 @@ public final class StateView extends VertexView
     double x1 = p.getX ();
     double y1 = p.getY ();
 
-    if ( ( otherState != null ) && !loopTransition )
+    if ( ( state != null ) && ( otherState != null ) && !loopTransition )
     {
-      if ( otherState.isStartState () )
+      boolean firstTransition = false;
+      for ( Transition current : state.getTransitionBegin () )
+      {
+        if ( current.getStateEnd () == otherState )
+        {
+          firstTransition = true;
+        }
+      }
+
+      boolean secondTransition = false;
+      for ( Transition current : otherState.getTransitionBegin () )
+      {
+        if ( current.getStateEnd () == state )
+        {
+          secondTransition = true;
+        }
+      }
+
+      if ( otherState.isStartState ()
+          && ! ( firstTransition && secondTransition ) )
       {
         x1 += START_OFFSET / 2;
       }
-      if ( otherState.isLoopTransition () )
+      if ( otherState.isLoopTransition ()
+          && ! ( firstTransition && secondTransition ) )
       {
         y1 += LOOP_TRANSITION_OFFSET / 2;
       }
     }
 
-    if ( getCell () instanceof DefaultStateView )
+    if ( state != null )
     {
-      State state = ( ( DefaultStateView ) getCell () ).getState ();
       if ( state.isStartState () )
       {
         x = r.getX () + START_OFFSET;
@@ -721,7 +739,7 @@ public final class StateView extends VertexView
       yout = yout2;
     }
 
-    if ( powerSet )
+    if ( state != null && state.isPowerState () )
     {
       int checkX = ( int ) ( xout - x );
       int checkY = ( int ) ( yout - y );

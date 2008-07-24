@@ -407,15 +407,18 @@ public class EdgeView extends AbstractCellView {
 		} else if (obj instanceof PortView)
 		{
 		  // Port Location Seen From This Edge
-			
-		  // MODIFYBEGIN
+      // MODIFYBEGIN
       PortView portView = ( PortView ) obj;
-
-      return portView.getParentView ().getPerimeterPoint ( this, null,
-          getNearestPoint ( index == 0 ) );
-
-      // return ((PortView) obj).getLocation(this,
-      // getNearestPoint(index == 0));
+      if ( this.source == this.target )
+      {
+        return ( ( PortView ) obj ).getLocation ( this,
+            getNearestPoint ( index == 0 ) );
+      }
+      else
+      {
+        return portView.getParentView ().getPerimeterPoint ( this, null,
+            getNearestPoint ( index == 0 ) );
+      }
       // MODIFYEND
 		}
 		else if (obj instanceof CellView) {

@@ -608,6 +608,9 @@ public final class StateView extends VertexView
       powerSet = state.isPowerState ();
     }
 
+    boolean loopTransition = edge.getSource ().getParentView () == edge
+        .getTarget ().getParentView ();
+
     State otherState = null;
     if ( edge.getSource ().getParentView () == this )
     {
@@ -641,7 +644,7 @@ public final class StateView extends VertexView
     double x1 = p.getX ();
     double y1 = p.getY ();
 
-    if ( otherState != null )
+    if ( ( otherState != null ) && !loopTransition )
     {
       if ( otherState.isStartState () )
       {

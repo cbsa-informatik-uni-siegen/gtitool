@@ -29,3 +29,5 @@ BM		- Drucken (Mehrere Komponenten pro Seite)
 		- LaTeX Export
 		- Benutzerinteraktionen einbauen
 		- Automat in Regulären Ausdruck umwandeln
+		- Linksrekursion (Zwei Arten)
+		- Linksrefaktorisierung

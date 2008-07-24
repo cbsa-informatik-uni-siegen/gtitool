@@ -9,6 +9,7 @@ import org.jgraph.graph.GraphConstants;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.redoundo.MultiItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
@@ -145,17 +146,21 @@ public final class LayoutManager
    */
   private final void createGrid ( ArrayList < DefaultStateView > states )
   {
-    int xPosition = 100;
-    int yPosition = 150;
+    int insets = 5 + Math.max ( StateView.START_OFFSET,
+        StateView.LOOP_TRANSITION_OFFSET );
+    int diff = 50;
+    int xPosition = insets;
+    int yPosition = insets + diff;
 
-    int xStartPosition = 100;
+    int xStartPosition = xPosition;
     int xSpace = 100;
+    int nextRowOffset = 200;
 
     if ( states.size () > 0 )
     {
       Rectangle2D rect = GraphConstants.getBounds ( states.get ( 0 )
           .getAttributes () );
-      xSpace = ( int ) rect.getWidth () + 50;
+      xSpace = ( int ) rect.getWidth () + diff;
     }
 
     ArrayList < DefaultStateView > group = new ArrayList < DefaultStateView > ();
@@ -175,7 +180,7 @@ public final class LayoutManager
           pos = 0;
           group = new ArrayList < DefaultStateView > ();
           xPosition = xStartPosition;
-          yPosition += 200;
+          yPosition += nextRowOffset;
         }
         else
         {
@@ -185,26 +190,40 @@ public final class LayoutManager
       group.add ( current );
       if ( this.item != null )
       {
+        // correct the x position if the state is a start state
+        int tmpPositionX = xPosition;
+        if ( current.getState ().isStartState () )
+        {
+          tmpPositionX -= StateView.START_OFFSET;
+        }
+
+        // correct the y position if the state contains a loop transition
+        int tmpPositionY = yPosition;
+        if ( current.getState ().isLoopTransition () )
+        {
+          tmpPositionY -= StateView.LOOP_TRANSITION_OFFSET;
+        }
+
         if ( ( pos % 2 ) != 0 )
         {
-          if ( ( current.getPositionX () != xPosition )
-              || ( current.getPositionY () != yPosition + 50 ) )
+          if ( ( current.getPositionX () != tmpPositionX )
+              || ( current.getPositionY () != tmpPositionY + diff ) )
           {
             this.item.addItem ( new StateMovedItem ( this.model, current,
-                current.getPositionX (), current.getPositionY (), xPosition,
-                yPosition + 50 ) );
-            current.move ( xPosition, yPosition + 50 );
+                current.getPositionX (), current.getPositionY (), tmpPositionX,
+                tmpPositionY + diff ) );
+            current.move ( tmpPositionX, tmpPositionY + diff );
           }
         }
         else
         {
-          if ( ( current.getPositionX () != xPosition )
-              || ( current.getPositionY () != yPosition - 50 ) )
+          if ( ( current.getPositionX () != tmpPositionX )
+              || ( current.getPositionY () != tmpPositionY - diff ) )
           {
             this.item.addItem ( new StateMovedItem ( this.model, current,
-                current.getPositionX (), current.getPositionY (), xPosition,
-                yPosition - 50 ) );
-            current.move ( xPosition, yPosition - 50 );
+                current.getPositionX (), current.getPositionY (), tmpPositionX,
+                tmpPositionY - diff ) );
+            current.move ( tmpPositionX, tmpPositionY - diff );
           }
         }
       }

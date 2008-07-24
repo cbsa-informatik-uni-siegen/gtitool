@@ -293,7 +293,10 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
             state.setPushDownAlphabet ( pushDownAlphabet );
           }
         }
-        createStateView ( x + 35, y + 35, state, false );
+
+        double newX = x + StateView.getWidth ( state ) / 2;
+        double newY = y + StateView.getHeight ( state ) / 2;
+        createStateView ( newX, newY, state, false );
       }
       else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
           && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
@@ -897,7 +900,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * 
    * @param stateView The {@link DefaultStateView} that should be removed.
    * @param createUndoStep Flag signals if an undo step should be created.
-   * 
    * @return The {@link RedoUndoItem}.
    */
   public final RedoUndoItem removeState ( DefaultStateView stateView,

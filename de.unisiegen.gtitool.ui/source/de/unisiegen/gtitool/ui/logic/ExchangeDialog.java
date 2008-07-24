@@ -6,9 +6,9 @@ import java.awt.event.ItemEvent;
 import java.io.File;
 
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
 
 import de.unisiegen.gtitool.core.storage.Element;
@@ -71,12 +71,6 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
 
 
   /**
-   * The {@link DefaultStyledDocument}
-   */
-  private DefaultStyledDocument document;
-
-
-  /**
    * Allocates a new {@link ExchangeDialog}.
    * 
    * @param mainWindow The {@link MainWindow}.
@@ -102,8 +96,6 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
     }
 
     this.gui.jGTITextPaneStatus.setEditorKit ( new StyledEditorKit () );
-    this.document = new DefaultStyledDocument ();
-    this.gui.jGTITextPaneStatus.setDocument ( this.document );
 
     setNormalMode ( true );
 
@@ -130,18 +122,18 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
     if ( error )
     {
       StyleConstants.setForeground ( set, Color.RED );
-      StyleConstants.setBold ( set, true );
     }
     else
     {
       StyleConstants.setForeground ( set, Color.BLACK );
-      StyleConstants.setBold ( set, true );
     }
 
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     try
     {
-      this.document.insertString ( this.document.getLength (), message
+      StyledDocument styledDocument = ( StyledDocument ) this.gui.jGTITextPaneStatus
+          .getDocument ();
+      styledDocument.insertString ( styledDocument.getLength (), message
           + lineBreak, set );
     }
     catch ( BadLocationException exc )

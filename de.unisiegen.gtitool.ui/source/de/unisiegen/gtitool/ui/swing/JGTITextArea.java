@@ -5,8 +5,12 @@ import java.awt.Color;
 
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 import de.unisiegen.gtitool.core.util.Theme;
+import de.unisiegen.gtitool.logger.Logger;
 
 
 /**
@@ -25,6 +29,18 @@ public final class JGTITextArea extends JTextArea
 
 
   /**
+   * The max length.
+   */
+  private static final int MAX_LENGTH = 1000000;
+
+
+  /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger.getLogger ( JGTITextArea.class );
+
+
+  /**
    * The initial {@link Color}.
    */
   private Color initialColor;
@@ -40,6 +56,36 @@ public final class JGTITextArea extends JTextArea
     setBorder ( null );
     setLineWrap ( true );
     setWrapStyleWord ( true );
+
+    setDocument ( new PlainDocument ()
+    {
+
+      /**
+       * The serial version uid.
+       */
+      private static final long serialVersionUID = 1L;
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public final void insertString ( int offset, String string, AttributeSet attributeSet )
+          throws BadLocationException
+      {
+        if ( string == null )
+        {
+          return;
+        }
+        if ( getLength () + string.length () <= MAX_LENGTH )
+        {
+          super.insertString ( offset, string, attributeSet );
+        }
+        else
+        {
+          logger.debug ( "insertString", //$NON-NLS-1$
+              "text not inserted, larger than " + MAX_LENGTH + "characters" ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+      }
+    } );
   }
 
 

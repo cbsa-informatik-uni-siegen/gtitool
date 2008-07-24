@@ -29,9 +29,11 @@ import de.unisiegen.gtitool.core.parser.scanner.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.style.listener.ExceptionsChangedListener;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
+import de.unisiegen.gtitool.ui.swing.JGTITextPane;
 
 
 /**
@@ -50,6 +52,18 @@ public final class StyledParserDocument < E extends Entity < E > > extends
    * The serial version uid.
    */
   private static final long serialVersionUID = -2546142812930077554L;
+
+
+  /**
+   * The max length.
+   */
+  private static final int MAX_LENGTH = 1000000;
+
+
+  /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger.getLogger ( JGTITextPane.class );
 
 
   /**
@@ -376,8 +390,20 @@ public final class StyledParserDocument < E extends Entity < E > > extends
   public final void insertString ( int offset, String string,
       AttributeSet attributeSet ) throws BadLocationException
   {
-    super.insertString ( offset, string, attributeSet );
-    fireParseableChanged ( parse () );
+    if ( string == null )
+    {
+      return;
+    }
+    if ( getLength () + string.length () <= MAX_LENGTH )
+    {
+      super.insertString ( offset, string, attributeSet );
+      fireParseableChanged ( parse () );
+    }
+    else
+    {
+      logger.debug ( "insertString", //$NON-NLS-1$
+          "text not inserted, larger than " + MAX_LENGTH + "characters" ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
   }
 
 

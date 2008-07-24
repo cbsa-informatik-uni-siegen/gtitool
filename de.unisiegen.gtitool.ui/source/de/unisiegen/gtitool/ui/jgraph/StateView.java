@@ -515,10 +515,9 @@ public final class StateView extends VertexView
 
 
   /**
-   * The loop {@link Transition} offset. Disabled because of problems with the
-   * parallel edge renderer.
+   * The loop {@link Transition} offset.
    */
-  public final static int LOOP_TRANSITION_OFFSET = 0;
+  public final static int LOOP_TRANSITION_OFFSET = 36;
 
 
   /**
@@ -597,8 +596,7 @@ public final class StateView extends VertexView
    * @see VertexView#getPerimeterPoint(EdgeView, Point2D, Point2D)
    */
   @Override
-  public final Point2D getPerimeterPoint (
-      @SuppressWarnings ( "unused" ) EdgeView edge,
+  public final Point2D getPerimeterPoint ( EdgeView edge,
       @SuppressWarnings ( "unused" ) Point2D source, Point2D p )
   {
     Rectangle2D r = getBounds ();
@@ -610,12 +608,50 @@ public final class StateView extends VertexView
       powerSet = state.isPowerState ();
     }
 
+    State otherState = null;
+    if ( edge.getSource ().getParentView () == this )
+    {
+      StateView stateView = ( StateView ) edge.getTarget ().getParentView ();
+      if ( stateView.getCell () instanceof DefaultStateView )
+      {
+        DefaultStateView defaultStateView = ( DefaultStateView ) stateView
+            .getCell ();
+        otherState = defaultStateView.getState ();
+      }
+    }
+    else
+    {
+      StateView stateView = ( StateView ) edge.getSource ().getParentView ();
+      if ( stateView.getCell () instanceof DefaultStateView )
+      {
+        DefaultStateView defaultStateView = ( DefaultStateView ) stateView
+            .getCell ();
+        otherState = defaultStateView.getState ();
+      }
+    }
+
     double x = r.getX ();
     double y = r.getY ();
     double a = ( r.getWidth () + 1 ) / 2;
     double b = ( r.getHeight () + 1 ) / 2;
     int width = ( int ) r.getWidth ();
     int height = ( int ) r.getHeight ();
+
+    // x1, y1 - point
+    double x1 = p.getX ();
+    double y1 = p.getY ();
+
+    if ( otherState != null )
+    {
+      if ( otherState.isStartState () )
+      {
+        x1 += START_OFFSET / 2;
+      }
+      if ( otherState.isLoopTransition () )
+      {
+        y1 += LOOP_TRANSITION_OFFSET / 2;
+      }
+    }
 
     if ( getCell () instanceof DefaultStateView )
     {
@@ -637,10 +673,6 @@ public final class StateView extends VertexView
     // x0, y0 - center of ellipse
     double x0 = x + a;
     double y0 = y + b;
-
-    // x1, y1 - point
-    double x1 = p.getX ();
-    double y1 = p.getY ();
 
     // calculate straight line equation through point and ellipse center
     double dx = x1 - x0;
@@ -693,7 +725,7 @@ public final class StateView extends VertexView
 
       if ( ( checkX >= a ) && ( checkY <= b ) )
       {
-        while ( !isAllowedTopRight ( checkX, checkY, width -1) )
+        while ( !isAllowedTopRight ( checkX, checkY, width - 1 ) )
         {
           xout = xout + 1;
           yout = yout - 1;
@@ -713,7 +745,7 @@ public final class StateView extends VertexView
       }
       else if ( ( checkX <= a ) && ( checkY >= b ) )
       {
-        while ( !isAllowedBottomLeft ( checkX, checkY, height-1 ) )
+        while ( !isAllowedBottomLeft ( checkX, checkY, height - 1 ) )
         {
           xout = xout - 1;
           yout = yout + 1;
@@ -723,7 +755,7 @@ public final class StateView extends VertexView
       }
       else if ( ( checkX >= a ) && ( checkY >= b ) )
       {
-        while ( !isAllowedBottomRight ( checkX, checkY, width-1, height-1 ) )
+        while ( !isAllowedBottomRight ( checkX, checkY, width - 1, height - 1 ) )
         {
           xout = xout + 1;
           yout = yout + 1;

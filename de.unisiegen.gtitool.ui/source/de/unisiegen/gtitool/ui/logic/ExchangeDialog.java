@@ -99,7 +99,8 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
 
     setNormalMode ( true );
 
-    if ( PreferenceManager.getInstance ().getReceiveModus () )
+    if ( PreferenceManager.getInstance ().getReceiveModus ()
+        || ( this.element == null ) )
     {
       this.gui.jGTIRadioButtonReceive.setSelected ( true );
     }

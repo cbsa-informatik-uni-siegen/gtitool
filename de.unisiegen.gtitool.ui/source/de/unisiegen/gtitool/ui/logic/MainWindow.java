@@ -2973,7 +2973,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     if ( !selected )
     {
-      EditorPanel selectedEditorPanel = this.jGTIMainSplitPane
+      EditorPanel selectedEditorPanelLeft = null;
+      if ( this.jGTIMainSplitPane.getActiveEditor ().equals (
+          ActiveEditor.LEFT_EDITOR ) )
+      {
+        selectedEditorPanelLeft = this.jGTIMainSplitPane
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+      }
+
+      EditorPanel selectedEditorPanelRight = this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
 
       int count = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
@@ -2992,16 +3000,24 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       if ( this.jGTIMainSplitPane.getActiveEditor ().equals (
           ActiveEditor.RIGHT_EDITOR ) )
       {
-        if ( selectedEditorPanel != null )
+        if ( selectedEditorPanelRight != null )
         {
           this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
-              .setSelectedEditorPanel ( selectedEditorPanel );
+              .setSelectedEditorPanel ( selectedEditorPanelRight );
         }
         else
         {
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
         }
       }
+
+      if ( selectedEditorPanelLeft != null )
+      {
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+            .setSelectedEditorPanel ( selectedEditorPanelLeft );
+      }
+
+      handleTabbedPaneStateChanged ();
     }
 
     this.jGTIMainSplitPane.setSecondViewActive ( selected );

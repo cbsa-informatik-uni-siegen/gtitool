@@ -15,7 +15,7 @@
       <TransitionBegin id="1"/>
     </State>
   </StateView>
-  <StateView x="175.0" y="37.0">
+  <StateView x="180.0" y="4.0">
     <State id="1" name="z1" startState="false" finalState="false">
       <TransitionBegin id="2"/>
       <TransitionBegin id="3"/>
@@ -38,7 +38,7 @@
       <TransitionEnd id="5"/>
     </State>
   </StateView>
-  <StateView x="443.0" y="43.0">
+  <StateView x="451.0" y="73.0">
     <State id="4" name="z4" startState="false" finalState="true">
       <TransitionBegin id="7"/>
       <TransitionEnd id="6"/>

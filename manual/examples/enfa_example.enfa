@@ -48,7 +48,7 @@
       <TransitionEnd id="1"/>
     </State>
   </StateView>
-  <StateView x="386.0" y="39.0">
+  <StateView x="386.0" y="11.0">
     <State id="3" name="q2" startState="false" finalState="false">
       <TransitionBegin id="4"/>
       <TransitionBegin id="5"/>
@@ -57,13 +57,13 @@
       <TransitionEnd id="4"/>
     </State>
   </StateView>
-  <StateView x="508.0" y="57.0">
+  <StateView x="525.0" y="47.0">
     <State id="4" name="q3" startState="false" finalState="false">
       <TransitionBegin id="6"/>
       <TransitionEnd id="5"/>
     </State>
   </StateView>
-  <StateView x="751.0" y="43.0">
+  <StateView x="775.0" y="11.0">
     <State id="5" name="q4" startState="false" finalState="true">
       <TransitionBegin id="7"/>
       <TransitionEnd id="6"/>
@@ -90,13 +90,13 @@
       <TransitionEnd id="12"/>
     </State>
   </StateView>
-  <StateView x="498.0" y="391.0">
+  <StateView x="506.0" y="382.0">
     <State id="9" name="q8" startState="false" finalState="false">
       <TransitionBegin id="13"/>
       <TransitionEnd id="11"/>
     </State>
   </StateView>
-  <StateView x="765.0" y="391.0">
+  <StateView x="767.0" y="382.0">
     <State id="10" name="z10" startState="false" finalState="false">
       <TransitionEnd id="13"/>
     </State>

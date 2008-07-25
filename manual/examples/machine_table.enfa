@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MachineModel machineType="ENFA" machineVersion="1018" usePushDownAlphabet="false">
+  <Alphabet>
+    <Symbol name="0" epsilon="false"/>
+    <Symbol name="1" epsilon="false"/>
+  </Alphabet>
+  <PushDownAlphabet>
+    <Symbol name="0" epsilon="false"/>
+    <Symbol name="1" epsilon="false"/>
+  </PushDownAlphabet>
+  <StateView x="22.0" y="18.0">
+    <State id="0" name="z0" startState="false" finalState="false">
+      <TransitionBegin id="0"/>
+    </State>
+  </StateView>
+  <StateView x="138.0" y="151.0">
+    <State id="1" name="z1" startState="false" finalState="false">
+      <TransitionEnd id="0"/>
+    </State>
+  </StateView>
+  <TransitionView>
+    <Transition id="0" stateBeginId="0" stateEndId="1">
+      <PushDownWordRead/>
+      <PushDownWordWrite/>
+      <Symbol name="&quot;epsilon&quot;" epsilon="true"/>
+    </Transition>
+  </TransitionView>
+</MachineModel>

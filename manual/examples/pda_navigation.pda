@@ -9,7 +9,7 @@
     <Symbol name="a" epsilon="false"/>
     <Symbol name="b" epsilon="false"/>
   </PushDownAlphabet>
-  <StateView x="0.0" y="18.0">
+  <StateView x="11.0" y="18.0">
     <State id="0" name="z0" startState="true" finalState="true">
       <TransitionBegin id="3"/>
     </State>
@@ -22,7 +22,7 @@
       <TransitionEnd id="4"/>
     </State>
   </StateView>
-  <StateView x="372.0" y="44.0">
+  <StateView x="374.0" y="11.0">
     <State id="3" name="z2" startState="false" finalState="true">
       <TransitionBegin id="6"/>
       <TransitionEnd id="5"/>

@@ -9,7 +9,7 @@
     <Symbol name="a" epsilon="false"/>
     <Symbol name="b" epsilon="false"/>
   </PushDownAlphabet>
-  <StateView x="8.0" y="53.0">
+  <StateView x="18.0" y="17.0">
     <State id="0" name="z0" startState="true" finalState="false">
       <TransitionBegin id="0"/>
       <TransitionBegin id="1"/>

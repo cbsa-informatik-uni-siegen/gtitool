@@ -17,7 +17,7 @@ import de.unisiegen.gtitool.core.grammars.Grammar;
  * Representation of {@link RedoUndoItem} for edit symbols action.
  * 
  * @author Benjamin Mies
- * @version $Id: StateAddedItem.java 960 2008-06-03 23:32:54Z fehler $
+ * @version $Id$
  */
 public final class GrammarSymbolsChangedItem extends RedoUndoItem
 {

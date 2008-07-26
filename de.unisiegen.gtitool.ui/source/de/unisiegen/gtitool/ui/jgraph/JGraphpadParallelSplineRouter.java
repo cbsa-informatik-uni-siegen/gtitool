@@ -85,11 +85,11 @@ public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting {
         double toX = to.getX ();
         double toY = to.getY ();
 
-        StateView stateViewFrom = ( StateView ) ( ( PortView ) edge
+        StateView stateView = ( StateView ) ( ( PortView ) edge
             .getSource () ).getParentView ();
-        if ( stateViewFrom.getCell () instanceof DefaultStateView )
+        if ( stateView.getCell () instanceof DefaultStateView )
         {
-          DefaultStateView defaultStateView = ( DefaultStateView ) stateViewFrom
+          DefaultStateView defaultStateView = ( DefaultStateView ) stateView
               .getCell ();
           State state = defaultStateView.getState ();
 

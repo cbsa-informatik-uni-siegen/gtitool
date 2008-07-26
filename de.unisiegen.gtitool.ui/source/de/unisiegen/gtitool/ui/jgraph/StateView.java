@@ -10,6 +10,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -739,14 +740,15 @@ public final class StateView extends VertexView
       yout = yout2;
     }
 
-    if ( state != null && state.isPowerState () )
+    if ( ( state != null ) && state.isPowerState () )
     {
       int checkX = ( int ) ( xout - x );
       int checkY = ( int ) ( yout - y );
 
       if ( ( checkX >= a ) && ( checkY <= b ) )
       {
-        while ( !isAllowedTopRight ( checkX, checkY, width - 1 ) )
+        while ( !isOutOfPaintedPowerStateAreaTopRight ( checkX, checkY,
+            width - 1 ) )
         {
           xout = xout + 1;
           yout = yout - 1;
@@ -756,7 +758,7 @@ public final class StateView extends VertexView
       }
       else if ( ( checkX <= a ) && ( checkY <= b ) )
       {
-        while ( !isAllowedTopLeft ( checkX, checkY ) )
+        while ( !isOutOfPaintedPowerStateAreaTopLeft ( checkX, checkY ) )
         {
           xout = xout - 1;
           yout = yout - 1;
@@ -766,7 +768,8 @@ public final class StateView extends VertexView
       }
       else if ( ( checkX <= a ) && ( checkY >= b ) )
       {
-        while ( !isAllowedBottomLeft ( checkX, checkY, height - 1 ) )
+        while ( !isOutOfPaintedPowerStateAreaBottomLeft ( checkX, checkY,
+            height - 1 ) )
         {
           xout = xout - 1;
           yout = yout + 1;
@@ -776,7 +779,8 @@ public final class StateView extends VertexView
       }
       else if ( ( checkX >= a ) && ( checkY >= b ) )
       {
-        while ( !isAllowedBottomRight ( checkX, checkY, width - 1, height - 1 ) )
+        while ( !isOutOfPaintedPowerStateAreaBottomRight ( checkX, checkY,
+            width - 1, height - 1 ) )
         {
           xout = xout + 1;
           yout = yout + 1;
@@ -803,14 +807,17 @@ public final class StateView extends VertexView
 
 
   /**
-   * Returns true if the given point is allowed, otherwise false.
+   * Returns true if the given point is out of the painted state area, otherwise
+   * false.
    * 
    * @param x The x value.
    * @param y The y value.
    * @param height The height.
-   * @return True if the given point is allowed, otherwise false.
+   * @return True if the given point is out of the painted state area, otherwise
+   *         false.
    */
-  private final boolean isAllowedBottomLeft ( int x, int y, int height )
+  private final boolean isOutOfPaintedPowerStateAreaBottomLeft ( int x, int y,
+      int height )
   {
     if ( ( ( x == 1 ) && ( y < height - 17 ) )
         || ( ( x == 2 ) && ( y < height - 14 ) )
@@ -840,16 +847,18 @@ public final class StateView extends VertexView
 
 
   /**
-   * Returns true if the given point is allowed, otherwise false.
+   * Returns true if the given point is out of the painted state area, otherwise
+   * false.
    * 
    * @param x The x value.
    * @param y The y value.
    * @param width The width.
    * @param height The height.
-   * @return True if the given point is allowed, otherwise false.
+   * @return True if the given point is out of the painted state area, otherwise
+   *         false.
    */
-  private final boolean isAllowedBottomRight ( int x, int y, int width,
-      int height )
+  private final boolean isOutOfPaintedPowerStateAreaBottomRight ( int x, int y,
+      int width, int height )
   {
     if ( ( ( x == width - 1 ) && ( y < height - 17 ) )
         || ( ( x == width - 2 ) && ( y < height - 14 ) )
@@ -879,13 +888,15 @@ public final class StateView extends VertexView
 
 
   /**
-   * Returns true if the given point is allowed, otherwise false.
+   * Returns true if the given point is out of the painted state area, otherwise
+   * false.
    * 
    * @param x The x value.
    * @param y The y value.
-   * @return True if the given point is allowed, otherwise false.
+   * @return True if the given point is out of the painted state area, otherwise
+   *         false.
    */
-  private final boolean isAllowedTopLeft ( int x, int y )
+  private final boolean isOutOfPaintedPowerStateAreaTopLeft ( int x, int y )
   {
     if ( ( ( x == 1 ) && ( y > 17 ) ) || ( ( x == 2 ) && ( y > 14 ) )
         || ( ( x == 3 ) && ( y > 12 ) ) || ( ( x == 4 ) && ( y > 11 ) )
@@ -905,14 +916,17 @@ public final class StateView extends VertexView
 
 
   /**
-   * Returns true if the given point is allowed, otherwise false.
+   * Returns true if the given point is out of the painted state area, otherwise
+   * false.
    * 
    * @param x The x value.
    * @param y The y value.
    * @param width The width.
-   * @return True if the given point is allowed, otherwise false.
+   * @return True if the given point is out of the painted state area, otherwise
+   *         false.
    */
-  private final boolean isAllowedTopRight ( int x, int y, int width )
+  private final boolean isOutOfPaintedPowerStateAreaTopRight ( int x, int y,
+      int width )
   {
     if ( ( ( x == width - 1 ) && ( y > 17 ) )
         || ( ( x == width - 2 ) && ( y > 14 ) )
@@ -938,5 +952,117 @@ public final class StateView extends VertexView
       return false;
     }
     return true;
+  }
+
+
+  /**
+   * Returns true if the given point is out of the painted state area, otherwise
+   * false.
+   * 
+   * @param x The x value.
+   * @param y The y value.
+   * @param width The width.
+   * @param height The height.
+   * @return True if the given point is out of the painted state area, otherwise
+   *         false.
+   */
+  private final boolean isOutOfPaintedStateArea ( int x, int y, int width,
+      int height )
+  {
+    int mX = width / 2;
+    int mY = height / 2;
+
+    int diffX = mX - x;
+    int diffY = mY - y > 0 ? mY - y : y - mY;
+
+    int maxDiffY = ( int ) Math.sqrt ( mY * mY - diffX * diffX );
+
+    if ( diffY > maxDiffY )
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+
+  /**
+   * Returns true if the selection is allowed, otherwise false.
+   * 
+   * @param absoluteX The absolute x position of the {@link MouseEvent}.
+   * @param absoluteY The absolute y position of the {@link MouseEvent}.
+   * @return True if the selection is allowed, otherwise false.
+   */
+  public final boolean isSelectionAllowed ( int absoluteX, int absoluteY )
+  {
+    Rectangle2D b = getBounds ();
+
+    int x = ( int ) b.getX ();
+    int y = ( int ) b.getY ();
+    int width = ( int ) b.getWidth ();
+    int height = ( int ) b.getHeight ();
+
+    int relativeX = absoluteX - x;
+    if ( relativeX < 0 )
+    {
+      relativeX = 0;
+    }
+    if ( relativeX >= width )
+    {
+      relativeX = width - 1;
+    }
+
+    int relativeY = absoluteY - y;
+    if ( relativeY < 0 )
+    {
+      relativeY = 0;
+    }
+    if ( relativeY >= height )
+    {
+      relativeY = height - 1;
+    }
+
+    State state = null;
+    if ( getCell () instanceof DefaultStateView )
+    {
+      state = ( ( DefaultStateView ) getCell () ).getState ();
+    }
+
+    if ( state != null )
+    {
+      if ( state.isStartState () )
+      {
+        relativeX -= START_OFFSET;
+        width -= START_OFFSET;
+      }
+      if ( state.isLoopTransition () )
+      {
+        relativeY -= LOOP_TRANSITION_OFFSET;
+        height -= LOOP_TRANSITION_OFFSET;
+      }
+
+      if ( state.isPowerState () )
+      {
+        if ( !isOutOfPaintedPowerStateAreaTopLeft ( relativeX, relativeY )
+            && !isOutOfPaintedPowerStateAreaTopRight ( relativeX, relativeY,
+                width )
+            && !isOutOfPaintedPowerStateAreaBottomLeft ( relativeX, relativeY,
+                height )
+            && !isOutOfPaintedPowerStateAreaBottomRight ( relativeX, relativeY,
+                width, height ) )
+        {
+          return true;
+        }
+      }
+      else
+      {
+        if ( !isOutOfPaintedStateArea ( relativeX, relativeY, width, height ) )
+        {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }

@@ -183,8 +183,7 @@ public final class JGTIGraph extends JGraph implements Printable
   /**
    * {@inheritDoc}
    * 
-   * @see java.awt.print.Printable#print(java.awt.Graphics,
-   *      java.awt.print.PageFormat, int)
+   * @see Printable#print(Graphics, PageFormat, int)
    */
   public int print ( Graphics graphics, PageFormat pageFormat, int pageIndex )
   {
@@ -296,5 +295,18 @@ public final class JGTIGraph extends JGraph implements Printable
   public final void setMarginTop ( int marginTop )
   {
     this.marginTop = marginTop;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see JGraph#updateUI()
+   */
+  @Override
+  public final void updateUI ()
+  {
+    setUI ( new JGTIBasicGraphUI () );
+    invalidate ();
   }
 }

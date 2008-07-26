@@ -3679,18 +3679,20 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   private final void updateSelected ( MouseEvent event )
   {
-    DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
-        .getFirstCellForLocation ( event.getPoint ().getX (), event.getPoint ()
-            .getY () );
-
-    if ( cell == null )
+    if ( this.jGTIGraph.getSelectionCell () == null )
     {
       MachinePanel.this.machine.clearSelectedTransition ();
 
       MachinePanel.this.gui.jGTITableMachine.repaint ();
       MachinePanel.this.gui.jGTITableMachinePDA.repaint ();
+      return;
     }
-    else if ( cell instanceof DefaultTransitionView )
+
+    DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
+        .getFirstCellForLocation ( event.getPoint ().getX (), event.getPoint ()
+            .getY () );
+
+    if ( cell instanceof DefaultTransitionView )
     {
       DefaultTransitionView transitionView = ( DefaultTransitionView ) cell;
       ArrayList < Transition > transitionList = new ArrayList < Transition > ();

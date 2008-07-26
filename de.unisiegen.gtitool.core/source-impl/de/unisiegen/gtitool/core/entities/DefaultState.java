@@ -1175,60 +1175,49 @@ public final class DefaultState implements State
         || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
       this.cachedPrettyString = new PrettyString ();
-      if ( this.selected )
+
+      Style styleName = this.selected ? Style.STATE_SELECTED : Style.STATE;
+      Style styleSyntax = this.selected ? Style.STATE_SELECTED_SYNTAX
+          : Style.NONE;
+
+      // power set name
+      if ( this.name.charAt ( 0 ) == '{' )
       {
-        this.cachedPrettyString.add ( new PrettyToken ( this.name,
-            Style.STATE_SELECTED ) );
+        String stateSet = this.name.substring ( 1, this.name.length () - 1 );
+
+        String [] splitStateSet = stateSet.split ( "," ); //$NON-NLS-1$
+
+        this.cachedPrettyString.add ( new PrettyToken ( "{", styleSyntax ) ); //$NON-NLS-1$
+        boolean first = true;
+        for ( String current : splitStateSet )
+        {
+          String newName = current;
+
+          // remove spaces
+          while ( newName.charAt ( 0 ) == ' ' )
+          {
+            newName = newName.substring ( 1 );
+          }
+          while ( newName.charAt ( newName.length () - 1 ) == ' ' )
+          {
+            newName = newName.substring ( 0, newName.length () - 1 );
+          }
+
+          if ( !first )
+          {
+            this.cachedPrettyString
+                .add ( new PrettyToken ( ", ", styleSyntax ) ); //$NON-NLS-1$
+          }
+          first = false;
+
+          this.cachedPrettyString.add ( new PrettyToken ( newName, styleName ) );
+        }
+        this.cachedPrettyString.add ( new PrettyToken ( "}", styleSyntax ) ); //$NON-NLS-1$
       }
+      // normal name
       else
       {
-        // name after a conversion
-        if ( this.name.charAt ( 0 ) == '{' )
-        {
-          String stateSet = this.name.substring ( 1, this.name.length () - 1 );
-
-          String [] splitStateSet = stateSet.split ( "," ); //$NON-NLS-1$
-
-          this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-          boolean first = true;
-          for ( String current : splitStateSet )
-          {
-            String newName = current;
-
-            // remove spaces
-            while ( newName.charAt ( 0 ) == ' ' )
-            {
-              newName = newName.substring ( 1 );
-            }
-            while ( newName.charAt ( newName.length () - 1 ) == ' ' )
-            {
-              newName = newName.substring ( 0, newName.length () - 1 );
-            }
-
-            if ( !first )
-            {
-              this.cachedPrettyString
-                  .add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-            }
-            first = false;
-
-            this.cachedPrettyString.add ( new PrettyToken ( newName,
-                Style.STATE ) );
-          }
-          this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
-        }
-        // empty set name
-        else if ( this.name.equals ( "\u2205" ) ) //$NON-NLS-1$
-        {
-          this.cachedPrettyString
-              .add ( new PrettyToken ( this.name, Style.NONE ) );
-        }
-        // normal name
-        else
-        {
-          this.cachedPrettyString.add ( new PrettyToken ( this.name,
-              Style.STATE ) );
-        }
+        this.cachedPrettyString.add ( new PrettyToken ( this.name, styleName ) );
       }
     }
 

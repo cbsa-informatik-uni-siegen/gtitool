@@ -36,6 +36,11 @@ public enum Style
   STATE_SELECTED ( true, false ),
 
   /**
+   * Style of selected syntax {@link State}s.
+   */
+  STATE_SELECTED_SYNTAX ( false, false ),
+
+  /**
    * Style of selected {@link Transition}s.
    */
   TRANSITION_SELECTED ( true, false ),
@@ -134,6 +139,11 @@ public enum Style
             .getColor ();
       }
       case STATE_SELECTED :
+      {
+        return PreferenceManager.getInstance ().getColorItemStateSelected ()
+            .getColor ();
+      }
+      case STATE_SELECTED_SYNTAX :
       {
         return PreferenceManager.getInstance ().getColorItemStateSelected ()
             .getColor ();

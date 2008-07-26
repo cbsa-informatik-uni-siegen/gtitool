@@ -1622,11 +1622,11 @@ public final class DefaultTransition implements Transition
       if ( this.selected )
       {
         this.cachedStackPrettyString
-            .overwriteColor ( Style.TRANSITION_SELECTED );
+            .setOverwrittenColor ( Style.TRANSITION_SELECTED );
       }
       else
       {
-        this.cachedStackPrettyString.overwriteColor ( null );
+        this.cachedStackPrettyString.setOverwrittenColor ( null );
       }
     }
 

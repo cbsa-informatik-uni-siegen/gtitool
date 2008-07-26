@@ -62,7 +62,7 @@ public final class PrettyToken implements Cloneable
   public final PrettyToken clone ()
   {
     PrettyToken newPrettyToken = new PrettyToken ( this.text, this.style );
-    newPrettyToken.overwrite ( this.overwrittenColor );
+    newPrettyToken.setOverwrittenColor ( this.overwrittenColor );
     return newPrettyToken;
   }
 
@@ -109,6 +109,17 @@ public final class PrettyToken implements Cloneable
       return this.overwrittenColor;
     }
     return this.style.getColor ();
+  }
+
+
+  /**
+   * Returns the overwritten {@link Color}.
+   * 
+   * @return The overwritten {@link Color}.
+   */
+  public final Color getOverwrittenColor ()
+  {
+    return this.overwrittenColor;
   }
 
 
@@ -169,13 +180,13 @@ public final class PrettyToken implements Cloneable
 
 
   /**
-   * Overwrites the {@link Color} with the given {@link Color}.
+   * Sets the overwritten {@link Color}.
    * 
-   * @param newColor The new {@link Color}.
+   * @param overwrittenColor The overwritten {@link Color}.
    */
-  public final void overwrite ( Color newColor )
+  public final void setOverwrittenColor ( Color overwrittenColor )
   {
-    this.overwrittenColor = newColor;
+    this.overwrittenColor = overwrittenColor;
   }
 
 

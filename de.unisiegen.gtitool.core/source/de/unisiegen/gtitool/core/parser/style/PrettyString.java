@@ -274,21 +274,6 @@ public final class PrettyString implements Iterable < PrettyToken >
 
 
   /**
-   * Overwrites the {@link Style} of every {@link PrettyToken} with the given
-   * {@link Style}.
-   * 
-   * @param newStyle The new {@link Style}.
-   */
-  public final void overwriteColor ( Style newStyle )
-  {
-    for ( PrettyToken current : this.prettyTokenList )
-    {
-      current.overwrite ( newStyle == null ? null : newStyle.getColor () );
-    }
-  }
-
-
-  /**
    * Removes the last {@link PrettyToken}.
    * 
    * @return The last {@link PrettyToken}.
@@ -336,6 +321,22 @@ public final class PrettyString implements Iterable < PrettyToken >
         this.prettyTokenList.add ( index, newToken1 );
         return;
       }
+    }
+  }
+
+
+  /**
+   * Overwrites the {@link Style} of every {@link PrettyToken} with the given
+   * {@link Style}.
+   * 
+   * @param newStyle The new {@link Style}.
+   */
+  public final void setOverwrittenColor ( Style newStyle )
+  {
+    for ( PrettyToken current : this.prettyTokenList )
+    {
+      current.setOverwrittenColor ( newStyle == null ? null : newStyle
+          .getColor () );
     }
   }
 

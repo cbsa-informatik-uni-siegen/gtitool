@@ -457,7 +457,7 @@ public abstract class AbstractMachine implements Machine
         this.currentStateId = state.getId ();
       }
     }
-    state.setDefaultName ();
+
     this.stateList.add ( state );
     link ( state );
     fireTableDataChanged ();
@@ -1212,6 +1212,29 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
+   * @see Machine#getNextStateName()
+   */
+  public final String getNextStateName ()
+  {
+    int result = -1;
+
+    for ( State current : this.stateList )
+    {
+      if ( current.getId () > result )
+      {
+        result = current.getId ();
+      }
+    }
+
+    result++ ;
+
+    return "z" + result; //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Machine#getNotReachableStates()
    */
   public final ArrayList < State > getNotReachableStates ()
@@ -1824,8 +1847,8 @@ public abstract class AbstractMachine implements Machine
     }
 
     // special case for the pda navigation
-    if ( this.getMachineType ().equals ( MachineType.PDA )
-        && getPossibleTransitions ().size () > 0 )
+    if ( getMachineType ().equals ( MachineType.PDA )
+        && ( getPossibleTransitions ().size () > 0 ) )
     {
       return true;
     }

@@ -110,8 +110,9 @@ public final class StateConfigDialog implements
     this.gui.jGTICheckBoxFinalState.setSelected ( this.state.isFinalState () );
     this.gui.jGTICheckBoxStartState.setSelected ( this.state.isStartState () );
     this.gui.styledStateParserPanel.setText ( state );
-    this.gui.jGTILabelRename.setText ( Messages.getString (
-        "NewStateNameDialog.RenameText", state ) ); //$NON-NLS-1$
+    this.gui.jGTILabelRename.setText ( Messages.getPrettyString (
+        "NewStateNameDialog.RenameText", state.toPrettyString () ) //$NON-NLS-1$
+        .toHTMLString () );
 
     /*
      * State changed listener

@@ -145,7 +145,8 @@ public final class ChooseTransitionDialog implements
     {
       JGTIRadioButton jGTIRadioButton = new JGTIRadioButton ();
       this.radioButtonList.add ( jGTIRadioButton );
-      jGTIRadioButton.setText ( this.transitionList.get ( i ).toString () );
+      jGTIRadioButton.setText ( this.transitionList.get ( i ).toPrettyString ()
+          .toHTMLString () );
 
       buttonGroup.add ( jGTIRadioButton );
 

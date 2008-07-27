@@ -106,9 +106,9 @@ public class ENFATest extends MachineTest
     // States
     try
     {
-      z0 = new DefaultState ( alphabet, pushDownAlphabet, true, false );
-      z1 = new DefaultState ( alphabet, pushDownAlphabet, false, false );
-      z2 = new DefaultState ( alphabet, pushDownAlphabet, false, true );
+      z0 = new DefaultState ( alphabet, pushDownAlphabet, "z0", true, false );
+      z1 = new DefaultState ( alphabet, pushDownAlphabet, "z1", false, false );
+      z2 = new DefaultState ( alphabet, pushDownAlphabet, "z2", false, true );
     }
     catch ( StateException exc )
     {

@@ -294,12 +294,6 @@ public interface State extends Entity < State >, Storable, Modifyable
 
 
   /**
-   * Sets the default name of this {@link State}.
-   */
-  public void setDefaultName ();
-
-
-  /**
    * Sets the error value.
    * 
    * @param error The error value to set.

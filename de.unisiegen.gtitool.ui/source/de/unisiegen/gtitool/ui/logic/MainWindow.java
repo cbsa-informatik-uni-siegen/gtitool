@@ -1747,6 +1747,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_UNDO );
       removeButtonState ( ButtonState.ENABLED_REDO );
     }
+    else
+    {
+      removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
+    }
   }
 
 

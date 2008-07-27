@@ -2719,7 +2719,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         {
           State newState = new DefaultState ( MachinePanel.this.machine
               .getAlphabet (),
-              MachinePanel.this.machine.getPushDownAlphabet (), false, false );
+              MachinePanel.this.machine.getPushDownAlphabet (),
+              MachinePanel.this.machine.getNextStateName (), false, false );
 
           MachinePanel.this.model.createStateView ( event.getPoint ().x
               / MachinePanel.this.zoomFactor, event.getPoint ().y
@@ -3106,7 +3107,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         {
           State newState = new DefaultState ( MachinePanel.this.machine
               .getAlphabet (),
-              MachinePanel.this.machine.getPushDownAlphabet (), true, false );
+              MachinePanel.this.machine.getPushDownAlphabet (),
+              MachinePanel.this.machine.getNextStateName (), true, false );
           MachinePanel.this.model.createStateView ( event.getPoint ().x
               / MachinePanel.this.zoomFactor, event.getPoint ().y
               / MachinePanel.this.zoomFactor, newState, true );
@@ -3207,7 +3209,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         {
           State newState = new DefaultState ( MachinePanel.this.machine
               .getAlphabet (),
-              MachinePanel.this.machine.getPushDownAlphabet (), false, true );
+              MachinePanel.this.machine.getPushDownAlphabet (),
+              MachinePanel.this.machine.getNextStateName (), false, true );
           MachinePanel.this.model.createStateView ( event.getPoint ().x
               / MachinePanel.this.zoomFactor, event.getPoint ().y
               / MachinePanel.this.zoomFactor, newState, true );

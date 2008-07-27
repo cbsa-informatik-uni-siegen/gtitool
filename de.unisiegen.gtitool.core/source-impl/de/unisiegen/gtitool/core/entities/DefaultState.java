@@ -64,12 +64,6 @@ public final class DefaultState implements State
 
 
   /**
-   * Flag that indicates if the default name can be set.
-   */
-  private boolean canSetDefaultName;
-
-
-  /**
    * This {@link DefaultState} is a final {@link DefaultState}.
    */
   private boolean finalState = false;
@@ -175,29 +169,6 @@ public final class DefaultState implements State
    * @param alphabet The {@link Alphabet} of this {@link DefaultState}.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          {@link DefaultState}.
-   * @param startState This {@link DefaultState} is a start {@link DefaultState}
-   *          .
-   * @param finalState This {@link DefaultState} is a final {@link DefaultState}
-   *          .
-   * @throws StateException If something with the {@link DefaultState} is not
-   *           correct.
-   */
-  public DefaultState ( Alphabet alphabet, Alphabet pushDownAlphabet,
-      boolean startState, boolean finalState ) throws StateException
-  {
-    this ( alphabet, pushDownAlphabet, "DEFAULTNAME", startState, finalState ); //$NON-NLS-1$
-    this.canSetDefaultName = true;
-
-    resetModify ();
-  }
-
-
-  /**
-   * Allocates a new {@link DefaultState}.
-   * 
-   * @param alphabet The {@link Alphabet} of this {@link DefaultState}.
-   * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          {@link DefaultState}.
    * @param name The name of this {@link DefaultState}.
    * @param startState This {@link DefaultState} is a start {@link DefaultState}
    *          .
@@ -244,9 +215,6 @@ public final class DefaultState implements State
     // TransitionEnd
     this.transitionEndList = new ArrayList < Transition > ();
     this.transitionEndIdList = new ArrayList < Integer > ();
-
-    // CanSetDefaultName
-    this.canSetDefaultName = false;
 
     // Attribute
     boolean foundId = false;
@@ -373,9 +341,6 @@ public final class DefaultState implements State
     // TransitionEnd
     this.transitionEndList = new ArrayList < Transition > ();
     this.transitionEndIdList = new ArrayList < Integer > ();
-
-    // DefaultName
-    this.canSetDefaultName = false;
 
     resetModify ();
   }
@@ -993,33 +958,6 @@ public final class DefaultState implements State
       throw new IllegalArgumentException ( "alphabet is already set" ); //$NON-NLS-1$
     }
     this.alphabet = alphabet;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see State#setDefaultName()
-   */
-  public final void setDefaultName ()
-  {
-    if ( this.canSetDefaultName )
-    {
-      if ( this.id == ID_NOT_DEFINED )
-      {
-        throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$ 
-      }
-      try
-      {
-        setName ( "z" + this.id ); //$NON-NLS-1$
-      }
-      catch ( StateException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-        return;
-      }
-    }
   }
 
 

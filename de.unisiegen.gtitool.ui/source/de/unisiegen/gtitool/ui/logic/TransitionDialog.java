@@ -25,6 +25,9 @@ import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
@@ -513,7 +516,7 @@ public final class TransitionDialog implements
       {
         State newState;
         newState = new DefaultState ( this.alphabet, this.pushDownAlphabet,
-            false, false );
+            this.machinePanel.getMachine ().getNextStateName (), false, false );
         target = this.model.createStateView ( this.xPosition / this.zoomFactor,
             this.yPosition / this.zoomFactor, newState, false );
         this.transition.setStateEnd ( target.getState () );
@@ -628,18 +631,19 @@ public final class TransitionDialog implements
     this.alphabet = initAlphabet;
     this.pushDownAlphabet = initPushDownAlphabet;
 
-    // PushDownWordRead
     setPushDownWordRead ( initPushDownWordRead );
-    // PushDownWordWrite
     setPushDownWordWrite ( initPushDownWordWrite );
+
     this.stateBegin = initStateBegin;
     this.stateEnd = initStateEnd;
     this.gui = new TransitionDialogForm ( this, initParent );
-    String targetName = this.stateEnd == null ? Messages
-        .getString ( "TransitionDialog.NewState" ) : this.stateEnd //$NON-NLS-1$
-        .getName ();
-    this.gui.jGTILabelNonterminalSymbol.setText ( Messages.getString (
-        "TransitionDialog.Header", this.stateBegin, targetName ) ); //$NON-NLS-1$
+
+    String targetName = this.stateEnd == null ? initMachinePanel.getMachine ()
+        .getNextStateName () : this.stateEnd.getName ();
+    this.gui.jGTILabelNonterminalSymbol.setText ( Messages.getPrettyString (
+        "TransitionDialog.Header", this.stateBegin.toPrettyString (), //$NON-NLS-1$
+        new PrettyString ( new PrettyToken ( targetName, Style.STATE ) ) )
+        .toHTMLString () );
 
     this.gui.jGTIListChangeOverSet
         .setTransferHandler ( new JGTIListTransferHandler (

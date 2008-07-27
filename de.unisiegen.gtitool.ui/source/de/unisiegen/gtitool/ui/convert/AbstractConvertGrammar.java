@@ -216,8 +216,8 @@ public abstract class AbstractConvertGrammar implements Converter
       }
       else
       {
-        state = new DefaultState ( this.alphabet, this.pushDownAlphabet, false,
-            false );
+        state = new DefaultState ( this.alphabet, this.pushDownAlphabet,
+            this.model.getMachine ().getNextStateName (), false, false );
       }
       DefaultStateView stateView = this.model.createStateView ( this.position,
           this.position, state, false );

@@ -267,6 +267,14 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
+   * Returns the next {@link State} name.
+   * 
+   * @return The next {@link State} name.
+   */
+  public String getNextStateName ();
+
+
+  /**
    * Returns the not reachable {@link State} list.
    * 
    * @return The not reachable {@link State} list.

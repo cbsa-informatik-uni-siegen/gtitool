@@ -10,6 +10,7 @@
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="builddir" value="${basedir}/build" />
 	<property name="distdir" value="${basedir}/dist" />
+	<property name="literaturedir" value="${basedir}/literature" />
 	<property name="outputfile" value="thesis" />
 
 	<!-- dist -->
@@ -24,12 +25,26 @@
 				<include name="*" />
 			</fileset>
 		</copy>
+		<copy todir="${builddir}">
+			<fileset dir="${literaturedir}">
+				<include name="*" />
+			</fileset>
+		</copy>
 		<!-- pdf latex -->
 		<exec dir="${builddir}" os="Linux" executable="pdflatex">
-			<arg value="${outputfile}.tex" />
+			<arg value="${outputfile}" />
+		</exec>
+		<exec dir="${builddir}" os="Linux" executable="bibtex">
+			<arg value="${outputfile}" />
 		</exec>
 		<exec dir="${builddir}" os="Linux" executable="pdflatex">
-			<arg value="${outputfile}.tex" />
+			<arg value="${outputfile}" />
+		</exec>
+		<exec dir="${builddir}" os="Linux" executable="bibtex">
+			<arg value="${outputfile}" />
+		</exec>
+		<exec dir="${builddir}" os="Linux" executable="pdflatex">
+			<arg value="${outputfile}" />
 		</exec>
 		<!-- copy -->
 		<copy file="${builddir}/${outputfile}.pdf" todir="${distdir}" />

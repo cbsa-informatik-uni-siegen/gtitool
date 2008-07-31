@@ -26,10 +26,10 @@
 		</copy>
 		<!-- pdf latex -->
 		<exec dir="${builddir}" os="Linux" executable="pdflatex">
-			<arg value="${outputfile}.tex" />
+			<arg value="${outputfile}" />
 		</exec>
 		<exec dir="${builddir}" os="Linux" executable="pdflatex">
-			<arg value="${outputfile}.tex" />
+			<arg value="${outputfile}" />
 		</exec>
 		<!-- copy -->
 		<copy file="${builddir}/${outputfile}.pdf" todir="${distdir}" />

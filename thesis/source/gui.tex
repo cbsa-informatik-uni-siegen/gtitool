@@ -11,7 +11,24 @@
 
 \section{Redo/Undo}
 
-TODOBM
+Da das Lernwerkzeug vom Aussehen her sehr an einen Editor angelehnt ist,
+wollten wir dem Benutzer auch eine Möglichkeit geben Schritte rückgängig zu
+machen oder wiederherzustellen. Dies war jedoch zu einem Zeitpunkt, zu dem bei
+weitem noch nicht alle Funktionalität implementiert war. Desweiteren soll das
+Werkzeug ja auch zukünftig an den Stoff der Vorlesung angepasst werden, so dass
+uns eine einfache Erweiterbarkeit sehr wichtig war.\vspace{10pt}
+
+Daher haben wir uns entschlossen die Verwaltung der Redo/Undo Schritte nicht
+einer Klasse alleine zu überlassen, sondern die verschiedenen Aktionen in
+einzelnen Items zu kapseln. Auf diesen Items kann dann die entsprechende redo
+bzw. undo Funktion aufgerufen werden. Verwaltet wird dies von einem Handler,
+welcher sich nur merkt welches das letzte aktive Item für Redo und Undo ist,
+und den Aufruf durch den Nutzer an das Item weiterleitet.\vspace{10pt}
+
+Durch diese Kapselung ist es leicht möglich die Redo/Undo Funktion zu
+erweitern, da einfach ein neues Item für die entsprechende Aktion implementiert
+werden muss, um diese Item beim Ausführen der Aktion an den Handler zu
+übergeben.
 
 
 \section{Anpassung aller GUI Komponenten}

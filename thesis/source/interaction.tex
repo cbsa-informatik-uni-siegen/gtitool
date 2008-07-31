@@ -19,7 +19,36 @@ TODOCF
 
 \subsection{Grammatik}
 
-TODOBM
+Im folgenden möchten wir auf die Fehler und Warnungen eingehen, welche bei dem
+Validierungsvorgang einer Grammatik auftreten können.\vspace{10pt}
+
+Als Validierungsfehler zählt, unter anderem, wenn die gleiche Produktion mehrfach
+angelegt wurde. In der Spalte Meldung sieht man wie immer nur, um welchen Fehler
+es sich gerade handelt. Über die Beschreibung wird mitgeteilt, um welche
+Produktion es sich dabei handelt. Man kann sich die betreffenden Produktionen
+auch farblich hervorheben lassen, indem man die entsprechende Fehlermeldung durch
+Mausklick auswählt. So kann der Benutzer die fehlerhaften Produktionen schnell
+lokalisieren und den Fehler beheben.\vspace{10pt}
+
+Wenn es sich bei der aktuellen Grammatik um eine reguläre Grammatik handelt
+gibt es noch eine weitere Fehlermeldung. Wenn nicht alle Produktion dem
+vorgegebenen Muster für eine rechtsreguläre Grammtik entsprechen, wird dies auch
+über einen Validierungsfehler angezeigt. Dabei kann man auch hier anhand der
+Beschreibung sehen, um welche Produktion es sich handelt. Wenn man den
+entsprechenden Eintrag auswählt, wird dem Benutzer wieder durch farbiges
+hervorheben signalisiert wo sich diese Produktion befindet. Es wird jetzt
+allerdings nicht die komplette Produktion eingefärbt, sondern nur der Teil der
+Satzform, welcher nicht dem Muster entspricht. Auch hier war wieder die
+Intention dem Benutzer schnell zu einer gültigen Grammatik zu
+verhelfen.\vspace{10pt}
+
+Neben diesen beiden Fehlern haben wir auch eine Warnung eingeführt. Diese
+gibt Auskunft darüber, wenn ein Nonterminal, vom Startsymbol ausgehend,
+nicht erreichbar ist. Es handelt sich hierbei nur um eine Warnung, weil es
+sich durchaus um eine gültige Grammatik handeln kann. Sie soll dem Benutzer
+allerdings dazu animieren, die Übergangsmenge zu kontrollieren, ob nicht eine,
+oder mehrere, Produktionen vergessen wurden. So soll es möglich sein
+Flüchtigkeitsfehler frühzeitig zu erkennen und zu beheben.
 
 
 \section{Operationen mit dem Automaten Keller}

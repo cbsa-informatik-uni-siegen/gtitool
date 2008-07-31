@@ -1,5 +1,7 @@
 *** TODO ***
 
+CF		- Parser: Der ToolTip muss den PrettyString verwenden.
+
 
 *** FEATURE ***
 

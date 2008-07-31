@@ -1,6 +1,5 @@
 *** TODO ***
 
-CF		- Parser: Der ToolTip muss den PrettyString verwenden.
 CF		- Konsolen-Position korrigieren (Machine, Grammar)
 CF		- ProductionWord: keine whitespaces zulassen
 

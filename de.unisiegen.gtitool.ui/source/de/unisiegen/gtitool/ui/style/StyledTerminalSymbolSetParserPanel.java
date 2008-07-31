@@ -78,9 +78,9 @@ public final class StyledTerminalSymbolSetParserPanel extends
           {
             exceptionList.add ( new ParserException ( currentTerminal
                 .getParserOffset ().getStart (), currentTerminal
-                .getParserOffset ().getEnd (), Messages.getString (
+                .getParserOffset ().getEnd (), Messages.getPrettyString (
                 "TerminalPanel.AlreadyNonterminalSymbol", //$NON-NLS-1$
-                currentTerminal.getName (), this.nonterminalSymbolSet ) ) );
+                currentTerminal.toPrettyString () ).toHTMLString () ) );
           }
         }
       }
@@ -95,7 +95,8 @@ public final class StyledTerminalSymbolSetParserPanel extends
         {
           exceptionList.add ( new ParserException ( current.getParserOffset ()
               .getStart (), current.getParserOffset ().getEnd (), Messages
-              .getString ( "TerminalPanel.SymbolUsed", current ) ) ); //$NON-NLS-1$
+              .getPrettyString ( "TerminalPanel.SymbolUsed", //$NON-NLS-1$
+                  current.toPrettyString () ).toHTMLString () ) );
         }
       }
     }

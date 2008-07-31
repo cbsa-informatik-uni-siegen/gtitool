@@ -63,9 +63,9 @@ public final class StyledNonterminalSymbolParserPanel extends
       {
         exceptionList.add ( new ParserException ( nonterminalSymbol
             .getParserOffset ().getStart (), nonterminalSymbol
-            .getParserOffset ().getEnd (), Messages.getString (
-            "TerminalPanel.StartSymbolNoNonterminalSymbol", //$NON-NLS-1$
-            nonterminalSymbol.getName (), this.nonterminalSymbolSet ) ) );
+            .getParserOffset ().getEnd (), Messages.getPrettyString (
+            "TerminalPanel.SymbolNoNonterminalSymbol", //$NON-NLS-1$
+            nonterminalSymbol.toPrettyString () ).toHTMLString () ) );
       }
     }
 

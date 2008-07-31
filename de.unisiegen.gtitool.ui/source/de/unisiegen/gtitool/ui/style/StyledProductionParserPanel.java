@@ -97,8 +97,8 @@ public final class StyledProductionParserPanel extends
         exceptionList.add ( new ParserException ( production
             .getNonterminalSymbol ().getParserOffset ().getStart (), production
             .getNonterminalSymbol ().getParserOffset ().getEnd (), Messages
-            .getString ( "Production.NonterminalSymbol", production //$NON-NLS-1$
-                .getNonterminalSymbol ().getName () ) ) );
+            .getPrettyString ( "Production.NonterminalSymbol", production //$NON-NLS-1$
+                .getNonterminalSymbol ().toPrettyString () ).toHTMLString () ) );
       }
 
       /*
@@ -142,8 +142,8 @@ public final class StyledProductionParserPanel extends
         {
           exceptionList.add ( new ParserException ( current.getParserOffset ()
               .getStart (), current.getParserOffset ().getEnd (), Messages
-              .getString ( "ProductionWord.SymbolNotFound", //$NON-NLS-1$
-                  current.getName () ) ) );
+              .getPrettyString ( "ProductionWord.SymbolNotFound", //$NON-NLS-1$
+                  current.toPrettyString () ).toHTMLString () ) );
         }
       }
 

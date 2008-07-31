@@ -63,9 +63,10 @@ public final class StyledStackParserPanel extends StyledParserPanel < Stack >
         {
           exceptionList.add ( new ParserException ( current.getParserOffset ()
               .getStart (), current.getParserOffset ().getEnd (), Messages
-              .getString (
+              .getPrettyString (
                   "StyledStackParserPanel.SymbolNotInPushDownAlphabet", //$NON-NLS-1$
-                  current.getName (), this.pushDownAlphabet ) ) );
+                  current.toPrettyString (),
+                  this.pushDownAlphabet.toPrettyString () ).toHTMLString () ) );
         }
       }
     }

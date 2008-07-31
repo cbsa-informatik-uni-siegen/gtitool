@@ -125,8 +125,8 @@ public final class StyledProductionWordParserPanel extends
         {
           exceptionList.add ( new ParserException ( current.getParserOffset ()
               .getStart (), current.getParserOffset ().getEnd (), Messages
-              .getString ( "ProductionWord.SymbolNotFound", //$NON-NLS-1$
-                  current.getName () ) ) );
+              .getPrettyString ( "ProductionWord.SymbolNotFound", //$NON-NLS-1$
+                  current.toPrettyString () ).toHTMLString () ) );
         }
       }
 

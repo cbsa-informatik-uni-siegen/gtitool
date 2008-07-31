@@ -74,8 +74,9 @@ public final class StyledStateSetParserPanel extends
         {
           exceptionList.add ( new ParserException ( current.getParserOffset ()
               .getStart (), current.getParserOffset ().getEnd (), Messages
-              .getString ( "StyledStateSetParserPanel.StateNotInStateSet", //$NON-NLS-1$
-                  current.getName (), this.stateList ) ) );
+              .getPrettyString (
+                  "StyledStateSetParserPanel.StateNotInStateSet", //$NON-NLS-1$
+                  current.toPrettyString () ).toHTMLString () ) );
         }
       }
     }

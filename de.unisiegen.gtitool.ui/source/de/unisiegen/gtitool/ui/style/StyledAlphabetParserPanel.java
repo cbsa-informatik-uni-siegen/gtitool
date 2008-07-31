@@ -64,7 +64,8 @@ public final class StyledAlphabetParserPanel extends
         {
           exceptionList.add ( new ParserException ( current.getParserOffset ()
               .getStart (), current.getParserOffset ().getEnd (), Messages
-              .getString ( "AlphabetDialog.SymbolUsed", current ) ) ); //$NON-NLS-1$
+              .getPrettyString ( "AlphabetDialog.SymbolUsed", //$NON-NLS-1$
+                  current.toPrettyString () ).toHTMLString () ) );
         }
       }
     }

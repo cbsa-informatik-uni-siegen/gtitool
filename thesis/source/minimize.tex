@@ -42,11 +42,19 @@ Zustände in der selben Äquivalenzklasse ligen, wenn sie mit jeweils allen
 Symbolen des aktuellen Alphabets in einen Zustand der selben Gruppe
 übergehen.\vspace{10pt}
 
+  \begin{figure}[h]
+  \begin{center}
+  \includegraphics[width=12cm]{../images/minimize.png}
+  \caption{Automat - Minimieren}
+  \end{center}
+  \end{figure}
+
 Schauen wir uns jetzt mal die Arbeitsweise des Algorithmus im Detail an. Als
 erstes müssen wir uns die aktuelle Gruppeneinteilung merken, also wieviele
 Gruppen wir haben, und welcher Zustand in welcher Gruppe liegt. Wir betrachten
 die erste unserer Gruppen. Wenn diese nur einen Zustand enthält kann sie nicht
-weiter verfeinert werden, und muss daher auch nicht mehr betrachtet werden. 
+weiter verfeinert werden, und muss daher auch nicht mehr betrachtet werden.
+\vspace{10pt}
 
 Wenn die Gruppe mehr als einen Zustand beinhaltet, nehmen wir uns das aktuelle
 Alphabet des Automaten zur Hilfe. Wir prüfen jetzt für jedes Symbol des Alphabets
@@ -54,7 +62,7 @@ einzeln, ob alle Zustände der Gruppe mit diesem Symbol in Zustände der selben
 Gruppe übergehen. Wenn das der Fall ist kann auch diese Gruppe nicht weiter
 unterteilt werden. Falls wir aber doch auf Zustände treffen, welche in eine
 andere Gruppe übergehen, werden diese Zustände aus der aktuellen Gruppe entfernt,
-und bilden eine neue Gruppe. 
+und bilden eine neue Gruppe. \vspace{10pt}
 
 Nachdem wir diese Prozedur für diese Gruppe
 abgeschlossen haben, wiederholen wir sie für alle Gruppen die wir noch nicht
@@ -65,14 +73,17 @@ werden. Stimmt die Gruppeneinteilung nicht überein, müssen wir wieder jede
 Gruppe einzeln betrachten, und versuchen diese in kleiner Gruppen zu
 zerlegen.\vspace{10pt}
 
-Nach Beendigung des Algorithmus legen repräsentiert jede Gruppe einen Zustand
+Nach Beendigung des Algorithmus repräsentiert jede Gruppe einen Zustand
 in unserem neuen Automaten. Jetzt muss noch pro Symbol des Alphabets der
 Übergang in den entsprechenden neuen Zustand angelegt werden. Mit diesem
 letzten Schritt ist die Konstruktion des minimalen Automaten
 abgeschlossen.\vspace{10pt}
 
 In unserem Lernwerkzeug wird dem Benutzer in einer sogenannten Outline genau
-mitgeteilt, was in den bisherigen Schritten des Algorithmus passiert ist, um
-diesen besser nachvollziehen zu können.\vspace{10pt}
+mitgeteilt, was in den bisherigen Schritten des Algorithmus passiert ist.
+Desweiteren ermöglichen wir dem Benutzer eine schrittweise Navigation und Vor-
+und Rückrichtung. Diese beiden Features sollen es ermöglichen den
+Minimierungsalgorithmus besser nachvollziehen und verstehen zu
+können.\vspace{10pt}
 
 

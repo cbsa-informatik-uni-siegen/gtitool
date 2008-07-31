@@ -8,4 +8,30 @@
 
 \chapter{Auto Layout}\label{AutoLayout}
 
-TODOBM
+Beim Anlegen eines neuen Automaten, oder auch modifizieren eines bestehenden,
+kommt es vor, dass die Übersichtlichkeit verloren geht. Damit man eine schnelle
+Möglichkeit hat, den Automaten wieder besser überblicken zu können wurde eine
+Autolayout Funktion implementiert.\vspace{10pt}
+
+Diese Funktion basiert zur Zeit auf dem Erweiterten Partitionierungsalgorithmus
+von Kerninghan und Lin, welcher auch als "`Min Cut"'- Algorithmus bekannt
+ist. Er beruht auf iterativer Verbesserung durch paarweisen
+Austausch.\vspace{10pt}
+
+Dieser Algorithmus wird eigentlich für die Partitionierung von Schaltungen
+verwendet, kann aber problemlos auf unsere Situation übertragen werden.
+Allerdings mussten bei der Übertragung einige Modifikationen
+vorgenmommen werden, auf welche ich später noch näher eingehen
+möchte.\vspace{10pt}
+
+\section{Der Kerninghan-Lin-Algorithmus im Details}
+
+Zu Beginn wird das Partitionierungsproblem in eine Graphendarstellung
+transformiert. Danach werden die Knoten des Graphen in zwei Gruppen unterteilt.
+Anschließend werden für die aktuelle Einteilung die Schnittkosten berechnet.
+Zur Berechnung der Schnittkosten werden die von der Schnittlinie, die Linie die
+die beiden Gruppen trennt, erfassten Kanten gezählt.\vspace{10pt}
+
+TODO BM explain algorithm
+
+

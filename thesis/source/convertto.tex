@@ -40,4 +40,16 @@ Ansicht in drei Bereiche eingeteilt. In dem oberen linken Bereich wird der
 Ausgangsautomat dargestellt, im unteren linken Bereich der nach und nach
 endstehende konvertierte Automat und schließlich im rechten Bereich eine
 Outline, die pro Schritt, jeweils mit einem Kommentar, angibt, welchen Schritt
-der Algorithmus im Moment durchführt.
+der Algorithmus im Moment durchführt.\vspace{10pt}
+
+Es existieren zwei verschiedene Verfahren zur Umwandlung in einen
+deterministischen endlichen Automaten (DEA). Zum einen kann der komplette
+Potenzautomat verwendet werden, um den DEA zu erzeugen. Der entstehende Automat
+enthält allerdings unter Umständen sehr viele nicht erreichbare Zustände, deren
+Berechnung einige zusätzliche Schritte zur Folge haben. Wenn der Benutzer diese
+Art der Umwandlung auswählt, kann er nach dem Umwandeln die nicht erreichbaren
+Zustände wieder entfernen, wie dies funktioniert, kann in \ref{ReachableStates}
+nachgelesen werden. Die zweite Methode ist, dass nur die erreichbaren Zustände
+in der unteren Ansicht angelegt werden. Diese Methode ist übersichtlicher für
+den Benutzer, wenn auch nicht alle im Potenzautomaten vorhandenen Zustände
+betrachtet werden.\vspace{10pt}

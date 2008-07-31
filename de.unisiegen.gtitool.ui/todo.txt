@@ -1,7 +1,7 @@
 *** TODO ***
 
 CF		- Konsolen-Position korrigieren (Machine, Grammar)
-CF		- ProductionWord: keine whitespaces zulassen
+
 
 *** FEATURE ***
 

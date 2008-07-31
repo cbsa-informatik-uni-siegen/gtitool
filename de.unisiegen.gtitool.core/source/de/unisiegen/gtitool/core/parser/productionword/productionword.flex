@@ -74,8 +74,8 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 
 <YYINITIAL>
 {
+	{WhiteSpace}		{ throw new ScannerException(yychar, yychar + yylength(), Messages.getString ( "Parser.13", yytext() ) ); }
 	"\u03B5"			{ return symbol(EPSILON); }
-	{WhiteSpace}		{ }
 	.					{ return symbol(MEMBER, yytext()); }
 	\".+\"				{ return symbol(MEMBER, yytext()); }
 }

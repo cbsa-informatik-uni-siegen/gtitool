@@ -131,7 +131,7 @@ public class TerminalDialogForm extends JDialog implements GUIClass <TerminalDia
         getContentPane().add(jGTIPanelButtons, gridBagConstraints);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-734)/2, (screenSize.height-467)/2, 734, 467);
+        setBounds((screenSize.width-480)/2, (screenSize.height-300)/2, 480, 300);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed

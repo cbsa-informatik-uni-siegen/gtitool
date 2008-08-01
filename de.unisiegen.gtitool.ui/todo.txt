@@ -1,5 +1,7 @@
 *** TODO ***
 
+BM		- Beim Umwandeln einer Grammatik dürfen nur maximal zwei Transitionen zwischen zwei
+		  Zuständen angelegt werden.
 
 *** FEATURE ***
 

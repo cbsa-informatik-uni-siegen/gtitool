@@ -33,10 +33,6 @@
 		</exec>
 		<!-- copy -->
 		<copy file="${builddir}/${outputfile}.pdf" todir="${distdir}" />
-		<!-- delete -->
-		<delete>
-			<fileset dir="${builddir}" includes="**/*" />
-		</delete>
 		<!-- message -->
 		<echo message="Dist manual finished" />
 	</target>

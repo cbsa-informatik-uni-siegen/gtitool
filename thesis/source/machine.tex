@@ -43,14 +43,23 @@ TODOBM
 TODOBM
 
 
-\subsection{Nicht deterministische Navigation im Kellerautomaten}
+\subsection{Navigation im Kellerautomaten mit Auswahl}
 
 TODOCF
 
 
 \subsection{Zustands Pfad}
 
-TODOCF
+Bei Verwendung eines nicht deterministischen Automaten stellte sich bei der
+Wort Navigation die Frage, auf welchem Pfad die aktuell aktiven Zustände
+erreicht wurden. Es wurden verschiedene Umsetzungen in Betracht gezogen, dem
+Benutzer die Ausgabe darzustellen. Es wurde schließlich entschieden, die
+Zustände auf dem Weg zu den aktuell aktiven Zustanden darzustellen. Zwischen
+diesen Zustanden werden die verwendeten Übergänge, sowie die verwendeten
+Symbole an den Übergängen dargestellt, bzw. hervorgehoben. Da unter Umständen
+viele Zustands Pfade vorhanden sein können, werden diese anhand der Anzahl der
+verwendeten Zustände sortiert, somit werden die kürzesten Pfade zuerst
+angezeigt.
 
 
 \section{Erreichbare Zustände}\label{ReachableStates}

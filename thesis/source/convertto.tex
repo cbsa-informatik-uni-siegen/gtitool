@@ -13,13 +13,63 @@ bzw. zwischen den verschiedenen Automaten Typen besprochen werden. Dabei wird
 im Besonderen darauf eingegangen, welche Herausforderungen aufgetreten sind, um
 dem Benutzer die verwendeten Algorithmen möglichst in kleinen Schritten und
 verständlich darzustellen. Beim Umwandeln der Grammatiken in die entsprechenden
-Automaten sind die verwendeten Algorithmen nicht besonders gut darzustellen,
-weshalb hier auf eine schrittweise Umwandlung verzichtet wurde.
+Automaten sind die verwendeten Algorithmen leicht zu verstehen und zusätzlich
+nicht besonders gut darzustellen, weshalb hier darauf verzichtet wurde dem
+Benutzer eine schrittweise Umwandlung anhand einer graphischen Darstellung zu
+präsentieren.
 
 
 \section{Grammatik umwandeln}
 
-TODOBM
+Wenn ein Benutzer eine Grammatik vollständig erstellt hat, kann es durchaus
+interessant sein, den Automaten zu sehen, welcher die Sprache akzeptiert, die
+durch die Grammatik beschrieben wird. Vor allem, da für Automaten weitaus mehr
+Verwendungsmöglichkeiten existieren. 
+
+\subsection{Umwandeln einer regulären Grammatik}
+
+Eine reguläre Grammatik kann in einen entsprechenden Nichtdeterministischen
+endlichen Automaten umgewandelt werden. Die Zustände unseres entstehenden
+Automaten resultieren aus den Nichtterminalzeichen unserer Grammatik. Allerdings
+werden in der Implementierung nur Zustände für die Nichtterminalzeichen angelegt,
+welche auch in einer Produktion, auf der rechten oder linken Seite, verwendet
+wird. Die Zustände werden immer dann angelegt, wenn man auf ein
+Nichtterminalzeichen trifft, welches man bis jetzt noch nicht gesehen
+hat.\vspace{10pt}
+
+Die Rechte Seite einer Produktion kann entweder aus einem einzelnen
+Terminalzeichen bestehen($\NonterminalSymbol{S} \to \TerminalSymbol{a}$), oder
+aus einem Terminalzeichen mit einem anschließenden Nichtterminalzeichen
+($\NonterminalSymbol{S} \to \TerminalSymbol{a}\NonterminalSymbol{A}$). Da keine
+anderen Produktionen für diese Grammatikform existieren können.\vspace{10pt}
+
+Wir schauen uns jetzt jede Produktion unserer Grammatik an.
+Zunächst interressiert uns die linke Seite. Wenn wir das Nichtterminalzeichen
+bereits gesehen haben, wurde auch schon ein Zustand dafür angelegt, und wir
+merken uns diesen. Wenn wir das Nichtterminalzeichen noch nicht gesehen haben,
+müssen wir jetzt einen neuen Zustand anlegen, welcher dieses repräsentiert, und
+merken uns diesen neuen Zustand, da dieser der Ausgangszustand
+für neu enstehende Übergänge ist.\vspace{10pt}
+
+Als nächstes betrachten wir die Rechte Seite der Produktion. Wenn es sich dabei
+um ein einzelnes Terminalzeichen handelt, wird ein neuer akzeptierender Zustand
+angelegt. Danach wird ein Übergang von dem Zustand für das Nichtterminalzeichen
+zu diesem neuen Zustand erzeugt, wobei die Übergangsmenge aus dem
+Terminalzeichen auf der rechten Seite der Produktion besteht.\vspace{10pt}
+
+Besteht die rechte Seite allerdings aus einem Terminalzeichen und einem
+Nichtterminalzeichen müssen wir wieder überprüfen, ob wir das
+Nichtterminalzeichen bereits gesehen haben, um gegebenenfalls den
+entsprechenden Zustand anzulegen. Im nächsten Schritt wird ein Übergang,
+zwischen den beiden Zuständen die wir uns gemerkt haben, angelegt, mit dem
+Terminalzeichen der rechten Seite als Übergangsmenge.\vspace{10pt}
+
+Diese Behandlung wiederholen wir für jede Produktion unserer Grammatik und
+erhalten so den entsprechenden Automaten.
+
+\subsection{Umwandeln einer kontextfreien Grammatik}
+
+
 
 
 \section{Automat umwandeln}

@@ -54,14 +54,42 @@ Bei Verwendung eines nicht deterministischen Automaten stellte sich bei der
 Wort Navigation die Frage, auf welchem Pfad die aktuell aktiven Zustände
 erreicht wurden. Es wurden verschiedene Umsetzungen in Betracht gezogen, dem
 Benutzer die Ausgabe darzustellen. Es wurde schließlich entschieden, die
-Zustände auf dem Weg zu den aktuell aktiven Zustanden darzustellen. Zwischen
-diesen Zustanden werden die verwendeten Übergänge, sowie die verwendeten
+Zustände auf dem Weg zu den aktuell aktiven Zuständen darzustellen. Zwischen
+diesen Zuständen werden die verwendeten Übergänge, sowie die verwendeten
 Symbole an den Übergängen dargestellt, bzw. hervorgehoben. Da unter Umständen
 viele Zustands Pfade vorhanden sein können, werden diese anhand der Anzahl der
 verwendeten Zustände sortiert, somit werden die kürzesten Pfade zuerst
-angezeigt.
+angezeigt.\vspace{10pt}
+
+Der implementierte Algorithmus geht rückwärts vor, startet also bei den aktuell
+aktiven Zuständen und geht alle Pfade zurück, bis alle, bis jetzt gelesenen
+Symbole abgearbeitet sind. Startet der berechnete Pfad dann in dem
+Startzustand, wurde ein gültiger Pfad erkannt. Bei der Implementierung des
+Algorithmus musste eine Zykluserkennung umgesetzt werden, da es sonst möglich
+war in eine Endlosschleife zu geraten, welche durch $\epsilon$-Übergänge
+verursacht wurde.
 
 
 \section{Erreichbare Zustände}\label{ReachableStates}
 
-TODOCF
+Nach dem in \ref{ConverToMachine} nachzulesenen Umwandeln eines nicht
+deterministischen in einen deterministischen Automaten unter Verwendung der
+Potenzautomatenkonstruktion stellte sich die Frage, wie die nicht erreichbaren
+Zustände erkannt und entfernt werden können. Dieses Problem betrifft aber nicht
+nur umgewandelte Automaten, sondern ganz allgemein, jeden erstellten
+Automaten.\vspace{10pt}
+
+Bei der Umsetzung sollte im Vordergrund stehen, dass der Benutzer mit sehr
+kleinen Schritten verdeutlicht bekommt, wie der zugrunde liegende Algorithmus
+arbeitet, so dass diese Arbeitsweise sehr einfach nachzuvollziehen
+ist.\vspace{10pt}
+
+Der verwendete Algorithmus besteht aus drei Phasen. In der ersten Phase wird ein
+noch nicht abgearbeiteter Zustand ausgewählt, zu Beginn wird mit dem Startzustand
+begonnen. In der zweiten Phase werden die von diesem Zustand aus direkt
+erreichbaren Zustände berechnet und dem Benutzer hervorgehoben dargestellt. In
+der dritten Phase werden alle bis jetzt zu erreichenden Zustände hervorgehoben.
+Gleichzeitig bekommt der Benutzer in der Outline mitgeteilt, welcher Zustand
+jetzt fertiggestellt ist und welche noch berechnet werden müssen. Durch diese
+sehr feine Unterteilung, soll ein besseres Verständnis des Algorithmus erreicht
+werden.

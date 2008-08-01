@@ -165,7 +165,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTISplitPaneOutline.setLeftComponent(jGTISplitPaneGraph);
 
         jGTIScrollPaneOutline.setBorder(null);
-        jGTIScrollPaneOutline.setMinimumSize(new java.awt.Dimension(150, 150));
+        jGTIScrollPaneOutline.setMinimumSize(new java.awt.Dimension(200, 200));
         jGTIScrollPaneOutline.setViewportView(jGTITableOutline);
 
         jGTISplitPaneOutline.setRightComponent(jGTIScrollPaneOutline);

@@ -99,6 +99,8 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
 
         jGTISplitPaneTable.setLeftComponent(jGTIPanelGraph);
 
+        jGTIPanelTable.setMinimumSize(new java.awt.Dimension(200, 200));
+
         jGTISplitPanePDATable.setDividerLocation(100);
         jGTISplitPanePDATable.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
@@ -153,6 +155,8 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
         jGTIPanelMachine.add(jGTISplitPaneTable, gridBagConstraints);
 
         jGTISplitPaneConsole.setLeftComponent(jGTIPanelMachine);
+
+        jGTITabbedPaneConsole.setMinimumSize(new java.awt.Dimension(200, 200));
 
         jGTIScrollPaneErrors.setBorder(null);
 

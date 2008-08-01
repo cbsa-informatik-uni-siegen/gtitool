@@ -1,7 +1,5 @@
 *** TODO ***
 
-CF		- Konsolen-Position korrigieren (Machine, Grammar)
-
 
 *** FEATURE ***
 

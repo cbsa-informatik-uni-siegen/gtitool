@@ -13,7 +13,6 @@ import javax.swing.border.LineBorder;
 
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
-import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.swing.JGTISplitPane;
 
 
@@ -346,15 +345,12 @@ public final class JGTIMainSplitPane extends JSplitPane implements
       }
 
       this.mainWindowForm.getJGTIMainSplitPane ().setDividerLocation (
-          PreferenceManager.getInstance ().getDividerLocationSecondView () );
+          this.mainWindowForm.getJGTIMainSplitPane ().getWidth () / 2 );
     }
     else
     {
       if ( this.mainWindowForm.getJGTIMainSplitPane ().getRightComponent () != null )
       {
-        PreferenceManager.getInstance ().setDividerLocationSecondView (
-            this.mainWindowForm.getJGTIMainSplitPane ().getDividerLocation () );
-
         this.mainWindowForm.getJGTIMainSplitPane ().setLeftComponent (
             this.mainWindowForm.getJGTIEditorPanelTabbedPaneLeft () );
         this.mainWindowForm.getJGTIMainSplitPane ().setRightComponent ( null );

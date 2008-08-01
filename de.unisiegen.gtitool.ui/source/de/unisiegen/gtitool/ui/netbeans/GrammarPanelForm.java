@@ -154,6 +154,8 @@ public class GrammarPanelForm extends JPanel implements GUIClass <GrammarPanel>
 
         jGTISplitPaneConsole.setLeftComponent(jGTIPanelGrammar);
 
+        jGTITabbedPaneConsole.setMinimumSize(new java.awt.Dimension(200, 200));
+
         jGTIScrollPaneErrors.setBorder(null);
 
         jGTITableErrors.addMouseListener(new java.awt.event.MouseAdapter() {

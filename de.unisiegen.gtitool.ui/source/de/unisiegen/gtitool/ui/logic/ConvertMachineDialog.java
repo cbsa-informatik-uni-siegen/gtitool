@@ -2,8 +2,6 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,7 +10,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
-import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
@@ -1141,31 +1138,10 @@ public final class ConvertMachineDialog implements
     this.gui.jGTITableOutline.getSelectionModel ().setSelectionMode (
         ListSelectionModel.SINGLE_SELECTION );
 
-    this.gui.jGTISplitPaneGraph.setDividerLocation ( PreferenceManager
-        .getInstance ().getDividerLocationConvertMachine () );
-    this.gui.jGTISplitPaneGraph.addPropertyChangeListener (
-        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
-        {
-
-          public void propertyChange ( PropertyChangeEvent event )
-          {
-            PreferenceManager.getInstance ().setDividerLocationConvertMachine (
-                ( ( Integer ) event.getNewValue () ).intValue () );
-          }
-        } );
-    this.gui.jGTISplitPaneOutline.setDividerLocation ( PreferenceManager
-        .getInstance ().getDividerLocationConvertMachineOutline () );
-    this.gui.jGTISplitPaneOutline.addPropertyChangeListener (
-        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
-        {
-
-          public void propertyChange ( PropertyChangeEvent event )
-          {
-            PreferenceManager.getInstance ()
-                .setDividerLocationConvertMachineOutline (
-                    ( ( Integer ) event.getNewValue () ).intValue () );
-          }
-        } );
+    Rectangle rect = PreferenceManager.getInstance ()
+        .getConvertMachineDialogBounds ();
+    this.gui.jGTISplitPaneGraph.setDividerLocation ( ( rect.height - 100 ) / 2 );
+    this.gui.jGTISplitPaneOutline.setDividerLocation ( rect.width - 250 );
 
     try
     {

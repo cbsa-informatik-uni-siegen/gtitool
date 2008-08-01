@@ -2,15 +2,12 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
-import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
@@ -164,12 +161,6 @@ public final class MinimizeMachineDialog implements
    * The original {@link DefaultMachineModel}.
    */
   private DefaultMachineModel modelOriginal;
-
-
-  /**
-   * Flag indicates if we want to handle the divider location event.
-   */
-  private boolean setDividerLocation = true;
 
 
   /**
@@ -575,8 +566,8 @@ public final class MinimizeMachineDialog implements
       this.gui.jGTISplitPaneGraph
           .setRightComponent ( this.gui.jGTIScrollPaneConverted );
       this.gui.jGTISplitPaneGraph.setDividerSize ( 3 );
-      this.gui.jGTISplitPaneGraph.setDividerLocation ( PreferenceManager
-          .getInstance ().getDividerLocationMinimizeMachine () );
+      this.gui.jGTISplitPaneGraph
+          .setDividerLocation ( ( this.gui.getHeight () - 100 ) / 2 );
     }
   }
 
@@ -622,7 +613,6 @@ public final class MinimizeMachineDialog implements
 
     if ( this.endReached )
     {
-      this.setDividerLocation = false;
       this.gui.jGTISplitPaneGraph.setRightComponent ( null );
       this.gui.jGTISplitPaneGraph.setDividerSize ( 0 );
     }
@@ -725,39 +715,9 @@ public final class MinimizeMachineDialog implements
     this.gui.jGTITableOutline.getSelectionModel ().setSelectionMode (
         ListSelectionModel.SINGLE_SELECTION );
 
-    this.gui.jGTISplitPaneGraph.setDividerLocation ( PreferenceManager
-        .getInstance ().getDividerLocationMinimizeMachine () );
-    this.gui.jGTISplitPaneGraph.addPropertyChangeListener (
-        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void propertyChange ( PropertyChangeEvent event )
-          {
-            if ( MinimizeMachineDialog.this.setDividerLocation
-                && ( MinimizeMachineDialog.this.gui.jGTISplitPaneGraph
-                    .getRightComponent () != null ) )
-            {
-              PreferenceManager.getInstance ()
-                  .setDividerLocationMinimizeMachine (
-                      ( ( Integer ) event.getNewValue () ).intValue () );
-            }
-            MinimizeMachineDialog.this.setDividerLocation = true;
-          }
-        } );
-    this.gui.jGTISplitPaneOutline.setDividerLocation ( PreferenceManager
-        .getInstance ().getDividerLocationMinimizeMachineOutline () );
-    this.gui.jGTISplitPaneOutline.addPropertyChangeListener (
-        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
-        {
-
-          public void propertyChange ( PropertyChangeEvent event )
-          {
-            PreferenceManager.getInstance ()
-                .setDividerLocationMinimizeMachineOutline (
-                    ( ( Integer ) event.getNewValue () ).intValue () );
-          }
-        } );
+    Rectangle rect = PreferenceManager.getInstance ()
+        .getMinimizeMachineDialogBounds ();
+    this.gui.jGTISplitPaneOutline.setDividerLocation ( rect.width - 250 );
 
     show ();
   }

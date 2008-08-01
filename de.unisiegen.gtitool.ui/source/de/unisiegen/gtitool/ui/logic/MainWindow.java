@@ -484,8 +484,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // second view
     boolean secondViewUsed = PreferenceManager.getInstance ()
         .getSeconsViewUsed ();
-    this.gui.getJGTIMainSplitPane ().setDividerLocation (
-        PreferenceManager.getInstance ().getDividerLocationSecondView () );
+    this.gui.getJGTIMainSplitPane ().setDividerLocation ( 0.5 );
     if ( this.gui.getJCheckBoxMenuItemSecondView ().isSelected () == secondViewUsed )
     {
       this.gui.getJCheckBoxMenuItemSecondView ().setSelected ( secondViewUsed );
@@ -2260,11 +2259,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // second view
     boolean selected = this.gui.getJCheckBoxMenuItemSecondView ().isSelected ();
     PreferenceManager.getInstance ().setSecondViewUsed ( selected );
-    if ( selected )
-    {
-      PreferenceManager.getInstance ().setDividerLocationSecondView (
-          this.gui.getJGTIMainSplitPane ().getDividerLocation () );
-    }
 
     // system exit
     System.exit ( 0 );

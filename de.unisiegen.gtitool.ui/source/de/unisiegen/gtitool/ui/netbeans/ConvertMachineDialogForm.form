@@ -188,7 +188,7 @@
               <Border info="null"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[150, 150]"/>
+              <Dimension value="[200, 200]"/>
             </Property>
           </Properties>
           <Constraints>

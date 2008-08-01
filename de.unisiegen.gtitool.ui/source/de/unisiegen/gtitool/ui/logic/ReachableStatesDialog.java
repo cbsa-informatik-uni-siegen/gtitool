@@ -3,15 +3,12 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
-import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
@@ -1324,19 +1321,9 @@ public final class ReachableStatesDialog implements
     this.gui.jGTITableOutline.getSelectionModel ().setSelectionMode (
         ListSelectionModel.SINGLE_SELECTION );
 
-    this.gui.jGTISplitPaneOutline.setDividerLocation ( PreferenceManager
-        .getInstance ().getDividerLocationReachableStatesOutline () );
-    this.gui.jGTISplitPaneOutline.addPropertyChangeListener (
-        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
-        {
-
-          public void propertyChange ( PropertyChangeEvent event )
-          {
-            PreferenceManager.getInstance ()
-                .setDividerLocationReachableStatesOutline (
-                    ( ( Integer ) event.getNewValue () ).intValue () );
-          }
-        } );
+    Rectangle rect = PreferenceManager.getInstance ()
+        .getReachableStatesDialogBounds ();
+    this.gui.jGTISplitPaneOutline.setDividerLocation ( rect.width - 250 );
 
     try
     {
@@ -1386,8 +1373,6 @@ public final class ReachableStatesDialog implements
 
     setStatus ();
 
-    Rectangle rect = PreferenceManager.getInstance ()
-        .getReachableStatesDialogBounds ();
     if ( ( rect.x == PreferenceManager.DEFAULT_REACHABLE_STATES_DIALOG_POSITION_X )
         || ( rect.y == PreferenceManager.DEFAULT_REACHABLE_STATES_DIALOG_POSITION_Y ) )
     {

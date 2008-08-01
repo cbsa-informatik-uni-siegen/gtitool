@@ -166,7 +166,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         jGTISplitPaneOutline.setLeftComponent(jGTISplitPaneGraph);
 
         jGTIScrollPaneOutline.setBorder(null);
-        jGTIScrollPaneOutline.setMinimumSize(new java.awt.Dimension(150, 150));
+        jGTIScrollPaneOutline.setMinimumSize(new java.awt.Dimension(200, 200));
 
         jGTITableOutline.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

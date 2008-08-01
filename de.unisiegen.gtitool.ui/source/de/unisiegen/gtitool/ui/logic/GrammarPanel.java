@@ -9,14 +9,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -87,12 +84,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * The {@link DefaultGrammarModel}.
    */
   private DefaultGrammarModel model;
-
-
-  /**
-   * Flag that indicates if the console divider location should be stored.
-   */
-  private boolean setDividerLocationConsole = true;
 
 
   /**
@@ -178,35 +169,11 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     initialize ();
     initializeSecondView ();
 
-    this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
-        .getInstance ().getDividerLocationConsole ().getFirst ().intValue () );
     setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
         .getState () );
-    this.gui.jGTISplitPaneConsole.addPropertyChangeListener (
-        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
-        {
 
-          @SuppressWarnings ( "synthetic-access" )
-          public void propertyChange (
-              @SuppressWarnings ( "unused" ) PropertyChangeEvent event )
-          {
-            if ( GrammarPanel.this.setDividerLocationConsole
-                && GrammarPanel.this.mainWindowForm
-                    .getJCheckBoxMenuItemConsole ().isSelected () )
-            {
-              int newDividerLocation = GrammarPanel.this.gui.jGTISplitPaneConsole
-                  .getHeight ()
-                  - GrammarPanel.this.gui.jGTISplitPaneConsole
-                      .getDividerLocation ();
-              PreferenceManager.getInstance ().setDividerLocationConsole (
-                  GrammarPanel.this.gui.jGTISplitPaneConsole
-                      .getDividerLocation (), newDividerLocation );
-            }
-            GrammarPanel.this.setDividerLocationConsole = true;
-          }
-        } );
-
-    // Language changed listener
+    this.gui.jGTISplitPaneConsole.setDividerLocation ( 1.0 );
+    
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
     this.gui.jGTITableGrammar.setDragEnabled ( true );
@@ -1298,20 +1265,12 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   {
     if ( visible )
     {
-      this.setDividerLocationConsole = false;
       this.gui.jGTISplitPaneConsole
           .setRightComponent ( this.gui.jGTITabbedPaneConsole );
       this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
-
-      int dividerLocationConsole = this.gui.jGTISplitPaneConsole.getHeight ()
-          - PreferenceManager.getInstance ().getDividerLocationConsole ()
-              .getSecond ().intValue ();
-      this.gui.jGTISplitPaneConsole
-          .setDividerLocation ( dividerLocationConsole );
     }
     else
     {
-      this.setDividerLocationConsole = false;
       this.gui.jGTISplitPaneConsole.setRightComponent ( null );
       this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
     }

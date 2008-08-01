@@ -47,6 +47,7 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
+import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableModel;
@@ -1285,8 +1286,10 @@ public final class ConvertMachineDialog implements
     new LayoutManager ( this.modelConverted, null ).doLayout ();
     for ( DefaultStateView current : this.modelConverted.getStateViewList () )
     {
+      int yOffset = current.getState ().isLoopTransition () ? StateView.LOOP_TRANSITION_OFFSET
+          : 0;
       this.positionMap.put ( current.getState ().getName (), new Position (
-          current.getPositionX (), current.getPositionY () ) );
+          current.getPositionX (), current.getPositionY () + yOffset ) );
     }
     while ( !this.stepItemList.isEmpty () )
     {

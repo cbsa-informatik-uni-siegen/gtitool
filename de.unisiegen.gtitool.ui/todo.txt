@@ -29,3 +29,4 @@ BM		- Drucken (Mehrere Komponenten pro Seite)
 		- Automat in Regulären Ausdruck umwandeln
 		- Linksrekursion (Zwei Arten)
 		- Linksrefaktorisierung
+		- Bei einer Grammatik direkt das Wort eingeben können

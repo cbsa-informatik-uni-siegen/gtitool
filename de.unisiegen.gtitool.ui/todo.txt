@@ -10,7 +10,6 @@ CF		- Im Beenden-Dialog bei der Frage nach "Save" sollte ein "No to all" / "Yes 
 CF		- Wörter ausgeben, die erkannt werden
 CF		- Doppeltes Handling aus dem Popupmenüs entfernen
 CF		- PDA Machinen Tabelle editierbar machen
-CF		- Reguläre Ausdrücke eingeben und umwandeln können
 CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
 CF		- Popupmenü auf der Machine Tabelle
 CF		- Tastaturbefehle einbauen
@@ -20,15 +19,8 @@ CF		- Eine Überprüfung einbauen, ob auf dem Server eine neue Version verfügba
 CF		- Auswahl der Transition so gestalten, dass auch sehr viele gut aussehen
 CF		- Parser muss Code formatieren können (PrettyPrinter)
 CF		- Logik des Reachable States Dialogs neu schreiben
+CF		- Benutzerinteraktionen einbauen
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout
 BM		- Farben beim Minimieren dynamisch berechnen
-BM		- Drucken (Mehrere Komponenten pro Seite)
-
-		- LaTeX Export
-		- Benutzerinteraktionen einbauen
-		- Automat in Regulären Ausdruck umwandeln
-		- Linksrekursion (Zwei Arten)
-		- Linksrefaktorisierung
-		- Bei einer Grammatik direkt das Wort eingeben können

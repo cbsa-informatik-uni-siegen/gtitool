@@ -2,6 +2,8 @@
 
 BM		- Beim Umwandeln einer Grammatik dürfen nur maximal zwei Transitionen zwischen zwei
 		  Zuständen angelegt werden.
+CF		- Im Beenden-Dialog bei der Frage nach "Save" sollte ein "No to all" / "Yes to all" rein
+
 
 *** FEATURE ***
 

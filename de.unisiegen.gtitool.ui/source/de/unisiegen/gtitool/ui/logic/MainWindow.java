@@ -350,6 +350,40 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
+   * The close state enum.
+   * 
+   * @author Christian Fehler
+   */
+  private enum CloseState
+  {
+    /**
+     * The confirmed value.
+     */
+    CONFIRMED,
+
+    /**
+     * The confirmed all value.
+     */
+    CONFIRMED_ALL,
+
+    /**
+     * The not confirmed value.
+     */
+    NOT_CONFIRMED,
+
+    /**
+     * The not confirmed all value.
+     */
+    NOT_CONFIRMED_ALL,
+
+    /**
+     * The canceled value.
+     */
+    CANCELED;
+  }
+
+
+  /**
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger.getLogger ( MainWindow.class );
@@ -1210,9 +1244,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   /**
    * Closes the selected {@link EditorPanel}.
    * 
-   * @return True if the panel is closed, false if the close was canceled.
+   * @return The {@link CloseState}.
    */
-  public final boolean handleClose ()
+  public final CloseState handleClose ()
   {
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () == null )
@@ -1221,7 +1255,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
 
     return handleClose ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel () );
+        .getSelectedEditorPanel (), this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ()
+        .isModified () ? 1 : 0, false, false );
   }
 
 
@@ -1229,26 +1265,53 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    * Closes the {@link EditorPanel}.
    * 
    * @param editorPanel The {@link EditorPanel} to close.
-   * @return True if the panel is closed, false if the close was canceled.
+   * @param modifiedFileCount The modified file count.
+   * @param confirmedAll The confirmed all value.
+   * @param notConfirmedAll The not confirmed all value.
+   * @return The {@link CloseState}.
    */
-  public final boolean handleClose ( EditorPanel editorPanel )
+  public final CloseState handleClose ( EditorPanel editorPanel,
+      int modifiedFileCount, boolean confirmedAll, boolean notConfirmedAll )
   {
+    boolean resultConfirmedAll = false;
+    boolean resultNotConfirmedAll = notConfirmedAll;
+
     if ( editorPanel.isModified () )
     {
-      ConfirmDialog confirmDialog = new ConfirmDialog (
-          this.gui,
-          Messages.getString (
-              "MainWindow.CloseModifyMessage", editorPanel.getName () ), Messages //$NON-NLS-1$
-              .getString ( "MainWindow.CloseModifyTitle" ), true, true, true ); //$NON-NLS-1$
-      confirmDialog.show ();
-
-      if ( confirmDialog.isConfirmed () )
+      if ( notConfirmedAll )
+      {
+        // do nothing
+      }
+      else if ( confirmedAll )
       {
         handleSave ( editorPanel );
       }
-      else if ( confirmDialog.isCanceled () )
+      else
       {
-        return false;
+        ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui, Messages
+            .getString ( "MainWindow.CloseModifyMessage", editorPanel //$NON-NLS-1$
+                .getName () ), Messages
+            .getString ( "MainWindow.CloseModifyTitle" ), true, //$NON-NLS-1$
+            modifiedFileCount > 1, true, modifiedFileCount > 1, true );
+        confirmDialog.show ();
+
+        if ( confirmDialog.isConfirmed () )
+        {
+          handleSave ( editorPanel );
+        }
+        else if ( confirmDialog.isConfirmedAll () )
+        {
+          handleSave ( editorPanel );
+          resultConfirmedAll = true;
+        }
+        else if ( confirmDialog.isNotConfirmedAll () )
+        {
+          resultNotConfirmedAll = true;
+        }
+        else if ( confirmDialog.isCanceled () )
+        {
+          return CloseState.CANCELED;
+        }
       }
     }
 
@@ -1258,7 +1321,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // check if all editor panels are closed now
     handleTabbedPaneStateChanged ();
 
-    return true;
+    if ( resultNotConfirmedAll )
+    {
+      return CloseState.NOT_CONFIRMED_ALL;
+    }
+
+    if ( resultConfirmedAll )
+    {
+      return CloseState.CONFIRMED_ALL;
+    }
+
+    return CloseState.CONFIRMED;
   }
 
 
@@ -1268,6 +1341,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void handleCloseAll ()
   {
     ActiveEditor activeEditor = this.jGTIMainSplitPane.getActiveEditor ();
+
+    boolean yesToAll = false;
+    boolean noToAll = false;
 
     // close all right editor panels
     this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
@@ -1281,9 +1357,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .setSelectedEditorPanel ( current );
 
       // check if the close was canceled
-      if ( !handleClose ( current ) )
+      CloseState closeState = handleClose ( current, getModifiedFileCount (),
+          yesToAll, noToAll );
+
+      if ( closeState.equals ( CloseState.CANCELED ) )
       {
         return;
+      }
+      if ( closeState.equals ( CloseState.NOT_CONFIRMED_ALL ) )
+      {
+        noToAll = true;
+      }
+      if ( closeState.equals ( CloseState.CONFIRMED_ALL ) )
+      {
+        yesToAll = true;
       }
     }
 
@@ -1299,13 +1386,44 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .setSelectedEditorPanel ( current );
 
       // check if the close was canceled
-      if ( !handleClose ( current ) )
+      CloseState closeState = handleClose ( current, getModifiedFileCount (),
+          yesToAll, noToAll );
+      if ( closeState.equals ( CloseState.CANCELED ) )
       {
         return;
+      }
+      if ( closeState.equals ( CloseState.NOT_CONFIRMED_ALL ) )
+      {
+        noToAll = true;
+      }
+      if ( closeState.equals ( CloseState.CONFIRMED_ALL ) )
+      {
+        yesToAll = true;
       }
     }
 
     this.jGTIMainSplitPane.setActiveEditor ( activeEditor );
+  }
+
+
+  /**
+   * Returns the modified file count.
+   * 
+   * @return The modified file count.
+   */
+  private final int getModifiedFileCount ()
+  {
+    int result = 0;
+
+    for ( EditorPanel current : this.jGTIMainSplitPane )
+    {
+      if ( current.isModified () )
+      {
+        result++ ;
+      }
+    }
+
+    return result;
   }
 
 
@@ -2170,6 +2288,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
     }
 
+    boolean yesToAll = false;
+    boolean noToAll = false;
+
     // close the right tabs
     this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
     handleTabbedPaneStateChanged ();
@@ -2183,13 +2304,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
             .setSelectedEditorPanel ( current );
 
-        ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui,
-            Messages.getString (
-                "MainWindow.CloseModifyMessage", current.getName () ), Messages //$NON-NLS-1$
-                .getString ( "MainWindow.CloseModifyTitle" ), true, true, true ); //$NON-NLS-1$
-        confirmDialog.show ();
-
-        if ( confirmDialog.isConfirmed () )
+        if ( yesToAll )
         {
           File file = current.handleSave ();
           if ( file != null )
@@ -2198,9 +2313,47 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
                 .setEditorPanelTitle ( current, file.getName () );
           }
         }
-        else if ( confirmDialog.isCanceled () )
+        else if ( noToAll )
         {
-          return;
+          // do nothing
+        }
+        else
+        {
+          int modifiedFileCount = getModifiedFileCount ();
+          ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui,
+              Messages.getString (
+                  "MainWindow.CloseModifyMessage", current.getName () ), //$NON-NLS-1$
+              Messages.getString ( "MainWindow.CloseModifyTitle" ), true, //$NON-NLS-1$
+              modifiedFileCount > 1, true, modifiedFileCount > 1, true );
+          confirmDialog.show ();
+
+          if ( confirmDialog.isConfirmed () )
+          {
+            File file = current.handleSave ();
+            if ( file != null )
+            {
+              this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
+                  .setEditorPanelTitle ( current, file.getName () );
+            }
+          }
+          else if ( confirmDialog.isConfirmedAll () )
+          {
+            File file = current.handleSave ();
+            if ( file != null )
+            {
+              this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
+                  .setEditorPanelTitle ( current, file.getName () );
+            }
+            yesToAll = true;
+          }
+          else if ( confirmDialog.isNotConfirmedAll () )
+          {
+            noToAll = true;
+          }
+          else if ( confirmDialog.isCanceled () )
+          {
+            return;
+          }
         }
       }
       this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
@@ -2220,13 +2373,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
             .setSelectedEditorPanel ( current );
 
-        ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui,
-            Messages.getString (
-                "MainWindow.CloseModifyMessage", current.getName () ), Messages //$NON-NLS-1$
-                .getString ( "MainWindow.CloseModifyTitle" ), true, true, true ); //$NON-NLS-1$
-        confirmDialog.show ();
-
-        if ( confirmDialog.isConfirmed () )
+        if ( yesToAll )
         {
           File file = current.handleSave ();
           if ( file != null )
@@ -2235,9 +2382,47 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
                 .setEditorPanelTitle ( current, file.getName () );
           }
         }
-        else if ( confirmDialog.isCanceled () )
+        else if ( noToAll )
         {
-          return;
+          // do nothing
+        }
+        else
+        {
+          int modifiedFileCount = getModifiedFileCount ();
+          ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui,
+              Messages.getString (
+                  "MainWindow.CloseModifyMessage", current.getName () ), //$NON-NLS-1$
+              Messages.getString ( "MainWindow.CloseModifyTitle" ), true, //$NON-NLS-1$
+              modifiedFileCount > 1, true, modifiedFileCount > 1, true );
+          confirmDialog.show ();
+
+          if ( confirmDialog.isConfirmed () )
+          {
+            File file = current.handleSave ();
+            if ( file != null )
+            {
+              this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+                  .setEditorPanelTitle ( current, file.getName () );
+            }
+          }
+          else if ( confirmDialog.isConfirmedAll () )
+          {
+            File file = current.handleSave ();
+            if ( file != null )
+            {
+              this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+                  .setEditorPanelTitle ( current, file.getName () );
+            }
+            yesToAll = true;
+          }
+          else if ( confirmDialog.isNotConfirmedAll () )
+          {
+            noToAll = true;
+          }
+          else if ( confirmDialog.isCanceled () )
+          {
+            return;
+          }
         }
       }
       this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()

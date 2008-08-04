@@ -173,7 +173,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         .getState () );
 
     this.gui.jGTISplitPaneConsole.setDividerLocation ( 1.0 );
-    
+
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
     this.gui.jGTITableGrammar.setDragEnabled ( true );
@@ -604,7 +604,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
           message, Messages
               .getString ( "ProductionPopupMenu.DeleteProductionTitle" ), true, //$NON-NLS-1$
-          true, false );
+          false, true, false, false );
       confirmDialog.show ();
       if ( confirmDialog.isConfirmed () )
       {
@@ -772,7 +772,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
             Messages.getString (
                 "MachinePanel.FileExists", saveDialog.getSelectedFile () //$NON-NLS-1$
                     .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
-            true, true, false );
+            true, false, true, false, false );
         confirmDialog.show ();
         if ( confirmDialog.isNotConfirmed () )
         {

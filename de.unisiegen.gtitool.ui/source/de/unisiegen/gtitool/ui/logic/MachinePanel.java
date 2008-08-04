@@ -815,10 +815,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final void deleteState ( DefaultStateView state )
   {
     ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
-        Messages.getString ( "TransitionDialog.DeleteStateQuestion", //$NON-NLS-1$
-            state ),
-        Messages.getString ( "TransitionDialog.DeleteStateTitle" ), true, true, //$NON-NLS-1$
-        false );
+        Messages.getString ( "TransitionDialog.DeleteStateQuestion", state ), //$NON-NLS-1$
+        Messages.getString ( "TransitionDialog.DeleteStateTitle" ), true, //$NON-NLS-1$
+        false, true, false, false );
     confirmDialog.show ();
     if ( confirmDialog.isConfirmed () )
     {
@@ -838,7 +837,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         Messages.getString ( "TransitionDialog.DeleteTransitionQuestion", //$NON-NLS-1$
             transition ), Messages
             .getString ( "TransitionDialog.DeleteTransitionTitle" ), true, //$NON-NLS-1$
-        true, false );
+        false, true, false, false );
     confirmedDialog.show ();
     if ( confirmedDialog.isConfirmed () )
     {
@@ -1337,7 +1336,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
           Messages.getString ( "MachinePanel.FileExists", saveDialog //$NON-NLS-1$
               .getSelectedFile ().getName () ), Messages
-              .getString ( "MachinePanel.ExportPicture" ), true, true, false ); //$NON-NLS-1$
+              .getString ( "MachinePanel.ExportPicture" ), true, false, true, //$NON-NLS-1$
+          false, false );
       confirmDialog.show ();
       if ( confirmDialog.isNotConfirmed () )
       {
@@ -1686,10 +1686,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       if ( saveDialog.getSelectedFile ().exists () )
       {
         ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
-            Messages.getString (
-                "MachinePanel.FileExists", saveDialog.getSelectedFile () //$NON-NLS-1$
-                    .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
-            true, true, false );
+            Messages.getString ( "MachinePanel.FileExists", saveDialog //$NON-NLS-1$
+                .getSelectedFile ().getName () ), Messages
+                .getString ( "MachinePanel.Save" ), true, false, true, false, //$NON-NLS-1$
+            false );
         confirmDialog.show ();
         if ( confirmDialog.isNotConfirmed () )
         {

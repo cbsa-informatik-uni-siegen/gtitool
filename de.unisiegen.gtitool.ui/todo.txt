@@ -2,6 +2,8 @@
 
 BM		- Beim Umwandeln einer Grammatik dürfen nur maximal zwei Transitionen zwischen zwei
 		  Zuständen angelegt werden.
+BM		- Maus-Klick-Modus: Auf einen Zustand klicken, JGraph verlassen, in den normalen
+		  Maus-Auswahl-Modus wechseln: Übergang wird angelegt
 
 
 *** FEATURE ***

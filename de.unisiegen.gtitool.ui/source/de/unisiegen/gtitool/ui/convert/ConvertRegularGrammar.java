@@ -12,6 +12,9 @@ import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
 import de.unisiegen.gtitool.core.machines.Machine;
@@ -132,6 +135,29 @@ public class ConvertRegularGrammar extends AbstractConvertGrammar
         {
           newStateView = createStateView ( current.getName () );
           this.states.put ( ( NonterminalSymbol ) current, newStateView );
+        }
+        else
+        {
+          for ( Transition transition : stateView.getState ()
+              .getTransitionBegin () )
+          {
+            if ( transition.getStateEnd ().equals ( newStateView.getState () ) )
+            {
+              try
+              {
+                transition.add ( symbols );
+              }
+              catch ( TransitionSymbolNotInAlphabetException exc )
+              {
+                // Do nothing
+              }
+              catch ( TransitionSymbolOnlyOneTimeException exc )
+              {
+                // Do nothing
+              }
+              return;
+            }
+          }
         }
 
         createTransition ( new DefaultWord (), new DefaultWord (), stateView,

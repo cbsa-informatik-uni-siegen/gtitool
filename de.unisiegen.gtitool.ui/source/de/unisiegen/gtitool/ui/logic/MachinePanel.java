@@ -2468,6 +2468,19 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   private final void intitializeMouseAdapter ()
   {
+    // cancel dragging if mouse leaves jgraph area
+    this.model.getJGTIGraph ().addMouseListener (
+        new java.awt.event.MouseAdapter ()
+        {
+
+          @Override
+          public void mouseExited (
+              @SuppressWarnings ( "unused" ) java.awt.event.MouseEvent evt )
+          {
+            cancelDraggingProgress ();
+          }
+        } );
+
     this.normalMouse = new MouseAdapter ()
     {
 
@@ -2731,8 +2744,15 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
         if ( MachinePanel.this.firstState == null )
         {
-          MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.jGTIGraph
-              .getSelectionCellAt ( event.getPoint () );
+          try
+          {
+            MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.jGTIGraph
+                .getSelectionCellAt ( event.getPoint () );
+          }
+          catch ( Exception e )
+          {
+            return;
+          }
           if ( MachinePanel.this.firstState == null )
           {
             return;
@@ -3624,5 +3644,20 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       MachinePanel.this.gui.jGTITableMachine.repaint ();
       MachinePanel.this.gui.jGTITableMachinePDA.repaint ();
     }
+  }
+
+
+  /**
+   * Cancel dragging progress.
+   */
+  public void cancelDraggingProgress ()
+  {
+    // Cancel dragging progress
+    MachinePanel.this.graphModel.remove ( new Object []
+    { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
+    performCellsChanged ();
+    MachinePanel.this.firstState = null;
+    MachinePanel.this.tmpTransition = null;
+    MachinePanel.this.tmpState = null;
   }
 }

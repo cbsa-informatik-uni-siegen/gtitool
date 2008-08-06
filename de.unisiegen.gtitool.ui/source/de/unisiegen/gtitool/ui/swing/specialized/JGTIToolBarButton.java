@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.ui.swing.specialized;
 
 import java.awt.Dimension;
 
+import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
@@ -40,9 +42,56 @@ public final class JGTIToolBarButton extends JButton
   public JGTIToolBarButton ()
   {
     super ();
-    setFocusPainted ( false );
-    setBorderPainted ( false );
-    setOpaque ( false );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIToolBarButton}.
+   * 
+   * @param action The {@link Action}.
+   */
+  public JGTIToolBarButton ( Action action )
+  {
+    super ( action );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIToolBarButton}.
+   * 
+   * @param icon The {@link Icon}.
+   */
+  public JGTIToolBarButton ( Icon icon )
+  {
+    super ( icon );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIToolBarButton}.
+   * 
+   * @param text The text.
+   */
+  public JGTIToolBarButton ( String text )
+  {
+    super ( text );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIToolBarButton}.
+   * 
+   * @param text The text.
+   * @param icon The {@link Icon}.
+   */
+  public JGTIToolBarButton ( String text, Icon icon )
+  {
+    super ( text, icon );
+    init ();
   }
 
 
@@ -79,5 +128,16 @@ public final class JGTIToolBarButton extends JButton
   public final Dimension getPreferredSize ()
   {
     return new Dimension ( FIX_WIDTH, FIX_HEIGHT );
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
+    setFocusPainted ( false );
+    setBorderPainted ( false );
+    setOpaque ( false );
   }
 }

@@ -13,10 +13,11 @@ import de.unisiegen.gtitool.ui.swing.JGTITabbedPane;
 
 
 /**
- * Special {@link JTabbedPane} which supportes the {@link EditorPanel}.
+ * Special {@link JTabbedPane} for the {@link EditorPanel}s.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: JGTIEditorPanelTabbedPane.java 959 2008-06-03 21:39:09Z fehler
+ *          $
  */
 public final class JGTIEditorPanelTabbedPane extends JGTITabbedPane implements
     Iterable < EditorPanel >
@@ -34,6 +35,29 @@ public final class JGTIEditorPanelTabbedPane extends JGTITabbedPane implements
   public JGTIEditorPanelTabbedPane ()
   {
     super ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIEditorPanelTabbedPane}.
+   * 
+   * @param tabPlacement The tab placement.
+   */
+  public JGTIEditorPanelTabbedPane ( int tabPlacement )
+  {
+    super ( tabPlacement );
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIEditorPanelTabbedPane}.
+   * 
+   * @param tabPlacement The tab placement.
+   * @param tabLayoutPolicy The tab layout policy.
+   */
+  public JGTIEditorPanelTabbedPane ( int tabPlacement, int tabLayoutPolicy )
+  {
+    super ( tabPlacement, tabLayoutPolicy );
   }
 
 

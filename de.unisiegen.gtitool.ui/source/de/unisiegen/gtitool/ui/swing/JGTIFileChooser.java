@@ -1,7 +1,11 @@
 package de.unisiegen.gtitool.ui.swing;
 
 
+import java.io.File;
+
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
 
 import de.unisiegen.gtitool.ui.logic.OpenDialog;
 import de.unisiegen.gtitool.ui.logic.SaveDialog;
@@ -40,10 +44,69 @@ public final class JGTIFileChooser extends JFileChooser
   public JGTIFileChooser ()
   {
     super ();
-    setAcceptAllFileFilterUsed ( false );
-    setControlButtonsAreShown ( false );
-    setBorder ( null );
-    setMultiSelectionEnabled ( true );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIFileChooser}.
+   * 
+   * @param currentDirectory The current directory.
+   */
+  public JGTIFileChooser ( File currentDirectory )
+  {
+    super ( currentDirectory );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIFileChooser}.
+   * 
+   * @param currentDirectory The current directory.
+   * @param fsv The {@link FileSystemView}.
+   */
+  public JGTIFileChooser ( File currentDirectory, FileSystemView fsv )
+  {
+    super ( currentDirectory, fsv );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIFileChooser}.
+   * 
+   * @param fsv The {@link FileSystemView}.
+   */
+  public JGTIFileChooser ( FileSystemView fsv )
+  {
+    super ( fsv );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIFileChooser}.
+   * 
+   * @param currentDirectoryPath The current directory path.
+   */
+  public JGTIFileChooser ( String currentDirectoryPath )
+  {
+    super ( currentDirectoryPath );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIFileChooser}.
+   * 
+   * @param currentDirectoryPath The current directory path.
+   * @param fsv The {@link FileSystemView}.
+   */
+  public JGTIFileChooser ( String currentDirectoryPath, FileSystemView fsv )
+  {
+    super ( currentDirectoryPath, fsv );
+    init ();
   }
 
 
@@ -64,6 +127,18 @@ public final class JGTIFileChooser extends JFileChooser
       this.saveDialog.approve ();
     }
     super.approveSelection ();
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
+    setAcceptAllFileFilterUsed ( false );
+    setControlButtonsAreShown ( false );
+    setBorder ( null );
+    setMultiSelectionEnabled ( true );
   }
 
 

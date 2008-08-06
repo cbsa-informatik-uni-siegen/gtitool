@@ -8,6 +8,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 
 import de.unisiegen.gtitool.core.util.Theme;
@@ -53,6 +54,66 @@ public final class JGTITextField extends JTextField
   public JGTITextField ()
   {
     super ();
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITextField}.
+   * 
+   * @param doc The {@link Document}.
+   * @param text The text.
+   * @param columns The columns.
+   */
+  public JGTITextField ( Document doc, String text, int columns )
+  {
+    super ( doc, text, columns );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITextField}.
+   * 
+   * @param columns The columns.
+   */
+  public JGTITextField ( int columns )
+  {
+    super ( columns );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITextField}.
+   * 
+   * @param text The text.
+   */
+  public JGTITextField ( String text )
+  {
+    super ( text );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITextField}.
+   * 
+   * @param text The text.
+   * @param columns The columns.
+   */
+  public JGTITextField ( String text, int columns )
+  {
+    super ( text, columns );
+    init ();
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
     this.initialColor = getBackground ();
     setBorder ( new LineBorder ( Color.BLACK, 1 ) );
 
@@ -67,8 +128,8 @@ public final class JGTITextField extends JTextField
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public final void insertString ( int offset, String string, AttributeSet attributeSet )
-          throws BadLocationException
+      public final void insertString ( int offset, String string,
+          AttributeSet attributeSet ) throws BadLocationException
       {
         if ( string == null )
         {

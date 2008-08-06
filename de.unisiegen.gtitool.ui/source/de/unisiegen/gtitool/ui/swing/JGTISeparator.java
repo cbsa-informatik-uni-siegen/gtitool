@@ -26,4 +26,15 @@ public final class JGTISeparator extends JSeparator
   {
     super ();
   }
+
+
+  /**
+   * Allocates a new {@link JGTISeparator}.
+   * 
+   * @param orientation The orientation.
+   */
+  public JGTISeparator ( int orientation )
+  {
+    super ( orientation );
+  }
 }

@@ -2,7 +2,9 @@ package de.unisiegen.gtitool.ui.swing;
 
 
 import java.awt.GridBagLayout;
+import java.awt.LayoutManager;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 
@@ -27,6 +29,52 @@ public final class JGTIPanel extends JPanel
   public JGTIPanel ()
   {
     super ();
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIPanel}.
+   * 
+   * @param isDoubleBuffered The is double buffered value.
+   */
+  public JGTIPanel ( boolean isDoubleBuffered )
+  {
+    super ( isDoubleBuffered );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIPanel}.
+   * 
+   * @param layout The {@link LayoutManager}.
+   */
+  public JGTIPanel ( LayoutManager layout )
+  {
+    super ( layout );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIPanel}.
+   * 
+   * @param layout The {@link LayoutManager}.
+   * @param isDoubleBuffered The is double buffered value.
+   */
+  public JGTIPanel ( LayoutManager layout, boolean isDoubleBuffered )
+  {
+    super ( layout, isDoubleBuffered );
+    init ();
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
     setLayout ( new GridBagLayout () );
   }
 }

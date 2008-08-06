@@ -1,10 +1,12 @@
 package de.unisiegen.gtitool.ui.swing;
 
 
+import javax.swing.JComponent;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.StyledDocument;
 
 import de.unisiegen.gtitool.logger.Logger;
 
@@ -42,6 +44,27 @@ public final class JGTITextPane extends JTextPane
   public JGTITextPane ()
   {
     super ();
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITextPane}.
+   * 
+   * @param doc The {@link StyledDocument}.
+   */
+  public JGTITextPane ( StyledDocument doc )
+  {
+    super ( doc );
+    init ();
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
     setBorder ( null );
 
     setDocument ( new DefaultStyledDocument ()
@@ -55,8 +78,8 @@ public final class JGTITextPane extends JTextPane
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public final void insertString ( int offset, String string, AttributeSet attributeSet )
-          throws BadLocationException
+      public final void insertString ( int offset, String string,
+          AttributeSet attributeSet ) throws BadLocationException
       {
         if ( string == null )
         {

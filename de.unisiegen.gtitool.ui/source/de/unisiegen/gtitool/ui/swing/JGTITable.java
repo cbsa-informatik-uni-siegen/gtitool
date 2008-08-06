@@ -21,13 +21,17 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.util.Theme;
 import de.unisiegen.gtitool.ui.swing.dnd.JGTITableModelRows;
@@ -95,75 +99,85 @@ public final class JGTITable extends JTable implements DropTargetListener
   public JGTITable ()
   {
     super ();
-    this.allowedDndSources = new ArrayList < JComponent > ();
-
-    // swing bugfix
-    addMouseMotionListener ( new MouseMotionAdapter ()
-    {
-
-      /**
-       * {@inheritDoc}
-       * 
-       * @see MouseMotionAdapter#mouseDragged(MouseEvent)
-       */
-      @Override
-      public void mouseDragged ( MouseEvent event )
-      {
-        if ( getDragEnabled ()
-            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 ) )
-        {
-          TransferHandler transferHandler = getTransferHandler ();
-          transferHandler.exportAsDrag ( JGTITable.this, event, transferHandler
-              .getSourceActions ( JGTITable.this ) );
-          event.consume ();
-        }
-      }
-    } );
-    setDropTarget ( new DropTarget ( this, this ) );
-
-    // disable cut, copy and paste
-    getActionMap ().put ( "cut", new AbstractAction () { //$NON-NLS-1$
-
-          /**
-           * The serial version uid.
-           */
-          private static final long serialVersionUID = 2442639750331718901L;
+    init ();
+  }
 
 
-          public void actionPerformed (
-              @SuppressWarnings ( "unused" ) ActionEvent e )
-          {
-            // do nothing
-          }
-        } );
-    getActionMap ().put ( "copy", new AbstractAction () { //$NON-NLS-1$
-
-          /**
-           * The serial version uid.
-           */
-          private static final long serialVersionUID = 4781268710775959195L;
-
-
-          public void actionPerformed (
-              @SuppressWarnings ( "unused" ) ActionEvent e )
-          {
-            // do nothing
-          }
-        } );
-    getActionMap ().put ( "paste", new AbstractAction () { //$NON-NLS-1$
-
-          /**
-           * The serial version uid.
-           */
-          private static final long serialVersionUID = 8934656186755813050L;
+  /**
+   * Allocates a new {@link JGTITable}.
+   * 
+   * @param numRows The row number.
+   * @param numColumns The column number.
+   */
+  public JGTITable ( int numRows, int numColumns )
+  {
+    super ( numRows, numColumns );
+    init ();
+  }
 
 
-          public void actionPerformed (
-              @SuppressWarnings ( "unused" ) ActionEvent e )
-          {
-            // do nothing
-          }
-        } );
+  /**
+   * Allocates a new {@link JGTITable}.
+   * 
+   * @param rowData The row data.
+   * @param columnNames The column names.
+   */
+  public JGTITable ( final Object [][] rowData, final Object [] columnNames )
+  {
+    super ( rowData, columnNames );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITable}.
+   * 
+   * @param dm The {@link TableModel}.
+   */
+  public JGTITable ( TableModel dm )
+  {
+    super ( dm );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITable}.
+   * 
+   * @param dm The {@link TableModel}.
+   * @param cm The {@link TableColumnModel}.
+   */
+  public JGTITable ( TableModel dm, TableColumnModel cm )
+  {
+    super ( dm, cm );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITable}.
+   * 
+   * @param dm The {@link TableModel}.
+   * @param cm The {@link TableColumnModel}.
+   * @param sm The {@link ListSelectionModel}.
+   */
+  public JGTITable ( TableModel dm, TableColumnModel cm, ListSelectionModel sm )
+  {
+    super ( dm, cm, sm );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITable}.
+   * 
+   * @param rowData The row data.
+   * @param columnNames The column names.
+   */
+  public JGTITable ( Vector < ? > rowData, Vector < ? > columnNames )
+  {
+    super ( rowData, columnNames );
+    init ();
   }
 
 
@@ -338,6 +352,83 @@ public final class JGTITable extends JTable implements DropTargetListener
       }
     }
     return size;
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
+    this.allowedDndSources = new ArrayList < JComponent > ();
+
+    // swing bugfix
+    addMouseMotionListener ( new MouseMotionAdapter ()
+    {
+
+      /**
+       * {@inheritDoc}
+       * 
+       * @see MouseMotionAdapter#mouseDragged(MouseEvent)
+       */
+      @Override
+      public void mouseDragged ( MouseEvent event )
+      {
+        if ( getDragEnabled ()
+            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 ) )
+        {
+          TransferHandler transferHandler = getTransferHandler ();
+          transferHandler.exportAsDrag ( JGTITable.this, event, transferHandler
+              .getSourceActions ( JGTITable.this ) );
+          event.consume ();
+        }
+      }
+    } );
+    setDropTarget ( new DropTarget ( this, this ) );
+
+    // disable cut, copy and paste
+    getActionMap ().put ( "cut", new AbstractAction () { //$NON-NLS-1$
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = 2442639750331718901L;
+
+
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent e )
+          {
+            // do nothing
+          }
+        } );
+    getActionMap ().put ( "copy", new AbstractAction () { //$NON-NLS-1$
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = 4781268710775959195L;
+
+
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent e )
+          {
+            // do nothing
+          }
+        } );
+    getActionMap ().put ( "paste", new AbstractAction () { //$NON-NLS-1$
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = 8934656186755813050L;
+
+
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent e )
+          {
+            // do nothing
+          }
+        } );
   }
 
 

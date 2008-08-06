@@ -2,22 +2,23 @@ package de.unisiegen.gtitool.ui.swing.specialized;
 
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
-import de.unisiegen.gtitool.ui.swing.JGTISplitPane;
 
 
 /**
- * The main {@link JGTISplitPane}.
+ * Special {@link JSplitPane} for the main view.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -106,9 +107,64 @@ public final class JGTIMainSplitPane extends JSplitPane implements
   public JGTIMainSplitPane ()
   {
     super ();
-    setDividerSize ( 3 );
-    setContinuousLayout ( false );
-    setBorder ( null );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIMainSplitPane}.
+   * 
+   * @param newOrientation The new orientation.
+   */
+  public JGTIMainSplitPane ( int newOrientation )
+  {
+    super ( newOrientation );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIMainSplitPane}.
+   * 
+   * @param newOrientation The new orientation.
+   * @param newContinuousLayout The new continuous layout.
+   */
+  public JGTIMainSplitPane ( int newOrientation, boolean newContinuousLayout )
+  {
+    super ( newOrientation, newContinuousLayout );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIMainSplitPane}.
+   * 
+   * @param newOrientation The new orientation.
+   * @param newContinuousLayout The new continuous layout.
+   * @param newLeftComponent The new left component.
+   * @param newRightComponent The new right component.
+   */
+  public JGTIMainSplitPane ( int newOrientation, boolean newContinuousLayout,
+      Component newLeftComponent, Component newRightComponent )
+  {
+    super ( newOrientation, newContinuousLayout, newLeftComponent,
+        newRightComponent );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIMainSplitPane}.
+   * 
+   * @param newOrientation The new orientation.
+   * @param newLeftComponent The new left component.
+   * @param newRightComponent The new right component.
+   */
+  public JGTIMainSplitPane ( int newOrientation, Component newLeftComponent,
+      Component newRightComponent )
+  {
+    super ( newOrientation, newLeftComponent, newRightComponent );
+    init ();
   }
 
 
@@ -187,6 +243,17 @@ public final class JGTIMainSplitPane extends JSplitPane implements
   public final MainWindowForm getMainWindowForm ()
   {
     return this.mainWindowForm;
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
+    setDividerSize ( 3 );
+    setContinuousLayout ( false );
+    setBorder ( null );
   }
 
 

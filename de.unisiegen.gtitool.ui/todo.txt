@@ -2,7 +2,6 @@
 
 BM		- Beim Umwandeln einer Grammatik dürfen nur maximal zwei Transitionen zwischen zwei
 		  Zuständen angelegt werden.
-CF		- Tabs verschieben: Repaint
 
 
 *** FEATURE ***

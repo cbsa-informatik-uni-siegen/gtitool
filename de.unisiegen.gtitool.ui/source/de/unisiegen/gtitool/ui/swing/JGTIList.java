@@ -18,10 +18,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 
@@ -89,76 +91,43 @@ public final class JGTIList extends JList implements DropTargetListener
   public JGTIList ()
   {
     super ();
-    setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.allowedDndSources = new ArrayList < JComponent > ();
-
-    // swing bugfix
-    addMouseMotionListener ( new MouseMotionAdapter ()
-    {
-
-      /**
-       * {@inheritDoc}
-       * 
-       * @see MouseMotionAdapter#mouseDragged(MouseEvent)
-       */
-      @Override
-      public void mouseDragged ( MouseEvent event )
-      {
-        if ( getDragEnabled ()
-            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 ) )
-        {
-          TransferHandler transferHandler = getTransferHandler ();
-          transferHandler.exportAsDrag ( JGTIList.this, event, transferHandler
-              .getSourceActions ( JGTIList.this ) );
-          event.consume ();
-        }
-      }
-    } );
-    setDropTarget ( new DropTarget ( this, this ) );
-
-    // disable cut, copy and paste
-    getActionMap ().put ( "cut", new AbstractAction () { //$NON-NLS-1$
-
-          /**
-           * The serial version uid.
-           */
-          private static final long serialVersionUID = -4319963661932864508L;
+    init ();
+  }
 
 
-          public void actionPerformed (
-              @SuppressWarnings ( "unused" ) ActionEvent e )
-          {
-            // do nothing
-          }
-        } );
-    getActionMap ().put ( "copy", new AbstractAction () { //$NON-NLS-1$
-
-          /**
-           * The serial version uid.
-           */
-          private static final long serialVersionUID = 2449576847404790643L;
+  /**
+   * Allocates a new {@link JGTIList}.
+   * 
+   * @param dataModel The {@link ListModel}.
+   */
+  public JGTIList ( ListModel dataModel )
+  {
+    super ( dataModel );
+    init ();
+  }
 
 
-          public void actionPerformed (
-              @SuppressWarnings ( "unused" ) ActionEvent e )
-          {
-            // do nothing
-          }
-        } );
-    getActionMap ().put ( "paste", new AbstractAction () { //$NON-NLS-1$
-
-          /**
-           * The serial version uid.
-           */
-          private static final long serialVersionUID = -7404714019259587536L;
+  /**
+   * Allocates a new {@link JGTIList}.
+   * 
+   * @param listData The list data.
+   */
+  public JGTIList ( final Object [] listData )
+  {
+    super ( listData );
+    init ();
+  }
 
 
-          public void actionPerformed (
-              @SuppressWarnings ( "unused" ) ActionEvent e )
-          {
-            // do nothing
-          }
-        } );
+  /**
+   * Allocates a new {@link JGTIList}.
+   * 
+   * @param listData The list data.
+   */
+  public JGTIList ( final Vector < ? > listData )
+  {
+    super ( listData );
+    init ();
   }
 
 
@@ -307,6 +276,84 @@ public final class JGTIList extends JList implements DropTargetListener
   public final Point getDropPoint ()
   {
     return this.dropPoint;
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
+    setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.allowedDndSources = new ArrayList < JComponent > ();
+
+    // swing bugfix
+    addMouseMotionListener ( new MouseMotionAdapter ()
+    {
+
+      /**
+       * {@inheritDoc}
+       * 
+       * @see MouseMotionAdapter#mouseDragged(MouseEvent)
+       */
+      @Override
+      public void mouseDragged ( MouseEvent event )
+      {
+        if ( getDragEnabled ()
+            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 ) )
+        {
+          TransferHandler transferHandler = getTransferHandler ();
+          transferHandler.exportAsDrag ( JGTIList.this, event, transferHandler
+              .getSourceActions ( JGTIList.this ) );
+          event.consume ();
+        }
+      }
+    } );
+    setDropTarget ( new DropTarget ( this, this ) );
+
+    // disable cut, copy and paste
+    getActionMap ().put ( "cut", new AbstractAction () { //$NON-NLS-1$
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = -4319963661932864508L;
+
+
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent e )
+          {
+            // do nothing
+          }
+        } );
+    getActionMap ().put ( "copy", new AbstractAction () { //$NON-NLS-1$
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = 2449576847404790643L;
+
+
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent e )
+          {
+            // do nothing
+          }
+        } );
+    getActionMap ().put ( "paste", new AbstractAction () { //$NON-NLS-1$
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = -7404714019259587536L;
+
+
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent e )
+          {
+            // do nothing
+          }
+        } );
   }
 
 

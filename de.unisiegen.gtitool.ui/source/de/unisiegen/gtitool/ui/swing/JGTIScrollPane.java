@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.swing;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
@@ -32,6 +33,54 @@ public final class JGTIScrollPane extends JScrollPane
   public JGTIScrollPane ()
   {
     super ();
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIScrollPane}.
+   * 
+   * @param view The view.
+   */
+  public JGTIScrollPane ( Component view )
+  {
+    super ( view );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIScrollPane}.
+   * 
+   * @param view The view.
+   * @param vsbPolicy The vertical scrollbar policy.
+   * @param hsbPolicy The horizontal scrollbar policy.
+   */
+  public JGTIScrollPane ( Component view, int vsbPolicy, int hsbPolicy )
+  {
+    super ( view, vsbPolicy, hsbPolicy );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIScrollPane}.
+   * 
+   * @param vsbPolicy The vertical scrollbar policy.
+   * @param hsbPolicy The horizontal scrollbar policy.
+   */
+  public JGTIScrollPane ( int vsbPolicy, int hsbPolicy )
+  {
+    super ( vsbPolicy, hsbPolicy );
+    init ();
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
     setBorder ( new LineBorder ( Color.BLACK, 1 ) );
   }
 

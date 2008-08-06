@@ -7,6 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.JTextArea;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 
 import de.unisiegen.gtitool.core.util.Theme;
@@ -52,6 +53,81 @@ public final class JGTITextArea extends JTextArea
   public JGTITextArea ()
   {
     super ();
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITextArea}.
+   * 
+   * @param doc The {@link Document}.
+   */
+  public JGTITextArea ( Document doc )
+  {
+    super ( doc );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITextArea}.
+   * 
+   * @param doc The {@link Document}.
+   * @param text The text.
+   * @param rows The rows.
+   * @param columns The columns.
+   */
+  public JGTITextArea ( Document doc, String text, int rows, int columns )
+  {
+    super ( doc, text, rows, columns );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITextArea}.
+   * 
+   * @param rows The rows.
+   * @param columns The columns.
+   */
+  public JGTITextArea ( int rows, int columns )
+  {
+    super ( rows, columns );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITextArea}.
+   * 
+   * @param text The text.
+   */
+  public JGTITextArea ( String text )
+  {
+    super ( text );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTITextArea}.
+   * 
+   * @param text The text.
+   * @param rows The rows.
+   * @param columns The columns.
+   */
+  public JGTITextArea ( String text, int rows, int columns )
+  {
+    super ( text, rows, columns );
+    init ();
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
     this.initialColor = getBackground ();
     setBorder ( null );
     setLineWrap ( true );
@@ -68,8 +144,8 @@ public final class JGTITextArea extends JTextArea
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public final void insertString ( int offset, String string, AttributeSet attributeSet )
-          throws BadLocationException
+      public final void insertString ( int offset, String string,
+          AttributeSet attributeSet ) throws BadLocationException
       {
         if ( string == null )
         {

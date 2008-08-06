@@ -85,7 +85,8 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
    */
   public JGTITabbedPane ()
   {
-    this ( TOP );
+    super ();
+    init ();
   }
 
 
@@ -96,7 +97,8 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
    */
   public JGTITabbedPane ( int tabPlacement )
   {
-    this ( tabPlacement, WRAP_TAB_LAYOUT );
+    super ( tabPlacement );
+    init ();
   }
 
 
@@ -109,70 +111,7 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
   public JGTITabbedPane ( int tabPlacement, int tabLayoutPolicy )
   {
     super ( tabPlacement, tabLayoutPolicy );
-
-    this.allowedDndSources = new ArrayList < JComponent > ();
-
-    setBorder ( new EmptyBorder ( 1, 1, 1, 1 ) );
-
-    setTransferHandler ( new JGTITabbedPaneTransferHandler (
-        TransferHandler.MOVE )
-    {
-
-      /**
-       * The serial version uid.
-       */
-      private static final long serialVersionUID = -7483915272887199973L;
-
-
-      @SuppressWarnings ( "synthetic-access" )
-      @Override
-      protected boolean importComponent ( JGTITabbedPane source,
-          @SuppressWarnings ( "unused" ) JGTITabbedPane target,
-          Component component )
-      {
-        int sourceIndex = source.getSelectedIndex ();
-        String title = source.getTitleAt ( sourceIndex );
-
-        int targetIndex = getTabIndex ( JGTITabbedPane.this.dropPoint.x,
-            JGTITabbedPane.this.dropPoint.y );
-
-        source.remove ( component );
-        if ( targetIndex == -1 )
-        {
-          add ( title, component );
-        }
-        else
-        {
-          add ( component, targetIndex );
-          setTitleAt ( targetIndex, title );
-        }
-
-        setSelectedComponent ( component );
-
-        return true;
-      }
-    } );
-
-    // swing bugfix
-    addMouseMotionListener ( new MouseMotionAdapter ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      @Override
-      public void mouseDragged ( MouseEvent event )
-      {
-        if ( getDragEnabled ()
-            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 )
-            && ( getTabIndex ( event.getPoint ().x, event.getPoint ().y ) != -1 ) )
-        {
-          TransferHandler transferHandler = getTransferHandler ();
-          transferHandler.exportAsDrag ( JGTITabbedPane.this, event,
-              transferHandler.getSourceActions ( JGTITabbedPane.this ) );
-          event.consume ();
-        }
-      }
-    } );
-    setDropTarget ( new DropTarget ( this, this ) );
+    init ();
   }
 
 
@@ -338,6 +277,77 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
   private final int getTabIndex ( int x, int y )
   {
     return getUI ().tabForCoordinate ( this, x, y );
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
+    this.allowedDndSources = new ArrayList < JComponent > ();
+
+    setBorder ( new EmptyBorder ( 1, 1, 1, 1 ) );
+
+    setTransferHandler ( new JGTITabbedPaneTransferHandler (
+        TransferHandler.MOVE )
+    {
+
+      /**
+       * The serial version uid.
+       */
+      private static final long serialVersionUID = -7483915272887199973L;
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      protected boolean importComponent ( JGTITabbedPane source,
+          @SuppressWarnings ( "unused" ) JGTITabbedPane target,
+          Component component )
+      {
+        int sourceIndex = source.getSelectedIndex ();
+        String title = source.getTitleAt ( sourceIndex );
+
+        int targetIndex = getTabIndex ( JGTITabbedPane.this.dropPoint.x,
+            JGTITabbedPane.this.dropPoint.y );
+
+        source.remove ( component );
+        if ( targetIndex == -1 )
+        {
+          add ( title, component );
+        }
+        else
+        {
+          add ( component, targetIndex );
+          setTitleAt ( targetIndex, title );
+        }
+
+        setSelectedComponent ( component );
+
+        return true;
+      }
+    } );
+
+    // swing bugfix
+    addMouseMotionListener ( new MouseMotionAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseDragged ( MouseEvent event )
+      {
+        if ( getDragEnabled ()
+            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 )
+            && ( getTabIndex ( event.getPoint ().x, event.getPoint ().y ) != -1 ) )
+        {
+          TransferHandler transferHandler = getTransferHandler ();
+          transferHandler.exportAsDrag ( JGTITabbedPane.this, event,
+              transferHandler.getSourceActions ( JGTITabbedPane.this ) );
+          event.consume ();
+        }
+      }
+    } );
+    setDropTarget ( new DropTarget ( this, this ) );
   }
 
 

@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.ui.swing;
 
 import java.awt.Dimension;
 
+import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
@@ -76,11 +78,56 @@ public final class JGTIButton extends JButton
   public JGTIButton ()
   {
     super ();
-    setFocusPainted ( false );
-    this.minWidth = DEFAULT_MIN_WIDTH;
-    this.maxWidth = DEFAULT_MAX_WIDTH;
-    this.minHeight = DEFAULT_MIN_HEIGHT;
-    this.maxHeight = DEFAULT_MAX_HEIGHT;
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIButton}.
+   * 
+   * @param action The {@link Action}.
+   */
+  public JGTIButton ( Action action )
+  {
+    super ( action );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIButton}.
+   * 
+   * @param icon The {@link Icon}.
+   */
+  public JGTIButton ( Icon icon )
+  {
+    super ( icon );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIButton}.
+   * 
+   * @param text The text.
+   */
+  public JGTIButton ( String text )
+  {
+    super ( text );
+    init ();
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIButton}.
+   * 
+   * @param text The text.
+   * @param icon The {@link Icon}.
+   */
+  public JGTIButton ( String text, Icon icon )
+  {
+    super ( text, icon );
+    init ();
   }
 
 
@@ -183,6 +230,19 @@ public final class JGTIButton extends JButton
       size.height = this.maxHeight;
     }
     return size;
+  }
+
+
+  /**
+   * Initializes this {@link JComponent}.
+   */
+  private final void init ()
+  {
+    setFocusPainted ( false );
+    this.minWidth = DEFAULT_MIN_WIDTH;
+    this.maxWidth = DEFAULT_MAX_WIDTH;
+    this.minHeight = DEFAULT_MIN_HEIGHT;
+    this.maxHeight = DEFAULT_MAX_HEIGHT;
   }
 
 

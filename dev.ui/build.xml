@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+	$Id$
+	
+	Copyright (c) 2007-2008 Christian Fehler
+-->
+<project name="gtitool.dev.ui" default="dist" basedir=".">
+
+	<!-- property -->
+	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
+	<property file="${buildfilesdir}/build.properties" />
+	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
+	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
+
+	<!-- dist -->
+	<target name="dist" depends="" description="Build distribution">
+		<echo message="Distribution ready" />
+	</target>
+</project>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+	$Id$
+	
+	Copyright (c) 2007-2008 Christian Fehler
+-->
+<project name="gtitool.dev.core" default="dist" basedir=".">
+
+	<!-- property -->
+	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
+	<property file="${buildfilesdir}/build.properties" />
+	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
+	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
+	<property name="jflex.basedir" value="${basedir}/../gtitool.jflex" />
+	<property name="jflex.distdir" value="${jflex.basedir}/dist" />
+	<property name="javacup.basedir" value="${basedir}/../gtitool.javacup" />
+	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
+	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
+	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
+
+	<!-- declare -->
+	<target name="declare">
+		<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${jflex.distdir}/${jflexfile}" />
+		<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${javacup.distdir}/${javacupfile}" />
+	</target>
+
+	<!-- dist -->
+	<target name="dist" depends="dist-jflex,dist-javacup" description="Build distribution">
+		<echo message="Distribution ready" />
+	</target>
+
+	<!-- dist jflex -->
+	<target name="dist-jflex">
+		<ant dir="${jflex.basedir}" target="dist" inheritall="false" />
+	</target>
+
+	<!-- dist javacup -->
+	<target name="dist-javacup">
+		<ant dir="${javacup.basedir}" target="dist" inheritall="false" />
+	</target>
+
+	<!-- parser -->
+	<target name="parser" depends="declare,parser-clean" description="Generate parsers and lexers" />
+
+	<!-- parser clean -->
+	<target name="parser-clean">
+		<delete includeemptydirs="true">
+			<fileset dir="${sourcegenerateddir}" includes="**/*" />
+		</delete>
+	</target>
+</project>

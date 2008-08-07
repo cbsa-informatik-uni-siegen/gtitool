@@ -45,3 +45,28 @@
 *** gtitool.logger ***
 - source folder:
   - source
+
+
+*** gtitool.dev.core ***
+- source folder:
+  - source
+  - source-impl
+  - source-generated
+- projects:
+  - de.unisiegen.gtitool.core
+  - gtitool.javacup
+  - gtitool.jflex
+  - gtitool.logger
+
+
+*** gtitool.dev.ui ***
+- source folder:
+  - source
+  - source-generated
+- projects:
+  - gtitool.dev.core
+  - de.unisiegen.gtitool.core
+  - gtitool.javacup
+  - gtitool.jflex
+  - gtitool.jgraph
+  - gtitool.logger

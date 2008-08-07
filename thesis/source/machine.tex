@@ -61,6 +61,13 @@ viele Zustands Pfade vorhanden sein können, werden diese anhand der Anzahl der
 verwendeten Zustände sortiert, somit werden die kürzesten Pfade zuerst
 angezeigt.\vspace{10pt}
 
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=12cm]{../images/history_path.png}
+\caption{Zustands Pfad}
+\end{center}
+\end{figure}
+
 Der implementierte Algorithmus geht rückwärts vor, startet also bei den aktuell
 aktiven Zuständen und geht alle Pfade zurück, bis alle, bis jetzt gelesenen
 Symbole abgearbeitet sind. Startet der berechnete Pfad dann in dem
@@ -83,6 +90,13 @@ Bei der Umsetzung sollte im Vordergrund stehen, dass der Benutzer mit sehr
 kleinen Schritten verdeutlicht bekommt, wie der zugrunde liegende Algorithmus
 arbeitet, so dass diese Arbeitsweise sehr einfach nachzuvollziehen
 ist.\vspace{10pt}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=12cm]{../images/reachable_states.png}
+\caption{Erreichbare Zustände}
+\end{center}
+\end{figure}
 
 Der verwendete Algorithmus besteht aus drei Phasen. In der ersten Phase wird ein
 noch nicht abgearbeiteter Zustand ausgewählt, zu Beginn wird mit dem Startzustand

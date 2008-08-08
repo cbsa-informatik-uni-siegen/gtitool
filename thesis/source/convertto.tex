@@ -69,7 +69,7 @@ erhalten so den entsprechenden Automaten.
 
 \subsection{Umwandeln einer kontextfreien Grammatik}
 
-
+TODOBM
 
 
 \section{Automat umwandeln}\label{ConverToMachine}
@@ -110,3 +110,48 @@ nachgelesen werden. Die zweite Methode ist, dass nur die erreichbaren Zustände
 in der unteren Ansicht angelegt werden. Diese Methode ist übersichtlicher für
 den Benutzer, wenn auch nicht alle im Potenzautomaten vorhandenen Zustände
 betrachtet werden.\vspace{10pt}
+
+Zur Umsetzung wurde der in \cite[S. 153ff]{Compilers} angegebene
+Algorithmus als Vorlage benutzt. Um den Algorithmus verwenden zu können,
+müssen zuerst einige Werte definiert werden.\vspace{10pt}
+
+
+\noindent
+\begin{tabular}{|p{2.2cm}|p{9.0cm}|}
+  \hline
+  NFA A                 & Input NFA \\
+  \hline
+  DFA D                 & Output DFA \\
+  \hline
+  Dstates               & States of output DFA D \\
+  \hline
+  Dtran                 & Transition function of DFA D \\
+  \hline
+  $\epsilon$-closure(s) & Set of NFA states reachable from NFA state s
+                          on $\epsilon$-transitions alone \\
+  \hline
+  $\epsilon$-closure(T) & Set of NFA states reachable from some NFA state s
+                          in set T on $\epsilon$-transitions alone; =
+                          $\cup_{s\ in\ T}\ \epsilon$-closure(s). \\
+  \hline
+  move(T,a)             & Set of NFA states to which there is a transition
+                          on input symbol a from some state s in T \\
+  \hline
+\end{tabular}
+\vspace{10pt}
+
+Die eigentliche Umwandlung geschieht dann mit folgendem Algorithmus, der aus
+didaktischen Gründen in mehrere Schritte aufgeteilt wurde.\vspace{10pt}
+
+\noindent
+\verb|initially, |$\epsilon$\verb|-closure(|$s_0$\verb|) is the only state in Dstates,|\\
+\verb|and it is unmarked;|\\
+\verb|while ( there is an unmarked state T in Dstates ) {|\\
+\verb|      mark T;|\\
+\verb|      for ( each input symbol a ) {|\\
+\verb|          U = |$\epsilon$\verb|-closure(move(T,a));|\\
+\verb|          if ( U is not in Dstates )|\\
+\verb|             add U as an unmarked state to Dstates;|\\
+\verb|          Dtran[T,a] = U;|\\
+\verb|      }|\\
+\verb|}|

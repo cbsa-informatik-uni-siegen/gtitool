@@ -66,6 +66,7 @@
 - projects:
   - gtitool.dev.core
   - de.unisiegen.gtitool.core
+  - de.unisiegen.gtitool.ui
   - gtitool.javacup
   - gtitool.jflex
   - gtitool.jgraph

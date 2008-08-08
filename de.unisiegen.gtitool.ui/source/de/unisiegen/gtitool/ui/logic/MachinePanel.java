@@ -49,6 +49,7 @@ import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphSelectionModel;
+import org.jgraph.graph.PortView;
 
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
@@ -662,6 +663,21 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       return true;
     }
     return false;
+  }
+
+
+  /**
+   * Cancel dragging progress.
+   */
+  public void cancelDraggingProgress ()
+  {
+    // Cancel dragging progress
+    MachinePanel.this.graphModel.remove ( new Object []
+    { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
+    performCellsChanged ();
+    MachinePanel.this.firstState = null;
+    MachinePanel.this.tmpTransition = null;
+    MachinePanel.this.tmpState = null;
   }
 
 
@@ -2527,6 +2543,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
             }
             else if ( cell instanceof DefaultStateView )
             {
+              if ( !isSelectionAllowed ( event.getX (), event.getY () ) )
+              {
+                return;
+              }
+
               DefaultStateView stateView = ( DefaultStateView ) cell;
 
               // open state config dialog
@@ -2560,9 +2581,16 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         {
           MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
         }
-        else
+        else if ( object instanceof DefaultStateView )
         {
-          MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+          if ( isSelectionAllowed ( event.getX (), event.getY () ) )
+          {
+            MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+          }
+          else
+          {
+            MachinePanel.this.popup = createPopupMenu ();
+          }
         }
 
         if ( MachinePanel.this.popup != null )
@@ -2622,9 +2650,16 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           {
             MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
           }
-          else
+          else if ( object instanceof DefaultStateView )
           {
-            MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+            if ( isSelectionAllowed ( event.getX (), event.getY () ) )
+            {
+              MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+            }
+            else
+            {
+              MachinePanel.this.popup = createPopupMenu ();
+            }
           }
 
           if ( MachinePanel.this.popup != null )
@@ -2719,9 +2754,16 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           {
             MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
           }
-          else
+          else if ( object instanceof DefaultStateView )
           {
-            MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+            if ( isSelectionAllowed ( event.getX (), event.getY () ) )
+            {
+              MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+            }
+            else
+            {
+              MachinePanel.this.popup = createPopupMenu ();
+            }
           }
 
           if ( MachinePanel.this.popup != null )
@@ -3017,9 +3059,16 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           {
             MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
           }
-          else
+          else if ( object instanceof DefaultStateView )
           {
-            MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+            if ( isSelectionAllowed ( event.getX (), event.getY () ) )
+            {
+              MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+            }
+            else
+            {
+              MachinePanel.this.popup = createPopupMenu ();
+            }
           }
 
           if ( MachinePanel.this.popup != null )
@@ -3119,9 +3168,16 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           {
             MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
           }
-          else
+          else if ( object instanceof DefaultStateView )
           {
-            MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+            if ( isSelectionAllowed ( event.getX (), event.getY () ) )
+            {
+              MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+            }
+            else
+            {
+              MachinePanel.this.popup = createPopupMenu ();
+            }
           }
 
           if ( MachinePanel.this.popup != null )
@@ -3235,6 +3291,32 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public boolean isRedoAble ()
   {
     return this.redoUndoHandler.isRedoAble ();
+  }
+
+
+  /**
+   * Returns false if the selection is not allowed on a {@link State}, otherwise
+   * true.
+   * 
+   * @param x The x position.
+   * @param y The y position.
+   * @return False if the selection is not allowed on a {@link State}, otherwise
+   *         true.
+   */
+  private final boolean isSelectionAllowed ( int x, int y )
+  {
+    PortView portView = MachinePanel.this.jGTIGraph.getPortViewAt ( x, y );
+    if ( ( portView != null )
+        && ( portView.getParentView () instanceof StateView ) )
+    {
+      StateView stateView = ( StateView ) portView.getParentView ();
+
+      if ( !stateView.isSelectionAllowed ( x, y ) )
+      {
+        return false;
+      }
+    }
+    return true;
   }
 
 
@@ -3644,20 +3726,5 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       MachinePanel.this.gui.jGTITableMachine.repaint ();
       MachinePanel.this.gui.jGTITableMachinePDA.repaint ();
     }
-  }
-
-
-  /**
-   * Cancel dragging progress.
-   */
-  public void cancelDraggingProgress ()
-  {
-    // Cancel dragging progress
-    MachinePanel.this.graphModel.remove ( new Object []
-    { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
-    performCellsChanged ();
-    MachinePanel.this.firstState = null;
-    MachinePanel.this.tmpTransition = null;
-    MachinePanel.this.tmpState = null;
   }
 }

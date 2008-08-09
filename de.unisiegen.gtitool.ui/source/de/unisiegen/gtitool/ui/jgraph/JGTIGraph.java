@@ -2,17 +2,22 @@ package de.unisiegen.gtitool.ui.jgraph;
 
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 
+import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Transition;
 
 
 /**
@@ -74,6 +79,20 @@ public final class JGTIGraph extends JGraph implements Printable
 
 
   /**
+   * The {@link StateView} which is used to render the painted
+   * {@link Transition}.
+   */
+  private StateView stateView = null;
+
+
+  /**
+   * The end {@link Point} which is used to render the painted
+   * {@link Transition}.
+   */
+  private Point endPoint = null;
+
+
+  /**
    * Allocates a new {@link JGTIGraph}.
    * 
    * @param graphModel The {@link DefaultGraphModel}.
@@ -97,8 +116,8 @@ public final class JGTIGraph extends JGraph implements Printable
 
     if ( cell instanceof DefaultStateView )
     {
-      DefaultStateView stateView = ( DefaultStateView ) cell;
-      State state = stateView.getState ();
+      DefaultStateView defaultStateView = ( DefaultStateView ) cell;
+      State state = defaultStateView.getState ();
 
       // only if the short name is used
       if ( !state.isShortNameUsed () )
@@ -107,10 +126,10 @@ public final class JGTIGraph extends JGraph implements Printable
       }
 
       // translate
-      int x = event.getX () - ( int ) stateView.getPositionX ();
-      int y = event.getY () - ( int ) stateView.getPositionY ();
-      int width = ( int ) stateView.getWidth ();
-      int height = ( int ) stateView.getHeight ();
+      int x = event.getX () - ( int ) defaultStateView.getPositionX ();
+      int y = event.getY () - ( int ) defaultStateView.getPositionY ();
+      int width = ( int ) defaultStateView.getWidth ();
+      int height = ( int ) defaultStateView.getHeight ();
 
       // clip
       x = x < 0 ? 0 : x;
@@ -177,6 +196,70 @@ public final class JGTIGraph extends JGraph implements Printable
     }
 
     return new Rectangle ( minX, minY, maxX - minX, maxY - minY );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see JComponent#paintComponent(Graphics)
+   */
+  @Override
+  protected final void paintComponent ( Graphics graphics )
+  {
+    super.paintComponent ( graphics );
+
+    Graphics2D g = ( Graphics2D ) graphics;
+
+    if ( ( this.stateView != null ) && ( this.endPoint != null ) )
+    {
+      Point2D startPoint = this.stateView.getPerimeterPoint ( null, null,
+          this.endPoint );
+
+      int x1 = ( int ) startPoint.getX ();
+      int y1 = ( int ) startPoint.getY ();
+      int x2 = this.endPoint.x;
+      int y2 = this.endPoint.y;
+
+      g.drawLine ( x1, y1, x2, y2 );
+
+      int dx = x2 - x1;
+      int dy = y2 - y1;
+
+      double lenght = Math.sqrt ( Math.pow ( dx, 2 ) + Math.pow ( dy, 2 ) );
+
+      if ( lenght > 0 )
+      {
+        if ( dx >= 0 && dy >= 0 )
+        {
+          double cos = dx / lenght;
+          double acos = Math.acos ( cos );
+          g.rotate ( acos, x2, y2 );
+        }
+        else if ( dx >= 0 && dy < 0 )
+        {
+          double cos = -dx / lenght;
+          double acos = Math.acos ( cos );
+          g.rotate ( acos - Math.PI, x2, y2 );
+        }
+        else if ( dx < 0 && dy >= 0 )
+        {
+          double cos = dx / lenght;
+          double acos = Math.acos ( cos );
+          g.rotate ( acos, x2, y2 );
+        }
+        else if ( dx < 0 && dy < 0 )
+        {
+          double cos = -dx / lenght;
+          double acos = Math.acos ( cos );
+          g.rotate ( acos - Math.PI, x2, y2 );
+        }
+      }
+
+      g.fillPolygon ( new int []
+      { x2 - 5, x2 - 5, x2 }, new int []
+      { y2 + 5, y2 - 5, y2 }, 3 );
+    }
   }
 
 
@@ -251,6 +334,18 @@ public final class JGTIGraph extends JGraph implements Printable
 
 
   /**
+   * Resets the painted {@link Transition}.
+   */
+  public final void resetPaintedTransition ()
+  {
+    this.stateView = null;
+    this.endPoint = null;
+
+    repaint ();
+  }
+
+
+  /**
    * Sets the marginBottom.
    * 
    * @param marginBottom The marginBottom to set.
@@ -295,6 +390,30 @@ public final class JGTIGraph extends JGraph implements Printable
   public final void setMarginTop ( int marginTop )
   {
     this.marginTop = marginTop;
+  }
+
+
+  /**
+   * Sets the painted {@link Transition}.
+   * 
+   * @param stateView The used {@link StateView}.
+   * @param endPoint The end {@link Point}.
+   */
+  public final void setPaintedTransition ( StateView stateView, Point endPoint )
+  {
+    if ( stateView == null )
+    {
+      throw new IllegalArgumentException ( "state view is null" ); //$NON-NLS-1$
+    }
+    this.stateView = stateView;
+
+    if ( endPoint == null )
+    {
+      throw new IllegalArgumentException ( "end point is null" ); //$NON-NLS-1$
+    }
+    this.endPoint = endPoint;
+
+    repaint ();
   }
 
 

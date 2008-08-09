@@ -608,28 +608,32 @@ public final class StateView extends VertexView
       state = ( ( DefaultStateView ) getCell () ).getState ();
     }
 
-    boolean loopTransition = edge.getSource ().getParentView () == edge
-        .getTarget ().getParentView ();
-
+    boolean loopTransition = false;
     State otherState = null;
-    if ( edge.getSource ().getParentView () == this )
+    if ( edge != null )
     {
-      StateView stateView = ( StateView ) edge.getTarget ().getParentView ();
-      if ( stateView.getCell () instanceof DefaultStateView )
+      loopTransition = edge.getSource ().getParentView () == edge.getTarget ()
+          .getParentView ();
+
+      if ( edge.getSource ().getParentView () == this )
       {
-        DefaultStateView defaultStateView = ( DefaultStateView ) stateView
-            .getCell ();
-        otherState = defaultStateView.getState ();
+        StateView stateView = ( StateView ) edge.getTarget ().getParentView ();
+        if ( stateView.getCell () instanceof DefaultStateView )
+        {
+          DefaultStateView defaultStateView = ( DefaultStateView ) stateView
+              .getCell ();
+          otherState = defaultStateView.getState ();
+        }
       }
-    }
-    else
-    {
-      StateView stateView = ( StateView ) edge.getSource ().getParentView ();
-      if ( stateView.getCell () instanceof DefaultStateView )
+      else
       {
-        DefaultStateView defaultStateView = ( DefaultStateView ) stateView
-            .getCell ();
-        otherState = defaultStateView.getState ();
+        StateView stateView = ( StateView ) edge.getSource ().getParentView ();
+        if ( stateView.getCell () instanceof DefaultStateView )
+        {
+          DefaultStateView defaultStateView = ( DefaultStateView ) stateView
+              .getCell ();
+          otherState = defaultStateView.getState ();
+        }
       }
     }
 
@@ -995,12 +999,12 @@ public final class StateView extends VertexView
    */
   public final boolean isSelectionAllowed ( int absoluteX, int absoluteY )
   {
-    Rectangle2D b = getBounds ();
+    Rectangle2D r = getBounds ();
 
-    int x = ( int ) b.getX ();
-    int y = ( int ) b.getY ();
-    int width = ( int ) b.getWidth ();
-    int height = ( int ) b.getHeight ();
+    int x = ( int ) r.getX ();
+    int y = ( int ) r.getY ();
+    int width = ( int ) r.getWidth ();
+    int height = ( int ) r.getHeight ();
 
     int relativeX = absoluteX - x;
     if ( relativeX < 0 )

@@ -620,6 +620,58 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * Add a new {@link Transition}.
+   * 
+   * @param event The {@link MouseEvent}.
+   */
+  public void addNewTransition ( MouseEvent event )
+  {
+    DefaultStateView target = null;
+    try
+    {
+      target = ( DefaultStateView ) MachinePanel.this.jGTIGraph
+          .getFirstCellForLocation ( event.getPoint ().getX (), event
+              .getPoint ().getY () );
+    }
+    catch ( ClassCastException exc )
+    {
+      // Nothing to do
+    }
+
+    State state = ( ( DefaultStateView ) this.firstState.getCell () )
+        .getState ();
+
+    TransitionDialog transitionDialog = new TransitionDialog (
+        MachinePanel.this.mainWindowForm, MachinePanel.this,
+        MachinePanel.this.model, MachinePanel.this.machine.getAlphabet (),
+        MachinePanel.this.machine.getPushDownAlphabet (), state,
+        target == null ? null : target.getState (), new DefaultWord (),
+        new DefaultWord (), new TreeSet < Symbol > (), event.getPoint ().x,
+        event.getPoint ().y, MachinePanel.this.zoomFactor );
+    transitionDialog.show ();
+
+    performCellsChanged ();
+
+    switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
+    {
+      case WITHOUT_RETURN_TO_MOUSE :
+      {
+        // Do nothing
+        break;
+      }
+      case WITH_RETURN_TO_MOUSE :
+      {
+        // Return to the normal mouse after every click.
+        MachinePanel.this.mainWindowForm.getLogic ().addButtonState (
+            ButtonState.SELECTED_MOUSE );
+        break;
+      }
+    }
+    cancelDraggingProgress ();
+  }
+
+
+  /**
    * Add a new Warning
    * 
    * @param machineException The {@link MachineException} containing the data
@@ -644,6 +696,18 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       return true;
     }
     return false;
+  }
+
+
+  /**
+   * Cancel dragging progress.
+   */
+  public void cancelDraggingProgress ()
+  {
+    // Cancel dragging progress
+    removeTmpTransition ();
+    performCellsChanged ();
+    MachinePanel.this.firstState = null;
   }
 
 
@@ -1767,8 +1831,32 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     if ( state )
     {
+      // the transition listener have to consume some mouse events
+      MouseListener [] mouseListener = this.jGTIGraph.getMouseListeners ();
+      MouseMotionListener [] mouseMotionListener = this.jGTIGraph
+          .getMouseMotionListeners ();
+
+      for ( MouseListener current : mouseListener )
+      {
+        this.jGTIGraph.removeMouseListener ( current );
+      }
+      for ( MouseMotionListener current : mouseMotionListener )
+      {
+        this.jGTIGraph.removeMouseMotionListener ( current );
+      }
+
       this.jGTIGraph.addMouseListener ( this.addTransition );
       this.jGTIGraph.addMouseMotionListener ( this.transitionMove );
+
+      for ( MouseListener current : mouseListener )
+      {
+        this.jGTIGraph.addMouseListener ( current );
+      }
+      for ( MouseMotionListener current : mouseMotionListener )
+      {
+        this.jGTIGraph.addMouseMotionListener ( current );
+      }
+
       activeMouseAdapter = ActiveMouseAdapter.ADD_TRANSITION;
     }
     else
@@ -2665,6 +2753,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           {
             MachinePanel.this.dragged = true;
 
+            // consume the event to prevent the normal jgraph handling
+            event.consume ();
+
             PortView portView = MachinePanel.this.jGTIGraph.getPortViewAt (
                 event.getPoint ().x, event.getPoint ().y );
             if ( ( portView != null )
@@ -2675,9 +2766,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
             }
           }
         }
-
         else
         {
+          // consume the event to prevent the normal jgraph handling
+          event.consume ();
+
           MachinePanel.this.jGTIGraph.setPaintedTransition (
               MachinePanel.this.firstState, event.getPoint () );
         }
@@ -2692,7 +2785,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       @Override
       public void mouseMoved ( MouseEvent event )
       {
-
         if ( MachinePanel.this.firstState != null )
         {
           MachinePanel.this.jGTIGraph.setPaintedTransition (
@@ -2987,6 +3079,93 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * Open a new configuration.
+   * 
+   * @param event The {@link MouseEvent}.
+   */
+  public void openConfiguration ( MouseEvent event )
+  {
+    updateSelected ( event );
+
+    if ( event.getClickCount () >= 2 )
+    {
+      DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
+          .getFirstCellForLocation ( event.getPoint ().getX (), event
+              .getPoint ().getY () );
+      if ( cell == null )
+      {
+        return;
+      }
+      else if ( cell instanceof DefaultTransitionView )
+      {
+        DefaultTransitionView transitionView = ( DefaultTransitionView ) cell;
+
+        // open transition config dialog
+        Transition usedTransition = transitionView.getTransition ();
+        TransitionDialog transitionDialog = new TransitionDialog (
+            MachinePanel.this.mainWindowForm, MachinePanel.this,
+            MachinePanel.this.machine.getAlphabet (), MachinePanel.this.machine
+                .getPushDownAlphabet (), usedTransition );
+        transitionDialog.show ();
+
+        performCellsChanged ();
+      }
+      else if ( cell instanceof DefaultStateView )
+      {
+        if ( !isSelectionAllowed ( event.getX (), event.getY () ) )
+        {
+          return;
+        }
+
+        DefaultStateView stateView = ( DefaultStateView ) cell;
+
+        // open state config dialog
+        StateConfigDialog dialog = new StateConfigDialog (
+            MachinePanel.this.mainWindowForm, MachinePanel.this, stateView
+                .getState (), MachinePanel.this.model );
+        dialog.show ();
+
+        // Update the machine table status
+        updateMachineTableStatus ();
+      }
+    }
+
+  }
+
+
+  /**
+   * Open a new {@link PopupMenu}.
+   * 
+   * @param event The {@link MouseEvent}.
+   */
+  public void openPopupMenu ( MouseEvent event )
+  {
+    DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
+        .getFirstCellForLocation ( event.getPoint ().getX (), event.getPoint ()
+            .getY () );
+    if ( object == null )
+    {
+      MachinePanel.this.popup = createPopupMenu ();
+    }
+    else if ( object instanceof DefaultTransitionView )
+    {
+      MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+    }
+    else if ( object instanceof DefaultStateView )
+    {
+      if ( isSelectionAllowed ( event.getX (), event.getY () ) )
+      {
+        MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+      }
+      else
+      {
+        MachinePanel.this.popup = createPopupMenu ();
+      }
+    }
+  }
+
+
+  /**
    * Performs the cells changed on the {@link GraphModel}.
    */
   public final void performCellsChanged ()
@@ -3005,6 +3184,15 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * Remove the temporary painted transition.
+   */
+  public void removeTmpTransition ()
+  {
+    this.jGTIGraph.resetPaintedTransition ();
   }
 
 
@@ -3367,165 +3555,5 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       MachinePanel.this.gui.jGTITableMachine.repaint ();
       MachinePanel.this.gui.jGTITableMachinePDA.repaint ();
     }
-  }
-
-
-  /**
-   * Cancel dragging progress.
-   */
-  public void cancelDraggingProgress ()
-  {
-    // Cancel dragging progress
-    removeTmpTransition ();
-    performCellsChanged ();
-    MachinePanel.this.firstState = null;
-  }
-
-
-  /**
-   * Open a new configuration.
-   * 
-   * @param event The {@link MouseEvent}.
-   */
-  public void openConfiguration ( MouseEvent event )
-  {
-    updateSelected ( event );
-
-    if ( event.getClickCount () >= 2 )
-    {
-      DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
-          .getFirstCellForLocation ( event.getPoint ().getX (), event
-              .getPoint ().getY () );
-      if ( cell == null )
-      {
-        return;
-      }
-      else if ( cell instanceof DefaultTransitionView )
-      {
-        DefaultTransitionView transitionView = ( DefaultTransitionView ) cell;
-
-        // open transition config dialog
-        Transition usedTransition = transitionView.getTransition ();
-        TransitionDialog transitionDialog = new TransitionDialog (
-            MachinePanel.this.mainWindowForm, MachinePanel.this,
-            MachinePanel.this.machine.getAlphabet (), MachinePanel.this.machine
-                .getPushDownAlphabet (), usedTransition );
-        transitionDialog.show ();
-
-        performCellsChanged ();
-      }
-      else if ( cell instanceof DefaultStateView )
-      {
-        if ( !isSelectionAllowed ( event.getX (), event.getY () ) )
-        {
-          return;
-        }
-
-        DefaultStateView stateView = ( DefaultStateView ) cell;
-
-        // open state config dialog
-        StateConfigDialog dialog = new StateConfigDialog (
-            MachinePanel.this.mainWindowForm, MachinePanel.this, stateView
-                .getState (), MachinePanel.this.model );
-        dialog.show ();
-
-        // Update the machine table status
-        updateMachineTableStatus ();
-      }
-    }
-
-  }
-
-
-  /**
-   * Open a new {@link PopupMenu}.
-   * 
-   * @param event The {@link MouseEvent}.
-   */
-  public void openPopupMenu ( MouseEvent event )
-  {
-    DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
-        .getFirstCellForLocation ( event.getPoint ().getX (), event.getPoint ()
-            .getY () );
-    if ( object == null )
-    {
-      MachinePanel.this.popup = createPopupMenu ();
-    }
-    else if ( object instanceof DefaultTransitionView )
-    {
-      MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
-    }
-    else if ( object instanceof DefaultStateView )
-    {
-      if ( isSelectionAllowed ( event.getX (), event.getY () ) )
-      {
-        MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
-      }
-      else
-      {
-        MachinePanel.this.popup = createPopupMenu ();
-      }
-    }
-  }
-
-
-  /**
-   * Add a new {@link Transition}.
-   * 
-   * @param event The {@link MouseEvent}.
-   */
-  public void addNewTransition ( MouseEvent event )
-  {
-    DefaultStateView target = null;
-    try
-    {
-      target =  ( DefaultStateView ) MachinePanel.this.jGTIGraph
-      .getFirstCellForLocation ( event.getPoint ().getX (), event
-          .getPoint ().getY () );
-    }
-    catch ( ClassCastException exc )
-    {
-      // Nothing to do
-    }
-
-    State state = ( ( DefaultStateView ) this.firstState.getCell () )
-        .getState ();
-
-    TransitionDialog transitionDialog = new TransitionDialog (
-        MachinePanel.this.mainWindowForm, MachinePanel.this,
-        MachinePanel.this.model, MachinePanel.this.machine.getAlphabet (),
-        MachinePanel.this.machine.getPushDownAlphabet (), state,
-        target == null ? null : target.getState (), new DefaultWord (),
-        new DefaultWord (), new TreeSet < Symbol > (), event.getPoint ().x,
-        event.getPoint ().y, MachinePanel.this.zoomFactor );
-    transitionDialog.show ();
-
-    performCellsChanged ();
-
-    switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
-    {
-      case WITHOUT_RETURN_TO_MOUSE :
-      {
-        // Do nothing
-        break;
-      }
-      case WITH_RETURN_TO_MOUSE :
-      {
-        // Return to the normal mouse after every click.
-        MachinePanel.this.mainWindowForm.getLogic ().addButtonState (
-            ButtonState.SELECTED_MOUSE );
-        break;
-      }
-    }
-    cancelDraggingProgress ();
-  }
-
-
-  /**
-   * Remove the temporary painted transition.
-   */
-  public void removeTmpTransition ()
-  {
-    this.jGTIGraph.resetPaintedTransition ();
   }
 }

@@ -138,8 +138,9 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
     public final void mouseDragged ( MouseEvent event )
     {
       autoscroll ( JGTIBasicGraphUI.this.graph, event.getPoint () );
-      if ( JGTIBasicGraphUI.this.graph.isEnabled () )
+      if ( JGTIBasicGraphUI.this.graph.isEnabled () && !event.isConsumed () )
       {
+
         if ( ( this.handler != null )
             && ( this.handler == JGTIBasicGraphUI.this.marquee ) )
         {

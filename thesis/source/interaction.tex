@@ -8,6 +8,13 @@
 
 \chapter{Interaktion}\label{Interaction}
 
+In diesem Kapitel werden die Interaktionen mit dem Benutzer erläutert. Ein
+wichtiger Aspekt der Interaktionen ist, dass der Benutzer angezeigt bekommt,
+wenn er etwas falsches eingeben hat. Ein weiterer Punkt ist, dass der Benutzer
+bei einem nicht deterministischen Kellerautomaten auswählen muss, welchen
+Übergang der Automat machen soll, da dieser das im Allgemeinen nicht erkennen
+kann.
+
 
 \section{Fehler und Warnung}
 
@@ -19,7 +26,7 @@ Fehlern bzw. Warnungen behandelt hätte werden können.\vspace{10pt}
 
 Der Hauptgrund für die Auswahl dieser Strategie war, dass der Benutzer durch das
 fehlerhafte Eingeben bzw. durch das Beheben der Fehler hoffentlich mehr lernt,
-als wenn er die Eingaben gar nicht erst hätte machen können. In diesem Kapitel
+als wenn er die Eingaben gar nicht erst hätte machen können. In diesem Abschnitt
 werden die verschiedenen Fehler und Warnungen beschrieben, die bei Grammatiken und
 Automaten auftreten können.
 
@@ -113,4 +120,25 @@ verwendet, der auch bei den Erreichbaren Zuständen in Kapitel
 
 \section{Operationen mit dem Automaten Keller}
 
-TODOCF
+Ein wichtiger Punkt der Interaktion mit dem Benutzer ist, dass der Benutzer
+nach einer Umwandlung einer kontextfreien Grammatik in einen Kellerautomaten
+einen Übergang auswählen muss, weil der entstehende Automaten nicht
+deterministisch ist. Die Umwandlung ist in Abschnitt
+\ref{ConverToGrammarContextFree} zu finden.\vspace{10pt}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=12cm]{../images/grammar_pda.png}
+\caption{Operationen mit dem Automaten Keller}
+\end{center}
+\end{figure}
+
+Bei dem verwendeten Beispiel kommen zwei Übergänge in Frage. Es könnte der
+Übergang gewählt werden, der \Symbol{E} vom Keller liest und nichts auf diesen
+schreibt, oder aber der Übergang der \Symbol{E} vom Keller liest und
+\Symbol{a}\Symbol{E}\Symbol{b} auf ihn schreibt. Da \Symbol{a} auf dem
+Eingabeband steht, sollte der zweite Übergang ausgewählt werden. Dem Benutzer
+steht es allerdings frei auch den anderen Übergang auszuwählen. In diesem Fall
+würde das Wort \Symbol{a}\Symbol{a}\Symbol{b}\Symbol{b} aber nicht akzeptiert
+werden. Der Benutzer hat bei einer falschen Wahl allerdings die Möglichkeit
+einen oder mehrere Schritte zurückzugehen, um dann die richtige Wahl zu treffen.

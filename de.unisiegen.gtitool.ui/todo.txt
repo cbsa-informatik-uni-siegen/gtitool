@@ -1,7 +1,5 @@
 *** TODO ***
 
-CF		- Sonderbehandlung zum Anlegen einer Loop Transition implementieren	  
-
 
 *** FEATURE ***
 

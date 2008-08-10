@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 
@@ -18,6 +19,7 @@ import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.preferences.PreferenceManager;
 
 
 /**
@@ -221,44 +223,114 @@ public final class JGTIGraph extends JGraph implements Printable
       int x2 = this.endPoint.x;
       int y2 = this.endPoint.y;
 
-      g.drawLine ( x1, y1, x2, y2 );
+      Rectangle2D bounds = this.stateView.getBounds ();
 
-      int dx = x2 - x1;
-      int dy = y2 - y1;
-
-      double lenght = Math.sqrt ( Math.pow ( dx, 2 ) + Math.pow ( dy, 2 ) );
-
-      if ( lenght > 0 )
+      if ( bounds.contains ( x2, y2 )
+          && this.stateView.isSelectionAllowed ( x2, y2 ) )
       {
-        if ( dx >= 0 && dy >= 0 )
-        {
-          double cos = dx / lenght;
-          double acos = Math.acos ( cos );
-          g.rotate ( acos, x2, y2 );
-        }
-        else if ( dx >= 0 && dy < 0 )
-        {
-          double cos = -dx / lenght;
-          double acos = Math.acos ( cos );
-          g.rotate ( acos - Math.PI, x2, y2 );
-        }
-        else if ( dx < 0 && dy >= 0 )
-        {
-          double cos = dx / lenght;
-          double acos = Math.acos ( cos );
-          g.rotate ( acos, x2, y2 );
-        }
-        else if ( dx < 0 && dy < 0 )
-        {
-          double cos = -dx / lenght;
-          double acos = Math.acos ( cos );
-          g.rotate ( acos - Math.PI, x2, y2 );
-        }
-      }
+        int x = ( int ) bounds.getX ();
+        int y = ( int ) bounds.getY ();
+        int width = ( int ) bounds.getWidth ();
 
-      g.fillPolygon ( new int []
-      { x2 - 5, x2 - 5, x2 }, new int []
-      { y2 + 5, y2 - 5, y2 }, 3 );
+        boolean powerSet = false;
+
+        if ( this.stateView.getCell () instanceof DefaultStateView )
+        {
+          State state = ( ( DefaultStateView ) this.stateView.getCell () )
+              .getState ();
+
+          if ( state.isLoopTransition () )
+          {
+            g.setColor ( PreferenceManager.getInstance ()
+                .getColorItemTransitionSelected ().getColor () );
+            y += StateView.LOOP_TRANSITION_OFFSET;
+          }
+          if ( state.isStartState () )
+          {
+            x += StateView.START_OFFSET;
+            width -= StateView.START_OFFSET;
+          }
+          powerSet = state.isPowerState ();
+        }
+
+        x += width / 2 - 10;
+
+        // loop
+        g.drawLine ( x - 0, y, x - 0, y - 1 );
+        if ( powerSet )
+        {
+          g.drawLine ( x - 1, y - 2, x - 1, y - 4 );
+          g.drawLine ( x - 2, y - 5, x - 2, y - 15 );
+        }
+        else
+        {
+          g.drawLine ( x - 1, y - 2, x - 1, y - 3 );
+          g.drawLine ( x - 2, y - 4, x - 2, y - 15 );
+        }
+        g.drawLine ( x - 1, y - 16, x - 1, y - 17 );
+        g.drawLine ( x - 0, y - 18, x - 0, y - 19 );
+        g.drawLine ( x + 1, y - 20, x + 1, y - 21 );
+        g.drawLine ( x + 2, y - 22, x + 4, y - 22 );
+        g.drawLine ( x + 5, y - 23, x + 14, y - 23 );
+        g.drawLine ( x + 15, y - 22, x + 16, y - 22 );
+        g.drawLine ( x + 17, y - 21, x + 18, y - 21 );
+        g.drawLine ( x + 19, y - 20, x + 19, y - 19 );
+        g.drawLine ( x + 20, y - 18, x + 20, y - 17 );
+        g.drawLine ( x + 21, y - 16, x + 21, y - 1 );
+
+        // arrow
+        g.drawLine ( x + 20, y - 7, x + 20, y );
+        g.drawLine ( x + 19, y - 9, x + 19, y - 2 );
+        g.drawLine ( x + 18, y - 10, x + 18, y - 6 );
+        g.drawLine ( x + 17, y - 11, x + 17, y - 10 );
+        g.drawLine ( x + 22, y - 7, x + 22, y - 2 );
+        g.drawLine ( x + 23, y - 7, x + 23, y - 4 );
+        g.drawLine ( x + 24, y - 8, x + 24, y - 5 );
+        g.drawLine ( x + 25, y - 8, x + 25, y - 6 );
+        g.drawLine ( x + 26, y - 9, x + 26, y - 8 );
+        g.drawLine ( x + 27, y - 9, x + 27, y - 9 );
+      }
+      else
+      {
+        g.drawLine ( x1, y1, x2, y2 );
+
+        int dx = x2 - x1;
+        int dy = y2 - y1;
+
+        double lenght = Math.sqrt ( Math.pow ( dx, 2 ) + Math.pow ( dy, 2 ) );
+
+        if ( lenght > 0 )
+        {
+          if ( ( dx >= 0 ) && ( dy >= 0 ) )
+          {
+            double cos = dx / lenght;
+            double acos = Math.acos ( cos );
+            g.rotate ( acos, x2, y2 );
+          }
+          else if ( ( dx >= 0 ) && ( dy < 0 ) )
+          {
+            double cos = -dx / lenght;
+            double acos = Math.acos ( cos );
+            g.rotate ( acos - Math.PI, x2, y2 );
+          }
+          else if ( ( dx < 0 ) && ( dy >= 0 ) )
+          {
+            double cos = dx / lenght;
+            double acos = Math.acos ( cos );
+            g.rotate ( acos, x2, y2 );
+          }
+          else if ( ( dx < 0 ) && ( dy < 0 ) )
+          {
+            double cos = -dx / lenght;
+            double acos = Math.acos ( cos );
+            g.rotate ( acos - Math.PI, x2, y2 );
+          }
+        }
+
+        g.fillPolygon ( new int []
+        { x2 - 5, x2 - 5, x2 }, new int []
+        { y2 + 5, y2 - 5, y2 }, 3 );
+      }
     }
   }
 

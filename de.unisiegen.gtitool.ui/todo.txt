@@ -1,9 +1,5 @@
 *** TODO ***
 
-BM		- Maus-Klick-Modus testen
-BM		- Die neue Behandlung zum Anlegen der Transition einbauen. Als Schnittstelle
-		  muss setPaintedTransition ( StateView stateView, Point endPoint ) und
-		  resetPaintedTransition () auf dem JGTIGraph benutzt werden
 CF		- Sonderbehandlung zum Anlegen einer Loop Transition implementieren	  
 
 

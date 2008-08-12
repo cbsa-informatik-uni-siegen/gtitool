@@ -1,9 +1,0 @@
-SM		- Reguläre Ausdrücke parsen können
-SM		- Reguläre Ausdrücke in einen Automaten umwandeln können (Zwei Arten)
-SM		- LaTeX Export (Dynamische Umsetzung wie bei TPML)
-SM		- Bei einer Grammatik direkt das Wort eingeben können
-SM		- Automat in Regulären Ausdruck umwandeln
-SM		- Linksrekursion (Zwei Arten)
-SM		- Linksrefaktorisierung
-SM		- Drucken: Mehrere Komponenten pro Seite mit Auto-Verkleinerung, also
-		  nur mit einem Print-Job

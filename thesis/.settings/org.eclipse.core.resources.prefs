@@ -1,7 +1,8 @@
-#Fri Aug 08 01:04:33 CEST 2008
+#Tue Aug 12 23:53:10 CEST 2008
 eclipse.preferences.version=1
 encoding//source/autolayout.tex=UTF-8
 encoding//source/command.tex=UTF-8
+encoding//source/concepts.tex=UTF-8
 encoding//source/conclusion.tex=UTF-8
 encoding//source/convertto.tex=UTF-8
 encoding//source/grammar.tex=UTF-8
@@ -11,6 +12,7 @@ encoding//source/introduction.tex=UTF-8
 encoding//source/machine.tex=UTF-8
 encoding//source/minimize.tex=UTF-8
 encoding//source/parser.tex=UTF-8
+encoding//source/perspective.tex=UTF-8
 encoding//source/print.tex=UTF-8
 encoding//source/statement.tex=UTF-8
 encoding//source/thesis.tex=UTF-8

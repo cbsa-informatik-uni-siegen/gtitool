@@ -27,7 +27,35 @@ TODOCF
 
 \subsection{Übergangstabelle}
 
-TODOCF
+Während der Entwicklung und ersten Tests des \gtitools kam der Wunsch auf,
+einen Automaten nicht nur graphisch zu bearbeiten, sondern auch in der
+Übergangstabelle. Dadurch soll es dem Benutzer ermöglicht werden, Übergänge
+schneller anzulegen, als es bei der normaler Methode in der Graphenansicht der
+Fall wäre. Um diese neue Methode zu implementieren wurden einige verschiedene
+Umsetzungen diskutiert. Zur Diskusion standen unter anderen, dass in jeder
+Zelle der Tabelle ausgewählt werden kann, zu welchen Zuständen ein Übergang
+existiert. Diese Auswahl hätte allerdings bei der Umsetzung schlecht
+ausgesehen, zumindest bei hinreichend vielen Zuständen. Aus diesem Grund wurde
+dieser Ansatz verworfen.\vspace{10pt}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=12cm]{../images/machine_table.png}
+\caption{Übergangstabelle}
+\end{center}
+\end{figure}
+
+Als nächste mögliche Umsetzung wurde diskutiert, ob es technisch möglich sei,
+in jede Zelle einen Parser zu verwenden. Dieser Parser musste so implementiert
+werden, dass er einen oder mehrere, durch Komma getrennte Zustände als Eingabe
+akzeptiert. Im Kapitel \ref{Parser} werden einige kontextsensitive Bedingungen
+angesprochen, die auch bei dem hier vorliegenden Parser verwendet werden
+mussten, da es dem Benutzer nicht möglich sein sollte, einen oder mehrere
+Zustände anzugeben, die nicht im Graphen vorkommen. Der Parser als solches
+konnte leicht implementiert werden, es gab allerdings einige technische
+Probleme diesen in jede Zelle zu implementieren. Diese Probleme konnten gelöst
+werden, so dass der Benutzer nun in der Lage ist, Übergänge per Tabelle
+anzulegen, zu modifizieren und zu löschen.
 
 
 \subsection{Keller Operationen Tabelle}

@@ -14,7 +14,39 @@
 
 \subsection{Automatendarstellung mit JGraph}
 
-TODOBM
+Bei der Darstellung der Automaten haben wir uns sehr an dem aktuellen
+Vorlesungsskript orientiert. Wir wollten eine möglichst hohe Überdeckung
+erreichen, um sicherzustellen, dass ein Benutzer einen existierenden Automaten
+verstehen kann, ohne sich noch viel einlesen zu müssen. In den
+Vorlesungsunterlagen wird ein Zustand als Kreis
+dargestellt. Ein Startzustand wird über einen doppelten Rahmen gekennzeichnet
+und ein Startzustand erkennt man an einem Pfeil, der optional mit Start
+beschriftet sein kann.\vspace{10pt}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=12cm]{../images/enfa_example.png}
+\caption{Beispiel für eine Automatendarstellung mit JGraph}
+\end{center}
+\end{figure}
+
+Um dies zu realisieren haben wir uns die frei verfübare Java Bibliothek JGraph
+zunutze gemacht, und nach unseren Bedürfnissen angepasst. Als erstes mussten
+wir mit Hilfe von JGraph Komponenten ein geeignete Darstellung von Zuständen
+und Übergängen erreichen. Diese Komponenten mussten dynamisch angelegt,
+gelöscht und bearbeitet werden können. Nachdem wir also eine passende
+Darstellung für unsere Automaten gefunden hatten, mussten wir noch die
+Verknüpfung von den grafischen Elementen und den Kernelementen herstellen. Um
+eine eindeutige Zuweisung von diesen Elementen zu erreichen, haben wir uns dazu
+entschieden, die Kernelemente als Attribut in den grafischen Komponenten.\vspace{10pt}
+
+Nachdem die Verknüpfung der Komponenten erledigt war, konnte man die
+Darstellung der Zustände und Übergänge anhand der entsprechenden Daten
+anpassen. Das bedeutet für Zustände, das man den Namen des Zustandsobjekts
+anzeigt, und auch auswertet, ob es sich um einen Startzustand oder Endzustand
+handelt. Bei den Übergängen konnte die Übergangsmenge als Beschriftung benutzt
+werden, wie es bei der Vorlage im Skript auch der Fall ist.\vspace{10pt}
+
 
 
 \subsection{Anpassung von JGraph}
@@ -66,7 +98,29 @@ anzulegen, zu modifizieren und zu löschen.
 
 \subsection{Keller Operationen Tabelle}
 
-TODOBM
+Anhand der Tabelle für Kelleroperationen kann der User genau nachvollziehen,
+was genau mit unserem Keller passiert, wenn wir mit diesem
+Übergang in einen anderen Zustand übergehen.\vspace{10pt}
+
+Die Tabelle enthält einen Eintrag pro Übergang in unserem Automaten. Jeder
+Eintrag enthält den Zustand von dem der Übergang ausgeht, den Zustand zu dem
+wir übergehen und die entsprechende Übergangsmenge. Zusätzlich wird noch
+das Wort angegeben, welches bei diesem Übergang vom Keller gelesen wird, und
+das Wort, welches auf den Keller geschrieben wird. Wenn wir nichts von dem
+Keller lesen oder auf den Keller schreiben wird als Wort $\epsilon$
+verwendet.\vspace{10pt}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=8cm]{../images/stack_operation_table.png}
+\caption{Keller Operationen Tabelle}
+\end{center}
+\end{figure}
+
+Als Orientierungshilft für den Benutzer kann man einen Eintrag in der Tabelle
+auswählen, und es wird dann der entsprechende Übergang im Automaten farblich
+hervorgehoben. Dies soll dabei helfen die Funktionsweise des aktuellen
+Automaten nachzuvollziehen.\vspace{10pt}
 
 
 \section{Wort-Navigation}
@@ -74,7 +128,46 @@ TODOBM
 
 \subsection{Deterministische Navigation}
 
-TODOBM
+Wir wollten dem Nutzer auch die Möglichkeit geben, sich anzusehen, wie der
+konstruierte Automat ein beliebiges Eingabewort abarbeitet. Für diesen Zweck
+wurde die Wortnavigation entwickelt.\vspace{10pt}
+
+Wenn der Nutzer den Wortnavigationsmodus startet findet er am unteren
+Bildschirmrand zwei Textfelder. Dabei handelt es sich um ein Eingabefeld für
+das Eingabewort, und um eine Anzeige des aktuellen Kellers. In der
+deterministischen Wortnavigation spielt die Kelleranzeige keine Rolle. Diese
+wird allerdings im folgenden Kapitel benötigt, und dann auch näher erläutert
+werden.\vspace{10pt}
+
+Um den Benutzer eine Hilfestellung bei der Eingabe eines Wortes zu geben, wird
+rechts neben dem Eingabefeld das aktuelle Alphabet angezeigt. Man kann nur
+Symbole verwenden, welche auch im aktuellen Alphabet enthalten
+sind.\vspace{10pt}
+
+  \begin{figure}[h]
+  \begin{center}
+  \includegraphics[width=12cm]{../images/dfa_navigation.png}
+  \caption{Automat - Wortnavigation}
+  \end{center}
+  \end{figure}
+
+Nachdem ein Wort eingegeben wurde kann der Nutzer dann die Verarbeitung des
+Worts starten. Es besteht die Möglichkeit sich Symbol für Symbol weiter durch
+das Wort zu arbeiten, und den genauen Weg im Automaten nachzuvollziehen. Um
+Verständnisprobleme besser beseitigen zu können, ist auch hier eine Navigation
+in Vor- und Rückrichtung möglich.\vspace{10pt}
+\vspace{10pt}
+
+Für jeden Schritt werden die Zustände farblich hervorgehoben, in denen sich der
+Automat aktuell befindet. Zusätzlich wird auch der Übergang und das
+entsprechende Symbol des Übergangs hervorgehoben, über welchen man in diesen
+Zustand gekommen ist. In dem Feld, in welchem man das Wort eingegeben hat, wird
+jetzt angezeigt, bis zu welcher Stelle der Automat das Wort schon verarbeitet
+hat.\vspace{10pt}
+
+Wenn man das ganze Wort verarbeitet hat bekommt der Benutzer eine Information,
+ob der Automat das Wort akzeptiert hat, oder ob das Wort nicht in der Sprache
+des Automaten liegt.\vspace{10pt}
 
 
 \subsection{Zustands Pfad}

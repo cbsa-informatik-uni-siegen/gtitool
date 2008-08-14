@@ -24,7 +24,7 @@ präsentieren.
 Wenn ein Benutzer eine Grammatik vollständig erstellt hat, kann es durchaus
 interessant sein, den Automaten zu sehen, welcher die Sprache akzeptiert, die
 durch die Grammatik beschrieben wird. Vor allem, da für Automaten weitaus mehr
-Verwendungsmöglichkeiten existieren. 
+Verwendungsmöglichkeiten in diesem Werkzeug existieren. 
 
 \subsection{Umwandeln einer regulären Grammatik}\label{ConverToGrammarRegular}
 
@@ -70,7 +70,26 @@ erhalten so den entsprechenden Automaten.
 \subsection{Umwandeln einer kontextfreien
 Grammatik}\label{ConverToGrammarContextFree}
 
-TODOBM
+Der Benutzer hat auch die Möglichkeit, eine konstruierte kontextfreie Grammatik
+in einen Kellerautomaten umwandeln zu lassen. Dazu wird das Verfahren des
+rekursiven Abstiegs verwendet, welches in der Vorlesung vorgestellt
+wurde.\vspace{10pt}
+
+Bei diesem Algorithmus wird zunächst ein Startzustand angelegt, welcher das
+Startsymbol der Grammatik in den Keller legt. Dann wird für jede Produktion
+ein Übergang angelegt, welcher die Rechte Seite der Produktion vom Keller
+entfernt, und dafür die linke Seite der Produktion auf den Keller
+schreibt.\vspace{10pt}
+
+Wenn alle Produktion verarbeitet wurden, werden noch zusätzlich pro
+Terminalzeichen ein Übergang angelegt. In jedem dieser Übergänge wird das
+entsprechende Terminalzeichen vom Eingabewort gelesen und vom Keller des
+Automaten genommen. Das bedeutet, es muss das gleiche Terminalzeichen als
+oberstes im Keller  und als nächstes Zeichen im Wort stehen.\vspace{10pt}
+
+Durch die Zweite Ansicht (siehe Kapitel \ref{SecondView}) hat der Benuzter auch
+die Möglichkeit die Ausgangsgrammatik und den enstandenen Automaten nebeneinander
+zu sehen, um die Zusammenhänge besser verstehen zu können.
 
 
 \section{Automat umwandeln}\label{ConverToMachine}

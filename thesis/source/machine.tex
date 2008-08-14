@@ -213,19 +213,53 @@ kleinen Schritten verdeutlicht bekommt, wie der zugrunde liegende Algorithmus
 arbeitet, so dass diese Arbeitsweise sehr einfach nachzuvollziehen
 ist.\vspace{10pt}
 
+Zur Umsetzung wurde der in \gticitepage{Algorithmen}{536} angegebene Algorithmus
+als Vorlage benutzt. Dieser Algorithmus implementiert die Breitensuche auf
+einem Graphen G mit Startknoten s. Zur Interpretation des Algorithmus ist noch
+zu sagen, dass das Attribut Farbe eines Knoten dazu verwendet wird, zu
+speichern in welchem Phase des Algorithmus er sich befindet. Ist ein Knoten
+weiss, bedeutet das, dass er noch nicht erkannt wurde. Am Anfang sind alle
+Knoten, außer dem Startknoten weiss. Grau bedeutet, dass der Knoten erkannt
+wurde, aber noch nicht vollständig abgearbeitet wurde. Wurde ein Knoten
+abgearbeitet, ändert sich seine Farbe in schwarz. Bei der Umsetzung im \gtitool
+wurde eine ähnliche Umsetzung gewählt, die nun besprochen wird.\vspace{10pt}
+
+\newpage
+\noindent
+\verb|BFS(G,s)|\\
+\verb|for alle Knoten u |$\in$\verb| V[G] - {s}|\\
+\verb|    do farbe[u] |$\gets$\verb| WEISS|\\
+\verb|       d[u] |$\gets \infty$\\
+\verb|       |$\pi$\verb|[u] |$\gets$\verb| NIL|\\
+\verb|farbe[s] |$\gets$\verb| GRAU|\\
+\verb|d[s] |$\gets$\verb| 0|\\
+\verb||$\pi$\verb|[s] |$\gets$\verb| NIL|\\
+\verb|Q |$\gets \emptyset$\\
+\verb|ENQUEUE(Q,s)|\\
+\verb|while Q |$\neq \emptyset$\\
+\verb|      do u |$\gets$\verb| DEQUEUE(Q)|\\
+\verb|         for alle v |$\in$\verb| Adj[u]|\\
+\verb|             do if farbe[v] = WEISS|\\
+\verb|                   then farbe[v] |$\gets$\verb| GRAU|\\
+\verb|                        d[v] |$\gets$\verb| d[u] + 1|\\
+\verb|                        |$\pi$\verb|[v] |$\gets$\verb| u|\\
+\verb|                        ENQUEUE(Q,v)|\\
+\verb|         farbe[u] |$\gets$\verb| SCHWARZ|\\
+\vspace{10pt}
+
+Der dann im Programm umgesetzte Algorithmus besteht aus drei Phasen. In der
+ersten Phase wird ein noch nicht abgearbeiteter Zustand ausgewählt, zu Beginn
+wird mit dem Startzustand begonnen. In der zweiten Phase werden die von diesem
+Zustand aus direkt erreichbaren Zustände berechnet und dem Benutzer hervorgehoben
+dargestellt. In der dritten Phase werden alle bis jetzt zu erreichenden Zustände
+hervorgehoben. Gleichzeitig bekommt der Benutzer in der Outline mitgeteilt,
+welcher Zustand jetzt fertiggestellt ist und welche noch berechnet werden müssen.
+Durch diese sehr feine Unterteilung, soll ein besseres Verständnis des
+Algorithmus erreicht werden.
+
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=12cm]{../images/reachable_states.png}
 \caption{Erreichbare Zustände}
 \end{center}
 \end{figure}
-
-Der verwendete Algorithmus besteht aus drei Phasen. In der ersten Phase wird ein
-noch nicht abgearbeiteter Zustand ausgewählt, zu Beginn wird mit dem Startzustand
-begonnen. In der zweiten Phase werden die von diesem Zustand aus direkt
-erreichbaren Zustände berechnet und dem Benutzer hervorgehoben dargestellt. In
-der dritten Phase werden alle bis jetzt zu erreichenden Zustände hervorgehoben.
-Gleichzeitig bekommt der Benutzer in der Outline mitgeteilt, welcher Zustand
-jetzt fertiggestellt ist und welche noch berechnet werden müssen. Durch diese
-sehr feine Unterteilung, soll ein besseres Verständnis des Algorithmus erreicht
-werden.

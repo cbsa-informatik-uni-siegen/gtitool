@@ -165,7 +165,14 @@ anzulegen, zu modifizieren und zu löschen.
 
 Anhand der Tabelle für Kelleroperationen kann der User genau nachvollziehen,
 was genau mit unserem Keller passiert, wenn wir mit diesem
-Übergang in einen anderen Zustand übergehen.\vspace{10pt}
+Übergang in einen anderen Zustand übergehen.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=12cm]{../images/stack_operation_table.png}
+\caption{Keller Operationen Tabelle}
+\end{center}
+\end{figure}
 
 Die Tabelle enthält einen Eintrag pro Übergang in unserem Automaten. Jeder
 Eintrag enthält den Zustand von dem der Übergang ausgeht, den Zustand zu dem
@@ -173,14 +180,7 @@ wir übergehen und die entsprechende Übergangsmenge. Zusätzlich wird noch
 das Wort angegeben, welches bei diesem Übergang vom Keller gelesen wird, und
 das Wort, welches auf den Keller geschrieben wird. Wenn wir nichts von dem
 Keller lesen oder auf den Keller schreiben wird als Wort $\epsilon$
-verwendet.\vspace{10pt}
-
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width=8cm]{../images/stack_operation_table.png}
-\caption{Keller Operationen Tabelle}
-\end{center}
-\end{figure}
+verwendet.\vspace{10pt} 
 
 Als Orientierungshilft für den Benutzer kann man einen Eintrag in der Tabelle
 auswählen, und es wird dann der entsprechende Übergang im Automaten farblich

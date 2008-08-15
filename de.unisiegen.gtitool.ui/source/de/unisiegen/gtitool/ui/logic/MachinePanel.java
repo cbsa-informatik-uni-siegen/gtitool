@@ -3162,6 +3162,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         MachinePanel.this.popup = createPopupMenu ();
       }
     }
+    
+    if ( MachinePanel.this.popup != null )
+    {
+      MachinePanel.this.popup.show ( ( Component ) event.getSource (),
+          event.getX (), event.getY () );
+    }
+    
   }
 
 

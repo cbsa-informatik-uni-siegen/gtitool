@@ -6,29 +6,12 @@
 %%
 
 
-\chapter{Oberflächengestaltung}\label{GUI}
+\chapter{Oberfläche}\label{GUI}
 
-
-\section{Redo/Undo}
-
-Da das Lernwerkzeug vom Aussehen her sehr an einen Editor angelehnt ist,
-wollten wir dem Benutzer auch eine Möglichkeit geben Schritte rückgängig zu
-machen oder wiederherzustellen. Dies war jedoch zu einem Zeitpunkt, zu dem bei
-weitem noch nicht alle Funktionalität implementiert war. Desweiteren soll das
-Werkzeug ja auch zukünftig an den Stoff der Vorlesung angepasst werden, so dass
-uns eine einfache Erweiterbarkeit sehr wichtig war.\vspace{10pt}
-
-Daher haben wir uns entschlossen die Verwaltung der Redo/Undo Schritte nicht
-einer Klasse alleine zu überlassen, sondern die verschiedenen Aktionen in
-einzelnen Items zu kapseln. Auf diesen Items kann dann die entsprechende redo
-bzw. undo Funktion aufgerufen werden. Verwaltet wird dies von einem Handler,
-welcher sich nur merkt welches das letzte aktive Item für Redo und Undo ist,
-und den Aufruf durch den Nutzer an das Item weiterleitet.\vspace{10pt}
-
-Durch diese Kapselung ist es leicht möglich die Redo/Undo Funktion zu
-erweitern, da einfach ein neues Item für die entsprechende Aktion implementiert
-werden muss, um diese Item beim Ausführen der Aktion an den Handler zu
-übergeben.
+In diesem Kapitel geht es um die Oberflächengestaltung. Zum einen geht es darum,
+wie und warum die Hauptansicht so gestaltet wurde, zum anderen darum, welche
+besonderen Schritte notwendig waren, um das Aussehen zu verbessern und dem
+Benutzer es dadurch zu erleichtern mit dem \gtitool zu arbeiten.
 
 
 \section{Gestaltung der Hauptansicht}
@@ -60,7 +43,29 @@ Aus diesem Ansatz heraus ist zum Beispiel auch der Wizard zum Anlegen einer
 neuen Datei enstanden. Dieser Wizard hat für jedes Eingabefeld ja schon einen
 Vorschlag, welche in den Einstellungen auf die Benutzerwünsche angepasst werden
 kann. Beim ersten Start sollen diese Werte allerdings als Orientierung und
-Beispieldaten dienen, was an diesen Stellen eingetragen werden soll. 
+Beispieldaten dienen, was an diesen Stellen eingetragen werden soll.
+
+
+\section{Redo/Undo}
+
+Da das Lernwerkzeug vom Aussehen her sehr an einen Editor angelehnt ist,
+wollten wir dem Benutzer auch eine Möglichkeit geben Schritte rückgängig zu
+machen oder wiederherzustellen. Dies war jedoch zu einem Zeitpunkt, zu dem bei
+weitem noch nicht alle Funktionalität implementiert war. Desweiteren soll das
+Werkzeug ja auch zukünftig an den Stoff der Vorlesung angepasst werden, so dass
+uns eine einfache Erweiterbarkeit sehr wichtig war.\vspace{10pt}
+
+Daher haben wir uns entschlossen die Verwaltung der Redo/Undo Schritte nicht
+einer Klasse alleine zu überlassen, sondern die verschiedenen Aktionen in
+einzelnen Items zu kapseln. Auf diesen Items kann dann die entsprechende redo
+bzw. undo Funktion aufgerufen werden. Verwaltet wird dies von einem Handler,
+welcher sich nur merkt welches das letzte aktive Item für Redo und Undo ist,
+und den Aufruf durch den Nutzer an das Item weiterleitet.\vspace{10pt}
+
+Durch diese Kapselung ist es leicht möglich die Redo/Undo Funktion zu
+erweitern, da einfach ein neues Item für die entsprechende Aktion implementiert
+werden muss, um diese Item beim Ausführen der Aktion an den Handler zu
+übergeben.
 
 
 \section{Anpassung aller GUI Komponenten}
@@ -91,7 +96,16 @@ erlaubt, seine Daten besser zu organisieren.
 
 \section{Look \& Feel}\label{LookAndFeel}
 
-TODOCF
+Damit das \gtitool unter verschiedenen Betriebsystemen immer gleich, oder
+zumindest sehr ähnlich aussieht, kam während der Entwicklung der Wunsch auf, ein
+eigenes Look \& Feel zu verwenden. Java bietet in diesem Bereich zwar mit dem
+Metal Look \& Feel eine Lösung an, die unter allen Betriebsystemen gleich
+aussehen soll, diese erfüllte aber unsere Vorstellungen nicht. Schließlich fiel
+die Wahl auf TinyLaF, ein weitestgehend gezeichnetes Look \& Feel, dass somit
+unter allen Betriebsystemen gleich aussieht. Dem Benutzer ist es aber
+freigestellt ein anderes, zum Beispiel das normale Betriebsystem Look \& Feel zu
+verwenden, wenn er dies wünscht. Alle in dieser Arbeit verwendeten Bilder des
+\gtitools wurden mit TinyLaF als Look \& Feel gemacht.
 
 
 \section{Zweite Ansicht}\label{SecondView}
@@ -99,8 +113,8 @@ TODOCF
 Bei der Umsetzung der verschiedenen Algorithmen wurden wir vor das Problem
 gestellt, dass es sinnvoll wäre, einen Automaten nach der Umwandlung, mit dem
 Automaten oder der Grammatik vor der Umwandlung zu vergleichen. Dies war nur
-durch einen Tabwechsel oder das Öffnen eines zweiten \gtitools
-möglich.\vspace{10pt}
+durch einen Tabwechsel oder das Öffnen eines zweiten \gtitools möglich, was
+nicht besonders benutzerfreundlich war.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}

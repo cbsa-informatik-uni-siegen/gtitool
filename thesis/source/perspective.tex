@@ -51,13 +51,15 @@ Anschließend sollen im Idealfall mehrere Möglichkeiten bestehen, mit diesem
 Ausdruck weiter zu arbeiten. Diese Möglichkeiten sollen nun kurz angesprochen
 werden.\vspace{10pt}
 
-Der eingegebene reguläre Ausdruck soll mit dem in \gticitepage{Compilers}{159ff}
+%### removes texlipse warning
+Der eingegebene reguläre Ausdruck soll mit dem in \cite[S.159ff]{Compilers}
 beschriebenen McNaughton-Yamada-Thompson Algorithmus in einen Automaten
-umgewandelt werden können. Diese Umwandlung sollte, wie die anderen
-Umwandlungen auch, schrittweise durchgeführt werden. Dadurch soll es dem
-Benutzer ermöglicht werden, den zur Umwandlung benutzten Algorithmus besser zu
-verstehen. Abbildung \ref{FigureThompson} zeigt das Ergebnis, das bei einer
-solchen Umwandlung entstehen würde.\vspace{10pt}
+umgewandelt werden können. Diese Umwandlung sollte, wie die anderen Umwandlungen
+auch, schrittweise durchgeführt werden. Dadurch soll es dem Benutzer ermöglicht
+werden, den zur Umwandlung benutzten Algorithmus besser zu verstehen. Abbildung
+\ref{FigureThompson} zeigt das Ergebnis, das bei einer solchen Umwandlung
+entstehen würde.\vspace{10pt}
+%### removes texlipse warning
 
 \begin{figure}[h!]
 \begin{center}
@@ -67,14 +69,16 @@ solchen Umwandlung entstehen würde.\vspace{10pt}
 \end{center}
 \end{figure}
 
+%### removes texlipse warning
 Eine weitere Verwendungsmöglichkeit eines regulären Ausdruck wäre das direkte
 Umwandeln in einen DEA. Dieser Algorithmus wird in
-\gticitepage{Compilers}{175ff} beschrieben und verwendet die Funktionen
+\cite[S. 175ff]{Compilers} beschrieben und verwendet die Funktionen
 \textit{nullable}, \textit{firstpos}, \textit{lastpos} und \textit{followpos},
 um die Umwandlung durchzuführen. Bei der Umsetzung müsste das Berechnen dieser
 Funktionen in irgendeiner Weise dargestellt werden, idealerweise anhand des
 Syntaxbaumes des regulären Ausdrucks. Ein mögliches Ergebnis der direkten
 Umwandlung ist in Abbildung \ref{FigureRegExDFA} zu sehen.\vspace{10pt}
+%### removes texlipse warning
 
 \begin{figure}[h!]
 \begin{center}
@@ -123,9 +127,11 @@ Existiert eine Produktion $\NonterminalSymbol{A} \to \NonterminalSymbol{A}
 ein Ableitungsschritt nötig ist spricht man von einer indirekten
 Rekursion.\vspace{10pt}
 
+%### removes texlipse warning
 In dem Buch \cite{Compilers} ist ein Algorithmus beschrieben, um Linksrekursion
 bei einer Grammatik zu beseitigen, welcher sich ohne Probleme umsetzen lassen
 sollte.\vspace{10pt}
+%### removes texlipse warning
 
 \noindent Gehen wir davon aus, die Produktionen für ein Nonterminal
 \NonterminalSymbol{A} sind von der Form\vspace{10pt}
@@ -145,10 +151,12 @@ Nichtterminalzeichen \NonterminalSymbol{A'} ein. Als ersetzt man die bestehenden
 \NonterminalSymbol{A'} $\to \alpha_1$\NonterminalSymbol{A'}$|\ldots|$
 $\alpha_n$\NonterminalSymbol{A'}$|\epsilon$\vspace{10pt}
 
+%### removes texlipse warning
 \noindent Damit können wir direkte Linksrekursion beseitigen. Und dies können wir
 uns auch zunutze machen, um indirekte Linksrekursion zu entfernen. Folgender
 Algorithmus zur Entfernung von Linksrekursion, aus dem Buch \cite{Compilers},
 macht sich dies zu nutze:\vspace{10pt}
+%### removes texlipse warning
 
 TODOBM Algorithmuscode einfügen\vspace{10pt}
 
@@ -232,7 +240,43 @@ benutzt werden, dieses Wort auf Akzeptanz zu prüfen.
 
 \section{Benutzerinteraktion erhöhen}
 
-TODOCF
+Bei der Umsetzung des \gtitools war es uns sehr wichtig, dass der Benutzer
+bei der Verwendung des Programms möglichst viel lernt. Im Kapitel
+\ref{Concepts} wurden einige Konzepte angesprochen, die uns bei der Umsetzung
+wichtig erschienen. Aufgrund des vermutlich sehr großen Aufwandes konnten wir
+den Bereich Benutzerinteraktion nicht weiter ausbauen. In diesem Abschnitt
+werden mögliche Anpassungen angesprochen, die für zukünftige \gtitool Versionen
+geplant sind. Bei diesen Anpassungen handelt es sich zum größten Teil um
+Erweiterungen der schon implementierten Umsetzungen.\vspace{10pt}
+
+Eine wichtige Erweiterung betrifft die Wort Navigation. Bei dieser Navigation
+gibt es bereits eine Benutzerinteraktion, welche in \ref{InteractionPDA}
+beschrieben wird. In Zukunft kann die Benutzerinteraktion, die in
+\ref{wordNavigation} beschrieben wird, erweitert werden. Eine mögliche Umsetzung
+wäre, den Benutzer vor einem Navigationsschritt dazu aufzufordern, die Übergänge
+zu markieren, die als nächstes verwendet werden. Dabei müsste der Benutzer anhand
+des nächsten Symbols im Eingabewort entscheiden, welche Übergänge dies betrifft.
+Kommt ein oder mehrere $epsilon$-Übergänge vor, müssen diese Übergänge zuerst
+ausgewählt werden. Durch diese Erweiterung wurde der Benutzer noch besser
+erkennen können wie der Algorithmus arbeitet. Um den ungeübten Benutzer nicht zu
+überfordern und somit vielleicht zur Aufgabe zu zwingen, muss dieser zusätzliche
+Auswahlschritt überspringbar sein. Es muss also eine Art Raten-Funktion geben,
+die dem Benutzer die Auswahl abnimmt.\vspace{10pt}
+
+Im Abschnitt \ref{ConverToMachine} wird das Umwandeln eines Automaten in einen
+anderen Automaten beschrieben, also zum Beispiel die Umwandlung von einem
+$\epsilon$-NDEA in einen DEA. Der dort Implementierte Algorithmus verwendet
+verschiedene Phasen. Eine dieser Phasen ist das Bilden des
+$\epsilon$-Abschlusses. In diesem Schritt wäre es möglich, den Benutzer alle
+Zustände zu markieren, die von dem aktiven Zustand nur durch
+$\epsilon$-Übergänge erreichbar sind. Eine weitere Möglichkeit wäre, den
+Benutzer dazu aufzufordern die Zustände zu aktivieren, die nach einem Übergang
+mit einem bestimmten Symbol aktiviert sein werden. Aber auch bei allen anderen
+Phasen sollte geprüft werden, ob es sinnvoll wäre, den Benutzer zu einer
+Interaktion aufzufordern. Es wäre aber nicht nur möglich Zustände und Übergänge
+in dem ursprünglichen Graphen zu markieren, ebenso wäre es in dem entstehenden
+Graphen möglich, anzugeben, welche Zustände und Übergänge in dem nächsten
+Schritt angelegt werden.\vspace{10pt}
 
 
 \section{Auto-Layout}\label{PerspectiveAutoLayout}

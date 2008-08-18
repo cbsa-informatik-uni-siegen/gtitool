@@ -32,9 +32,11 @@ Anschließend werden für die aktuelle Einteilung die Schnittkosten berechnet.
 Zur Berechnung der Schnittkosten werden die von der Schnittlinie, die Linie die
 die beiden Gruppen trennt, erfassten Kanten gezählt.\vspace{10pt}
 
+%### removes texlipse warning
 Der Kerninghan-Lin-Algorithmus lässt sich in die folgenden Schritte
 unterteilen, welche dem Buch "`Layoutsynthese elektronischer
-Schaltungen"' (\gticite{Layout}) entnommen wurden:\vspace{10pt}
+Schaltungen"' (\cite{Layout}) entnommen wurden:\vspace{10pt}
+%### removes texlipse warning
 
 Schritt 0:
 \begin{itemize}
@@ -94,6 +96,7 @@ für jeden Knoten der noch nicht fixiert ist neu berechnet und erneut $Schritt\
 Ende erreicht hat. Wenn nicht, werden in $Schritt\ 5$ die Vertauschungen des
 aktuellen Durchgangs durchgeführt, und es wird ein neuer Durchgang gestartet.\vspace{10pt}
 
+%### removes texlipse warning
 Wie schon erwähnt musste der Algorithmus für die Implementierung ein wenig
 modifiziert werden. Zum einen  geht man eigentlich davon aus, dass die Knoten
 in zwei etwa gleichgroße Gruppen einteilt. Dies erwies sich bei der
@@ -101,8 +104,9 @@ Implementierung allerdings als eher unvorteilhaft. Daher wird dynamisch
 bestimmt, in wieviele Gruppen die Knoten unterteilt werden, wobei die Größe
 aller Gruppen aber auch hier in etwa die gleiche ist. Diese
 Implementierung entspricht soweit der Erweiterung des
-Kerningham-Lin-Algorithmus wie sie in \gticite{Layout} beschrieben
+Kerningham-Lin-Algorithmus wie sie in \cite{Layout} beschrieben
 wird\vspace{10pt}
+%### removes texlipse warning
 
 Die Erweiterung des Algorithmus sieht jetzt vor, dass man den Algorithmus jetzt
 für alle möglichen zweier Paarungen von Gruppen betrachtet. Die Implementierung

@@ -26,11 +26,13 @@ vermutlich enormen Zeitaufwand wurde entschieden, eine Bibliothek zu benutzen.
 In Abschnit \ref{PerspectiveGraphics} wird darauf eingegangen, in wie weit eine
 Änderung in Zukunft sinnvoll, bzw. realisierbar ist.\vspace{10pt} 
 
-Da JGraph (siehe \gticite{jgraph}) die Funktionalität zur Verfügung stellt, die
+%### removes texlipse warning
+Da JGraph (siehe \cite{jgraph}) die Funktionalität zur Verfügung stellt, die
 wir brauchen, um die Automaten darstellen zu können, wurde entschieden, diese
 Bibliothek zu benutzen. Im folgenden wird darauf eingegangen, wie Automaten mit
 JGraph dargestellt werden und wie JGraph angepasst werden musste, um den
 speziellen Ansprüchen unserer Umsetzung zu genügen.
+%### removes texlipse warning
 
 
 \subsection{Automatendarstellung mit JGraph}\label{GraphJGraph}
@@ -279,7 +281,8 @@ kleinen Schritten verdeutlicht bekommt, wie der zugrunde liegende Algorithmus
 arbeitet, so dass diese Arbeitsweise sehr einfach nachzuvollziehen
 ist.\vspace{10pt}
 
-Zur Umsetzung wurde der in \gticitepage{Algorithmen}{536} angegebene Algorithmus
+%### removes texlipse warning
+Zur Umsetzung wurde der in \cite[S. 536]{Algorithmen} angegebene Algorithmus
 als Vorlage benutzt. Dieser Algorithmus implementiert die Breitensuche auf
 einem Graphen G mit Startknoten s. Zur Interpretation des Algorithmus ist noch
 zu sagen, dass das Attribut Farbe eines Knoten dazu verwendet wird, zu
@@ -289,6 +292,7 @@ Knoten, außer dem Startknoten weiss. Grau bedeutet, dass der Knoten erkannt
 wurde, aber noch nicht vollständig abgearbeitet wurde. Wurde ein Knoten
 abgearbeitet, ändert sich seine Farbe in schwarz. Bei der Umsetzung im \gtitool
 wurde eine ähnliche Umsetzung gewählt, die nun besprochen wird.\vspace{10pt}
+%### removes texlipse warning
 
 \newpage
 \noindent

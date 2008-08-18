@@ -1,0 +1,2 @@
+BM		- Im Abschnitt Linksrekursion wird das falsche Hochkomma verwendet,
+		  es sollte keine "neun" verwendet werden, sondern ein '

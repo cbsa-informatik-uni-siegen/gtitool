@@ -12,7 +12,7 @@ Im Mittelpunkt der Planung und der Umsetzung des \gtitools standen die
 Automaten. Die verschiedenen Aspekte von Automaten werden in diesem Kapitel
 besprochen, dazu behört die graphische Umsetzung, sowie die verschiedenen
 Möglichkeiten, was mit einem Automaten geschehen kann, wenn dieser angelegt
-wurde.
+wurde.\vspace{10pt}
 
 
 \section{Graphenansicht}\label{Graph}
@@ -31,7 +31,7 @@ Da JGraph (siehe \cite{jgraph}) die Funktionalität zur Verfügung stellt, die
 wir brauchen, um die Automaten darstellen zu können, wurde entschieden, diese
 Bibliothek zu benutzen. Im folgenden wird darauf eingegangen, wie Automaten mit
 JGraph dargestellt werden und wie JGraph angepasst werden musste, um den
-speziellen Ansprüchen unserer Umsetzung zu genügen.
+speziellen Ansprüchen unserer Umsetzung zu genügen.\vspace{10pt}
 %### removes texlipse warning
 
 
@@ -51,6 +51,7 @@ an einem Pfeil, der optional mit Start beschriftet sein kann.\vspace{10pt}
 \caption{Beispiel für eine Automatendarstellung mit JGraph}
 \end{center}
 \end{figure}
+\vspace{10pt}
 
 Um dies zu realisieren haben wir uns die frei verfübare Java Bibliothek JGraph
 zunutze gemacht, und nach unseren Bedürfnissen angepasst. Als erstes mussten
@@ -128,7 +129,7 @@ In diesem Abschnitt werden die zwei Tabellen beschrieben, die bei den Automaten
 verwendet werden, um dem Benutzer zusätzliche Informationen zur Verfügung zu
 stellen. Die Übergangstabelle bietet zusätzlich noch die Möglichkeit den
 Automaten zu verändern. Es können Übergänge angelegt, modifiziert oder gelöscht
-werden.
+werden.\vspace{10pt}
 
 
 \subsection{Übergangstabelle}
@@ -150,6 +151,7 @@ dieser Ansatz verworfen.\vspace{10pt}
 \caption{Übergangstabelle}
 \end{center}
 \end{figure}
+\vspace{10pt}
 
 Als nächste mögliche Umsetzung wurde diskutiert, ob es technisch möglich sei,
 in jede Zelle einen Parser zu verwenden. Dieser Parser musste so implementiert
@@ -161,14 +163,14 @@ Zustände anzugeben, die nicht im Graphen vorkommen. Der Parser als solches
 konnte leicht implementiert werden, es gab allerdings einige technische
 Probleme diesen in jede Zelle zu implementieren. Diese Probleme konnten gelöst
 werden, so dass der Benutzer nun in der Lage ist, Übergänge per Tabelle
-anzulegen, zu modifizieren und zu löschen.
+anzulegen, zu modifizieren und zu löschen.\vspace{10pt}
 
 
 \subsection{Keller Operationen Tabelle}
 
 Anhand der Tabelle für Kelleroperationen kann der User genau nachvollziehen,
 was genau mit unserem Keller passiert, wenn wir mit diesem
-Übergang in einen anderen Zustand übergehen.
+Übergang in einen anderen Zustand übergehen.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}
@@ -176,6 +178,7 @@ was genau mit unserem Keller passiert, wenn wir mit diesem
 \caption{Keller Operationen Tabelle}
 \end{center}
 \end{figure}
+\vspace{10pt}
 
 Die Tabelle enthält einen Eintrag pro Übergang in unserem Automaten. Jeder
 Eintrag enthält den Zustand von dem der Übergang ausgeht, den Zustand zu dem
@@ -212,19 +215,19 @@ rechts neben dem Eingabefeld das aktuelle Alphabet angezeigt. Man kann nur
 Symbole verwenden, welche auch im aktuellen Alphabet enthalten
 sind.\vspace{10pt}
 
-  \begin{figure}[h]
-  \begin{center}
-  \includegraphics[width=12cm]{../images/dfa_navigation.png}
-  \caption{Automat - Wortnavigation}
-  \end{center}
-  \end{figure}
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{../images/dfa_navigation.png}
+\caption{Automat - Wortnavigation}
+\end{center}
+\end{figure}
+\vspace{10pt}
 
 Nachdem ein Wort eingegeben wurde kann der Nutzer dann die Verarbeitung des
 Worts starten. Es besteht die Möglichkeit sich Symbol für Symbol weiter durch
 das Wort zu arbeiten, und den genauen Weg im Automaten nachzuvollziehen. Um
 Verständnisprobleme besser beseitigen zu können, ist auch hier eine Navigation
 in Vor- und Rückrichtung möglich.\vspace{10pt}
-\vspace{10pt}
 
 Für jeden Schritt werden die Zustände farblich hervorgehoben, in denen sich der
 Automat aktuell befindet. Zusätzlich wird auch der Übergang und das
@@ -257,6 +260,7 @@ angezeigt.\vspace{10pt}
 \caption{Zustands Pfad}
 \end{center}
 \end{figure}
+\vspace{10pt}
 
 Der implementierte Algorithmus geht rückwärts vor, startet also bei den aktuell
 aktiven Zuständen und geht alle Pfade zurück, bis alle, bis jetzt gelesenen
@@ -264,7 +268,7 @@ Symbole abgearbeitet sind. Startet der berechnete Pfad dann in dem
 Startzustand, wurde ein gültiger Pfad erkannt. Bei der Implementierung des
 Algorithmus musste eine Zykluserkennung umgesetzt werden, da es sonst möglich
 war in eine Endlosschleife zu geraten, welche durch $\epsilon$-Übergänge
-verursacht wurde.
+verursacht wurde.\vspace{10pt}
 
 
 \section{Erreichbare Zustände}\label{ReachableStates}
@@ -294,7 +298,6 @@ abgearbeitet, ändert sich seine Farbe in schwarz. Bei der Umsetzung im \gtitool
 wurde eine ähnliche Umsetzung gewählt, die nun besprochen wird.\vspace{10pt}
 %### removes texlipse warning
 
-\newpage
 \noindent
 \verb|BFS(G,s)|\\
 \verb|for alle Knoten u |$\in$\verb| V[G] - {s}|\\
@@ -325,7 +328,7 @@ dargestellt. In der dritten Phase werden alle bis jetzt zu erreichenden Zuständ
 hervorgehoben. Gleichzeitig bekommt der Benutzer in der Outline mitgeteilt,
 welcher Zustand jetzt fertiggestellt ist und welche noch berechnet werden müssen.
 Durch diese sehr feine Unterteilung, soll ein besseres Verständnis des
-Algorithmus erreicht werden.
+Algorithmus erreicht werden.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}
@@ -333,3 +336,4 @@ Algorithmus erreicht werden.
 \caption{Erreichbare Zustände}
 \end{center}
 \end{figure}
+\vspace{10pt}

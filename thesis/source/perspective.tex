@@ -12,10 +12,10 @@ In diesem Kapitel werden die Zukunftsperspektiven für das \gtitool besprochen.
 Bei der Implementierung wurde besonderer Wert darauf gelegt, dass das \gtitool
 leicht zu erweitern sein muss. Der dadurch entstandene Aufwand konnte dadurch
 gerechtfertigt werden, dass Erweiterungen in der Zukunft leichter und somit
-schneller integriert werden können.
+schneller integriert werden können.\vspace{10pt}
 
 
-\section{Graphische Komponenten implementieren}\label{PerspectiveGraphics}
+\section{Graphische Komponenten}\label{PerspectiveGraphics}
 
 Wie in Abschnitt \ref{Graph} beschrieben verwenden wir zur graphischen
 Darstellung der Automaten die Bibliothek JGraph. Diese Bibliothek bietet einen
@@ -38,7 +38,7 @@ Zu einer möglichen Umsetzung ist zu sagen, dass sowohl Zustände wie auch
 Übergängen ein größeres Problem sein könnte, da dort die Übergänge nicht auf
 einer Linie verlaufen. Der größte Nutzer bei einer eigenständigen Implementierung
 wäre, das Änderungen leichter eingepflegt werden könnten, da dies bei der sehr
-komplexen Implementierung von JGraph meistens problematisch war.
+komplexen Implementierung von JGraph meistens problematisch war.\vspace{10pt}
 
 
 \section{Reguläre Ausdrücke}
@@ -68,6 +68,7 @@ entstehen würde.\vspace{10pt}
 \label{FigureThompson}
 \end{center}
 \end{figure}
+\vspace{10pt}
 
 %### removes texlipse warning
 Eine weitere Verwendungsmöglichkeit eines regulären Ausdruck wäre das direkte
@@ -87,6 +88,7 @@ Umwandlung ist in Abbildung \ref{FigureRegExDFA} zu sehen.\vspace{10pt}
 \label{FigureRegExDFA}
 \end{center}
 \end{figure}
+\vspace{10pt}
 
 
 \section{\LaTeX-Export}
@@ -106,7 +108,7 @@ dass der Lehrende nicht mehr den Umweg über den Bildexport gehen muss, sondern
 den Automaten direkt in \LaTeX\ integrieren kann. Bei der Umsetzung ist auf die
 Auswahl einer geeigneten Bibliothek zu achten, so dass auch große Automaten
 noch gut aussehen. Wichtig wäre auch, dass sich, wenn möglich, die \LaTeX-
-und die am Bildschirm dargestellte Version wenig unterscheiden.
+und die am Bildschirm dargestellte Version wenig unterscheiden.\vspace{10pt}
 
 
 \section{Grammatik Erweiterungen}
@@ -161,10 +163,7 @@ macht sich dies zu nutze:\vspace{10pt}
 TODOBM Algorithmuscode einfügen\vspace{10pt}
 
 Somit besteht die Möglichkeit sowohl direkte als auch indirekte Linksrekursion
-zu beseitigen.
-
-
-
+zu beseitigen.\vspace{10pt}
 
 
 \subsection{Linksfaktorisierung}
@@ -217,7 +216,7 @@ ein Ergebnis warten muss. Die Bestimmung sollte somit nicht einfach per
 Brute-Force-Methode ungesetzt werden, sondern in irgendeiner Form abhängig von
 dem gewendeten Typ, wie zum Beispiel einer Grammatik. Somit sollten gewisse
 Wörter direkt ausgeschlossen werden, die bei der Brute-Force-Methode ansonsten
-mit getestet werden würden.
+mit getestet werden würden.\vspace{10pt}
 
 
 \section{Eingabe von mehreren Wörtern}
@@ -235,7 +234,7 @@ erkennt.\vspace{10pt}
 Eine mögliche Umsetzung wäre, dass Wörter in einer editierbaren Tabelle
 eingegeben werden können. Dazu wäre in jeder Zeile ein Parser nötig, der die
 Wörter erkennt. Wird eine gültige Eingabe gemacht, kann der Automat dazu
-benutzt werden, dieses Wort auf Akzeptanz zu prüfen.
+benutzt werden, dieses Wort auf Akzeptanz zu prüfen.\vspace{10pt}
 
 
 \section{Benutzerinteraktion erhöhen}
@@ -247,8 +246,13 @@ wichtig erschienen. Aufgrund des vermutlich sehr großen Aufwandes konnten wir
 den Bereich Benutzerinteraktion nicht weiter ausbauen. In diesem Abschnitt
 werden mögliche Anpassungen angesprochen, die für zukünftige \gtitool Versionen
 geplant sind. Bei diesen Anpassungen handelt es sich zum größten Teil um
-Erweiterungen der schon implementierten Umsetzungen.\vspace{10pt}
+Erweiterungen der schon implementierten Umsetzungen. Alle in der Zukunft
+implementierten Erweiterungen sollten dann direkt mit einer entsprechend hohen
+Benutzerinteraktion umgesetzt werden, so dass das nachträgliche Erweitern in
+diesen Fällen entfallen würde.\vspace{10pt}
 
+
+\subsection{Word-Navigation}
 Eine wichtige Erweiterung betrifft die Wort Navigation. Bei dieser Navigation
 gibt es bereits eine Benutzerinteraktion, welche in \ref{InteractionPDA}
 beschrieben wird. In Zukunft kann die Benutzerinteraktion, die in
@@ -263,20 +267,47 @@ erkennen können wie der Algorithmus arbeitet. Um den ungeübten Benutzer nicht 
 Auswahlschritt überspringbar sein. Es muss also eine Art Raten-Funktion geben,
 die dem Benutzer die Auswahl abnimmt.\vspace{10pt}
 
+
+\subsection{Umwandeln}
 Im Abschnitt \ref{ConverToMachine} wird das Umwandeln eines Automaten in einen
 anderen Automaten beschrieben, also zum Beispiel die Umwandlung von einem
 $\epsilon$-NDEA in einen DEA. Der dort Implementierte Algorithmus verwendet
 verschiedene Phasen. Eine dieser Phasen ist das Bilden des
 $\epsilon$-Abschlusses. In diesem Schritt wäre es möglich, den Benutzer alle
 Zustände zu markieren, die von dem aktiven Zustand nur durch
-$\epsilon$-Übergänge erreichbar sind. Eine weitere Möglichkeit wäre, den
-Benutzer dazu aufzufordern die Zustände zu aktivieren, die nach einem Übergang
-mit einem bestimmten Symbol aktiviert sein werden. Aber auch bei allen anderen
-Phasen sollte geprüft werden, ob es sinnvoll wäre, den Benutzer zu einer
-Interaktion aufzufordern. Es wäre aber nicht nur möglich Zustände und Übergänge
-in dem ursprünglichen Graphen zu markieren, ebenso wäre es in dem entstehenden
-Graphen möglich, anzugeben, welche Zustände und Übergänge in dem nächsten
-Schritt angelegt werden.\vspace{10pt}
+$\epsilon$-Übergänge erreichbar sind.\vspace{10pt}
+
+Eine weitere Möglichkeit wäre, den Benutzer dazu aufzufordern die Zustände zu
+aktivieren, die nach einem Übergang mit einem bestimmten Symbol aktiviert sein
+werden. Aber auch bei allen anderen Phasen sollte geprüft werden, ob es sinnvoll
+wäre, den Benutzer zu einer Interaktion aufzufordern. Es wäre aber nicht nur
+möglich Zustände und Übergänge in dem ursprünglichen Graphen zu markieren, ebenso
+wäre es in dem entstehenden Graphen möglich, anzugeben, welche Zustände und
+Übergänge in dem nächsten Schritt angelegt werden.\vspace{10pt}
+
+
+\subsection{Erreichbare Zustände}
+Wie im Abschnitt \ref{ReachableStates} vorgestellt, implementiert der
+Algorithmus zur Bestimmung der erreichbaren Zustände eine Breitensuche. Bei
+dieser Breitensuche könnte der Benutzer dazu aufgefordert werden die
+erreichbaren Zustände zu markieren. Diese Markierung könnte dann überprüft
+werden und der Benutzer würde über die Richtigkeit seiner Eingabe informiert.
+Auch bei dieser Benutzerinteraktion wäre eine Funktion wichtig, die die
+richtige Auswahl trifft.\vspace{10pt}
+
+
+\subsection{Minimieren}
+Das Minimieren von Automaten bietet sehr großen Spielraum zum Einbau von
+Benutzerinteraktion. Der in Kapitel \ref{Minimize} vorgestellte Algorithmus
+basiert darauf Zustände in Äquivalenz\-klassen zu unterteilen. Es wäre somit
+möglich diese Unterteilung dem Benutzer zu überlassen. Er musste also
+auswählen, warum eine Gruppe in zwei Gruppen zerfällt. Um dies zu erreichen,
+müsste der Benutzer Übergänge mit dem gleichen Symbol finden, die in
+unterschiedlichen Gruppen enden.\vspace{10pt}
+
+Im ersten Schritt des Minimierens werden die nicht erreichbaren Zustände
+entfernt, auch diesen Schritt kann der Benutzer selbst durchführen, in dem er die
+entsprechenden Zustände auswählt.\vspace{10pt}
 
 
 \section{Auto-Layout}\label{PerspectiveAutoLayout}

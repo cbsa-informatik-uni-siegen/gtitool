@@ -13,7 +13,7 @@ wichtiger Aspekt der Interaktionen ist, dass der Benutzer angezeigt bekommt,
 wenn er etwas falsches eingeben hat. Ein weiterer Punkt ist, dass der Benutzer
 bei einem nicht deterministischen Kellerautomaten auswählen muss, welchen
 Übergang der Automat machen soll, da dieser das im Allgemeinen nicht erkennen
-kann.
+kann.\vspace{10pt}
 
 
 \section{Fehler und Warnung}\label{InteractionErrorWarning}
@@ -28,7 +28,7 @@ Der Hauptgrund für die Auswahl dieser Strategie war, dass der Benutzer durch da
 fehlerhafte Eingeben bzw. durch das Beheben der Fehler hoffentlich mehr lernt,
 als wenn er die Eingaben gar nicht erst hätte machen können. In diesem Abschnitt
 werden die verschiedenen Fehler und Warnungen beschrieben, die bei Grammatiken und
-Automaten auftreten können.
+Automaten auftreten können.\vspace{10pt}
 
 
 \subsection{Grammatik}
@@ -62,7 +62,7 @@ erreichbar ist. Es handelt sich hierbei nur um eine Warnung, weil es sich
 durchaus um eine gültige Grammatik handeln kann. Sie soll dem Benutzer allerdings
 dazu animieren, die Übergangsmenge zu kontrollieren, ob nicht eine, oder mehrere,
 Produktionen vergessen wurden. So soll es möglich sein Flüchtig\-keits\-fehler
-frühzeitig zu erkennen und zu beheben.
+frühzeitig zu erkennen und zu beheben.\vspace{10pt}
 
 \subsection{Automat}
 
@@ -114,7 +114,7 @@ ungeübte Benutzer den akzeptierenden Zustand nur vergessen hat. Außerdem wird
 eine Warnung angezeigt, wenn ein oder mehrere Zustände nicht erreichbar sind.
 Zur Bestimmung dieser unerreichbaren Zustände wird der gleiche Algorithmus
 verwendet, der auch bei den Erreichbaren Zuständen in Kapitel
-\ref{ReachableStates} benutzt wird.
+\ref{ReachableStates} benutzt wird.\vspace{10pt}
 
 
 \section{Operationen mit dem Automaten Keller}\label{InteractionPDA}
@@ -131,6 +131,7 @@ deterministisch ist. Die Umwandlung ist in Abschnitt
 \caption{Operationen mit dem Automaten Keller}
 \end{center}
 \end{figure}
+\vspace{10pt}
 
 Bei dem verwendeten Beispiel kommen zwei Übergänge in Frage. Es könnte der
 Übergang gewählt werden, der \Symbol{E} vom Keller liest und nichts auf diesen
@@ -140,4 +141,5 @@ Eingabeband steht, sollte der zweite Übergang ausgewählt werden. Dem Benutzer
 steht es allerdings frei auch den anderen Übergang auszuwählen. In diesem Fall
 würde das Wort \Symbol{a}\Symbol{a}\Symbol{b}\Symbol{b} aber nicht akzeptiert
 werden. Der Benutzer hat bei einer falschen Wahl allerdings die Möglichkeit
-einen oder mehrere Schritte zurückzugehen, um dann die richtige Wahl zu treffen.
+einen oder mehrere Schritte zurückzugehen, um dann die richtige Wahl zu
+treffen.\vspace{10pt}

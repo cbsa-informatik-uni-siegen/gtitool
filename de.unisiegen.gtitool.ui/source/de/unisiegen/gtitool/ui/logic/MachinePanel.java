@@ -3162,13 +3162,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         MachinePanel.this.popup = createPopupMenu ();
       }
     }
-    
+
     if ( MachinePanel.this.popup != null )
     {
-      MachinePanel.this.popup.show ( ( Component ) event.getSource (),
-          event.getX (), event.getY () );
+      MachinePanel.this.popup.show ( ( Component ) event.getSource (), event
+          .getX (), event.getY () );
     }
-    
+
   }
 
 
@@ -3250,6 +3250,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         this.gui.jGTISplitPaneConsole
             .setRightComponent ( this.gui.jGTITabbedPaneConsole );
         this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
+        this.gui.jGTISplitPaneConsole
+            .setDividerLocation ( this.gui.jGTISplitPaneConsole.getHeight () - 203 );
       }
     }
     else
@@ -3304,6 +3306,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         this.gui.jGTISplitPaneTable
             .setRightComponent ( this.gui.jGTISplitPanePDATable );
         this.gui.jGTISplitPaneTable.setDividerSize ( 3 );
+        this.gui.jGTISplitPaneTable.setDividerLocation ( this.mainWindowForm
+            .getWidth () - 220 );
       }
     }
     else

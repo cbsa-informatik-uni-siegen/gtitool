@@ -1,7 +1,5 @@
 *** TODO ***
 
-CF		- Fehler beim ersten Einblenden der Console
-
 
 *** FEATURE ***
 

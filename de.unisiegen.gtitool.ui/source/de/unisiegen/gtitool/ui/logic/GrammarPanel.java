@@ -1268,6 +1268,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       this.gui.jGTISplitPaneConsole
           .setRightComponent ( this.gui.jGTITabbedPaneConsole );
       this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
+      this.gui.jGTISplitPaneConsole
+          .setDividerLocation ( this.gui.jGTISplitPaneConsole.getHeight () - 203 );
     }
     else
     {

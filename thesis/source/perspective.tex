@@ -159,7 +159,18 @@ Algorithmus zur Entfernung von Linksrekursion, aus dem Buch \cite{Compilers},
 macht sich dies zu nutze:\vspace{10pt}
 %### removes texlipse warning
 
-TODOBM Algorithmuscode einfügen\vspace{10pt}
+\noindent
+\verb|for i = 1 to n do {|\\
+\verb|  for j = 1 to i - 1 do {|\\
+\verb|    ersetze jede Produktion der Form| $A_i \to A_j \gamma$ \verb| |\\ 
+\verb|    durch die Produktion|$A_i \to \delta_1\gamma|\ldots|\delta_k\gamma$
+\verb|, wobei |$A_j \to \delta_1|\ldots|\delta_k$\\ 
+\verb|    alle derzeitigen Produktionen für |$A_j$ \verb|sind|\\ 
+\verb|  }|\\
+\verb|  eleminiere die unmittelbare Linksrekursion für |$A_i$\\
+\verb|  (mit dem vorhergehend beschriebenen Algorithmus)|\\
+\verb|}|
+\vspace{10pt}
 
 Somit besteht die Möglichkeit sowohl direkte als auch indirekte Linksrekursion
 zu beseitigen.\vspace{10pt}
@@ -201,6 +212,27 @@ das Eingabewort stehen. Somit kann man das Wort mit den Produktionen herleiten,
 die man während dieses Durchlaufs verwendet hat. Als Hilfestellung für den
 Benutzer sollten diese noch in einer Liste, oder etwas ähnlichem in der
 Reihenfolge der Verwendung aufgelistet werden.\vspace{10pt}
+
+Alternativ könnte man dem Benutzer die Möglichkeit geben ahand der Bottom-Up
+Methode zu überprüfen, ob das Wort in der Grammatik liegt. Dazu wird das
+komplette Eingabewort auf den Keller geschrieben. Jetzt versucht man Teile des
+Kellers auf der rechten Seite einer Produktion wiederzufinden. Wenn man eine
+solche Produktion gefunden hat, wird der Teil des Kellers, der der rechten
+Seite entspricht, durch die linke Seite der Produktion ersetzt. Dies versucht
+man fortzusetzten, bis man das Startzeichen auf dem Keller stehen hat. In
+diesem Fall liegt das Eingabewort in der Grammatik. Da eventuell in einem
+solchen Reduktionsschritt mehrere Produktionen in Frage kommen können, wäre
+dort wieder die Entscheidung des Benutzers gefragt, welches die richtige
+Produktion für diese Situation ist. Wenn keine Möglichkeit existiert das
+Eingabewort auf das Startzeichen zu reduzieren, dann liegt das Wort nicht in
+der konstruierten Grammatik. Wie bei der Top-Down Methode wäre es
+auch hier sinnvoll, die verwendeten Produktionen in einer Liste zu
+speichern, und dem Nutzer anzuzeigen, um den Vorgang nachvollziehen
+zu können.\vspace{10pt}
+
+Um auf verschiedene Benutzervorlieben einzugehen, könnte man beide Varianten
+implementieren, und den Benutzer entscheiden lassen, welche er verwenden
+möchte.\vspace{10pt}
 
 \section{Erkannte Wörter ausgeben}
 

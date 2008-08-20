@@ -83,6 +83,6 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	"\u2191"			{ return symbol(ARROWUP); }
 	"\u2193"			{ return symbol(ARROWDOWN); }
 	{WhiteSpace}		{ }
-	.					{ return symbol(SYMBOL, yytext()); }
+	.'*					{ return symbol(SYMBOL, yytext()); }
 	\".+\"				{ return symbol(SYMBOL, yytext()); }
 }

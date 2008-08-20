@@ -76,6 +76,6 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	"{"					{ return symbol(LCBRACE); }
 	"}"					{ return symbol(RCBRACE); }
 	{WhiteSpace}		{ }
-	.					{ return symbol(SYMBOL, yytext()); }
+	.'*					{ return symbol(SYMBOL, yytext()); }
 	\".+\"				{ return symbol(SYMBOL, yytext()); }
 }

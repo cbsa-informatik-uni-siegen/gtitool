@@ -77,6 +77,6 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	"\u03B5"			{ return symbol(EPSILON); }
 	"->"|"\u2192"		{ return symbol(ARROW); }
 	{WhiteSpace}		{ return symbol(WHITESPACE); }
-	.					{ return symbol(MEMBER, yytext()); }
+	.'*					{ return symbol(MEMBER, yytext()); }
 	\".+\"				{ return symbol(MEMBER, yytext()); }
 }

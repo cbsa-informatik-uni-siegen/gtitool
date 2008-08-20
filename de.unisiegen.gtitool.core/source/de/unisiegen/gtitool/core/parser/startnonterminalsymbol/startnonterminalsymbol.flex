@@ -73,6 +73,6 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 <YYINITIAL>
 {
 	{WhiteSpace}		{ }
-	.					{ return symbol(START_NONTERMINAL_SYMBOL, yytext()); }
+	.'*					{ return symbol(START_NONTERMINAL_SYMBOL, yytext()); }
 	\".+\"				{ return symbol(START_NONTERMINAL_SYMBOL, yytext()); }
 }

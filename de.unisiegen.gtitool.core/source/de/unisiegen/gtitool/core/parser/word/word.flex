@@ -73,6 +73,6 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 <YYINITIAL>
 {
 	{WhiteSpace}		{ throw new ScannerException(yychar, yychar + yylength(), Messages.getString ( "Parser.13", yytext() ) ); }
-	.					{ return symbol(SYMBOL, yytext()); }
+	.'*					{ return symbol(SYMBOL, yytext()); }
 	\".+\"				{ return symbol(SYMBOL, yytext()); }
 }

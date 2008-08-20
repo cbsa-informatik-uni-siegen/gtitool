@@ -175,10 +175,51 @@ macht sich dies zu nutze:\vspace{10pt}
 Somit besteht die Möglichkeit sowohl direkte als auch indirekte Linksrekursion
 zu beseitigen.\vspace{10pt}
 
-
 \subsection{Linksfaktorisierung}
 
-TODOBM
+Bei einer Grammatik kann es zu Problemen führen, wenn verschiedene Produktionen
+gleiche Prefixe haben. Wie es zum Beispiel bei \vspace{10pt}
+
+\noindent
+$S \to$ if E then S else S
+$|$ if E then S
+\vspace{10pt}
+
+\noindent
+der Fall ist. Diese Probleme lassen sich durch den Algorithmus zur
+Linksfaktorisierung lösen. Dieser Algorithmus sieht wie folgt aus.\vspace{10pt}
+
+Zunächst einmal bestimmen wir eine Symbolfolge $\alpha$, welche dem längsten
+gemeinsamen Prefix aller Produktionen für das selbe Nichtterminalzeichen
+\NonterminalSymbol{A} entspricht. In unserem Beispiel wäre $\alpha$ "`if E then
+S"'. Alle Produktionen für A sind von der Form\vspace{10pt}
+
+\noindent
+$A \to \alpha \beta_1|\ldots|\alpha
+\beta_n|\gamma_1|\ldots|\gamma_n$
+\vspace{10pt}
+
+\noindent
+wobei $\gamma$ nicht mit $\alpha$ beginnt und es gilt $n \geq 2$ und $k \geq 0$.
+\vspace{10pt}
+
+Um für die Grammatik den Algorithmus zur Linksfaktorisierung anzuwenden fürht
+man als erstes ein neus Nichtterminalzeichen A' ein. Als
+nächstes ersetzt man die bestehenden Produktionen von A
+durch die folgenden.\vspace{10pt}
+
+\noindent
+$A \to \alpha A'|\gamma_1|\ldots|\gamma_n$\\
+$A' \to \beta_1|\ldots|\beta_n$
+\vspace{10pt}
+
+\noindent
+Dieser Schritt muss wiederholt werden, bis für kein alle Produktionen eines
+Nichtterminalzeichen $\epsilon$ der einzige gemeinsame Prefix ist.\vspace{10pt} 
+
+Dieser Algorithmus kann für eine Implementierung verwendet werden,
+indem man die Bedingung für jedes Nichtterminalzeichen überprüft, ob eine Linksfatorisierung
+nötig ist, und diese dann wie oben beschrieben anwendet.
 
 \subsection{Wortnavigation für Grammatiken}
 

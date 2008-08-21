@@ -1,2 +1,1 @@
 BM		- ConverToGrammarContextFree: Zweiten Absatz erweitern
-BM		- Linksfaktorisierung: PrettyStyle verwenden

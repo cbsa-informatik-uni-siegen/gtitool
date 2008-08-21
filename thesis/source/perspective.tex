@@ -160,16 +160,16 @@ macht sich dies zu nutze:\vspace{10pt}
 %### removes texlipse warning
 
 \noindent
-\verb|for i = 1 to n do {|\\
-\verb|  for j = 1 to i - 1 do {|\\
-\verb|    ersetze jede Produktion der Form| $A_i \to A_j \gamma$ \verb| |\\ 
-\verb|    durch die Produktion|$A_i \to \delta_1\gamma|\ldots|\delta_k\gamma$
-\verb|, wobei |$A_j \to \delta_1|\ldots|\delta_k$\\ 
-\verb|    alle derzeitigen Produktionen für |$A_j$ \verb|sind|\\ 
-\verb|  }|\\
-\verb|  eleminiere die unmittelbare Linksrekursion für |$A_i$\\
-\verb|  (mit dem vorhergehend beschriebenen Algorithmus)|\\
-\verb|}|
+\verb|1  for i = 1 to n do {|\\
+\verb|2    for j = 1 to i - 1 do {|\\
+\verb|3      ersetze jede Produktion der Form| $A_i \to A_j \gamma$ \verb| |\\ 
+\verb|4      durch die Produktion|$A_i \to \delta_1\gamma|\ldots|\delta_k\gamma$
+\verb|5  , wobei |$A_j \to \delta_1|\ldots|\delta_k$\\ 
+\verb|6      alle derzeitigen Produktionen für |$A_j$ \verb|sind|\\ 
+\verb|7    }|\\
+\verb|8    eleminiere die unmittelbare Linksrekursion für |$A_i$\\
+\verb|9    (mit dem vorhergehend beschriebenen Algorithmus)|\\
+\verb|10 }|
 \vspace{10pt}
 
 Somit besteht die Möglichkeit sowohl direkte als auch indirekte Linksrekursion
@@ -384,4 +384,75 @@ entsprechenden Zustände auswählt.\vspace{10pt}
 
 \section{Auto-Layout}\label{PerspectiveAutoLayout}
 
-TODOBM
+Wie im Kapitel \ref{AutoLayout} schon erwähnt ist der implementierte Autolayout
+Algorithmus noch verbesserungsfähig. Ein Algorithmus welcher wahrscheinlich
+bessere Ergebnisse liefert ist der Simulated-Annealing Algorithmus (Simulierte
+Abkühlung), welcher auch in dem Buch \cite{Layout} beschrieben
+wird.\vspace{10pt}
+
+Bei diesem Algorithmus versucht man sich ein Verfahren zu Nutze zu machen,
+welches in der Natur beobachtet werden kann. Dabei handelt es sich um den
+Abkühlungsprozess wie er zum Beispiel bei metallischen Schmelzen beobachtet
+werden kann. Dabei kann beobachtet werden, das die Metallatome sich zu Beginn
+des Abkühlunsprozesses noch annähernd chaotisch durch die Gitterpositionen
+bewegen. Mit abnehmender Temperatur nehmen die Atome allerdings immer mehr
+geordnete Positionen ein, so dass später nur noch eine Optimierung in der
+lokalen Nachbarschaft der Atome möglich ist. Durch dieses Verfahren wird eine
+annähernd optimale Lösung erreicht.\vspace{10pt}
+
+Diesen, in der Natur beobachteten Algorithmus, versucht man jetzt nachzubilden,
+und mit diesem Verahren Partitionierungsprobleme, beziehungsweise
+Layoutprobleme, zu lösen. Dabei gibt man den Elementen zu Beginn einen hohen
+Freiheitsgrad, wie es ja auch bei dem Abkühlungsprozess der Fall ist. Dadurch
+nimmt man auch Verschlechterungen in Kauf. Dieser Freiheitsgrad nimmt jedoch
+immer weiter ab, so dass die Akzeptanz von Verschlechterungen immer weiter
+sinkt.\vspace{10pt}
+
+Bei dem Algorithmus werden die Elemente zu Beginn in einer zufällige
+Anfangspositionierung gebracht. Jetzt wird über eine Kostenfunktion die
+aktuellen Kosten bei dieser Konfiguration berechnet. Als nächstes wählt man
+willkürlich zwei Elemente aus und berechnet erneut die Kosten für den Fall,
+dass man diese beiden Elemente tauschen würde. Wenn sich die Kosten verbessern
+wird der Tausch auf jeden Fall durchgeführt. Wenn die Kosten gleich bleiben,
+oder sich sogar verschlechtern würden tauscht man mit einer bestimmten
+Wahrscheinlichkeit. Je größer der Wert der Verschlechterung ist, umso
+unwahrscheinlicher ist der Tausch der Elemente.\vspace{10pt}
+
+\noindent
+Der Pseudocode für diesen Algorithmus sieht wie folgt aus:\vspace{10pt}
+
+\noindent
+\verb|1  begin|\\
+\verb|2    T = T|$_0$\verb|, i = 0|\\
+\verb|3    cur_part = init_part|\\
+\verb|4    cur_cost=COST( cur_part )|\\
+\verb|5    repeat|\\
+\verb|6      repeat|\\
+\verb|7        i = i + 1|\\
+\verb|8        a|$_i$\verb| = SELECT( A ), b|$_i$\verb| = SELECT( B )|\\
+\verb|9        trial_part = EXCHANGE( a|$_i$\verb|,b|$_i$\verb|, cur_part )|\\
+\verb|10       trial_cost = COST( trial_part )|\\
+\verb|11       |$\Delta$\verb|cost = trial_cost - cur_cost|\\
+\verb|12       if ( |$\Delta$\verb|cost < 0 ) then|\\
+\verb|13         cur_cost = trial_cost|\\
+\verb|14         cur_part = MOVE ( a|$_i$\verb|, b|$_i$\verb| )|\\
+\verb|15       else|\\
+\verb|16         r = RANDOM ( 0, 1 )|\\
+\verb|17         if ( r < e|$^{-\frac{\Delta cost}{T}}$\verb| ) then|\\
+\verb|18           cur_cost = trial_cost|\\
+\verb|19           cur_part = MOVE ( a|$_i$\verb|, b|$_i$\verb| )|\\
+\verb|20     until (Abbruchskriterium, z.B. Gleichgewicht bei T, erreicht)|\\
+\verb|21    T = |$\alpha$\verb| * T|\\
+\verb|22   until ( T < T|$_{min}$\verb| )|\\
+\verb|23 end|\\ 
+\vspace{10pt}
+
+Die Kostenfunktion macht bei der Implementierung des Algorithmus ein äußerst
+wichtigen Punkt aus. In unserem speziellen Fall müsste man berücksichtigen,
+dass zwei Zustände, zwischen denen ein Übergang existiert, nicht zu weit
+auseinanderliegen sollten. Wenn zwei Zustände nicht direkt nebeneinander liegen
+können, sollte sehr großer Wert darauf gelegt werden, dass der Übergang nicht
+durch einen anderen Zustand geht, so dass die Beschriftung des Übergangs oder
+des anderen Zustandes eventuell nicht mehr zu erkennen ist. Weiterhin sollten
+die Überschneidungen der Übergänge untereinander auch so minimal wie mögich
+sein. \vspace{10pt}

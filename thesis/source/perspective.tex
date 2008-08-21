@@ -161,15 +161,15 @@ macht sich dies zu nutze:\vspace{10pt}
 %### removes texlipse warning
 
 \noindent
-\verb|1  for i = 1 to n do {|\\
-\verb|2    for j = 1 to i - 1 do {|\\
-\verb|3      ersetze jede Produktion der Form| $A_i \to A_j \gamma$ \verb| |\\ 
-\verb|4      durch die Produktion|$A_i \to \delta_1\gamma|\ldots|\delta_k\gamma$
-\verb|5  , wobei |$A_j \to \delta_1|\ldots|\delta_k$\\ 
-\verb|6      alle derzeitigen Produktionen für |$A_j$ \verb|sind|\\ 
-\verb|7    }|\\
-\verb|8    eleminiere die unmittelbare Linksrekursion für |$A_i$\\
-\verb|9    (mit dem vorhergehend beschriebenen Algorithmus)|\\
+\verb| 1 for i = 1 to n do {|\\
+\verb| 2   for j = 1 to i - 1 do {|\\
+\verb| 3     ersetze jede Produktion der Form| $A_i \to A_j \gamma$ \verb| |\\ 
+\verb| 4     durch die Produktion|$A_i \to \delta_1\gamma|\ldots|\delta_k\gamma$
+\verb| 5 , wobei |$A_j \to \delta_1|\ldots|\delta_k$\\ 
+\verb| 6     alle derzeitigen Produktionen für |$A_j$ \verb|sind|\\ 
+\verb| 7   }|\\
+\verb| 8   eleminiere die unmittelbare Linksrekursion für |$A_i$\\
+\verb| 9   (mit dem vorhergehend beschriebenen Algorithmus)|\\
 \verb|10 }|
 \vspace{10pt}
 
@@ -423,15 +423,15 @@ unwahrscheinlicher ist der Tausch der Elemente.\vspace{10pt}
 Der Pseudocode für diesen Algorithmus sieht wie folgt aus:\vspace{10pt}
 
 \noindent
-\verb|1  begin|\\
-\verb|2    T = T|$_0$\verb|, i = 0|\\
-\verb|3    cur_part = init_part|\\
-\verb|4    cur_cost=COST( cur_part )|\\
-\verb|5    repeat|\\
-\verb|6      repeat|\\
-\verb|7        i = i + 1|\\
-\verb|8        a|$_i$\verb| = SELECT( A ), b|$_i$\verb| = SELECT( B )|\\
-\verb|9        trial_part = EXCHANGE( a|$_i$\verb|,b|$_i$\verb|, cur_part )|\\
+\verb| 1 begin|\\
+\verb| 2   T = T|$_0$\verb|, i = 0|\\
+\verb| 3   cur_part = init_part|\\
+\verb| 4   cur_cost=COST( cur_part )|\\
+\verb| 5   repeat|\\
+\verb| 6     repeat|\\
+\verb| 7       i = i + 1|\\
+\verb| 8       a|$_i$\verb| = SELECT( A ), b|$_i$\verb| = SELECT( B )|\\
+\verb| 9       trial_part = EXCHANGE( a|$_i$\verb|,b|$_i$\verb|, cur_part )|\\
 \verb|10       trial_cost = COST( trial_part )|\\
 \verb|11       |$\Delta$\verb|cost = trial_cost - cur_cost|\\
 \verb|12       if ( |$\Delta$\verb|cost < 0 ) then|\\

@@ -304,25 +304,25 @@ wurde eine ähnliche Umsetzung gewählt, die nun besprochen wird.\vspace{10pt}
 %### removes texlipse warning
 
 \noindent
-\verb|BFS(G,s)|\\
-\verb|for alle Knoten u |$\in$\verb| V[G] - {s}|\\
-\verb|    do farbe[u] |$\gets$\verb| WEISS|\\
-\verb|       d[u] |$\gets \infty$\\
-\verb|       |$\pi$\verb|[u] |$\gets$\verb| NIL|\\
-\verb|farbe[s] |$\gets$\verb| GRAU|\\
-\verb|d[s] |$\gets$\verb| 0|\\
-\verb||$\pi$\verb|[s] |$\gets$\verb| NIL|\\
-\verb|Q |$\gets \emptyset$\\
-\verb|ENQUEUE(Q,s)|\\
-\verb|while Q |$\neq \emptyset$\\
-\verb|      do u |$\gets$\verb| DEQUEUE(Q)|\\
-\verb|         for alle v |$\in$\verb| Adj[u]|\\
-\verb|             do if farbe[v] = WEISS|\\
-\verb|                   then farbe[v] |$\gets$\verb| GRAU|\\
-\verb|                        d[v] |$\gets$\verb| d[u] + 1|\\
-\verb|                        |$\pi$\verb|[v] |$\gets$\verb| u|\\
-\verb|                        ENQUEUE(Q,v)|\\
-\verb|         farbe[u] |$\gets$\verb| SCHWARZ|\\
+\verb| 1 BFS(G,s)|\\
+\verb| 2 for alle Knoten u |$\in$\verb| V[G] - {s}|\\
+\verb| 3     do farbe[u] |$\gets$\verb| WEISS|\\
+\verb| 4        d[u] |$\gets \infty$\\
+\verb| 5        |$\pi$\verb|[u] |$\gets$\verb| NIL|\\
+\verb| 6 farbe[s] |$\gets$\verb| GRAU|\\
+\verb| 7 d[s] |$\gets$\verb| 0|\\
+\verb| 8 |$\pi$\verb|[s] |$\gets$\verb| NIL|\\
+\verb| 9 Q |$\gets \emptyset$\\
+\verb|10 ENQUEUE(Q,s)|\\
+\verb|11 while Q |$\neq \emptyset$\\
+\verb|12       do u |$\gets$\verb| DEQUEUE(Q)|\\
+\verb|13          for alle v |$\in$\verb| Adj[u]|\\
+\verb|14              do if farbe[v] = WEISS|\\
+\verb|15                    then farbe[v] |$\gets$\verb| GRAU|\\
+\verb|16                         d[v] |$\gets$\verb| d[u] + 1|\\
+\verb|17                         |$\pi$\verb|[v] |$\gets$\verb| u|\\
+\verb|18                         ENQUEUE(Q,v)|\\
+\verb|19          farbe[u] |$\gets$\verb| SCHWARZ|\\
 \vspace{10pt}
 
 Der dann im Programm umgesetzte Algorithmus besteht aus drei Phasen. In der

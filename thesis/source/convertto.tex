@@ -164,15 +164,15 @@ Die eigentliche Umwandlung geschieht dann mit folgendem Algorithmus, der aus
 didaktischen Gründen in mehrere Schritte aufgeteilt wurde.\vspace{10pt}
 
 \noindent
-\verb|initially, |$\epsilon$\verb|-closure(|$s_0$\verb|) is the only state in Dstates,|\\
-\verb|and it is unmarked;|\\
-\verb|while ( there is an unmarked state T in Dstates ) {|\\
-\verb|      mark T;|\\
-\verb|      for ( each input symbol a ) {|\\
-\verb|          U = |$\epsilon$\verb|-closure(move(T,a));|\\
-\verb|          if ( U is not in Dstates )|\\
-\verb|             add U as an unmarked state to Dstates;|\\
-\verb|          Dtran[T,a] = U;|\\
-\verb|      }|\\
-\verb|}|
+\verb| 1 initially, |$\epsilon$\verb|-closure(|$s_0$\verb|) is the only state in Dstates,|\\
+\verb| 2 and it is unmarked;|\\
+\verb| 3 while ( there is an unmarked state T in Dstates ) {|\\
+\verb| 4       mark T;|\\
+\verb| 5       for ( each input symbol a ) {|\\
+\verb| 6           U = |$\epsilon$\verb|-closure(move(T,a));|\\
+\verb| 7           if ( U is not in Dstates )|\\
+\verb| 8              add U as an unmarked state to Dstates;|\\
+\verb| 9           Dtran[T,a] = U;|\\
+\verb|10       }|\\
+\verb|11 }|
 \vspace{10pt}

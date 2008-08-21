@@ -73,11 +73,13 @@ Grammatik}\label{ConverToGrammarContextFree}
 Der Benutzer hat auch die Möglichkeit, eine konstruierte kontextfreie Grammatik
 in einen Kellerautomaten umwandeln zu lassen.\vspace{10pt}
 
-Bei diesem Algorithmus wird zunächst ein Startzustand angelegt, welcher das
-Startsymbol der Grammatik in den Keller legt. Dann wird für jede Produktion
-ein Übergang angelegt, welcher die rechte Seite der Produktion vom Keller
-entfernt, und dafür die linke Seite der Produktion auf den Keller
-schreibt.\vspace{10pt}
+Bei diesem Algorithmus werden zwei Zustände angelegt. Ein Startzustand und ein
+akzeptierender Zustand. Dazu ein Übergang vom Startzustand in den
+akzeptierenden Zustand, welcher das Startsymbol der Grammatik in den Keller
+legt. Dann wird für jede Produktion ein Übergang angelegt, welcher die rechte
+Seite der Produktion vom Keller entfernt, und dafür die linke Seite der
+Produktion auf den Keller schreibt. Dieser Übergang hat als
+Ursprungs- und Zielzustand den akzeptierenden Zustand.\vspace{10pt}
 
 Wenn alle Produktion verarbeitet wurden, werden noch zusätzlich pro
 Terminalzeichen ein Übergang angelegt. In jedem dieser Übergänge wird das

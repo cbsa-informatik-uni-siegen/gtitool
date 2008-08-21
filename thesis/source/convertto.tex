@@ -14,7 +14,7 @@ im Besonderen darauf eingegangen, welche Herausforderungen aufgetreten sind, um
 dem Benutzer die verwendeten Algorithmen möglichst in kleinen Schritten und
 verständlich darzustellen. Beim Umwandeln der Grammatiken in die entsprechenden
 Automaten sind die verwendeten Algorithmen leicht zu verstehen und zusätzlich
-nicht besonders gut darzustellen, weshalb hier darauf verzichtet wurde dem
+nicht besonders gut darzustellen, weshalb hier darauf verzichtet wurde, dem
 Benutzer eine schrittweise Umwandlung anhand einer graphischen Darstellung zu
 präsentieren.\vspace{10pt}
 
@@ -28,30 +28,30 @@ Verwendungsmöglichkeiten in diesem Werkzeug existieren.\vspace{10pt}
 
 \subsection{Umwandeln einer regulären Grammatik}\label{ConverToGrammarRegular}
 
-Eine reguläre Grammatik kann in einen entsprechenden Nichtdeterministischen
+Eine reguläre Grammatik kann in einen entsprechenden nicht deterministischen
 endlichen Automaten umgewandelt werden. Die Zustände unseres entstehenden
 Automaten resultieren aus den Nichtterminalzeichen unserer Grammatik. Allerdings
 werden in der Implementierung nur Zustände für die Nichtterminalzeichen angelegt,
 welche auch in einer Produktion, auf der rechten oder linken Seite, verwendet
-wird. Die Zustände werden immer dann angelegt, wenn man auf ein
+werden. Die Zustände werden immer dann angelegt, wenn man auf ein
 Nichtterminalzeichen trifft, welches man bis jetzt noch nicht gesehen
 hat.\vspace{10pt}
 
 Die Rechte Seite einer Produktion kann entweder aus einem einzelnen
-Terminalzeichen bestehen($\NonterminalSymbol{S} \to \TerminalSymbol{a}$), oder
+Terminalzeichen bestehen ($\NonterminalSymbol{S} \to \TerminalSymbol{a}$), oder
 aus einem Terminalzeichen mit einem anschließenden Nichtterminalzeichen
 ($\NonterminalSymbol{S} \to \TerminalSymbol{a}\NonterminalSymbol{A}$). Da keine
 anderen Produktionen für diese Grammatikform existieren können.\vspace{10pt}
 
 Wir schauen uns jetzt jede Produktion unserer Grammatik an.
-Zunächst interressiert uns die linke Seite. Wenn wir das Nichtterminalzeichen
+Zunächst interessiert uns die linke Seite. Wenn wir das Nichtterminalzeichen
 bereits gesehen haben, wurde auch schon ein Zustand dafür angelegt, und wir
 merken uns diesen. Wenn wir das Nichtterminalzeichen noch nicht gesehen haben,
 müssen wir jetzt einen neuen Zustand anlegen, welcher dieses repräsentiert, und
 merken uns diesen neuen Zustand, da dieser der Ausgangszustand
 für neu enstehende Übergänge ist.\vspace{10pt}
 
-Als nächstes betrachten wir die Rechte Seite der Produktion. Wenn es sich dabei
+Als nächstes betrachten wir die rechte Seite der Produktion. Wenn es sich dabei
 um ein einzelnes Terminalzeichen handelt, wird ein neuer akzeptierender Zustand
 angelegt. Danach wird ein Übergang von dem Zustand für das Nichtterminalzeichen
 zu diesem neuen Zustand erzeugt, wobei die Übergangsmenge aus dem
@@ -75,7 +75,7 @@ in einen Kellerautomaten umwandeln zu lassen.\vspace{10pt}
 
 Bei diesem Algorithmus wird zunächst ein Startzustand angelegt, welcher das
 Startsymbol der Grammatik in den Keller legt. Dann wird für jede Produktion
-ein Übergang angelegt, welcher die Rechte Seite der Produktion vom Keller
+ein Übergang angelegt, welcher die rechte Seite der Produktion vom Keller
 entfernt, und dafür die linke Seite der Produktion auf den Keller
 schreibt.\vspace{10pt}
 
@@ -94,7 +94,7 @@ zu sehen, um die Zusammenhänge besser verstehen zu können.\vspace{10pt}
 
 Bei der Planung der Umwandlung zwischen den verschiedenen Automaten Typen
 stellte sich die Frage, wie dem Benutzer der Umwandlungsalgorithmus möglichst
-verständlich dargestellt wird. Ich entschied mich für das auch sonst im
+verständlich dargestellt wird. Wir entschieden uns für das auch sonst im
 \gtitool verwendete Verfahren, eine Navigationsleiste zu verwendet, die es dem
 Benutzer gestattet in dem Algorithmus einen Schritt vor, bzw. einen Schritt
 zurück zu gehen. Um die Handhabung für den Benutzer zu erleichtern, wurde die
@@ -122,14 +122,15 @@ Es existieren zwei verschiedene Verfahren zur Umwandlung in einen
 deterministischen endlichen Automaten (DEA). Zum einen kann der komplette
 Potenzautomat verwendet werden, um den DEA zu erzeugen. Der entstehende Automat
 enthält allerdings unter Umständen sehr viele nicht erreichbare Zustände, deren
-Berechnung einige zusätzliche Schritte zur Folge haben. Wenn der Benutzer diese
-Art der Umwandlung auswählt, kann er nach dem Umwandeln die nicht erreichbaren
-Zustände wieder entfernen, wie dies funktioniert, kann in \ref{ReachableStates}
-nachgelesen werden. Die zweite Methode ist, dass nur die erreichbaren Zustände
-in der unteren Ansicht angelegt werden. Diese Methode ist übersichtlicher für
-den Benutzer, wenn auch nicht alle im Potenzautomaten vorhandenen Zustände
-betrachtet werden.\vspace{10pt}
+Berechnung einige zusätzliche Schritte zur Folge haben kann. Wenn der Benutzer
+diese Art der Umwandlung auswählt, kann er nach dem Umwandeln die nicht
+erreichbaren Zustände wieder entfernen, wie dies funktioniert, kann in
+\ref{ReachableStates} nachgelesen werden. Die zweite Methode ist, dass nur die
+erreichbaren Zustände in der unteren Ansicht angelegt werden. Diese Methode ist
+übersichtlicher für den Benutzer, wenn auch nicht alle im Potenzautomaten
+vorhandenen Zustände betrachtet werden.\vspace{10pt}
 
+\newpage
 %### removes texlipse warning
 Zur Umsetzung wurde der in \cite[S. 153ff]{Compilers} angegebene Algorithmus als
 Vorlage benutzt. Um den Algorithmus verwenden zu können, müssen zuerst einige

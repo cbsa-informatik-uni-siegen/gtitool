@@ -40,12 +40,17 @@ einer Linie verlaufen. Der größte Nutzer bei einer eigenständigen Implementie
 wäre, das Änderungen leichter eingepflegt werden könnten, da dies bei der sehr
 komplexen Implementierung von JGraph meistens problematisch war.\vspace{10pt}
 
+Ein weiterer Punkt betrifft die Übergänge. Im Moment verlaufen diese immer
+gerade, außer bei parallelen Übergängen. Es wäre aber durchaus wünschenswert,
+wenn die Übergänge zum Beispiel um einen Zustand herumgehen würden, wenn dieser
+auf dem direkten Weg zwischen zwei Zuständen liegen würde.\vspace{10pt}
+
 
 \section{Reguläre Ausdrücke}
 
-Die wohl wichtigste und komplexeste Erweiterung die für die Zukunft geplant
+Die wohl wichtigste und komplexeste Erweiterung, die für die Zukunft geplant
 ist, ist die Unterstützung von regulären Ausdrücken. Der Benutzer soll somit in
-der Lage sein, einen regulären Ausruck wie
+der Lage sein, einen regulären Ausdruck wie
 (\Symbol{a}$\mid$\Symbol{b})*\Symbol{a}\Symbol{b}\Symbol{b} eingeben zu können.
 Anschließend sollen im Idealfall mehrere Möglichkeiten bestehen, mit diesem
 Ausdruck weiter zu arbeiten. Diese Möglichkeiten sollen nun kurz angesprochen
@@ -99,7 +104,7 @@ vorgestellte Drucken. Dadurch ist der Benutzer in der Lage seine erstellten
 Automaten oder Grammatiken auszudrucken, um so seine Unterlagen zu
 vervollständigen. Eine weitere wichtige Funktionen besteht in dem Bildexport.
 Durch diesen Export ist der Benutzer in der Lage, die erstellten Automaten als
-Bild zu exportieren, um sie zum Beispiel in eigene Ausarbeitungen
+Bild zu exportieren, um sie zum Beispiel in eigene Prüfungsvorbereitungen
 aufzunehmen.\vspace{10pt}
 
 Als Perspektive für die Zukunft wäre es sinnvoll, auch Dozenten besser zu
@@ -125,7 +130,7 @@ Nichtterminalzeichen $\NonterminalSymbol{A}$ nach beliebig vielen Schritten etwa
 von der Form $\NonterminalSymbol{A} \TerminalSymbol{$\alpha$}$ herleiten lässt.
 Existiert eine Produktion $\NonterminalSymbol{A} \to \NonterminalSymbol{A}
 \TerminalSymbol{$\alpha$}$ spricht man von direkter Rekursion. Wenn dazu mehr als
-ein Ableitungsschritt nötig ist spricht man von einer indirekten
+ein Ableitungsschritt nötig ist, spricht man von einer indirekten
 Rekursion.\vspace{10pt}
 
 %### removes texlipse warning
@@ -134,7 +139,7 @@ bei einer Grammatik zu beseitigen, welcher sich ohne Probleme umsetzen lassen
 sollte.\vspace{10pt}
 %### removes texlipse warning
 
-\noindent Gehen wir davon aus, die Produktionen für ein Nonterminal
+\noindent Gehen wir davon aus, die Produktionen für ein Nichtterminalzeichen
 \NonterminalSymbol{A} sind von der Form\vspace{10pt}
 
 \NonterminalSymbol{A} $\to$ \NonterminalSymbol{A}$\alpha_1|\ldots|$
@@ -143,8 +148,8 @@ sollte.\vspace{10pt}
 \noindent wobei $\beta_1\ bis\ \beta_n$ nicht mit \NonterminalSymbol{A}
 beginnen.\vspace{10pt}
 
-\noindent Um diese Rekursion zu beseitigen führt man ein neues
-Nichtterminalzeichen \NonterminalSymbol{A$'$} ein. Als ersetzt man die
+\noindent Um diese Rekursion zu beseitigen, führt man ein neues
+Nichtterminalzeichen \NonterminalSymbol{A$'$} ein. Also ersetzt man die
 bestehenden Produktion von
 \NonterminalSymbol{A} durch diese Produktionen:\vspace{10pt}
 
@@ -164,7 +169,7 @@ macht sich dies zu nutze:\vspace{10pt}
 \verb| 1 for i = 1 to n do {|\\
 \verb| 2   for j = 1 to i - 1 do {|\\
 \verb| 3     ersetze jede Produktion der Form| $A_i \to A_j \gamma$ \verb| |\\ 
-\verb| 4     durch die Produktion|$A_i \to \delta_1\gamma|\ldots|\delta_k\gamma$
+\verb| 4     durch die Produktion |$A_i \to \delta_1\gamma|\ldots|\delta_k\gamma$
 \verb| 5 , wobei |$A_j \to \delta_1|\ldots|\delta_k$\\ 
 \verb| 6     alle derzeitigen Produktionen für |$A_j$ \verb|sind|\\ 
 \verb| 7   }|\\
@@ -173,7 +178,7 @@ macht sich dies zu nutze:\vspace{10pt}
 \verb|10 }|
 \vspace{10pt}
 
-Somit besteht die Möglichkeit sowohl direkte als auch indirekte Linksrekursion
+Somit besteht die Möglichkeit sowohl direkte, wie auch indirekte Linksrekursion
 zu beseitigen.\vspace{10pt}
 
 \subsection{Linksfaktorisierung}
@@ -204,7 +209,7 @@ $A \to \alpha \beta_1|\ldots|\alpha
 wobei $\gamma$ nicht mit $\alpha$ beginnt und es gilt $n \geq 2$ und $k \geq 0$.
 \vspace{10pt}
 
-Um für die Grammatik den Algorithmus zur Linksfaktorisierung anzuwenden fürht
+Um für die Grammatik den Algorithmus zur Linksfaktorisierung anzuwenden führt
 man als erstes ein neus Nichtterminalzeichen A' ein. Als
 nächstes ersetzt man die bestehenden Produktionen von A
 durch die folgenden.\vspace{10pt}
@@ -215,7 +220,7 @@ $A' \to \beta_1|\ldots|\beta_n$
 \vspace{10pt}
 
 \noindent
-Dieser Schritt muss wiederholt werden, bis für kein alle Produktionen eines
+Dieser Schritt muss wiederholt werden, bis für alle Produktionen eines
 Nichtterminalzeichen $\epsilon$ der einzige gemeinsame Prefix ist.\vspace{10pt} 
 
 Dieser Algorithmus kann für eine Implementierung verwendet werden,
@@ -225,7 +230,7 @@ nötig ist, und diese dann wie oben beschrieben anwendet.
 \subsection{Wortnavigation für Grammatiken}
 
 Die Wortnavigation für Automaten haben wir ja schon in Kapitel
-\ref{wordNavigation} beschrieben. Solch eine Wortnavigation liese sich auch
+\ref{wordNavigation} beschrieben. Solch eine Wortnavigation ließe sich auch
 für eine Grammatik realisieren, so dass der Benutzer nicht erst den Umweg
 nutzen muss, die Grammtik in einen Autmaten umzuwandeln.\vspace{10pt}
 
@@ -239,38 +244,37 @@ erforderlich.\vspace{10pt}
 Für die Top-Down Methode könnte das Verfahren des rekursiven Abstiegs verwendet
 werden. Dieser Algorithmus startet mit dem Startsymbol der Grammatik auf dem
 Keller. Wenn mehrere Produktionen für das Startsymbol in der Grammatik
-existieren, muss der Benutzer jetzt auswählen, welches die richtige Produktion ist. Dann wird
-das Startsymbol durch die Rechte Seite dieser Produktion ersetzt. Jetzt nimmt
-man sich jedes Symbol einzeln vor wobei man von links startet. Handelt es sich
-um ein Nichtterminalzeichen, würde dieses wieder durch die rechte Seite der
-richtigen nächsten Produktion ersetzt. Handelt es sich um ein Terminalzeichen,
-wird dieses mit dem nächsten Zeichen im Eingabewort verglichen. Wenn diese
-Übereinstimmen wird ein Pointer innerhalb des Eingabewortes ein Symbol
+existieren, muss der Benutzer jetzt auswählen, welches die richtige Produktion
+ist. Dann wird das Startsymbol durch die rechte Seite dieser Produktion ersetzt.
+Jetzt nimmt man sich jedes Symbol einzeln vor, wobei man von links startet.
+Handelt es sich um ein Nichtterminalzeichen, würde dieses wieder durch die rechte
+Seite der richtigen nächsten Produktion ersetzt. Handelt es sich um ein
+Terminalzeichen, wird dieses mit dem nächsten Zeichen im Eingabewort verglichen.
+Wenn diese übereinstimmen wird ein Pointer innerhalb des Eingabewortes ein Symbol
 weitergeschoben, und man betrachtet das nächste Symbol. Wenn die beiden Symbole
-nicht übereinstimmen, muss eine Fehlermeldung ausgegeben werden, dass dieses
-Wort mit den bis jetzt verwendeten Produktionen nich hergeleitet werden kann.
-Wenn man das letzte Symbol auf dem Keller behandelt hat sollte auf dem Keller
-das Eingabewort stehen. Somit kann man das Wort mit den Produktionen herleiten,
-die man während dieses Durchlaufs verwendet hat. Als Hilfestellung für den
-Benutzer sollten diese noch in einer Liste, oder etwas ähnlichem in der
-Reihenfolge der Verwendung aufgelistet werden.\vspace{10pt}
+nicht übereinstimmen, muss eine Fehlermeldung ausgegeben werden, dass dieses Wort
+mit den bis jetzt verwendeten Produktionen nich hergeleitet werden kann. Wenn man
+das letzte Symbol auf dem Keller behandelt hat, sollte auf dem Keller das
+Eingabewort stehen. Somit kann man das Wort mit den Produktionen herleiten, die
+man während dieses Durchlaufs verwendet hat. Als Hilfestellung für den Benutzer
+sollten diese noch in einer Liste, oder etwas ähnlichem in der Reihenfolge der
+Verwendung aufgelistet werden.\vspace{10pt}
 
-Alternativ könnte man dem Benutzer die Möglichkeit geben ahand der Bottom-Up
+Alternativ könnte man dem Benutzer die Möglichkeit geben anhand der Bot\-tom-Up
 Methode zu überprüfen, ob das Wort in der Grammatik liegt. Dazu wird das
 komplette Eingabewort auf den Keller geschrieben. Jetzt versucht man Teile des
 Kellers auf der rechten Seite einer Produktion wiederzufinden. Wenn man eine
-solche Produktion gefunden hat, wird der Teil des Kellers, der der rechten
-Seite entspricht, durch die linke Seite der Produktion ersetzt. Dies versucht
-man fortzusetzten, bis man das Startzeichen auf dem Keller stehen hat. In
-diesem Fall liegt das Eingabewort in der Grammatik. Da eventuell in einem
-solchen Reduktionsschritt mehrere Produktionen in Frage kommen können, wäre
+solche Produktion gefunden hat, wird der Teil des Kellers, der der rechten Seite
+entspricht, durch die linke Seite der Produktion ersetzt. Dies versucht man
+fortzusetzen, bis man das Startzeichen auf dem Keller stehen hat. In diesem Fall
+liegt das Eingabewort in der von der Grammatik erkannten Sprache. Da eventuell in
+einem solchen Reduktionsschritt mehrere Produktionen in Frage kommen können, wäre
 dort wieder die Entscheidung des Benutzers gefragt, welches die richtige
 Produktion für diese Situation ist. Wenn keine Möglichkeit existiert das
-Eingabewort auf das Startzeichen zu reduzieren, dann liegt das Wort nicht in
-der konstruierten Grammatik. Wie bei der Top-Down Methode wäre es
-auch hier sinnvoll, die verwendeten Produktionen in einer Liste zu
-speichern, und dem Nutzer anzuzeigen, um den Vorgang nachvollziehen
-zu können.\vspace{10pt}
+Eingabewort auf das Startzeichen zu reduzieren, dann liegt das Wort nicht in der
+konstruierten Grammatik. Wie bei der Top-Down Methode wäre es auch hier sinnvoll,
+die verwendeten Produktionen in einer Liste zu speichern, und dem Nutzer
+anzuzeigen, um den Vorgang nachvollziehen zu können.\vspace{10pt}
 
 Um auf verschiedene Benutzervorlieben einzugehen, könnte man beide Varianten
 implementieren, und den Benutzer entscheiden lassen, welche er verwenden
@@ -278,18 +282,20 @@ möchte.\vspace{10pt}
 
 \section{Erkannte Wörter ausgeben}
 
-Eine weitere sinvolle und für die Zukunft angedachte Erweiterung ist die
+Eine weitere sinnvolle und für die Zukunft angedachte Erweiterung ist die
 Ausgabe von erkannten Wörtern. Nachdem ein Automat, eine Grammatik oder dann
-vieleicht auch ein regulärer Ausdruck eingebenen und validiert wurde, soll der
+vielleicht auch ein regulärer Ausdruck, eingebenen und validiert wurde, soll der
 Benutzer in der Lage sein eine Ansicht zu öffnen, in der er Wörter ausgegeben
-bekommt, die zum Beispiel von dem erstellten Automat erkannt werden. Bei der
-Umsetzung ist darauf zu achten, dass die Bestimmung dieser Wörter möglichst mit
-geringer Laufzeit implementiert ist, so dass der Benutzer nicht allzu lange auf
-ein Ergebnis warten muss. Die Bestimmung sollte somit nicht einfach per
-Brute-Force-Methode ungesetzt werden, sondern in irgendeiner Form abhängig von
-dem gewendeten Typ, wie zum Beispiel einer Grammatik. Somit sollten gewisse
-Wörter direkt ausgeschlossen werden, die bei der Brute-Force-Methode ansonsten
-mit getestet werden würden.\vspace{10pt}
+bekommt, die zum Beispiel von dem erstellten Automat erkannt
+werden.\vspace{10pt}
+
+Bei der Umsetzung ist darauf zu achten, dass die Bestimmung dieser Wörter
+möglichst mit geringer Laufzeit implementiert wird, so dass der Benutzer nicht
+allzu lange auf ein Ergebnis warten muss. Die Bestimmung sollte somit nicht
+einfach per Brute-Force-Methode ungesetzt werden, sondern in irgendeiner Form
+abhängig von dem gewendeten Typ, wie zum Beispiel einer Grammatik. Somit sollten
+gewisse Wörter direkt ausgeschlossen werden, die bei der Brute-Force-Methode
+ansonsten mit getestet werden würden.\vspace{10pt}
 
 
 \section{Eingabe von mehreren Wörtern}
@@ -326,17 +332,17 @@ diesen Fällen entfallen würde.\vspace{10pt}
 
 
 \subsection{Word-Navigation}
-Eine wichtige Erweiterung betrifft die Wort Navigation. Bei dieser Navigation
+Eine wichtige Erweiterung betrifft die Wort-Navigation. Bei dieser Navigation
 gibt es bereits eine Benutzerinteraktion, welche in \ref{InteractionPDA}
 beschrieben wird. In Zukunft kann die Benutzerinteraktion, die in
 \ref{wordNavigation} beschrieben wird, erweitert werden. Eine mögliche Umsetzung
 wäre, den Benutzer vor einem Navigationsschritt dazu aufzufordern, die Übergänge
 zu markieren, die als nächstes verwendet werden. Dabei müsste der Benutzer anhand
 des nächsten Symbols im Eingabewort entscheiden, welche Übergänge dies betrifft.
-Kommt ein oder mehrere $epsilon$-Übergänge vor, müssen diese Übergänge zuerst
+Kommt ein oder mehrere $\epsilon$-Übergänge vor müssen diese Übergänge zuerst
 ausgewählt werden. Durch diese Erweiterung wurde der Benutzer noch besser
-erkennen können wie der Algorithmus arbeitet. Um den ungeübten Benutzer nicht zu
-überfordern und somit vielleicht zur Aufgabe zu zwingen, muss dieser zusätzliche
+erkennen können, wie der Algorithmus arbeitet. Um den ungeübten Benutzer nicht
+zu überfordern und somit vielleicht zur Aufgabe zu zwingen, muss dieser zusätzliche
 Auswahlschritt überspringbar sein. Es muss also eine Art Raten-Funktion geben,
 die dem Benutzer die Auswahl abnimmt.\vspace{10pt}
 
@@ -344,13 +350,13 @@ die dem Benutzer die Auswahl abnimmt.\vspace{10pt}
 \subsection{Umwandeln}
 Im Abschnitt \ref{ConverToMachine} wird das Umwandeln eines Automaten in einen
 anderen Automaten beschrieben, also zum Beispiel die Umwandlung von einem
-$\epsilon$-NDEA in einen DEA. Der dort Implementierte Algorithmus verwendet
+$\epsilon$-NDEA in einen DEA. Der dort implementierte Algorithmus verwendet
 verschiedene Phasen. Eine dieser Phasen ist das Bilden des
 $\epsilon$-Abschlusses. In diesem Schritt wäre es möglich, den Benutzer alle
-Zustände zu markieren, die von dem aktiven Zustand nur durch
+Zustände markieren zu lassen, die von dem aktiven Zustand nur durch
 $\epsilon$-Übergänge erreichbar sind.\vspace{10pt}
 
-Eine weitere Möglichkeit wäre, den Benutzer dazu aufzufordern die Zustände zu
+Eine weitere Möglichkeit wäre, den Benutzer dazu aufzufordern, die Zustände zu
 aktivieren, die nach einem Übergang mit einem bestimmten Symbol aktiviert sein
 werden. Aber auch bei allen anderen Phasen sollte geprüft werden, ob es sinnvoll
 wäre, den Benutzer zu einer Interaktion aufzufordern. Es wäre aber nicht nur
@@ -362,7 +368,7 @@ wäre es in dem entstehenden Graphen möglich, anzugeben, welche Zustände und
 \subsection{Erreichbare Zustände}
 Wie im Abschnitt \ref{ReachableStates} vorgestellt, implementiert der
 Algorithmus zur Bestimmung der erreichbaren Zustände eine Breitensuche. Bei
-dieser Breitensuche könnte der Benutzer dazu aufgefordert werden die
+dieser Breitensuche könnte der Benutzer dazu aufgefordert werden, die
 erreichbaren Zustände zu markieren. Diese Markierung könnte dann überprüft
 werden und der Benutzer würde über die Richtigkeit seiner Eingabe informiert.
 Auch bei dieser Benutzerinteraktion wäre eine Funktion wichtig, die die
@@ -373,7 +379,7 @@ richtige Auswahl trifft.\vspace{10pt}
 Das Minimieren von Automaten bietet sehr großen Spielraum zum Einbau von
 Benutzerinteraktion. Der in Kapitel \ref{Minimize} vorgestellte Algorithmus
 basiert darauf Zustände in Äquivalenz\-klassen zu unterteilen. Es wäre somit
-möglich diese Unterteilung dem Benutzer zu überlassen. Er musste also
+möglich diese Unterteilung dem Benutzer zu überlassen. Er müsste also
 auswählen, warum eine Gruppe in zwei Gruppen zerfällt. Um dies zu erreichen,
 müsste der Benutzer Übergänge mit dem gleichen Symbol finden, die in
 unterschiedlichen Gruppen enden.\vspace{10pt}
@@ -385,11 +391,13 @@ entsprechenden Zustände auswählt.\vspace{10pt}
 
 \section{Auto-Layout}\label{PerspectiveAutoLayout}
 
+%###
 Wie im Kapitel \ref{AutoLayout} schon erwähnt ist der implementierte Autolayout
 Algorithmus noch verbesserungsfähig. Ein Algorithmus welcher wahrscheinlich
 bessere Ergebnisse liefert ist der Simulated-Annealing Algorithmus (Simulierte
 Abkühlung), welcher auch in dem Buch \cite{Layout} beschrieben
 wird.\vspace{10pt}
+%###
 
 Bei diesem Algorithmus versucht man sich ein Verfahren zu Nutze zu machen,
 welches in der Natur beobachtet werden kann. Dabei handelt es sich um den

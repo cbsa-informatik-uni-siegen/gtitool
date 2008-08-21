@@ -41,9 +41,10 @@ Bei der Darstellung der Automaten haben wir uns sehr an dem aktuellen
 Vorlesungsskript orientiert. Wir wollten eine möglichst hohe Überdeckung
 erreichen, um sicherzustellen, dass ein Benutzer einen existierenden Automaten
 verstehen kann, ohne sich noch viel einlesen zu müssen. In den
-Vorlesungsunterlagen wird ein Zustand als Kreis dargestellt. Ein Startzustand
-wird über einen doppelten Rahmen gekennzeichnet und ein Startzustand erkennt man
-an einem Pfeil, der optional mit Start beschriftet sein kann.\vspace{10pt}
+Vorlesungsunterlagen wird ein Zustand als Kreis dargestellt. Ein akzeptierender
+Zustand wird über einen doppelten Rahmen gekennzeichnet und ein Startzustand
+erkennt man an einem Pfeil, der optional mit Start beschriftet sein
+kann.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}
@@ -53,7 +54,7 @@ an einem Pfeil, der optional mit Start beschriftet sein kann.\vspace{10pt}
 \end{figure}
 \vspace{10pt}
 
-Um dies zu realisieren haben wir uns die frei verfübare Java Bibliothek JGraph
+Um dies zu realisieren, haben wir uns die frei verfügbare Java Bibliothek JGraph
 zunutze gemacht, und nach unseren Bedürfnissen angepasst. Als erstes mussten
 wir mit Hilfe von JGraph Komponenten ein geeignete Darstellung von Zuständen
 und Übergängen erreichen. Diese Komponenten mussten dynamisch angelegt,
@@ -61,12 +62,12 @@ gelöscht und bearbeitet werden können. Nachdem wir also eine passende
 Darstellung für unsere Automaten gefunden hatten, mussten wir noch die
 Verknüpfung von den graphischen Elementen und den Kernelementen herstellen. Um
 eine eindeutige Zuweisung von diesen Elementen zu erreichen, haben wir uns dazu
-entschieden, die Kernelemente als Attribut in den grafischen Komponenten
+entschieden, die Kernelemente als Attribut in den graphischen Komponenten
 zu speichern.\vspace{10pt}
 
 Nachdem die Verknüpfung der Komponenten erledigt war, konnte man die
 Darstellung der Zustände und Übergänge anhand der entsprechenden Daten
-anpassen. Das bedeutet für Zustände, das man den Namen des Zustandsobjekts
+anpassen. Das bedeutet für Zustände, dass man den Namen des Zustandsobjekts
 anzeigt, und auch auswertet, ob es sich um einen Startzustand oder Endzustand
 handelt. Bei den Übergängen konnte die Übergangsmenge als Beschriftung benutzt
 werden, wie es bei der Vorlage im Skript auch der Fall ist.\vspace{10pt}
@@ -74,7 +75,7 @@ werden, wie es bei der Vorlage im Skript auch der Fall ist.\vspace{10pt}
 
 \subsection{Anpassung von JGraph}\label{GraphJGraphAdaptation}
 
-Die Bibliothek JGraph bietet einen weit über unsere Anforderungen hinaus
+Die Bibliothek JGraph bietet eine weit über unsere Anforderungen hinaus
 gehende Unterstützung von graphischen Komponenten. An einigen Stellen mussten
 allerdings Anpassungen vorgenommen werden, um den von uns vorgegebenen
 Funktionumfang erreichen zu können. Diese Anpassungen werden in diesem
@@ -89,23 +90,23 @@ Zeichnen automatisch. Durch diese Art der Implementierung ist es jetzt sehr
 einfach in den verschiedenen Algorithmen die Darstellung der graphischen
 Komponenten zu beeinflussen.\vspace{10pt}
 
-Eine weitere Anpassung die von uns implementiert wurde, ist die schon von den
+Eine weitere Anpassung, die von uns implementiert wurde, ist die schon von den
 Parsern, siehe Kapitel \ref{Parser}, bekannte Verwendung von sogenannten
 PrettyStrings. Bei einfachen Übergängen oder Zuständen mit kurzem Namen,
-beinhaltet diese Anpassung nicht allzu viele Verbesserungen. Das sieht aber bei
+beinhaltet diese Anpassung nicht allzu viele Verbesserungen. Das sieht bei
 der Verwendung von mehreren Symbolen in einem Übergang oder den
-Potenzmengen-Zuständen anders aus. Dort ist der Benutzer in der Lage durch die
-zusätzlichen Farbinformation und Zeichenattribute die ihm zur Verfügung
+Potenzmengen-Zuständen aber anders aus. Dort ist der Benutzer in der Lage, durch
+die zusätzlichen Farbinformation und Zeichenattribute, die ihm zur Verfügung
 gestellten Informationen schneller aufzunehmen, als wenn ihm eine unformatierte
 Zeichenkette angezeigt werden würde.\vspace{10pt}
 
 In Kapitel \ref{ConverTo} wird die Umwandlung von Automaten in andere Automaten
-Formen, z.B. die Umwandlung von einem $\epsilon$-NDEA in einen DEA. Bei der
-Implementierung dieser Umwandlung wurden wir vor das Problem gestellt, dass in
-der Literatur, sowie im Vorlesungsskript Potenzautomaten-Zustand nicht rund
-dargestellt werden, sondern als Rechteck mit abgerundeten Ecken. Dieses Problem
-wurde durch die Anpassung der graphischen Zustände, sowie durch die Berechnung
-der Endpunkte der Übergänge gelöst.\vspace{10pt}
+Formen, z.B. die Umwandlung von einem $\epsilon$-NDEA in einen DEA besprochen.
+Bei der Implementierung dieser Umwandlung wurden wir vor das Problem gestellt,
+dass in der Literatur, sowie im Vorlesungsskript, Potenzautomaten-Zustand nicht
+rund dargestellt werden, sondern als Rechteck mit abgerundeten Ecken. Dieses
+Problem wurde durch die Anpassung der graphischen Zustände, sowie durch die
+Berechnung der Endpunkte der Übergänge gelöst.\vspace{10pt}
 
 Die Darstellungsweise von parallelen Übergängen in entgegengesetzte Richtung
 musste angepasst werden, da die normale Implementierung ein Ergebnis lieferte,
@@ -114,13 +115,12 @@ war.\vspace{10pt}
 
 Die letzte wichtige Anpassung wurde notwendig, da ein Start-Zustand mit einem
 Pfeil auf den Zustand dargestellt werden musste. Dieser graphische Pfeil musste
-somit zu dem Zustand gehören, was die Breite des Zustandes erhöhte und damit
-die normale Berechnung von JGraph, zum Beispiel die Berechnung der Position
-eines Überganges beeinflusste und dafür sorgte, dass der Graph nicht mehr so
-aussah, wie er intuitiv sein sollte. Um dieses Problem zu lösen, musste bei
-vielen Berechnungen, ein Offset berücksichtigt werden, so dass ein
-Start-Zustand nicht mehr anders behandelt wurde, wie ein normaler
-Zustand.\vspace{10pt}
+somit zu dem Zustand gehören, was die Breite des Zustandes erhöhte und damit die
+normale Berechnung von JGraph, zum Beispiel die Berechnung der Position eines
+Überganges beeinflusste und dafür sorgte, dass der Graph nicht mehr so aussah,
+wie er intuitiv aussehen sollte. Um dieses Problem zu lösen, musste bei vielen
+Berechnungen, ein Offset berücksichtigt werden, so dass ein Start-Zustand nicht
+mehr anders behandelt wurde, wie ein normaler Zustand.\vspace{10pt}
 
 
 \section{Tabellen}
@@ -134,16 +134,16 @@ werden.\vspace{10pt}
 
 \subsection{Übergangstabelle}
 
-Während der Entwicklung und ersten Tests des \gtitools kam der Wunsch auf,
-einen Automaten nicht nur graphisch zu bearbeiten, sondern auch in der
+Während der Entwicklung und ersten Tests des \gtitools kam der Wunsch auf, einen
+Automaten nicht nur graphisch zu bearbeiten, sondern auch in der
 Übergangstabelle. Dadurch soll es dem Benutzer ermöglicht werden, Übergänge
 schneller anzulegen, als es bei der normaler Methode in der Graphenansicht der
-Fall wäre. Um diese neue Methode zu implementieren wurden einige verschiedene
-Umsetzungen diskutiert. Zur Diskusion standen unter anderen, dass in jeder
-Zelle der Tabelle ausgewählt werden kann, zu welchen Zuständen ein Übergang
-existiert. Diese Auswahl hätte allerdings bei der Umsetzung schlecht
-ausgesehen, zumindest bei hinreichend vielen Zuständen. Aus diesem Grund wurde
-dieser Ansatz verworfen.\vspace{10pt}
+Fall wäre. Um diese neue Methode zu implementieren wurden verschiedene
+Umsetzungen diskutiert. Zur Diskusion standen unter anderen, dass in jeder Zelle
+der Tabelle ausgewählt werden kann, zu welchen Zuständen ein Übergang existiert.
+Diese Auswahl hätte allerdings bei der Umsetzung schlecht ausgesehen, zumindest
+bei hinreichend vielen Zuständen. Aus diesem Grund wurde dieser Ansatz
+verworfen.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}
@@ -154,22 +154,22 @@ dieser Ansatz verworfen.\vspace{10pt}
 \vspace{10pt}
 
 Als nächste mögliche Umsetzung wurde diskutiert, ob es technisch möglich sei,
-in jede Zelle einen Parser zu verwenden. Dieser Parser musste so implementiert
-werden, dass er einen oder mehrere, durch Komma getrennte Zustände als Eingabe
+in jede Zelle einen Parser zu verwenden. Dieser Parser müsste so implementiert
+werden, dass er einen oder mehrere, durch Komma getrennte, Zustände als Eingabe
 akzeptiert. Im Kapitel \ref{Parser} werden einige kontextsensitive Bedingungen
 angesprochen, die auch bei dem hier vorliegenden Parser verwendet werden
 mussten, da es dem Benutzer nicht möglich sein sollte, einen oder mehrere
 Zustände anzugeben, die nicht im Graphen vorkommen. Der Parser als solches
 konnte leicht implementiert werden, es gab allerdings einige technische
-Probleme diesen in jede Zelle zu implementieren. Diese Probleme konnten gelöst
+Probleme diesen in die Zellen zu integrieren. Diese Probleme konnten gelöst
 werden, so dass der Benutzer nun in der Lage ist, Übergänge per Tabelle
 anzulegen, zu modifizieren und zu löschen.\vspace{10pt}
 
 
 \subsection{Keller Operationen Tabelle}
 
-Anhand der Tabelle für Kelleroperationen kann der User genau nachvollziehen,
-was genau mit unserem Keller passiert, wenn wir mit diesem
+Anhand der Tabelle für Kelleroperationen kann der Benutzer genau
+nachvollziehen, was genau mit unserem Keller passiert, wenn wir mit diesem
 Übergang in einen anderen Zustand übergehen.\vspace{10pt}
 
 \begin{figure}[h!]
@@ -188,7 +188,7 @@ das Wort, welches auf den Keller geschrieben wird. Wenn wir nichts von dem
 Keller lesen oder auf den Keller schreiben wird als Wort $\epsilon$
 verwendet.\vspace{10pt} 
 
-Als Orientierungshilft für den Benutzer kann man einen Eintrag in der Tabelle
+Als Orientierungshilfe für den Benutzer kann man einen Eintrag in der Tabelle
 auswählen, und es wird dann der entsprechende Übergang im Automaten farblich
 hervorgehoben. Dies soll dabei helfen die Funktionsweise des aktuellen
 Automaten nachzuvollziehen.\vspace{10pt}
@@ -198,24 +198,26 @@ Automaten nachzuvollziehen.\vspace{10pt}
 
 In diesem Abschnitt wird die Wort-Navigation geschrieben. Neben der
 deterministischen Navigation wird das Anzeigen des Pfades zu den aktuell
-aktiven Zuständen angesprochen, was dem Benutzer erleichtern soll, warum ein
-eingegebenes Wort erkannt wird.
+aktiven Zuständen angesprochen, was dem Benutzer erleichtern soll, zu
+erkennen, warum ein eingegebenes Wort erkannt wird.
 
 
 \subsection{Deterministische Navigation}
 
 Wir wollten dem Nutzer auch die Möglichkeit geben, sich anzusehen, wie der
-konstruierte Automat ein beliebiges Eingabewort abarbeitet. Für diesen Zweck
-wurde die Wortnavigation entwickelt.\vspace{10pt}
+konstruierte Automat ein beliebiges Eingabewort abarbeitet, dabei muss
+allerdings gelten, dass es sich um ein gültiges Wort handelt, es müssen also
+alle Symbole im Alphabet vorkommen. Für diesen Zweck wurde die Wortnavigation
+entwickelt.\vspace{10pt}
 
 Wenn der Nutzer den Wortnavigationsmodus startet findet er am unteren
 Bildschirmrand zwei Textfelder. Dabei handelt es sich um ein Eingabefeld für
 das Eingabewort, und um eine Anzeige des aktuellen Kellers. In der
 deterministischen Wortnavigation spielt die Kelleranzeige keine Rolle. Diese
-wird allerdings im folgenden Kapitel benötigt, und dann auch näher erläutert
-werden.\vspace{10pt}
+wird allerdings bei der Verwendung von einem Kellerautomaten benötigt und wird
+in Abschnitt \ref{InteractionPDA} besprochen.\vspace{10pt}
 
-Um den Benutzer eine Hilfestellung bei der Eingabe eines Wortes zu geben, wird
+Um dem Benutzer eine Hilfestellung bei der Eingabe eines Wortes zu geben, wird
 rechts neben dem Eingabefeld das aktuelle Alphabet angezeigt. Man kann nur
 Symbole verwenden, welche auch im aktuellen Alphabet enthalten
 sind.\vspace{10pt}
@@ -228,7 +230,7 @@ sind.\vspace{10pt}
 \end{figure}
 \vspace{10pt}
 
-Nachdem ein Wort eingegeben wurde kann der Nutzer dann die Verarbeitung des
+Nachdem ein Wort eingegeben wurde, kann der Nutzer dann die Verarbeitung des
 Worts starten. Es besteht die Möglichkeit sich Symbol für Symbol weiter durch
 das Wort zu arbeiten, und den genauen Weg im Automaten nachzuvollziehen. Um
 Verständnisprobleme besser beseitigen zu können, ist auch hier eine Navigation
@@ -241,8 +243,8 @@ Zustand gekommen ist. In dem Feld, in welchem man das Wort eingegeben hat, wird
 jetzt angezeigt, bis zu welcher Stelle der Automat das Wort schon verarbeitet
 hat.\vspace{10pt}
 
-Wenn man das ganze Wort verarbeitet hat bekommt der Benutzer eine Information,
-ob der Automat das Wort akzeptiert hat, oder ob das Wort nicht in der Sprache
+Wenn man das ganze Wort verarbeitet hat, bekommt der Benutzer eine Information,
+ob der Automat das Wort akzeptiert hat, oder, ob das Wort nicht in der Sprache
 des Automaten liegt.\vspace{10pt}
 
 
@@ -329,11 +331,11 @@ Der dann im Programm umgesetzte Algorithmus besteht aus drei Phasen. In der
 ersten Phase wird ein noch nicht abgearbeiteter Zustand ausgewählt, zu Beginn
 wird mit dem Startzustand begonnen. In der zweiten Phase werden die von diesem
 Zustand aus direkt erreichbaren Zustände berechnet und dem Benutzer hervorgehoben
-dargestellt. In der dritten Phase werden alle bis jetzt zu erreichenden Zustände
-hervorgehoben. Gleichzeitig bekommt der Benutzer in der Outline mitgeteilt,
-welcher Zustand jetzt fertiggestellt ist und welche noch berechnet werden müssen.
-Durch diese sehr feine Unterteilung, soll ein besseres Verständnis des
-Algorithmus erreicht werden.\vspace{10pt}
+dargestellt. In der dritten Phase werden alle bis jetzt erreichbaren Zustände
+hervorgehoben. Gleichzeitig bekommt der Benutzer rechts in der Outline
+mitgeteilt, welcher Zustand jetzt fertiggestellt ist und welche noch berechnet
+werden müssen. Durch diese sehr feine Unterteilung, soll ein besseres Verständnis
+des Algorithmus erreicht werden.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}

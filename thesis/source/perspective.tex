@@ -46,7 +46,7 @@ wenn die Übergänge zum Beispiel um einen Zustand herumgehen würden, wenn dies
 auf dem direkten Weg zwischen zwei Zuständen liegen würde.\vspace{10pt}
 
 
-\section{Reguläre Ausdrücke}
+\section{Reguläre Ausdrücke}\label{PerspectiveRegEx}
 
 Die wohl wichtigste und komplexeste Erweiterung, die für die Zukunft geplant
 ist, ist die Unterstützung von regulären Ausdrücken. Der Benutzer soll somit in
@@ -96,7 +96,7 @@ Umwandlung ist in Abbildung \ref{FigureRegExDFA} zu sehen.\vspace{10pt}
 \vspace{10pt}
 
 
-\section{\LaTeX-Export}
+\section{\LaTeX-Export}\label{PerspectiveLaTeX}
 
 Bei der Umsetzung des \gtitools war es uns wichtig in erster Linie studentische
 Benutzer zu unterstützen. Dazu zählt unter anderem das in Kapitel \ref{Print}
@@ -116,14 +116,15 @@ noch gut aussehen. Wichtig wäre auch, dass sich, wenn möglich, die \LaTeX-
 und die am Bildschirm dargestellte Version wenig unterscheiden.\vspace{10pt}
 
 
-\section{Grammatik Erweiterungen}
+\section{Grammatik Erweiterungen}\label{PerspectiveGrammar}
 
 Bei Grammatiken gibt es noch diverse Möglichkeiten, welche bis jetzt noch nicht
 umgesetzt sind. Als Beispiele, auf die wir in diesem Kapitel noch eingehen
 möchten, haben wir uns das Problem von Linksrekursion, Linksfaktorisierung und
 Wortnavigation auf einer Grammatik aufgegriffen.\vspace{10pt}
 
-\subsection{Linksrekursion}
+
+\subsection{Linksrekursion}\label{PerspectiveLeftrecursion}
 
 Eine Grammatik wird als linksrekursiv bezeichnet, wenn sich aus einem beliebigen
 Nichtterminalzeichen $\NonterminalSymbol{A}$ nach beliebig vielen Schritten etwas
@@ -181,7 +182,8 @@ macht sich dies zu nutze:\vspace{10pt}
 Somit besteht die Möglichkeit sowohl direkte, wie auch indirekte Linksrekursion
 zu beseitigen.\vspace{10pt}
 
-\subsection{Linksfaktorisierung}
+
+\subsection{Linksfaktorisierung}\label{PerspectiveLeftfactorisation}
 
 Bei einer Grammatik kann es zu Problemen führen, wenn verschiedene Produktionen
 gleiche Prefixe haben. Wie es zum Beispiel bei \vspace{10pt}
@@ -230,10 +232,11 @@ Dieser Algorithmus kann für eine Implementierung verwendet werden, indem man di
 Bedingung für jedes Nichtterminalzeichen überprüft, ob eine Linksfatorisierung
 nötig ist, und diese dann wie oben beschrieben anwendet.
 
-\subsection{Wortnavigation für Grammatiken}
+
+\subsection{Wortnavigation für Grammatiken}\label{PerspectiveGrammarWordNavigation}
 
 Die Wortnavigation für Automaten haben wir ja schon in Kapitel
-\ref{wordNavigation} beschrieben. Solch eine Wortnavigation ließe sich auch
+\ref{WordNavigation} beschrieben. Solch eine Wortnavigation ließe sich auch
 für eine Grammatik realisieren, so dass der Benutzer nicht erst den Umweg
 nutzen muss, die Grammtik in einen Autmaten umzuwandeln.\vspace{10pt}
 
@@ -283,7 +286,8 @@ Um auf verschiedene Benutzervorlieben einzugehen, könnte man beide Varianten
 implementieren, und den Benutzer entscheiden lassen, welche er verwenden
 möchte.\vspace{10pt}
 
-\section{Erkannte Wörter ausgeben}
+
+\section{Erkannte Wörter ausgeben}\label{PerspectiveDetectedWords}
 
 Eine weitere sinnvolle und für die Zukunft angedachte Erweiterung ist die
 Ausgabe von erkannten Wörtern. Nachdem ein Automat, eine Grammatik oder dann
@@ -301,7 +305,7 @@ gewisse Wörter direkt ausgeschlossen werden, die bei der Brute-Force-Methode
 ansonsten mit getestet werden würden.\vspace{10pt}
 
 
-\section{Eingabe von mehreren Wörtern}
+\section{Eingabe von mehreren Wörtern}\label{PerspectiveMultiplyWordInput}
 
 In der aktuellen Version des \gtitools kann man nur für Automaten ein Wort
 eingeben. In Zukunft soll das aber auch für Grammatiken und dann auch für
@@ -319,7 +323,7 @@ Wörter erkennt. Wird eine gültige Eingabe gemacht, kann der Automat dazu
 benutzt werden, dieses Wort auf Akzeptanz zu prüfen.\vspace{10pt}
 
 
-\section{Benutzerinteraktion erhöhen}
+\section{Benutzerinteraktion erhöhen}\label{PerspectiveInteraction}
 
 Bei der Umsetzung des \gtitools war es uns sehr wichtig, dass der Benutzer
 bei der Verwendung des Programms möglichst viel lernt. Im Kapitel
@@ -334,11 +338,11 @@ Benutzerinteraktion umgesetzt werden, so dass das nachträgliche Erweitern in
 diesen Fällen entfallen würde.\vspace{10pt}
 
 
-\subsection{Word-Navigation}
+\subsection{Word-Navigation}\label{PerspectiveWordNavigation}
 Eine wichtige Erweiterung betrifft die Wort-Navigation. Bei dieser Navigation
 gibt es bereits eine Benutzerinteraktion, welche in \ref{InteractionPDA}
 beschrieben wird. In Zukunft kann die Benutzerinteraktion, die in
-\ref{wordNavigation} beschrieben wird, erweitert werden. Eine mögliche Umsetzung
+\ref{WordNavigation} beschrieben wird, erweitert werden. Eine mögliche Umsetzung
 wäre, den Benutzer vor einem Navigationsschritt dazu aufzufordern, die Übergänge
 zu markieren, die als nächstes verwendet werden. Dabei müsste der Benutzer anhand
 des nächsten Symbols im Eingabewort entscheiden, welche Übergänge dies betrifft.
@@ -350,7 +354,7 @@ Auswahlschritt überspringbar sein. Es muss also eine Art Raten-Funktion geben,
 die dem Benutzer die Auswahl abnimmt.\vspace{10pt}
 
 
-\subsection{Umwandeln}
+\subsection{Umwandeln}\label{PerspectiveConvertTo}
 Im Abschnitt \ref{ConverToMachine} wird das Umwandeln eines Automaten in einen
 anderen Automaten beschrieben, also zum Beispiel die Umwandlung von einem
 $\epsilon$-NDEA in einen DEA. Der dort implementierte Algorithmus verwendet
@@ -368,7 +372,7 @@ wäre es in dem entstehenden Graphen möglich, anzugeben, welche Zustände und
 Übergänge in dem nächsten Schritt angelegt werden.\vspace{10pt}
 
 
-\subsection{Erreichbare Zustände}
+\subsection{Erreichbare Zustände}\label{PerspectiveReachableStates}
 Wie im Abschnitt \ref{ReachableStates} vorgestellt, implementiert der
 Algorithmus zur Bestimmung der erreichbaren Zustände eine Breitensuche. Bei
 dieser Breitensuche könnte der Benutzer dazu aufgefordert werden, die
@@ -378,7 +382,7 @@ Auch bei dieser Benutzerinteraktion wäre eine Funktion wichtig, die die
 richtige Auswahl trifft.\vspace{10pt}
 
 
-\subsection{Minimieren}
+\subsection{Minimieren}\label{PerspectiveMinimize}
 Das Minimieren von Automaten bietet sehr großen Spielraum zum Einbau von
 Benutzerinteraktion. Der in Kapitel \ref{Minimize} vorgestellte Algorithmus
 basiert darauf Zustände in Äquivalenz\-klassen zu unterteilen. Es wäre somit

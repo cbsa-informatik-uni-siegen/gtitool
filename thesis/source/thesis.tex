@@ -19,7 +19,14 @@
 \usepackage{latexsym}
 \usepackage{array}
 \usepackage{stmaryrd}
-\usepackage{hyperref}
+\usepackage[a4paper,
+            colorlinks=false,
+            final,
+            pdfkeywords={Lernwerkzeug fuer die Grundlagen der theoretischen Informatik},
+            pdftitle={Lernwerkzeug fuer die Grundlagen der theoretischen Informatik},
+            pdfauthor={Christian Fehler, Benjamin Mies},
+            pdfsubject={Diplomarbeit},
+            pdfdisplaydoctitle=true]{hyperref}
 \usepackage{graphicx}
 \usepackage{cite}
 
@@ -86,7 +93,9 @@ Gutachter: & Privatdozent Dr. Kurt Sieber\\
 
 \include{perspective}
 
+\setcounter{secnumdepth}{-1}
 \include{conclusion}
+\setcounter{secnumdepth}{2}
 
 \bibliographystyle{alphadin}
 \bibliography{literature}

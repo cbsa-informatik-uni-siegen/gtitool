@@ -1,0 +1,88 @@
+/**
+ * The cup file of the regex parser.
+ * 
+ * @author Simon Meurer
+ */
+import de.unisiegen.gtitool.core.entities.regex.RegexNode;
+import de.unisiegen.gtitool.core.entities.regex.ConjunctionNode;
+import de.unisiegen.gtitool.core.entities.regex.EpsilonNode;
+import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
+import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
+import de.unisiegen.gtitool.core.entities.regex.OptionalNode;
+import de.unisiegen.gtitool.core.entities.regex.PlusNode;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.exceptions.ErrorHandling;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String				SYMBOL;
+terminal					STAR;
+terminal					PLUS;
+terminal					QUESTION;
+terminal					OR;
+terminal					CONCAT;
+terminal					EPSILON;
+terminal					LBRACE;
+terminal					RBRACE;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal RegexNode		regex;
+non terminal Symbol			symbol;
+
+
+
+/************
+ * Regex *
+ ************/
+
+regex							::= regex:reg STAR
+									{:
+										RESULT = new KleeneNode(reg);
+									:}
+								|	regex:reg PLUS
+									{:
+										RESULT = new PlusNode(reg);
+									:}
+								|	regex:reg1 OR regex:reg2
+									{:
+										RESULT = new DisjunctionNode(reg1, reg2);
+									:}
+								|	regex:reg1 regex:reg2
+									{:
+										RESULT = new ConjunctionNode(reg1, reg2);
+									:}
+								|	regex:reg1 CONCAT regex:reg2
+									{:
+										RESULT = new ConjunctionNode(reg1, reg2);
+									:}
+								|	EPSILON
+									{:
+										RESULT = new EpsilonNode();
+									:}
+								|	regex:reg QUESTION
+									{:
+										RESULT = new Optional(reg);
+									:}
+								|	LBRACE regex:r RBRACE
+									{:
+										RESULT = new Conjunction(reg1, reg2);
+									:}
+								;
+
+symbol							::= SYMBOL:s
+									{:
+									   RESULT = new DefaultSymbol(s);
+									:}
+								;

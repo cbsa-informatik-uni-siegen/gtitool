@@ -10,13 +10,22 @@
 	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
 	<property file="${buildfilesdir}/build.properties" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
+	<property name="distdir" value="${basedir}/dist" />
+	<property name="classesdir" value="${distdir}/classes" />
+	<property name="libdir" value="${basedir}/lib" />
+	<property name="sourcedir" value="${basedir}/source" />
+	<property name="sourceimpldir" value="${basedir}/source-impl" />
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
 	<property name="jflex.basedir" value="${basedir}/../gtitool.jflex" />
 	<property name="jflex.distdir" value="${jflex.basedir}/dist" />
+	<property name="logger.basedir" value="${basedir}/../gtitool.logger" />
+	<property name="logger.distdir" value="${logger.basedir}/dist" />
 	<property name="javacup.basedir" value="${basedir}/../gtitool.javacup" />
 	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
 	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
+	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
+	<property name="loggerfile" value="gtitool.logger-${gtitool.version}.jar" />
 
 	<!-- declare -->
 	<target name="declare">
@@ -25,7 +34,7 @@
 	</target>
 
 	<!-- dist -->
-	<target name="dist" depends="dist-jflex,dist-javacup" description="Build distribution">
+	<target name="dist" depends="dist-jflex,dist-javacup,dist-compile" description="Build distribution">
 		<echo message="Distribution ready" />
 	</target>
 
@@ -39,13 +48,36 @@
 		<ant dir="${javacup.basedir}" target="dist" inheritall="false" />
 	</target>
 
+	<!-- dist compile -->
+	<target name="dist-compile" depends="parser">
+		<delete dir="${classesdir}" />
+		<mkdir dir="${classesdir}" />
+		<javac debug="off" destdir="${classesdir}" encoding="UTF-8" source="1.5" target="1.5">
+			<compilerarg value="-Xlint:deprecation,unchecked" />
+			<src path="${sourcedir}" />
+			<src path="${sourceimpldir}" />
+			<src path="${sourcegenerateddir}" />
+			<classpath>
+				<pathelement location="${distdir}/${loggerfile}" />
+				<pathelement location="${distdir}/${javacupfile}" />
+			</classpath>
+		</javac>
+	</target>
+
 	<!-- parser -->
-	<target name="parser" depends="declare,parser-clean" description="Generate parsers and lexers" />
+	<target name="parser" depends="declare,parser-clean,parser-regex" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
 		<delete includeemptydirs="true">
 			<fileset dir="${sourcegenerateddir}" includes="**/*" />
 		</delete>
+	</target>
+
+
+	<!-- parser regex -->
+	<target name="parser-regex">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/regex/regex.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/regex/regex.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/regex" package="de.unisiegen.gtitool.core.parser.regex" parser="RegexAbstractParser" symbols="RegexTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 </project>

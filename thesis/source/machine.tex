@@ -9,9 +9,13 @@
 \chapter{Automaten}\label{Machines}
 
 Im Mittelpunkt der Planung und der Umsetzung des \gtitools standen die Automaten.
-Die verschiedenen Aspekte von Automaten werden in diesem Kapitel besprochen, dazu
-gehört die graphische Umsetzung, sowie die verschiedenen Möglichkeiten, diesen zu
-verwenden, wenn er angelegt wurde.\vspace{10pt}
+Im Rahmen dieser Diplomarbeit wurden vier Automatentypen umgesetzt. Der
+deterministische endliche Automat (DEA), der nicht determinitische endliche
+Automat (NDEA), der $\epsilon$ nicht deterministische endliche Automat
+($\epsilon$-NDEA) und schließlich der Kellerautomat. Die verschiedenen Aspekte
+von Automaten werden in diesem Kapitel besprochen, dazu gehört die graphische
+Umsetzung, sowie die verschiedenen Möglichkeiten, diesen zu verwenden, wenn er
+angelegt wurde.\vspace{10pt}
 
 
 \section{Graphenansicht}\label{Graph}
@@ -19,15 +23,15 @@ verwenden, wenn er angelegt wurde.\vspace{10pt}
 In diesem Abschnitt wird die Graphendarstellung besprochen. Zu Beginn der
 Diplomarbeit wurde diskutiert, welche Möglichkeiten zur Darstellung eines
 Automaten zur Verfügung stehen. Im Raum standen das eigenständige
-Implementieren der graphischen Komponenten, sowie das Benutzen einer
+Implementieren der graphischen Komponenten, sowie die Verwendung einer
 Bibliothek, die diese Funktionalität zur Verfügung stellt. Aufgrund des
 vermutlich enormen Zeitaufwandes wurde entschieden, eine Bibliothek zu benutzen.
 In Abschnit \ref{PerspectiveGraphics} wird darauf eingegangen, in wie weit eine
 Änderung in Zukunft sinnvoll bzw. realisierbar wäre.\vspace{10pt} 
 
 %### removes texlipse warning
-Da JGraph (siehe \cite{jgraph}) die Funktionalität zur Verfügung stellt, die
-wir brauchen, um die Automaten darstellen zu können, wurde entschieden, diese
+Da JGraph (siehe \cite{jgraph}) die benötigte Funktionalität zur Verfügung
+stellt, um die Automaten darstellen zu können, wurde entschieden, diese
 Bibliothek zu benutzen. Im Folgenden wird darauf eingegangen, wie Automaten mit
 JGraph dargestellt werden und wie JGraph angepasst werden musste, um den
 speziellen Ansprüchen unserer Umsetzung zu genügen.\vspace{10pt}
@@ -77,7 +81,7 @@ Die Bibliothek JGraph bietet eine weit über unsere Anforderungen hinaus
 gehende Unterstützung von graphischen Komponenten. An einigen Stellen mussten
 allerdings Anpassungen vorgenommen werden, um den von uns vorgegebenen
 Funktionumfang erreichen zu können. Diese Anpassungen werden in diesem
-Abschnitt besprochen.\vspace{10pt}
+Abschnitt geschildert.\vspace{10pt}
 
 Als erste Anpassung wurde umgesetzt, dass die Farbe der Zustände geändert
 werden kann. Dies wird zwar von der Bibliothek unterstützt, allerdings wurde
@@ -147,21 +151,19 @@ verworfen.\vspace{10pt}
 \begin{center}
 \includegraphics[width=12cm]{../images/machine_table.png}
 \caption{Übergangstabelle}
+\label{FigureMachineTable}
 \end{center}
 \end{figure}
 \vspace{10pt}
 
 Als nächste mögliche Umsetzung wurde diskutiert, ob es technisch möglich sei,
 in jeder Zelle einen Parser zu verwenden. Dieser Parser müsste so implementiert
-werden, dass er einen oder mehrere, durch Komma getrennte Zustände als Eingabe
+werden, dass er einen oder mehrere, durch Kommata getrennte Zustände als Eingabe
 akzeptiert. Im Kapitel \ref{Parser} werden einige kontextsensitive Bedingungen
 angesprochen, die auch bei dem hier vorliegenden Parser verwendet werden
 mussten, da es dem Benutzer nicht möglich sein sollte, einen oder mehrere
-Zustände anzugeben, die nicht im Graphen vorkommen. Der Parser als solches
-konnte leicht implementiert werden, es gab allerdings einige technische
-Probleme, diesen in die Zellen zu integrieren. Diese Probleme konnten gelöst
-werden, so dass der Benutzer nun in der Lage ist, Übergänge per Tabelle
-anzulegen, zu modifizieren und zu löschen.\vspace{10pt}
+Zustände anzugeben, die nicht im Graphen vorkommen. Abbildung
+\ref{FigureMachineTable} zeigt das von uns umgesetzte Ergebnis.\vspace{10pt}
 
 
 \subsection{Keller Operationen Tabelle}\label{TablesPDA}
@@ -196,7 +198,7 @@ solche Tabelle aussehen kann.\vspace{10pt}
 In diesem Abschnitt wird die Wort-Navigation beschrieben. Neben der
 deterministischen Navigation wird das Anzeigen des Pfades zu den aktuell
 aktiven Zuständen angesprochen, das dem Benutzer erleichtern soll, zu
-erkennen, warum ein eingegebenes Wort erkannt wird.
+verstehen, warum ein eingegebenes Wort erkannt wird.
 
 
 \subsection{Deterministische Navigation}\label{WordNavigationDeterministic}
@@ -245,15 +247,14 @@ liegt, welche von dem Automaten erkannt wird.\vspace{10pt}
 \subsection{Zustands Pfad}\label{HistoryPath}
 
 Bei Verwendung eines nicht deterministischen Automaten stellte sich bei der
-Wort-Navigation die Frage, auf welchem Pfad die aktuell aktiven Zustände
-erreicht wurden. Es wurden verschiedene Umsetzungen in Betracht gezogen, um dem
-Benutzer die Ausgabe darzustellen. Es wurde schließlich entschieden, die
-Zustände auf dem Weg zu den aktuell aktiven Zuständen darzustellen. Zwischen
-diesen Zuständen werden die verwendeten Übergänge, sowie die verwendeten
-Symbole an den Übergängen dargestellt bzw. hervorgehoben. Da unter Umständen
-viele Zustands-Pfade vorhanden sein können, werden diese anhand der Anzahl der
-verwendeten Zustände sortiert, somit werden die kürzesten Pfade zuerst
-angezeigt.\vspace{10pt}
+Wort-Navigation die Frage, auf welchem Pfad die aktuell aktiven Zustände erreicht
+wurden. Verschiedene Umsetzungen wurden von uns qin Betracht gezogen, um dem
+Benutzer die Ausgabe darzustellen. Es wurde schließlich entschieden, die Zustände
+auf dem Pfad zu den aktuell aktiven Zuständen darzustellen. Auf diesem Pfad
+werden die verwendeten Übergänge, sowie die verwendeten Symbole an den Übergängen
+hervorgehoben. Da unter Umständen mehrere Pfade vorhanden sein können, werden
+diese anhand der Anzahl der verwendeten Zustände sortiert, dabei werden die
+kürzesten Pfade zuerst angezeigt.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}
@@ -264,25 +265,25 @@ angezeigt.\vspace{10pt}
 \vspace{10pt}
 
 Der implementierte Algorithmus geht rückwärts vor, startet also bei den aktuell
-aktiven Zuständen und geht alle Pfade zurück, bis alle, bis dahin gelesenen
-Symbole abgearbeitet sind. Startet der berechnete Pfad dann in dem
-Startzustand, wurde ein gültiger Pfad erkannt. Bei der Implementierung des
-Algorithmus musste eine Zykluserkennung umgesetzt werden, da es sonst möglich
-wäre, in eine Endlosschleife zu geraten, welche durch $\epsilon$-Übergänge
-verursacht wurde.\vspace{10pt}
+aktiven Zuständen und geht alle Pfade zurück, bis alle, beim Starten der Ansicht
+vom Eingabewort gelesenen Symbole abgearbeitet sind. Startet der berechnete Pfad
+dann in dem Startzustand, wurde ein gültiger Pfad erkannt. Bei der
+Implementierung des Algorithmus musste eine Zykluserkennung umgesetzt werden, da
+es sonst möglich wäre, in eine Endlosschleife zu geraten, welche durch
+$\epsilon$-Übergänge verursacht wurde.\vspace{10pt}
 
 
 \section{Erreichbare Zustände}\label{ReachableStates}
 
 Nach dem in \ref{ConverToMachine} nachzulesenen Umwandeln eines nicht
 deterministischen in einen deterministischen Automaten unter Verwendung der
-Potenzautomatenkonstruktion stellte sich die Frage, wie die nicht erreichbaren
+Potenzautomatenkonstruktion stellte sich die Frage, wie die unerreichbaren
 Zustände erkannt und entfernt werden können. Dieses Problem betrifft aber nicht
 nur umgewandelte Automaten, sondern ganz allgemein, jeden erstellten
 Automaten.\vspace{10pt}
 
-Bei der Umsetzung sollte im Vordergrund stehen, dass der Benutzer mit sehr
-kleinen Schritten verdeutlicht bekommt, wie der zugrunde liegende Algorithmus
+Bei der Umsetzung sollte im Vordergrund stehen, dass dem Benutzer mit sehr
+kleinen Schritten verdeutlicht wird, wie der zugrundeliegende Algorithmus
 arbeitet, so dass diese Arbeitsweise sehr einfach nachzuvollziehen
 ist.\vspace{10pt}
 
@@ -296,7 +297,7 @@ weiß, bedeutet das, dass er noch nicht erkannt wurde. Am Anfang sind alle
 Knoten, außer dem Startknoten, weiß. Grau bedeutet, dass der Knoten erkannt
 wurde, aber noch nicht vollständig abgearbeitet wurde. Wurde ein Knoten
 abgearbeitet, ändert sich seine Farbe in schwarz. Bei der Umsetzung im \gtitool
-wurde eine ähnliche Umsetzung gewählt, die nun besprochen wird.\vspace{10pt}
+wurde eine ähnliche Umsetzung gewählt, die nun dargestellt wird.\vspace{10pt}
 %### removes texlipse warning
 
 \noindent
@@ -321,13 +322,16 @@ wurde eine ähnliche Umsetzung gewählt, die nun besprochen wird.\vspace{10pt}
 \verb|19          farbe[u] |$\gets$\verb| SCHWARZ|\\
 \vspace{10pt}
 
-Der dann im Programm umgesetzte Algorithmus besteht aus drei Phasen. In der
-ersten Phase wird ein noch nicht abgearbeiteter Zustand ausgewählt, zu Beginn
-wird mit dem Startzustand begonnen. In der zweiten Phase werden die von diesem
-Zustand aus direkt erreichbaren Zustände berechnet und dem Benutzer hervorgehoben
-dargestellt. In der dritten Phase werden alle bis jetzt erreichbaren Zustände
-hervorgehoben. Gleichzeitig bekommt der Benutzer rechts in der Outline
-mitgeteilt, welcher Zustand jetzt fertiggestellt ist und welche noch berechnet
+Der dann im Programm umgesetzte Algorithmus besteht aus drei Phasen.
+
+In der ersten Phase wird ein noch nicht abgearbeiteter Zustand ausgewählt, also
+ein Zustand, der von einem anderen Zustand aus erreichbar ist, aber für den noch
+nicht berechnet wurde, welche Zustände von ihm aus erreichbar sind. Zu Beginn des
+Algorithmus wird mit dem Startzustand angefangen. In der zweiten Phase werden die
+von diesem Zustand aus direkt erreichbaren Zustände berechnet und dem Benutzer
+hervorgehoben dargestellt. In der dritten Phase werden alle bis jetzt
+erreichbaren Zustände hervorgehoben. Gleichzeitig wird rechts in der Outline
+angezeigt, welcher Zustand jetzt fertiggestellt ist und welche noch berechnet
 werden müssen. Durch diese sehr feine Unterteilung soll ein besseres Verständnis
 des Algorithmus erreicht werden.\vspace{10pt}
 

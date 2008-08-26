@@ -8,15 +8,14 @@
 
 \chapter{Konvertierung}\label{ConverTo}
 
-In diesem Kapitel soll das Umwandeln von einer Grammatik in einen Automaten
-bzw. zwischen den verschiedenen Automatentypen besprochen werden. Dabei wird
-im Besonderen darauf eingegangen, welche Herausforderungen aufgetreten sind, um
-dem Benutzer die verwendeten Algorithmen möglichst in kleinen Schritten und
-verständlich darzustellen. Beim Umwandeln der Grammatiken in die entsprechenden
-Automaten sind die verwendeten Algorithmen leicht zu verstehen und zusätzlich
-nicht besonders gut darzustellen, weshalb hier darauf verzichtet wurde, dem
-Benutzer eine schrittweise Umwandlung anhand einer graphischen Darstellung zu
-präsentieren.\vspace{10pt}
+In diesem Kapitel soll das Umwandeln von einer Grammatik in einen Automaten bzw.
+zwischen den verschiedenen Automatentypen besprochen werden. Dabei wird im
+Besonderen darauf eingegangen, welche Herausforderungen aufgetreten sind, um dem
+Benutzer die verwendeten Algorithmen möglichst in kleinen Schritten darzustellen.
+Beim Umwandeln von Grammatiken in die entsprechenden Automaten sind die
+verwendeten Algorithmen leicht zu verstehen und nicht besonders gut darzustellen,
+weshalb hier darauf verzichtet wurde, dem Benutzer eine schrittweise Umwandlung
+anhand einer graphischen Darstellung zu präsentieren.\vspace{10pt}
 
 
 \section{Grammatik Konvertierung}\label{ConverToGrammar}
@@ -97,7 +96,7 @@ nebeneinander zu sehen, um die Zusammenhänge besser verstehen zu können.\vspac
 
 \section{Automaten Konvertierung}\label{ConverToMachine}
 
-Bei der Planung der Umwandlung zwischen den verschiedenen Automaten Typen stellte
+Bei der Planung der Umwandlung zwischen den verschiedenen Automatentypen stellte
 sich die Frage, wie dem Benutzer der Umwandlungsalgorithmus möglichst
 verständlich dargestellt wird. Wir entschieden uns für das auch sonst im \gtitool
 verwendete Verfahren, eine Navigationsleiste zu verwenden, die es dem Benutzer
@@ -111,8 +110,8 @@ durchgeführt werden können.\vspace{10pt}
 Um dem Benutzer den durchgeführten Algorithmus zu verdeutlichen, wurde die
 Ansicht in drei Bereiche eingeteilt. In dem oberen linken Bereich wird der
 Ausgangsautomat dargestellt, im unteren linken Bereich der nach und nach
-entstehende konvertierte Automat und schließlich im rechten Bereich eine
-Outline, die pro Schritt, jeweils mit einem Kommentar, angibt, welchen Schritt
+entstehende konvertierte Automat und schließlich im rechten Bereich eine Outline,
+die pro Ausführungsphase, jeweils mit einem Kommentar, angibt, welchen Schritt
 der Algorithmus im Moment durchführt.\vspace{10pt}
 
 \begin{figure}[h!]
@@ -123,23 +122,24 @@ der Algorithmus im Moment durchführt.\vspace{10pt}
 \end{figure}
 \vspace{10pt}
 
-Es existieren zwei verschiedene Verfahren zur Umwandlung in einen
-deterministischen endlichen Automaten (DEA). Zum einen kann der komplette
-Potenzautomat verwendet werden, um den DEA zu erzeugen. Der entstehende Automat
-enthält allerdings unter Umständen sehr viele nicht erreichbare Zustände, deren
-Berechnung einige zusätzliche Schritte zur Folge haben kann. Wenn der Benutzer
-diese Art der Umwandlung auswählt, kann er nach dem Umwandeln die nicht
-erreichbaren Zustände wieder entfernen. Wie dies funktioniert, kann in
-\ref{ReachableStates} nachgelesen werden. Die zweite Methode ist, dass nur die
-erreichbaren Zustände in der unteren Ansicht angelegt werden. Diese Methode ist
-übersichtlicher für den Benutzer, wenn auch nicht alle im Potenzautomaten
-vorhandenen Zustände betrachtet werden.\vspace{10pt}
+Es existieren zwei verschiedene Verfahren zur Umwandlung eines nicht
+deterministischen endlichen Automaten in einen deterministischen endlichen
+Automaten (DEA). Zum einen kann der komplette Potenzautomat verwendet werden, um
+den DEA zu erzeugen. Der entstehende Automat enthält allerdings unter Umständen
+sehr viele nicht erreichbare Zustände, deren Berechnung einige zusätzliche
+Schritte zur Folge haben kann. Wenn der Benutzer diese Art der Umwandlung
+auswählt, kann er nach dem Umwandeln die nicht erreichbaren Zustände wieder
+entfernen. Wie dies funktioniert, kann in \ref{ReachableStates} nachgelesen
+werden. Die zweite Methode ist, dass nur die erreichbaren Zustände in der unteren
+Ansicht angelegt werden. Diese Methode ist übersichtlicher für den Benutzer, wenn
+auch nicht alle im Potenzautomaten vorhandenen Zustände betrachtet
+werden.\vspace{10pt}
 
 \newpage
 %### removes texlipse warning
 Zur Umsetzung wurde der in \cite[S. 153ff]{Compilers} angegebene Algorithmus als
-Vorlage benutzt. Um den Algorithmus verwenden zu können, müssen zuerst einige
-Werte definiert werden.\vspace{10pt}
+Vorlage benutzt. Um den Algorithmus verstehen zu können, müssen zuerst einige
+Terme definiert werden.\vspace{10pt}
 %### removes texlipse warning
 
 \noindent

@@ -8,19 +8,18 @@
 
 \chapter{Interaktion}\label{Interaction}
 
-In diesem Kapitel werden die Interaktionen mit dem Benutzer erläutert. Ein
-wichtiger Aspekt der Interaktionen ist, dass der Benutzer angezeigt bekommt,
-wenn er etwas Falsches eingegeben hat. Ein weiterer Punkt ist, dass der Benutzer
-bei einem nicht deterministischen Kellerautomaten auswählen muss, welchen
-Übergang der Automat machen soll, da dieser das nicht in jedem Fall erkennen
-kann.\vspace{10pt}
+In diesem Kapitel wird die Interaktion mit dem Benutzer erläutert. Ein wichtiger
+Aspekt der Interaktion ist, dass angezeigt wird, wenn etwas Falsches eingegeben
+wurde. Ein weiterer Punkt ist, dass bei einem nicht deterministischen
+Kellerautomaten auswählt werden muss, welchen Übergang der Automat machen soll,
+da dieser das nicht in jedem Fall erkennen kann.\vspace{10pt}
 
 
 \section{Fehler und Warnungen}\label{InteractionErrorWarning}
 
-Es war uns bei der Umsetzung des \gtitools sehr wichtig, dass der Benutzer sehr
-viele Fehler machen kann, ohne dass er durch eine Validierung eingeschränkt wird.
-Eine Ausnahme von diesem Konzept bilden die in Kapitel \ref{Parser} beschriebenen
+Es war uns bei der Umsetzung des \gtitools sehr wichtig, dass man als sehr viele
+Fehler machen kann, ohne dass er durch eine Validierung eingeschränkt wird. Eine
+Ausnahme von diesem Konzept bilden die in Kapitel \ref{Parser} beschriebenen
 Parser, da eine falsche Eingabe dort nicht gut, durch das Anzeigen von Fehlern
 bzw. Warnungen, behandelt hätte werden können.\vspace{10pt}
 
@@ -66,14 +65,19 @@ Flüchtig\-keits\-fehler frühzeitig zu erkennen und zu beheben.\vspace{10pt}
 
 \subsection{Automat}\label{InteractionMachine}
 
-Auch für den Automaten gibt es einige Fehler und Warnungen die nun aufgezählt
+Auch für Automaten gibt es einige Fehler und Warnungen die nun aufgezählt
 werden. Die verschiedenen Automatentypen verwenden unterschiedliche Fehler. So
 ist ein $\epsilon$-Übergang in einem $\epsilon$-NDEA kein Fehler, in einem DEA
 aber schon. Deshalb wird bei jedem Fehler angegeben, in welchem Automaten er
-vorhanden ist.\vspace{10pt}
+auftreten kann.\vspace{10pt}
 
 \noindent
 \begin{tabular}{|p{2.1cm}|p{2.7cm}|p{6.0cm}|}
+  \hline
+  \textbf{Meldung} &
+  \textbf{Automaten} &
+  \textbf{Beschreibung} \\
+  \hline
   \hline
   Alle Symbole &
   DEA &
@@ -112,17 +116,16 @@ Benutzer gewarnt, wenn kein akzeptierender Zustand vorhanden ist. Dabei handelt
 es sich nicht um einen ungültigen Automaten, aber es könnte sein, dass der
 ungeübte Benutzer den akzeptierenden Zustand nur vergessen hat. Außerdem wird
 eine Warnung angezeigt, wenn ein oder mehrere Zustände nicht erreichbar sind.
-Zur Bestimmung dieser unerreichbaren Zustände wird der gleiche Algorithmus
-verwendet, der auch bei den erreichbaren Zuständen in Kapitel
-\ref{ReachableStates} benutzt wird.\vspace{10pt}
+Zur Bestimmung dieser unerreichbaren Zustände wird der in Kapitel
+\ref{ReachableStates} beschriebene Algorithmus benutzt.\vspace{10pt}
 
 
 \section{Operationen mit dem Automaten Keller}\label{InteractionPDA}
 
-Ein wichtiger Punkt der Interaktion mit dem Benutzer ist, dass der Benutzer
-nach einer Umwandlung einer kontextfreien Grammatik in einen Kellerautomaten
-einen Übergang auswählen muss, weil der entstehende Automaten nicht
-deterministisch ist. Die Umwandlung ist in Abschnitt
+Ein wichtiger Punkt der Interaktion mit dem Benutzer ist, dass der Benutzer nach
+einer Umwandlung einer kontextfreien Grammatik in einen nicht deterministisch
+Kellerautomaten einen Übergang auswählen muss, weil der entstehende Automat
+nicht deterministisch sein muss. Die Umwandlung ist in Abschnitt
 \ref{ConverToGrammarContextFree} zu finden.\vspace{10pt}
 
 \begin{figure}[h!]
@@ -135,13 +138,14 @@ deterministisch ist. Die Umwandlung ist in Abschnitt
 \vspace{10pt}
 
 Bei dem in Abbildung \ref{FigureGrammarPDA} verwendeten Beispiel kommen zwei
-Übergänge in Frage. Es könnte der Übergang gewählt werden, der \Symbol{E} vom
+Übergänge in Frage: Es könnte der Übergang gewählt werden, der \Symbol{E} vom
 Keller liest und nichts auf diesen schreibt, oder aber der Übergang, der
 \Symbol{E} vom Keller liest und \Symbol{a}\Symbol{E}\Symbol{b} auf ihn schreibt.
 Da \Symbol{a} als nächstes auf dem Eingabeband steht, sollte der zweite Übergang
-ausgewählt werden. Dem Benutzer steht es allerdings frei, auch den anderen
-Übergang auszuwählen. In diesem Fall würde das Wort
+ausgewählt werden, da bei der Verwendung des ersten Übergangs das \Symbol{a}
+nicht mehr herleitbar ist. Dem Benutzer steht es allerdings frei, auch den
+anderen Übergang auszuwählen. In diesem Fall würde das Wort
 \Symbol{a}\Symbol{a}\Symbol{b}\Symbol{b} aber nicht akzeptiert werden. Der
-Benutzer hat bei einer falschen Wahl allerdings die Möglichkeit, einen oder
-mehrere Schritte zurückzugehen, um dann die richtige Wahl zu
-treffen.\vspace{10pt}
+Benutzer hat bei einer Wahl, die sich im Nachhinein als falsch herausstellt,
+allerdings die Möglichkeit, einen oder mehrere Schritte zurückzugehen, um dann
+die hoffentlich richtige Wahl zu treffen.\vspace{10pt}

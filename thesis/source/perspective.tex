@@ -118,12 +118,12 @@ Automaten noch gut aussehen. Wichtig wäre auch, dass sich, wenn möglich, die
 unterscheiden.\vspace{10pt}
 
 
-\section{Grammatik Erweiterungen}\label{PerspectiveGrammar}
+\section{Grammatik-Erweiterungen}\label{PerspectiveGrammar}
 
 Bei Grammatiken gibt es noch diverse Möglichkeiten, welche bis jetzt noch nicht
 umgesetzt sind. Als Beispiele, auf die wir in diesem Kapitel noch eingehen
-möchten, haben wir uns das Problem von Linksrekursion, Linksfaktorisierung und
-Wortnavigation auf einer Grammatik aufgegriffen.\vspace{10pt}
+möchten, haben wir uns Linksrekursion, Linksfaktorisierung und
+Wort-Navigation auf einer Grammatik aufgegriffen.\vspace{10pt}
 
 
 \subsection{Linksrekursion}\label{PerspectiveLeftrecursion}
@@ -132,12 +132,12 @@ Eine Grammatik wird als linksrekursiv bezeichnet, wenn sich aus einem beliebigen
 Nichtterminalzeichen $\NonterminalSymbol{A}$ nach beliebig vielen Schritten etwas
 von der Form $\NonterminalSymbol{A} \TerminalSymbol{$\alpha$}$ herleiten lässt.
 Existiert eine Produktion $\NonterminalSymbol{A} \to \NonterminalSymbol{A}
-\TerminalSymbol{$\alpha$}$ spricht man von direkter Rekursion. Wenn dazu mehr als
-ein Ableitungsschritt nötig ist, spricht man von einer indirekten
-Rekursion.\vspace{10pt}
+\TerminalSymbol{$\alpha$}$ spricht man von direkter Linksrekursion. Wenn dazu
+mehr als ein Ableitungsschritt nötig ist, spricht man von einer indirekten
+Linksrekursion.\vspace{10pt}
 
 %### removes texlipse warning
-In dem Buch \cite{Compilers} ist ein Algorithmus beschrieben, um Linksrekursion
+In \cite{Compilers} ist ein Algorithmus beschrieben, um Linksrekursion
 bei einer Grammatik zu beseitigen, welcher sich ohne Probleme umsetzen lassen
 sollte.\vspace{10pt}
 %### removes texlipse warning
@@ -187,7 +187,7 @@ zu beseitigen.\vspace{10pt}
 
 \subsection{Linksfaktorisierung}\label{PerspectiveLeftfactorisation}
 
-Bei einer Grammatik kann es zu Problemen führen, wenn verschiedene Produktionen
+Bei einer Grammatik kann es zu Problemen kommen, wenn verschiedene Produktionen
 gleiche Prefixe haben. Wie es zum Beispiel bei \vspace{10pt}
 
 \noindent
@@ -216,7 +216,7 @@ Form\vspace{10pt}
 wobei $\gamma$ nicht mit $\alpha$ beginnt und es gilt $n \geq 2$ und $k \geq 0$.
 \vspace{10pt}
 
-Um für die Grammatik den Algorithmus zur Linksfaktorisierung anzuwenden führt
+Um den Algorithmus zur Linksfaktorisierung auf die Grammatik anzuwenden führt
 man als erstes ein neus Nichtterminalzeichen \NonterminalSymbol{A$'$} ein. Als
 nächstes ersetzt man die bestehenden Produktionen von \NonterminalSymbol{A}
 durch die folgenden.\vspace{10pt}
@@ -227,38 +227,33 @@ durch die folgenden.\vspace{10pt}
 \vspace{10pt}
 
 \noindent
-Dieser Schritt muss wiederholt werden, bis für alle Produktionen eines
-Nichtterminalzeichen $\epsilon$ der einzige gemeinsame Prefix ist.\vspace{10pt} 
+Dieser Schritt muss wiederholt werden, bis für alle Produktionen mit dem
+gleichen Nichtterminalzeichen auf der rechten Seite $\epsilon$ der einzige
+gemeinsame Prefix ist.\vspace{10pt}
 
-Dieser Algorithmus kann für eine Implementierung verwendet werden, indem man die
-Bedingung für jedes Nichtterminalzeichen überprüft, ob eine Linksfatorisierung
-nötig ist, und diese dann wie oben beschrieben anwendet.
+Dieser Algorithmus kann für eine Implementierung verwendet werden, indem für
+jedes Nichtterminalzeichen überprüft, ob eine Linksfatorisierung nötig ist, und
+diese dann wie oben beschrieben anwendet.
 
 
-\subsection{Wortnavigation für Grammatiken}\label{PerspectiveGrammarWordNavigation}
+\subsection{Ableitungen für Grammatiken}\label{PerspectiveGrammarWordNavigation}
 
 Die Wortnavigation für Automaten haben wir ja schon in Kapitel
-\ref{WordNavigation} beschrieben. Solch eine Wortnavigation ließe sich auch
-für eine Grammatik realisieren, so dass der Benutzer nicht erst den Umweg
-nutzen muss, die Grammtik in einen Autmaten umzuwandeln.\vspace{10pt}
+\ref{WordNavigation} beschrieben. Etwas in der Richtung ließe sich
+auch für Grammatik realisieren. Allerdings naviert man nicht mehr
+durch ein Wort, sondern man sucht die richtig Ableitung von dem
+Startsymbol aus.\vspace{10pt}
 
-Dabei könnte man dem Benutzer die Auswahlmöglichkeit geben, ob er via
-Top-Down oder Bottom-Up Verfahren überprüfen lassen möchte, ob ein Wort in der
-konstruierten Grammatik liegt. Dazu muss dann eine linksfaktorisierte Grammatik
-ohne Linksrekursion verwendet werden, oder es wäre bei der Auswahl des nächsten
-Schritts gegebenenfalls noch der Eingriff des Benutzers
-erforderlich.\vspace{10pt}
-
-Für die Top-Down Methode könnte das Verfahren des rekursiven Abstiegs verwendet
-werden. Dieser Algorithmus startet mit dem Startsymbol der Grammatik auf dem
-Keller. Wenn mehrere Produktionen für das Startsymbol in der Grammatik
-existieren, muss der Benutzer jetzt auswählen, welches die richtige Produktion
-ist. Dann wird das Startsymbol durch die rechte Seite dieser Produktion ersetzt.
-Jetzt nimmt man sich jedes Symbol einzeln vor, wobei man von links startet.
-Handelt es sich um ein Nichtterminalzeichen, würde dieses wieder durch die rechte
-Seite der richtigen nächsten Produktion ersetzt. Handelt es sich um ein
-Terminalzeichen, wird dieses mit dem nächsten Zeichen im Eingabewort verglichen.
-Wenn diese übereinstimmen wird ein Pointer innerhalb des Eingabewortes ein Symbol
+Dazu könnte die Top-Down Methode des rekursiven Abstiegs verwendet werden. Dieser
+Algorithmus startet mit dem Startsymbol der Grammatik auf dem Keller. Wenn
+mehrere Produktionen für das Startsymbol in der Grammatik existieren, muss der
+Benutzer jetzt auswählen, welches die richtige Produktion ist. Dann wird das
+Startsymbol durch die rechte Seite dieser Produktion ersetzt. Jetzt nimmt man
+sich jedes Symbol einzeln vor, wobei man von links startet. Handelt es sich um
+ein Nichtterminalzeichen, würde dieses wieder durch die rechte Seite der
+richtigen nächsten Produktion ersetzt. Handelt es sich um ein Terminalzeichen,
+wird dieses mit dem nächsten Zeichen im Eingabewort verglichen. Wenn diese
+übereinstimmen wird ein Pointer innerhalb des Eingabewortes ein Symbol
 weitergeschoben, und man betrachtet das nächste Symbol. Wenn die beiden Symbole
 nicht übereinstimmen, muss eine Fehlermeldung ausgegeben werden, dass dieses Wort
 mit den bis jetzt verwendeten Produktionen nich hergeleitet werden kann. Wenn man
@@ -267,27 +262,6 @@ Eingabewort stehen. Somit kann man das Wort mit den Produktionen herleiten, die
 man während dieses Durchlaufs verwendet hat. Als Hilfestellung für den Benutzer
 sollten diese noch in einer Liste, oder etwas ähnlichem in der Reihenfolge der
 Verwendung aufgelistet werden.\vspace{10pt}
-
-Alternativ könnte man dem Benutzer die Möglichkeit geben anhand der Bot\-tom-Up
-Methode zu überprüfen, ob das Wort in der Grammatik liegt. Dazu wird das
-komplette Eingabewort auf den Keller geschrieben. Jetzt versucht man Teile des
-Kellers auf der rechten Seite einer Produktion wiederzufinden. Wenn man eine
-solche Produktion gefunden hat, wird der Teil des Kellers, der der rechten Seite
-entspricht, durch die linke Seite der Produktion ersetzt. Dies versucht man
-fortzusetzen, bis man das Startzeichen auf dem Keller stehen hat. In diesem Fall
-liegt das Eingabewort in der von der Grammatik erkannten Sprache. Da eventuell in
-einem solchen Reduktionsschritt mehrere Produktionen in Frage kommen können, wäre
-dort wieder die Entscheidung des Benutzers gefragt, welches die richtige
-Produktion für diese Situation ist. Wenn keine Möglichkeit existiert das
-Eingabewort auf das Startzeichen zu reduzieren, dann liegt das Wort nicht in der
-konstruierten Grammatik. Wie bei der Top-Down Methode wäre es auch hier sinnvoll,
-die verwendeten Produktionen in einer Liste zu speichern, und dem Nutzer
-anzuzeigen, um den Vorgang nachvollziehen zu können.\vspace{10pt}
-
-Um auf verschiedene Benutzervorlieben einzugehen, könnte man beide Varianten
-implementieren, und den Benutzer entscheiden lassen, welche er verwenden
-möchte.\vspace{10pt}
-
 
 \section{Erkannte Wörter ausgeben}\label{PerspectiveDetectedWords}
 
@@ -402,22 +376,23 @@ entsprechenden Zustände auswählt.\vspace{10pt}
 \section{Auto-Layout}\label{PerspectiveAutoLayout}
 
 %###
-Wie im Kapitel \ref{AutoLayout} schon erwähnt ist der implementierte Autolayout
-Algorithmus noch verbesserungsfähig. Ein Algorithmus welcher wahrscheinlich
-bessere Ergebnisse liefert ist der Simulated-Annealing Algorithmus (Simulierte
-Abkühlung), welcher auch in dem Buch \cite{Layout} beschrieben
+Wie im Kapitel \ref{AutoLayout} schon erwähnt ist kann der implementierte
+Autolayout-Algorithmus noch optimiert werden. Ein Algorithmus welcher
+wahrscheinlich bessere Ergebnisse liefert ist der
+Simulated-Annealing-Algorithmus (Simulierte Abkühlung), welcher auch in \cite{Layout} beschrieben
 wird.\vspace{10pt}
 %###
 
-Bei diesem Algorithmus versucht man sich ein Verfahren zu Nutze zu machen,
-welches in der Natur beobachtet werden kann. Dabei handelt es sich um den
-Abkühlungsprozess wie er zum Beispiel bei metallischen Schmelzen beobachtet
-werden kann. Dabei kann beobachtet werden, das die Metallatome sich zu Beginn
-des Abkühlunsprozesses noch annähernd chaotisch durch die Gitterpositionen
-bewegen. Mit abnehmender Temperatur nehmen die Atome allerdings immer mehr
-geordnete Positionen ein, so dass später nur noch eine Optimierung in der
-lokalen Nachbarschaft der Atome möglich ist. Durch dieses Verfahren wird eine
-annähernd optimale Lösung erreicht.\vspace{10pt}
+Bei diesem Algorithmus versucht man sich das Verfahren des Abkühlungsprozesses zu
+Nutze zu machen, welches in der Natur beobachtet werden kann. Wenn man diesen
+Prozess Beispielsweise bei metallischen Schmelzen beobachtet, kann man
+feststellen, dass die Metallatome sich zu Beginn des Abkühlunsprozesses noch
+annähernd chaotisch durch die Gitterpositionen bewegen. Mit abnehmender
+Temperatur nehmen die Atome allerdings immer mehr geordnete Positionen ein, so
+dass später nur noch eine Optimierung in der lokalen Nachbarschaft der Atome
+möglich ist. Durch dieses Verfahren wird in der Natur immer eine
+optimal Lösung erreicht, weshalb man versucht dieses auf ein
+Partitionierungsproblem zu übertragen.\vspace{10pt}
 
 Diesen, in der Natur beobachteten Algorithmus, versucht man jetzt nachzubilden,
 und mit diesem Verahren Partitionierungsprobleme, beziehungsweise
@@ -434,8 +409,9 @@ willkürlich zwei Elemente aus und berechnet erneut die Kosten für den Fall,
 dass man diese beiden Elemente tauschen würde. Wenn sich die Kosten verbessern
 wird der Tausch auf jeden Fall durchgeführt. Wenn die Kosten gleich bleiben,
 oder sich sogar verschlechtern würden tauscht man mit einer bestimmten
-Wahrscheinlichkeit. Je größer der Wert der Verschlechterung ist, umso
-unwahrscheinlicher ist der Tausch der Elemente.\vspace{10pt}
+Wahrscheinlichkeit. Die Maßgebenden Faktoren zur Berechnung der
+Wahrscheinlichkeit sind die aktuelle Temperatur und der Grad der
+Veschlechterung.\vspace{10pt}
 
 \noindent
 Der Pseudocode für diesen Algorithmus sieht wie folgt aus:\vspace{10pt}
@@ -466,12 +442,12 @@ Der Pseudocode für diesen Algorithmus sieht wie folgt aus:\vspace{10pt}
 \verb|23 end|\\ 
 \vspace{10pt}
 
-Die Kostenfunktion macht bei der Implementierung des Algorithmus ein äußerst
-wichtigen Punkt aus. In unserem speziellen Fall müsste man berücksichtigen,
-dass zwei Zustände, zwischen denen ein Übergang existiert, nicht zu weit
-auseinanderliegen sollten. Wenn zwei Zustände nicht direkt nebeneinander liegen
-können, sollte sehr großer Wert darauf gelegt werden, dass der Übergang nicht
-durch einen anderen Zustand geht, so dass die Beschriftung des Übergangs oder
-des anderen Zustandes eventuell nicht mehr zu erkennen ist. Weiterhin sollten
-die Überschneidungen der Übergänge untereinander auch so minimal wie mögich
-sein. \vspace{10pt}
+Die Kostenfunktion ist bei der Implementierung des Algorithmus ein wichtiger
+Punkt aus. In unserem speziellen Fall müsste man berücksichtigen, dass zwei
+Zustände, zwischen denen ein Übergang existiert, nicht zu weit auseinanderliegen
+sollten. Wenn zwei Zustände nicht direkt nebeneinander liegen können, sollte sehr
+großer Wert darauf gelegt werden, dass der Übergang nicht durch einen anderen
+Zustand geht, so dass die Beschriftung des Übergangs oder des anderen Zustandes
+eventuell nicht mehr zu erkennen ist. Weiterhin sollten die Überschneidungen der
+Übergänge untereinander möglichst gering sein.
+\vspace{10pt}

@@ -8,37 +8,41 @@
 
 \chapter{Grammatiken}\label{Grammars}
 
-Grammatiken gehören auch zu den Punkten, welche in unser Lernwerkzeug mit
-eingehen sollen. Der Benutzer muss die Möglichkeit haben eine Menge von
-Terminalzeichen und Nichtterminalzeichen anzugeben, ebenso wie ein Startsymbol
-festzulegen. Dies haben wir durch Eingabefelder realisiert, hinter welchen
-entsprechende Parser liegen. Die Parser werden detailiert im Kapitel
+Eines der Hauptthemen, mit denen sich das Fach Grundlagen der Informatik
+beschäftigt, sind Grammatiken. Daher ist dieses Themengebiet auch Bestandteil
+unseres Lernwerkzeugs geworden. Der Benutzer muss die Möglichkeit haben eine
+Menge von Terminalzeichen und Nichtterminalzeichen anzugeben, ebenso wie ein
+Startsymbol festzulegen. Dies haben wir durch Eingabefelder realisiert, hinter
+welchen entsprechende Parser liegen. Die Parser werden detailiert im Kapitel
 \ref{Parser} erläutert.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=12cm]{../images/cfg_example.png}
 \caption{Grammatik}
+\label{FigureProduction}
 \end{center}
 \end{figure}
 \vspace{10pt}
 
-Also fehlte noch die Darstellung der Produktionen. Hierbei haben wir uns für
-eine Listenansicht entschieden, wobei die Produktionen als PrettyString
+Zur Darstellung der Produktionen wird
+eine Listenansicht verwendet, wobei die Produktionen als PrettyString
 angezeigt werden. Das bedeutet, dass man die verschiedenen Symbole
 (Terminalzeichen, Nichtterminalzeichen, Startsymbol) in den Farben dargestellt
 bekommt, die man in den Einstellungen dafür vergeben hat. Wir hoffen dadurch
 eine bessere Übersichtlichkeit in den einzelnen Produktionen für den Benutzer
-geschaffen zu haben.\vspace{10pt}
+geschaffen zu haben (siehe Abbildung \ref{FigureProduction}).\vspace{10pt}
 
 Als Hilfestellung beim Anlegen von neuen Produktionen wird die aktuelle
-Konfiguration der Grammatik überhalb der existierenden Produktionen
+Konfiguration der Grammatik oberhalb der existierenden Produktionen
 angezeigt.\vspace{10pt}
+
 
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=8cm]{../images/production_dialog.png}
 \caption{Grammatik - Produktion anlegen}
+\label{FigureAddProduction}
 \end{center}
 \end{figure}
 \vspace{10pt}
@@ -53,8 +57,9 @@ Konstruktion des Wortes der Satzform zur Verfügung stehen. Als weitere
 Hilfestellung haben wir unterhalb des Eingabefeldes einen Bereich angelegt,
 in welchem die resultierende Produktion angezeigt wird. So kann der
 Benuzter jederzeit überprüfen, ob das Ergebnis seinen
-Vorstellungen entspricht.\vspace{10pt}
+Vorstellungen entspricht. In Abbildung \ref{FigureAddProduction}
+sieht man den Dialog, welcher Verwendet wird um Produktionen
+anzulegen und zu bearbeiten.\vspace{10pt}
 
-Der Benutzer hat auch die Möglichkeit seine definierte Grammatik validieren zu
-lassen. Wie das Validieren umgesetzt wurde und welche Möglichkeiten der
-Benutzer dadurch hat, wird in Kapitel \ref{Interaction} erläutert.\vspace{10pt}
+Der Benutzer hat auch die Möglichkeit seine definierte Grammatik zu validieren.
+Kapitel \ref{Interaction} beschreibt die Umsetzung im Detail.\vspace{10pt}

@@ -28,28 +28,30 @@ Verwendungsmöglichkeiten in diesem Werkzeug existieren.\vspace{10pt}
 
 \subsection{Umwandeln einer regulären Grammatik}\label{ConverToGrammarRegular}
 
+%### removes texlipse warning
 Eine reguläre Grammatik kann in einen entsprechenden nicht deterministischen
-endlichen Automaten umgewandelt werden. Die Zustände unseres entstehenden
-Automaten resultieren aus den Nichtterminalzeichen unserer Grammatik. Allerdings
-werden in der Implementierung nur Zustände für die Nichtterminalzeichen angelegt,
-welche auch in einer Produktion, auf der rechten oder linken Seite, verwendet
-werden. Die Zustände werden immer dann angelegt, wenn man auf ein
-Nichtterminalzeichen trifft, welches man bis jetzt noch nicht gesehen
-hat.\vspace{10pt}
+endlichen Automaten umgewandelt werden. Der verwendete Algorithmus kann in
+\cite{Compilers} nachgelesen werden. Die Zustände unseres entstehenden Automaten
+resultieren aus den Nichtterminalzeichen unserer Grammatik. Allerdings werden in
+der Implementierung nur Zustände für die Nichtterminalzeichen angelegt, welche
+auch in einer Produktion, auf der rechten oder linken Seite, verwendet werden.
+Die Zustände werden immer dann angelegt, wenn man auf ein Nichtterminalzeichen
+trifft, welches man bis jetzt noch nicht gesehen hat.\vspace{10pt}
+%### removes texlipse warning
 
-Die Rechte Seite einer Produktion kann entweder aus einem einzelnen
+Die rechte Seite einer Produktion kann entweder aus einem einzelnen
 Terminalzeichen bestehen ($\NonterminalSymbol{S} \to \TerminalSymbol{a}$), oder
 aus einem Terminalzeichen mit einem anschließenden Nichtterminalzeichen
-($\NonterminalSymbol{S} \to \TerminalSymbol{a}\NonterminalSymbol{A}$). Da keine
-anderen Produktionen für diese Grammatikform existieren können.\vspace{10pt}
+($\NonterminalSymbol{S} \to \TerminalSymbol{a}\NonterminalSymbol{A}$), da nur
+solche Arten von Produktionen zugelassen sind.\vspace{10pt}
 
-Wir schauen uns jetzt jede Produktion unserer Grammatik an.
+Wir betrachten der Reihe nach jede Produktion der Grammatik.
 Zunächst interessiert uns die linke Seite. Wenn wir das Nichtterminalzeichen
 bereits gesehen haben, wurde auch schon ein Zustand dafür angelegt, und wir
 merken uns diesen. Wenn wir das Nichtterminalzeichen noch nicht gesehen haben,
 müssen wir jetzt einen neuen Zustand anlegen, welcher dieses repräsentiert, und
 merken uns diesen neuen Zustand, da dieser der Ausgangszustand
-für neu enstehende Übergänge ist.\vspace{10pt}
+für die zu erstellenden Übergänge ist.\vspace{10pt}
 
 Als nächstes betrachten wir die rechte Seite der Produktion. Wenn es sich dabei
 um ein einzelnes Terminalzeichen handelt, wird ein neuer akzeptierender Zustand
@@ -64,13 +66,14 @@ entsprechenden Zustand anzulegen. Im nächsten Schritt wird ein Übergang,
 zwischen den beiden Zuständen die wir uns gemerkt haben, angelegt, mit dem
 Terminalzeichen der rechten Seite als Übergangsmenge.\vspace{10pt}
 
-Diese Behandlung wiederholen wir für jede Produktion unserer Grammatik und
-erhalten so den entsprechenden Automaten.\vspace{10pt}
+Diese Behandlung wiederholen wir für jede Produktion der Grammatik und
+erhalten so einen endlichen Automaten, der genau die von der
+Grammatik erzeugte Sprache akzeptiert.\vspace{10pt}
 
 \subsection{Umwandeln einer kontextfreien Grammatik}\label{ConverToGrammarContextFree}
 
-Der Benutzer hat auch die Möglichkeit, eine konstruierte kontextfreie Grammatik
-in einen Kellerautomaten umwandeln zu lassen.\vspace{10pt}
+Der Benutzer hat auch die Möglichkeit, eine zuvor erstellte kontextfreie
+Grammatik in einen Kellerautomaten umwandeln zu lassen.\vspace{10pt}
 
 Bei diesem Algorithmus werden zwei Zustände angelegt. Ein Startzustand und ein
 akzeptierender Zustand. Dazu ein Übergang vom Startzustand in den
@@ -80,7 +83,7 @@ Seite der Produktion vom Keller entfernt, und dafür die linke Seite der
 Produktion auf den Keller schreibt. Dieser Übergang hat als
 Ursprungs- und Zielzustand den akzeptierenden Zustand.\vspace{10pt}
 
-Wenn alle Produktion verarbeitet wurden, werden noch zusätzlich pro
+Wenn alle Produktion verarbeitet wurden, wird zusätzlich pro
 Terminalzeichen ein Übergang angelegt. In jedem dieser Übergänge wird das
 entsprechende Terminalzeichen vom Eingabewort gelesen und vom Keller des
 Automaten genommen. Das bedeutet, es muss das gleiche Terminalzeichen als

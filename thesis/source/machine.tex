@@ -36,14 +36,15 @@ speziellen Ansprüchen unserer Umsetzung zu genügen.\vspace{10pt}
 
 \subsection{Automatendarstellung mit JGraph}\label{GraphJGraph}
 
-Bei der Darstellung der Automaten haben wir uns sehr an dem aktuellen
-Vorlesungsskript orientiert. Wir wollten eine möglichst hohe Überdeckung
+%### removes texlipse warning
+Bei der Darstellung der Automaten haben wir uns sehr daran orientiert, wie sie
+hier \cite{Sieber} verwendet wird. Wir wollten eine möglichst hohe Überdeckung
 erreichen, um sicherzustellen, dass ein Benutzer einen existierenden Automaten
 verstehen kann, ohne sich noch viel einlesen zu müssen. In den
 Vorlesungsunterlagen wird ein Zustand als Kreis dargestellt. Ein akzeptierender
 Zustand wird über einen doppelten Rahmen gekennzeichnet und ein Startzustand
-erkennt man an einem Pfeil, der optional mit Start beschriftet sein
-kann.\vspace{10pt}
+erkennt man an einem Pfeil, wlecher mit Start beschriftet ist.\vspace{10pt}
+%### removes texlipse warning
 
 \begin{figure}[h!]
 \begin{center}
@@ -53,16 +54,14 @@ kann.\vspace{10pt}
 \end{figure}
 \vspace{10pt}
 
-Um dies zu realisieren, haben wir uns die frei verfügbare Java Bibliothek JGraph
-zunutze gemacht, und nach unseren Bedürfnissen angepasst. Als erstes mussten
-wir mit Hilfe von JGraph Komponenten ein geeignete Darstellung von Zuständen
-und Übergängen erreichen. Diese Komponenten mussten dynamisch angelegt,
-gelöscht und bearbeitet werden können. Nachdem wir also eine passende
+Als erstes mussten wir mit Hilfe von JGraph Komponenten ein geeignete Darstellung
+von Zuständen und Übergängen erreichen. Diese Komponenten mussten dynamisch
+angelegt, gelöscht und bearbeitet werden können. Nachdem wir also eine passende
 Darstellung für unsere Automaten gefunden hatten, mussten wir noch die
 Verknüpfung von den graphischen Elementen und den Kernelementen herstellen. Um
 eine eindeutige Zuweisung von diesen Elementen zu erreichen, haben wir uns dazu
-entschieden, die Kernelemente als Attribut in den graphischen Komponenten
-zu speichern.\vspace{10pt}
+entschieden, die Kernelemente als Attribut in den graphischen Komponenten zu
+speichern.\vspace{10pt}
 
 Nachdem die Verknüpfung der Komponenten erledigt war, konnte man die
 Darstellung der Zustände und Übergänge anhand der entsprechenden Daten
@@ -175,6 +174,7 @@ nachvollziehen, was genau mit unserem Keller passiert, wenn wir mit diesem
 \begin{center}
 \includegraphics[width=12cm]{../images/stack_operation_table.png}
 \caption{Keller Operationen Tabelle}
+\label{FigureStackOperationTable}
 \end{center}
 \end{figure}
 \vspace{10pt}
@@ -183,14 +183,12 @@ Die Tabelle enthält einen Eintrag pro Übergang in unserem Automaten. Jeder
 Eintrag enthält den Zustand von dem der Übergang ausgeht, den Zustand zu dem
 wir übergehen und die entsprechende Übergangsmenge. Zusätzlich wird noch
 das Wort angegeben, welches bei diesem Übergang vom Keller gelesen wird, und
-das Wort, welches auf den Keller geschrieben wird. Wenn wir nichts von dem
+das Wort, welches auf den Keller geschrieben wird. Wenn wir nichts vom
 Keller lesen oder auf den Keller schreiben, wird als Wort $\epsilon$
 verwendet.\vspace{10pt} 
 
-Als Orientierungshilfe für den Benutzer kann man einen Eintrag in der Tabelle
-auswählen, und es wird dann der entsprechende Übergang im Automaten farblich
-hervorgehoben. Dies soll dabei helfen, die Funktionsweise des aktuellen
-Automaten nachzuvollziehen.\vspace{10pt}
+In Abbildung \ref{FigureStackOperationTable} sieht man, wie eine
+solche Tabelle aussehen kann.\vspace{10pt}
 
 
 \section{Wort-Navigation}\label{WordNavigation}
@@ -204,10 +202,9 @@ erkennen, warum ein eingegebenes Wort erkannt wird.
 \subsection{Deterministische Navigation}\label{WordNavigationDeterministic}
 
 Wir wollten dem Nutzer auch die Möglichkeit geben, sich anzusehen, wie der
-konstruierte Automat ein beliebiges Eingabewort abarbeitet, dabei muss
-allerdings gelten, dass es sich um ein gültiges Wort handelt, es müssen also
-alle Symbole im Alphabet vorkommen. Für diesen Zweck wurde die Wortnavigation
-entwickelt.\vspace{10pt}
+konstruierte Automat ein beliebiges Eingabewort abarbeitet, dabei muss es sich um
+ein gültiges Wort über dem Alphabet handeln. Für diesen Zweck wurde die
+Wortnavigation entwickelt.\vspace{10pt}
 
 Wenn der Nutzer den Wortnavigationsmodus startet findet er am unteren
 Bildschirmrand zwei Textfelder. Dabei handelt es sich um ein Eingabefeld für
@@ -218,7 +215,7 @@ in Abschnitt \ref{InteractionPDA} besprochen.\vspace{10pt}
 
 Um dem Benutzer eine Hilfestellung bei der Eingabe eines Wortes zu geben, wird
 rechts neben dem Eingabefeld das aktuelle Alphabet angezeigt. Man kann nur
-Symbole verwenden, welche auch im aktuellen Alphabet enthalten
+Symbole verwenden, welche auch im Eingabealphabet enthalten
 sind.\vspace{10pt}
 
 \begin{figure}[h]
@@ -230,19 +227,17 @@ sind.\vspace{10pt}
 \vspace{10pt}
 
 Nachdem ein Wort eingegeben wurde, kann der Nutzer dann die Verarbeitung des
-Worts starten. Es besteht die Möglichkeit sich Symbol für Symbol weiter durch
-das Wort zu arbeiten, und den genauen Weg im Automaten nachzuvollziehen. Um
-Verständnisprobleme besser beseitigen zu können, ist auch hier eine Navigation
-in Vor- und Rückrichtung möglich.\vspace{10pt}
+Worts starten. Es besteht die Möglichkeit sich Zeichen für Zeichen weiter durch
+das Wort zu arbeiten, und den genauen Weg im Automaten nachzuvollziehen.\vspace{10pt}
 
-Für jeden Schritt werden die Zustände farblich hervorgehoben, in denen sich der
+In jedem Schritt werden die Zustände farblich hervorgehoben, in denen sich der
 Automat aktuell befindet. Zusätzlich wird auch der Übergang und das
 entsprechende Symbol des Übergangs hervorgehoben, über welchen man in diesen
 Zustand gekommen ist. In dem Feld, in welchem man das Wort eingegeben hat, wird
 jetzt angezeigt, bis zu welcher Stelle der Automat das Wort schon verarbeitet
 hat.\vspace{10pt}
 
-Wenn man das ganze Wort verarbeitet hat, bekommt der Benutzer eine Information,
+Wenn man das ganze Wort gelesen hat, bekommt der Benutzer eine Information,
 ob der Automat das Wort akzeptiert hat, oder, ob das Wort nicht in der Sprache
 des Automaten liegt.\vspace{10pt}
 

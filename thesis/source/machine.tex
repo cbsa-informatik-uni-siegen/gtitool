@@ -47,13 +47,16 @@ erreichen, um sicherzustellen, dass ein Benutzer einen existierenden Automaten
 verstehen kann, ohne sich noch viel einlesen zu müssen. In den
 Vorlesungsunterlagen wird ein Zustand als Kreis dargestellt. Ein akzeptierender
 Zustand wird über einen doppelten Rahmen gekennzeichnet. Einen Startzustand
-erkennt man an einem Pfeil, wlecher mit Start beschriftet ist.\vspace{10pt}
+erkennt man an einem Pfeil, wlecher mit Start beschriftet ist. In
+Abbildung \ref{FigureMachine} sieht man wie ein Automat im GTI Tool
+aussieht.\vspace{10pt}
 %### removes texlipse warning
 
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=12cm]{../images/enfa_example.png}
 \caption{Beispiel für eine Automatendarstellung mit JGraph}
+\label{FigureMachine}
 \end{center}
 \end{figure}
 \vspace{10pt}
@@ -206,7 +209,8 @@ verstehen, warum ein eingegebenes Wort erkannt wird.
 Wir wollten dem Nutzer auch die Möglichkeit geben, sich anzusehen, wie der
 konstruierte Automat ein beliebiges Eingabewort abarbeitet. Dabei muss es sich
 um ein gültiges Wort über dem Alphabet handeln. Für diesen Zweck wurde die
-Wort-Navigation entwickelt.\vspace{10pt}
+Wort-Navigation entwickelt. In Abbildung \ref{FigureWordNavigation}
+sieht man den Dialog zur WortNavigation im GTI Tool.\vspace{10pt}
 
 Wenn der Nutzer den Wort-Navigationsmodus startet, findet er am unteren
 Bildschirmrand zwei Textfelder. Hierbei handelt es sich um ein Eingabefeld für
@@ -224,6 +228,7 @@ sind.\vspace{10pt}
 \begin{center}
 \includegraphics[width=12cm]{../images/dfa_navigation.png}
 \caption{Automat - Wort-Navigation}
+\label{FigureWordNavigation}
 \end{center}
 \end{figure}
 \vspace{10pt}

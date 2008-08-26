@@ -123,7 +123,7 @@ unterscheiden.\vspace{10pt}
 Bei Grammatiken gibt es noch diverse Möglichkeiten, welche bis jetzt noch nicht
 umgesetzt sind. Als Beispiele, auf die wir in diesem Kapitel noch eingehen
 möchten, haben wir uns Linksrekursion, Linksfaktorisierung und
-Wort-Navigation auf einer Grammatik aufgegriffen.\vspace{10pt}
+Ableitungen für Grammatiken aufgegriffen.\vspace{10pt}
 
 
 \subsection{Linksrekursion}\label{PerspectiveLeftrecursion}
@@ -145,10 +145,10 @@ sollte.\vspace{10pt}
 \noindent Gehen wir davon aus, die Produktionen für ein Nichtterminalzeichen
 \NonterminalSymbol{A} sind von der Form\vspace{10pt}
 
-\NonterminalSymbol{A} $\to$ \NonterminalSymbol{A}$\alpha_1|\ldots|$
-\NonterminalSymbol{A}$\alpha_n | \beta_1 | \ldots | \beta_n$\vspace{10pt}
+\NonterminalSymbol{A} $\to$ \NonterminalSymbol{A}$\alpha_1\ |\ \ldots\ |\ $
+\NonterminalSymbol{A}$\alpha_n\ |\ \beta_1\ |\ \ldots\ |\ \beta_n$\vspace{10pt}
 
-\noindent wobei $\beta_1\ bis\ \beta_n$ nicht mit \NonterminalSymbol{A}
+\noindent wobei $\beta_1\ $bis$\ \beta_n$ nicht mit \NonterminalSymbol{A}
 beginnen.\vspace{10pt}
 
 \noindent Um diese Rekursion zu beseitigen, führt man ein neues
@@ -156,13 +156,13 @@ Nichtterminalzeichen \NonterminalSymbol{A$'$} ein. Also ersetzt man die
 bestehenden Produktion von
 \NonterminalSymbol{A} durch diese Produktionen:\vspace{10pt}
 
-\NonterminalSymbol{A} $\to \beta_1 | \ldots | \beta_n$
+\NonterminalSymbol{A} $\to \beta_1\ |\ \ldots\ |\ \beta_n$
 
-\NonterminalSymbol{A$'$} $\to \alpha_1$\NonterminalSymbol{A$'$}$|\ldots|$
-$\alpha_n$\NonterminalSymbol{A$'$}$|\epsilon$\vspace{10pt}
+\NonterminalSymbol{A$'$} $\to \alpha_1$\NonterminalSymbol{A$'$}$\ |\ \ldots\ |\
+$ $\alpha_n$\NonterminalSymbol{A$'$}$\ |\ \epsilon$\vspace{10pt}
 
 %### removes texlipse warning
-\noindent Damit können wir direkte Linksrekursion beseitigen. Und dies können wir
+\noindent Damit können wir direkte Linksrekursion beseitigen. Dies können wir
 uns auch zunutze machen, um indirekte Linksrekursion zu entfernen. Folgender
 Algorithmus zur Entfernung von Linksrekursion, aus dem Buch \cite{Compilers},
 macht sich dies zu nutze:\vspace{10pt}
@@ -172,8 +172,8 @@ macht sich dies zu nutze:\vspace{10pt}
 \verb| 1 for i = 1 to n do {|\\
 \verb| 2   for j = 1 to i - 1 do {|\\
 \verb| 3     ersetze jede Produktion der Form| $A_i \to A_j \gamma$ \verb| |\\ 
-\verb| 4     durch die Produktion |$A_i \to \delta_1\gamma|\ldots|\delta_k\gamma$
-\verb| 5 , wobei |$A_j \to \delta_1|\ldots|\delta_k$\\ 
+\verb| 4     durch die Produktion |$A_i \to \delta_1\gamma\ |\ \ldots\ |\ \delta_k\gamma$
+\verb| 5 , wobei |$A_j \to \delta_1\ |\ \ldots\ |\ \delta_k$\\ 
 \verb| 6     alle derzeitigen Produktionen für |$A_j$ \verb|sind|\\ 
 \verb| 7   }|\\
 \verb| 8   eleminiere die unmittelbare Linksrekursion für |$A_i$\\
@@ -181,7 +181,7 @@ macht sich dies zu nutze:\vspace{10pt}
 \verb|10 }|
 \vspace{10pt}
 
-Somit besteht die Möglichkeit sowohl direkte, wie auch indirekte Linksrekursion
+Somit besteht die Möglichkeit, sowohl direkte, wie auch indirekte Linksrekursion
 zu beseitigen.\vspace{10pt}
 
 
@@ -198,7 +198,7 @@ gleiche Prefixe haben. Wie es zum Beispiel bei \vspace{10pt}
 
 \noindent
 der Fall ist. Diese Probleme lassen sich durch den Algorithmus zur
-Linksfaktorisierung lösen. Dieser Algorithmus sieht wie folgt aus.\vspace{10pt}
+Linksfaktorisierung lösen. Dieser Algorithmus sieht wie folgt aus:\vspace{10pt}
 
 Zunächst einmal bestimmen wir eine Symbolfolge $\alpha$, welche dem längsten
 gemeinsamen Prefix aller Produktionen für das selbe Nichtterminalzeichen
@@ -208,27 +208,27 @@ gemeinsamen Prefix aller Produktionen für das selbe Nichtterminalzeichen
 Form\vspace{10pt}
 
 \noindent
-\NonterminalSymbol{A}$ \to \alpha \beta_1|\ldots|\alpha
-\beta_n|\gamma_1|\ldots|\gamma_n$
+\NonterminalSymbol{A}$ \to \alpha \beta_1\ |\ \ldots\ |\ \alpha
+\beta_n\ |\ \gamma_1\ |\ \ldots\ |\ \gamma_n$
 \vspace{10pt}
 
 \noindent
 wobei $\gamma$ nicht mit $\alpha$ beginnt und es gilt $n \geq 2$ und $k \geq 0$.
 \vspace{10pt}
 
-Um den Algorithmus zur Linksfaktorisierung auf die Grammatik anzuwenden führt
-man als erstes ein neus Nichtterminalzeichen \NonterminalSymbol{A$'$} ein. Als
+Um den Algorithmus zur Linksfaktorisierung auf die Grammatik anzuwenden, führt
+man als erstes ein neues Nichtterminalzeichen \NonterminalSymbol{A$'$} ein. Als
 nächstes ersetzt man die bestehenden Produktionen von \NonterminalSymbol{A}
 durch die folgenden.\vspace{10pt}
 
 \noindent
-\NonterminalSymbol{A}$ \to \alpha $\NonterminalSymbol{A$'$}$|\gamma_1|\ldots|\gamma_n$\\
-\NonterminalSymbol{A$'$}$ \to \beta_1|\ldots|\beta_n$
+\NonterminalSymbol{A}$ \to \alpha $\NonterminalSymbol{A$'$}$\ |\ \gamma_1\ |\ \ldots\ |\ \gamma_n$\\
+\NonterminalSymbol{A$'$}$ \to \beta_1\ |\ \ldots\ |\ \beta_n$
 \vspace{10pt}
 
 \noindent
 Dieser Schritt muss wiederholt werden, bis für alle Produktionen mit dem
-gleichen Nichtterminalzeichen auf der rechten Seite $\epsilon$ der einzige
+glei\-chen Nichtterminalzeichen auf der rechten Seite $\epsilon$ der einzige
 gemeinsame Prefix ist.\vspace{10pt}
 
 Dieser Algorithmus kann für eine Implementierung verwendet werden, indem für
@@ -238,9 +238,9 @@ diese dann wie oben beschrieben anwendet.
 
 \subsection{Ableitungen für Grammatiken}\label{PerspectiveGrammarWordNavigation}
 
-Die Wortnavigation für Automaten haben wir ja schon in Kapitel
+Die Wort-Navigation für Automaten haben wir in Kapitel
 \ref{WordNavigation} beschrieben. Etwas in der Richtung ließe sich
-auch für Grammatik realisieren. Allerdings naviert man nicht mehr
+auch für Grammatik realisieren. Allerdings navigiert man nicht mehr
 durch ein Wort, sondern man sucht die richtig Ableitung von dem
 Startsymbol aus.\vspace{10pt}
 
@@ -256,12 +256,13 @@ wird dieses mit dem nächsten Zeichen im Eingabewort verglichen. Wenn diese
 übereinstimmen wird ein Pointer innerhalb des Eingabewortes ein Symbol
 weitergeschoben, und man betrachtet das nächste Symbol. Wenn die beiden Symbole
 nicht übereinstimmen, muss eine Fehlermeldung ausgegeben werden, dass dieses Wort
-mit den bis jetzt verwendeten Produktionen nich hergeleitet werden kann. Wenn man
-das letzte Symbol auf dem Keller behandelt hat, sollte auf dem Keller das
+mit den bis jetzt verwendeten Produktionen nicht hergeleitet werden kann. Wenn
+man das letzte Symbol auf dem Keller behandelt hat, sollte auf dem Keller das
 Eingabewort stehen. Somit kann man das Wort mit den Produktionen herleiten, die
 man während dieses Durchlaufs verwendet hat. Als Hilfestellung für den Benutzer
-sollten diese noch in einer Liste, oder etwas ähnlichem in der Reihenfolge der
-Verwendung aufgelistet werden.\vspace{10pt}
+sollten die für die Ableitung verwendeten Produktionen noch in einer Liste, oder
+etwas ähnlichem in der Reihenfolge der Verwendung aufgelistet
+werden.\vspace{10pt}
 
 \section{Erkannte Wörter ausgeben}\label{PerspectiveDetectedWords}
 
@@ -373,18 +374,17 @@ entsprechenden Zustände auswählt.\vspace{10pt}
 
 \section{Auto-Layout}\label{PerspectiveAutoLayout}
 
-%###
-Wie im Kapitel \ref{AutoLayout} schon erwähnt ist kann der implementierte
-Autolayout-Algorithmus noch optimiert werden. Ein Algorithmus welcher
-wahrscheinlich bessere Ergebnisse liefert ist der
-Simulated-Annealing-Algorithmus (Simulierte Abkühlung), welcher auch in \cite{Layout} beschrieben
-wird.\vspace{10pt}
-%###
+%### removes texlipse warning
+Wie im Kapitel \ref{AutoLayout} schon erwähnt, kann der implementierte
+Autolayout-Algorithmus noch optimiert werden. Ein Algorithmus der wahrscheinlich
+bessere Ergebnisse liefert, ist der Simulated-Annealing-Algorithmus (Simulierte
+Abkühlung), welcher auch in \cite{Layout} beschrieben wird.\vspace{10pt}
+%### removes texlipse warning
 
-Bei diesem Algorithmus versucht man sich das Verfahren des Abkühlungsprozesses zu
+Bei diesem Algorithmus versucht man sich das Verfahren des Ab\-kühlungs\-pro\-zes\-ses zu
 Nutze zu machen, welches in der Natur beobachtet werden kann. Wenn man diesen
 Prozess Beispielsweise bei metallischen Schmelzen beobachtet, kann man
-feststellen, dass die Metallatome sich zu Beginn des Abkühlunsprozesses noch
+feststellen, dass die Metallatome sich zu Beginn des Ab\-kühlungs\-pro\-zes\-ses noch
 annähernd chaotisch durch die Gitterpositionen bewegen. Mit abnehmender
 Temperatur nehmen die Atome allerdings immer mehr geordnete Positionen ein, so
 dass später nur noch eine Optimierung in der lokalen Nachbarschaft der Atome
@@ -393,22 +393,22 @@ optimal Lösung erreicht, weshalb man versucht dieses auf ein
 Partitionierungsproblem zu übertragen.\vspace{10pt}
 
 Diesen, in der Natur beobachteten Algorithmus, versucht man jetzt nachzubilden,
-und mit diesem Verahren Partitionierungsprobleme, beziehungsweise
+und mit diesem Verfahren Partitionierungsprobleme, beziehungsweise
 Layoutprobleme, zu lösen. Dabei gibt man den Elementen zu Beginn einen hohen
 Freiheitsgrad, wie es ja auch bei dem Abkühlungsprozess der Fall ist. Dadurch
 nimmt man auch Verschlechterungen in Kauf. Dieser Freiheitsgrad nimmt jedoch
 immer weiter ab, so dass die Akzeptanz von Verschlechterungen immer weiter
 sinkt.\vspace{10pt}
 
-Bei dem Algorithmus werden die Elemente zu Beginn in einer zufällige
-Anfangspositionierung gebracht. Jetzt wird über eine Kostenfunktion die
+Bei dem Algorithmus werden die Elemente zu Beginn in eine zufällige
+Anfangspositionierung gebracht. Jetzt werden über eine Kostenfunktion die
 aktuellen Kosten bei dieser Konfiguration berechnet. Als nächstes wählt man
 willkürlich zwei Elemente aus und berechnet erneut die Kosten für den Fall,
-dass man diese beiden Elemente tauschen würde. Wenn sich die Kosten verbessern
+dass man diese beiden Elemente tauschen würde. Wenn sich die Kosten verbessern,
 wird der Tausch auf jeden Fall durchgeführt. Wenn die Kosten gleich bleiben,
-oder sich sogar verschlechtern würden tauscht man mit einer bestimmten
-Wahrscheinlichkeit. Die Maßgebenden Faktoren zur Berechnung der
-Wahrscheinlichkeit sind die aktuelle Temperatur und der Grad der
+oder sich sogar verschlechtern würden, tauscht man mit einer bestimmten
+Wahr\-schein\-lich\-keit. Die Maßgebenden Faktoren zur Berechnung der
+Wahr\-schein\-lich\-keit sind die aktuelle Temperatur und der Grad der
 Veschlechterung.\vspace{10pt}
 
 \noindent
@@ -441,7 +441,7 @@ Der Pseudocode für diesen Algorithmus sieht wie folgt aus:\vspace{10pt}
 \vspace{10pt}
 
 Die Kostenfunktion ist bei der Implementierung des Algorithmus ein wichtiger
-Punkt aus. In unserem speziellen Fall müsste man berücksichtigen, dass zwei
+Punkt. In unserem speziellen Fall müsste man berücksichtigen, dass zwei
 Zustände, zwischen denen ein Übergang existiert, nicht zu weit auseinanderliegen
 sollten. Wenn zwei Zustände nicht direkt nebeneinander liegen können, sollte sehr
 großer Wert darauf gelegt werden, dass der Übergang nicht durch einen anderen

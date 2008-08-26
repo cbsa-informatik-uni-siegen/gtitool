@@ -6,14 +6,14 @@
 %%
 
 
-\chapter{Minimieren}\label{Minimize}
+\chapter{Minimierung}\label{Minimize}
 
-Sobald der Benutzer einen Automaten erstellt hat, kann er mit diesem schon
-alle Funktionen, welche dieses Lernwerkzeug bietet, nutzen. Allerdings besteht die
-Möglichkeit, dass ein Automat existiert, der die gleiche Sprache erkennt die
-unser erstellter Automat erkennt, jedoch mit weniger Zuständen auskommt. Bei
+Sobald der Benutzer einen Automaten erstellt hat, kann er mit diesem schon alle
+Funktionen, welche dieses Lernwerkzeug bietet, nutzen. Allerdings besteht die
+Möglichkeit, dass ein Automat existiert, der die gleiche Sprache erkennt, die ein
+erstellter Automat erkennt, jedoch mit weniger Zuständen auskommt. Bei
 komplexeren Beispielen bemerkt man schnell, dass die Übersichtlichkeit mit
-wachsender Anzahl der Zustände immer weiter abnimmt. Daher ist es wünschenswert
+wachsender Anzahl der Zustände immer weiter abnimmt. Daher ist es wünschenswert,
 immer mit dem minimalen Automaten für eine bestimmte Sprache zu arbeiten. Im
 Folgenden wollen wir uns jetzt den Algorithmus ansehen, welcher verwendet wird,
 um aus einem Automaten einen neuen Automaten mit einer minimalen Anzahl von
@@ -26,10 +26,10 @@ auskommt.\vspace{10pt}
 
 Der erster Minimierungsschritt besteht darin, die unerreichbaren Zustände zu
 entfernen, da diese keine Auswirkung auf die erkannte Sprache haben können. Der
-dazu verwendete Algorithmus zur Berechnung der erreichbaren Zustände kann im Abschnitt \ref{ReachableStates} nachgeschlagen
-werden.\vspace{10pt}
+dazu verwendete Algorithmus zur Berechnung der erreichbaren Zustände kann im
+Abschnitt \ref{ReachableStates} nachgeschlagen werden.\vspace{10pt}
 
-Im Weiteren versuchen wir äquivalente Zustände in Gruppen, auch
+Im Weiteren versuchen wir, äquivalente Zustände in Gruppen, auch
 Äquivalenz\-klassen genannt, zusammenzufassen, um diese später zu einem Zustand
 zu verschmelzen. Initial wird unsere Menge von Zuständen in zwei Gruppen
 unterteilt. Alle akzeptierenden Zustände bilden die erste, alle nicht
@@ -45,15 +45,15 @@ Symbolen des Eingabealphabets in einen Zustand der selben Gruppe
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=12cm]{../images/minimize.png}
-\caption{Automat - Minimieren}
+\caption{Automat - Minimierung}
 \end{center}
 \end{figure}
 \vspace{10pt}
 
 Schauen wir uns jetzt mal die Arbeitsweise des Algorithmus im Detail an. Als
-erstes wird die aktuelle Gruppeneinteilung gespeichert, also wieviele
+erstes wird die aktuelle Gruppeneinteilung gespeichert, also wie viele
 Gruppen existieren, und welcher Zustand in welcher Gruppe liegt. Dann wird
-die erste Gruppen betrachtet. Wenn diese nur einen Zustand enthält kann sie
+die erste Gruppen betrachtet. Wenn diese nur einen Zustand enthält, kann sie
 nicht weiter verfeinert werden, und muss daher auch nicht mehr betrachtet werden.
 \vspace{10pt}
 
@@ -65,12 +65,12 @@ weiter unterteilt werden. Falls aber doch Zustände existieren, welche in
 eine andere Gruppe übergehen, werden diese Zustände aus der aktuellen Gruppe
 entfernt und bilden eine neue Gruppe. \vspace{10pt}
 
-Nachdem diese Prozedur für diese Gruppe abgeschlossen ist, wird sie für alle
-Gruppen, die noch nicht betrachtet wurden, wiederholt. Nach Betrachtung aller
+Nachdem diese Prozedur für die aktuelle Gruppe abgeschlossen ist, wird sie für
+alle Gruppen, die noch nicht betrachtet wurden, wiederholt. Nach Betrachtung aller
 Gruppen wird die aktuelle Gruppeneinteilung mit der verglichen, die zu Beginn
 gespeichert wurde. Wenn diese übereinstimmt, ist unser Algorithmus am Ende, und
 die Gruppen können nicht weiter verfeinert werden. Stimmt die Gruppeneinteilung
-nicht überein, muss jede Gruppe erneut einzeln betrachten, um zu versuchen
+nicht überein, muss jede Gruppe erneut einzeln betrachten, um zu versuchen,
 diese in kleinere Gruppen zu zerlegen.\vspace{10pt}
 
 Nach Beendigung des Algorithmus repräsentiert jede Gruppe einen Zustand

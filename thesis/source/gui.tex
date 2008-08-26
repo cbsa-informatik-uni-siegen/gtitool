@@ -23,7 +23,7 @@ diskutiert haben, kamen wir sehr schnell zu der Übereinkunft, dass die
 "`Grundlagen der theoretischen Informatik"', als auch "`Theorie der
 Programmierung I"' für jeden Informatikstudenten der Universität Siegen
 Pflichtveranstaltungen sind, ist die Wahrscheinlichkeit, dass Studenten beide
-Lernwerkzeuge nutzen werden sehr hoch.\vspace{10pt}
+Lernwerkzeuge nutzen werden, sehr hoch.\vspace{10pt}
 
 Ein großer Vorteil dieser Entscheidung war natürlich, dass wir beide
 bereits an der Projektgruppe TPML mitgearbeitet hatten. Zwar waren wir nicht
@@ -34,7 +34,7 @@ geholfen haben.\vspace{10pt}
 Wir hoffen, dass zukünftige Benutzer von den Parallelen im Aussehen
 und in der Funktionsweise beider Lernwerkzeuge profitieren können.\vspace{10pt}
 
-Während der gesamten Diplomarbeit stand im Vordergrund das Lernwerkzeug so
+Während der gesamten Diplomarbeit stand im Vordergrund, das Lernwerkzeug so
 intuitiv und selbsterklärend wie möglich zu gestalten. Denn schließlich soll
 ein Benutzer nicht noch lange Zeit darauf verwenden müssen, den Umgang mit dem
 Werkzeug zu erlernen und sich im schlimmsten Falle durch ein dickes Handbuch
@@ -43,8 +43,8 @@ durchzuarbeiten.\vspace{10pt}
 Aus diesem Ansatz heraus ist zum Beispiel auch der Wizard zum Anlegen einer
 neuen Datei enstanden. Dieser Wizard hat für jedes Eingabefeld ja schon einen
 Vorschlag, welche in den Einstellungen auf die Benutzerwünsche angepasst werden
-kann. Beim ersten Start sollen diese Werte allerdings als Orientierung und
-Beispieldaten dienen, was an diesen Stellen eingetragen werden soll.
+kann. Beim ersten Start sollen diese Werte als Orientierung dienen, was in den
+Feldern eingetragen werden soll.
 \vspace{10pt}
 
 
@@ -57,14 +57,14 @@ weitem noch nicht alle Funktionalität implementiert war. Desweiteren soll das
 Werkzeug ja auch zukünftig an den Stoff der Vorlesung angepasst werden, so dass
 uns eine einfache Erweiterbarkeit sehr wichtig war.\vspace{10pt}
 
-Daher haben wir uns entschlossen die Verwaltung der Redo/Undo Schritte nicht
+Daher haben wir uns entschlossen, die Verwaltung der Redo/Undo Schritte nicht
 einer Klasse alleine zu überlassen, sondern die verschiedenen Aktionen in
 einzelnen Items zu kapseln. Auf diesen Items kann dann die entsprechende Redo-
 bzw. Undo-Funktion aufgerufen werden. Verwaltet wird dies von einem Handler,
 welcher sich nur merkt, welches das letzte aktive Item für Redo und Undo ist,
 und den Aufruf durch den Nutzer an das Item weiterleitet.\vspace{10pt}
 
-Durch diese Kapselung ist es leicht möglich die Redo/Undo Funktion zu
+Durch diese Kapselung ist es leicht möglich, die Redo/Undo Funktion zu
 erweitern, da einfach ein neues Item für die entsprechende Aktion implementiert
 werden muss, um diese Item beim Ausführen der Aktion an den Handler zu
 übergeben.\vspace{10pt}

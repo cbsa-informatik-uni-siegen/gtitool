@@ -11,19 +11,19 @@
 Beim Anlegen eines neuen Automaten, oder auch beim Modifizieren eines
 bestehenden, kommt es vor, dass die Übersichtlichkeit verloren geht. Damit man
 eine schnelle Möglichkeit hat, den Automaten wieder besser überblicken zu
-können, wurde eine Autolayout Funktion implementiert.\vspace{10pt}
+können, wurde eine Auto-Layout Funktion implementiert.\vspace{10pt}
 
 Diese Funktion basiert zur Zeit auf dem Erweiterten Partitionierungsalgorithmus
 von Kerninghan und Lin. Er beruht auf der iterativen Verbesserung durch
 paarweisen Austausch.\vspace{10pt}
 
 Dieser Algorithmus wird eigentlich für die Partitionierung von Schaltungen
-verwendet, kann aber problemlos auf unsere Situation übertragen werden.
+verwendet, kann aber problemlos auch auf unsere Situation übertragen werden.
 Allerdings mussten bei der Übertragung einige Modifikationen
 vorgenommen werden, auf welche wir später noch näher eingehen
 werden.\vspace{10pt}
 
-\section{Der Kerninghan-Lin-Algorithmus im Detail}\label{KerninghanLin}
+\section{Der Kerninghan-Lin-Algorithmus}\label{KerninghanLin}
 
 Zu Beginn wird das Partitionierungsproblem in eine Graphendarstellung
 transformiert. Danach werden die Knoten des Graphen in zwei Gruppen unterteilt.
@@ -34,7 +34,7 @@ die beiden Gruppen trennt, erfassten Kanten gezählt.\vspace{10pt}
 %### removes texlipse warning
 Der Kerninghan-Lin-Algorithmus lässt sich in die folgenden Schritte
 unterteilen, welche dem Buch "`Layoutsynthese elektronischer
-Schaltungen"' (\cite{Layout}) entnommen wurden:\vspace{10pt}
+Schaltungen"' \cite{Layout} entnommen wurden:\vspace{10pt}
 %### removes texlipse warning
 
 Schritt 0:
@@ -96,14 +96,14 @@ Ende erreicht hat. Wenn nicht, werden in $Schritt\ 5$ die Vertauschungen des
 aktuellen Durchgangs durchgeführt, und es wird ein neuer Durchgang gestartet.\vspace{10pt}
 
 %### removes texlipse warning
-Wie schon erwähnt musste der Algorithmus für die Implementierung ein wenig
-modifiziert werden. Zum einen  geht man eigentlich davon aus, dass die
-Knotenmenge in zwei ungefähr gleichgroße Gruppen einteilt. Dies erwies sich bei
-der Implementierung allerdings als eher unvorteilhaft. Daher wird dynamisch
-bestimmt, in wieviele Gruppen die Knoten unterteilt werden, wobei die Größe
+Wie schon erwähnt, musste der Algorithmus für die Implementierung ein wenig
+modifiziert werden. Zum einen  geht man davon aus, dass die
+Knotenmenge in zwei ungefähr gleichgroße Gruppen eingeteilt werden. Dies erwies
+sich bei der Implementierung allerdings als eher unvorteilhaft. Daher wird dynamisch
+bestimmt, in wie viele Gruppen die Knoten unterteilt werden, wobei die Größe
 aller Gruppen aber auch hier in etwa die gleiche ist. Diese
 Implementierung entspricht soweit der Erweiterung des
-Kerningham-Lin-Algorithmus wie sie in \cite{Layout} beschrieben
+Kerningham-Lin-Algorithmus, wie sie in \cite{Layout} beschrieben
 wird.\vspace{10pt}
 %### removes texlipse warning
 
@@ -113,11 +113,11 @@ sieht so aus, dass man eine Linie zwischen die erste und zweite Gruppe legt, und
 alle Kanten zählt, die diese Linie schneiden. Dann berechnet man, bei
 welchen beiden Knoten ein Tausch die größte Verbesserung liefert, also die
 meisten Schnitte mit der Linie wegfallen würden. Diese werden dann getauscht und
-fixiert. Wenn alle Knoten fixiert sind, oder keine Tauschkombination existiert
+fixiert. Wenn alle Knoten fixiert sind oder keine Tauschkombination existiert,
 bei der Schnitte mit der Linie zwischen den Gruppen wegfallen, wird die Linie
 eine Gruppe nach unten geschoben, also zwischen die zweite und dritte Gruppe und
 die Vorgehensweise wiederholt. Der Algorithmus terminiert, nachdem die vorletzte
-und letzte Gruppe abgearbeitet wurden.\vspace{10pt}
+und die letzte Gruppe abgearbeitet wurden.\vspace{10pt}
 
 Dieser Algorithmus liefert noch nicht das optimale Ergebnis, was daran liegt,
 dass für die Kostenfunktion nur die Schnitte der Kanten berücksichtigt werden.

@@ -42,7 +42,7 @@ hier \cite{Sieber} verwendet wird. Wir wollten eine möglichst hohe Überdeckung
 erreichen, um sicherzustellen, dass ein Benutzer einen existierenden Automaten
 verstehen kann, ohne sich noch viel einlesen zu müssen. In den
 Vorlesungsunterlagen wird ein Zustand als Kreis dargestellt. Ein akzeptierender
-Zustand wird über einen doppelten Rahmen gekennzeichnet und ein Startzustand
+Zustand wird über einen doppelten Rahmen gekennzeichnet. Einen Startzustand
 erkennt man an einem Pfeil, wlecher mit Start beschriftet ist.\vspace{10pt}
 %### removes texlipse warning
 
@@ -54,8 +54,8 @@ erkennt man an einem Pfeil, wlecher mit Start beschriftet ist.\vspace{10pt}
 \end{figure}
 \vspace{10pt}
 
-Als erstes mussten wir mit Hilfe von JGraph Komponenten ein geeignete Darstellung
-von Zuständen und Übergängen erreichen. Diese Komponenten mussten dynamisch
+Als erstes mussten wir mit Hilfe von JGraph Komponenten eine geeignete
+Darstellung von Zuständen und Übergängen erreichen. Diese Komponenten mussten dynamisch
 angelegt, gelöscht und bearbeitet werden können. Nachdem wir also eine passende
 Darstellung für unsere Automaten gefunden hatten, mussten wir noch die
 Verknüpfung von den graphischen Elementen und den Kernelementen herstellen. Um
@@ -63,12 +63,12 @@ eine eindeutige Zuweisung von diesen Elementen zu erreichen, haben wir uns dazu
 entschieden, die Kernelemente als Attribut in den graphischen Komponenten zu
 speichern.\vspace{10pt}
 
-Nachdem die Verknüpfung der Komponenten erledigt war, konnte man die
-Darstellung der Zustände und Übergänge anhand der entsprechenden Daten
-anpassen. Das bedeutet für Zustände, dass man den Namen des Zustandsobjekts
-anzeigt, und auch auswertet, ob es sich um einen Startzustand oder Endzustand
-handelt. Bei den Übergängen konnte die Übergangsmenge als Beschriftung benutzt
-werden, wie es bei der Vorlage im Skript auch der Fall ist.\vspace{10pt}
+Nachdem die Verknüpfung der Komponenten erledigt war, konnte man die Darstellung
+der Zustände und Übergänge anhand der entsprechenden Daten anpassen. Das bedeutet
+für Zustände, dass man den Namen des Zustandsobjekts anzeigt, und auch auswertet,
+ob es sich um einen Startzustand oder um einen Endzustand handelt. Bei den
+Übergängen konnte die Übergangsmenge als Beschriftung benutzt werden, wie es bei
+der Vorlage im Skript der Fall ist.\vspace{10pt}
 
 
 \subsection{Anpassung von JGraph}\label{GraphJGraphAdaptation}
@@ -204,12 +204,12 @@ erkennen, warum ein eingegebenes Wort erkannt wird.
 Wir wollten dem Nutzer auch die Möglichkeit geben, sich anzusehen, wie der
 konstruierte Automat ein beliebiges Eingabewort abarbeitet, dabei muss es sich um
 ein gültiges Wort über dem Alphabet handeln. Für diesen Zweck wurde die
-Wortnavigation entwickelt.\vspace{10pt}
+Wort-Navigation entwickelt.\vspace{10pt}
 
-Wenn der Nutzer den Wortnavigationsmodus startet findet er am unteren
+Wenn der Nutzer den Wort-Navigationsmodus startet, findet er am unteren
 Bildschirmrand zwei Textfelder. Dabei handelt es sich um ein Eingabefeld für
 das Eingabewort, und um eine Anzeige des aktuellen Kellers. In der
-deterministischen Wortnavigation spielt die Kelleranzeige keine Rolle. Diese
+deterministischen Wort-Navigation spielt die Kelleranzeige keine Rolle. Diese
 wird allerdings bei der Verwendung von einem Kellerautomaten benötigt und wird
 in Abschnitt \ref{InteractionPDA} besprochen.\vspace{10pt}
 
@@ -221,13 +221,13 @@ sind.\vspace{10pt}
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=12cm]{../images/dfa_navigation.png}
-\caption{Automat - Wortnavigation}
+\caption{Automat - Wort-Navigation}
 \end{center}
 \end{figure}
 \vspace{10pt}
 
 Nachdem ein Wort eingegeben wurde, kann der Nutzer dann die Verarbeitung des
-Worts starten. Es besteht die Möglichkeit sich Zeichen für Zeichen weiter durch
+Worts starten. Es besteht die Möglichkeit, sich Zeichen für Zeichen weiter durch
 das Wort zu arbeiten, und den genauen Weg im Automaten nachzuvollziehen.\vspace{10pt}
 
 In jedem Schritt werden die Zustände farblich hervorgehoben, in denen sich der
@@ -239,7 +239,7 @@ hat.\vspace{10pt}
 
 Wenn man das ganze Wort gelesen hat, bekommt der Benutzer eine Information,
 ob der Automat das Wort akzeptiert hat, oder, ob das Wort nicht in der Sprache
-des Automaten liegt.\vspace{10pt}
+liegt, welche von dem Automaten erkannt wird.\vspace{10pt}
 
 
 \subsection{Zustands Pfad}\label{HistoryPath}

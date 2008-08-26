@@ -19,14 +19,14 @@ Benutzer eine schrittweise Umwandlung anhand einer graphischen Darstellung zu
 präsentieren.\vspace{10pt}
 
 
-\section{Grammatik umwandeln}\label{ConverToGrammar}
+\section{Grammatik Konvertierung}\label{ConverToGrammar}
 
 Wenn ein Benutzer eine Grammatik vollständig erstellt hat, kann es durchaus
 interessant sein, den Automaten zu sehen, welcher die Sprache akzeptiert, die
 durch die Grammatik beschrieben wird. Vor allem, da für Automaten weitaus mehr
 Verwendungsmöglichkeiten in diesem Werkzeug existieren.\vspace{10pt}
 
-\subsection{Umwandeln einer regulären Grammatik}\label{ConverToGrammarRegular}
+\subsection{Konvertierung einer regulären Grammatik}\label{ConverToGrammarRegular}
 
 %### removes texlipse warning
 Eine reguläre Grammatik kann in einen entsprechenden nicht deterministischen
@@ -40,10 +40,10 @@ trifft, welches man bis jetzt noch nicht gesehen hat.\vspace{10pt}
 %### removes texlipse warning
 
 Die rechte Seite einer Produktion kann entweder aus einem einzelnen
-Terminalzeichen bestehen ($\NonterminalSymbol{S} \to \TerminalSymbol{a}$), oder
+Terminalzeichen ($\NonterminalSymbol{S} \to \TerminalSymbol{a}$), oder
 aus einem Terminalzeichen mit einem anschließenden Nichtterminalzeichen
-($\NonterminalSymbol{S} \to \TerminalSymbol{a}\NonterminalSymbol{A}$), da nur
-solche Arten von Produktionen zugelassen sind.\vspace{10pt}
+($\NonterminalSymbol{S} \to \TerminalSymbol{a}\NonterminalSymbol{A}$) bestehen,
+da nur solche Arten von Produktionen zugelassen sind.\vspace{10pt}
 
 Wir betrachten der Reihe nach jede Produktion der Grammatik.
 Zunächst interessiert uns die linke Seite. Wenn wir das Nichtterminalzeichen
@@ -63,8 +63,8 @@ Besteht die rechte Seite allerdings aus einem Terminalzeichen und einem
 Nichtterminalzeichen müssen wir wieder überprüfen, ob wir das
 Nichtterminalzeichen bereits gesehen haben, um gegebenenfalls den
 entsprechenden Zustand anzulegen. Im nächsten Schritt wird ein Übergang,
-zwischen den beiden Zuständen die wir uns gemerkt haben, angelegt, mit dem
-Terminalzeichen der rechten Seite als Übergangsmenge.\vspace{10pt}
+zwischen den beiden Zuständen die wir uns gemerkt haben, angelegt, mit der der
+rechten Seite der Produktion als Übergangsmenge.\vspace{10pt}
 
 Diese Behandlung wiederholen wir für jede Produktion der Grammatik und
 erhalten so einen endlichen Automaten, der genau die von der
@@ -75,23 +75,24 @@ Grammatik erzeugte Sprache akzeptiert.\vspace{10pt}
 Der Benutzer hat auch die Möglichkeit, eine zuvor erstellte kontextfreie
 Grammatik in einen Kellerautomaten umwandeln zu lassen.\vspace{10pt}
 
-Bei diesem Algorithmus werden zwei Zustände angelegt. Ein Startzustand und ein
-akzeptierender Zustand. Dazu ein Übergang vom Startzustand in den
-akzeptierenden Zustand, welcher das Startsymbol der Grammatik in den Keller
-legt. Dann wird für jede Produktion ein Übergang angelegt, welcher die rechte
+Bei diesem Algorithmus werden zwei Zustände angelegt, ein Startzustand und ein
+akzeptierender Zustand. Dazu wird ein Übergang vom Startzustand in den
+akzeptierenden Zustand angelegt, welcher das Startsymbol der Grammatik in den
+Keller legt. Dann wird für jede Produktion ein Übergang angelegt, welcher die rechte
 Seite der Produktion vom Keller entfernt, und dafür die linke Seite der
 Produktion auf den Keller schreibt. Dieser Übergang hat als
 Ursprungs- und Zielzustand den akzeptierenden Zustand.\vspace{10pt}
 
-Wenn alle Produktion verarbeitet wurden, wird zusätzlich pro
-Terminalzeichen ein Übergang angelegt. In jedem dieser Übergänge wird das
-entsprechende Terminalzeichen vom Eingabewort gelesen und vom Keller des
-Automaten genommen. Das bedeutet, es muss das gleiche Terminalzeichen als
-oberstes im Keller  und als nächstes Zeichen im Wort stehen.\vspace{10pt}
+Wenn alle Produktionen verarbeitet wurden, wird zusätzlich pro Terminalzeichen
+ein Übergang vom akzeptierenden Zustand in den akzeptierenden Zustand angelegt.
+In jedem dieser Übergänge wird das entsprechende Terminalzeichen vom Eingabewort
+gelesen und vom Keller des Automaten genommen. Das bedeutet, es muss das gleiche
+Terminalzeichen als oberstes im Keller  und als nächstes Zeichen im Wort
+stehen.\vspace{10pt}
 
 Durch die Zweite Ansicht (siehe Kapitel \ref{SecondView}) hat der Benuzter auch
-die Möglichkeit die Ausgangsgrammatik und den enstandenen Automaten nebeneinander
-zu sehen, um die Zusammenhänge besser verstehen zu können.\vspace{10pt}
+die Möglichkeit, die Ausgangsgrammatik und den enstandenen Automaten
+nebeneinander zu sehen, um die Zusammenhänge besser verstehen zu können.\vspace{10pt}
 
 
 \section{Automaten Konvertierung}\label{ConverToMachine}

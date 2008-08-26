@@ -128,7 +128,7 @@ Ableitungen für Grammatiken aufgegriffen.\vspace{10pt}
 
 \subsection{Linksrekursion}\label{PerspectiveLeftrecursion}
 
-Eine Grammatik wird als linksrekursiv bezeichnet, wenn sich aus einem beliebigen
+Eine Grammatik wird als linksrekursiv bezeichnet, wenn sich aus einem
 Nichtterminalzeichen $\NonterminalSymbol{A}$ nach beliebig vielen Schritten etwas
 von der Form $\NonterminalSymbol{A} \TerminalSymbol{$\alpha$}$ herleiten lässt.
 Existiert eine Produktion $\NonterminalSymbol{A} \to \NonterminalSymbol{A}
@@ -253,7 +253,7 @@ sich jedes Symbol einzeln vor, wobei man von links startet. Handelt es sich um
 ein Nichtterminalzeichen, würde dieses wieder durch die rechte Seite der
 richtigen nächsten Produktion ersetzt. Handelt es sich um ein Terminalzeichen,
 wird dieses mit dem nächsten Zeichen im Eingabewort verglichen. Wenn diese
-übereinstimmen wird ein Pointer innerhalb des Eingabewortes ein Symbol
+übereinstimmen, wird ein Pointer innerhalb des Eingabewortes ein Symbol
 weitergeschoben, und man betrachtet das nächste Symbol. Wenn die beiden Symbole
 nicht übereinstimmen, muss eine Fehlermeldung ausgegeben werden, dass dieses Wort
 mit den bis jetzt verwendeten Produktionen nicht hergeleitet werden kann. Wenn

@@ -167,8 +167,8 @@ anzulegen, zu modifizieren und zu löschen.\vspace{10pt}
 \subsection{Keller Operationen Tabelle}\label{TablesPDA}
 
 Anhand der Tabelle für Kelleroperationen kann der Benutzer genau
-nachvollziehen, was genau mit unserem Keller passiert, wenn wir mit diesem
-Übergang in einen anderen Zustand übergehen.\vspace{10pt}
+nachvollziehen, was genau mit dem Keller des Automaten passiert, wenn wir
+in einen anderen Zustand übergehen.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}
@@ -184,7 +184,7 @@ Eintrag enthält den Zustand von dem der Übergang ausgeht, den Zustand zu dem
 wir übergehen und die entsprechende Übergangsmenge. Zusätzlich wird noch
 das Wort angegeben, welches bei diesem Übergang vom Keller gelesen wird, und
 das Wort, welches auf den Keller geschrieben wird. Wenn wir nichts vom
-Keller lesen oder auf den Keller schreiben, wird als Wort $\epsilon$
+Keller lesen, oder auf den Keller schreiben, wird als Wort "`$\epsilon$"'
 verwendet.\vspace{10pt} 
 
 In Abbildung \ref{FigureStackOperationTable} sieht man, wie eine
@@ -202,12 +202,12 @@ erkennen, warum ein eingegebenes Wort erkannt wird.
 \subsection{Deterministische Navigation}\label{WordNavigationDeterministic}
 
 Wir wollten dem Nutzer auch die Möglichkeit geben, sich anzusehen, wie der
-konstruierte Automat ein beliebiges Eingabewort abarbeitet, dabei muss es sich um
-ein gültiges Wort über dem Alphabet handeln. Für diesen Zweck wurde die
+konstruierte Automat ein beliebiges Eingabewort abarbeitet. Dabei muss es sich
+um ein gültiges Wort über dem Alphabet handeln. Für diesen Zweck wurde die
 Wort-Navigation entwickelt.\vspace{10pt}
 
 Wenn der Nutzer den Wort-Navigationsmodus startet, findet er am unteren
-Bildschirmrand zwei Textfelder. Dabei handelt es sich um ein Eingabefeld für
+Bildschirmrand zwei Textfelder. Hierbei handelt es sich um ein Eingabefeld für
 das Eingabewort, und um eine Anzeige des aktuellen Kellers. In der
 deterministischen Wort-Navigation spielt die Kelleranzeige keine Rolle. Diese
 wird allerdings bei der Verwendung von einem Kellerautomaten benötigt und wird

@@ -17,7 +17,7 @@ schneller integriert werden können.\vspace{10pt}
 
 \section{Graphische Komponenten}\label{PerspectiveGraphics}
 
-Wie in Abschnitt \ref{Graph} beschrieben verwenden wir zur graphischen
+Wie in Abschnitt \ref{Graph} beschrieben, verwenden wir zur graphischen
 Darstellung der Automaten die Bibliothek JGraph. Diese Bibliothek bietet einen
 sehr großen Funktionsumfang, der von uns nicht komplett ausgeschöpft werden
 musste. Eine mögliche Implementierung für die Zukunft wäre es, diese Bibliothek
@@ -28,17 +28,18 @@ Da eine solche Implementierung sehr viel Zeit in Anspruch nehmen würde, war es
 uns im Rahmen der Diplomarbeit nicht möglich, neben den umgesetzten Komponenten
 auch noch die graphischen Komponenten selbst zu implementieren. JGraph bot uns
 die Möglichkeit sehr schnell und einfach bereits brauchbare Ergebnisse zu
-erzielen. Es mussten einige in \ref{GraphJGraphAdaptation} beschriebene
+erzielen. Es mussten einige in Abschnitt \ref{GraphJGraphAdaptation} beschriebene
 Anpassungen vorgenommen werden, damit das Ergebnis unseren Vorstellungen
-entsprach, aber diese waren im Gegensatz zu einer vollständigen Implementieren
+entsprach, diese waren aber im Gegensatz zu einer vollständigen Implementieren
 zeitlich nicht so komplex.\vspace{10pt}
 
 Zu einer möglichen Umsetzung ist zu sagen, dass sowohl Zustände wie auch
-Übergänge implementiert werden müssen. Was gerade bei der Verwendung von parallel
-Übergängen ein größeres Problem sein könnte, da dort die Übergänge nicht auf
-einer Linie verlaufen. Der größte Nutzer bei einer eigenständigen Implementierung
-wäre, das Änderungen leichter eingepflegt werden könnten, da dies bei der sehr
-komplexen Implementierung von JGraph meistens problematisch war.\vspace{10pt}
+Übergänge implementiert werden müssen. Was gerade bei der Verwendung von
+parallelen Übergängen ein größeres Problem sein könnte, da dort die Übergänge
+nicht auf einer Linie verlaufen. Der größte Nutzer bei einer eigenständigen
+Implementierung wäre, dass Änderungen leichter eingepflegt werden könnten, da
+dies bei der sehr komplexen Implementierung von JGraph meistens problematisch
+war.\vspace{10pt}
 
 Ein weiterer Punkt betrifft die Übergänge. Im Moment verlaufen diese immer
 gerade, außer bei parallelen Übergängen. Es wäre aber durchaus wünschenswert,
@@ -57,7 +58,7 @@ Ausdruck weiter zu arbeiten. Diese Möglichkeiten sollen nun kurz angesprochen
 werden.\vspace{10pt}
 
 %### removes texlipse warning
-Der eingegebene reguläre Ausdruck soll mit dem in \cite[S.159ff]{Compilers}
+Der eingegebene reguläre Ausdrucks soll mit dem in \cite[S.159ff]{Compilers}
 beschriebenen McNaughton-Yamada-Thompson Algorithmus in einen Automaten
 umgewandelt werden können. Diese Umwandlung sollte, wie die anderen Umwandlungen
 auch, schrittweise durchgeführt werden. Dadurch soll es dem Benutzer ermöglicht
@@ -98,11 +99,11 @@ Umwandlung ist in Abbildung \ref{FigureRegExDFA} zu sehen.\vspace{10pt}
 
 \section{\LaTeX-Export}\label{PerspectiveLaTeX}
 
-Bei der Umsetzung des \gtitools war es uns wichtig in erster Linie studentische
+Bei der Umsetzung des \gtitools war es uns in erster Linie wichtig studentische
 Benutzer zu unterstützen. Dazu zählt unter anderem das in Kapitel \ref{Print}
-vorgestellte Drucken. Dadurch ist der Benutzer in der Lage seine erstellten
+vorgestellte Drucken. Dadurch ist der Benutzer in der Lage, seine erstellten
 Automaten oder Grammatiken auszudrucken, um so seine Unterlagen zu
-vervollständigen. Eine weitere wichtige Funktionen besteht in dem Bildexport.
+vervollständigen. Eine weitere wichtige Funktion besteht in dem Bildexport.
 Durch diesen Export ist der Benutzer in der Lage, die erstellten Automaten als
 Bild zu exportieren, um sie zum Beispiel in eigene Prüfungsvorbereitungen
 aufzunehmen.\vspace{10pt}
@@ -111,9 +112,10 @@ Als Perspektive für die Zukunft wäre es sinnvoll, auch Dozenten besser zu
 unterstützen. Eine Möglichkeit wäre das Implementieren eines \LaTeX-Exports, so
 dass der Lehrende nicht mehr den Umweg über den Bildexport gehen muss, sondern
 den Automaten direkt in \LaTeX\ integrieren kann. Bei der Umsetzung ist auf die
-Auswahl einer geeigneten Bibliothek zu achten, so dass auch große Automaten
-noch gut aussehen. Wichtig wäre auch, dass sich, wenn möglich, die \LaTeX-
-und die am Bildschirm dargestellte Version wenig unterscheiden.\vspace{10pt}
+Auswahl einer geeigneten \LaTeX-Bibliothek zu achten, so dass auch große
+Automaten noch gut aussehen. Wichtig wäre auch, dass sich, wenn möglich, die
+\LaTeX- und die am Bildschirm dargestellte Version wenig
+unterscheiden.\vspace{10pt}
 
 
 \section{Grammatik Erweiterungen}\label{PerspectiveGrammar}
@@ -291,29 +293,29 @@ möchte.\vspace{10pt}
 
 Eine weitere sinnvolle und für die Zukunft angedachte Erweiterung ist die
 Ausgabe von erkannten Wörtern. Nachdem ein Automat, eine Grammatik oder dann
-vielleicht auch ein regulärer Ausdruck, eingebenen und validiert wurde, soll der
-Benutzer in der Lage sein eine Ansicht zu öffnen, in der er Wörter ausgegeben
+vielleicht auch ein regulärer Ausdruck eingebenen und validiert wurde, soll der
+Benutzer in der Lage sein, eine Ansicht zu öffnen, in der er Wörter ausgegeben
 bekommt, die zum Beispiel von dem erstellten Automat erkannt
 werden.\vspace{10pt}
 
 Bei der Umsetzung ist darauf zu achten, dass die Bestimmung dieser Wörter
 möglichst mit geringer Laufzeit implementiert wird, so dass der Benutzer nicht
 allzu lange auf ein Ergebnis warten muss. Die Bestimmung sollte somit nicht
-einfach per Brute-Force-Methode ungesetzt werden, sondern in irgendeiner Form
-abhängig von dem gewendeten Typ, wie zum Beispiel einer Grammatik. Somit sollten
-gewisse Wörter direkt ausgeschlossen werden, die bei der Brute-Force-Methode
-ansonsten mit getestet werden würden.\vspace{10pt}
+einfach per Brute-Force-Methode umgesetzt werden, sondern in irgendeiner Form
+abhängig von dem gewendeten Typ sein, wie zum Beispiel einer Grammatik. Somit
+sollten gewisse Wörter direkt ausgeschlossen werden, die bei der
+Brute-Force-Methode ansonsten mit getestet werden würden.\vspace{10pt}
 
 
 \section{Eingabe von mehreren Wörtern}\label{PerspectiveMultiplyWordInput}
 
-In der aktuellen Version des \gtitools kann man nur für Automaten ein Wort
+In der aktuellen Version des \gtitools kann man für Automaten nur ein Wort
 eingeben. In Zukunft soll das aber auch für Grammatiken und dann auch für
 reguläre Ausdrücke möglich sein. In der aktuellen Umsetzung kann der Benutzer
 aber nur ein Wort eingeben und dieses dann auf Akzeptanz prüfen. Für die
 Zukunft wäre es somit wünschenswert, mehr als ein Wort eingeben zu können,
 welches dann direkt während der Eingabe überprüft wird, so dass der Benutzer
-nicht erst die Navigation starten muss. Diese Ansicht soll dem Benutzer helfen
+nicht erst die Navigation starten muss. Diese Ansicht soll dem Benutzer helfen, 
 zu erkennen, welche Sprache ein erstellter Automat oder eine Grammatik
 erkennt.\vspace{10pt}
 
@@ -340,21 +342,22 @@ diesen Fällen entfallen würde.\vspace{10pt}
 
 \subsection{Word-Navigation}\label{PerspectiveWordNavigation}
 Eine wichtige Erweiterung betrifft die Wort-Navigation. Bei dieser Navigation
-gibt es bereits eine Benutzerinteraktion, welche in \ref{InteractionPDA}
-beschrieben wird. In Zukunft kann die Benutzerinteraktion, die in
-\ref{WordNavigation} beschrieben wird, erweitert werden. Eine mögliche Umsetzung
-wäre, den Benutzer vor einem Navigationsschritt dazu aufzufordern, die Übergänge
-zu markieren, die als nächstes verwendet werden. Dabei müsste der Benutzer anhand
-des nächsten Symbols im Eingabewort entscheiden, welche Übergänge dies betrifft.
-Kommt ein oder mehrere $\epsilon$-Übergänge vor müssen diese Übergänge zuerst
-ausgewählt werden. Durch diese Erweiterung wurde der Benutzer noch besser
-erkennen können, wie der Algorithmus arbeitet. Um den ungeübten Benutzer nicht
-zu überfordern und somit vielleicht zur Aufgabe zu zwingen, muss dieser zusätzliche
-Auswahlschritt überspringbar sein. Es muss also eine Art Raten-Funktion geben,
-die dem Benutzer die Auswahl abnimmt.\vspace{10pt}
+gibt es bereits eine Benutzerinteraktion, welche in Abschnitt
+\ref{InteractionPDA} beschrieben wird. In Zukunft kann die Benutzerinteraktion,
+die in Abschnitt \ref{WordNavigation} beschrieben wird, erweitert werden. Eine
+mögliche Umsetzung wäre, den Benutzer vor einem Navigationsschritt dazu
+aufzufordern, die Übergänge zu markieren, die als nächstes verwendet werden.
+Dabei müsste der Benutzer anhand des nächsten Symbols im Eingabewort entscheiden,
+welche Übergänge dies betrifft. Kommen ein oder mehrere $\epsilon$-Übergänge vor,
+müssen diese Übergänge zuerst ausgewählt werden. Durch diese Erweiterung würde
+der Benutzer noch besser erkennen können, wie der Algorithmus arbeitet. Um den
+ungeübten Benutzer nicht zu überfordern und somit vielleicht zur Aufgabe zu
+zwingen, muss dieser zusätzliche Auswahlschritt überspringbar sein. Es muss also
+eine Art Raten-Funktion geben, die dem Benutzer die Auswahl
+abnimmt.\vspace{10pt}
 
 
-\subsection{Umwandeln}\label{PerspectiveConvertTo}
+\subsection{Konvertierung}\label{PerspectiveConvertTo}
 Im Abschnitt \ref{ConverToMachine} wird das Umwandeln eines Automaten in einen
 anderen Automaten beschrieben, also zum Beispiel die Umwandlung von einem
 $\epsilon$-NDEA in einen DEA. Der dort implementierte Algorithmus verwendet
@@ -367,8 +370,8 @@ Eine weitere Möglichkeit wäre, den Benutzer dazu aufzufordern, die Zustände z
 aktivieren, die nach einem Übergang mit einem bestimmten Symbol aktiviert sein
 werden. Aber auch bei allen anderen Phasen sollte geprüft werden, ob es sinnvoll
 wäre, den Benutzer zu einer Interaktion aufzufordern. Es wäre aber nicht nur
-möglich Zustände und Übergänge in dem ursprünglichen Graphen zu markieren, ebenso
-wäre es in dem entstehenden Graphen möglich, anzugeben, welche Zustände und
+möglich, Zustände und Übergänge in dem ursprünglichen Graphen zu markieren,
+ebenso wäre es in dem entstehenden Graphen möglich, anzugeben, welche Zustände und
 Übergänge in dem nächsten Schritt angelegt werden.\vspace{10pt}
 
 
@@ -382,11 +385,11 @@ Auch bei dieser Benutzerinteraktion wäre eine Funktion wichtig, die die
 richtige Auswahl trifft.\vspace{10pt}
 
 
-\subsection{Minimieren}\label{PerspectiveMinimize}
+\subsection{Minimierung}\label{PerspectiveMinimize}
 Das Minimieren von Automaten bietet sehr großen Spielraum zum Einbau von
 Benutzerinteraktion. Der in Kapitel \ref{Minimize} vorgestellte Algorithmus
-basiert darauf Zustände in Äquivalenz\-klassen zu unterteilen. Es wäre somit
-möglich diese Unterteilung dem Benutzer zu überlassen. Er müsste also
+basiert darauf, Zustände in Äquivalenz\-klassen zu unterteilen. Es wäre somit
+möglich, diese Unterteilung dem Benutzer zu überlassen. Er müsste also
 auswählen, warum eine Gruppe in zwei Gruppen zerfällt. Um dies zu erreichen,
 müsste der Benutzer Übergänge mit dem gleichen Symbol finden, die in
 unterschiedlichen Gruppen enden.\vspace{10pt}

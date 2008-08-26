@@ -68,14 +68,14 @@ Verletzung mit einer Fehlermeldung behandelt.\vspace{10pt}
 
 Eine weitere Kontextbedingung wird überprüft, wenn das Alphabet eines
 bestehenden Automaten bearbeitet wird. Dabei darf der Benutzer beliebige, aber
-noch nicht verwendete, Symbole ergänzen. Er darf allerdings keine Symbole
+noch nicht verwendete Symbole ergänzen. Er darf allerdings keine Symbole
 entfernen, die noch von einem Übergang benutzt werden. Soll dies geschehen,
 muss der Benutzer erst das Symbol aus allen Übergängen entfernen,
 anschließend kann es aus dem Alphabet entfernt werden.\vspace{10pt}
 
 Gleiches gilt für das Bearbeiten der Nichtterminalzeichen und Terminalzeichen
 einer bestehenden Grammatik. Auch hier wird überprüft, ob das Zeichen in einer
-der Produktionen benutzt wird, ist dies der Fall, kann es nicht entfernt
+der Produktionen benutzt wird. Ist dies der Fall, kann es nicht entfernt
 werden.\vspace{10pt}
 
 Ein ähnliches Prinzip wird bei einigen anderen Parser verwendet, so zum
@@ -89,10 +89,10 @@ Um dem Benutzer das Arbeiten mit Grammatiken einfacher und übersichtlicher zu
 machen, wurde die Darstellungsweise der Nichtterminalzeichen und
 Terminalzeichen unterschiedlich gestaltet. So wird das Startsymbol in einer
 anderen Farbe dargestellt, als die anderen Nichtterminalzeichen. Der Benutzer
-ist somit in der Lage in den normalen Produktionen zu erkennen, ob ein
+ist somit in der Lage, in den normalen Produktionen zu erkennen, ob ein
 Nichtterminalzeichen das Startsymbol ist oder nicht. Da sich normalerweise der
 Scanner um die Darstellungsweise eines Symbols kümmert, musste dies angepasst
-werden, da der Scanner weder Terminalzeichen, noch Nichtterminalzeicher oder
+werden, da der Scanner weder Terminalzeichen, noch Nichtterminalzeichen oder
 das Startsymbol auseinander halten kann.\vspace{10pt}
 
 Das Problem wurde so gelöst, dass zum Beispiel dem Scanner der

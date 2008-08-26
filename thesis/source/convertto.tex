@@ -6,10 +6,10 @@
 %%
 
 
-\chapter{Umwandeln}\label{ConverTo}
+\chapter{Konvertierung}\label{ConverTo}
 
 In diesem Kapitel soll das Umwandeln von einer Grammatik in einen Automaten
-bzw. zwischen den verschiedenen Automaten Typen besprochen werden. Dabei wird
+bzw. zwischen den verschiedenen Automatentypen besprochen werden. Dabei wird
 im Besonderen darauf eingegangen, welche Herausforderungen aufgetreten sind, um
 dem Benutzer die verwendeten Algorithmen möglichst in kleinen Schritten und
 verständlich darzustellen. Beim Umwandeln der Grammatiken in die entsprechenden
@@ -91,23 +91,23 @@ die Möglichkeit die Ausgangsgrammatik und den enstandenen Automaten nebeneinand
 zu sehen, um die Zusammenhänge besser verstehen zu können.\vspace{10pt}
 
 
-\section{Automat umwandeln}\label{ConverToMachine}
+\section{Automaten Konvertierung}\label{ConverToMachine}
 
-Bei der Planung der Umwandlung zwischen den verschiedenen Automaten Typen
-stellte sich die Frage, wie dem Benutzer der Umwandlungsalgorithmus möglichst
-verständlich dargestellt wird. Wir entschieden uns für das auch sonst im
-\gtitool verwendete Verfahren, eine Navigationsleiste zu verwendet, die es dem
-Benutzer gestattet in dem Algorithmus einen Schritt vor, bzw. einen Schritt
-zurück zu gehen. Um die Handhabung für den Benutzer zu erleichtern, wurde die
-Navigationsleiste so erweitert, dass der Benutzer zurück an den Anfang der
-Ausführung des Algorithmus springen kann, ebenfalls an das Ende und, dass die
-einzelnen Schritte auch automatisch, nach einer einstellbaren Zeit, durchgeführt
-werden können.\vspace{10pt}
+Bei der Planung der Umwandlung zwischen den verschiedenen Automaten Typen stellte
+sich die Frage, wie dem Benutzer der Umwandlungsalgorithmus möglichst
+verständlich dargestellt wird. Wir entschieden uns für das auch sonst im \gtitool
+verwendete Verfahren, eine Navigationsleiste zu verwenden, die es dem Benutzer
+gestattet, in dem Algorithmus einen Schritt vor bzw. einen Schritt zurück zu
+gehen. Um die Handhabung für den Benutzer zu erleichtern, wurde die
+Navigationsleiste so erweitert, dass der Benutzer sowohl zurück an den Anfang der
+Ausführung des Algorithmus springen kann, als auch an das Ende. Des weiteren
+sollten die einzelnen Schritte auch automatisch, nach einer einstellbaren Zeit,
+durchgeführt werden können.\vspace{10pt}
 
 Um dem Benutzer den durchgeführten Algorithmus zu verdeutlichen, wurde die
 Ansicht in drei Bereiche eingeteilt. In dem oberen linken Bereich wird der
 Ausgangsautomat dargestellt, im unteren linken Bereich der nach und nach
-endstehende konvertierte Automat und schließlich im rechten Bereich eine
+entstehende konvertierte Automat und schließlich im rechten Bereich eine
 Outline, die pro Schritt, jeweils mit einem Kommentar, angibt, welchen Schritt
 der Algorithmus im Moment durchführt.\vspace{10pt}
 
@@ -125,7 +125,7 @@ Potenzautomat verwendet werden, um den DEA zu erzeugen. Der entstehende Automat
 enthält allerdings unter Umständen sehr viele nicht erreichbare Zustände, deren
 Berechnung einige zusätzliche Schritte zur Folge haben kann. Wenn der Benutzer
 diese Art der Umwandlung auswählt, kann er nach dem Umwandeln die nicht
-erreichbaren Zustände wieder entfernen, wie dies funktioniert, kann in
+erreichbaren Zustände wieder entfernen. Wie dies funktioniert, kann in
 \ref{ReachableStates} nachgelesen werden. Die zweite Methode ist, dass nur die
 erreichbaren Zustände in der unteren Ansicht angelegt werden. Diese Methode ist
 übersichtlicher für den Benutzer, wenn auch nicht alle im Potenzautomaten

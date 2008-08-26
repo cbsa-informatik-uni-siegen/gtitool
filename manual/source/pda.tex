@@ -25,7 +25,7 @@ mindestens folgende Zustände und Übergänge nötig sind, um die Sprache zu
 erkennen:
 
 \begin{itemize}
-  \item Ein Zustand \State{z0} der sowohl Start, wie auch akzeptierenden
+  \item Ein Zustand \State{z0}, der sowohl Start-, wie auch akzeptierenden
   Zustand ist
   \item Ein Zustand \State{z1}
   \item Ein akzeptierender Zustand \State{z2}
@@ -40,7 +40,7 @@ erkennen:
   \Symbol{a} vom Keller löscht
 \end{itemize}
 
-Bei der Wort Navigation muss sich somit ergeben, damit das Wort akzeptiert wird,
+Damit das Wort akzeptiert wird, muss sich somit bei der Wort-Navigation ergeben,
 dass das Eingabewort komplett gelesen wurde. Zusätzlich muss sich der Automat
 entweder im Zustand \State{z0} oder im Zustand \State{z2} befinden, wobei der
 Keller leer sein muss.\vspace{10pt}
@@ -69,7 +69,7 @@ soll.\vspace{10pt}
 \end{figure}
 
 Wurden auf diese Weise alle Zustände und Übergänge angelegt, kann der Automat
-validiert werden und sollte keine Fehler mehr aufweisen. Bei der Wort
+validiert werden und sollte keine Fehler mehr aufweisen. Bei der Wort-
 Navigation ist jetzt nicht nur das Eingabewort interessant, sondern auch der
 dargestellte Keller. Wird zum Beispiel das Wort \Word{aaabbb} gewählt, wird im
 ersten Schritt das Symbol \Symbol{a} gelesen und auf den Keller geschrieben.
@@ -88,7 +88,7 @@ für $n \geq 0$ erkennt. Wie in Kapitel \ref{Grammar} angegeben, müssen die bei
 Produktionen \StartSymbol{E} $\to$ \TerminalSymbol{$\epsilon$} und
 \StartSymbol{E} $\to$ \TerminalSymbol{a}\StartSymbol{E}\TerminalSymbol{b}
 angelegt werden. Anschließend wandeln wir die Grammatik in einen
-Kellerautomaten um, dies erfolgt mit "`Umwandel in\ldots"' im Menüpunkt
+Kellerautomaten um, dies erfolgt mit "`Umwandeln in\ldots"' im Menüpunkt
 "`Ausführen"'. Bei dieser Art der Umwandlung entsteht immer ein Kellerautomat
 mit zwei Zuständen \State{s} und \State{f}. Der Unterschied zu normalen
 Automaten ist, dass jetzt vom Zustand \State{f} mehrere Übergänge in sich
@@ -103,25 +103,25 @@ Tabelle nachgesehen werden.\vspace{10pt}
 \end{center}
 \end{figure}
 
-Wird für diesen Automaten die Wortnavigation mit dem Wort \Word{aabb} gestartet,
-ergibt sich im zweiten Schritt der Navigation, dass der Übergang, der verwendet
-werden kann, nicht mehr eindeutig ist. Oben auf dem Keller befindet sich das
-Nichtterminalzeichen \StartSymbol{E}, welches entweder durch
+Wird für diesen Automaten die Wort-Navigation mit dem Wort \Word{aabb}
+ge\-star\-tet, ergibt sich im zweiten Schritt der Navigation, dass der Übergang,
+der verwendet werden kann, nicht mehr eindeutig ist. Oben auf dem Keller befindet
+sich das Nichtterminalzeichen \StartSymbol{E}, welches entweder durch
 \TerminalSymbol{$\epsilon$} oder durch
-\TerminalSymbol{a}\StartSymbol{E}\TerminalSymbol{b} ersetzt werden könnte. Da
-wir das Wort \Word{aabb} erkennen wollen, muss der Übergang \StartSymbol{E}
-$\to$ \TerminalSymbol{a}\StartSymbol{E}\TerminalSymbol{b} ausgewählt werden.
-Der nächste Schritt ist wieder eindeutig, da nur der Übergang ausgewählt werden
-kann, der \TerminalSymbol{a} vom Eingabewort liest und \TerminalSymbol{a} vom
-Keller entfernt. Im nächsten Schritt muss wieder ausgewählt werden, welcher
-Übergang verwendet werden soll. Da als nächstes Terminalzeichen wieder ein
+\TerminalSymbol{a}\StartSymbol{E}\TerminalSymbol{b} ersetzt werden könnte. Da wir
+das Wort \Word{aabb} erkennen wollen, muss der Übergang \StartSymbol{E} $\to$
+\TerminalSymbol{a}\StartSymbol{E}\TerminalSymbol{b} ausgewählt werden. Der
+nächste Schritt ist wieder eindeutig, da nur der Übergang ausgewählt werden kann,
+der \TerminalSymbol{a} vom Eingabewort liest und \TerminalSymbol{a} vom Keller
+entfernt. Im nächsten Schritt muss wieder ausgewählt werden, welcher Übergang
+verwendet werden soll. Da als nächstes Terminalzeichen wieder ein
 \TerminalSymbol{a} auf dem Eingabewort steht, muss wieder der Übergang \StartSymbol{E}
 $\to$ \TerminalSymbol{a}\StartSymbol{E}\TerminalSymbol{b} ausgewählt werden.
 Genau wie zuvor ist der nächste Schritt wieder eindeutig. Da als nächstes das
 Terminalzeichen \TerminalSymbol{b} auf dem Keller steht, muss diesmal der
 Übergang \StartSymbol{E} $\to$ \TerminalSymbol{$\epsilon$} ausgewählt werden.
-Durch diesen Übergang wird das oben auf dem Keller stehende
-Nichtterminalzeichen \StartSymbol{E} entfernt. Mit den nächsten zwei
-eindeutigen Schritten werden die Terminalzeichen \TerminalSymbol{b} auf dem
-Eingabewort gelesen und vom Keller entfernt. Da am Ende der Keller leer ist und
-der Zustand \State{f} aktiv ist, wird das Wort akzeptiert.
+Durch diesen Übergang wird das oben auf dem Keller stehende Nichtterminalzeichen
+\StartSymbol{E} entfernt. Mit den nächsten zwei eindeutigen Schritten werden die
+Terminalzeichen \TerminalSymbol{b} auf dem Eingabewort gelesen und vom Keller
+entfernt. Da am Ende der Keller leer ist und der Zustand \State{f} aktiv ist,
+wird das Wort akzeptiert.

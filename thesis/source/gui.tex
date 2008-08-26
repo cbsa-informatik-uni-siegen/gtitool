@@ -11,7 +11,7 @@
 In diesem Kapitel geht es um die Oberflächengestaltung. Zum einen geht es darum,
 wie und warum die Hauptansicht so gestaltet wurde, zum anderen darum, welche
 besonderen Schritte notwendig waren, um das Aussehen zu verbessern und dem
-Benutzer es dadurch zu erleichtern mit dem \gtitool zu arbeiten.
+Benutzer es dadurch zu erleichtern, mit dem \gtitool zu arbeiten.
 \vspace{10pt}
 
 
@@ -76,8 +76,8 @@ Ein wichtiges Konzept bei der graphischen Gestaltung des \gtitool ist es, die vo
 der Programmiersprache zur Verfügung gestellten Komponenten anzupassen und dann
 nur noch ausschließlich diese angepassten Komponenten zu benutzen. Der wohl
 größte Vorteil dieser Umsetzung ist, dass nicht überall ein normaler String
-verwendet wird, sondern ein sogenannter PrettyString. Dieser enthält neben dem
-normalen Text auch noch Farbinformation, sowie Zeichenattribute, wie zum
+verwendet wird, sondern ein sogenannter Pretty-String. Dieser enthält neben dem
+normalen Text auch noch Farbinformationen, sowie Zeichenattribute, wie zum
 Beispiel Fettdruck.\vspace{10pt}
 
 Der erforderliche Aufwand wurde investiert, um dem Benutzer eine möglichst
@@ -89,7 +89,7 @@ intuitiv bedienen kann. Um dies umzusetzen, wurde unter anderem Drag and Drop
 auf den verschiedenen Komponenten implementiert. So kann der Benutzer im
 Übergangs-Dialog die Symbole einfach vom "`Alphabet"' in die
 "`Übergangs-Menge"' ziehen. Gleiches gilt für das Umsortieren von Produktionen,
-das zwar die Grammatik nicht ändert, aber es dem Benutzer ermöglicht die
+das zwar die Grammatik nicht ändert, aber es dem Benutzer ermöglicht, die
 Produktionen übersichtlicher anzuordnen. In vielen Programmen, in denen Tabs
 zur Gliederung benutzt werden, gehört es zum Funktionsumfang diese Tabs per Drag
 and Drop zu verschieben. Auch dies wurde implementiert, da es dem Benutzer
@@ -106,7 +106,7 @@ Metal Look \& Feel eine Lösung an, die unter allen Betriebssystemen gleich
 aussehen soll, diese erfüllte aber unsere Vorstellungen nicht. Schließlich fiel
 die Wahl auf TinyLaF (siehe \cite{tinylaf}), ein weitestgehend gezeichnetes
 Look \& Feel, dass somit unter allen Betriebsystemen gleich aussieht. Dem
-Benutzer ist es aber freigestellt ein anderes, zum Beispiel das normale
+Benutzer ist es aber freigestellt, ein anderes, zum Beispiel das normale
 Betriebsystem Look \& Feel zu verwenden, wenn er dies wünscht. Alle in dieser
 Diplomarbeit verwendeten Bilder des \gtitools wurden mit TinyLaF als Look \&
 Feel gemacht.\vspace{10pt}
@@ -141,9 +141,9 @@ beiden Dateien die aktive ist. Durch dieses Vorgehen wird intuitiv klar, welche
 Datei aktiv ist, da sich die Farbe der Umrandung beim Aktivieren der anderen
 Ansicht ändert.\vspace{10pt}
 
-Eine weitere wichtige Eigenschaft der zweiten Ansicht ist es, dass Dateien in
+Eine weitere wichtige Eigenschaft der zweiten Ansicht ist, dass Dateien in
 diese zweite Ansicht verschoben werden können müssen. Ebenfalls muss es möglich
-sein in der zweiten Ansicht Dateien zu öffnen, bzw. neue zu erstellen. Um die
+sein in der zweiten Ansicht Dateien zu öffnen bzw. neue zu erstellen. Um die
 letzen beiden genannten Punkte umzusetzen, wurde das Konzept des aktiven
 Editors erweitert. Die oben beschriebene andere Darstellung der aktiven Datei
 wurde so erweitert, dass sich auch alle anderen Ereignisse auf den aktiven

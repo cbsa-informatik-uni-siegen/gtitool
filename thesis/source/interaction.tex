@@ -10,19 +10,19 @@
 
 In diesem Kapitel werden die Interaktionen mit dem Benutzer erläutert. Ein
 wichtiger Aspekt der Interaktionen ist, dass der Benutzer angezeigt bekommt,
-wenn er etwas falsches eingeben hat. Ein weiterer Punkt ist, dass der Benutzer
+wenn er etwas Falsches eingegeben hat. Ein weiterer Punkt ist, dass der Benutzer
 bei einem nicht deterministischen Kellerautomaten auswählen muss, welchen
 Übergang der Automat machen soll, da dieser das im Allgemeinen nicht erkennen
 kann.\vspace{10pt}
 
 
-\section{Fehler und Warnung}\label{InteractionErrorWarning}
+\section{Fehler und Warnungen}\label{InteractionErrorWarning}
 
 Es war uns bei der Umsetzung des \gtitools sehr wichtig, dass der Benutzer sehr
 viele Fehler machen kann, ohne dass er durch eine Validierung eingeschränkt wird.
 Eine Ausnahme von diesem Konzept bilden die in Kapitel \ref{Parser} beschriebenen
-Parser, da eine falsche Eingabe dort nicht anständig durch das Anzeigen von
-Fehlern bzw. Warnungen behandelt hätte werden können.\vspace{10pt}
+Parser, da eine falsche Eingabe dort nicht gut, durch das Anzeigen von Fehlern
+bzw. Warnungen, behandelt hätte werden können.\vspace{10pt}
 
 Der Hauptgrund für die Auswahl dieser Strategie war, dass der Benutzer durch das
 fehlerhafte Eingeben bzw. durch das Beheben der Fehler hoffentlich mehr lernt,
@@ -129,17 +129,19 @@ deterministisch ist. Die Umwandlung ist in Abschnitt
 \begin{center}
 \includegraphics[width=12cm]{../images/grammar_pda.png}
 \caption{Operationen mit dem Automaten Keller}
+\label{FigureGrammarPDA}
 \end{center}
 \end{figure}
 \vspace{10pt}
 
-Bei dem verwendeten Beispiel kommen zwei Übergänge in Frage. Es könnte der
-Übergang gewählt werden, der \Symbol{E} vom Keller liest und nichts auf diesen
-schreibt, oder aber der Übergang, der \Symbol{E} vom Keller liest und
-\Symbol{a}\Symbol{E}\Symbol{b} auf ihn schreibt. Da \Symbol{a} als nächstes auf
-dem Eingabeband steht, sollte der zweite Übergang ausgewählt werden. Dem Benutzer
-steht es allerdings frei auch den anderen Übergang auszuwählen. In diesem Fall
-würde das Wort \Symbol{a}\Symbol{a}\Symbol{b}\Symbol{b} aber nicht akzeptiert
-werden. Der Benutzer hat bei einer falschen Wahl allerdings die Möglichkeit einen
-oder mehrere Schritte zurückzugehen, um dann die richtige Wahl zu
+Bei dem in Abbildung \ref{FigureGrammarPDA} verwendeten Beispiel kommen zwei
+Übergänge in Frage. Es könnte der Übergang gewählt werden, der \Symbol{E} vom
+Keller liest und nichts auf diesen schreibt, oder aber der Übergang, der
+\Symbol{E} vom Keller liest und \Symbol{a}\Symbol{E}\Symbol{b} auf ihn schreibt.
+Da \Symbol{a} als nächstes auf dem Eingabeband steht, sollte der zweite Übergang
+ausgewählt werden. Dem Benutzer steht es allerdings frei, auch den anderen
+Übergang auszuwählen. In diesem Fall würde das Wort
+\Symbol{a}\Symbol{a}\Symbol{b}\Symbol{b} aber nicht akzeptiert werden. Der
+Benutzer hat bei einer falschen Wahl allerdings die Möglichkeit, einen oder
+mehrere Schritte zurückzugehen, um dann die richtige Wahl zu
 treffen.\vspace{10pt}

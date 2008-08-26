@@ -108,7 +108,7 @@ Berechnung der Endpunkte der Übergänge gelöst.\vspace{10pt}
 
 Die Darstellungsweise von parallelen Übergängen in entgegengesetzte Richtung
 musste angepasst werden, da die normale Implementierung ein Ergebnis lieferte,
-das dem als Vorlage benutzten Beispiel im Vorlesungsscript nicht ähnlich
+das dem als Vorlage benutzten Beispiel im Vorlesungsskript nicht ähnlich
 war.\vspace{10pt}
 
 Die letzte wichtige Anpassung wurde notwendig, da ein Start-Zustand mit einem
@@ -137,7 +137,7 @@ Automaten nicht nur graphisch zu bearbeiten, sondern auch in der
 Übergangstabelle. Dadurch soll es dem Benutzer ermöglicht werden, Übergänge
 schneller anzulegen, als es bei der normaler Methode in der Graphenansicht der
 Fall wäre. Um diese neue Methode zu implementieren, wurden verschiedene
-Umsetzungen diskutiert. Zur Diskusion standen unter anderen, dass in jeder Zelle
+Umsetzungen diskutiert. Zur Diskussion standen unter anderem, dass in jeder Zelle
 der Tabelle ausgewählt werden kann, zu welchen Zuständen ein Übergang existiert.
 Diese Auswahl hätte allerdings bei der graphiscnen Umsetzung Probleme bereitet,
 zumindest bei hinreichend vielen Zuständen. Aus diesem Grund wurde dieser Ansatz
@@ -245,7 +245,7 @@ des Automaten liegt.\vspace{10pt}
 \subsection{Zustands Pfad}\label{HistoryPath}
 
 Bei Verwendung eines nicht deterministischen Automaten stellte sich bei der
-Wort Navigation die Frage, auf welchem Pfad die aktuell aktiven Zustände
+Wort-Navigation die Frage, auf welchem Pfad die aktuell aktiven Zustände
 erreicht wurden. Es wurden verschiedene Umsetzungen in Betracht gezogen, um dem
 Benutzer die Ausgabe darzustellen. Es wurde schließlich entschieden, die
 Zustände auf dem Weg zu den aktuell aktiven Zuständen darzustellen. Zwischen
@@ -264,7 +264,7 @@ angezeigt.\vspace{10pt}
 \vspace{10pt}
 
 Der implementierte Algorithmus geht rückwärts vor, startet also bei den aktuell
-aktiven Zuständen und geht alle Pfade zurück, bis alle, bis jetzt gelesenen
+aktiven Zuständen und geht alle Pfade zurück, bis alle, bis dahin gelesenen
 Symbole abgearbeitet sind. Startet der berechnete Pfad dann in dem
 Startzustand, wurde ein gültiger Pfad erkannt. Bei der Implementierung des
 Algorithmus musste eine Zykluserkennung umgesetzt werden, da es sonst möglich

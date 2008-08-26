@@ -8,13 +8,13 @@
 
 \chapter{Parser}\label{Parser}
 
-Zu Beginn der Planungen für das \gtitool stellte sich die Frage, wie der
-Benutzer die verschiedenen benötigten Eingaben machen soll. Es wurden
-verschiedene Möglichkeiten in Betracht gezogen, schließlich wurde aber das
-Verwenden von Parsern bevorzugt. Der Vorteil von Parsern ist, dass der Benutzer
-in seinen Eingaben, für zum Beispiel ein Alphabet, so wenig wie möglich
-beschränkt wird. Dies wäre nicht der Fall gewesen, wenn zum Beispiel nur eine
-Auswahl von Symbolen zur Verfügung gestanden hätte.\vspace{10pt}
+Zu Beginn der Planungen für das \gtitool stellte sich die Frage, wie der Benutzer
+die verschiedenen benötigten Eingaben machen soll. Es wurden verschiedene
+Möglichkeiten in Betracht gezogen, schließlich wurde aber das Verwenden von
+Parsern bevorzugt. Der Vorteil von Parsern ist, dass der Benutzer in seinen
+Eingaben, für zum Beispiel ein Alphabet, so wenig wie möglich beschränkt wird.
+Dies wäre nicht der Fall gewesen, wenn nur eine Auswahl von Symbolen zur
+Verfügung gestanden hätte.\vspace{10pt}
 
 %### removes texlipse warning
 Zur Erzeugung der Parser wurde der CUP Parser Generator für Java verwendet, siehe
@@ -39,7 +39,7 @@ Bedingungen.\vspace{10pt}
 
 In diesem Abschnitt geht es darum, welche kontextsensitiven Bedingungen
 über\-prüft werden müssen, um dem Benutzer zu verdeutlichen, welche Eingaben
-in aktuellen Kontext nicht getroffen werden können. Ein wichtiger Aspekt dabei
+im aktuellen Kontext nicht getroffen werden können. Ein wichtiger Aspekt dabei
 ist, dass der Benutzer dabei darauf hingewiesen wird, warum seine Eingabe
 abgelehnt wird.\vspace{10pt}
 
@@ -78,7 +78,7 @@ einer bestehenden Grammatik. Auch hier wird überprüft, ob das Zeichen in einer
 der Produktionen benutzt wird. Ist dies der Fall, kann es nicht entfernt
 werden.\vspace{10pt}
 
-Ein ähnliches Prinzip wird bei einigen anderen Parser verwendet, so zum
+Ein ähnliches Prinzip wird bei einigen anderen Parsern verwendet, so zum
 Beispiel das Keller Lese-Wort bzw. das Keller Schreib-Wort. Auch dort müssen
 die verwendeten Symbole im Keller Alphabet vorkommen.\vspace{10pt}
 

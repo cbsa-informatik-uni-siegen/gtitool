@@ -99,7 +99,7 @@ Umwandlung ist in Abbildung \ref{FigureRegExDFA} zu sehen.\vspace{10pt}
 
 \section{\LaTeX-Export}\label{PerspectiveLaTeX}
 
-Bei der Umsetzung des \gtitools war es uns in erster Linie wichtig studentische
+Bei der Umsetzung des \gtitools war es uns in erster Linie wichtig, studentische
 Benutzer zu unterstützen. Dazu zählt unter anderem das in Kapitel \ref{Print}
 vorgestellte Drucken. Dadurch ist der Benutzer in der Lage, seine erstellten
 Automaten oder Grammatiken auszudrucken, um so seine Unterlagen zu
@@ -265,12 +265,11 @@ Verwendung aufgelistet werden.\vspace{10pt}
 
 \section{Erkannte Wörter ausgeben}\label{PerspectiveDetectedWords}
 
-Eine weitere sinnvolle und für die Zukunft angedachte Erweiterung ist die
-Ausgabe von erkannten Wörtern. Nachdem ein Automat, eine Grammatik oder dann
-vielleicht auch ein regulärer Ausdruck eingebenen und validiert wurde, soll der
-Benutzer in der Lage sein, eine Ansicht zu öffnen, in der er Wörter ausgegeben
-bekommt, die zum Beispiel von dem erstellten Automat erkannt
-werden.\vspace{10pt}
+Eine weitere sinnvolle und für die Zukunft angedachte Erweiterung ist die Ausgabe
+von erkannten Wörtern. Nachdem ein Automat, eine Grammatik oder ein regulärer
+Ausdruck eingebenen und validiert wurde, soll der Benutzer in der Lage sein, eine
+Ansicht zu öffnen, in der er Wörter ausgegeben bekommt, die zum Beispiel von dem
+erstellten Automaten erkannt werden.\vspace{10pt}
 
 Bei der Umsetzung ist darauf zu achten, dass die Bestimmung dieser Wörter
 möglichst mit geringer Laufzeit implementiert wird, so dass der Benutzer nicht
@@ -284,12 +283,12 @@ Brute-Force-Methode ansonsten mit getestet werden würden.\vspace{10pt}
 \section{Eingabe von mehreren Wörtern}\label{PerspectiveMultiplyWordInput}
 
 In der aktuellen Version des \gtitools kann man für Automaten nur ein Wort
-eingeben. In Zukunft soll das aber auch für Grammatiken und dann auch für
-reguläre Ausdrücke möglich sein. In der aktuellen Umsetzung kann der Benutzer
-aber nur ein Wort eingeben und dieses dann auf Akzeptanz prüfen. Für die
-Zukunft wäre es somit wünschenswert, mehr als ein Wort eingeben zu können,
+eingeben. In Zukunft soll diese Eingabe aber auch für Grammatiken und dann auch
+für reguläre Ausdrücke möglich sein. In der aktuellen Umsetzung kann der Benutzer
+aber nur ein Wort eingeben und dieses dann auf Akzeptanz prüfen. Für zukünftige
+Versionen wäre es somit wünschenswert, mehr als ein Wort eingeben zu können,
 welches dann direkt während der Eingabe überprüft wird, so dass der Benutzer
-nicht erst die Navigation starten muss. Diese Ansicht soll dem Benutzer helfen, 
+nicht erst die Navigation starten muss. Diese Ansicht soll dem Benutzer helfen,
 zu erkennen, welche Sprache ein erstellter Automat oder eine Grammatik
 erkennt.\vspace{10pt}
 
@@ -301,17 +300,16 @@ benutzt werden, dieses Wort auf Akzeptanz zu prüfen.\vspace{10pt}
 
 \section{Benutzerinteraktion erhöhen}\label{PerspectiveInteraction}
 
-Bei der Umsetzung des \gtitools war es uns sehr wichtig, dass der Benutzer
-bei der Verwendung des Programms möglichst viel lernt. Im Kapitel
-\ref{Concepts} wurden einige Konzepte angesprochen, die uns bei der Umsetzung
-wichtig erschienen. Aufgrund des vermutlich sehr großen Aufwandes konnten wir
-den Bereich Benutzerinteraktion nicht weiter ausbauen. In diesem Abschnitt
-werden mögliche Anpassungen angesprochen, die für zukünftige \gtitool Versionen
-geplant sind. Bei diesen Anpassungen handelt es sich zum größten Teil um
-Erweiterungen der schon implementierten Umsetzungen. Alle in der Zukunft
-implementierten Erweiterungen sollten dann direkt mit einer entsprechend hohen
-Benutzerinteraktion umgesetzt werden, so dass das nachträgliche Erweitern in
-diesen Fällen entfallen würde.\vspace{10pt}
+Bei der Umsetzung des \gtitools war es uns sehr wichtig, dass der Benutzer bei
+der Verwendung des Programms möglichst viel lernt. Im Kapitel \ref{Concepts}
+wurden einige Konzepte angesprochen, die uns bei der Umsetzung sinnvoll
+erschienen. Aufgrund des vermutlich sehr großen Aufwandes konnten wir den Bereich
+Benutzerinteraktion nicht weiter ausbauen. In diesem Abschnitt werden mögliche
+Anpassungen angesprochen, die für zukünftige \gtitool Versionen geplant sind. Bei
+diesen Anpassungen handelt es sich zum größten Teil um Erweiterungen der schon
+implementierten Umsetzungen. Alle in der Zukunft implementierten Erweiterungen
+sollten dann direkt mit einer entsprechend hohen Benutzerinteraktion umgesetzt
+werden, so dass das nachträgliche Erweitern entfallen würde.\vspace{10pt}
 
 
 \subsection{Word-Navigation}\label{PerspectiveWordNavigation}
@@ -327,7 +325,7 @@ müssen diese Übergänge zuerst ausgewählt werden. Durch diese Erweiterung wü
 der Benutzer noch besser erkennen können, wie der Algorithmus arbeitet. Um den
 ungeübten Benutzer nicht zu überfordern und somit vielleicht zur Aufgabe zu
 zwingen, muss dieser zusätzliche Auswahlschritt überspringbar sein. Es muss also
-eine Art Raten-Funktion geben, die dem Benutzer die Auswahl
+eine Art "`Raten-Funktion"' geben, die dem Benutzer die Auswahl
 abnimmt.\vspace{10pt}
 
 

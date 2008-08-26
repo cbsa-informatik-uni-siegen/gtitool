@@ -6,6 +6,9 @@
 %%
 
 
+%### removes texlipse warnings
+
+
 \chapter{Konvertierung}\label{ConverTo}
 
 In diesem Kapitel soll das Umwandeln von einer Grammatik in einen Automaten bzw.
@@ -27,7 +30,6 @@ Verwendungsmöglichkeiten in diesem Werkzeug existieren.\vspace{10pt}
 
 \subsection{Konvertierung einer regulären Grammatik}\label{ConverToGrammarRegular}
 
-%### removes texlipse warning
 Eine reguläre Grammatik kann in einen entsprechenden nicht deterministischen,
 endlichen Automaten umgewandelt werden. Der verwendete Algorithmus kann in
 \cite{Compilers} nachgelesen werden. Die Zustände unseres entstehenden Automaten
@@ -36,7 +38,6 @@ der Implementierung nur Zustände für die Nichtterminalzeichen angelegt, welche
 auch in einer Produktion, auf der rechten oder linken Seite, verwendet werden.
 Die Zustände werden immer dann angelegt, wenn man auf ein Nichtterminalzeichen
 trifft, welches man bis jetzt noch nicht gesehen hat.\vspace{10pt}
-%### removes texlipse warning
 
 Die rechte Seite einer Produktion kann entweder aus einem einzelnen
 Terminalzeichen ($\NonterminalSymbol{S} \to \TerminalSymbol{a}$), oder
@@ -75,11 +76,9 @@ Grammatik erzeugte Sprache akzeptiert.\vspace{10pt}
 \subsection{a einer kontextfreien
 Grammatik}\label{ConverToGrammarContextFree}
 
-%### removes texlipse warning
 Der Benutzer hat auch die Möglichkeit, eine zuvor erstellte kontextfreie
 Grammatik in einen Kellerautomaten umwandeln zu lassen. Dieser
 Algorithmus ist in \cite{Compilers} beschrieben\vspace{10pt}
-%### removes texlipse warning
 
 Zu Beginn werden zwei Zustände angelegt, ein Startzustand und ein
 akzeptierender Zustand. Dazu wird ein Übergang vom Startzustand in den
@@ -125,6 +124,7 @@ der Algorithmus im Moment durchführt.\vspace{10pt}
 \begin{center}
 \includegraphics[width=12cm]{../images/convert_to.png}
 \caption{Automat umwandeln}
+\label{FigureConvertTo}
 \end{center}
 \end{figure}
 \vspace{10pt}
@@ -143,11 +143,9 @@ auch nicht alle im Potenzautomaten vorhandenen Zustände betrachtet
 werden.\vspace{10pt}
 
 \newpage
-%### removes texlipse warning
 Zur Umsetzung wurde der in \cite[S. 153ff]{Compilers} angegebene Algorithmus als
 Vorlage benutzt. Um den Algorithmus verstehen zu können, müssen zuerst einige
 Terme definiert werden.\vspace{10pt}
-%### removes texlipse warning
 
 \noindent
 \begin{tabular}{|p{2.2cm}|p{9.0cm}|}
@@ -173,8 +171,8 @@ Terme definiert werden.\vspace{10pt}
 \end{tabular}
 \vspace{10pt}
 
-Die eigentliche Umwandlung geschieht dann mit folgendem Algorithmus, der aus
-didaktischen Gründen in mehrere Schritte aufgeteilt wurde.\vspace{10pt}
+Abbildung \ref{FigureConvertTo} zeigt die Umwandlung nach einigen Schritten. Die
+eigentliche Umwandlung geschieht dann mit folgendem Algorithmus:\vspace{10pt}
 
 \noindent
 \verb| 1 initially, |$\epsilon$\verb|-closure(|$s_0$\verb|) is the only state in Dstates,|\\
@@ -189,3 +187,22 @@ didaktischen Gründen in mehrere Schritte aufgeteilt wurde.\vspace{10pt}
 \verb|10       }|\\
 \verb|11 }|
 \vspace{10pt}
+
+Dieser Algorithmus verwaltet eine Menge \textit{Dstates} von Zuständen des
+umgewandelten Automaten. Neben dieser Menge wird für jeden Zustand gespeichert,
+ob er schon verarbeitet wurde. Am Anfang wird der $\epsilon$-Abschluss des
+Start-Zustandes \State{$s_0$} in die Menge \textit{Dstates} aufgenommen. In Zeile
+vier wird der aktuelle Zustand markiert, jeder neue Zustände in \textit{Dstates}
+wird somit abgearbeitet. In der Schleife in Zeile fünf wird über alle Symbole des
+Alphabets iteriert. In Zeile sechs wird berechnet, welche Zustände von dem
+aktuellen Symbol aus erreichbar sind, zusätzlich dazu wird von diesem Ergebnis
+noch der $\epsilon$-Abschluss berechnet. Anschließend wird dieser neue Zustand zu
+der Menge \textit{Dstates} hinzugefügt, falls er noch nicht enthalten ist.
+Außerdem wird der Zustand in diesem Fall als nicht markiert gekennzeichnet.
+Abschließend wird in Zeile neun die neue Übergangsfunktion
+gespeichert.\vspace{10pt}
+
+
+
+
+%### removes texlipse warnings

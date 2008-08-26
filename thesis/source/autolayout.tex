@@ -6,6 +6,9 @@
 %%
 
 
+%### removes texlipse warnings
+
+
 \chapter{Auto-Layout}\label{AutoLayout}
 
 Beim Anlegen eines neuen Automaten, oder auch beim Modifizieren eines
@@ -31,11 +34,9 @@ Anschließend werden für die aktuelle Einteilung die Schnittkosten berechnet.
 Zur Berechnung der Schnittkosten werden die von der Schnittlinie, die Linie, die
 die beiden Gruppen trennt, erfassten Kanten gezählt.\vspace{10pt}
 
-%### removes texlipse warning
 Der Kerninghan-Lin-Algorithmus lässt sich in die folgenden Schritte
 unterteilen, welche dem Buch "`Layoutsynthese elektronischer
 Schaltungen"' \cite{Layout} entnommen wurden:\vspace{10pt}
-%### removes texlipse warning
 
 Schritt 0:
 \begin{itemize}
@@ -95,7 +96,6 @@ für jeden Knoten der noch nicht fixiert ist neu berechnet und erneut $Schritt\
 Ende erreicht hat. Wenn nicht, werden in $Schritt\ 5$ die Vertauschungen des
 aktuellen Durchgangs durchgeführt, und es wird ein neuer Durchgang gestartet.\vspace{10pt}
 
-%### removes texlipse warning
 Wie schon erwähnt, musste der Algorithmus für die Implementierung ein wenig
 modifiziert werden. Zum Einen geht man davon aus, dass die
 Knotenmenge in zwei ungefähr gleichgroße Gruppen eingeteilt werden. Dies erwies
@@ -105,7 +105,6 @@ aller Gruppen aber auch hier in etwa die gleiche ist. Diese
 Implementierung entspricht soweit der Erweiterung des
 Kerningham-Lin-Algorithmus, wie sie in \cite{Layout} beschrieben
 wird.\vspace{10pt}
-%### removes texlipse warning
 
 Die Erweiterung des Algorithmus sieht jetzt vor, dass man den Algorithmus jetzt
 für alle möglichen Paarungen von Gruppen betrachtet. Die Implementierung
@@ -124,3 +123,6 @@ dass für die Kostenfunktion nur die Schnitte der Kanten berücksichtigt werden.
 Daher wird im Kapitel \ref{PerspectiveAutoLayout} ein alternativer Algorithmus beschrieben,
 welcher wahrscheinlich bessere Ergebnisse für ein automatisches Layout liefern
 könnte.\vspace{10pt}
+
+
+%### removes texlipse warnings

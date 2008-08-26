@@ -6,6 +6,9 @@
 %%
 
 
+%### removes texlipse warnings
+
+
 \chapter{Parser}\label{Parser}
 
 TODOCF: Parser definieren
@@ -18,11 +21,9 @@ Eingaben, für zum Beispiel ein Alphabet, so wenig wie möglich beschränkt wird
 Dies wäre nicht der Fall gewesen, wenn nur eine Auswahl von Zeichen zur
 Verfügung gestanden hätte.\vspace{10pt}
 
-%### removes texlipse warning
-Zur Erzeugung der Parser wurde der CUP Parser-Generator für Java verwendet,
-siehe \cite{java-cup}. Als Lexer wurde wegen dem guten Zusammenspiel mit dem
-verwendeten Parser JFlex benutzt, siehe \cite{jflex}.\vspace{10pt}
-%### removes texlipse warning
+Zur Erzeugung der Parser wurde der CUP Parser-Generator für Java verwendet, siehe
+\cite{java-cup}. Als lexikalischer Scanner wurde wegen dem guten Zusammenspiel
+mit dem verwendeten Parser JFlex benutzt, siehe \cite{jflex}.\vspace{10pt}
 
 In diesem Kapitel werden die Besonderheiten der Parser angesprochen, vor allem
 das Prüfen der kontextsensitiven Bedingungen und das Anpassen der verwendeten
@@ -100,3 +101,6 @@ Produktion: Um dem Benutzer auch hier eine Unterscheidung der Symbole leicht zu
 machen, muss hier eine farbliche Unterscheidung zwischen Terminalzeichen,
 Nichtterminalzeichen und dem Startsymbol erfolgen. Auch dieses Problem wurde auf
 die oben genannte Art und Weise gelöst.\vspace{10pt}
+
+
+%### removes texlipse warnings

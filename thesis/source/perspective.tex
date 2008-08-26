@@ -6,6 +6,9 @@
 %%
 
 
+%### removes texlipse warnings
+
+
 \chapter{Perspektiven}\label{Perspective}
 
 In diesem Kapitel werden die Zukunftsperspektiven für das \gtitool besprochen.
@@ -57,7 +60,6 @@ Anschließend sollen im Idealfall mehrere Möglichkeiten bestehen, mit diesem
 Ausdruck weiter zu arbeiten. Diese Möglichkeiten werden im Folgenden
 angedeutet.\vspace{10pt}
 
-%### removes texlipse warning
 Der eingegebene reguläre Ausdrucks soll mit dem in \cite[S.159ff]{Compilers}
 beschriebenen McNaughton-Yamada-Thompson Algorithmus in einen Automaten
 umgewandelt werden können. Diese Umwandlung sollte, wie die anderen Umwandlungen
@@ -65,7 +67,6 @@ auch, schrittweise durchgeführt werden. Dadurch soll es dem Benutzer ermöglich
 werden, den zur Umwandlung benutzten Algorithmus besser zu verstehen. Abbildung
 \ref{FigureThompson} zeigt das Ergebnis, das bei einer solchen Umwandlung
 entstehen würde.\vspace{10pt}
-%### removes texlipse warning
 
 \begin{figure}[h!]
 \begin{center}
@@ -76,7 +77,6 @@ entstehen würde.\vspace{10pt}
 \end{figure}
 \vspace{10pt}
 
-%### removes texlipse warning
 Eine weitere Verwendungsmöglichkeit eines regulären Ausdruck wäre das direkte
 Umwandeln in einen DEA. Dieser Algorithmus wird in
 \cite[S. 175ff]{Compilers} beschrieben und verwendet die Funktionen
@@ -85,7 +85,6 @@ um die Umwandlung durchzuführen. Bei der Umsetzung müsste das Berechnen dieser
 Funktionen in irgendeiner Weise dargestellt werden, idealerweise anhand des
 Syntaxbaumes des regulären Ausdrucks. Ein mögliches Ergebnis der direkten
 Umwandlung ist in Abbildung \ref{FigureRegExDFA} zu sehen.\vspace{10pt}
-%### removes texlipse warning
 
 \begin{figure}[h!]
 \begin{center}
@@ -136,11 +135,9 @@ Existiert eine Produktion $\NonterminalSymbol{A} \to \NonterminalSymbol{A}
 mehr als ein Ableitungsschritt nötig ist, spricht man von einer indirekten
 Linksrekursion.\vspace{10pt}
 
-%### removes texlipse warning
 In \cite{Compilers} ist ein Algorithmus beschrieben, um Linksrekursion
 bei einer Grammatik zu beseitigen, welcher sich ohne Probleme umsetzen lassen
 sollte.\vspace{10pt}
-%### removes texlipse warning
 
 \noindent Gehen wir davon aus, die Produktionen für ein Nichtterminalzeichen
 \NonterminalSymbol{A} sind von der Form\vspace{10pt}
@@ -161,12 +158,10 @@ bestehenden Produktion von
 \NonterminalSymbol{A$'$} $\to \alpha_1$\NonterminalSymbol{A$'$}$\ |\ \ldots\ |\
 $ $\alpha_n$\NonterminalSymbol{A$'$}$\ |\ \epsilon$\vspace{10pt}
 
-%### removes texlipse warning
 \noindent Damit können wir direkte Linksrekursion beseitigen. Dies können wir
 uns auch zunutze machen, um indirekte Linksrekursion zu entfernen. Folgender
 Algorithmus zur Entfernung von Linksrekursion, aus dem Buch \cite{Compilers},
 macht sich dies zu nutze:\vspace{10pt}
-%### removes texlipse warning
 
 \noindent
 \verb| 1 for i = 1 to n do {|\\
@@ -375,12 +370,10 @@ entsprechenden Zustände auswählt.\vspace{10pt}
 
 \section{Auto-Layout}\label{PerspectiveAutoLayout}
 
-%### removes texlipse warning
 Wie im Kapitel \ref{AutoLayout} schon erwähnt, kann der implementierte
 Autolayout-Algorithmus noch optimiert werden. Ein Algorithmus der wahrscheinlich
 bessere Ergebnisse liefert, ist der Simulated-Annealing-Algorithmus (Simulierte
 Abkühlung), welcher auch in \cite{Layout} beschrieben wird.\vspace{10pt}
-%### removes texlipse warning
 
 Bei diesem Algorithmus versucht man sich das Verfahren des Ab\-kühlungs\-pro\-zes\-ses zu
 Nutze zu machen, welches in der Natur beobachtet werden kann. Wenn man diesen
@@ -450,3 +443,6 @@ Zustand geht, so dass die Beschriftung des Übergangs oder des anderen Zustandes
 eventuell nicht mehr zu erkennen ist. Weiterhin sollten die Überschneidungen der
 Übergänge untereinander möglichst gering sein.
 \vspace{10pt}
+
+
+%### removes texlipse warnings

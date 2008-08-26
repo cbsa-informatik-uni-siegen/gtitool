@@ -6,6 +6,9 @@
 %%
 
 
+%### removes texlipse warnings
+
+
 \chapter{Oberfläche}\label{GUI}
 
 In diesem Kapitel geht es um die Oberflächengestaltung. Zum Einen geht es darum,
@@ -106,7 +109,6 @@ organisieren.\vspace{10pt}
 
 \section{Look \& Feel}\label{LookAndFeel}
 
-%### removes texlipse warning
 Damit das \gtitool unter verschiedenen Betriebsystemen immer gleich, oder
 zumindest sehr ähnlich aussieht, kam während der Entwicklung der Wunsch auf, ein
 eigenes Look \& Feel zu verwenden. Java bietet in diesem Bereich zwar mit dem
@@ -118,7 +120,6 @@ Benutzer ist es aber freigestellt, ein anderes, zum Beispiel das normale
 Betriebsystem Look \& Feel zu verwenden, wenn er dies wünscht. Alle in dieser
 Diplomarbeit verwendeten Bilder des \gtitools wurden mit TinyLaF als Look \&
 Feel gemacht.\vspace{10pt}
-%### removes texlipse warning
 
 
 \section{Zweite Ansicht}\label{SecondView}
@@ -133,6 +134,7 @@ nicht besonders benutzerfreundlich ist.\vspace{10pt}
 \begin{center}
 \includegraphics[width=12cm]{../images/second_view.png}
 \caption{Zweite Ansicht}
+\label{FigureSecondView}
 \end{center}
 \end{figure}
 \vspace{10pt}
@@ -141,13 +143,14 @@ Dieses Problem wurde dadurch gelöst, dass eine zweite Ansicht integriert wurde,
 die es erlaubt, Tabs in einem zweiten Bereich zu öffnen. So können zwei Dateien
 gleichzeitig sichtbar sein. Während der Umsetzung mussten verschiedene Probleme
 diskutiert und gelöst werden. So stellte sich die Frage, wie dem Benutzer
-verdeutlicht werden kann, welche der beiden sichtbaren Dateien aktiv ist.
-Wichtig ist dieser Status für die Aktivierung der Menüeinträge bzw. Toolbar
-Buttons. Als Umsetzung wurde schließlich gewählt, dass anhand von
-unterschiedlichen Umrandungen dem Benutzer klar gemacht werden soll, welche der
-beiden Dateien die aktive ist. Durch dieses Vorgehen wird intuitiv klar, welche
-Datei aktiv ist, da sich die Farbe der Umrandung beim Aktivieren der anderen
-Ansicht ändert.\vspace{10pt}
+verdeutlicht werden kann, welche der beiden sichtbaren Dateien aktiv ist. Wichtig
+ist dieser Status für die Aktivierung der Menüeinträge bzw. Toolbar Buttons. Als
+Umsetzung wurde schließlich gewählt, dass anhand von unterschiedlichen
+Umrandungen dem Benutzer klar gemacht werden soll, welche der beiden Dateien die
+aktive ist. Durch dieses Vorgehen wird intuitiv klar, welche Datei aktiv ist, da
+sich die Farbe der Umrandung beim Aktivieren der anderen Ansicht ändert. In
+Abbildung \ref{FigureSecondView} ist der Automat auf der rechten Seite
+aktiv.\vspace{10pt}
 
 Eine weitere wichtige Eigenschaft der zweiten Ansicht ist, dass Dateien in diese
 zweite Ansicht verschoben werden können. Ebenfalls muss es möglich sein in der
@@ -159,3 +162,6 @@ Datei geöfffnet werden soll, muss erst die Ansicht aktiviert werden, in der die
 Datei geöffnet werden soll. Das Gleiche gilt beim Anlegen einer neuen Datei. Das
 Verschieben von geöffneten Dateien wurde per Kontextmenü und intuitiv per Drag
 and Drop zwischen den Ansichten gelöst.\vspace{10pt}
+
+
+%### removes texlipse warnings

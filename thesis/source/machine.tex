@@ -6,6 +6,9 @@
 %%
 
 
+%### removes texlipse warnings
+
+
 \chapter{Automaten}\label{Machines}
 
 Im Mittelpunkt der Planung und der Umsetzung des \gtitools standen die Automaten.
@@ -29,18 +32,15 @@ vermutlich enormen Zeitaufwandes wurde entschieden, eine Bibliothek zu benutzen.
 In Abschnit \ref{PerspectiveGraphics} wird darauf eingegangen, in wie weit eine
 Änderung in Zukunft sinnvoll bzw. realisierbar wäre.\vspace{10pt} 
 
-%### removes texlipse warning
 Da JGraph (siehe \cite{jgraph}) die benötigte Funktionalität zur Verfügung
 stellt, um die Automaten darstellen zu können, wurde entschieden, diese
 Bibliothek zu benutzen. Im Folgenden wird darauf eingegangen, wie Automaten mit
 JGraph dargestellt werden und wie JGraph angepasst werden musste, um den
 speziellen Ansprüchen unserer Umsetzung zu genügen.\vspace{10pt}
-%### removes texlipse warning
 
 
 \subsection{Automatendarstellung mit JGraph}\label{GraphJGraph}
 
-%### removes texlipse warning
 Bei der Darstellung der Automaten haben wir uns sehr daran orientiert, wie sie
 hier \cite{Sieber} verwendet wird. Wir wollten eine möglichst hohe Überdeckung
 erreichen, um sicherzustellen, dass ein Benutzer einen existierenden Automaten
@@ -50,7 +50,6 @@ Zustand wird über einen doppelten Rahmen gekennzeichnet. Einen Startzustand
 erkennt man an einem Pfeil, wlecher mit Start beschriftet ist. In
 Abbildung \ref{FigureMachine} sieht man wie ein Automat im GTI Tool
 aussieht.\vspace{10pt}
-%### removes texlipse warning
 
 \begin{figure}[h!]
 \begin{center}
@@ -86,21 +85,19 @@ allerdings Anpassungen vorgenommen werden, um den von uns vorgegebenen
 Funktionumfang erreichen zu können. Diese Anpassungen werden in diesem
 Abschnitt geschildert.\vspace{10pt}
 
-Als erste Anpassung wurde umgesetzt, dass die Farbe der Zustände geändert
-werden kann. Dies wird zwar von der Bibliothek unterstützt, allerdings wurde
-von uns eine Verknüpfung mit den Kernelementen gewünscht. Auf diese Weise ist
-es nun möglich, einem solchen Kernelement zu sagen, dass es aktiv oder
-fehlerhaft ist. Die graphische Komponente aktualisiert sich dann beim nächsten
-Zeichnen automatisch. Durch diese Art der Implementierung ist es jetzt sehr
-einfach, in den verschiedenen Algorithmen die Darstellung der graphischen
-Komponenten zu beeinflussen.\vspace{10pt}
+Wir wollten in der Lage sein die Farbe der Zustände je nach Situation anzupassen,
+um zum Beispiel einen aktiven oder einen fehlerhaften Zustand anders
+darzustellen. Dies wird zwar von der Bibliothek unterstützt, allerdings wurde von
+uns eine Verknüpfung mit den Kernelementen gewünscht. Auf diese Weise ist es nun
+möglich, einem solchen Kernelement zu sagen, dass es aktiv oder fehlerhaft ist.
+Die graphische Komponente aktualisiert sich dann beim nächsten Zeichnen
+automatisch. Durch diese Art der Implementierung ist es jetzt sehr einfach, in
+den verschiedenen Algorithmen die Darstellung der graphischen Komponenten zu
+beeinflussen.\vspace{10pt}
 
 Eine weitere Anpassung, die von uns implementiert wurde, ist die schon von den
 Parsern, siehe Kapitel \ref{Parser}, bekannte Verwendung von sogenannten
-PrettyStrings. Bei einfachen Übergängen oder Zuständen mit kurzem Namen
-beinhaltet diese Anpassung nicht allzu viele Verbesserungen. Das sieht bei der
-Verwendung von mehreren Symbolen in einem Übergang oder den
-Potenzmengen-Zuständen anders aus. Dort ist der Benutzer in der Lage, durch die
+Pretty-Strings. Der Benutzer soll dadurch in der Lage sein, durch die
 zu\-sätz\-lich\-en Farbinformationen und Zeichenattribute, die ihm zur Verfügung
 gestellten Informationen schneller aufzunehmen, als wenn ihm eine unformatierte
 Zeichenkette angezeigt werden würde.\vspace{10pt}
@@ -108,24 +105,10 @@ Zeichenkette angezeigt werden würde.\vspace{10pt}
 In Kapitel \ref{ConverTo} wird die Umwandlung von Automaten in andere Automaten-
 Formen, z.B. die Umwandlung von einem $\epsilon$-NDEA in einen DEA besprochen.
 Bei der Implementierung dieser Umwandlung wurden wir vor das Problem gestellt,
-dass in der Literatur, sowie im Vorlesungsskript, Potenzautomaten-Zustände nicht
-rund dargestellt werden, sondern als Rechteck mit abgerundeten Ecken. Dieses
-Problem wurde durch die Anpassung der graphischen Zustände, sowie durch die
-Berechnung der Endpunkte der Übergänge gelöst.\vspace{10pt}
-
-Die Darstellungsweise von parallelen Übergängen in entgegengesetzte Richtung
-musste angepasst werden, da die normale Implementierung ein Ergebnis lieferte,
-das dem als Vorlage benutzten Beispiel im Vorlesungsskript nicht ähnlich
-war.\vspace{10pt}
-
-Die letzte wichtige Anpassung wurde notwendig, da ein Start-Zustand mit einem
-Pfeil auf den Zustand dargestellt werden musste. Dieser graphische Pfeil musste
-somit zu dem Zustand gehören, was die Breite des Zustandes erhöhte und damit die
-normale Berechnung von JGraph, zum Beispiel die Berechnung der Position eines
-Überganges beeinflusste und dafür sorgte, dass der Graph nicht mehr so aussah,
-wie er intuitiv aussehen sollte. Um dieses Problem zu lösen, musste bei vielen
-Berechnungen, ein Offset berücksichtigt werden, so dass ein Start-Zustand nicht
-mehr anders behandelt wurde, wie ein normaler Zustand.\vspace{10pt}
+dass in der Literatur Potenzautomaten-Zustände nicht rund dargestellt werden,
+sondern als Rechteck mit abgerundeten Ecken. Dieses Problem wurde durch die
+Anpassung der graphischen Zustände, sowie durch die Berechnung der Endpunkte der
+Übergänge gelöst.\vspace{10pt}
 
 
 \section{Tabellen}\label{Tables}
@@ -265,6 +248,7 @@ kürzesten Pfade zuerst angezeigt.\vspace{10pt}
 \begin{center}
 \includegraphics[width=12cm]{../images/history_path.png}
 \caption{Zustands Pfad}
+\label{FigureHistoryPath}
 \end{center}
 \end{figure}
 \vspace{10pt}
@@ -275,7 +259,8 @@ vom Eingabewort gelesenen Symbole abgearbeitet sind. Startet der berechnete Pfad
 dann in dem Startzustand, wurde ein gültiger Pfad erkannt. Bei der
 Implementierung des Algorithmus musste eine Zykluserkennung umgesetzt werden, da
 es sonst möglich wäre, in eine Endlosschleife zu geraten, welche durch
-$\epsilon$-Übergänge verursacht wurde.\vspace{10pt}
+$\epsilon$-Übergänge verursacht wurde. Abbildung \ref{FigureHistoryPath} zeigt
+ein einfaches Beispiel eines Pfads.\vspace{10pt}
 
 
 \section{Erreichbare Zustände}\label{ReachableStates}
@@ -292,7 +277,6 @@ kleinen Schritten verdeutlicht wird, wie der zugrundeliegende Algorithmus
 arbeitet, so dass diese Arbeitsweise sehr einfach nachzuvollziehen
 ist.\vspace{10pt}
 
-%### removes texlipse warning
 Zur Umsetzung wurde der in \cite[S. 536]{Algorithmen} angegebene Algorithmus
 als Vorlage benutzt. Dieser Algorithmus implementiert die Breitensuche auf
 einem Graphen G mit Startknoten s. Zur Interpretation des Algorithmus ist noch
@@ -303,7 +287,6 @@ Knoten, außer dem Startknoten, weiß. Grau bedeutet, dass der Knoten erkannt
 wurde, aber noch nicht vollständig abgearbeitet wurde. Wurde ein Knoten
 abgearbeitet, ändert sich seine Farbe in schwarz. Bei der Umsetzung im \gtitool
 wurde eine ähnliche Umsetzung gewählt, die nun dargestellt wird.\vspace{10pt}
-%### removes texlipse warning
 
 \noindent
 \verb| 1 BFS(G,s)|\\
@@ -327,7 +310,9 @@ wurde eine ähnliche Umsetzung gewählt, die nun dargestellt wird.\vspace{10pt}
 \verb|19          farbe[u] |$\gets$\verb| SCHWARZ|\\
 \vspace{10pt}
 
-Der dann im Programm umgesetzte Algorithmus besteht aus drei Phasen.
+Der dann im Programm umgesetzte Algorithmus besteht aus drei Phasen. Abbildung
+\ref{FigureReachableStates} zeigt ein einfaches Beispiel der erreichbaren
+Zustände.
 
 In der ersten Phase wird ein noch nicht abgearbeiteter Zustand ausgewählt, also
 ein Zustand, der von einem anderen Zustand aus erreichbar ist, aber für den noch
@@ -344,6 +329,10 @@ des Algorithmus erreicht werden.\vspace{10pt}
 \begin{center}
 \includegraphics[width=12cm]{../images/reachable_states.png}
 \caption{Erreichbare Zustände}
+\label{FigureReachableStates}
 \end{center}
 \end{figure}
 \vspace{10pt}
+
+
+%### removes texlipse warnings

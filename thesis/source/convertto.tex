@@ -44,8 +44,11 @@ aus einem Terminalzeichen mit einem anschließenden Nichtterminalzeichen
 ($\NonterminalSymbol{S} \to \TerminalSymbol{a}\NonterminalSymbol{A}$) bestehen,
 da nur solche Arten von Produktionen zugelassen sind.\vspace{10pt}
 
-Wir betrachten der Reihe nach jede Produktion der Grammatik.
-Zunächst interessiert uns die linke Seite. Wenn wir das Nichtterminalzeichen
+Am Anfang legen wir einen akzeptierenden Zustand an, welchen wir im weitern
+Verlauf des Algorithmus noch benötigen werden.\vspace{10pt}
+
+ Wir betrachten der Reihe nach
+jede Produktion der Grammatik. Zunächst interessiert uns die linke Seite. Wenn wir das Nichtterminalzeichen
 bereits gesehen haben, wurde auch schon ein Zustand dafür angelegt, und wir
 merken uns diesen. Wenn wir das Nichtterminalzeichen noch nicht gesehen haben,
 müssen wir jetzt einen neuen Zustand anlegen, welcher dieses repräsentiert, und
@@ -53,10 +56,10 @@ merken uns diesen neuen Zustand, da dieser der Ausgangszustand
 für die zu erstellenden Übergänge ist.\vspace{10pt}
 
 Als nächstes betrachten wir die rechte Seite der Produktion. Wenn es sich dabei
-um ein einzelnes Terminalzeichen handelt, wird ein neuer akzeptierender Zustand
-angelegt. Danach wird ein Übergang von dem Zustand für das Nichtterminalzeichen
-zu diesem neuen Zustand erzeugt, wobei die Übergangsmenge aus dem
-Terminalzeichen auf der rechten Seite der Produktion besteht.\vspace{10pt}
+um ein einzelnes Terminalzeichen handelt, wird ein Übergang von dem Zustand für
+das Nichtterminalzeichen zu dem akzeptierenden Zustand erzeugt, wobei die
+Übergangsmenge aus dem Terminalzeichen auf der rechten Seite der Produktion
+besteht.\vspace{10pt}
 
 Besteht die rechte Seite allerdings aus einem Terminalzeichen und einem
 Nichtterminalzeichen müssen wir wieder überprüfen, ob wir das
@@ -71,10 +74,13 @@ Grammatik erzeugte Sprache akzeptiert.\vspace{10pt}
 
 \subsection{Umwandeln einer kontextfreien Grammatik}\label{ConverToGrammarContextFree}
 
+%### removes texlipse warning
 Der Benutzer hat auch die Möglichkeit, eine zuvor erstellte kontextfreie
-Grammatik in einen Kellerautomaten umwandeln zu lassen.\vspace{10pt}
+Grammatik in einen Kellerautomaten umwandeln zu lassen. Dieser
+Algorithmus ist in \cite{Compilers} beschrieben\vspace{10pt}
+%### removes texlipse warning
 
-Bei diesem Algorithmus werden zwei Zustände angelegt, ein Startzustand und ein
+Zu Beginn werden zwei Zustände angelegt, ein Startzustand und ein
 akzeptierender Zustand. Dazu wird ein Übergang vom Startzustand in den
 akzeptierenden Zustand angelegt, welcher das Startsymbol der Grammatik in den
 Keller legt. Dann wird für jede Produktion ein Übergang angelegt, welcher die rechte

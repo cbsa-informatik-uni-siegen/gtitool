@@ -13,11 +13,11 @@
 {
     \begin{itemgroup}{}
 	\item Graphenansicht
-	\item Übergangs-Tabelle
+	\item Minimierung
 	\item Wort-Navigation
+	\item Übergangs-Tabelle
 	\item Erreichbare Zustände
 	\item Konvertierung
-	\item Minimierung
 	\end{itemgroup}
 
 	\vfill{}
@@ -48,27 +48,29 @@
 }
 
 
-\myslide{Automaten - Übergangs-Tabelle}
+\myslide{Automaten - Minimierung}
 {
     \begin{itemgroup}{}
-	\item Nicht nur graphische Bearbeitung eines Automaten
-	\item Schnellere Änderungen an einem Automaten
-    \end{itemgroup}
-
-    \begin{itemgroup}{Lösung}
-	\item Editierbare Tabelle
-	\item Übergänge werden angelegt, gelöscht oder modifiziert
+	\item Nicht erreichbare Zustände entfernen
+	\item Einteilung in zwei Äquivalenzklassen
+		\begin{itemgroup}{}
+		\item Akzeptierende Zustände
+		\item Nicht akzeptierende Zustände
+		\end{itemgroup}
+	\item Verfeinern der Äquivalenzklassen
+	\item Jede Äquivalenzklasse repräsentiert einen Zustand in dem minimalen
+	Automat
 	\end{itemgroup}
-    
-    \vfill{}
+	
+	\vfill{}    
 }
 
 
-\myslide{Automaten - Übergangs-Tabelle}
+\myslide{Automaten - Minimierung}
 {
   \begin{center}
-    \includegraphics[height=14cm]{../images/machine_table.png}
-  \end{center}
+    \includegraphics[height=14cm]{../images/minimize.png}
+  \end{center}   
 }
 
 
@@ -113,6 +115,30 @@
 {
   \begin{center}
     \includegraphics[height=14cm]{../images/grammar_pda.png}
+  \end{center}
+}
+
+
+\myslide{Automaten - Übergangs-Tabelle}
+{
+    \begin{itemgroup}{}
+	\item Nicht nur graphische Bearbeitung eines Automaten
+	\item Schnellere Änderungen an einem Automaten
+    \end{itemgroup}
+
+    \begin{itemgroup}{Lösung}
+	\item Editierbare Tabelle
+	\item Übergänge werden angelegt, gelöscht oder modifiziert
+	\end{itemgroup}
+    
+    \vfill{}
+}
+
+
+\myslide{Automaten - Übergangs-Tabelle}
+{
+  \begin{center}
+    \includegraphics[height=14cm]{../images/machine_table.png}
   \end{center}
 }
 
@@ -170,32 +196,6 @@
   \begin{center}
     \includegraphics[height=14cm]{../images/convert_to.png}
   \end{center}
-}
-
-
-\myslide{Automaten - Minimierung}
-{
-    \begin{itemgroup}{}
-	\item Nicht erreichbare Zustände entfernen
-	\item Einteilung in zwei Äquivalenzklassen
-		\begin{itemgroup}{}
-		\item Akzeptierende Zustände
-		\item Nicht akzeptierende Zustände
-		\end{itemgroup}
-	\item Verfeinern der Äquivalenzklassen
-	\item Jede Äquivalenzklasse repräsentiert einen Zustand in dem minimalen
-	Automat
-	\end{itemgroup}
-	
-	\vfill{}    
-}
-
-
-\myslide{Automaten - Minimierung}
-{
-  \begin{center}
-    \includegraphics[height=14cm]{../images/minimize.png}
-  \end{center}   
 }
 
 

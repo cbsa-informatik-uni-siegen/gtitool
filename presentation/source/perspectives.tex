@@ -129,7 +129,56 @@
 
 \myslide{Perspektiven - Grammatik-Erweiterungen}
 {
-    TODOBM
+    \begin{itemgroup}{}
+	\item Linksrekursion
+	\item Linksfaktorisierung
+	\item Ableitungen für Grammatiken
+    \end{itemgroup}
+    
+    \vfill{}
+}
+
+\myslide{Perspektiven - Linksrekursion}
+{
+    \begin{itemgroup}{}
+	\item Probleme bei Produktionen der Form $\NonterminalSymbol{E} \to
+	\NonterminalSymbol{E} + \NonterminalSymbol{E}$
+	\item Stoff von Compilerbau I
+    \end{itemgroup}
+
+    \begin{itemgroup}{Lösung}
+	\item Erkennen und entfernen von direkter Linksrekursion
+	\item Erkennen und entfernen von indirekter Linksrekursion
+	\end{itemgroup}
+    
+    \vfill{}
+}
+
+\myslide{Perspektiven - Linksfaktorisierung}
+{
+    \begin{itemgroup}{}
+	\item Probleme beim Finden der richtigen Ableitung
+	\item Stoff von Compilerbau I
+    \end{itemgroup}
+
+    \begin{itemgroup}{Lösung}
+	\item Linksfatorisierung der Grammatik
+	\end{itemgroup}
+    
+    \vfill{}
+}
+
+\myslide{Perspektiven - Ableitungen für Grammatikenn}
+{
+    \begin{itemgroup}{}
+	\item Wörter auch für Grammatiken überprüfbar
+	\item Stoff von Compilerbau I
+    \end{itemgroup}
+
+    \begin{itemgroup}{Lösung}
+	\item Finden der richtigen Ableitung durch rekursiven Abstieg
+	\item Auflistung der verwendeten Produktionen
+	\end{itemgroup}
     
     \vfill{}
 }
@@ -137,7 +186,21 @@
 
 \myslide{Perspektiven - Auto-Layout}
 {
-    TODOBM
+    \begin{itemgroup}{}
+	\item Der Auto-Layout Algorithmus hat nur Überschneidung der Kanten als
+	Kostenfunktion
+	\item Oft schlechte Ergebnisse, die durch den Nutzer korrigiert werden müssen
+    \end{itemgroup}
+
+    \begin{itemgroup}{Lösung}
+	\item Algorithmus mit besserer Kostenfunktion (Simulated-Annealing)
+	\item Kostenfunktion sollte mehrere Parameter berücksichtigen
+		\begin{itemgroup}{Lösung}
+		\item Überschneidung von Kanten
+		\item Länge von Kanten
+		\item Überscheidung von Kante und Zustand
+		\end{itemgroup}
+	\end{itemgroup}
     
     \vfill{}
 }

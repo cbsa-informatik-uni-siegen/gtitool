@@ -146,11 +146,6 @@
 \myslide{Automaten - Konvertierung}
 {
     \begin{itemgroup}{}
-	\item Konvertierung von Grammatiken
-		\begin{itemgroup}{}
-    	\item Reguläre Grammatik konvertieren
-    	\item Kontextfreie Grammatik konvertieren
-    	\end{itemgroup}
 	\item Konvertierung von Automaten
 		\begin{itemgroup}{}
     	\item Nur erreichbare Zustände anlegen
@@ -160,52 +155,6 @@
   
 	\vfill{}
 }
-
-
-\myslide{Automaten - Reguläre Grammatik konvertieren}
-{
-    \begin{itemgroup}{}
-	\item Es wird jede einzelene Produktion betrachtet
-	\item Für das Nichtterminalzeichen auf der linken Seite wird ein Zustand
-	angelegt.
-	\item Besteht die rechte Seite aus einem einzelnen Terminalzeichen
-  		\begin{itemgroup}{}
-    	\item Einen Übergang zu einem akzeptierenden Zustand
-    	\item Terminalzeichen als Produktionsmenge
-    	\end{itemgroup}
-	\item Besteht die rechte Seite aus einem Terminalzeichen und einem Nichtterminalzeichen
-  		\begin{itemgroup}{}
-    	\item Einen Übergang zu einem Zustand der das Nichterminalzeichen repräsentiert
-		\item Terminalzeichen als Produktionsmenge
-		 \end{itemgroup}
-    \end{itemgroup}
-	\vfill{}
-}
-
-
-\myslide{Automaten - Kontextfreie Grammatik konvertieren}
-{
-    \begin{itemgroup}{}
-	\item Anlegen eines Startzustands
-	\item Anlegen eines akzeptierenden Zustands
-	\item Übergang von Startzustand in akzeptierenden Zustand bei dem das 
-	Startsymbol auf den Keller gelegt wird
-	\item Für jede Produktion ein Übergang vom akzeptierenden in akzeptierenden
-	Zustand
-		\begin{itemgroup}{}
-    	\item Rechte Seite der Produktion vom Keller entfernen
-    	\item Durch linke Seite der Produktion auf den Keller schreiben
-    	\end{itemgroup}
-	\item Für jedes Terminalzeichen ein Übergang vom akzeptierenden in akzeptierenden
-	Zustand
-		\begin{itemgroup}{}
-    	\item Das Terminalzeichen wird vom Eingabeband gelesen und vom Keller
-    	entfernt \end{itemgroup}
-	\end{itemgroup}
-  
-	\vfill{}
-}
-
 
 \myslide{Automaten - Konvertierung von Automaten}
 {

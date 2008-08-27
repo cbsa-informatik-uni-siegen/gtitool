@@ -13,7 +13,7 @@
 {
     \begin{itemgroup}{}
 	\item Graphenansicht
-	\item Tabellen
+	\item Übergangs-Tabelle
 	\item Wort-Navigation
 	\item Erreichbare Zustände
 	\item Konvertierung
@@ -21,8 +21,8 @@
 	\end{itemgroup}
 
 	\vfill{}
-    
 }
+
 
 \myslide{Automaten - Graphenansicht}
 {
@@ -39,6 +39,7 @@
 	\vfill{}
 }
 
+
 \myslide{Automaten - Graphenansicht}
 {
   \begin{center}
@@ -46,21 +47,30 @@
   \end{center}
 }
 
-\myslide{Automaten - Tabellen}
+
+\myslide{Automaten - Übergangs-Tabelle}
 {
-TODOCF Bearbeiten von Tabellen
-    \begin{itemgroup}{Überschrift 0}
-	\item Item 0
-	\item Item 1
-	\item Item 2
+    \begin{itemgroup}{}
+	\item Nicht nur graphische Bearbeitung eines Automaten
+	\item Schnellere Änderungen an einem Automaten
+    \end{itemgroup}
+
+    \begin{itemgroup}{Lösung}
+	\item Editierbare Tabelle
+	\item Übergänge werden angelegt, gelöscht oder modifiziert
 	\end{itemgroup}
     
-	\begin{itemgroup}{Überschrift 1}
-	\item Item 0
-	\item Item 1
-	\item Item 2
-	\end{itemgroup}
+    \vfill{}
 }
+
+
+\myslide{Automaten - Übergangs-Tabelle}
+{
+  \begin{center}
+    \includegraphics[height=14cm]{../images/machine_table.png}
+  \end{center}
+}
+
 
 \myslide{Automaten - Wort-Navigation}
 {
@@ -74,6 +84,7 @@ TODOCF Bearbeiten von Tabellen
 	\vfill{}
 }
 
+
 \myslide{Automaten - Wort-Navigation}
 {
   \begin{center}
@@ -81,38 +92,56 @@ TODOCF Bearbeiten von Tabellen
   \end{center}
 }
 
+
 \myslide{Automaten - Wort-Navigation}
 {
-  TODOCF Wort-Navigation Kellerautomat \\
-  
-      \begin{itemgroup}{Überschrift 0}
-	\item Item 0
-	\item Item 1
-	\item Item 2
+    \begin{itemgroup}{}
+	\item Nicht deterministischer Kellerautomat
+	\item Auswahl des nächsten Übergangs nicht eindeutig
+    \end{itemgroup}
+
+    \begin{itemgroup}{Lösung}
+	\item Falls deterministisch Übergang verwenden
+	\item Sonst Benutzer auswählen lassen
 	\end{itemgroup}
     
-	\begin{itemgroup}{Überschrift 1}
-	\item Item 0
-	\item Item 1
-	\item Item 2
-	\end{itemgroup}
+    \vfill{}
 }
+
+
+\myslide{Automaten - Wort-Navigation}
+{
+  \begin{center}
+    \includegraphics[height=14cm]{../images/grammar_pda.png}
+  \end{center}
+}
+
 
 \myslide{Automaten - Erreichbare Zustände}
 {
-TODOCF \\
-    \begin{itemgroup}{Überschrift 0}
-	\item Item 0
-	\item Item 1
-	\item Item 2
+    \begin{itemgroup}{}
+	\item Erreichbare Zustände erkennen
+	\item Unerreichbare Zustände entfernen
+	\item Wird bei der Minimierung verwendet
+    \end{itemgroup}
+
+    \begin{itemgroup}{Lösung}
+	\item Verwendung der Breitensuche
+	\item Nicht erreichbare Zustände werden nicht markiert
+	\item Ergebnis: Automat mit nur erreichbaren Zuständen
 	\end{itemgroup}
     
-	\begin{itemgroup}{Überschrift 1}
-	\item Item 0
-	\item Item 1
-	\item Item 2
-	\end{itemgroup}
+    \vfill{}
 }
+
+
+\myslide{Automaten - Erreichbare Zustände}
+{
+  \begin{center}
+    \includegraphics[height=14cm]{../images/reachable_states.png}
+  \end{center}
+}
+
 
 \myslide{Automaten - Konvertierung}
 {
@@ -124,12 +153,14 @@ TODOCF \\
     	\end{itemgroup}
 	\item Konvertierung von Automaten
 		\begin{itemgroup}{}
-    	\item TODOCF
+    	\item Nur erreichbare Zustände anlegen
+    	\item Potenzautomaten Konstruktion
     	\end{itemgroup}
 	\end{itemgroup}
   
 	\vfill{}
 }
+
 
 \myslide{Automaten - Reguläre Grammatik konvertieren}
 {
@@ -150,6 +181,7 @@ TODOCF \\
     \end{itemgroup}
 	\vfill{}
 }
+
 
 \myslide{Automaten - Kontextfreie Grammatik konvertieren}
 {
@@ -174,23 +206,36 @@ TODOCF \\
 	\vfill{}
 }
 
+
 \myslide{Automaten - Konvertierung von Automaten}
 {
-TODOCF \\
-    \begin{itemgroup}{Überschrift 0}
-	\item Item 0
-	\item Item 1
-	\item Item 2
+    \begin{itemgroup}{}
+	\item Konvertierung NDEA $\to$ DEA
+    \item Konvertierung $\epsilon$-NDEA $\to$ DEA
+    \item Konvertierung $\epsilon$-NDEA $\to$ NDEA
+    \end{itemgroup}
+
+    \begin{itemgroup}{Lösung}
+	\item Für jeden Zustand und jedes Symbol überprüfen
+	\begin{itemgroup}{}
+	  \item Welche Zustände sind von dem Zustand mit dem Symbol erreichbar
+	  \item Übergang mit dem Symbol zu dem neuen Zustand anlegen
+	  \item Gegebenenfalls den neuen Zustand anlegen
+	\end{itemgroup}
+	\item Potenzmengen Konstruktion: Alle Zustände direkt anlegen
 	\end{itemgroup}
     
-	\begin{itemgroup}{Überschrift 1}
-	\item Item 0
-	\item Item 1
-	\item Item 2
-	\end{itemgroup}
-  
-	\vfill{}
+    \vfill{}
 }
+
+
+\myslide{Automaten - Konvertierung von Automaten}
+{
+  \begin{center}
+    \includegraphics[height=14cm]{../images/convert_to.png}
+  \end{center}
+}
+
 
 \myslide{Automaten - Minimieren}
 {
@@ -208,6 +253,7 @@ TODOCF \\
 	
 	\vfill{}    
 }
+
 
 \myslide{Automaten - Minimieren}
 {

@@ -11,6 +11,44 @@
 
 \myslide{Automaten}
 {
+    \begin{itemgroup}{}
+	\item Graphenansicht
+	\item Tabellen
+	\item Wort-Navigation
+	\item Erreichbare Zustände
+	\item Konvertierung
+	\item Minimierung
+	\end{itemgroup}
+
+	\vfill{}
+    
+}
+
+\myslide{Automaten - Graphenansicht}
+{
+    \begin{itemgroup}{}
+	\item Orientierung an der Vorlesung
+	\item Normale Zustände werden durch Kreis mit Namen in der Mitte dargestellt
+	\begin{itemgroup}{}
+		\item Startzustände haben zusätzlich einen mit Start beschrifteten Pfeil
+		\item Akzeptierende Zustände haben zusätzlich einen doppelten Rahmen
+	\end{itemgroup}
+	\item Transitionen werden als Pfeil mit Übergangsmenge dargestellt
+	\end{itemgroup}
+
+	\vfill{}
+}
+
+\myslide{Automaten - Graphenansicht}
+{
+  \begin{center}
+    \includegraphics[height=14cm]{../images/enfa_example.png}
+  \end{center}
+}
+
+\myslide{Automaten - Tabellen}
+{
+TODOCF Bearbeiten von Tabellen
     \begin{itemgroup}{Überschrift 0}
 	\item Item 0
 	\item Item 1
@@ -22,6 +60,160 @@
 	\item Item 1
 	\item Item 2
 	\end{itemgroup}
+}
+
+\myslide{Automaten - Wort-Navigation}
+{
+    \begin{itemgroup}{}
+	\item Eingabe eines Wortes
+	\item Zeichenweise Navigation durch das Wort
+	\item Aktiven Zustände und Übergänge werden hervorgehoben
+	\item Es wird angezeigt wie weit das Wort bereits gelesen wurde
+	\end{itemgroup}
+
+	\vfill{}
+}
+
+\myslide{Automaten - Wort-Navigation}
+{
+  \begin{center}
+    \includegraphics[height=14cm]{../images/dfa_navigation.png}
+  \end{center}
+}
+
+\myslide{Automaten - Wort-Navigation}
+{
+  TODOCF Wort-Navigation Kellerautomat \\
+  
+      \begin{itemgroup}{Überschrift 0}
+	\item Item 0
+	\item Item 1
+	\item Item 2
+	\end{itemgroup}
+    
+	\begin{itemgroup}{Überschrift 1}
+	\item Item 0
+	\item Item 1
+	\item Item 2
+	\end{itemgroup}
+}
+
+\myslide{Automaten - Erreichbare Zustände}
+{
+TODOCF \\
+    \begin{itemgroup}{Überschrift 0}
+	\item Item 0
+	\item Item 1
+	\item Item 2
+	\end{itemgroup}
+    
+	\begin{itemgroup}{Überschrift 1}
+	\item Item 0
+	\item Item 1
+	\item Item 2
+	\end{itemgroup}
+}
+
+\myslide{Automaten - Konvertierung}
+{
+    \begin{itemgroup}{}
+	\item Konvertierung von Grammatiken
+		\begin{itemgroup}{}
+    	\item Reguläre Grammatik konvertieren
+    	\item Kontextfreie Grammatik konvertieren
+    	\end{itemgroup}
+	\item Konvertierung von Automaten
+		\begin{itemgroup}{}
+    	\item TODOCF
+    	\end{itemgroup}
+	\end{itemgroup}
+  
+	\vfill{}
+}
+
+\myslide{Automaten - Reguläre Grammatik konvertieren}
+{
+    \begin{itemgroup}{}
+	\item Es wird jede einzelene Produktion betrachtet
+	\item Für das Nichtterminalzeichen auf der linken Seite wird ein Zustand
+	angelegt.
+	\item Besteht die rechte Seite aus einem einzelnen Terminalzeichen
+  		\begin{itemgroup}{}
+    	\item Einen Übergang zu einem akzeptierenden Zustand
+    	\item Terminalzeichen als Produktionsmenge
+    	\end{itemgroup}
+	\item Besteht die rechte Seite aus einem Terminalzeichen und einem Nichtterminalzeichen
+  		\begin{itemgroup}{}
+    	\item Einen Übergang zu einem Zustand der das Nichterminalzeichen repräsentiert
+		\item Terminalzeichen als Produktionsmenge
+		 \end{itemgroup}
+    \end{itemgroup}
+	\vfill{}
+}
+
+\myslide{Automaten - Kontextfreie Grammatik konvertieren}
+{
+    \begin{itemgroup}{}
+	\item Anlegen eines Startzustands
+	\item Anlegen eines akzeptierenden Zustands
+	\item Übergang von Startzustand in akzeptierenden Zustand bei dem das 
+	Startsymbol auf den Keller gelegt wird
+	\item Für jede Produktion ein Übergang vom akzeptierenden in akzeptierenden
+	Zustand
+		\begin{itemgroup}{}
+    	\item Rechte Seite der Produktion vom Keller entfernen
+    	\item Durch linke Seite der Produktion auf den Keller schreiben
+    	\end{itemgroup}
+	\item Für jedes Terminalzeichen ein Übergang vom akzeptierenden in akzeptierenden
+	Zustand
+		\begin{itemgroup}{}
+    	\item Das Terminalzeichen wird vom Eingabeband gelesen und vom Keller
+    	entfernt \end{itemgroup}
+	\end{itemgroup}
+  
+	\vfill{}
+}
+
+\myslide{Automaten - Konvertierung von Automaten}
+{
+TODOCF \\
+    \begin{itemgroup}{Überschrift 0}
+	\item Item 0
+	\item Item 1
+	\item Item 2
+	\end{itemgroup}
+    
+	\begin{itemgroup}{Überschrift 1}
+	\item Item 0
+	\item Item 1
+	\item Item 2
+	\end{itemgroup}
+  
+	\vfill{}
+}
+
+\myslide{Automaten - Minimieren}
+{
+    \begin{itemgroup}{}
+	\item Nicht erreichbare Zustände entfernen
+	\item Einteilung in zwei Äquivalenzklassen
+		\begin{itemgroup}{}
+		\item Akzeptierende Zustände
+		\item Nicht akzeptierende Zustände
+		\end{itemgroup}
+	\item Verfeinern der Äquivalenzklassen
+	\item Jede Äquivalenzklasse repräsentiert einen Zustand in dem minimalen
+	Automat
+	\end{itemgroup}
+	
+	\vfill{}    
+}
+
+\myslide{Automaten - Minimieren}
+{
+  \begin{center}
+    \includegraphics[height=14cm]{../images/minimize.png}
+  \end{center}   
 }
 
 

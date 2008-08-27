@@ -1,4 +1,5 @@
-\def\department{Fachbereich 12 - Informatik und Elektrotechnik}
+\def\department{Fachbereich 12 - Informatik und Elektrotechnik\\[1mm]
+                Fachgruppe Programmiersprachen}
 \def\university{Universit\"at Siegen}
 
 \setrulecolor{0.0,0.0,1.0}

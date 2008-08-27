@@ -6,6 +6,9 @@
 %%
 
 
+%### removes texlipse warnings
+
+
 \documentclass[fleqn,landscape,titlepage,german]{myslides}
 
 \usepackage[utf8]{inputenc}
@@ -22,20 +25,44 @@
 
 \begin{document}
 
-\presentation[GTI Tool]{Christian\ Fehler,\ Benjamin\ Mies}{GTI Tool}
+\presentation[GTI Tool]{Christian\ Fehler,\ Benjamin\ Mies}
+                       {Ein Lernwerkzeug für die Grundlagen der theoretischen Informatik}
 
 \maketitle
 
 \addoverviewitem{Einleitung}
+\addoverviewitem{Oberfläche}
+\addoverviewitem{Automaten}
+\addoverviewitem{Grammatiken}
+\addoverviewitem{Konzepte}
+\addoverviewitem{Perspektiven}
 \addoverviewitem{Fazit}
 
 \CenteredGraphics
 
 
 \makeoverviewslide
-
+\include{introduction}
 
 \makeoverviewslide
+\include{gui}
 
+\makeoverviewslide
+\include{machine}
+
+\makeoverviewslide
+\include{grammar}
+
+\makeoverviewslide
+\include{concepts}
+
+\makeoverviewslide
+\include{perspectives}
+
+\makeoverviewslide
+\include{conclusion}
 
 \end{document}
+
+
+%### removes texlipse warnings

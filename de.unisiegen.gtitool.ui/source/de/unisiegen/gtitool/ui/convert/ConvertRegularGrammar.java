@@ -34,6 +34,12 @@ public class ConvertRegularGrammar extends AbstractConvertGrammar
 {
 
   /**
+   * The final {@link DefaultStateView}.
+   */
+  private DefaultStateView finalStateView;
+
+
+  /**
    * The {@link NonterminalSymbol}s and there representing
    * {@link DefaultStateView}s.
    */
@@ -72,6 +78,9 @@ public class ConvertRegularGrammar extends AbstractConvertGrammar
   @Override
   protected void performProductions ()
   {
+
+    this.finalStateView = createStateView ( null );
+    this.finalStateView.getState ().setFinalState ( true );
     for ( Production current : getGrammar ().getProduction () )
     {
       DefaultStateView stateView;
@@ -120,12 +129,32 @@ public class ConvertRegularGrammar extends AbstractConvertGrammar
         symbols.add ( new DefaultSymbol ( current.getName () ) );
         if ( productionWord.size () == 1 )
         {
-          newStateView = createStateView ( null );
-
-          createTransition ( new DefaultWord (), new DefaultWord (), stateView,
-              newStateView, symbols );
-
-          newStateView.getState ().setFinalState ( true );
+          boolean symbolAdded = false;
+          for ( Transition transition : this.finalStateView.getState ()
+              .getTransitionEnd () )
+          {
+            if ( transition.getStateBegin ().equals ( stateView.getState () ) )
+            {
+              try
+              {
+                transition.add ( symbols );
+              }
+              catch ( TransitionSymbolNotInAlphabetException exc )
+              {
+                // Nothing to do
+              }
+              catch ( TransitionSymbolOnlyOneTimeException exc )
+              {
+                // Nothing to do
+              }
+              symbolAdded = true;
+            }
+          }
+          if ( !symbolAdded )
+          {
+            createTransition ( new DefaultWord (), new DefaultWord (),
+                stateView, this.finalStateView, symbols );
+          }
         }
       }
       else

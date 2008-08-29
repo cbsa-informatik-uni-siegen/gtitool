@@ -198,6 +198,15 @@ Parsen werden bis auf das Prüfen der kontextsensitiven Bedingungen nicht
 benötigt, da keine Umwandlung in eine andere Programmiersprache erfolgen
 muss.\vspace{10pt}
 
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=12cm]{../images/parser.png}
+\caption{Parser - Kontextsensitive Bedingungen}
+\label{FigureParser}
+\end{center}
+\end{figure}
+\vspace{10pt}
+
 Zu Beginn der Planungen für das \gtitool stellte sich die Frage, wie der Benutzer
 die unterschiedlichen Eingaben machen soll. Es wurden verschiedene
 Möglichkeiten in Betracht gezogen, schließlich wurde aber die Verwendung von
@@ -236,7 +245,8 @@ einzugeben. Betrachten wir als erstes das Eingeben des Alphabetes im Dialog für
 die Einstellungen, da dieser Parser die wenigsten kontextsensitiven Bedingungen
 berücksichtigen muss. Sowohl beim Eingabealphabet, wie auch beim Kelleralphabet
 ist die einzige Bedingung, dass ein Symbol nicht doppelt vorkommen darf, eine
-Eingabe \{\Symbol{0}, \Symbol{0}\} ist somit nicht zulässig.\vspace{10pt}
+Eingabe \{\Symbol{0}, \Symbol{0}\} wie in Abbildung \ref{FigureParser}
+dargestellt, ist somit nicht zulässig.\vspace{10pt}
 
 Ebenfalls in den Einstellungen zu finden ist die Eingabe der
 Nichtterminalzeichen, Terminalzeichen und des Startsymbols. Genau wie beim

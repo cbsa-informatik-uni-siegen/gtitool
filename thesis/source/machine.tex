@@ -13,12 +13,12 @@
 
 Im Mittelpunkt der Planung und der Umsetzung des \gtitools standen die Automaten.
 Im Rahmen dieser Diplomarbeit wurden vier Automatentypen umgesetzt. Der
-deterministische endliche Automat (DEA), der nicht determinitische endliche
-Automat (NDEA), der $\epsilon$ nicht deterministische endliche Automat
-($\epsilon$-NDEA) und schließlich der Kellerautomat. Die verschiedenen Aspekte
-von Automaten werden in diesem Kapitel besprochen, dazu gehört die graphische
-Umsetzung, sowie die verschiedenen Möglichkeiten, diesen zu verwenden, wenn er
-angelegt wurde.\vspace{10pt}
+deterministische endliche Automat (DEA), der nichtdeterminitische endliche
+Automat (NDEA), der nichtdeterministische endliche Automat mit
+$epsilon$-Übergängen ($\epsilon$-NDEA) und schließlich der Kellerautomat. Die
+verschiedenen Aspekte von Automaten werden in diesem Kapitel besprochen, dazu
+gehört die graphische Umsetzung, sowie die verschiedenen Möglichkeiten, diesen zu
+verwenden, wenn er angelegt wurde.\vspace{10pt}
 
 
 \section{Graphenansicht}\label{Graph}
@@ -100,13 +100,13 @@ Pretty-Strings, welche in Abschnitt \ref{GUIDesign} bereits angesprochen wurde.
 Diese Pretty-Strings werden zum Anzeigen der Namen verwendet, was gerade bei
 Potenzautomaten-Zuständen einen Vorteil mit sich bringt.\vspace{10pt}
 
-Im Abschnitt \ref{ConverTo} wird die Umwandlung von Automaten in andere
-Automaten- Formen, z.B. die Umwandlung von einem $\epsilon$-NDEA in einen DEA besprochen.
-Bei der Implementierung dieser Umwandlung wurden wir vor das Problem gestellt,
-dass in der Literatur Potenzautomaten-Zustände nicht rund dargestellt werden,
-sondern als Rechteck mit abgerundeten Ecken. Dieses Problem wurde durch die
-Anpassung der graphischen Zustände, sowie durch die Berechnung der Endpunkte der
-Übergänge gelöst.\vspace{10pt}
+In Abschnitt \ref{ConverToMachine} wird die Umwandlung von Automaten in andere
+Automaten- Formen, z.B. die Umwandlung von einem $\epsilon$-NDEA in einen DEA
+besprochen. Bei der Implementierung dieser Umwandlung wurden wir vor das Problem
+gestellt, dass in der Literatur Potenzautomaten-Zustände nicht rund dargestellt
+werden, sondern als Rechteck mit abgerundeten Ecken. Dieses Problem wurde durch
+die Anpassung der graphischen Zustände, sowie durch die Berechnung der Endpunkte
+der Übergänge gelöst.\vspace{10pt}
 
 
 \section{Tabellen}\label{Tables}
@@ -150,7 +150,7 @@ Zustände anzugeben, die nicht im Graphen vorkommen. Abbildung
 \ref{FigureMachineTable} zeigt das von uns umgesetzte Ergebnis.\vspace{10pt}
 
 
-\subsection{Keller Operationen Tabelle}\label{TablesPDA}
+\subsection{Tabelle für Keller-Operationen}\label{TablesPDA}
 
 Anhand der Tabelle für Kelleroperationen kann der Benutzer genau
 nachvollziehen, was genau mit dem Keller des Automaten passiert, wenn wir
@@ -159,22 +159,20 @@ in einen anderen Zustand übergehen.\vspace{10pt}
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=12cm]{../images/stack_operation_table.png}
-\caption{Keller Operationen Tabelle}
+\caption{Tabelle für Keller-Operationen}
 \label{FigureStackOperationTable}
 \end{center}
 \end{figure}
 \vspace{10pt}
 
 Die Tabelle enthält einen Eintrag pro Übergang in unserem Automaten. Jeder
-Eintrag enthält den Zustand von dem der Übergang ausgeht, den Zustand zu dem
-wir übergehen und die entsprechende Übergangsmenge. Zusätzlich wird noch
-das Wort angegeben, welches bei diesem Übergang vom Keller gelesen wird, und
-das Wort, welches auf den Keller geschrieben wird. Wenn wir nichts vom
-Keller lesen, oder auf den Keller schreiben, wird als Wort "`$\epsilon$"'
-verwendet.\vspace{10pt} 
-
-In Abbildung \ref{FigureStackOperationTable} sieht man, wie eine
-solche Tabelle aussehen kann.\vspace{10pt}
+Eintrag enthält den Zustand von dem der Übergang ausgeht, den Zustand zu dem wir
+übergehen und die entsprechende Übergangsmenge. Zusätzlich wird noch das Wort
+angegeben, welches bei diesem Übergang vom Keller gelesen wird, und das Wort,
+welches auf den Keller geschrieben wird. Wenn wir nichts vom Keller lesen, oder
+auf den Keller schreiben, wird als Wort "`$\epsilon$"' verwendet. In Abbildung
+\ref{FigureStackOperationTable} sieht man, wie eine solche Tabelle aussehen
+kann.\vspace{10pt}
 
 
 \section{Wort-Navigation}\label{WordNavigation}
@@ -294,7 +292,7 @@ die hoffentlich richtige Wahl zu treffen.\vspace{10pt}
 
 \section{Erreichbare Zustände}\label{ReachableStates}
 
-Nach dem in \ref{ConverToMachine} nachzulesenen Umwandeln eines nicht
+Nach dem in \ref{ConverToMachine} angesprochenen Umwandeln eines nicht
 deterministischen in einen deterministischen Automaten unter Verwendung der
 Potenzautomatenkonstruktion stellte sich die Frage, wie die unerreichbaren
 Zustände erkannt und entfernt werden können. Dieses Problem betrifft aber nicht

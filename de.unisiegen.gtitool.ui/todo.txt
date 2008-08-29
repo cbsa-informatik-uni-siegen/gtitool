@@ -1,5 +1,9 @@
 *** TODO ***
 
+CF		- "Wort wird nicht akzeptiert" bei ND-PDA
+CF		- Das "leere" Wort wird nicht akzeptiert
+BM		- Minimierung: Outline anpassen
+
 
 *** FEATURE ***
 
@@ -20,3 +24,5 @@ CF		- Benutzerinteraktionen einbauen
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout
 BM		- Farben beim Minimieren dynamisch berechnen
+
+		- Wort-Navigation ersetzen durch ...

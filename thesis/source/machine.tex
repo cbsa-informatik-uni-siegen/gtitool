@@ -261,6 +261,37 @@ $\epsilon$-Übergänge verursacht wurde. Abbildung \ref{FigureHistoryPath} zeigt
 ein einfaches Beispiel eines Pfads.\vspace{10pt}
 
 
+\subsection{Operationen mit dem Automaten Keller}\label{InteractionPDA}
+
+Ein wichtiger Punkt der Interaktion mit dem Benutzer ist, dass der Benutzer nach
+einer Umwandlung einer kontextfreien Grammatik in einen nicht deterministisch
+Kellerautomaten einen Übergang auswählen muss, weil der entstehende Automat
+nicht deterministisch sein muss. Die Umwandlung ist in Abschnitt
+\ref{ConverToGrammarContextFree} zu finden.\vspace{10pt}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=12cm]{../images/grammar_pda.png}
+\caption{Operationen mit dem Automaten Keller}
+\label{FigureGrammarPDA}
+\end{center}
+\end{figure}
+\vspace{10pt}
+
+Bei dem in Abbildung \ref{FigureGrammarPDA} verwendeten Beispiel kommen zwei
+Übergänge in Frage: Es könnte der Übergang gewählt werden, der \Symbol{E} vom
+Keller liest und nichts auf diesen schreibt, oder aber der Übergang, der
+\Symbol{E} vom Keller liest und \Symbol{a}\Symbol{E}\Symbol{b} auf ihn schreibt.
+Da \Symbol{a} als nächstes auf dem Eingabeband steht, sollte der zweite Übergang
+ausgewählt werden, da bei der Verwendung des ersten Übergangs das \Symbol{a}
+nicht mehr herleitbar ist. Dem Benutzer steht es allerdings frei, auch den
+anderen Übergang auszuwählen. In diesem Fall würde das Wort
+\Symbol{a}\Symbol{a}\Symbol{b}\Symbol{b} aber nicht akzeptiert werden. Der
+Benutzer hat bei einer Wahl, die sich im Nachhinein als falsch herausstellt,
+allerdings die Möglichkeit, einen oder mehrere Schritte zurückzugehen, um dann
+die hoffentlich richtige Wahl zu treffen.\vspace{10pt}
+
+
 \section{Erreichbare Zustände}\label{ReachableStates}
 
 Nach dem in \ref{ConverToMachine} nachzulesenen Umwandeln eines nicht
@@ -332,5 +363,372 @@ des Algorithmus erreicht werden.\vspace{10pt}
 \end{figure}
 \vspace{10pt}
 
+
+\section{Konvertierung}\label{ConverToMachine}
+
+Bei der Planung der Umwandlung zwischen den verschiedenen Automatentypen stellte
+sich die Frage, wie dem Benutzer der Umwandlungsalgorithmus möglichst
+verständlich dargestellt wird. Aus diesem Grund wurde die in Abschnitt
+\ref{GUIDesign} angesprochene Navigationsleiste verwendet.\vspace{10pt}
+
+Um dem Benutzer den durchgeführten Algorithmus zu verdeutlichen, wurde die
+Ansicht in drei Bereiche eingeteilt. In dem oberen linken Bereich wird der
+Ausgangsautomat dargestellt, im unteren linken Bereich der nach und nach
+entstehende konvertierte Automat und schließlich im rechten Bereich eine Outline,
+die pro Ausführungsphase, jeweils mit einem Kommentar, angibt, welchen Schritt
+der Algorithmus im Moment durchführt.\vspace{10pt}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=12cm]{../images/convert_to.png}
+\caption{Automat umwandeln}
+\label{FigureConvertTo}
+\end{center}
+\end{figure}
+\vspace{10pt}
+
+Es existieren zwei verschiedene Verfahren zur Umwandlung eines nicht
+deterministischen endlichen Automaten in einen deterministischen endlichen
+Automaten (DEA). Zum einen kann der komplette Potenzautomat verwendet werden, um
+den DEA zu erzeugen. Der entstehende Automat enthält allerdings unter Umständen
+sehr viele nicht erreichbare Zustände, deren Berechnung einige zusätzliche
+Schritte zur Folge haben kann. Wenn der Benutzer diese Art der Umwandlung
+auswählt, kann er nach dem Umwandeln die nicht erreichbaren Zustände wieder
+entfernen. Wie dies funktioniert, kann in \ref{ReachableStates} nachgelesen
+werden. Die zweite Methode ist, dass nur die erreichbaren Zustände in der unteren
+Ansicht angelegt werden. Diese Methode ist übersichtlicher für den Benutzer, wenn
+auch nicht alle im Potenzautomaten vorhandenen Zustände betrachtet
+werden.\vspace{10pt}
+
+\newpage
+Zur Umsetzung wurde der in \cite[S. 153ff]{Compilers} angegebene Algorithmus als
+Vorlage benutzt. Um den Algorithmus verstehen zu können, müssen zuerst einige
+Terme definiert werden.\vspace{10pt}
+
+\noindent
+\begin{tabular}{|p{2.2cm}|p{9.0cm}|}
+  \hline
+  NFA A                 & Input NFA \\
+  \hline
+  DFA D                 & Output DFA \\
+  \hline
+  Dstates               & States of output DFA D \\
+  \hline
+  Dtran                 & Transition function of DFA D \\
+  \hline
+  $\epsilon$-closure(s) & Set of NFA states reachable from NFA state s
+                          on $\epsilon$-transitions alone \\
+  \hline
+  $\epsilon$-closure(T) & Set of NFA states reachable from some NFA state s
+                          in set T on $\epsilon$-transitions alone; =
+                          $\cup_{s\ in\ T}\ \epsilon$-closure(s). \\
+  \hline
+  move(T,a)             & Set of NFA states to which there is a transition
+                          on input symbol a from some state s in T \\
+  \hline
+\end{tabular}
+\vspace{10pt}
+
+Abbildung \ref{FigureConvertTo} zeigt die Umwandlung nach einigen Schritten. Die
+eigentliche Umwandlung geschieht dann mit folgendem Algorithmus:\vspace{10pt}
+
+\noindent
+\verb| 1 initially, |$\epsilon$\verb|-closure(|$s_0$\verb|) is the only state in Dstates,|\\
+\verb| 2 and it is unmarked;|\\
+\verb| 3 while ( there is an unmarked state T in Dstates ) {|\\
+\verb| 4       mark T;|\\
+\verb| 5       for ( each input symbol a ) {|\\
+\verb| 6           U = |$\epsilon$\verb|-closure(move(T,a));|\\
+\verb| 7           if ( U is not in Dstates )|\\
+\verb| 8              add U as an unmarked state to Dstates;|\\
+\verb| 9           Dtran[T,a] = U;|\\
+\verb|10       }|\\
+\verb|11 }|
+\vspace{10pt}
+
+Dieser Algorithmus verwaltet eine Menge \textit{Dstates} von Zuständen des
+umgewandelten Automaten. Neben dieser Menge wird für jeden Zustand gespeichert,
+ob er schon verarbeitet wurde. Am Anfang wird der $\epsilon$-Abschluss des
+Start-Zustandes \State{$s_0$} in die Menge \textit{Dstates} aufgenommen. In Zeile
+vier wird der aktuelle Zustand markiert, jeder neue Zustände in \textit{Dstates}
+wird somit abgearbeitet. In der Schleife in Zeile fünf wird über alle Symbole des
+Alphabets iteriert. In Zeile sechs wird berechnet, welche Zustände von dem
+aktuellen Symbol aus erreichbar sind, zusätzlich dazu wird von diesem Ergebnis
+noch der $\epsilon$-Abschluss berechnet. Anschließend wird dieser neue Zustand zu
+der Menge \textit{Dstates} hinzugefügt, falls er noch nicht enthalten ist.
+Außerdem wird der Zustand in diesem Fall als nicht markiert gekennzeichnet.
+Abschließend wird in Zeile neun die neue Übergangsfunktion
+gespeichert.\vspace{10pt}
+
+
+\section{Minimierung}\label{Minimize}
+
+Sobald der Benutzer einen Automaten erstellt hat, kann er mit diesem schon alle
+Funktionen, welche dieses Lernwerkzeug bietet, nutzen. Allerdings besteht die
+Möglichkeit, dass ein Automat existiert, der die gleiche Sprache erkennt, die ein
+erstellter Automat erkennt, jedoch mit weniger Zuständen auskommt. Bei
+komplexeren Beispielen bemerkt man schnell, dass die Übersichtlichkeit mit
+wachsender Anzahl der Zustände immer weiter abnimmt. Daher ist es wünschenswert,
+immer mit dem minimalen Automaten für eine bestimmte Sprache zu arbeiten. Im
+Folgenden wollen wir uns jetzt den Algorithmus ansehen, welcher verwendet wird,
+um aus einem Automaten einen neuen Automaten mit einer minimalen Anzahl von
+Zuständen zu erzeugen. Dieser Algorithmus ist aus \cite{Compilers}
+entnommen. In Abbildung \ref{FigureMinimization} sieht man wie die
+Minimierung im GTI Tool graphisch dargestellt wird.\vspace{10pt}
+
+Wie bereits erwähnt, erwartet der Algorithmus als Eingabe einen Automaten, und
+erzeugt als Ausgabe einen neuen Automaten welcher die gleiche Sprache
+akzeptiert, jedoch mit einer minimalen Anzahl von Zuständen
+auskommt.\vspace{10pt}
+
+Der erster Minimierungsschritt besteht darin, die unerreichbaren Zustände zu
+entfernen, da diese keine Auswirkung auf die erkannte Sprache haben können. Der
+dazu verwendete Algorithmus zur Berechnung der erreichbaren Zustände kann im
+Abschnitt \ref{ReachableStates} nachgeschlagen werden.\vspace{10pt}
+
+Im Weiteren versuchen wir, äquivalente Zustände in Gruppen, auch
+Äquivalenz\-klassen genannt, zusammenzufassen, um diese später zu einem Zustand
+zu verschmelzen. Um herauszufinden, ob zwei Zustände in der gleichen
+Äquivalenz\-klasse liegen, überprüft man für jedes Symbol des Alphabets
+einzeln, ob alle Zustände der Gruppe mit diesem Symbol in Zustände der selben
+Gruppe übergehen.\vspace{10pt}
+
+Initial wird unsere Menge von Zuständen in zwei Gruppen unterteilt. Alle
+akzeptierenden Zustände bilden die erste, alle nicht akzeptierenden Zustände die
+zweite Gruppe.\vspace{10pt}
+
+Der Algorithmus nimmt sich jetzt das Alphabet des Eingabeautomaten zur Hilfe, um
+zu prüfen, ob alle Zustände einer Gruppe wirklich in einer Äquivalenzklasse
+liegen, oder ob wir die Gruppe aufspalten müssen. Dazu sei gesagt, dass zwei
+Zustände in der selben Äquivalenzklasse liegen, wenn sie mit jeweils allen
+Symbolen des Eingabealphabets in einen Zustand der selben Gruppe
+übergehen.\vspace{10pt}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{../images/minimize.png}
+\caption{Automat - Minimierung}
+\label{FigureMinimization}
+\end{center}
+\end{figure}
+\vspace{10pt}
+
+Schauen wir uns jetzt mal die Arbeitsweise des Algorithmus im Detail an. Als
+erstes wird die aktuelle Gruppeneinteilung gespeichert, also wie viele
+Gruppen existieren, und welcher Zustand in welcher Gruppe liegt. Dann wird
+die erste Gruppen betrachtet. Wenn diese nur einen Zustand enthält, kann sie
+nicht weiter verfeinert werden, und muss daher auch nicht mehr betrachtet werden.
+\vspace{10pt}
+
+Enthält die Gruppe mehr als einen Zustand, wird das aktuelle Alphabet des
+Automaten betrachtet. Der Algorithmus überprüft jetzt, ob alle Zustände dieser
+Gruppe in der gleichen Äquivalenzklasse liegen. Wenn das der Fall ist, kann auch
+diese Gruppe nicht weiter unterteilt werden. Falls aber doch Zustände
+existieren, welche in einer anderen Äquivalenz\-klasse liegen, werden diese
+Zustände aus der aktuellen Gruppe entfernt und bilden eine neue Gruppe. \vspace{10pt}
+
+Nachdem diese Prozedur für die aktuelle Gruppe abgeschlossen ist, wird sie für
+alle Gruppen, die noch nicht betrachtet wurden, wiederholt. Nach Betrachtung aller
+Gruppen wird die aktuelle Gruppeneinteilung mit der verglichen, die zu Beginn
+gespeichert wurde. Wenn diese übereinstimmt, ist unser Algorithmus am Ende, und
+die Gruppen können nicht weiter verfeinert werden. Stimmt die Gruppeneinteilung
+nicht überein, muss jede Gruppe erneut einzeln betrachten, um zu versuchen,
+diese in kleinere Gruppen zu zerlegen.\vspace{10pt}
+
+Nach Beendigung des Algorithmus repräsentiert jede Gruppe einen Zustand
+im minimalen Automaten. Jetzt muss noch pro Symbol des Alphabets der
+Übergang in den entsprechenden neuen Zustand angelegt werden. Mit diesem
+letzten Schritt ist die Konstruktion des minimalen Automaten
+abgeschlossen.\vspace{10pt}
+
+In unserem Lernwerkzeug wird dem Benutzer wie üblich in der Outline angezeigt,
+was in den bisherigen Schritten des Algorithmus passiert ist.\vspace{10pt}
+
+
+\section{Auto-Layout}\label{AutoLayout}
+
+Beim Anlegen eines neuen Automaten, oder auch beim Modifizieren eines
+bestehenden, kommt es vor, dass die Übersichtlichkeit verloren geht. Damit man
+eine schnelle Möglichkeit hat, den Automaten wieder besser überblicken zu
+können, wurde eine Auto-Layout Funktion implementiert.\vspace{10pt}
+
+Diese Funktion basiert zur Zeit auf dem Erweiterten Partitionierungsalgorithmus
+von Kerninghan und Lin. Er beruht auf der iterativen Verbesserung durch
+paarweisen Austausch.\vspace{10pt}
+
+Dieser Algorithmus wird eigentlich für die Partitionierung von Schaltungen auf
+einem Verdrahtungsträger verwendet. Dabei soll es zu möglichst wenig
+Überschneidungen der Leiterbahnen kommen, weil die Leiterbahnen dann auf mehrere
+Ebenen verteilt werden müssen. Der Kerninhan-Lin Algorithmus kann aber problemlos
+auf unsere Situation übertragen werden. Allerdings mussten bei der Übertragung
+einige Modifikationen vorgenommen werden, auf welche wir später noch näher
+eingehen werden.\vspace{10pt}
+
+
+\subsection{Der Kerninghan-Lin-Algorithmus}\label{KerninghanLin}
+
+Zu Beginn wird das Partitionierungsproblem in eine Graphendarstellung
+transformiert. Danach wird die Knotenmenge V in zwei Gruppen, mit jeweils n
+Elementen unterteilt. Anschließend werden für die aktuelle Einteilung die Kosten
+berechnet. Als Kosten bezeichnen wir Schnitte mit einer imaginären Linie
+zwischen zwei Gruppen.\vspace{10pt}
+
+In jedem Durchlauf wird mehrfach ein Gewinnwert $\Delta g$ berechnet. Einen
+Gewinnwert kann man erreichen, indem man zwei Knoten austauscht, und dadurch
+die Anzahl der Schnitte verringert, wobei der Gewinnwert der Differenz
+zwischen der neuen und alten Anzahl von Schnitten entspricht.
+
+Der Kerninghan-Lin-Algorithmus lässt sich in die folgenden Schritte
+unterteilen, welche dem Buch "`Layoutsynthese elektronischer
+Schaltungen"' \cite{Layout} entnommen wurden:\vspace{10pt}
+
+Schritt 1:
+\begin{itemize}
+  \item i=1
+  \item Berechnung von D(v) für alle Knoten v $\in$ V
+\end{itemize}
+
+Schritt 2:
+\begin{itemize}
+  \item Auswahl von $a_i$ und $b_i$ mit maximalem Gewinnwert $\Delta g_i =
+  D(a_i) + D(b_i) - 2 * c(a_i b_i)$
+  \item Vertauschen und fixieren von $a_i$ und $b_i$
+\end{itemize}
+
+
+Schritt 3:
+\begin{itemize}
+  \item Wenn alle Knoten fixiert sind, weiter mit Schritt 4, andernfalls
+  \item Neuberechnung der D-Werte für alle Knoten, welche nicht fixiert und
+  mit $a_i$ und $b_i$ verunden sind
+  \item i=i+1
+  \item Weiter mit Schritt 2
+\end{itemize}
+
+Schritt 4:
+\begin{itemize}
+  \item Bestimmung der Vertauschungssequenz 1 bis m $(1 \leq m \leq i)$, so dass
+  $G_m = \sum_{i=1}^{m}{\Delta g_i}$ maximiert wird
+  \item Wenn $G_m > 0$, weiter mit Schritt 5, andernfalls ENDE
+\end{itemize}
+
+Schritt 5:
+\begin{itemize}
+  \item Durchführen aller m Vertauschungen, beseitigen aller Knotenfixierungen
+  \item Weiter mit Schritt 1
+\end{itemize}\vspace{10pt}
+
+Betrachten wir zunächst, wie der Algorithmus vorgeht, indem wir
+nachvollziehen, was in den einzelnen Schritten passiert.\vspace{10pt}
+
+In \textit{Schritt 1} wird für alle Knoten berechnet, ob sie einen hohen oder
+niedrigen Anteil der Schnittkosten verursachen. Die beiden Knoten, welche den
+maximalen Gewinnwert bringen, werden getauscht und fixiert.\vspace{10pt}
+
+In \textit{Schritt 3} überprüfen wir, ob alle Knoten bereits fixiert sind,
+ansonsten werden die Kosten für jeden Knoten der noch nicht fixiert ist neu
+berechnet und erneut
+\textit{Schritt 2} ausgeführt.\vspace{10pt}
+
+In \textit{Schritt 4} wird überprüft, ob der Algorithmus bereits sein Ende
+erreicht hat. Wenn nicht, werden in \textit{Schritt 5} die Vertauschungen des
+aktuellen Durchgangs durchgeführt, und es wird ein neuer Durchgang gestartet.\vspace{10pt}
+
+Wie schon erwähnt, musste der Algorithmus für die Implementierung ein wenig
+modifiziert werden. Zum Einen geht man davon aus, dass die
+Knotenmenge in zwei ungefähr gleichgroße Gruppen eingeteilt werden. Dies erwies
+sich bei der Implementierung allerdings als eher unvorteilhaft. Daher wird dynamisch
+bestimmt, in wie viele Gruppen die Knoten unterteilt werden, wobei die Größe
+aller Gruppen aber auch hier in etwa die gleiche ist. Diese
+Implementierung entspricht soweit der Erweiterung des
+Kerningham-Lin-Algorithmus, wie sie in \cite{Layout} beschrieben
+wird.\vspace{10pt}
+
+Die Erweiterung des Algorithmus sieht jetzt vor, dass man den Algorithmus jetzt
+für alle möglichen Paarungen von Gruppen betrachtet. Die Implementierung
+sieht so aus, dass man eine Linie zwischen die erste und zweite Gruppe legt, und
+alle Kanten zählt, die diese Linie schneiden. Dann berechnet man, bei
+welchen beiden Knoten ein Tausch die größte Verbesserung liefert, also die
+meisten Schnitte mit der Linie wegfallen würden. Diese werden dann getauscht und
+fixiert. Wenn alle Knoten fixiert sind oder keine Tauschkombination existiert,
+bei der Schnitte mit der Linie zwischen den Gruppen wegfallen, wird die Linie
+eine Gruppe nach unten geschoben, also zwischen die zweite und dritte Gruppe und
+die Vorgehensweise wiederholt. Der Algorithmus terminiert, nachdem die vorletzte
+und die letzte Gruppe abgearbeitet wurden.\vspace{10pt}
+
+Dieser Algorithmus liefert noch nicht das optimale Ergebnis, was daran liegt,
+dass für die Kostenfunktion nur die Schnitte der Kanten berücksichtigt werden.
+Daher wird im Kapitel \ref{PerspectiveAutoLayout} ein alternativer Algorithmus beschrieben,
+welcher wahrscheinlich bessere Ergebnisse für ein automatisches Layout liefern
+könnte.\vspace{10pt}
+
+
+\section{Fehler und Warnungen}\label{InteractionMachine}
+
+Es war uns bei der Umsetzung des \gtitools sehr wichtig, dass man als sehr viele
+Fehler machen kann, ohne dass er durch eine Validierung eingeschränkt wird. Eine
+Ausnahme von diesem Konzept bilden die in Kapitel \ref{Parser} beschriebenen
+Parser, da eine falsche Eingabe dort nicht gut, durch das Anzeigen von Fehlern
+bzw. Warnungen, behandelt hätte werden können.\vspace{10pt}
+
+Der Hauptgrund für die Auswahl dieser Strategie war, dass der Benutzer durch das
+fehlerhafte Eingeben bzw. durch das Beheben der Fehler hoffentlich mehr lernt,
+als wenn er die Eingaben gar nicht erst hätte machen können. In diesem Abschnitt
+werden die verschiedenen Fehler und Warnungen beschrieben, die bei Grammatiken und
+Automaten auftreten können.\vspace{10pt}
+
+Für Automaten gibt es einige Fehler und Warnungen die nun aufgezählt werden. Die
+verschiedenen Automatentypen verwenden unterschiedliche Fehler. So ist ein
+$\epsilon$-Übergang in einem $\epsilon$-NDEA kein Fehler, in einem DEA aber
+schon. Deshalb wird bei jedem Fehler angegeben, in welchem Automaten er auftreten
+kann.\vspace{10pt}
+
+\noindent
+\begin{tabular}{|p{2.1cm}|p{2.7cm}|p{6.0cm}|}
+  \hline
+  \textbf{Meldung} &
+  \textbf{Automaten} &
+  \textbf{Beschreibung} \\
+  \hline
+  \hline
+  Alle Symbole &
+  DEA &
+  Ein Zustand muss Übergänge mit allen Symbolen enthalten \\
+  \hline
+  Symbole nur einmal &
+  DEA und Kellerautomat &
+  Ein Zustand darf nicht mehrere Übergänge mit dem gleichen Symbol enthalten \\
+  \hline
+  $\epsilon$-Übergang &
+  DEA und NDEA &
+  Es darf kein $\epsilon$-Übergang vorhanden sein \\
+  \hline
+  Keller-Operationen &
+  DEA, NDEA und $\epsilon$-NDEA &
+  Es dürfen keine Operationen auf dem Keller ausgeführt werden \\
+  \hline
+  Mehr als ein Start-Zustand &
+  DEA, NDEA, $\epsilon$-NDEA und Kellerautomat&
+  Es darf nur ein Start-Zustand vorhanden sein \\
+  \hline
+  Kein Start-Zustand &
+  DEA, NDEA, $\epsilon$-NDEA und Kellerautomat&
+  Es muss ein Start-Zustand vorhanden sein \\
+  \hline
+  Eindeutiger Zustandsname &
+  DEA, NDEA, $\epsilon$-NDEA und Kellerautomat&
+  Die Namen der Zustände müssen eindeutig sein \\
+  \hline
+\end{tabular}
+\vspace{10pt}
+
+\noindent
+Neben diesen Fehlern gibt es auch noch zwei Warnungen. Zum einen wird der
+Benutzer gewarnt, wenn kein akzeptierender Zustand vorhanden ist. Dabei handelt
+es sich nicht um einen ungültigen Automaten, aber es könnte sein, dass der
+ungeübte Benutzer den akzeptierenden Zustand nur vergessen hat. Außerdem wird
+eine Warnung angezeigt, wenn ein oder mehrere Zustände nicht erreichbar sind.
+Zur Bestimmung dieser unerreichbaren Zustände wird der in Kapitel
+\ref{ReachableStates} beschriebene Algorithmus benutzt.\vspace{10pt}
 
 %### removes texlipse warnings

@@ -11,36 +11,53 @@
 
 \chapter{Einleitung}\label{Introduction}
 
-Das Fach Grundlagen der theoretischen Informatik ist für alle
+Das Fach Grundlagen der theoretischen Informatik (\textit{GTI}) ist für alle
 Informatikstudenten der Universität Siegen eine Pflichtveranstaltung. Allerdings
 haben bisherige Klausurergebnisse gezeigt, dass einige Studenten Probleme mit
 diesem Themengebiet haben.\vspace{10pt}
 
 Um die Studenten bei der Lösung dieser Probleme zu unterstützen, ist die Idee
-entstanden, ein Lernwerkzeug für dieses Fach zu entwickeln. Dieses Lernwerkzeug
-soll den Stoff der Vorlesung und der Übungen abdecken, und den Studenten helfen,
-diesen besser nachvollziehen zu können, um Verständnisprobleme zu
-beseitigen.\vspace{10pt}
+entstanden, ein Lernwerkzeug (im weiteren Text als \textit{\gtitool} bezeichnet)
+für dieses Fach zu entwickeln. Dieses Lernwerkzeu soll den Stoff der Vorlesung
+und der Übungen abdecken, und den Studenten helfen, diesen besser
+nachvollziehen zu können, um Verständnisprobleme zu beseitigen.\vspace{10pt}
 
-Dieses Lernwerkzeug haben wir im Rahmen unserer Diplomarbeit entwickelt, und im
-Folgenden soll vorgestellt werden, welche Funktionen bereits verfügbar sind. In
-Kapitel \ref{Perspective} werden wir noch auf zukünftige Aussichten für dieses
-Projekt eingehen, wobei wir Erweiterungsmöglichkeiten nennen und einen Vorschlag
-für die Realisierung geben werden.\vspace{10pt}
+\noindent
+Die Vorlesung GTI kann in die folgenden Themengebietet unterteilt
+werden:\vspace{10pt} 
 
-TODO
+\begin{itemize}
+  \item Reguläre Sprachen und endliche Automaten
+  \item Kontextfreie Sprachen und Kellerautomaten
+  \item Berechenbarkeitstheorie
+\end{itemize}\vspace{10pt}
 
-In diesem Kapitel werden alle wichtigen Konzepte besprochen, die bei der
-Umsetzung des \gtitools berücksichtigt bzw. erst während der Entwicklung
-diskutiert und anschließend in die Tat umgesetzt wurden.\vspace{10pt}
+\noindent
+Der Umfang des \gtitools beschränkt sich auf Auszüge der Kapitel
+"`Reguläre Sprachen und endliche Automaten"' und "`Kontextfreie Sprachen und
+Kellerautomaten"'.\vspace{10pt}
 
-Ein wichtiges Konzept bei der Umsetzung war die Unterstützung von Lerngruppen.
-Das \gtitool sollte somit in irgendeiner Weise dazu in der Lage sein, nicht nur
-einem einzelnen Benutzer zur Verfügung zu stehen, sondern sollte auch von einer
-Lerngruppe benutzt werden können. Bei der Planung wurden verschiedene
-Möglichkeiten diskutiert, auf welche Weise wir Lerngruppen unterstützen
-können. Schließlich wurde beschlossen, den Benutzern einen Austausch von
-Automaten und Grammatiken zu ermöglichen.\vspace{10pt}
+Der Benutzer hat die Möglichkeit eigene Automaten, Kapitel \ref{Machines}, und
+Grammatiken, Kapitel \ref{Grammars},  zu definieren. Die definierten Grammatiken
+können in Automaten konvertiert werden, was in Kapitel \ref{ConverToGrammar} beschrieben wird. Für die Automaten besteht
+die Möglichkeit, diese in einen anderen Automatentypen umzuwandeln, worauf wir
+in Kaptitel \ref{ConverToMachine} eingehen werden. In Kapitel
+\ref{WordNavigationDeterministic} werden wir beschreiben, wie ein
+Benutzer überprüfen kann, ob ein Wort in der Sprache liegt, welche
+der Automat erkennt. Der Benutzer hat auch die Möglichkeit, sich
+aus einem definierten Automaten einen minimalen Automaten
+konstruieren zu lassen, welcher die gleiche Sprache erkennt. Diese
+Minimierung wird in Kapitel \ref{Minimize} erklärt.\vspace{10pt}
+
+Während der Diplomarbeit haben wir einige Konzepte diskutiert und festgelegt,
+welche bei der Implementierung in die Tat umgesetzt wurden. Ein wichtiges Konzept
+bei der Umsetzung war die Unterstützung von Lerngruppen. Das \gtitool sollte
+somit in irgendeiner Weise dazu in der Lage sein, nicht nur einem einzelnen
+Benutzer zur Verfügung zu stehen, sondern sollte auch von einer Lerngruppe
+benutzt werden können. Bei der Planung wurden verschiedene Möglichkeiten
+diskutiert, auf welche Weise wir Lerngruppen unterstützen können. Schließlich
+wurde beschlossen, den Benutzern einen Austausch von Automaten und Grammatiken zu
+ermöglichen.\vspace{10pt}
 
 Der Austausch von Dateien wurde so umgesetzt, dass ein Benutzer seine geöffneten
 Dateien an andere Benutzer verschicken kann, falls der Empfänger zuvor das
@@ -49,15 +66,14 @@ Erkenntnisse mit den Anderen auszutauschen. Dies sollte dazu dienen, das
 Verständnis der Materie zu verbessern.\vspace{10pt}
 
 Ein weiteres sehr wichtiges, wenn nicht sogar das wichtigste Konzept bei der
-Umsetzung, war, die bereits in Abschnitt \ref{InteractionErrorWarning}
-angesprochene Vorgehensweise mit Benutzereingaben. Der Benutzer sollte so wenig
-wie möglich in der Eingabe beschränkt werden. Ein Beispiel dafür ist, dass er in
-einem DEA einen $\epsilon$-Übergang anlegen kann, obwohl das für dieses
+Umsetzung, war, die Vorgehensweise mit Benutzereingaben. Der Benutzer sollte so
+wenig wie möglich in der Eingabe beschränkt werden. Ein Beispiel dafür ist, dass
+er in einem DEA einen $\epsilon$-Übergang anlegen kann, obwohl das für dieses
 Automatenmodell nicht erlaubt ist. Allerdings kann er einen solchen Automaten
-nicht benutzen, denn bevor etwas ihm, zum Beispiel eine Wort-Navigation, erfolgen
-kann, wird der Automat automatisch validiert, wobei die in Abschnitt
-\ref{InteractionErrorWarning} angegebenen Fehler und Warnungen auftreten
-können.\vspace{10pt}
+erst benutzen, wenn dieser auf Korrektheit überprüft wurde, und alle
+festgestellten Fehler beseitigt wurden. Diese Überprüfung auf Korrektheit wird
+im Folgenden als \textit{Validierung} bezeichnet, welche im \gtitool für
+Automaten und Grammatiken möglich ist.\vspace{10pt}
 
 Hintergrund von diesem Konzept war, dass der Benutzer durch dieses Vorgehen mehr
 lernt, als würde er, um in dem Beispiel zu bleiben, einen $\epsilon$-Übergang

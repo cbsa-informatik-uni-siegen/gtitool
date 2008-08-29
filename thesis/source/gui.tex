@@ -13,9 +13,8 @@
 
 In diesem Kapitel geht es um die Oberflächengestaltung. Zum Einen geht es darum,
 wie und warum die Hauptansicht so gestaltet wurde, zum Anderen darum, welche
-besonderen Schritte notwendig waren, um das Aussehen zu verbessern und dem
-Benutzer es dadurch zu erleichtern, mit dem \gtitool zu arbeiten.
-\vspace{10pt}
+besonderen Schritte notwendig waren, um das Aussehen zu verbessern und es dem
+Benutzer dadurch zu erleichtern, mit dem \gtitool zu arbeiten.\vspace{10pt}
 
 
 \section{Gestaltung der Hauptansicht}\label{GUIMain}
@@ -53,7 +52,7 @@ Feldern eingetragen werden soll.
 
 \section{Gestaltung der graphischen Komponenten}\label{GUIDesign}
 
-Wir wurden an einigen Stellen im \gtitool vor das Problem gestellt Algorithmen
+Wir wurden an einigen Stellen im \gtitool vor das Problem gestellt, Algorithmen
 schrittweise ablaufen zu lassen, da der Benutzer bei der Unterteilung in kleine
 Schritte mehr Nutzen hat, als wenn der Algorithmus schneller abgearbeitet würde.
 Wir entschieden uns dafür eine Navigationsleiste zu verwenden, die es dem
@@ -76,19 +75,18 @@ kann.\vspace{10pt}
 Eine weitere Anpassung, die von uns implementiert wurde, ist die  Verwendung von
 sogenannten Pretty-Strings. Ein Pretty-String unterscheidet sich von einem
 normalen String durch zu\-sätz\-liche Farbinformationen und Zeichenattribute
-jedes einzelnen Zeichens. Der Benutzer soll dadurch in der Lage sein die ihm zur
-Verfügung gestellten Informationen schneller aufzunehmen, als wenn ihm eine
+jedes einzelnen Zeichens. Der Benutzer soll dadurch in der Lage sein, die ihm
+zur Verfügung gestellten Informationen schneller aufzunehmen, als wenn ihm eine
 unformatierte Zeichenkette angezeigt werden würde.\vspace{10pt}
 
 
 \section{Redo/Undo}\label{GUIRedoUndo}
 
-Da das Lernwerkzeug vom Aussehen her sehr an einen Editor angelehnt ist,
-wollten wir dem Benutzer auch eine Möglichkeit geben, Schritte rückgängig zu
-machen oder zu wiederholen. Dies war jedoch zu einem Zeitpunkt, zu dem bei
-weitem noch nicht alle Funktionalität implementiert war. Desweiteren soll das
-Werkzeug ja auch zukünftig an den Stoff der Vorlesung angepasst werden, so dass
-uns eine einfache Erweiterbarkeit sehr wichtig war.\vspace{10pt}
+Da das Lernwerkzeug vom Aussehen her sehr an einen Editor angelehnt ist, wollten
+wir dem Benutzer auch eine Möglichkeit geben, Schritte rückgängig zu machen oder
+zu wiederholen. Desweiteren soll das Werkzeug ja auch zukünftig an den Stoff der
+Vorlesung angepasst werden, so dass uns eine einfache Erweiterbarkeit sehr
+wichtig war.\vspace{10pt}
 
 Daher haben wir uns entschlossen, die Verwaltung der Redo/Undo Schritte nicht
 einer Klasse alleine zu überlassen, sondern die verschiedenen Aktionen in
@@ -189,8 +187,8 @@ and Drop zwischen den Ansichten gelöst.\vspace{10pt}
 
 \section{Parser}\label{Parser}
 
-Wenn wir in dieser Diplomarbeit den Begriff \textit{Parser} verwenden, meinen wir
-damit das Zerlegen einer von Benutzer eingegebene Zeichenkette in ein internes
+Wenn wir in dieser Diplomarbeit den Begriff {\em Parser} verwenden, meinen wir
+damit die Umwandlung einer vom Benutzer eingegebene Zeichenkette in ein internes
 Format, das wir benutzen können, um die Daten weiter zu verwenden. Ein Beispiel
 dafür ist das Alphabet oder der Zustand. Ein Parser wird normalerweise als Teil
 eines Compilers benutzt. Die bei einem Compiler verwendeteten Phasen nach dem
@@ -216,7 +214,7 @@ Dies wäre nicht der Fall gewesen, wenn nur eine Auswahl von Zeichen zur
 Verfügung gestanden hätte.\vspace{10pt}
 
 Zur Erzeugung der Parser wurde der CUP Parser-Generator für Java verwendet, siehe
-\cite{java-cup}. Als lexikalischer Scanner wurde wegen dem guten Zusammenspiel
+\cite{java-cup}. Als lexikalischer Scanner wurde wegen des guten Zusammenspiels
 mit dem verwendeten Parser JFlex benutzt, siehe \cite{jflex}.\vspace{10pt}
 
 In diesem Abschnitt werden die Besonderheiten der Parser angesprochen, vor allem
@@ -240,7 +238,7 @@ aktuellen Kontext nicht vorgenommen werden können. Ein wichtiger Aspekt dabei
 ist, dass der Benutzer darauf hingewiesen wird, warum seine Eingabe abgelehnt
 wird.\vspace{10pt}
 
-Im \gtitool gibt es an verschiedenen Stellen die Möglichkeit ein Alphabet
+Im \gtitool gibt es an verschiedenen Stellen die Möglichkeit, ein Alphabet
 einzugeben. Betrachten wir als erstes das Eingeben des Alphabetes im Dialog für
 die Einstellungen, da dieser Parser die wenigsten kontextsensitiven Bedingungen
 berücksichtigen muss. Sowohl beim Eingabealphabet, wie auch beim Kelleralphabet
@@ -275,27 +273,23 @@ einer bestehenden Grammatik. Auch hier wird überprüft, ob das Zeichen in einer
 der Produktionen benutzt wird. Ist dies der Fall, kann es nicht entfernt
 werden.\vspace{10pt}
 
-Ein ähnliches Prinzip wird bei einigen der übrigen Parsern verwendet, so zum
-Beispiel das Keller Lese-Wort bzw. das Keller Schreib-Wort. Auch dort müssen
-die verwendeten Symbole im Keller Alphabet vorkommen.\vspace{10pt}
-
 
 \subsection{Anpassung der Darstellungsweise}\label{ParserAdaption}
 
-Um das Arbeiten mit Grammatiken einfacher und übersichtlicher zu
-machen, wurde die Darstellung der Nichtterminalzeichen und
-Terminalzeichen unterschiedlich gewählt. So wird das Startsymbol in einer
-anderen Farbe, als die anderen Nichtterminalzeichen dargestellt wird. Der
-Benutzer ist somit in der Lage, in den Produktionen zu erkennen, ob ein
-Nichtterminalzeichen das Startsymbol ist oder nicht.\vspace{10pt}
+Um das Arbeiten mit Grammatiken einfacher und übersichtlicher zu machen, wurde
+die Darstellung der Nichtterminalzeichen und Terminalzeichen unterschiedlich
+gewählt. So wird das Startsymbol in einer anderen Farbe, als die anderen
+Nichtterminalzeichen dargestellt. Der Benutzer ist somit in der Lage, in den
+Produktionen zu erkennen, ob ein Nichtterminalzeichen das Startsymbol ist oder
+nicht.\vspace{10pt}
 
 Das Problem wurde so gelöst, dass zum Beispiel dem Scanner der
 Nichtterminalzeichen mitgegeben wurde, bei welchem Zeichen es sich um das
-Startsymbol handelt. Ein weiteres Beispiel ist die rechte Seite einer
-Produktion: Um dem Benutzer auch hier eine Unterscheidung der Symbole leicht zu
-machen, muss hier eine farbliche Unterscheidung zwischen Terminalzeichen,
-Nichtterminalzeichen und dem Startsymbol erfolgen. Auch dieses Problem wurde auf
-die oben genannte Art und Weise gelöst.\vspace{10pt}
+Startsymbol handelt. Ein weiteres Beispiel ist die rechte Seite einer Produktion:
+Um dem Benutzer auch hier eine Unterscheidung der Symbole leicht zu machen, muss
+hier eine farbliche Unterscheidung zwischen Terminalzeichen, Nichtterminalzeichen
+und dem Startsymbol erfolgen. Auch dieses Problem wurde auf die oben genannte Art
+und Weise gelöst.\vspace{10pt}
 
 
 \section{Drucken}\label{Print}

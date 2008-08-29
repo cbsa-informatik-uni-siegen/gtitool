@@ -13,7 +13,7 @@
 
 Im Mittelpunkt der Planung und der Umsetzung des \gtitools standen die Automaten.
 Im Rahmen dieser Diplomarbeit wurden vier Automatentypen umgesetzt. Der
-deterministische endliche Automat (DEA), der nichtdeterminitische endliche
+deterministische endliche Automat (DEA), der nichtdeterministische endliche
 Automat (NDEA), der nichtdeterministische endliche Automat mit
 $epsilon$-Übergängen ($\epsilon$-NDEA) und schließlich der Kellerautomat. Die
 verschiedenen Aspekte von Automaten werden in diesem Kapitel besprochen, dazu
@@ -41,15 +41,14 @@ speziellen Ansprüchen unserer Umsetzung zu genügen.\vspace{10pt}
 
 \subsection{Automatendarstellung mit JGraph}\label{GraphJGraph}
 
-Bei der Darstellung der Automaten haben wir uns sehr daran orientiert, wie sie
-hier \cite{Sieber} verwendet wird. Wir wollten eine möglichst hohe Überdeckung
-erreichen, um sicherzustellen, dass ein Benutzer einen existierenden Automaten
-verstehen kann, ohne sich noch viel einlesen zu müssen. In den
-Vorlesungsunterlagen wird ein Zustand als Kreis dargestellt. Ein akzeptierender
-Zustand wird über einen doppelten Rahmen gekennzeichnet. Einen Startzustand
-erkennt man an einem Pfeil, wlecher mit Start beschriftet ist. In
-Abbildung \ref{FigureMachine} sieht man wie ein Automat im GTI Tool
-aussieht.\vspace{10pt}
+Bei der Darstellung der Automaten haben wir uns am Verlesungsskript \cite{Sieber}
+orientiert. Wir wollten eine möglichst hohe Überdeckung erreichen, um
+sicherzustellen, dass ein Benutzer einen existierenden Automaten verstehen kann,
+ohne sich noch viel einlesen zu müssen. In den Vorlesungsunterlagen wird ein
+Zustand als Kreis dargestellt. Ein akzeptierender Zustand wird über einen
+doppelten Rahmen gekennzeichnet. Einen Startzustand erkennt man an einem Pfeil,
+welcher mit Start beschriftet ist. In Abbildung \ref{FigureMachine} sieht man
+wie ein Automat im GTI Tool aussieht.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}
@@ -60,10 +59,10 @@ aussieht.\vspace{10pt}
 \end{figure}
 \vspace{10pt}
 
-Als erstes mussten wir mit Hilfe von JGraph Komponenten eine geeignete
-Darstellung von Zuständen und Übergängen erreichen. Diese Komponenten mussten dynamisch
-angelegt, gelöscht und bearbeitet werden können. Nachdem wir also eine passende
-Darstellung für unsere Automaten gefunden hatten, mussten wir noch die
+Als erstes mussten wir mit Hilfe von JGraph-Komponenten eine geeignete
+Darstellung von Zuständen und Übergängen erreichen. Diese Komponenten müssen
+dynamisch angelegt, gelöscht und bearbeitet werden können. Nachdem wir also eine
+passende Darstellung für unsere Automaten gefunden hatten, mussten wir noch die
 Verknüpfung von den graphischen Elementen und den Kernelementen herstellen. Um
 eine eindeutige Zuweisung von diesen Elementen zu erreichen, haben wir uns dazu
 entschieden, die Kernelemente als Attribut in den graphischen Komponenten zu
@@ -85,8 +84,8 @@ allerdings Anpassungen vorgenommen werden, um den von uns vorgegebenen
 Funktionumfang erreichen zu können. Diese Anpassungen werden in diesem
 Abschnitt geschildert.\vspace{10pt}
 
-Wir wollten in der Lage sein die Farbe der Zustände je nach Situation anzupassen,
-um zum Beispiel einen aktiven oder einen fehlerhaften Zustand anders
+Wir wollten in der Lage sein, die Farbe der Zustände je nach Situation
+anzupassen, um zum Beispiel einen aktiven oder einen fehlerhaften Zustand anders
 darzustellen. Dies wird zwar von der Bibliothek unterstützt, allerdings wurde von
 uns eine Verknüpfung mit den Kernelementen gewünscht. Auf diese Weise ist es nun
 möglich, einem solchen Kernelement zu sagen, dass es aktiv oder fehlerhaft ist.
@@ -230,7 +229,7 @@ liegt, welche von dem Automaten erkannt wird.\vspace{10pt}
 
 \subsection{Zustands Pfad}\label{HistoryPath}
 
-Bei Verwendung eines nicht deterministischen Automaten stellte sich bei der
+Bei Verwendung eines nichtdeterministischen Automaten stellte sich bei der
 Wort-Navigation die Frage, auf welchem Pfad die aktuell aktiven Zustände erreicht
 wurden. Verschiedene Umsetzungen wurden von uns qin Betracht gezogen, um dem
 Benutzer die Ausgabe darzustellen. Es wurde schließlich entschieden, die Zustände
@@ -262,9 +261,9 @@ ein einfaches Beispiel eines Pfads.\vspace{10pt}
 \subsection{Operationen mit dem Automaten Keller}\label{InteractionPDA}
 
 Ein wichtiger Punkt der Interaktion mit dem Benutzer ist, dass der Benutzer nach
-einer Umwandlung einer kontextfreien Grammatik in einen nicht deterministisch
+einer Umwandlung einer kontextfreien Grammatik in einen nichtdeterministisch
 Kellerautomaten einen Übergang auswählen muss, weil der entstehende Automat
-nicht deterministisch sein muss. Die Umwandlung ist in Abschnitt
+nichtdeterministisch sein muss. Die Umwandlung ist in Abschnitt
 \ref{ConverToGrammarContextFree} zu finden.\vspace{10pt}
 
 \begin{figure}[h!]
@@ -292,8 +291,8 @@ die hoffentlich richtige Wahl zu treffen.\vspace{10pt}
 
 \section{Erreichbare Zustände}\label{ReachableStates}
 
-Nach dem in \ref{ConverToMachine} angesprochenen Umwandeln eines nicht
-deterministischen in einen deterministischen Automaten unter Verwendung der
+Nach dem in \ref{ConverToMachine} angesprochenen Umwandeln eines
+nichtdeterministischen in einen deterministischen Automaten unter Verwendung der
 Potenzautomatenkonstruktion stellte sich die Frage, wie die unerreichbaren
 Zustände erkannt und entfernt werden können. Dieses Problem betrifft aber nicht
 nur umgewandelte Automaten, sondern ganz allgemein, jeden erstellten
@@ -385,8 +384,8 @@ der Algorithmus im Moment durchführt.\vspace{10pt}
 \end{figure}
 \vspace{10pt}
 
-Es existieren zwei verschiedene Verfahren zur Umwandlung eines nicht
-deterministischen endlichen Automaten in einen deterministischen endlichen
+Es existieren zwei verschiedene Verfahren zur Umwandlung eines
+nichtdeterministischen endlichen Automaten in einen deterministischen endlichen
 Automaten (DEA). Zum einen kann der komplette Potenzautomat verwendet werden, um
 den DEA zu erzeugen. Der entstehende Automat enthält allerdings unter Umständen
 sehr viele nicht erreichbare Zustände, deren Berechnung einige zusätzliche
@@ -663,11 +662,12 @@ Layout liefern könnte.\vspace{10pt}
 
 \section{Fehler und Warnungen}\label{InteractionMachine}
 
-Es war uns bei der Umsetzung des \gtitools sehr wichtig, dass man als sehr viele
-Fehler machen kann, ohne dass er durch eine Validierung eingeschränkt wird. Eine
-Ausnahme von diesem Konzept bilden die in Kapitel \ref{Parser} beschriebenen
-Parser, da eine falsche Eingabe dort nicht gut, durch das Anzeigen von Fehlern
-bzw. Warnungen, behandelt hätte werden können.\vspace{10pt}
+Es war uns bei der Umsetzung des \gtitools sehr wichtig, dass der Benutzer aus
+seiner gemachten Fehlern lernen kann, ohne dass er durch eine Validierung
+eingeschränkt wird. Eine Ausnahme von diesem Konzept bilden die in Kapitel
+\ref{Parser} beschriebenen Parser, da eine falsche Eingabe dort nicht gut, durch
+das Anzeigen von Fehlern bzw. Warnungen, behandelt hätte werden
+können.\vspace{10pt}
 
 Der Hauptgrund für die Auswahl dieser Strategie war, dass der Benutzer durch das
 fehlerhafte Eingeben bzw. durch das Beheben der Fehler hoffentlich mehr lernt,

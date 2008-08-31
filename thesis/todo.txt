@@ -1,1 +1,0 @@
-BM		- "Kernelement" besser definieren: machine.tex, Zeile 66

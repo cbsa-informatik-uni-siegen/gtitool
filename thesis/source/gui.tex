@@ -13,7 +13,7 @@
 
 In diesem Kapitel geht es um die Oberflächengestaltung. Zum Einen geht es darum,
 wie und warum die Hauptansicht so gestaltet wurde, zum Anderen darum, welche
-besonderen Schritte notwendig waren, um das Aussehen zu verbessern und es dem
+besonderen Schritte notwendig waren, um das Aussehen zu verbessern, und es dem
 Benutzer dadurch zu erleichtern, mit dem \gtitool zu arbeiten.\vspace{10pt}
 
 
@@ -54,14 +54,14 @@ Feldern eingetragen werden soll.
 
 Wir wurden an einigen Stellen im \gtitool vor das Problem gestellt, Algorithmen
 schrittweise ablaufen zu lassen, da der Benutzer bei der Unterteilung in kleine
-Schritte mehr Nutzen hat, als wenn der Algorithmus schneller abgearbeitet würde.
+Schritte mehr Nutzen hat, als wenn der Algorithmus in einem Schritt abgearbeitet würde.
 Wir entschieden uns dafür eine Navigationsleiste zu verwenden, die es dem
 Benutzer gestattet, in dem Algorithmus einen Schritt vor bzw. einen Schritt
 zurück zu gehen. Um die Handhabung für den Benutzer zu erleichtern, wurde die
 Navigationsleiste so erweitert, dass der Benutzer sowohl zurück an den Anfang der
 Ausführung des Algorithmus springen kann, als auch an das Ende. Des weiteren
-sollten die einzelnen Schritte auch automatisch, nach einer einstellbaren Zeit,
-durchgeführt werden können.\vspace{10pt}
+können die einzelnen Schritte auch automatisch, nach einer einstellbaren Zeit,
+durchgeführt werden.\vspace{10pt}
 
 In vielen Ansichten werden neben der Hauptansicht Tabellen angezeigt. In
 diesen Tabellen werden zusätzliche Informationen aufgelistet,
@@ -82,20 +82,20 @@ unformatierte Zeichenkette angezeigt werden würde.\vspace{10pt}
 
 \section{Redo/Undo}\label{GUIRedoUndo}
 
-Da das Lernwerkzeug vom Aussehen her sehr an einen Editor angelehnt ist, wollten
+Da das Lernwerkzeug vom Aussehen her an einen Editor angelehnt ist, wollten
 wir dem Benutzer auch eine Möglichkeit geben, Schritte rückgängig zu machen oder
 zu wiederholen. Desweiteren soll das Werkzeug ja auch zukünftig an den Stoff der
 Vorlesung angepasst werden, so dass uns eine einfache Erweiterbarkeit sehr
 wichtig war.\vspace{10pt}
 
-Daher haben wir uns entschlossen, die Verwaltung der Redo/Undo Schritte nicht
+Daher haben wir uns entschlossen, die Verwaltung der Redo/Undo-Schritte nicht
 einer Klasse alleine zu überlassen, sondern die verschiedenen Aktionen in
 einzelnen Items zu kapseln. Auf diesen Items kann dann die entsprechende Redo-
 bzw. Undo-Funktion aufgerufen werden. Verwaltet wird dies von einem Handler,
 welcher sich nur merkt, welches das letzte aktive Item für Redo und Undo ist,
-und den Aufruf durch den Nutzer an das Item weiterleitet.\vspace{10pt}
+und den Aufruf des Nutzers an das Item weiterleitet.\vspace{10pt}
 
-Durch diese Kapselung ist es leicht möglich, die Redo/Undo Funktion zu
+Durch diese Kapselung ist es leicht möglich, die Redo/Undo-Funktion zu
 erweitern, da einfach ein neues Item für die entsprechende Aktion implementiert
 werden muss, um diese Item beim Ausführen der Aktion an den Handler zu
 übergeben.\vspace{10pt}
@@ -124,7 +124,7 @@ gilt für das Umsortieren von Produktionen, wodurch zwar die Grammatik nicht
 geändert wird, es dem Benutzer aber möglich ist, die Produktionen übersichtlicher
 anzuordnen. In vielen Programmen, in denen Tabs zur Gliederung benutzt werden,
 gehört es zum Funktionsumfang diese Tabs per Drag and Drop zu verschieben. Auch
-dies wurde implementiert, da es dem Benutzer erlaubt, seine Daten besser zu
+dies wurde implementiert, um dem Benutzer die Möglichkeit zu geben, seine Daten besser zu
 organisieren.\vspace{10pt}
 
 
@@ -167,14 +167,14 @@ diskutiert und gelöst werden. So stellte sich die Frage, wie dem Benutzer
 verdeutlicht werden kann, welche der beiden sichtbaren Dateien aktiv ist. Wichtig
 ist dieser Status für die Aktivierung der Menüeinträge bzw. Toolbar Buttons. Als
 Umsetzung wurde schließlich gewählt, dass anhand von unterschiedlichen
-Umrandungen dem Benutzer klar gemacht werden soll, welche der beiden Dateien die
-aktive ist. Durch dieses Vorgehen wird intuitiv klar, welche Datei aktiv ist, da
+Umrandungen dem Benutzer klar gemacht werden soll, welche der beiden Dateien
+aktiv ist. Durch dieses Vorgehen wird intuitiv klar, welche Datei aktiv ist, da
 sich die Farbe der Umrandung beim Aktivieren der anderen Ansicht ändert. In
 Abbildung \ref{FigureSecondView} ist der Automat auf der rechten Seite
 aktiv.\vspace{10pt}
 
 Eine weitere wichtige Eigenschaft der zweiten Ansicht ist, dass Dateien in diese
-zweite Ansicht verschoben werden können. Ebenfalls muss es möglich sein in der
+zweite Ansicht verschoben werden können. Ebenfalls ist es möglich, in der
 zweiten Ansicht Dateien zu öffnen bzw. neue zu erstellen. Um die letzen beiden
 genannten Punkte umzusetzen, wurde das Konzept des aktiven Editors erweitert. Die
 oben beschriebene andere Darstellung der aktiven Datei wurde so erweitert, dass
@@ -214,7 +214,7 @@ Dies wäre nicht der Fall gewesen, wenn nur eine Auswahl von Zeichen zur
 Verfügung gestanden hätte.\vspace{10pt}
 
 Zur Erzeugung der Parser wurde der CUP Parser-Generator für Java verwendet, siehe
-\cite{java-cup}. Als lexikalischer Scanner wurde wegen des guten Zusammenspiels
+\cite{java-cup}. Als Scannergenerator wurde wegen des guten Zusammenspiels
 mit dem verwendeten Parser JFlex benutzt, siehe \cite{jflex}.\vspace{10pt}
 
 In diesem Abschnitt werden die Besonderheiten der Parser angesprochen, vor allem
@@ -250,7 +250,7 @@ Ebenfalls in den Einstellungen zu finden ist die Eingabe der
 Nichtterminalzeichen, Terminalzeichen und des Startsymbols. Genau wie beim
 Alphabet, darf auch hier ein Nichtterminalzeichen bzw. ein Terminalzeichen nur
 einmal in der Menge vorkommen. Zusätzlich muss aber gelten, dass die Menge der
-Nichtterminalzeichen  und die Menge der Terminalzeichen disjunkt sein müssen. Es
+Nichtterminalzeichen  und die Menge der Terminalzeichen disjunkt sind. Es
 ist dem Benutzer somit nicht erlaubt bei den Nichtterminalzeichen
 \{\NonterminalSymbol{E}, \NonterminalSymbol{a}\} und gleichzeitig
 \{\TerminalSymbol{a}, \TerminalSymbol{b}\} bei den Terminalzeichen einzutragen.
@@ -258,11 +258,11 @@ Versucht der Benutzer eine solche Eingabe vorzunehmen, bekommt er zum Beispiel
 bei den Nichtterminalzeichen angezeigt, dass \NonterminalSymbol{a} bereits ein
 Terminalzeichen ist, bzw. umgekehrt, wenn zuerst das Nichtterminalzeichen
 vorhanden war. Eine weitere Bedingung ist, dass das Startsymbol in der Menge der
-Nichtterminalzeichen enthalten sein muss, auch diese Bedingung wird überprüft
+Nichtterminalzeichen enthalten sein muss. Auch diese Bedingung wird überprüft
 und bei Verletzung mit einer Fehlermeldung behandelt.\vspace{10pt}
 
 Eine weitere Kontextbedingung wird überprüft, wenn das Alphabet eines
-bestehenden Automaten bearbeitet wird. Dabei darf der Benutzer beliebige, aber
+bestehenden Automaten bearbeitet wird. Dabei darf der Benutzer beliebige, 
 noch nicht verwendete Symbole ergänzen. Er darf allerdings keine Symbole
 entfernen, die noch von einem Übergang verwendet werden. Soll dies geschehen,
 muss der Benutzer erst das Symbol aus allen Übergängen entfernen,
@@ -278,18 +278,10 @@ werden.\vspace{10pt}
 
 Um das Arbeiten mit Grammatiken einfacher und übersichtlicher zu machen, wurde
 die Darstellung der Nichtterminalzeichen und Terminalzeichen unterschiedlich
-gewählt. So wird das Startsymbol in einer anderen Farbe, als die anderen
-Nichtterminalzeichen dargestellt. Der Benutzer ist somit in der Lage, in den
+gewählt. So werden das Startsymbol und die anderen Nichtterminalzeichen in einer
+unterschiedlichen Farbe dargestellt. Der Benutzer ist somit in der Lage, in den
 Produktionen zu erkennen, ob ein Nichtterminalzeichen das Startsymbol ist oder
 nicht.\vspace{10pt}
-
-Das Problem wurde so gelöst, dass zum Beispiel dem Scanner der
-Nichtterminalzeichen mitgegeben wurde, bei welchem Zeichen es sich um das
-Startsymbol handelt. Ein weiteres Beispiel ist die rechte Seite einer Produktion:
-Um dem Benutzer auch hier eine Unterscheidung der Symbole leicht zu machen, muss
-hier eine farbliche Unterscheidung zwischen Terminalzeichen, Nichtterminalzeichen
-und dem Startsymbol erfolgen. Auch dieses Problem wurde auf die oben genannte Art
-und Weise gelöst.\vspace{10pt}
 
 
 \section{Drucken}\label{Print}

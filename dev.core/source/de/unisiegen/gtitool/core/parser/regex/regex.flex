@@ -47,7 +47,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	{
 	  switch (id)
 	  {
-		case SYMBOL:
+		case IDENT:
 		  return Style.SYMBOL;
 		default:
 		  return Style.NONE;
@@ -66,6 +66,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 
 LineTerminator			= \r|\n|\r\n
 WhiteSpace				= {LineTerminator} | [ \t\f]
+Ident					= [:jletterdigit:]
 
 %%
 
@@ -79,7 +80,6 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	"?"					{ return symbol(QUESTION); }
 	"("					{ return symbol(LBRACE); }
 	")"					{ return symbol(RBRACE); }
+	{Ident}				{ return symbol(IDENT, yytext()); }
 	{WhiteSpace}		{ }
-	.'*					{ return symbol(SYMBOL, yytext()); }
-	\".+\"				{ return symbol(SYMBOL, yytext()); }
 }

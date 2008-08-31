@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 
 /**
- * @author Simon Meurer
+ * TODO
  */
-public class DisjunctionNode extends RegexNode
+public class ConcatenationNode extends RegexNode
 {
 
   private RegexNode regex1;
@@ -19,7 +19,7 @@ public class DisjunctionNode extends RegexNode
   /**
    * TODO
    */
-  public DisjunctionNode ( RegexNode regex1, RegexNode regex2 )
+  public ConcatenationNode ( RegexNode regex1, RegexNode regex2 )
   {
     this.regex1 = regex1;
     this.regex2 = regex2;
@@ -64,24 +64,15 @@ public class DisjunctionNode extends RegexNode
    * TODO
    * 
    * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
-   */
-  @Override
-  public boolean nullable ()
-  {
-    return this.regex1.nullable () || this.regex2.nullable ();
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
    */
   @Override
   public ArrayList < RegexNode > firstPos ()
   {
+    if ( !this.regex1.nullable () )
+    {
+      return this.regex1.firstPos ();
+    }
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
     nodes.addAll ( this.regex1.firstPos () );
     nodes.addAll ( this.regex2.firstPos () );
@@ -98,10 +89,27 @@ public class DisjunctionNode extends RegexNode
   @Override
   public ArrayList < RegexNode > lastPos ()
   {
+    if ( !this.regex2.nullable () )
+    {
+      return this.regex2.lastPos ();
+    }
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
     nodes.addAll ( this.regex1.lastPos () );
     nodes.addAll ( this.regex2.lastPos () );
     return nodes;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
+   */
+  @Override
+  public boolean nullable ()
+  {
+    return this.regex1.nullable () && this.regex2.nullable ();
   }
 
 
@@ -114,6 +122,6 @@ public class DisjunctionNode extends RegexNode
   @Override
   public String toString ()
   {
-    return "{" + this.regex1.toString () + "|" + this.regex2.toString () + "}";
+    return "(" + this.regex1.toString () + "·" + this.regex2.toString () + ")";
   }
 }

@@ -4,12 +4,13 @@
  * @author Simon Meurer
  */
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
-import de.unisiegen.gtitool.core.entities.regex.ConjunctionNode;
+import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.EpsilonNode;
 import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
 import de.unisiegen.gtitool.core.entities.regex.OptionalNode;
 import de.unisiegen.gtitool.core.entities.regex.PlusNode;
+import de.unisiegen.gtitool.core.entities.regex.TokenNode;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
@@ -22,16 +23,16 @@ import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
 /************
  * Terminal *
  ************/
- 
-terminal String				SYMBOL;
-terminal					STAR;
-terminal					PLUS;
-terminal					QUESTION;
-terminal					OR;
-terminal					CONCAT;
-terminal					EPSILON;
-terminal					LBRACE;
-terminal					RBRACE;
+
+terminal String				STAR;
+terminal String				PLUS;
+terminal String				QUESTION;
+terminal String				OR;
+terminal String				CONCAT;
+terminal String				EPSILON;
+terminal String				LBRACE;
+terminal String				RBRACE;
+terminal String				IDENT;
 
 
 /****************
@@ -39,50 +40,96 @@ terminal					RBRACE;
  ****************/
  
 non terminal RegexNode		regex;
-non terminal Symbol			symbol;
+non terminal RegexNode		concatenation;
+non terminal RegexNode[]	simple_regex_list;
+non terminal RegexNode		simple_regex;
 
+/****************
+ * Precedence *
+ ****************/
 
+precedence left 	OR;
+precedence left 	CONCAT;
+precedence right 	LBRACE;
+precedence left 	QUESTION;
+precedence left 	PLUS;
+precedence left 	STAR;
+precedence left 	EPSILON;
+precedence left 	IDENT;
 
 /************
  * Regex *
  ************/
 
-regex							::= regex:reg STAR
-									{:
-										RESULT = new KleeneNode(reg);
-									:}
-								|	regex:reg PLUS
-									{:
-										RESULT = new PlusNode(reg);
-									:}
-								|	regex:reg1 OR regex:reg2
+regex							::= regex:reg1 OR regex:reg2
 									{:
 										RESULT = new DisjunctionNode(reg1, reg2);
 									:}
-								|	regex:reg1 regex:reg2
+								|	simple_regex:regex
 									{:
-										RESULT = new ConjunctionNode(reg1, reg2);
+										RESULT = regex;
 									:}
-								|	regex:reg1 CONCAT regex:reg2
+								|	concatenation:c
 									{:
-										RESULT = new ConjunctionNode(reg1, reg2);
+										RESULT = c;
+									:}
+								;
+simple_regex					::= simple_regex:reg STAR
+									{:
+										RESULT = new KleeneNode(reg);
+									:}
+								|	simple_regex:reg PLUS
+									{:
+										RESULT = new PlusNode(reg);
+									:}
+								|	simple_regex:reg QUESTION
+									{:
+										RESULT = new OptionalNode(reg);
+									:}
+								|	LBRACE regex:reg RBRACE
+									{:
+										RESULT = reg;
+									:}
+								|	IDENT:i
+									{:
+										RESULT = new TokenNode(i);
 									:}
 								|	EPSILON
 									{:
 										RESULT = new EpsilonNode();
 									:}
-								|	regex:reg QUESTION
+								;
+simple_regex_list				::= simple_regex:regex simple_regex_list:srl
 									{:
-										RESULT = new Optional(reg);
+									   RESULT = new RegexNode[srl.length + 1];
+									   System.arraycopy(srl, 0, RESULT, 1, srl.length);
+									   RESULT[0] = regex;
 									:}
-								|	LBRACE regex:r RBRACE
+								|	simple_regex:regex CONCAT simple_regex_list:srl
 									{:
-										RESULT = new Conjunction(reg1, reg2);
+									   RESULT = new RegexNode[srl.length + 1];
+									   System.arraycopy(srl, 0, RESULT, 1, srl.length);
+									   RESULT[0] = regex;
+									:}
+								|	simple_regex:regex
+									{:
+										RESULT = new RegexNode[] { regex };
 									:}
 								;
-
-symbol							::= SYMBOL:s
+concatenation					::= simple_regex:regex simple_regex_list:srl
 									{:
-									   RESULT = new DefaultSymbol(s);
+									   for (int n = 0; n < srl.length; ++n) 
+						  			   {
+						    			 regex = new ConcatenationNode(regex, srl[n] );
+						   			   }
+						   			   RESULT = regex; 
+									:}
+								|	simple_regex:regex CONCAT simple_regex_list:srl
+									{:
+									   for (int n = 0; n < srl.length; ++n) 
+						  			   {
+						    			 regex = new ConcatenationNode(regex, srl[n] );
+						   			   }
+						   			   RESULT = regex; 
 									:}
 								;

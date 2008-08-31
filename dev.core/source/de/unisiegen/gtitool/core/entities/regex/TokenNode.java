@@ -1,23 +1,27 @@
 package de.unisiegen.gtitool.core.entities.regex;
 
+
 import java.util.ArrayList;
 
 
 /**
  * TODO
  */
-public class OptionalNode extends RegexNode
+public class TokenNode extends RegexNode
 {
 
-  private RegexNode content;
+  private String node;
+
+
+  private int position;
 
 
   /**
    * TODO
    */
-  public OptionalNode ( RegexNode regex )
+  public TokenNode ( String name )
   {
-    this.content = regex;
+    this.node = name;
   }
 
 
@@ -30,44 +34,56 @@ public class OptionalNode extends RegexNode
   @Override
   public ArrayList < RegexNode > getChildren ()
   {
-    return this.content.getChildren ();
+    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    nodes.add ( this );
+    return nodes;
   }
-  
+
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
   public ArrayList < RegexNode > getTokenNodes ()
   {
-    return null;
+    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    nodes.add ( this );
+    return nodes;
   }
-  
+
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
    */
   @Override
   public ArrayList < RegexNode > firstPos ()
   {
-    return this.content.firstPos ();
+    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    nodes.add ( this );
+    return nodes;
   }
+
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
    */
   @Override
   public ArrayList < RegexNode > lastPos ()
   {
-    return this.content.lastPos ();
+    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    nodes.add ( this );
+    return nodes;
   }
+
 
   /**
    * TODO
@@ -91,6 +107,31 @@ public class OptionalNode extends RegexNode
   @Override
   public String toString ()
   {
-    return this.content.toString () + "?";
+    return this.node + "<" + getPosition () + ">";
   }
+
+
+  /**
+   * Sets the position.
+   * 
+   * @param position The position to set.
+   * @see #position
+   */
+  public void setPosition ( int position )
+  {
+    this.position = position;
+  }
+
+
+  /**
+   * Returns the position.
+   * 
+   * @return The position.
+   * @see #position
+   */
+  public int getPosition ()
+  {
+    return this.position;
+  }
+
 }

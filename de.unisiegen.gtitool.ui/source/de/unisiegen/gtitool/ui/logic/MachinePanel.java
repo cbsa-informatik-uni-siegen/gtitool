@@ -393,6 +393,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * Flag that indicates if the user input was needed during the navigation so
+   * far.
+   */
+  private boolean userInputNeeded = false;
+
+
+  /**
    * Create a new Machine Panel Object
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
@@ -1910,6 +1917,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       if ( this.machine.isUserInputNeeded () )
       {
+        this.userInputNeeded = true;
+
         boolean running = cancelAutoStepTimer ();
 
         ChooseTransitionDialog dialog = new ChooseTransitionDialog (
@@ -2025,6 +2034,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     }
 
     this.machineMode = MachineMode.WORD_NAVIGATION;
+    this.userInputNeeded = false;
     clearHighlight ();
 
     this.gui.wordPanelForm.styledWordParserPanel.setEditable ( false );
@@ -2055,6 +2065,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     cancelAutoStepTimer ();
 
     this.machineMode = MachineMode.ENTER_WORD;
+    this.userInputNeeded = false;
     clearHighlight ();
 
     this.machine.stop ();
@@ -3402,17 +3413,35 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           // do nothing
         }
 
-        if ( word.size () == 0 )
+        if ( this.userInputNeeded )
         {
-          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-              .getPrettyString ( "WordPanel.StatusAcceptedEmpty", //$NON-NLS-1$
-                  word.toPrettyString () ).toHTMLString () );
+          if ( word.size () == 0 )
+          {
+            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+                .getPrettyString ( "WordPanel.StatusAcceptedEmptyPDA", //$NON-NLS-1$
+                    word.toPrettyString () ).toHTMLString () );
+          }
+          else
+          {
+            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+                .getPrettyString ( "WordPanel.StatusAcceptedPDA", //$NON-NLS-1$
+                    word.toPrettyString () ).toHTMLString () );
+          }
         }
         else
         {
-          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-              .getPrettyString ( "WordPanel.StatusAccepted", //$NON-NLS-1$
-                  word.toPrettyString () ).toHTMLString () );
+          if ( word.size () == 0 )
+          {
+            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+                .getPrettyString ( "WordPanel.StatusAcceptedEmpty", //$NON-NLS-1$
+                    word.toPrettyString () ).toHTMLString () );
+          }
+          else
+          {
+            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+                .getPrettyString ( "WordPanel.StatusAccepted", //$NON-NLS-1$
+                    word.toPrettyString () ).toHTMLString () );
+          }
         }
       }
       else
@@ -3434,17 +3463,35 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           // do nothing
         }
 
-        if ( word.size () == 0 )
+        if ( this.userInputNeeded )
         {
-          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-              .getPrettyString ( "WordPanel.StatusNotAcceptedEmpty", //$NON-NLS-1$
-                  word.toPrettyString () ).toHTMLString () );
+          if ( word.size () == 0 )
+          {
+            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+                .getPrettyString ( "WordPanel.StatusNotAcceptedEmptyPDA", //$NON-NLS-1$
+                    word.toPrettyString () ).toHTMLString () );
+          }
+          else
+          {
+            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+                .getPrettyString ( "WordPanel.StatusNotAcceptedPDA", //$NON-NLS-1$
+                    word.toPrettyString () ).toHTMLString () );
+          }
         }
         else
         {
-          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-              .getPrettyString ( "WordPanel.StatusNotAccepted", //$NON-NLS-1$
-                  word.toPrettyString () ).toHTMLString () );
+          if ( word.size () == 0 )
+          {
+            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+                .getPrettyString ( "WordPanel.StatusNotAcceptedEmpty", //$NON-NLS-1$
+                    word.toPrettyString () ).toHTMLString () );
+          }
+          else
+          {
+            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+                .getPrettyString ( "WordPanel.StatusNotAccepted", //$NON-NLS-1$
+                    word.toPrettyString () ).toHTMLString () );
+          }
         }
       }
     }

@@ -1,8 +1,5 @@
 *** TODO ***
 
-CF		- "Wort wird nicht akzeptiert" bei ND-PDA
-BM		- Minimierung: Outline anpassen
-
 
 *** FEATURE ***
 

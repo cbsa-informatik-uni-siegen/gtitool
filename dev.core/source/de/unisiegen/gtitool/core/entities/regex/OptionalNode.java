@@ -1,19 +1,25 @@
 package de.unisiegen.gtitool.core.entities.regex;
 
+
 import java.util.ArrayList;
 
 
 /**
- * TODO
+ * Representation of an Optional/Questionnode in the Regex
  */
 public class OptionalNode extends RegexNode
 {
 
+  /**
+   * The {@link RegexNode} in the Question
+   */
   private RegexNode content;
 
 
   /**
-   * TODO
+   * Constructor for a Optional/Questionnode in the Regex
+   * 
+   * @param regex The Regex in the Optionalnode
    */
   public OptionalNode ( RegexNode regex )
   {
@@ -22,33 +28,40 @@ public class OptionalNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
+   */
+  @Override
+  public RegexNode toCoreSyntax ()
+  {
+    return new DisjunctionNode ( this.content.toCoreSyntax (),
+        new EpsilonNode () );
+  }
+
+
+  /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
   @Override
   public ArrayList < RegexNode > getChildren ()
   {
-    return this.content.getChildren ();
+    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    nodes.add ( this.content );
+    nodes.addAll ( this.content.getChildren () );
+    return nodes;
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
   public ArrayList < RegexNode > getTokenNodes ()
   {
-    return null;
+    return this.content.getTokenNodes ();
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
    */
   @Override
@@ -57,10 +70,8 @@ public class OptionalNode extends RegexNode
     return this.content.firstPos ();
   }
 
+
   /**
-   * TODO
-   *
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
    */
   @Override
@@ -69,28 +80,23 @@ public class OptionalNode extends RegexNode
     return this.content.lastPos ();
   }
 
+
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
    */
   @Override
   public boolean nullable ()
   {
-    return false;
+    return true;
   }
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString ()
   {
-    return this.content.toString () + "?";
+    return this.content.toString () + "?"; //$NON-NLS-1$
   }
 }

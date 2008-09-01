@@ -5,7 +5,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
-import de.unisiegen.gtitool.core.entities.regex.Converter;
+import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
 import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
@@ -78,7 +78,7 @@ public class ParserTest
      * Regex
      */
     RegexParseable regexParseable = new RegexParseable ();
-    String regexText = "(a|b)*abb";
+    String regexText = "(a|b)+a?bb";
     try
     {
       RegexNode regex = ( RegexNode ) regexParseable.newParser ( regexText )
@@ -114,7 +114,7 @@ public class ParserTest
       }
       System.out.println ( "LastPos: {" + lastpos + "}");
       
-      Converter conv = new Converter(regex);
+      Regex conv = new Regex(regex);
       for(int i = 1; i < currentPosition ; i++) {
         String followPos = "";
         for(RegexNode current : conv.followPos ( i )) {
@@ -125,6 +125,9 @@ public class ParserTest
         }
         System.out.println ("FollowPos(" + i + ") = " + followPos);
       }
+      
+      RegexNode coreSyntax = regex.toCoreSyntax ();
+      System.out.println (coreSyntax.toString ());
     }
     catch ( Exception e )
     {

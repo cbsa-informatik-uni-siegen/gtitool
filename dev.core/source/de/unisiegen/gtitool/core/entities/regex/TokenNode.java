@@ -5,30 +5,45 @@ import java.util.ArrayList;
 
 
 /**
- * TODO
+ * Representation of a Token in the Regex
  */
 public class TokenNode extends RegexNode
 {
 
-  private String node;
+  /**
+   * The name of the Token
+   */
+  private String name;
 
 
+  /**
+   * The position in the Syntaxtree
+   */
   private int position;
 
 
   /**
-   * TODO
+   * Contructor for a Token in the Regex
+   * 
+   * @param name The name of the Token
    */
   public TokenNode ( String name )
   {
-    this.node = name;
+    this.name = name;
   }
 
 
   /**
-   * TODO
-   * 
-   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
+   */
+  @Override
+  public RegexNode toCoreSyntax ()
+  {
+    return this;
+  }
+
+
+  /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
   @Override
@@ -41,9 +56,6 @@ public class TokenNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
@@ -56,9 +68,6 @@ public class TokenNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
    */
   @Override
@@ -71,9 +80,6 @@ public class TokenNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
    */
   @Override
@@ -86,9 +92,6 @@ public class TokenNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
    */
   @Override
@@ -99,15 +102,12 @@ public class TokenNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString ()
   {
-    return this.node + "<" + getPosition () + ">";
+    return this.name;
   }
 
 

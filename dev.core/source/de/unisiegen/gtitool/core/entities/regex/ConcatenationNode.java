@@ -5,19 +5,30 @@ import java.util.ArrayList;
 
 
 /**
- * TODO
+ * Representation of a Concatenation in the Regex
+ * 
+ * @author Simon Meurer
  */
 public class ConcatenationNode extends RegexNode
 {
 
+  /**
+   * First element of the Concatenation
+   */
   private RegexNode regex1;
 
 
+  /**
+   * Second element of the Concatenation
+   */
   private RegexNode regex2;
 
 
   /**
-   * TODO
+   * Constructor for a {@link ConcatenationNode}
+   * 
+   * @param regex1 First element of the {@link ConcatenationNode}
+   * @param regex2 Second element of the {@link ConcatenationNode}
    */
   public ConcatenationNode ( RegexNode regex1, RegexNode regex2 )
   {
@@ -27,9 +38,17 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
+   */
+  @Override
+  public RegexNode toCoreSyntax ()
+  {
+    return new ConcatenationNode ( this.regex1.toCoreSyntax (), this.regex2
+        .toCoreSyntax () );
+  }
+
+
+  /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
   @Override
@@ -45,10 +64,7 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
   public ArrayList < RegexNode > getTokenNodes ()
@@ -61,9 +77,6 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
    */
   @Override
@@ -81,9 +94,6 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
    */
   @Override
@@ -101,9 +111,6 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
    */
   @Override
@@ -114,14 +121,11 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString ()
   {
-    return "(" + this.regex1.toString () + "·" + this.regex2.toString () + ")";
+    return "(" + this.regex1.toString () + this.regex2.toString () + ")"; //$NON-NLS-1$ //$NON-NLS-2$
   }
 }

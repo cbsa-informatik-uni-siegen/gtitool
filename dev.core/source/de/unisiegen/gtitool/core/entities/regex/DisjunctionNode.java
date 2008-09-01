@@ -5,19 +5,30 @@ import java.util.ArrayList;
 
 
 /**
+ * Representation of a Disjunction in the Regex
+ * 
  * @author Simon Meurer
  */
 public class DisjunctionNode extends RegexNode
 {
 
+  /**
+   * First element of the Disjunction
+   */
   private RegexNode regex1;
 
 
+  /**
+   * Second element of the Disjunction
+   */
   private RegexNode regex2;
 
 
   /**
-   * TODO
+   * Constructor for a {@link DisjunctionNode}
+   * 
+   * @param regex1 First element of the {@link DisjunctionNode}
+   * @param regex2 Second element of the {@link DisjunctionNode}
    */
   public DisjunctionNode ( RegexNode regex1, RegexNode regex2 )
   {
@@ -27,9 +38,17 @@ public class DisjunctionNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
+   */
+  @Override
+  public RegexNode toCoreSyntax ()
+  {
+    return new DisjunctionNode ( this.regex1.toCoreSyntax (), this.regex2
+        .toCoreSyntax () );
+  }
+
+
+  /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
   @Override
@@ -45,9 +64,6 @@ public class DisjunctionNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
   @Override
@@ -61,9 +77,6 @@ public class DisjunctionNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
    */
   @Override
@@ -74,9 +87,6 @@ public class DisjunctionNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
    */
   @Override
@@ -90,9 +100,6 @@ public class DisjunctionNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
    */
   @Override
@@ -106,14 +113,11 @@ public class DisjunctionNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString ()
   {
-    return "{" + this.regex1.toString () + "|" + this.regex2.toString () + "}";
+    return this.regex1.toString () + "|" + this.regex2.toString (); //$NON-NLS-1$
   }
 }

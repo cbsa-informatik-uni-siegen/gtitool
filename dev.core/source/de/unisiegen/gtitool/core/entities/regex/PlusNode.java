@@ -1,30 +1,44 @@
 package de.unisiegen.gtitool.core.entities.regex;
 
+
 import java.util.ArrayList;
 
 
 /**
- * TODO
- *
+ * Representation of a Plus in the Regex
  */
 public class PlusNode extends RegexNode
 {
-  
-  RegexNode content;
-  
+
   /**
-   * TODO
-   *
+   * The {@link RegexNode} in the Plus
    */
-  public PlusNode (RegexNode regex)
+  RegexNode content;
+
+
+  /**
+   * Constructor for a {@link PlusNode}
+   * 
+   * @param regex The {@link RegexNode} in the Plus
+   */
+  public PlusNode ( RegexNode regex )
   {
     this.content = regex;
   }
 
+
   /**
-   * TODO
-   *
-   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
+   */
+  @Override
+  public RegexNode toCoreSyntax ()
+  {
+    return new ConcatenationNode ( this.content.toCoreSyntax (),
+        new KleeneNode ( this.content.toCoreSyntax () ) );
+  }
+
+
+  /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
   @Override
@@ -38,9 +52,6 @@ public class PlusNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
   @Override
@@ -48,11 +59,9 @@ public class PlusNode extends RegexNode
   {
     return this.content.getTokenNodes ();
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
    */
   @Override
@@ -60,11 +69,9 @@ public class PlusNode extends RegexNode
   {
     return this.content.firstPos ();
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
    */
   @Override
@@ -72,11 +79,9 @@ public class PlusNode extends RegexNode
   {
     return this.content.lastPos ();
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
    */
   @Override
@@ -84,16 +89,14 @@ public class PlusNode extends RegexNode
   {
     return this.content.nullable ();
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @return
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString ()
   {
-    return this.content.toString () + "+";
+    return this.content.toString () + "+"; //$NON-NLS-1$
   }
 }

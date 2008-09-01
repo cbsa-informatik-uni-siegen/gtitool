@@ -5,16 +5,21 @@ import java.util.ArrayList;
 
 
 /**
- * TODO
+ * Representation of a Kleene Closure in the Regex
  */
 public class KleeneNode extends RegexNode
 {
 
+  /**
+   * The {@link RegexNode} of the Kleene Closure
+   */
   private RegexNode content;
 
 
   /**
-   * TODO
+   * Constructor for a {@link KleeneNode}
+   * 
+   * @param content The {@link RegexNode} of the Kleene Closure
    */
   public KleeneNode ( RegexNode content )
   {
@@ -23,9 +28,16 @@ public class KleeneNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
+   */
+  @Override
+  public RegexNode toCoreSyntax ()
+  {
+    return new KleeneNode ( this.content.toCoreSyntax () );
+  }
+
+
+  /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
   @Override
@@ -39,9 +51,6 @@ public class KleeneNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
   @Override
@@ -49,11 +58,9 @@ public class KleeneNode extends RegexNode
   {
     return this.content.getTokenNodes ();
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
    */
   @Override
@@ -61,11 +68,9 @@ public class KleeneNode extends RegexNode
   {
     return this.content.firstPos ();
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
    */
   @Override
@@ -76,9 +81,6 @@ public class KleeneNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
    */
   @Override
@@ -89,14 +91,11 @@ public class KleeneNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString ()
   {
-    return this.content.toString () + "*";
+    return this.content.toString () + "*"; //$NON-NLS-1$
   }
 }

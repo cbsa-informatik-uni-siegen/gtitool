@@ -308,6 +308,7 @@ Zustände erkannt und entfernt werden können. Dieses Problem betrifft aber nich
 nur umgewandelte Automaten, sondern ganz allgemein, jeden erstellten
 Automaten.\vspace{10pt}
 
+\newpage
 Bei der Umsetzung sollte im Vordergrund stehen, dass dem Benutzer mit sehr
 kleinen Schritten verdeutlicht wird, wie der zugrundeliegende Algorithmus
 arbeitet, so dass diese Arbeitsweise sehr einfach nachzuvollziehen
@@ -628,9 +629,9 @@ Schritt 5:
 Betrachten wir zunächst, wie der Algorithmus vorgeht, indem wir
 nachvollziehen, was in den einzelnen Schritten passiert.\vspace{10pt}
 
-In {\em Schritt 1} wird für alle Knoten berechnet, ob sie einen hohen oder
-niedrigen Anteil der Schnittkosten verursachen. Die beiden Knoten, welche den
-maximalen Gewinnwert bringen, werden in {\em Schritt 2} getauscht und
+In {\em Schritt 1} werden für die aktuelle Konfiguration die Kosten berechnet.
+In {\em Schritt 2} werden die beiden Knoten gesucht, die bei einem Tausch den
+maximalen Gewinnwert bringen. Diese werden im Anschluss auch getauscht und
 fixiert.\vspace{10pt}
 
 In {\em Schritt 3} überprüfen wir, ob alle Knoten bereits fixiert sind,

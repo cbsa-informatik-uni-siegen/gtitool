@@ -168,8 +168,8 @@ macht sich dies zu nutze:\vspace{10pt}
 \verb| 1 for i = 1 to n do {|\\
 \verb| 2   for j = 1 to i - 1 do {|\\
 \verb| 3     ersetze jede Produktion der Form| $A_i \to A_j \gamma$ \verb| |\\ 
-\verb| 4     durch die Produktion |$A_i \to \delta_1\gamma\ |\ \ldots\ |\ \delta_k\gamma$
-\verb| 5 , wobei |$A_j \to \delta_1\ |\ \ldots\ |\ \delta_k$\\ 
+\verb| 4     durch die Produktion |$A_i \to \delta_1\gamma\ |\ \ldots\ |\ \delta_k\gamma$,\\
+\verb| 5     wobei |$A_j \to \delta_1\ |\ \ldots\ |\ \delta_k$\\ 
 \verb| 6     alle derzeitigen Produktionen für |$A_j$ \verb|sind|\\ 
 \verb| 7   }|\\
 \verb| 8   eleminiere die unmittelbare Linksrekursion für |$A_i$\\
@@ -270,6 +270,7 @@ Ansicht zu öffnen, in der er Wörter ausgegeben bekommt, die zum Beispiel von d
 erstellten Automaten erkannt werden, also Teilmenge der vom Automaten erkannten
 Sprache sind.\vspace{10pt}
 
+\newpage
 Bei der Umsetzung ist darauf zu achten, dass die Bestimmung dieser Wörter
 möglichst mit geringer Laufzeit implementiert wird, so dass der Benutzer nicht
 allzu lange auf ein Ergebnis warten muss. Die Bestimmung sollte somit nicht

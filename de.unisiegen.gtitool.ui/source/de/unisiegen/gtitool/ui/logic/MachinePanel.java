@@ -3402,9 +3402,18 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           // do nothing
         }
 
-        this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-            .getPrettyString ( "WordPanel.StatusAccepted", //$NON-NLS-1$
-                word.toPrettyString () ).toHTMLString () );
+        if ( word.size () == 0 )
+        {
+          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+              .getPrettyString ( "WordPanel.StatusAcceptedEmpty", //$NON-NLS-1$
+                  word.toPrettyString () ).toHTMLString () );
+        }
+        else
+        {
+          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+              .getPrettyString ( "WordPanel.StatusAccepted", //$NON-NLS-1$
+                  word.toPrettyString () ).toHTMLString () );
+        }
       }
       else
       {
@@ -3425,9 +3434,18 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           // do nothing
         }
 
-        this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-            .getPrettyString ( "WordPanel.StatusNotAccepted", //$NON-NLS-1$
-                word.toPrettyString () ).toHTMLString () );
+        if ( word.size () == 0 )
+        {
+          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+              .getPrettyString ( "WordPanel.StatusNotAcceptedEmpty", //$NON-NLS-1$
+                  word.toPrettyString () ).toHTMLString () );
+        }
+        else
+        {
+          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+              .getPrettyString ( "WordPanel.StatusNotAccepted", //$NON-NLS-1$
+                  word.toPrettyString () ).toHTMLString () );
+        }
       }
     }
     else

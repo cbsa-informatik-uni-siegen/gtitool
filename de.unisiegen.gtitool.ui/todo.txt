@@ -1,7 +1,6 @@
 *** TODO ***
 
 CF		- "Wort wird nicht akzeptiert" bei ND-PDA
-CF		- Das "leere" Wort wird nicht akzeptiert
 BM		- Minimierung: Outline anpassen
 
 

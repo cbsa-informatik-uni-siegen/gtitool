@@ -210,17 +210,14 @@ public class Minimizer
    * Create a new {@link PrettyString}.
    * 
    * @param states the list of the {@link DefaultStateView}s.
+   * @param oldGroup The old group of the removed states.
    * @return The created {@link PrettyString}.
    */
   private PrettyString createPrettyString (
-      ArrayList < DefaultStateView > states )
+      ArrayList < DefaultStateView > states, ArrayList < DefaultStateView > oldGroup )
   {
     PrettyString prettyString = new PrettyString ();
-
-    prettyString.add ( new PrettyToken ( Messages
-        .getString ( "MinimizeMachineDialog.PrettyString" ) //$NON-NLS-1$
-        + " ", Style.NONE ) ); //$NON-NLS-1$
-
+    
     for ( int i = 0 ; i < states.size () ; i++ )
     {
       if ( i != 0 && i < ( states.size () - 1 ) )
@@ -233,6 +230,27 @@ public class Minimizer
             .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
       }
       prettyString.add ( states.get ( i ).getState () );
+    }
+    
+
+
+    prettyString.add ( new PrettyToken ( " " + Messages //$NON-NLS-1$
+        .getString ( "MinimizeMachineDialog.PrettyString" ) //$NON-NLS-1$
+        + " ", Style.NONE ) ); //$NON-NLS-1$
+    
+    
+    for ( int i = 0 ; i < oldGroup.size () ; i++ )
+    {
+      if ( i != 0 && i < ( oldGroup.size () - 1 ) )
+      {
+        prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
+      }
+      if ( i != 0 && i == ( oldGroup.size () - 1 ) )
+      {
+        prettyString.add ( new PrettyToken ( " " + Messages //$NON-NLS-1$
+            .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
+      }
+      prettyString.add ( oldGroup.get ( i ).getState () );
     }
     return prettyString;
   }
@@ -452,12 +470,13 @@ public class Minimizer
    */
   private void minimize ()
   {
-
-    for ( ArrayList < DefaultStateView > group : this.activeGroups )
+    ArrayList < DefaultStateView > currentGroup = null;
+    for ( ArrayList < DefaultStateView > current : this.activeGroups )
     {
-      if ( group.size () > 1 )
+      currentGroup = current;
+      if ( current.size () > 1 )
       {
-        tryToSplitGroup ( group );
+        tryToSplitGroup ( current );
         if ( this.newGroupStates.size () > 0 )
         {
           break;
@@ -481,7 +500,7 @@ public class Minimizer
       ArrayList < Transition > transitionList = new ArrayList < Transition > ();
       transitionList.addAll ( this.transitions );
       this.previousSteps.push ( new MinimizeItem ( oldGroup,
-          createPrettyString ( this.newGroupStates ), transitionList, null ) );
+          createPrettyString ( this.newGroupStates, currentGroup ), transitionList, null ) );
       this.newGroupStates = new ArrayList < DefaultStateView > ();
       minimize ();
       return;

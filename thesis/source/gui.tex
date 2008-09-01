@@ -21,8 +21,8 @@ Benutzer dadurch zu erleichtern, mit dem \gtitool zu arbeiten.\vspace{10pt}
 
 Als wir zu Beginn der Diplomarbeit über die Gestaltung der Hauptansicht
 diskutiert haben, kamen wir sehr schnell zu der Übereinkunft, dass die
-Ähnlichkeit zu dem Lernwerkzeug TPML möglichst groß sein sollte. Da sowohl
-"`Grundlagen der theoretischen Informatik"', als auch "`Theorie der
+Ähnlichkeit zu dem Lernwerkzeug TPML, siehe \cite{tpml}, möglichst groß sein
+sollte. Da sowohl "`Grundlagen der theoretischen Informatik"', als auch "`Theorie der
 Programmierung I"' für jeden Informatikstudenten der Universität Siegen
 Pflichtveranstaltungen sind, ist die Wahrscheinlichkeit, dass Studenten beide
 Lernwerkzeuge nutzen werden, sehr hoch.\vspace{10pt}
@@ -31,22 +31,19 @@ Ein großer Vorteil dieser Entscheidung war natürlich, dass wir beide
 bereits an der Projektgruppe TPML mitgearbeitet hatten. Zwar waren wir nicht
 hauptsächlich an den Grafikelementen beteiligt, konnten aber dennoch einige
 Einblicke sammeln, welche uns bei der Gestaltung der Benutzeroberfläche sehr
-geholfen haben.\vspace{10pt}
-
-Wir hoffen, dass zukünftige Benutzer von den Parallelen im Aussehen
+geholfen haben. Wir hoffen, dass zukünftige Benutzer von den Parallelen im Aussehen
 und in der Funktionsweise beider Lernwerkzeuge profitieren können.\vspace{10pt}
 
 Während der gesamten Diplomarbeit stand im Vordergrund, das Lernwerkzeug so
 intuitiv und selbsterklärend wie möglich zu gestalten. Denn schließlich soll
 ein Benutzer nicht noch lange Zeit darauf verwenden müssen, den Umgang mit dem
-Werkzeug zu erlernen und sich im schlimmsten Falle durch ein dickes Handbuch
-durchzuarbeiten.\vspace{10pt}
+Werkzeug zu erlernen.\vspace{10pt}
 
 Aus diesem Ansatz heraus ist zum Beispiel auch der Wizard zum Anlegen einer
-neuen Datei enstanden. Dieser Wizard hat für jedes Eingabefeld ja schon einen
+neuen Datei enstanden. Dieser Wizard hat für jedes Eingabefeld einen
 Vorschlag, welche in den Einstellungen auf die Benutzerwünsche angepasst werden
 kann. Beim ersten Start sollen diese Werte als Orientierung dienen, was in den
-Feldern eingetragen werden soll.
+Feldern eingetragen werden muss.
 \vspace{10pt}
 
 
@@ -55,7 +52,7 @@ Feldern eingetragen werden soll.
 Wir wurden an einigen Stellen im \gtitool vor das Problem gestellt, Algorithmen
 schrittweise ablaufen zu lassen, da der Benutzer bei der Unterteilung in kleine
 Schritte mehr Nutzen hat, als wenn der Algorithmus in einem Schritt abgearbeitet würde.
-Wir entschieden uns dafür eine Navigationsleiste zu verwenden, die es dem
+Wir entschieden uns dafür, eine Navigationsleiste zu verwenden, die es dem
 Benutzer gestattet, in dem Algorithmus einen Schritt vor bzw. einen Schritt
 zurück zu gehen. Um die Handhabung für den Benutzer zu erleichtern, wurde die
 Navigationsleiste so erweitert, dass der Benutzer sowohl zurück an den Anfang der
@@ -73,32 +70,11 @@ Stellen in dem Automaten oder der Grammatik schneller lokalisieren
 kann.\vspace{10pt}
 
 Eine weitere Anpassung, die von uns implementiert wurde, ist die  Verwendung von
-sogenannten Pretty-Strings. Ein Pretty-String unterscheidet sich von einem
+sogenannten {\em Pretty-Strings}. Ein Pretty-String unterscheidet sich von einem
 normalen String durch zu\-sätz\-liche Farbinformationen und Zeichenattribute
 jedes einzelnen Zeichens. Der Benutzer soll dadurch in der Lage sein, die ihm
 zur Verfügung gestellten Informationen schneller aufzunehmen, als wenn ihm eine
 unformatierte Zeichenkette angezeigt werden würde.\vspace{10pt}
-
-
-\section{Redo/Undo}\label{GUIRedoUndo}
-
-Da das Lernwerkzeug vom Aussehen her an einen Editor angelehnt ist, wollten
-wir dem Benutzer auch eine Möglichkeit geben, Schritte rückgängig zu machen oder
-zu wiederholen. Desweiteren soll das Werkzeug ja auch zukünftig an den Stoff der
-Vorlesung angepasst werden, so dass uns eine einfache Erweiterbarkeit sehr
-wichtig war.\vspace{10pt}
-
-Daher haben wir uns entschlossen, die Verwaltung der Redo/Undo-Schritte nicht
-einer Klasse alleine zu überlassen, sondern die verschiedenen Aktionen in
-einzelnen Items zu kapseln. Auf diesen Items kann dann die entsprechende Redo-
-bzw. Undo-Funktion aufgerufen werden. Verwaltet wird dies von einem Handler,
-welcher sich nur merkt, welches das letzte aktive Item für Redo und Undo ist,
-und den Aufruf des Nutzers an das Item weiterleitet.\vspace{10pt}
-
-Durch diese Kapselung ist es leicht möglich, die Redo/Undo-Funktion zu
-erweitern, da einfach ein neues Item für die entsprechende Aktion implementiert
-werden muss, um diese Item beim Ausführen der Aktion an den Handler zu
-übergeben.\vspace{10pt}
 
 
 \section{Anpassung aller GUI Komponenten}\label{GUIAdaption}
@@ -293,8 +269,8 @@ nochmal nachzuvollziehen.\vspace{10pt}
 Daher sind alle Tabellen, welche bei den verschiedenen Funktionen des
 Lernwerkzeugs dargestellt werden, druckbar. Weiterhin kann auch der konstruierte
 Automat gedruckt werden. Zusätzlich können noch alle Zwischenansichten der
-Automaten gedruckt werden, sprich die einzelnen Schritte beim Umwandeln oder
-Minimieren.\vspace{10pt}
+Automaten gedruckt werden, sprich die einzelnen Schritte bei der Konvertierung
+oder der Minimierung.\vspace{10pt}
 
 Desweiteren kann ein konstruierter Automat als Bild exportiert werden. So hat
 man die Möglichkeit einen Automaten in ein PDF- oder eine \LaTeX -Datei

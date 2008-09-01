@@ -11,8 +11,8 @@
 
 \chapter{Kontextfreie Grammatiken}\label{Grammars}
 
-Eines der Hauptthemen, mit denen sich das Fach Grundlagen der Informatik
-beschäftigt, sind kontextfreie Grammatiken. Daher ist dieses Themengebiet auch
+Eines der Hauptthemen, mit denen sich das Fach Grundlagen der theoretischen
+Informatik beschäftigt, sind kontextfreie Grammatiken. Daher ist dieses Themengebiet auch
 Bestandteil unseres Lernwerkzeugs geworden. Der Benutzer muss die Möglichkeit
 haben, eine Menge von Terminalzeichen und Nichtterminalzeichen anzugeben, ebenso
 wie ein Startsymbol festzulegen. Dies haben wir durch Eingabefelder realisiert,
@@ -30,11 +30,9 @@ Abschnitt
 \vspace{10pt}
 
 Zur Darstellung der Produktionen wird eine Listenansicht verwendet, wobei die
-Produktionen als PrettyString angezeigt werden. Das bedeutet, dass man die
-verschiedenen Symbole (Terminalzeichen, Nichtterminalzeichen, Startsymbol) in den
-Farben dargestellt bekommt, die man in den Einstellungen dafür vergeben hat. Wir
-hoffen, dadurch eine bessere Übersichtlichkeit in den einzelnen Produktionen für
-den Benutzer geschaffen zu haben (siehe Abbildung
+Produktionen als Pretty-String angezeigt werden, welche ja schon in Abschnitt
+\ref{GUIDesign} beschrieben wurden. Wir hoffen, dadurch eine bessere
+Übersichtlichkeit in den einzelnen Produktionen für den Benutzer geschaffen zu haben (siehe Abbildung
 \ref{FigureProduction}).\vspace{10pt}
 
 Als Hilfestellung beim Anlegen von neuen Produktionen wird die aktuelle
@@ -45,7 +43,7 @@ angezeigt.\vspace{10pt}
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=8cm]{../images/production_dialog.png}
-\caption{Grammatik - Produktion anlegen}
+\caption{Produktion anlegen}
 \label{FigureAddProduction}
 \end{center}
 \end{figure}
@@ -62,7 +60,7 @@ Hilfestellung haben wir unterhalb des Eingabefeldes einen Bereich angelegt,
 in welchem die resultierende Produktion angezeigt wird. So kann der
 Benuzter jederzeit überprüfen, ob das Ergebnis seinen
 Vorstellungen entspricht. In Abbildung \ref{FigureAddProduction}
-sieht man den Dialog, welcher Verwendet wird um Produktionen
+sieht man den Dialog, welcher verwendet wird, um Produktionen
 anzulegen und zu bearbeiten.\vspace{10pt}
 
 Der Benutzer hat auch die Möglichkeit, seine definierte Grammatik zu validieren.
@@ -90,10 +88,11 @@ Die Zustände werden immer dann angelegt, wenn man auf ein Nichtterminalzeichen
 trifft, welches man bis jetzt noch nicht gesehen hat.\vspace{10pt}
 
 Die rechte Seite einer Produktion kann entweder aus einem einzelnen
-Terminalzeichen ($\NonterminalSymbol{S} \to \TerminalSymbol{a}$), oder
+Terminalzeichen (z.B. $\NonterminalSymbol{S} \to \TerminalSymbol{a}$), oder
 aus einem Terminalzeichen mit einem anschließenden Nichtterminalzeichen
-($\NonterminalSymbol{S} \to \TerminalSymbol{a}\NonterminalSymbol{A}$) bestehen,
-da nur solche Arten von Produktionen zugelassen sind.\vspace{10pt}
+(z.B. $\NonterminalSymbol{S} \to \TerminalSymbol{a}\NonterminalSymbol{A}$)
+bestehen, da nur solche Arten von Produktionen in einer rechtsregulären
+Grammatik zugelassen sind.\vspace{10pt}
 
 Am Anfang legen wir einen akzeptierenden Zustand an, welchen wir im weitern
 Verlauf des Algorithmus noch benötigen werden.\vspace{10pt}
@@ -116,7 +115,7 @@ Besteht die rechte Seite allerdings aus einem Terminalzeichen und einem
 Nichtterminalzeichen müssen wir wieder überprüfen, ob wir das
 Nichtterminalzeichen bereits gesehen haben, um gegebenenfalls den
 entsprechenden Zustand anzulegen. Im nächsten Schritt wird ein Übergang,
-zwischen den beiden Zuständen die wir uns gemerkt haben, angelegt, mit der der
+zwischen den beiden Zuständen die wir uns gemerkt haben, angelegt, mit der
 rechten Seite der Produktion als Übergangsmenge.\vspace{10pt}
 
 Diese Behandlung wiederholen wir für jede Produktion der Grammatik und
@@ -139,11 +138,9 @@ Produktion auf den Keller schreibt. Dieser Übergang hat als
 Ursprungs- und Zielzustand den akzeptierenden Zustand.\vspace{10pt}
 
 Wenn alle Produktionen verarbeitet wurden, wird zusätzlich pro Terminalzeichen
-ein Übergang vom akzeptierenden Zustand in den akzeptierenden Zustand angelegt.
-In jedem dieser Übergänge wird das entsprechende Terminalzeichen vom Eingabewort
-gelesen und vom Keller des Automaten genommen. Das bedeutet, es muss das gleiche
-Terminalzeichen als oberstes im Keller  und als nächstes Zeichen im Wort
-stehen.\vspace{10pt}
+ein Übergang vom akzeptierenden Zustand in sich selbst angelegt.
+In jedem dieser Übergänge wird das entsprechende Terminalzeichen vom Eingabeband
+gelesen und vom Keller des Automaten genommen.\vspace{10pt}
 
 Durch die Zweite Ansicht (siehe Abschnitt \ref{SecondView}) hat der Benuzter
 auch die Möglichkeit, die Ausgangsgrammatik und den enstandenen Automaten
@@ -155,9 +152,9 @@ nebeneinander zu sehen, um die Zusammenhänge besser verstehen zu können.\vspac
 Im Folgenden möchten wir auf die Fehler und Warnungen eingehen, welche bei dem
 Validierungsvorgang einer Grammatik auftreten können.\vspace{10pt}
 
-Zu diesen Validierungsfehlern zählt unter anderem wenn Produktionen mehrfach
-in einer Grammatik existieren. In der Spalte "`Meldung"' sieht man wie immer
-nur, um welchen Fehler es sich gerade handelt. Über die Beschreibung wird
+Zu diesen Validierungsfehlern zählt unter anderem, wenn die selbe Produktion
+mehrfach in einer Grammatik existiert. In der Spalte "`Meldung"' sieht man wie
+immer nur, um welchen Fehler es sich gerade handelt. Über die Beschreibung wird
 mitgeteilt, um welche Produktion es sich dabei handelt.\vspace{10pt}
 
 Handelt es sich bei der aktuellen Grammatik um eine reguläre Grammatik, gibt es
@@ -168,9 +165,7 @@ Beschreibung sehen, um welche Produktion es sich handelt. Wenn man den
 entsprechenden Eintrag auswählt, wird dem Benutzer wieder durch farbiges
 Hervorheben signalisiert, wo sich diese Produktion befindet. Es wird jetzt
 allerdings nicht die ganze Produktion eingefärbt, sondern nur der Teil der
-Satzform, welcher nicht den Satzformen für reguläre Grammatiken entspricht. Auch
-hier war wieder die Intention, dem Benutzer schnell zu einer gültigen Grammatik
-zu verhelfen.\vspace{10pt}
+Satzform, welcher nicht den Satzformen für reguläre Grammatiken entspricht.\vspace{10pt}
 
 Neben diesen beiden Fehlern haben wir auch eine Warnung eingeführt. Diese gibt
 Auskunft darüber, wenn ein Nichtterminalzeichen, vom Startsymbol ausgehend, nicht

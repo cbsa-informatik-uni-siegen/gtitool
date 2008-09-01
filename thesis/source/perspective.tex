@@ -120,7 +120,7 @@ unterscheiden.\vspace{10pt}
 \section{Grammatik-Erweiterungen}\label{PerspectiveGrammar}
 
 Bei Grammatiken gibt es noch diverse Möglichkeiten, welche bis jetzt noch nicht
-umgesetzt sind. Als Beispiele, auf die wir in diesem Abschnitt noch eingehen
+umgesetzt wurden. Als Beispiele, auf die wir in diesem Abschnitt noch eingehen
 möchten, haben wir uns Linksrekursion, Linksfaktorisierung und
 Ableitungen für Grammatiken aufgegriffen.\vspace{10pt}
 
@@ -143,9 +143,9 @@ sollte.\vspace{10pt}
 \NonterminalSymbol{A} sind von der Form\vspace{10pt}
 
 \NonterminalSymbol{A} $\to$ \NonterminalSymbol{A}$\alpha_1\ |\ \ldots\ |\ $
-\NonterminalSymbol{A}$\alpha_n\ |\ \beta_1\ |\ \ldots\ |\ \beta_n$\vspace{10pt}
+\NonterminalSymbol{A}$\alpha_n\ |\ \beta_1\ |\ \ldots\ |\ \beta_k$\vspace{10pt}
 
-\noindent wobei $\beta_1\ $bis$\ \beta_n$ nicht mit \NonterminalSymbol{A}
+\noindent wobei $\beta_1\ $bis$\ \beta_k$ nicht mit \NonterminalSymbol{A}
 beginnen.\vspace{10pt}
 
 \noindent Um diese Rekursion zu beseitigen, führt man ein neues
@@ -153,7 +153,8 @@ Nichtterminalzeichen \NonterminalSymbol{A$'$} ein. Also ersetzt man die
 bestehenden Produktion von
 \NonterminalSymbol{A} durch diese Produktionen:\vspace{10pt}
 
-\NonterminalSymbol{A} $\to \beta_1\ |\ \ldots\ |\ \beta_n$
+\NonterminalSymbol{A} $\to \beta_1$\NonterminalSymbol{A$'$}$\ |\ \ldots\ |\
+\beta_k$\NonterminalSymbol{A$'$}
 
 \NonterminalSymbol{A$'$} $\to \alpha_1$\NonterminalSymbol{A$'$}$\ |\ \ldots\ |\
 $ $\alpha_n$\NonterminalSymbol{A$'$}$\ |\ \epsilon$\vspace{10pt}
@@ -192,7 +193,7 @@ gleiche Prefixe haben. Wie es zum Beispiel bei \vspace{10pt}
 \vspace{10pt}
 
 \noindent der Fall ist. Denn hier kann man beim rekursiven Abstieg nicht
-entscheiden, welche Ableitung die richtige ist. Dieses Problem läss sich durch
+entscheiden, welche Ableitung die richtige ist. Dieses Problem lässt sich durch
 den Algorithmus zur Linksfaktorisierung lösen. Dieser Algorithmus sieht wie folgt
 aus:\vspace{10pt}
 
@@ -205,7 +206,7 @@ Form\vspace{10pt}
 
 \noindent
 \NonterminalSymbol{A}$ \to \alpha \beta_1\ |\ \ldots\ |\ \alpha
-\beta_n\ |\ \gamma_1\ |\ \ldots\ |\ \gamma_n$
+\beta_n\ |\ \gamma_1\ |\ \ldots\ |\ \gamma_k$
 \vspace{10pt}
 
 \noindent
@@ -218,8 +219,8 @@ nächstes ersetzt man die bestehenden Produktionen von \NonterminalSymbol{A}
 durch die folgenden.\vspace{10pt}
 
 \noindent
-\NonterminalSymbol{A}$ \to \alpha $\NonterminalSymbol{A$'$}$\ |\ \gamma_1\ |\ \ldots\ |\ \gamma_n$\\
-\NonterminalSymbol{A$'$}$ \to \beta_1\ |\ \ldots\ |\ \beta_n$
+\NonterminalSymbol{A}$ \to \alpha $\NonterminalSymbol{A$'$}$\ |\ \gamma_1\ |\
+\ldots\ |\ \gamma_k$\\ \NonterminalSymbol{A$'$}$ \to \beta_1\ |\ \ldots\ |\ \beta_n$
 \vspace{10pt}
 
 \noindent
@@ -227,9 +228,9 @@ Dieser Schritt muss wiederholt werden, bis für alle Produktionen mit dem
 glei\-chen Nichtterminalzeichen auf der rechten Seite $\epsilon$ der einzige
 gemeinsame Prefix ist.\vspace{10pt}
 
-Dieser Algorithmus kann für eine Implementierung verwendet werden, indem für
-jedes Nichtterminalzeichen überprüft, ob eine Linksfatorisierung nötig ist, und
-diese dann wie oben beschrieben anwendet.
+Dieser Algorithmus kann für eine Implementierung verwendet werden, indem man für
+jedes Nichtterminalzeichen überprüft wird, ob eine Linksfatorisierung nötig ist,
+und diese dann wie oben beschrieben anwendet wird.
 
 
 \subsection{Ableitungen für Grammatiken}\label{PerspectiveGrammarWordNavigation}
@@ -237,7 +238,7 @@ diese dann wie oben beschrieben anwendet.
 Die Wort-Navigation für Automaten haben wir in Abschnitt
 \ref{WordNavigation} beschrieben. Etwas in der Richtung ließe sich
 auch für Grammatik realisieren. Allerdings navigiert man nicht mehr
-durch ein Wort, sondern man sucht die richtig Ableitung von dem
+durch ein Wort, sondern man sucht die richtige Ableitung von dem
 Startsymbol aus.\vspace{10pt}
 
 Dazu könnte die Top-Down Methode des rekursiven Abstiegs verwendet werden. Dieser
@@ -245,8 +246,8 @@ Algorithmus startet mit dem Startsymbol der Grammatik auf dem Keller. Wenn
 mehrere Produktionen für das Startsymbol in der Grammatik existieren, muss der
 Benutzer jetzt auswählen, welches die richtige Produktion ist. Dann wird das
 Startsymbol durch die rechte Seite dieser Produktion ersetzt. Jetzt nimmt man
-sich jedes Symbol einzeln vor, wobei man von links startet. Handelt es sich um
-ein Nichtterminalzeichen, würde dieses wieder durch die rechte Seite der
+sich jedes Symbol des Kellers einzeln vor, wobei man von links startet. Handelt
+es sich um ein Nichtterminalzeichen, würde dieses wieder durch die rechte Seite der
 richtigen nächsten Produktion ersetzt. Handelt es sich um ein Terminalzeichen,
 wird dieses mit dem nächsten Zeichen im Eingabewort verglichen. Wenn diese
 übereinstimmen, wird ein Pointer innerhalb des Eingabewortes ein Symbol
@@ -370,13 +371,13 @@ entsprechenden Zustände auswählt.\vspace{10pt}
 \section{Auto-Layout}\label{PerspectiveAutoLayout}
 
 Wie im Abschnitt \ref{AutoLayout} schon erwähnt, kann der implementierte
-Autolayout-Algorithmus noch optimiert werden. Ein Algorithmus der wahrscheinlich
-bessere Ergebnisse liefert, ist der Simulated-Annealing-Algorithmus (Simulierte
-Abkühlung), welcher auch in \cite{Layout} beschrieben wird.\vspace{10pt}
+Auto-Layout-Algorithmus noch optimiert werden. Ein Algorithmus der
+wahrscheinlich bessere Ergebnisse liefert, ist der Simulated-Annealing-Algorithmus (Simulierte
+Ab\-kühlung), welcher auch in \cite{Layout} beschrieben wird.\vspace{10pt}
 
 Bei diesem Algorithmus versucht man sich das Verfahren des Ab\-kühlungs\-pro\-zes\-ses zu
 Nutze zu machen, welches in der Natur beobachtet werden kann. Wenn man diesen
-Prozess Beispielsweise bei metallischen Schmelzen beobachtet, kann man
+Prozess beispielsweise bei metallischen Schmelzen beobachtet, kann man
 feststellen, dass die Metallatome sich zu Beginn des Ab\-kühlungs\-pro\-zes\-ses noch
 annähernd chaotisch durch die Gitterpositionen bewegen. Mit abnehmender
 Temperatur nehmen die Atome allerdings immer mehr geordnete Positionen ein, so
@@ -427,13 +428,13 @@ Der Pseudocode für diesen Algorithmus sieht wie folgt aus:\vspace{10pt}
 \verb|17         if ( r < e|$^{-\frac{\Delta cost}{T}}$\verb| ) then|\\
 \verb|18           cur_cost = trial_cost|\\
 \verb|19           cur_part = MOVE ( a|$_i$\verb|, b|$_i$\verb| )|\\
-\verb|20     until (Abbruchskriterium, z.B. Gleichgewicht bei T, erreicht)|\\
+\verb|20     until (Abbruchskriterium erreicht)|\\
 \verb|21    T = |$\alpha$\verb| * T|\\
 \verb|22   until ( T < T|$_{min}$\verb| )|\\
 \verb|23 end|\\ 
 \vspace{10pt}
 
-Die Kostenfunktion ist bei der Implementierung des Algorithmus ein wichtiger
+Die Kostenfunktion ist bei der Implementierung ein wichtiger
 Punkt. In unserem speziellen Fall müsste man berücksichtigen, dass zwei
 Zustände, zwischen denen ein Übergang existiert, nicht zu weit auseinanderliegen
 sollten. Wenn zwei Zustände nicht direkt nebeneinander liegen können, sollte sehr

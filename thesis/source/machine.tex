@@ -44,7 +44,7 @@ speziellen Ansprüchen unserer Umsetzung zu genügen.\vspace{10pt}
 Bei der Darstellung der Automaten haben wir uns am Verlesungsskript \cite{Sieber}
 orientiert. Wir wollten eine möglichst hohe Überdeckung erreichen, um
 sicherzustellen, dass ein Benutzer einen existierenden Automaten verstehen kann,
-ohne sich noch viel einlesen zu müssen. In den Vorlesungsunterlagen wird ein
+ohne sich erst einlesen zu müssen. In den Vorlesungsunterlagen wird ein
 Zustand als Kreis dargestellt. Ein akzeptierender Zustand wird über einen
 doppelten Rahmen gekennzeichnet. Einen Startzustand erkennt man an einem Pfeil,
 welcher mit Start beschriftet ist. In Abbildung \ref{FigureMachine} sieht man
@@ -64,16 +64,17 @@ Darstellung von Zuständen und Übergängen erreichen. Diese Komponenten müssen
 dynamisch angelegt, gelöscht und bearbeitet werden können. Nachdem wir also eine
 passende Darstellung für unsere Automaten gefunden hatten, mussten wir noch die
 Verknüpfung von den graphischen Elementen und den eigentlichen Zustands- und
-Übergangsobjekten herstellen. Um eine eindeutige Zuweisung von diesen Elementen
-zu erreichen, haben wir uns dazu entschieden, die Kernelemente als Attribut in
-den graphischen Komponenten zu speichern.\vspace{10pt}
+Übergangsobjekten herstellen. Diese Zustands- und Übergangsobjekte werden im
+nachfolgenden als {\em Kernelemente} bezeichnet. Um eine eindeutige Zuweisung
+von diesen Elementen zu erreichen, haben wir uns dazu entschieden, die 
+Kernelemente als Attribut in den graphischen Komponenten zu speichern.\vspace{10pt}
 
 Nachdem die Verknüpfung der Komponenten erledigt war, konnte man die Darstellung
 der Zustände und Übergänge anhand der entsprechenden Daten anpassen. Für Zustände bedeutet
 das, dass man den Namen des Zustandsobjekts anzeigt, und auswertet,
 ob es sich um einen Startzustand oder um einen Endzustand handelt. Bei den
 Übergängen konnte die Übergangsmenge als Beschriftung benutzt werden, wie es bei
-der Vorlage im Skript der Fall ist.\vspace{10pt}
+der Vorlage im Vorlesungsskript der Fall ist.\vspace{10pt}
 
 
 \subsection{Anpassung von JGraph}\label{GraphJGraphAdaptation}
@@ -160,8 +161,8 @@ Zustände anzugeben, die nicht im Graphen vorkommen. Abbildung
 
 \subsection{Tabelle für Keller-Operationen}\label{TablesPDA}
 
-Anhand der Tabelle für Kelleroperationen kann der Benutzer genau
-nachvollziehen, was genau mit dem Keller des Automaten passiert, wenn dieser
+Anhand der Tabelle für Kelleroperationen kann der Benutzer nachvollziehen, was 
+mit dem Keller des Automaten passiert, wenn dieser
 in einen anderen Zustand übergeht.\vspace{10pt}
 
 \begin{figure}[h!]
@@ -173,7 +174,7 @@ in einen anderen Zustand übergeht.\vspace{10pt}
 \end{figure}
 \vspace{10pt}
 
-Die Tabelle enthält einen Eintrag pro Übergang in unserem Automaten. Jeder
+Die Tabelle enthält einen Eintrag pro Übergang des Automaten. Jeder
 Eintrag enthält den Ausgangszustand, den Folgezustand
 und die entsprechende Übergangsmenge. Zusätzlich wird noch das Wort
 angegeben, welches bei diesem Übergang vom Keller gelesen wird, und das Wort,
@@ -194,18 +195,17 @@ Operationen mit dem Automaten Keller eingegangen.
 
 \subsection{Deterministische Navigation}\label{WordNavigationDeterministic}
 
-Wir wollten dem Nutzer auch die Möglichkeit geben, sich anzusehen, wie der
+Wir wollten dem Nutzer die Möglichkeit geben, sich anzusehen, wie der
 konstruierte Automat ein beliebiges Eingabewort abarbeitet. Dabei muss es sich
 um ein gültiges Wort über dem Alphabet handeln. Für diesen Zweck wurde die
 Wort-Navigation entwickelt. In Abbildung \ref{FigureWordNavigation}
-sieht man den Dialog zur WortNavigation im GTI Tool.\vspace{10pt}
+sieht man den Dialog zur Wort-Navigation im GTI Tool.\vspace{10pt}
 
 Wenn der Nutzer den Wort-Navigationsmodus startet, findet er am unteren
-Bildschirmrand zwei Textfelder. Hierbei handelt es sich um ein Eingabefeld für
-das Eingabewort, und um eine Anzeige des aktuellen Kellers. In der
-deterministischen Wort-Navigation spielt die Kelleranzeige keine Rolle. Diese
-wird allerdings bei der Verwendung von einem Kellerautomaten benötigt und wird
-in Abschnitt \ref{InteractionPDA} besprochen.\vspace{10pt}
+Bildschirmrand zwei wichtige Textfelder. Hierbei handelt es sich um ein
+Eingabefeld für das Eingabewort, und um eine Anzeige des aktuellen Kellers. Die
+Kelleranzeige wird bei der Verwendung von einem Kellerautomaten
+benötigt und wird in Abschnitt \ref{InteractionPDA} besprochen.\vspace{10pt}
 
 Um dem Benutzer eine Hilfestellung bei der Eingabe eines Wortes zu geben, wird
 rechts neben dem Eingabefeld das aktuelle Alphabet angezeigt. Man kann nur
@@ -215,26 +215,26 @@ sind.\vspace{10pt}
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=12cm]{../images/dfa_navigation.png}
-\caption{Automat - Wort-Navigation}
+\caption{Wort-Navigation}
 \label{FigureWordNavigation}
 \end{center}
 \end{figure}
 \vspace{10pt}
 
 Nachdem ein Wort eingegeben wurde, kann der Nutzer dann die Verarbeitung des
-Worts starten. Es besteht die Möglichkeit, sich Zeichen für Zeichen weiter durch
-das Wort zu arbeiten, und den genauen Weg im Automaten nachzuvollziehen.\vspace{10pt}
+Worts starten. Für die Navigation wird die bereits beschriebene
+Navigationsleiste verwendet.\vspace{10pt}
 
 In jedem Schritt werden die Zustände farblich hervorgehoben, in denen sich der
 Automat aktuell befindet. Zusätzlich wird auch der Übergang und das
 entsprechende Symbol des Übergangs hervorgehoben, über welchen man in diesen
 Zustand gekommen ist. In dem Feld, in welchem man das Wort eingegeben hat, wird
-jetzt angezeigt, bis zu welcher Stelle der Automat das Wort schon gelesen
-hat.\vspace{10pt}
+jetzt angezeigt, bis zu welcher Stelle das Wort bereits gelesen
+wurde.\vspace{10pt}
 
 Wenn der Automat das ganze Wort gelesen hat, bekommt der Benutzer eine Information,
 ob der Automat das Wort akzeptiert hat, oder, ob das Wort nicht in der Sprache
-des Automaten liegt.\vspace{10pt}
+liegt, welche der Automaten akzeptiert.\vspace{10pt}
 
 
 \subsection{Zustands Pfad}\label{HistoryPath}
@@ -488,14 +488,14 @@ erzeugt als Ausgabe einen neuen Automaten welcher die gleiche Sprache
 akzeptiert, jedoch mit einer minimalen Anzahl von Zuständen
 auskommt.\vspace{10pt}
 
-Der erster Minimierungsschritt besteht darin, die unerreichbaren Zustände zu
+Der erste Minimierungsschritt besteht darin, die unerreichbaren Zustände zu
 entfernen, da diese keine Auswirkung auf die erkannte Sprache haben können. Der
 dazu verwendete Algorithmus zur Berechnung der erreichbaren Zustände kann im
 Abschnitt \ref{ReachableStates} nachgeschlagen werden.\vspace{10pt}
 
 Im Weiteren versuchen wir, äquivalente Zustände in Gruppen, auch
-Äquivalenz\-klassen genannt, zusammenzufassen, um diese später zu einem Zustand
-zu verschmelzen. Um herauszufinden, ob zwei Zustände in der gleichen
+Äqui\-valenz\-klassen genannt, zusammenzufassen, um diese später zu einem
+Zustand zu verschmelzen. Um herauszufinden, ob zwei Zustände in der gleichen
 Äquivalenz\-klasse liegen, überprüft man für jedes Symbol des Alphabets
 einzeln, ob alle Zustände der Gruppe mit diesem Symbol in Zustände der selben
 Gruppe übergehen.\vspace{10pt}
@@ -511,10 +511,10 @@ Zustände in der selben Äquivalenzklasse liegen, wenn sie mit jeweils allen
 Symbolen des Eingabealphabets in einen Zustand der selben Gruppe
 übergehen.\vspace{10pt}
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \begin{center}
 \includegraphics[width=12cm]{../images/minimize.png}
-\caption{Automat - Minimierung}
+\caption{Minimierung}
 \label{FigureMinimization}
 \end{center}
 \end{figure}
@@ -523,7 +523,7 @@ Symbolen des Eingabealphabets in einen Zustand der selben Gruppe
 Schauen wir uns jetzt mal die Arbeitsweise des Algorithmus im Detail an. Als
 erstes wird die aktuelle Gruppeneinteilung gespeichert, also wie viele
 Gruppen existieren, und welcher Zustand in welcher Gruppe liegt. Dann wird
-die erste Gruppen betrachtet. Wenn diese nur einen Zustand enthält, kann sie
+die erste Gruppe betrachtet. Wenn diese nur einen Zustand enthält, kann sie
 nicht weiter verfeinert werden, und muss daher auch nicht mehr betrachtet werden.
 \vspace{10pt}
 
@@ -535,12 +535,12 @@ existieren, welche in einer anderen Äquivalenz\-klasse liegen, werden diese
 Zustände aus der aktuellen Gruppe entfernt und bilden eine neue Gruppe. \vspace{10pt}
 
 Nachdem diese Prozedur für die aktuelle Gruppe abgeschlossen ist, wird sie für
-alle Gruppen, die noch nicht betrachtet wurden, wiederholt. Nach Betrachtung aller
-Gruppen wird die aktuelle Gruppeneinteilung mit der verglichen, die zu Beginn
-gespeichert wurde. Wenn diese übereinstimmt, ist unser Algorithmus am Ende, und
-die Gruppen können nicht weiter verfeinert werden. Stimmt die Gruppeneinteilung
-nicht überein, muss jede Gruppe erneut einzeln betrachten, um zu versuchen,
-diese in kleinere Gruppen zu zerlegen.\vspace{10pt}
+alle Gruppen, die noch nicht betrachtet wurden, wiederholt. Als nächstes wird
+die aktuelle Gruppeneinteilung mit der verglichen, die zu Beginn gespeichert
+wurde. Wenn diese übereinstimmen, ist unser Algorithmus am Ende, und die
+Gruppen können nicht weiter verfeinert werden. Stimmen die Gruppeneinteilungen
+nicht überein, muss jede Gruppe erneut einzeln betrachtet werden, um zu
+versuchen, diese in kleinere Gruppen zu zerlegen.\vspace{10pt}
 
 Nach Beendigung des Algorithmus repräsentiert jede Gruppe einen Zustand
 im minimalen Automaten. Jetzt muss noch pro Symbol des Alphabets der
@@ -555,9 +555,9 @@ was in den bisherigen Schritten des Algorithmus passiert ist.\vspace{10pt}
 \section{Auto-Layout}\label{AutoLayout}
 
 Beim Anlegen eines neuen Automaten, oder auch beim Modifizieren eines
-bestehenden, kommt es vor, dass die Übersichtlichkeit verloren geht. Damit man
-eine schnelle Möglichkeit hat, den Automaten wieder besser überblicken zu
-können, wurde eine Auto-Layout Funktion implementiert.\vspace{10pt}
+bestehenden, kommt es vor, dass die Übersichtlichkeit verloren geht.
+Um schnell wieder einen übersichtlichen Automaten zu erhalten,
+wurde eine Auto-Layout Funktion implementiert.\vspace{10pt}
 
 Diese Funktion basiert zur Zeit auf dem Erweiterten Partitionierungsalgorithmus
 von Kerninghan und Lin. Er beruht auf der iterativen Verbesserung durch
@@ -583,7 +583,7 @@ zwischen zwei Gruppen.\vspace{10pt}
 In jedem Durchlauf wird mehrfach ein Gewinnwert $\Delta g$ berechnet. Einen
 Gewinnwert kann man erreichen, indem man zwei Knoten austauscht, und dadurch
 die Anzahl der Schnitte verringert, wobei der Gewinnwert der Differenz
-zwischen der neuen und alten Anzahl von Schnitten entspricht.
+zwischen der neuen und alten Anzahl von Schnitten entspricht.\vspace{10pt}
 
 Der Kerninghan-Lin-Algorithmus lässt sich in die folgenden Schritte
 unterteilen, welche dem Buch "`Layoutsynthese elektronischer
@@ -628,17 +628,18 @@ Schritt 5:
 Betrachten wir zunächst, wie der Algorithmus vorgeht, indem wir
 nachvollziehen, was in den einzelnen Schritten passiert.\vspace{10pt}
 
-In \textit{Schritt 1} wird für alle Knoten berechnet, ob sie einen hohen oder
+In {\em Schritt 1} wird für alle Knoten berechnet, ob sie einen hohen oder
 niedrigen Anteil der Schnittkosten verursachen. Die beiden Knoten, welche den
-maximalen Gewinnwert bringen, werden getauscht und fixiert.\vspace{10pt}
+maximalen Gewinnwert bringen, werden in {\em Schritt 2} getauscht und
+fixiert.\vspace{10pt}
 
-In \textit{Schritt 3} überprüfen wir, ob alle Knoten bereits fixiert sind,
+In {\em Schritt 3} überprüfen wir, ob alle Knoten bereits fixiert sind,
 ansonsten werden die Kosten für jeden Knoten der noch nicht fixiert ist neu
 berechnet und erneut
-\textit{Schritt 2} ausgeführt.\vspace{10pt}
+{\em Schritt 2} ausgeführt.\vspace{10pt}
 
-In \textit{Schritt 4} wird überprüft, ob der Algorithmus bereits sein Ende
-erreicht hat. Wenn nicht, werden in \textit{Schritt 5} die Vertauschungen des
+In {\em Schritt 4} wird überprüft, ob der Algorithmus bereits sein Ende
+erreicht hat. Wenn nicht, werden in {\em Schritt 5} die Vertauschungen des
 aktuellen Durchgangs durchgeführt, und es wird ein neuer Durchgang gestartet.\vspace{10pt}
 
 Wie schon erwähnt, musste der Algorithmus für die Implementierung ein wenig
@@ -651,7 +652,7 @@ Implementierung entspricht soweit der Erweiterung des
 Kerningham-Lin-Algorithmus, wie sie in \cite{Layout} beschrieben
 wird.\vspace{10pt}
 
-Die Erweiterung des Algorithmus sieht jetzt vor, dass man den Algorithmus jetzt
+Die Erweiterung des Algorithmus sieht vor, dass man den Algorithmus jetzt
 für alle möglichen Paarungen von Gruppen betrachtet. Die Implementierung
 sieht so aus, dass man eine Linie zwischen die erste und zweite Gruppe legt, und
 alle Kanten zählt, die diese Linie schneiden. Dann berechnet man, bei

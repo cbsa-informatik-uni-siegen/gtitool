@@ -134,13 +134,11 @@ Damit das \gtitool unter verschiedenen Betriebsystemen immer gleich, oder
 zumindest sehr ähnlich aussieht, kam während der Entwicklung der Wunsch auf, ein
 eigenes Look \& Feel zu verwenden. Java bietet in diesem Bereich zwar mit dem
 Metal Look \& Feel eine Lösung an, die unter allen Betriebssystemen gleich
-aussehen soll, diese erfüllte aber unsere Vorstellungen nicht. Schließlich fiel
-die Wahl auf TinyLaF (siehe \cite{tinylaf}), ein weitgehend gezeichnetes
-Look \& Feel, dass somit unter allen Betriebsystemen gleich aussieht. Dem
-Benutzer ist es aber freigestellt, ein anderes, zum Beispiel das normale
-Betriebsystem Look \& Feel zu verwenden, wenn er dies wünscht. Alle in dieser
-Diplomarbeit verwendeten Bilder des \gtitools wurden mit TinyLaF als Look \&
-Feel gemacht.\vspace{10pt}
+aussehen soll. Diese erfüllte aber unsere Vorstellungen nicht. Schließlich fiel
+die Wahl auf TinyLaF (siehe \cite{tinylaf}). Dem Benutzer ist es aber
+freigestellt, ein anderes, zum Beispiel das normale Betriebsystem Look \& Feel zu
+verwenden, wenn er dies wünscht. Alle in dieser Diplomarbeit verwendeten Bilder
+des \gtitools wurden mit TinyLaF als Look \& Feel erstellt.\vspace{10pt}
 
 
 \section{Zweite Ansicht}\label{SecondView}
@@ -165,24 +163,23 @@ die es erlaubt, Tabs in einem zweiten Bereich zu öffnen. So können zwei Dateie
 gleichzeitig sichtbar sein. Während der Umsetzung mussten verschiedene Probleme
 diskutiert und gelöst werden. So stellte sich die Frage, wie dem Benutzer
 verdeutlicht werden kann, welche der beiden sichtbaren Dateien aktiv ist. Wichtig
-ist dieser Status für die Aktivierung der Menüeinträge bzw. Toolbar Buttons. Als
-Umsetzung wurde schließlich gewählt, dass anhand von unterschiedlichen
-Umrandungen dem Benutzer klar gemacht werden soll, welche der beiden Dateien
-aktiv ist. Durch dieses Vorgehen wird intuitiv klar, welche Datei aktiv ist, da
-sich die Farbe der Umrandung beim Aktivieren der anderen Ansicht ändert. In
-Abbildung \ref{FigureSecondView} ist der Automat auf der rechten Seite
-aktiv.\vspace{10pt}
+ist dieser Status für die Aktivierung der Menüeinträge bzw. Toolbar Buttons. Die
+Lösung besteht jetzt darin, dass anhand von unterschiedlichen Umrandungen dem
+Benutzer klar gemacht werden soll, welche der beiden Dateien aktiv ist. Durch
+dieses Vorgehen wird intuitiv klar, welche Datei aktiv ist, da sich die Farbe der
+Umrandung beim Aktivieren der anderen Ansicht ändert. In Abbildung
+\ref{FigureSecondView} ist der Automat auf der rechten Seite aktiv.\vspace{10pt}
 
 Eine weitere wichtige Eigenschaft der zweiten Ansicht ist, dass Dateien in diese
-zweite Ansicht verschoben werden können. Ebenfalls ist es möglich, in der
-zweiten Ansicht Dateien zu öffnen bzw. neue zu erstellen. Um die letzen beiden
-genannten Punkte umzusetzen, wurde das Konzept des aktiven Editors erweitert. Die
-oben beschriebene andere Darstellung der aktiven Datei wurde so erweitert, dass
-sich auch alle anderen Ereignisse auf den aktiven Editor beziehen. Wenn eine
-Datei geöfffnet werden soll, muss erst die Ansicht aktiviert werden, in der die
-Datei geöffnet werden soll. Das Gleiche gilt beim Anlegen einer neuen Datei. Das
-Verschieben von geöffneten Dateien wurde per Kontextmenü und intuitiv per Drag
-and Drop zwischen den Ansichten gelöst.\vspace{10pt}
+zweite Ansicht verschoben werden können. Ebenfalls ist es möglich, in der zweiten
+Ansicht Dateien zu öffnen bzw. neue zu erstellen. Um die letzten beiden genannten
+Punkte umzusetzen, wurde das Konzept des aktiven Editors erweitert. Die oben
+beschriebene andere Darstellung der aktiven Datei wurde so erweitert, dass sich
+auch alle anderen Ereignisse auf den aktiven Editor beziehen. Wenn eine Datei
+geöfffnet werden soll, muss erst die Ansicht aktiviert werden, in der die Datei
+geöffnet werden soll. Das Gleiche gilt beim Anlegen einer neuen Datei. Das
+Verschieben von geöffneten Dateien wurde per Kontextmenü und per Drag and Drop
+zwischen den Ansichten gelöst.\vspace{10pt}
 
 
 \section{Parser}\label{Parser}
@@ -199,7 +196,7 @@ muss.\vspace{10pt}
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=12cm]{../images/parser.png}
-\caption{Parser - Kontextsensitive Bedingungen}
+\caption{Kontextsensitive Bedingungen}
 \label{FigureParser}
 \end{center}
 \end{figure}
@@ -214,8 +211,9 @@ Dies wäre nicht der Fall gewesen, wenn nur eine Auswahl von Zeichen zur
 Verfügung gestanden hätte.\vspace{10pt}
 
 Zur Erzeugung der Parser wurde der CUP Parser-Generator für Java verwendet, siehe
-\cite{java-cup}. Als Scannergenerator wurde wegen des guten Zusammenspiels
-mit dem verwendeten Parser JFlex benutzt, siehe \cite{jflex}.\vspace{10pt}
+\cite{java-cup}. Als Scannergenerator wurde wegen des guten Zusammenspiels mit
+dem verwendeten Parser-Generator JFlex benutzt, siehe
+\cite{jflex}.\vspace{10pt}
 
 In diesem Abschnitt werden die Besonderheiten der Parser angesprochen, vor allem
 das Prüfen der kontextsensitiven Bedingungen und das Anpassen der verwendeten
@@ -239,7 +237,7 @@ ist, dass der Benutzer darauf hingewiesen wird, warum seine Eingabe abgelehnt
 wird.\vspace{10pt}
 
 Im \gtitool gibt es an verschiedenen Stellen die Möglichkeit, ein Alphabet
-einzugeben. Betrachten wir als erstes das Eingeben des Alphabetes im Dialog für
+einzugeben. Betrachten wir als erstes die Eingabe des Alphabetes im Dialog für
 die Einstellungen, da dieser Parser die wenigsten kontextsensitiven Bedingungen
 berücksichtigen muss. Sowohl beim Eingabealphabet, wie auch beim Kelleralphabet
 ist die einzige Bedingung, dass ein Symbol nicht doppelt vorkommen darf, eine
@@ -259,7 +257,7 @@ bei den Nichtterminalzeichen angezeigt, dass \NonterminalSymbol{a} bereits ein
 Terminalzeichen ist, bzw. umgekehrt, wenn zuerst das Nichtterminalzeichen
 vorhanden war. Eine weitere Bedingung ist, dass das Startsymbol in der Menge der
 Nichtterminalzeichen enthalten sein muss. Auch diese Bedingung wird überprüft
-und bei Verletzung mit einer Fehlermeldung behandelt.\vspace{10pt}
+und bei Verletzung eine Fehlermeldung angezeigt.\vspace{10pt}
 
 Eine weitere Kontextbedingung wird überprüft, wenn das Alphabet eines
 bestehenden Automaten bearbeitet wird. Dabei darf der Benutzer beliebige, 
@@ -277,11 +275,11 @@ werden.\vspace{10pt}
 \subsection{Anpassung der Darstellungsweise}\label{ParserAdaption}
 
 Um das Arbeiten mit Grammatiken einfacher und übersichtlicher zu machen, wurde
-die Darstellung der Nichtterminalzeichen und Terminalzeichen unterschiedlich
-gewählt. So werden das Startsymbol und die anderen Nichtterminalzeichen in einer
-unterschiedlichen Farbe dargestellt. Der Benutzer ist somit in der Lage, in den
-Produktionen zu erkennen, ob ein Nichtterminalzeichen das Startsymbol ist oder
-nicht.\vspace{10pt}
+die Darstellung der Nichtterminalzeichen, Terminalzeichen und des Startsymbols
+unterschiedlich gewählt. So werden das Startsymbol und die anderen
+Nichtterminalzeichen in einer unterschiedlichen Farbe dargestellt. Der Benutzer
+ist somit in der Lage, in den Produktionen zu erkennen, ob ein
+Nichtterminalzeichen das Startsymbol ist oder nicht.\vspace{10pt}
 
 
 \section{Drucken}\label{Print}

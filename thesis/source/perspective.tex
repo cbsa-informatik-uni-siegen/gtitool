@@ -31,10 +31,10 @@ Da eine solche Implementierung sehr viel Zeit in Anspruch nehmen würde, war es
 uns im Rahmen der Diplomarbeit nicht möglich, neben den umgesetzten Komponenten
 auch noch die graphischen Komponenten selbst zu implementieren. JGraph bot uns
 die Möglichkeit, sehr schnell und einfach bereits brauchbare Ergebnisse zu
-erzielen. Es mussten einige in Abschnitt \ref{GraphJGraphAdaptation} beschriebene
-Anpassungen vorgenommen werden, damit das Ergebnis unseren Vorstellungen
-entsprach, diese waren aber im Gegensatz zu einer vollständigen Implementierung
-zeitlich weniger aufwendig.\vspace{10pt}
+erzielen. Es mussten einige, in Abschnitt \ref{GraphJGraphAdaptation}
+beschriebene, Anpassungen vorgenommen werden, damit das Ergebnis unseren
+Vorstellungen entsprach. Diese waren aber im Gegensatz zu einer vollständigen
+Implementierung zeitlich weniger aufwendig.\vspace{10pt}
 
 Zu einer möglichen Umsetzung ist zu sagen, dass sowohl Zustände wie auch
 Übergänge implementiert werden müssen. Was gerade bei der Verwendung von
@@ -60,14 +60,6 @@ Anschließend sollen im Idealfall mehrere Möglichkeiten bestehen, mit diesem
 Ausdruck weiter zu arbeiten. Diese Möglichkeiten werden im Folgenden
 angedeutet.\vspace{10pt}
 
-Der eingegebene reguläre Ausdrucks soll mit dem in \cite[S.159ff]{Compilers}
-beschriebenen McNaughton-Yamada-Thompson Algorithmus in einen Automaten
-umgewandelt werden können. Diese Umwandlung sollte, wie die anderen Umwandlungen
-auch, schrittweise durchgeführt werden. Dadurch soll es dem Benutzer ermöglicht
-werden, den zur Umwandlung benutzten Algorithmus besser zu verstehen. Abbildung
-\ref{FigureThompson} zeigt das Ergebnis, das bei einer solchen Umwandlung
-entstehen würde.\vspace{10pt}
-
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=12cm]{../images/thompson.png}
@@ -77,15 +69,6 @@ entstehen würde.\vspace{10pt}
 \end{figure}
 \vspace{10pt}
 
-Eine weitere Verwendungsmöglichkeit eines regulären Ausdruck wäre das direkte
-Umwandeln in einen DEA. Dieser Algorithmus wird in
-\cite[S. 175ff]{Compilers} beschrieben und verwendet die Funktionen
-\textit{nullable}, \textit{firstpos}, \textit{lastpos} und \textit{followpos},
-um die Umwandlung durchzuführen. Bei der Umsetzung müsste das Berechnen dieser
-Funktionen in irgendeiner Weise dargestellt werden, idealerweise anhand des
-Syntaxbaumes des regulären Ausdrucks. Ein mögliches Ergebnis der direkten
-Umwandlung ist in Abbildung \ref{FigureRegExDFA} zu sehen.\vspace{10pt}
-
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=12cm]{../images/regex_dfa.png}
@@ -94,6 +77,23 @@ Umwandlung ist in Abbildung \ref{FigureRegExDFA} zu sehen.\vspace{10pt}
 \end{center}
 \end{figure}
 \vspace{10pt}
+
+Der eingegebene reguläre Ausdruck soll mit dem in \cite[S.159ff]{Compilers}
+beschriebenen McNaughton-Yamada-Thompson Algorithmus in einen Automaten
+umgewandelt werden können. Diese Umwandlung sollte, wie die anderen Umwandlungen
+auch, schrittweise durchgeführt werden. Dadurch soll es dem Benutzer ermöglicht
+werden, den zur Umwandlung benutzten Algorithmus besser zu verstehen. Abbildung
+\ref{FigureThompson} zeigt das Ergebnis, das bei einer solchen Umwandlung
+entstehen würde.\vspace{10pt}
+
+Eine weitere Verwendungsmöglichkeit eines regulären Ausdruck wäre das direkte
+Umwandeln in einen DEA. Dieser Algorithmus wird in
+\cite[S. 175ff]{Compilers} beschrieben und verwendet die Funktionen
+\textit{nullable}, \textit{firstpos}, \textit{lastpos} und \textit{followpos},
+um die Umwandlung durchzuführen. Bei der Umsetzung müsste das Berechnen dieser
+Funktionen in irgendeiner Weise dargestellt werden, idealerweise anhand des
+Syntaxbaumes des regulären Ausdrucks. Ein mögliches Ergebnis der direkten
+Umwandlung ist in Abbildung \ref{FigureRegExDFA} zu sehen.\vspace{10pt}
 
 
 \section{\LaTeX-Export}\label{PerspectiveLaTeX}
@@ -272,10 +272,9 @@ Sprache sind.\vspace{10pt}
 Bei der Umsetzung ist darauf zu achten, dass die Bestimmung dieser Wörter
 möglichst mit geringer Laufzeit implementiert wird, so dass der Benutzer nicht
 allzu lange auf ein Ergebnis warten muss. Die Bestimmung sollte somit nicht
-einfach per Brute-Force-Methode umgesetzt werden, sondern in irgendeiner Form
-abhängig von dem gewendeten Typ sein, wie zum Beispiel einer Grammatik. Somit
-sollten gewisse Wörter direkt ausgeschlossen werden, die bei der
-Brute-Force-Methode ansonsten mit getestet werden würden.\vspace{10pt}
+einfach per Brute-Force-Methode umgesetzt werden. Somit sollten gewisse Wörter
+direkt ausgeschlossen werden, die bei der Brute-Force-Methode ansonsten mit
+getestet werden würden.\vspace{10pt}
 
 
 \section{Eingabe von mehreren Wörtern}\label{PerspectiveMultiplyWordInput}
@@ -285,7 +284,7 @@ eingeben. In Zukunft soll diese Eingabe aber auch für Grammatiken und dann auch
 für reguläre Ausdrücke möglich sein. In der aktuellen Umsetzung kann der Benutzer
 aber nur ein Wort eingeben und dieses dann auf Akzeptanz prüfen. Für zukünftige
 Versionen wäre es somit wünschenswert, mehr als ein Wort eingeben zu können,
-welches dann direkt während der Eingabe geprüft wird, so dass der Benutzer
+welche dann direkt während der Eingabe geprüft werden, so dass der Benutzer
 nicht erst die Navigation starten muss. Diese Ansicht soll dem Benutzer helfen,
 zu erkennen, welche Sprache ein erstellter Automat erkennt.\vspace{10pt}
 
@@ -338,10 +337,10 @@ $\epsilon$-Übergänge erreichbar sind.\vspace{10pt}
 Eine weitere Möglichkeit wäre, den Benutzer dazu aufzufordern, die Zustände zu
 aktivieren, die nach einem Übergang mit einem bestimmten Symbol aktiviert sein
 werden. Aber auch bei allen anderen Phasen sollte geprüft werden, ob es sinnvoll
-wäre, den Benutzer zu einer Interaktion aufzufordern. Es wäre aber nicht nur
-möglich, Zustände und Übergänge in dem ursprünglichen Graphen zu markieren,
-ebenso wäre es in dem entstehenden Graphen möglich, anzugeben, welche Zustände und
-Übergänge in dem nächsten Schritt angelegt werden.\vspace{10pt}
+wäre, den Benutzer zu einer Interaktion aufzufordern. Es wäre nicht nur möglich,
+Zustände und Übergänge in dem ursprünglichen Graphen zu markieren, ebenso wäre es
+in dem entstehenden Graphen möglich, anzugeben, welche Zustände und Übergänge in
+dem nächsten Schritt angelegt werden.\vspace{10pt}
 
 
 \subsection{Erreichbare Zustände}\label{PerspectiveReachableStates}

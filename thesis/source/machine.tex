@@ -15,8 +15,8 @@ Im Mittelpunkt der Planung und der Umsetzung des \gtitools standen die Automaten
 Im Rahmen dieser Diplomarbeit wurden vier Automatentypen umgesetzt. Der
 deterministische endliche Automat (DEA), der nichtdeterministische endliche
 Automat (NDEA), der nichtdeterministische endliche Automat mit
-$epsilon$-Übergängen ($\epsilon$-NDEA) und schließlich der Kellerautomat. Die
-verschiedenen Aspekte von Automaten werden in diesem Kapitel besprochen, dazu
+$\epsilon$-Übergängen ($\epsilon$-NDEA) und schließlich der Kellerautomat. Die
+verschiedenen Aspekte von Automaten werden in diesem Kapitel besprochen. Dazu
 gehört die graphische Umsetzung, sowie die verschiedenen Möglichkeiten,
 einen Automaten zu verwenden, nachdem er erstellt wurde.\vspace{10pt}
 
@@ -78,11 +78,10 @@ der Vorlage im Skript der Fall ist.\vspace{10pt}
 
 \subsection{Anpassung von JGraph}\label{GraphJGraphAdaptation}
 
-Die Bibliothek JGraph bietet eine weit über unsere Anforderungen hinaus
-gehende Unterstützung von graphischen Komponenten. An einigen Stellen mussten
-allerdings Anpassungen vorgenommen werden, um den von uns vorgegebenen
-Funktionumfang erreichen zu können. Diese Anpassungen werden in diesem
-Abschnitt geschildert.\vspace{10pt}
+Die Bibliothek JGraph bietet eine sehr weitreichende Unterstützung von
+graphischen Komponenten. An einigen Stellen mussten allerdings Anpassungen
+vorgenommen werden, um den von uns vorgegebenen Funktionumfang erreichen zu
+können. Diese Anpassungen werden in diesem Abschnitt geschildert.\vspace{10pt}
 
 Wir wollten in der Lage sein, die Farbe der Zustände je nach Situation
 anzupassen, um zum Beispiel einen aktiven oder einen fehlerhaften Zustand anders
@@ -98,7 +97,8 @@ Eine weitere Anpassung, die von uns implementiert wurde, ist die Verwendung von
 Pretty-Strings, welche in Abschnitt \ref{GUIDesign} bereits angesprochen wurde.
 Diese Pretty-Strings werden zum Anzeigen der Namen verwendet, was gerade bei
 Potenzautomaten-Zuständen einen Vorteil mit sich bringt, da die Namen der Zustände
-aus denen der Potenzmengenzustand entstanden ist, besser hervorgehoben werden.\vspace{10pt}
+aus denen der Potenzmengen-Zustand entstanden ist, besser hervorgehoben
+werden.\vspace{10pt}
 
 In Abschnitt \ref{ConverToMachine} wird die Umwandlung von Automaten in andere
 Automaten- Formen, z.B. die Umwandlung von einem $\epsilon$-NDEA in einen DEA
@@ -119,6 +119,14 @@ werden.\vspace{10pt}
 
 
 \subsection{Übergangstabelle}\label{TablesTransition}
+
+Unter der {\em Übergangstabelle} versteht man eine Tabelle in der alle
+Übergänge eingetragen sind. Abbildung \ref{FigureMachineTable} zeigt ein
+Beispiel für eine solche Tabelle. In der ersten Spalte sind alle Zustände
+aufgelistet. Die anderen Spalten beziehen sich jeweils auf das in der Kopfzeile
+der Tabelle angegebene Symbol. In dem dargestellten Beispiel bedeutet der
+Eintrag in der ersten Zeile, zweite Spalte, dass ein $\epsilon$-Übergang von
+\State{z0} nach \State{z1} existiert.\vspace{10pt}
 
 Während der Entwicklung und ersten Tests des \gtitools kam der Wunsch auf, einen
 Automaten nicht nur graphisch zu bearbeiten, sondern auch in der
@@ -180,7 +188,8 @@ kann.\vspace{10pt}
 In diesem Abschnitt wird die Wort-Navigation beschrieben. Neben der
 deterministischen Navigation wird das Anzeigen des Pfades zu den aktuell
 aktiven Zuständen angesprochen, das dem Benutzer erleichtern soll, zu
-verstehen, warum ein eingegebenes Wort erkannt wird.
+verstehen, warum ein eingegebenes Wort erkannt wird. Schließlich wird auf die
+Operationen mit dem Automaten Keller eingegangen.
 
 
 \subsection{Deterministische Navigation}\label{WordNavigationDeterministic}
@@ -256,16 +265,16 @@ dann in dem Startzustand, wurde ein gültiger Pfad erkannt. Bei der
 Implementierung des Algorithmus musste eine Zykluserkennung umgesetzt werden, da
 es sonst möglich wäre, in eine Endlosschleife zu geraten, welche durch
 $\epsilon$-Übergänge verursacht wurde. Abbildung \ref{FigureHistoryPath} zeigt
-ein einfaches Beispiel eines Pfads.\vspace{10pt}
+ein einfaches Beispiel eines solchen Pfads.\vspace{10pt}
 
 
 \subsection{Operationen mit dem Automaten Keller}\label{InteractionPDA}
 
-Ein wichtiger Punkt der Interaktion mit dem Benutzer ist, dass der Benutzer nach
-einer Umwandlung einer kontextfreien Grammatik in einen nichtdeterministisch
-Kellerautomaten einen Übergang auswählen muss, weil der entstehende Automat
-nichtdeterministisch sein muss. Die Umwandlung ist in Abschnitt
-\ref{ConverToGrammarContextFree} zu finden.\vspace{10pt}
+Ein wichtiger Punkt ist, dass der Benutzer nach einer Umwandlung einer
+kontextfreien Grammatik in einen Kellerautomaten einen Übergang auswählen muss,
+wenn der entstehende Automat nicht deterministisch ist. Die eigentliche
+Umwandlung ist in Abschnitt \ref{ConverToGrammarContextFree} zu
+finden.\vspace{10pt}
 
 \begin{figure}[h!]
 \begin{center}
@@ -448,7 +457,7 @@ Dieser Algorithmus verwaltet eine Menge \textit{Dstates} von Zuständen des
 umgewandelten Automaten. Neben dieser Menge wird für jeden Zustand gespeichert,
 ob er schon verarbeitet wurde. Am Anfang wird der $\epsilon$-Abschluss des
 Start-Zustandes \State{$s_0$} in die Menge \textit{Dstates} aufgenommen. In Zeile
-vier wird der aktuelle Zustand markiert, jeder neue Zustände in \textit{Dstates}
+vier wird der aktuelle Zustand markiert, jeder neue Zustand in \textit{Dstates}
 wird somit abgearbeitet. In der Schleife in Zeile fünf wird über alle Symbole des
 Alphabets iteriert. In Zeile sechs wird berechnet, welche Zustände von dem
 aktuellen Symbol aus erreichbar sind, zusätzlich dazu wird von diesem Ergebnis
@@ -664,17 +673,11 @@ Layout liefern könnte.\vspace{10pt}
 \section{Fehler und Warnungen}\label{InteractionMachine}
 
 Es war uns bei der Umsetzung des \gtitools sehr wichtig, dass der Benutzer aus
-seiner gemachten Fehlern lernen kann, ohne dass er durch eine Validierung
+seinen gemachten Fehlern lernen kann, ohne dass er durch eine Validierung
 eingeschränkt wird. Eine Ausnahme von diesem Konzept bilden die in Kapitel
 \ref{Parser} beschriebenen Parser, da eine falsche Eingabe dort nicht gut, durch
 das Anzeigen von Fehlern bzw. Warnungen, behandelt hätte werden
 können.\vspace{10pt}
-
-Der Hauptgrund für die Auswahl dieser Strategie war, dass der Benutzer durch das
-fehlerhafte Eingeben bzw. durch das Beheben der Fehler hoffentlich mehr lernt,
-als wenn er die Eingaben gar nicht erst hätte machen können. In diesem Abschnitt
-werden die verschiedenen Fehler und Warnungen beschrieben, die bei Grammatiken und
-Automaten auftreten können.\vspace{10pt}
 
 Für Automaten gibt es einige Fehler und Warnungen die nun aufgezählt werden. Die
 verschiedenen Automatentypen verwenden unterschiedliche Fehler. So ist ein

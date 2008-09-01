@@ -97,7 +97,7 @@
     </State>
   </StateView>
   <StateView x="767.0" y="382.0">
-    <State id="10" name="z10" startState="false" finalState="false">
+    <State id="10" name="z10" startState="false" finalState="true">
       <TransitionEnd id="13"/>
     </State>
   </StateView>

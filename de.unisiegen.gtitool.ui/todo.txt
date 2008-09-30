@@ -1,5 +1,8 @@
 *** TODO ***
-
+CF		- In gezoomten Automaten wird beim öffnen des 
+		  Kontextmenues der Zoomfaktor nicht berücksichtigt.
+CF		- Wortnavigation: Die Meldungen anpassen, damit sich diese immer
+          auf das Gesamtwort beziehen.
 
 *** FEATURE ***
 

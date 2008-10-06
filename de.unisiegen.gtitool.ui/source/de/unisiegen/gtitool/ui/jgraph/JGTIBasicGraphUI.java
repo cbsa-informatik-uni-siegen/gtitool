@@ -73,7 +73,8 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
       {
         StateView stateView = ( StateView ) portView.getParentView ();
 
-        if ( stateView.isSelectionAllowed ( event.getX (), event.getY () ) )
+        if ( stateView.isSelectionAllowed ( event.getX (), event.getY (),
+            JGTIBasicGraphUI.this.graph.getScale () ) )
         {
           selectCellForEvent ( this.cell.getCell (), event );
           JGTIBasicGraphUI.this.focus = this.cell;
@@ -155,7 +156,8 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
           {
             StateView stateView = ( StateView ) JGTIBasicGraphUI.this.focus;
 
-            if ( !stateView.isSelectionAllowed ( event.getX (), event.getY () ) )
+            if ( !stateView.isSelectionAllowed ( event.getX (), event.getY (),
+                JGTIBasicGraphUI.this.graph.getScale () ) )
             {
               event.consume ();
               return;
@@ -274,7 +276,7 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
                 StateView stateView = ( StateView ) portView.getParentView ();
 
                 if ( !stateView.isSelectionAllowed ( event.getX (), event
-                    .getY () ) )
+                    .getY (), JGTIBasicGraphUI.this.graph.getScale () ) )
                 {
                   event.consume ();
                   this.cell = null;

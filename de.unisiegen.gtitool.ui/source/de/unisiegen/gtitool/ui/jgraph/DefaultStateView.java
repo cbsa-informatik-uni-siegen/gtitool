@@ -20,6 +20,7 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.redoundo.StatePositionChangedListener;
 
 
@@ -125,15 +126,24 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * The {@link DefaultMachineModel}
+   */
+  private DefaultMachineModel machineModel;
+
+
+  /**
    * Creates a new {@link DefaultStateView}.
    * 
+   * @param machineModel The {@link DefaultMachineModel}.
    * @param graphModel The {@link DefaultGraphModel}.
    * @param state The {@link State} represented by this view.
    */
-  public DefaultStateView ( DefaultGraphModel graphModel, State state )
+  public DefaultStateView ( DefaultMachineModel machineModel,
+      DefaultGraphModel graphModel, State state )
   {
     super ( state );
 
+    this.machineModel = machineModel;
     this.graphModel = graphModel;
     this.state = state;
 
@@ -324,6 +334,18 @@ public final class DefaultStateView extends DefaultGraphCell implements
       return HEIGHT_NOT_DEFINED;
     }
     return bounds.getHeight ();
+  }
+
+
+  /**
+   * Returns the {@link DefaultMachineModel}.
+   * 
+   * @return The {@link DefaultMachineModel}.
+   * @see #machineModel
+   */
+  public DefaultMachineModel getMachineModel ()
+  {
+    return this.machineModel;
   }
 
 

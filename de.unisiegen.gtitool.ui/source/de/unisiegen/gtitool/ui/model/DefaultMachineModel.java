@@ -379,7 +379,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   {
     this.machine.addState ( state );
 
-    DefaultStateView stateView = new DefaultStateView ( this.graphModel, state );
+    DefaultStateView stateView = new DefaultStateView ( this, this.graphModel,
+        state );
 
     String viewClass = StateView.class.getName ();
 

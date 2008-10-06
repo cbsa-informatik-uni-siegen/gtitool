@@ -216,17 +216,19 @@ public final class JGTIGraph extends JGraph implements Printable
     if ( ( this.stateView != null ) && ( this.endPoint != null ) )
     {
       Point2D startPoint = this.stateView.getPerimeterPoint ( null, null,
-          this.endPoint );
+          new Point ( ( int ) ( this.endPoint.x / this.scale ),
+              ( int ) ( this.endPoint.y / this.scale ) ) );
 
       int x1 = ( int ) startPoint.getX ();
       int y1 = ( int ) startPoint.getY ();
-      int x2 = this.endPoint.x;
-      int y2 = this.endPoint.y;
+      int x2 = ( int ) ( this.endPoint.x / this.scale );
+      int y2 = ( int ) ( this.endPoint.y / this.scale );
 
       Rectangle2D bounds = this.stateView.getBounds ();
 
       if ( bounds.contains ( x2, y2 )
-          && this.stateView.isSelectionAllowed ( x2, y2 ) )
+          && this.stateView.isSelectionAllowed ( this.endPoint.x,
+              this.endPoint.y, this.scale ) )
       {
         int x = ( int ) bounds.getX ();
         int y = ( int ) bounds.getY ();
@@ -254,6 +256,9 @@ public final class JGTIGraph extends JGraph implements Printable
         }
 
         x += width / 2 - 10;
+
+        // TODOCF optimize the scale
+        g.scale ( this.scale, this.scale );
 
         // loop
         g.drawLine ( x - 0, y, x - 0, y - 1 );
@@ -292,6 +297,8 @@ public final class JGTIGraph extends JGraph implements Printable
       }
       else
       {
+        g.scale ( this.scale, this.scale );
+
         g.drawLine ( x1, y1, x2, y2 );
 
         int dx = x2 - x1;

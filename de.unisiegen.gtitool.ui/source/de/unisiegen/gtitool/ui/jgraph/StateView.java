@@ -603,9 +603,13 @@ public final class StateView extends VertexView
     Rectangle2D r = getBounds ();
 
     State state = null;
+    double zoomFactor = 1.0;
     if ( getCell () instanceof DefaultStateView )
     {
-      state = ( ( DefaultStateView ) getCell () ).getState ();
+      DefaultStateView defaultStateView = ( DefaultStateView ) getCell ();
+      state = defaultStateView.getState ();
+      zoomFactor = defaultStateView.getMachineModel ().getJGTIGraph ()
+          .getScale ();
     }
 
     boolean loopTransition = false;
@@ -752,7 +756,7 @@ public final class StateView extends VertexView
       if ( ( checkX >= a ) && ( checkY <= b ) )
       {
         while ( !isOutOfPaintedPowerStateAreaTopRight ( checkX, checkY,
-            width - 1 ) )
+            width - 1, zoomFactor ) )
         {
           xout = xout + 1;
           yout = yout - 1;
@@ -762,7 +766,8 @@ public final class StateView extends VertexView
       }
       else if ( ( checkX <= a ) && ( checkY <= b ) )
       {
-        while ( !isOutOfPaintedPowerStateAreaTopLeft ( checkX, checkY ) )
+        while ( !isOutOfPaintedPowerStateAreaTopLeft ( checkX, checkY,
+            zoomFactor ) )
         {
           xout = xout - 1;
           yout = yout - 1;
@@ -773,7 +778,7 @@ public final class StateView extends VertexView
       else if ( ( checkX <= a ) && ( checkY >= b ) )
       {
         while ( !isOutOfPaintedPowerStateAreaBottomLeft ( checkX, checkY,
-            height - 1 ) )
+            height - 1, zoomFactor ) )
         {
           xout = xout - 1;
           yout = yout + 1;
@@ -784,7 +789,7 @@ public final class StateView extends VertexView
       else if ( ( checkX >= a ) && ( checkY >= b ) )
       {
         while ( !isOutOfPaintedPowerStateAreaBottomRight ( checkX, checkY,
-            width - 1, height - 1 ) )
+            width - 1, height - 1, zoomFactor ) )
         {
           xout = xout + 1;
           yout = yout + 1;
@@ -817,12 +822,14 @@ public final class StateView extends VertexView
    * @param x The x value.
    * @param y The y value.
    * @param height The height.
+   * @param zoomFactor The zoom factor.
    * @return True if the given point is out of the painted state area, otherwise
    *         false.
    */
   private final boolean isOutOfPaintedPowerStateAreaBottomLeft ( int x, int y,
-      int height )
+      int height, @SuppressWarnings ( "unused" ) double zoomFactor )
   {
+    // TODOCF use the zoom factor
     if ( ( ( x == 1 ) && ( y < height - 17 ) )
         || ( ( x == 2 ) && ( y < height - 14 ) )
         || ( ( x == 3 ) && ( y < height - 12 ) )
@@ -858,12 +865,14 @@ public final class StateView extends VertexView
    * @param y The y value.
    * @param width The width.
    * @param height The height.
+   * @param zoomFactor The zoom factor.
    * @return True if the given point is out of the painted state area, otherwise
    *         false.
    */
   private final boolean isOutOfPaintedPowerStateAreaBottomRight ( int x, int y,
-      int width, int height )
+      int width, int height, @SuppressWarnings ( "unused" ) double zoomFactor )
   {
+    // TODOCF use the zoom factor
     if ( ( ( x == width - 1 ) && ( y < height - 17 ) )
         || ( ( x == width - 2 ) && ( y < height - 14 ) )
         || ( ( x == width - 3 ) && ( y < height - 12 ) )
@@ -897,11 +906,14 @@ public final class StateView extends VertexView
    * 
    * @param x The x value.
    * @param y The y value.
+   * @param zoomFactor The zoom factor.
    * @return True if the given point is out of the painted state area, otherwise
    *         false.
    */
-  private final boolean isOutOfPaintedPowerStateAreaTopLeft ( int x, int y )
+  private final boolean isOutOfPaintedPowerStateAreaTopLeft ( int x, int y,
+      @SuppressWarnings ( "unused" ) double zoomFactor )
   {
+    // TODOCF use the zoom factor
     if ( ( ( x == 1 ) && ( y > 17 ) ) || ( ( x == 2 ) && ( y > 14 ) )
         || ( ( x == 3 ) && ( y > 12 ) ) || ( ( x == 4 ) && ( y > 11 ) )
         || ( ( x == 5 ) && ( y > 10 ) ) || ( ( x == 6 ) && ( y > 8 ) )
@@ -926,12 +938,14 @@ public final class StateView extends VertexView
    * @param x The x value.
    * @param y The y value.
    * @param width The width.
+   * @param zoomFactor The zoom factor.
    * @return True if the given point is out of the painted state area, otherwise
    *         false.
    */
   private final boolean isOutOfPaintedPowerStateAreaTopRight ( int x, int y,
-      int width )
+      int width, @SuppressWarnings ( "unused" ) double zoomFactor )
   {
+    // TODOCF use the zoom factor
     if ( ( ( x == width - 1 ) && ( y > 17 ) )
         || ( ( x == width - 2 ) && ( y > 14 ) )
         || ( ( x == width - 3 ) && ( y > 12 ) )
@@ -995,16 +1009,18 @@ public final class StateView extends VertexView
    * 
    * @param absoluteX The absolute x position of the {@link MouseEvent}.
    * @param absoluteY The absolute y position of the {@link MouseEvent}.
+   * @param zoomFactor The zoom factor.
    * @return True if the selection is allowed, otherwise false.
    */
-  public final boolean isSelectionAllowed ( int absoluteX, int absoluteY )
+  public final boolean isSelectionAllowed ( int absoluteX, int absoluteY,
+      double zoomFactor )
   {
     Rectangle2D r = getBounds ();
 
-    int x = ( int ) r.getX ();
-    int y = ( int ) r.getY ();
-    int width = ( int ) r.getWidth ();
-    int height = ( int ) r.getHeight ();
+    int x = ( int ) ( r.getX () * zoomFactor );
+    int y = ( int ) ( r.getY () * zoomFactor );
+    int width = ( int ) ( r.getWidth () * zoomFactor );
+    int height = ( int ) ( r.getHeight () * zoomFactor );
 
     int relativeX = absoluteX - x;
     if ( relativeX < 0 )
@@ -1047,13 +1063,14 @@ public final class StateView extends VertexView
 
       if ( state.isPowerState () )
       {
-        if ( !isOutOfPaintedPowerStateAreaTopLeft ( relativeX, relativeY )
+        if ( !isOutOfPaintedPowerStateAreaTopLeft ( relativeX, relativeY,
+            zoomFactor )
             && !isOutOfPaintedPowerStateAreaTopRight ( relativeX, relativeY,
-                width )
+                width, zoomFactor )
             && !isOutOfPaintedPowerStateAreaBottomLeft ( relativeX, relativeY,
-                height )
+                height, zoomFactor )
             && !isOutOfPaintedPowerStateAreaBottomRight ( relativeX, relativeY,
-                width, height ) )
+                width, height, zoomFactor ) )
         {
           return true;
         }

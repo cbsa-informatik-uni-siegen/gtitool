@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
@@ -15,7 +16,9 @@ import javax.swing.filechooser.FileFilter;
 import de.unisiegen.gtitool.core.entities.exceptions.RegexException;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
+import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
+import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -145,6 +148,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.mainWindowForm = mainWindowForm;
     this.file = file;
     this.model = model;
+    this.regex = model.getRegex ();
     this.gui = new RegexPanelForm ( this );
 
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
@@ -373,9 +377,30 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     }
   }
 
-  public void handleRegexChangeButtonClicked(ActionEvent evt){
-    
+
+  /**
+   * TODO
+   * 
+   * @param evt
+   */
+  public void handleRegexChangeButtonClicked (
+      @SuppressWarnings ( "unused" ) ActionEvent evt )
+  {
+    String newRegex = JOptionPane.showInputDialog ( this );
+    RegexParseable regexParseable = new RegexParseable ();
+    try
+    {
+      this.regex.changeRegexNode ( ( RegexNode ) regexParseable.newParser (
+          newRegex ).parse () );
+    }
+    catch ( Exception exc )
+    {
+      exc.printStackTrace ();
+    }
+    this.gui.jGTITextFieldRegex.setText ( this.regex.getRegexNode ()
+        .toString () );
   }
+
 
   /**
    * TODO
@@ -390,7 +415,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       FileFilter fileFilter = new FileFilter ()
       {
 
-        @SuppressWarnings ( "synthetic-access" )
         @Override
         public boolean accept ( File acceptedFile )
         {
@@ -407,7 +431,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         }
 
 
-        @SuppressWarnings ( "synthetic-access" )
         @Override
         public String getDescription ()
         {

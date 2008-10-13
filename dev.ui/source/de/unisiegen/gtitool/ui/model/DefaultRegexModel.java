@@ -3,11 +3,13 @@ package de.unisiegen.gtitool.ui.model;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -34,6 +36,46 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   }
 
 
+  
+  /**
+   * Returns the regex.
+   *
+   * @return The regex.
+   * @see #regex
+   */
+  public DefaultRegex getRegex ()
+  {
+    return this.regex;
+  }
+  
+  /**
+   * TODO
+   * 
+   * @throws StoreException
+   */
+  public DefaultRegexModel ( Element element ) throws StoreException
+  {
+    boolean foundVersion = false;
+    for ( Attribute attr : element.getAttribute () )
+    {
+      if ( attr.getName ().equals ( "regexVersion" ) ) //$NON-NLS-1$
+      {
+        foundVersion = true;
+        if ( attr.getValueInt () != REGEX_VERSION )
+        {
+          throw new StoreException ( Messages
+              .getString ( "StoreException.IncompatibleVersion" ) ); //$NON-NLS-1$
+        }
+      }
+    }
+    if ( !foundVersion )
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
+    }
+  }
+
+
   /**
    * TODO
    * 
@@ -45,6 +87,8 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     Element newElement = new Element ( "RegexModel" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "regexVersion", //$NON-NLS-1$
         REGEX_VERSION ) );
+    newElement.addElement ( this.regex.getAlphabet ().getElement () );
+    newElement.addElement ( this.regex.getElement () );
     return newElement;
   }
 

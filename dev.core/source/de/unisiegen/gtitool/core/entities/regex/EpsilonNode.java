@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 /**
  * Representation of an Epsilon in the Regex
+ * 
+ * @author Simon Meurer
+ * @version
  */
 public class EpsilonNode extends RegexNode
 {

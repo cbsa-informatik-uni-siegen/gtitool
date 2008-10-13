@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 /**
  * Representation of an Optional/Questionnode in the Regex
+ * 
+ * @author Simon Meurer
+ * @version
  */
 public class OptionalNode extends RegexNode
 {

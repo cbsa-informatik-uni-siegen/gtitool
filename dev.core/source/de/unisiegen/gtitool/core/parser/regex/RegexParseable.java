@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
  * The {@link RegexNode} {@link Parseable} class.
  * 
  * @author Simon Meurer
+ * @version
  */
 public final class RegexParseable implements Parseable
 {

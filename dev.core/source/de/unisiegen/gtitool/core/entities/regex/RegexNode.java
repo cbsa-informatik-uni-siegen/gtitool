@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * Abstract class for a Node in a Regex
  * 
  * @author Simon Meurer
+ * @version
  */
 public abstract class RegexNode
 {

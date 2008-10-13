@@ -32,6 +32,8 @@ terminal String				CONCAT;
 terminal String				EPSILON;
 terminal String				LBRACE;
 terminal String				RBRACE;
+terminal String				SLBRACE;
+terminal String				SRBRACE;
 terminal String				IDENT;
 
 
@@ -51,6 +53,7 @@ non terminal RegexNode		simple_regex;
 precedence left 	OR;
 precedence left 	CONCAT;
 precedence right 	LBRACE;
+precedence right 	SLBRACE;
 precedence left 	QUESTION;
 precedence left 	PLUS;
 precedence left 	STAR;

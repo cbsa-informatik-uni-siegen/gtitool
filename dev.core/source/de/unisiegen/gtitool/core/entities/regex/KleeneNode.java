@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 /**
  * Representation of a Kleene Closure in the Regex
+ * 
+ * @author Simon Meurer
+ * @version
  */
 public class KleeneNode extends RegexNode
 {

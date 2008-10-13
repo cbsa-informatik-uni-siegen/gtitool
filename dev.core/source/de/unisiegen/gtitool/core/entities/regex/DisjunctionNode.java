@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * Representation of a Disjunction in the Regex
  * 
  * @author Simon Meurer
+ * @version
  */
 public class DisjunctionNode extends RegexNode
 {

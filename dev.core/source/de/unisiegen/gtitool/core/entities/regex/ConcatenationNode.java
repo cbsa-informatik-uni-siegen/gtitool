@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * Representation of a Concatenation in the Regex
  * 
  * @author Simon Meurer
+ * @version
  */
 public class ConcatenationNode extends RegexNode
 {

@@ -80,6 +80,8 @@ Ident					= [:jletterdigit:]
 	"?"					{ return symbol(QUESTION); }
 	"("					{ return symbol(LBRACE); }
 	")"					{ return symbol(RBRACE); }
+	"["					{ return symbol(SLBRACE); }
+	"]"					{ return symbol(SRBRACE); }
 	{Ident}				{ return symbol(IDENT, yytext()); }
 	{WhiteSpace}		{ }
 }

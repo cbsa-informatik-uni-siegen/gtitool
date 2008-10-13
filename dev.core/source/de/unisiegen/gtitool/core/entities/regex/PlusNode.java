@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 /**
  * Representation of a Plus in the Regex
+ * 
+ * @author Simon Meurer
+ * @version
  */
 public class PlusNode extends RegexNode
 {

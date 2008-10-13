@@ -2,23 +2,26 @@ package de.unisiegen.gtitool.core.parser;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
-import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
 import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
 import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
 import de.unisiegen.gtitool.core.parser.symbol.SymbolParseable;
 import de.unisiegen.gtitool.core.parser.word.WordParseable;
+import de.unisiegen.gtitool.core.regex.DefaultRegex;
 
 
 /**
  * The test class of the parser.
  * 
  * @author Christian Fehler
- * @version $Id: ParserTest.java 547 2008-02-10 22:24:57Z fehler $
+ * @author Simon Meurer
+ * @version $Id$
  */
 @SuppressWarnings (
 { "all" } )
@@ -78,12 +81,12 @@ public class ParserTest
      * Regex
      */
     RegexParseable regexParseable = new RegexParseable ();
-    String regexText = "(a|b)+a?bb";
+    String regexText = "a|b|c|d";
     try
     {
       RegexNode regex = ( RegexNode ) regexParseable.newParser ( regexText )
           .parse ();
-      regex = new ConcatenationNode(regex, new TokenNode("#"));
+      regex = new ConcatenationNode ( regex, new TokenNode ( "#" ) );
 
       int currentPosition = 1;
       for ( RegexNode current : regex.getTokenNodes () )
@@ -97,37 +100,45 @@ public class ParserTest
       }
       System.out.println ( regex );
       String firstpos = "";
-      for(RegexNode current : regex.firstPos ()) {
-        if(firstpos.length ()>0) {
-          firstpos+= ";";
+      for ( RegexNode current : regex.firstPos () )
+      {
+        if ( firstpos.length () > 0 )
+        {
+          firstpos += ";";
         }
-        firstpos += ((TokenNode)current).getPosition ();
+        firstpos += ( ( TokenNode ) current ).getPosition ();
       }
-      System.out.println ( "FirstPos: {" + firstpos + "}");
+      System.out.println ( "FirstPos: {" + firstpos + "}" );
 
       String lastpos = "";
-      for(RegexNode current : regex.lastPos ()) {
-        if(lastpos.length ()>0) {
-          lastpos+= ";";
+      for ( RegexNode current : regex.lastPos () )
+      {
+        if ( lastpos.length () > 0 )
+        {
+          lastpos += ";";
         }
-        lastpos += ((TokenNode)current).getPosition ();
+        lastpos += ( ( TokenNode ) current ).getPosition ();
       }
-      System.out.println ( "LastPos: {" + lastpos + "}");
-      
-      Regex conv = new Regex(regex);
-      for(int i = 1; i < currentPosition ; i++) {
+      System.out.println ( "LastPos: {" + lastpos + "}" );
+
+      DefaultRegex conv = new DefaultRegex (new DefaultAlphabet(new DefaultSymbol("a"),new DefaultSymbol("b"),new DefaultSymbol("c"),new DefaultSymbol("d")));
+      conv.setRegexNode ( regex );
+      for ( int i = 1 ; i < currentPosition ; i++ )
+      {
         String followPos = "";
-        for(RegexNode current : conv.followPos ( i )) {
-          if(followPos.length ()>0) {
-            followPos+= ";";
+        for ( RegexNode current : conv.followPos ( i ) )
+        {
+          if ( followPos.length () > 0 )
+          {
+            followPos += ";";
           }
-          followPos += ((TokenNode)current).getPosition ();
+          followPos += ( ( TokenNode ) current ).getPosition ();
         }
-        System.out.println ("FollowPos(" + i + ") = " + followPos);
+        System.out.println ( "FollowPos(" + i + ") = " + followPos );
       }
-      
+
       RegexNode coreSyntax = regex.toCoreSyntax ();
-      System.out.println (coreSyntax.toString ());
+      System.out.println ( coreSyntax.toString () );
     }
     catch ( Exception e )
     {

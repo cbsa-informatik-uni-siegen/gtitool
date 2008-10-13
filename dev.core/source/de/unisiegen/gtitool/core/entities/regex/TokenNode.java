@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 /**
  * Representation of a Token in the Regex
+ * 
+ * @author Simon Meurer
+ * @version
  */
 public class TokenNode extends RegexNode
 {

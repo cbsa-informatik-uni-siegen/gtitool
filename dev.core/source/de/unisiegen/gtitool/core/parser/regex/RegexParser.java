@@ -12,6 +12,7 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
  * The {@link RegexNode} parser class.
  * 
  * @author Simon Meurer
+ * @version
  */
 public final class RegexParser extends RegexAbstractParser
 {

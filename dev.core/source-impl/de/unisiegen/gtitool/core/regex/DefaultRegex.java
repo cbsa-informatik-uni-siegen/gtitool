@@ -12,12 +12,14 @@ import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
+import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
  * 
  */
-public class DefaultRegex implements Regex
+public class DefaultRegex implements Regex, Storable
 {
 
   /**
@@ -104,6 +106,12 @@ public class DefaultRegex implements Regex
   }
 
 
+  public DefaultRegex ( Element e )
+  {
+
+  }
+
+
   /**
    * Sets the {@link RegexNode} initial.
    * 
@@ -145,6 +153,18 @@ public class DefaultRegex implements Regex
       }
     }
     return nodeList;
+  }
+
+
+  /**
+   * Returns the regexNode.
+   * 
+   * @return The regexNode.
+   * @see #regexNode
+   */
+  public RegexNode getRegexNode ()
+  {
+    return this.regexNode;
   }
 
 
@@ -241,7 +261,8 @@ public class DefaultRegex implements Regex
    */
   public boolean isModified ()
   {
-    if(this.initialNode == null || this.regexNode == null) {
+    if ( this.initialNode == null || this.regexNode == null )
+    {
       return true;
     }
     return this.initialNode.equals ( this.regexNode );
@@ -269,5 +290,17 @@ public class DefaultRegex implements Regex
   public void resetModify ()
   {
     this.initialNode = this.regexNode;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
+   */
+  public Element getElement ()
+  {
+    return this.regexNode.getElement ();
   }
 }

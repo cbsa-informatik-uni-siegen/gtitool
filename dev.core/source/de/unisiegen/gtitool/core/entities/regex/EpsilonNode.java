@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.storage.Element;
+
 
 /**
  * Representation of an Epsilon in the Regex
@@ -88,5 +90,18 @@ public class EpsilonNode extends RegexNode
   public String toString ()
   {
     return "1"; //$NON-NLS-1$
+  }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
+   */
+  public Element getElement ()
+  {
+    Element newElement = new Element("Epsilon");
+    return newElement;
   }
 }

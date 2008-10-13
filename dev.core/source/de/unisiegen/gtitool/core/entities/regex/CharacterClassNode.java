@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.entities.regex;
 import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
+import de.unisiegen.gtitool.core.storage.Element;
 
 
 /**
@@ -127,6 +128,18 @@ public class CharacterClassNode extends RegexNode
     {
       exc.printStackTrace();
     };
+    return null;
+  }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
+   */
+  public Element getElement ()
+  {
     return null;
   }
 

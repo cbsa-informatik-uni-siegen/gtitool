@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.storage.Element;
+
 
 /**
  * Representation of a Kleene Closure in the Regex
@@ -100,5 +102,20 @@ public class KleeneNode extends RegexNode
   public String toString ()
   {
     return this.content.toString () + "*"; //$NON-NLS-1$
+  }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
+   */
+  public Element getElement ()
+  {
+
+    Element newElement = new Element("Kleene");
+    newElement.addElement ( this.content.getElement () );
+    return newElement;
   }
 }

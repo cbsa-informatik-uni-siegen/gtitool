@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.storage.Storable;
+
 
 /**
  * Abstract class for a Node in a Regex
@@ -10,7 +12,7 @@ import java.util.ArrayList;
  * @author Simon Meurer
  * @version
  */
-public abstract class RegexNode
+public abstract class RegexNode implements Storable
 {
 
   /**

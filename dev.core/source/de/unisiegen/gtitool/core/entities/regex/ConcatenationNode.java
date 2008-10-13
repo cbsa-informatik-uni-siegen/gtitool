@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.storage.Element;
+
 
 /**
  * Representation of a Concatenation in the Regex
@@ -128,5 +130,20 @@ public class ConcatenationNode extends RegexNode
   public String toString ()
   {
     return "(" + this.regex1.toString () + this.regex2.toString () + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+  }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
+   */
+  public Element getElement ()
+  {
+    Element newElement = new Element("Concatenation");
+    newElement.addElement ( this.regex1.getElement () );
+    newElement.addElement ( this.regex2.getElement () );
+    return newElement;
   }
 }

@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.storage.Element;
+
 
 /**
  * Representation of a Token in the Regex
@@ -135,6 +137,20 @@ public class TokenNode extends RegexNode
   public int getPosition ()
   {
     return this.position;
+  }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
+   */
+  public Element getElement ()
+  {
+    Element newElement = new Element("Token");
+    newElement.addElement ( new Element( this.name ));
+    return newElement;
   }
 
 }

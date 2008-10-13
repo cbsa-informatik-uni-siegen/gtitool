@@ -34,7 +34,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
   /**
    * The {@link MachinePanel}
    */
-  MachinePanel machinePanel;
+  private MachinePanel machinePanel;
 
 
   /**

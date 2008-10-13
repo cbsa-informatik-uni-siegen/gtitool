@@ -219,9 +219,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * The {@link MouseAdapter} for the end icon in the toolbar.
+   * The {@link MouseAdapter} for the final icon in the toolbar.
    */
-  private MouseAdapter addEndState;
+  private MouseAdapter addFinalState;
 
 
   /**
@@ -636,7 +636,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     DefaultStateView target = null;
     try
     {
-      // TODOCF check the zoom factor
       target = ( DefaultStateView ) MachinePanel.this.jGTIGraph
           .getFirstCellForLocation ( event.getPoint ().getX (), event
               .getPoint ().getY () );
@@ -1782,12 +1781,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     if ( state )
     {
-      this.jGTIGraph.addMouseListener ( this.addEndState );
+      this.jGTIGraph.addMouseListener ( this.addFinalState );
       activeMouseAdapter = ActiveMouseAdapter.ADD_FINAL_STATE;
     }
     else
     {
-      this.jGTIGraph.removeMouseListener ( this.addEndState );
+      this.jGTIGraph.removeMouseListener ( this.addFinalState );
     }
   }
 
@@ -2592,7 +2591,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         }
 
         // check if there is another stateview under this point
-        // TODOCF check the zoom factor
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
                 .getPoint ().getY () );
@@ -2615,7 +2613,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
               MachinePanel.this.machine.getPushDownAlphabet (),
               MachinePanel.this.machine.getNextStateName (), false, false );
 
-          // TODOCF check the zoom factor
           MachinePanel.this.model.createStateView ( event.getPoint ().x
               / MachinePanel.this.zoomFactor, event.getPoint ().y
               / MachinePanel.this.zoomFactor, newState, true );
@@ -2758,7 +2755,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
         if ( MachinePanel.this.firstState == null )
         {
-          // TODOCF check the zoom factor
           Object cell = MachinePanel.this.jGTIGraph.getFirstCellForLocation (
               event.getPoint ().getX (), event.getPoint ().getY () );
           if ( cell instanceof DefaultStateView )
@@ -2838,7 +2834,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           return;
         }
 
-        // TODOCF check the zoom factor
         // check if there is another stateview under this point
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
@@ -2862,7 +2857,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
               MachinePanel.this.machine.getPushDownAlphabet (),
               MachinePanel.this.machine.getNextStateName (), true, false );
 
-          // TODOCF check the zoom factor
           MachinePanel.this.model.createStateView ( event.getPoint ().x
               / MachinePanel.this.zoomFactor, event.getPoint ().y
               / MachinePanel.this.zoomFactor, newState, true );
@@ -2892,7 +2886,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       }
     };
 
-    this.addEndState = new MouseAdapter ()
+    this.addFinalState = new MouseAdapter ()
     {
 
       /**
@@ -2925,7 +2919,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           return;
         }
 
-        // TODOCF check the zoom factor
         // check if there is another stateview under this point
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
@@ -2949,7 +2942,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
               MachinePanel.this.machine.getPushDownAlphabet (),
               MachinePanel.this.machine.getNextStateName (), false, true );
 
-          // TODOCF check the zoom factor
           MachinePanel.this.model.createStateView ( event.getPoint ().x
               / MachinePanel.this.zoomFactor, event.getPoint ().y
               / MachinePanel.this.zoomFactor, newState, true );
@@ -2993,7 +2985,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         {
           return;
         }
-        if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
+
+        if ( !MachinePanel.this.machineMode.equals ( MachineMode.ENTER_WORD )
+            && !MachinePanel.this.machineMode
+                .equals ( MachineMode.WORD_NAVIGATION ) )
         {
           return;
         }
@@ -3006,8 +3001,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           return;
         }
 
-        // TODOCF check the zoom factor
-        // Open popup menu if right button was pressed
+        // open popup menu if right button was pressed
         if ( event.getButton () == MouseEvent.BUTTON3 )
         {
           MachinePanel.this.popup = createEnterWordModePopupMenu ();
@@ -3108,7 +3102,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     if ( event.getClickCount () >= 2 )
     {
-      // TODOCF check the zoom factor
       DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
           .getFirstCellForLocation ( event.getPoint ().getX (), event
               .getPoint ().getY () );
@@ -3132,7 +3125,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       }
       else if ( cell instanceof DefaultStateView )
       {
-        // TODOCF check the zoom factor
         if ( !isSelectionAllowed ( event.getX (), event.getY () ) )
         {
           return;
@@ -3161,7 +3153,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public void openPopupMenu ( MouseEvent event )
   {
-    // TODOCF check the zoom factor
     DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
         .getFirstCellForLocation ( event.getPoint ().getX (), event.getPoint ()
             .getY () );
@@ -3175,7 +3166,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     }
     else if ( object instanceof DefaultStateView )
     {
-      // TODOCF check the zoom factor
       if ( isSelectionAllowed ( event.getX (), event.getY () ) )
       {
         MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
@@ -3188,7 +3178,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     if ( MachinePanel.this.popup != null )
     {
-      // TODOCF check the zoom factor
       MachinePanel.this.popup.show ( ( Component ) event.getSource (), event
           .getX (), event.getY () );
     }
@@ -3602,7 +3591,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       MachinePanel.this.gui.jGTITableMachinePDA.repaint ();
       return;
     }
-    // TODOCF check the zoom factor
+
     DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
         .getFirstCellForLocation ( event.getPoint ().getX (), event.getPoint ()
             .getY () );
@@ -3614,7 +3603,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
       transitionList.add ( transitionView.getTransition () );
 
-      // TODOCF check the zoom factor
       DefaultGraphCell nextCell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
           .getNextCellForLocation ( cell, event.getPoint ().getX (), event
               .getPoint ().getY () );
@@ -3626,7 +3614,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           transitionList.add ( ( ( DefaultTransitionView ) nextCell )
               .getTransition () );
         }
-        // TODOCF check the zoom factor
         nextCell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
             .getNextCellForLocation ( nextCell, event.getPoint ().getX (),
                 event.getPoint ().getY () );

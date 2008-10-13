@@ -61,45 +61,21 @@ public final class DefaultPopupMenu extends JPopupMenu
 
 
   /**
-   * The zoom 100 percent item.
-   */
-  private JCheckBoxMenuItem zoom100;
-
-
-  /**
-   * The zoom 125 percent item.
-   */
-  private JCheckBoxMenuItem zoom125;
-
-
-  /**
-   * The zoom 150 percent item.
-   */
-  private JCheckBoxMenuItem zoom150;
-
-
-  /**
-   * The zoom 175 percent item.
-   */
-  private JCheckBoxMenuItem zoom175;
-
-
-  /**
-   * The zoom 200 percent item.
-   */
-  private JCheckBoxMenuItem zoom200;
-
-
-  /**
    * The zoom 50 percent item.
    */
   private JCheckBoxMenuItem zoom50;
 
 
   /**
-   * The zoom 75 percent item.
+   * The zoom 100 percent item.
    */
-  private JCheckBoxMenuItem zoom75;
+  private JCheckBoxMenuItem zoom100;
+
+
+  /**
+   * The zoom 150 percent item.
+   */
+  private JCheckBoxMenuItem zoom150;
 
 
   /**
@@ -150,19 +126,6 @@ public final class DefaultPopupMenu extends JPopupMenu
     } );
     this.zoom.add ( this.zoom50 );
 
-    this.zoom75 = new JCheckBoxMenuItem ( "75\u0025" ); //$NON-NLS-1$
-    this.zoom75.addActionListener ( new ActionListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
-      {
-        DefaultPopupMenu.this.panel.setZoomFactor ( 0.75 );
-      }
-    } );
-    this.zoom.add ( this.zoom75 );
-
     this.zoom100 = new JCheckBoxMenuItem ( "100\u0025" ); //$NON-NLS-1$
     this.zoom100.addActionListener ( new ActionListener ()
     {
@@ -175,19 +138,6 @@ public final class DefaultPopupMenu extends JPopupMenu
       }
     } );
     this.zoom.add ( this.zoom100 );
-
-    this.zoom125 = new JCheckBoxMenuItem ( "125\u0025" ); //$NON-NLS-1$
-    this.zoom125.addActionListener ( new ActionListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
-      {
-        DefaultPopupMenu.this.panel.setZoomFactor ( 1.25 );
-      }
-    } );
-    this.zoom.add ( this.zoom125 );
 
     this.zoom150 = new JCheckBoxMenuItem ( "150\u0025" ); //$NON-NLS-1$
     this.zoom150.addActionListener ( new ActionListener ()
@@ -202,55 +152,23 @@ public final class DefaultPopupMenu extends JPopupMenu
     } );
     this.zoom.add ( this.zoom150 );
 
-    this.zoom175 = new JCheckBoxMenuItem ( "175\u0025" ); //$NON-NLS-1$
-    this.zoom175.addActionListener ( new ActionListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
-      {
-        DefaultPopupMenu.this.panel.setZoomFactor ( 1.75 );
-      }
-    } );
-    this.zoom.add ( this.zoom175 );
-
-    this.zoom200 = new JCheckBoxMenuItem ( "200\u0025" ); //$NON-NLS-1$
-    this.zoom200.addActionListener ( new ActionListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
-      {
-        DefaultPopupMenu.this.panel.setZoomFactor ( 2 );
-      }
-    } );
-    this.zoom.add ( this.zoom200 );
-
     switch ( this.factor )
     {
       case 50 :
+      {
         this.zoom50.setSelected ( true );
         break;
-      case 75 :
-        this.zoom75.setSelected ( true );
-        break;
+      }
       case 100 :
+      {
         this.zoom100.setSelected ( true );
         break;
-      case 125 :
-        this.zoom125.setSelected ( true );
-        break;
+      }
       case 150 :
+      {
         this.zoom150.setSelected ( true );
         break;
-      case 175 :
-        this.zoom175.setSelected ( true );
-        break;
-      case 200 :
-        this.zoom200.setSelected ( true );
-        break;
+      }
     }
 
     add ( this.zoom );

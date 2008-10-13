@@ -173,9 +173,9 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         jGTIPanelGeneral.add(jGTILabelZoom, gridBagConstraints);
 
         jGTISliderZoom.setMajorTickSpacing(50);
-        jGTISliderZoom.setMaximum(200);
+        jGTISliderZoom.setMaximum(150);
         jGTISliderZoom.setMinimum(50);
-        jGTISliderZoom.setMinorTickSpacing(25);
+        jGTISliderZoom.setMinorTickSpacing(50);
         jGTISliderZoom.setToolTipText(bundle.getString("PreferencesDialog.ZoomToolTip")); // NOI18N
         jGTISliderZoom.setValue(100);
         gridBagConstraints = new java.awt.GridBagConstraints();

@@ -19,34 +19,14 @@ public enum ZoomFactorItem
   ZOOM_50 ( 50 ),
 
   /**
-   * The zoom factor for 75 percent.
-   */
-  ZOOM_75 ( 75 ),
-
-  /**
    * The zoom factor for 100 percent.
    */
   ZOOM_100 ( 100 ),
 
   /**
-   * The zoom factor for 125 percent.
-   */
-  ZOOM_125 ( 125 ),
-
-  /**
    * The zoom factor for 150 percent.
    */
-  ZOOM_150 ( 150 ),
-
-  /**
-   * The zoom factor for 175 percent.
-   */
-  ZOOM_175 ( 175 ),
-
-  /**
-   * The zoom factor for 200 percent.
-   */
-  ZOOM_200 ( 200 );
+  ZOOM_150 ( 150 );
 
   /**
    * The {@link Logger} for this enum.
@@ -69,29 +49,13 @@ public enum ZoomFactorItem
       {
         return ZOOM_50;
       }
-      case 75 :
-      {
-        return ZOOM_75;
-      }
       case 100 :
       {
         return ZOOM_100;
       }
-      case 125 :
-      {
-        return ZOOM_125;
-      }
       case 150 :
       {
         return ZOOM_150;
-      }
-      case 175 :
-      {
-        return ZOOM_175;
-      }
-      case 200 :
-      {
-        return ZOOM_200;
       }
       default :
       {

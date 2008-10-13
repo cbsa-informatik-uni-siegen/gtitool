@@ -169,9 +169,9 @@
             <Component class="de.unisiegen.gtitool.ui.swing.JGTISlider" name="jGTISliderZoom">
               <Properties>
                 <Property name="majorTickSpacing" type="int" value="50"/>
-                <Property name="maximum" type="int" value="200"/>
+                <Property name="maximum" type="int" value="150"/>
                 <Property name="minimum" type="int" value="50"/>
-                <Property name="minorTickSpacing" type="int" value="25"/>
+                <Property name="minorTickSpacing" type="int" value="50"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="PreferencesDialog.ZoomToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>

@@ -7,3 +7,5 @@ SM		- Linksrekursion (Zwei Arten)
 SM		- Linksrefaktorisierung
 SM		- Drucken: Mehrere Komponenten pro Seite mit Auto-Verkleinerung, also
 		  nur mit einem Print-Job
+
+SM		- Speichern und Laden von Regexn

@@ -3,6 +3,11 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Element;
 
 
@@ -49,9 +54,51 @@ public class DisjunctionNode extends RegexNode
     return new DisjunctionNode ( this.regex1.toCoreSyntax (), this.regex2
         .toCoreSyntax () );
   }
+  
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getLeftChildrenCount()
+   */
+  @Override
+  public int getLeftChildrenCount ()
+  {
+    return this.regex1.getLeftChildrenCount () + 1;
+  }
+  
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getRightChildrenCount()
+   */
+  @Override
+  public int getRightChildrenCount ()
+  {
+    return this.regex2.getRightChildrenCount () + 1;
+  }
 
 
   /**
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getAllChildren()
+   */
+  @Override
+  public ArrayList < RegexNode > getAllChildren ()
+  {
+    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    nodes.add ( this.regex1 );
+    nodes.add ( this.regex2 );
+    nodes.addAll ( this.regex1.getAllChildren () );
+    nodes.addAll ( this.regex2.getAllChildren () );
+    return nodes;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
   @Override
@@ -60,14 +107,12 @@ public class DisjunctionNode extends RegexNode
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
     nodes.add ( this.regex1 );
     nodes.add ( this.regex2 );
-    nodes.addAll ( this.regex1.getChildren () );
-    nodes.addAll ( this.regex2.getChildren () );
     return nodes;
   }
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getAllChildren()
    */
   @Override
   public ArrayList < RegexNode > getTokenNodes ()
@@ -127,15 +172,104 @@ public class DisjunctionNode extends RegexNode
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
    */
   public Element getElement ()
   {
-    Element newElement = new Element("Disjunction");
+    Element newElement = new Element ( "Disjunction" );
     newElement.addElement ( this.regex1.getElement () );
     newElement.addElement ( this.regex2.getElement () );
     return newElement;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
+   */
+  public ParserOffset getParserOffset ()
+  {
+    return null;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param parserOffset
+   * @see de.unisiegen.gtitool.core.entities.Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
+   */
+  public void setParserOffset ( ParserOffset parserOffset )
+  {
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param listener
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param listener
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
+   */
+  public PrettyString toPrettyString ()
+  {
+    PrettyString string = this.regex1.toPrettyString ();
+    string
+        .add ( new PrettyString ( new PrettyToken ( "|", Style.REGEX_SYMBOL ) ) );
+    string.add ( this.regex2.toPrettyString () );
+    return string;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param o
+   * @return
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo ( RegexNode o )
+  {
+    return 0;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNodeString()
+   */
+  @Override
+  public PrettyString getNodeString ()
+  {
+    return new PrettyString ( new PrettyToken ( "|", Style.REGEX_SYMBOL ) );
   }
 }

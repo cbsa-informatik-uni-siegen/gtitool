@@ -47,8 +47,19 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	{
 	  switch (id)
 	  {
+	  	case STAR:
+	  	case PLUS:
+	  	case OR:
+	  	case CONCAT:
+	  	case EPSILON:
+	  	case QUESTION:
+	  	case LBRACE:
+	  	case RBRACE:
+	  	case SLBRACE:
+	  	case SRBRACE:
+	  	  return Style.REGEX_SYMBOL;
 		case IDENT:
-		  return Style.SYMBOL;
+		  return Style.TOKEN;
 		default:
 		  return Style.NONE;
 	  }

@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.Entity;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.Storable;
 
 
@@ -12,7 +14,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Simon Meurer
  * @version
  */
-public abstract class RegexNode implements Storable
+public abstract class RegexNode implements Entity < RegexNode >, Storable
 {
 
   /**
@@ -20,7 +22,18 @@ public abstract class RegexNode implements Storable
    * 
    * @return All children of this node
    */
+  public abstract ArrayList < RegexNode > getAllChildren ();
+
+
+  /**
+   * Gets the direct children of this Node
+   *
+   * @return The dircet children of this Node
+   */
   public abstract ArrayList < RegexNode > getChildren ();
+
+  public abstract int getRightChildrenCount();
+  public abstract int getLeftChildrenCount();
 
 
   /**
@@ -63,5 +76,13 @@ public abstract class RegexNode implements Storable
    * @return the RegexNode in Core Syntax
    */
   public abstract RegexNode toCoreSyntax ();
+
+
+  /**
+   * Get the {@link PrettyString} for the Node in the JGTIGraph
+   * 
+   * @return The {@link PrettyString} for the Node in the JGTIGraph
+   */
+  public abstract PrettyString getNodeString ();
 
 }

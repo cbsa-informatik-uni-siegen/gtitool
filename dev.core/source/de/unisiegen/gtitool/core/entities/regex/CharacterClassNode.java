@@ -3,13 +3,14 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.Element;
 
 
 /**
- * 
- * 
  * @author Simon Meurer
  * @version
  */
@@ -29,6 +30,29 @@ public class CharacterClassNode extends RegexNode
     this.chars = chars;
   }
 
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getLeftChildrenCount()
+   */
+  @Override
+  public int getLeftChildrenCount ()
+  {
+    return 0;
+  }
+  
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getRightChildrenCount()
+   */
+  @Override
+  public int getRightChildrenCount ()
+  {
+    return 0;
+  }
 
   /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
@@ -47,10 +71,10 @@ public class CharacterClassNode extends RegexNode
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getAllChildren()
    */
   @Override
-  public ArrayList < RegexNode > getChildren ()
+  public ArrayList < RegexNode > getAllChildren ()
   {
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
     nodes.add ( this );
@@ -112,8 +136,10 @@ public class CharacterClassNode extends RegexNode
   public RegexNode toCoreSyntax ()
   {
     String coreSyntax = "";
-    for(char c : this.chars) {
-      if(coreSyntax.length () > 0) {
+    for ( char c : this.chars )
+    {
+      if ( coreSyntax.length () > 0 )
+      {
         coreSyntax += "|";
       }
       coreSyntax += c;
@@ -121,13 +147,110 @@ public class CharacterClassNode extends RegexNode
     RegexParseable regexParseable = new RegexParseable ();
     try
     {
-      return ( RegexNode ) regexParseable.newParser ( coreSyntax )
-      .parse ();
+      return ( RegexNode ) regexParseable.newParser ( coreSyntax ).parse ();
     }
     catch ( Exception exc )
     {
-      exc.printStackTrace();
-    };
+      exc.printStackTrace ();
+    }
+    ;
+    return null;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
+   */
+  public Element getElement ()
+  {
+    return null;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
+   */
+  public ParserOffset getParserOffset ()
+  {
+    return null;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param parserOffset
+   * @see de.unisiegen.gtitool.core.entities.Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
+   */
+  public void setParserOffset ( ParserOffset parserOffset )
+  {
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param listener
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param listener
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
+   */
+  public PrettyString toPrettyString ()
+  {
+    return null;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param o
+   * @return
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo ( RegexNode o )
+  {
+    return 0;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNodeString()
+   */
+  @Override
+  public PrettyString getNodeString ()
+  {
     return null;
   }
 
@@ -136,9 +259,10 @@ public class CharacterClassNode extends RegexNode
    * TODO
    *
    * @return
-   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
-  public Element getElement ()
+  @Override
+  public ArrayList < RegexNode > getChildren ()
   {
     return null;
   }

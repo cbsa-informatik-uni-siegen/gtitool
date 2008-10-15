@@ -671,7 +671,9 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
           g2.setColor ( this.preferenceTransitionActive );
         }
         // Selected
-        else if ( this.selected )
+        else if ( this.selected || ( ( this.view.getCell () instanceof DefaultTransitionView )
+            && ( ( ( DefaultTransitionView ) this.view.getCell () )
+                .getTransition ().isSelected () ) ) )
         {
           g2.setColor ( this.preferenceTransitionSelected );
         }

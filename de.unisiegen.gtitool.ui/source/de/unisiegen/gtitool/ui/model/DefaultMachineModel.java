@@ -693,7 +693,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   {
     this.graphModel = new DefaultGraphModel ();
 
-    this.jGTIGraph = new JGTIGraph ( this.graphModel );
+    this.jGTIGraph = new JGTIGraph ( this, this.graphModel );
     this.jGTIGraph.setDoubleBuffered ( false );
     this.jGTIGraph.getGraphLayoutCache ()
         .setFactory ( new GPCellViewFactory () );

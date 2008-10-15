@@ -8,9 +8,12 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
 
@@ -19,7 +22,7 @@ import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 
 /**
@@ -95,14 +98,75 @@ public final class JGTIGraph extends JGraph implements Printable
 
 
   /**
+   * The loop {@link Transition} with 50 percent zzom factor.
+   */
+  private static BufferedImage LOOP_TRANSITION_50 = null;
+
+
+  /**
+   * The loop {@link Transition} with 100 percent zzom factor.
+   */
+  private static BufferedImage LOOP_TRANSITION_100 = null;
+
+
+  /**
+   * The loop {@link Transition} with 150 percent zzom factor.
+   */
+  private static BufferedImage LOOP_TRANSITION_150 = null;
+
+  static
+  {
+    try
+    {
+      LOOP_TRANSITION_50 = ImageIO
+          .read ( JGTIGraph.class
+              .getResource ( "/de/unisiegen/gtitool/ui/icon/jgraph/loop_transition_50.png" ) );//$NON-NLS-1$
+
+      LOOP_TRANSITION_100 = ImageIO
+          .read ( JGTIGraph.class
+              .getResource ( "/de/unisiegen/gtitool/ui/icon/jgraph/loop_transition_100.png" ) );//$NON-NLS-1$
+
+      LOOP_TRANSITION_150 = ImageIO
+          .read ( JGTIGraph.class
+              .getResource ( "/de/unisiegen/gtitool/ui/icon/jgraph/loop_transition_150.png" ) );//$NON-NLS-1$
+    }
+    catch ( IOException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
+
+
+  /**
+   * The {@link DefaultMachineModel}.
+   */
+  private DefaultMachineModel defaultMachineModel = null;
+
+
+  /**
    * Allocates a new {@link JGTIGraph}.
    * 
-   * @param graphModel The {@link DefaultGraphModel}.
+   * @param defaultGraphModel The {@link DefaultGraphModel}.
    */
-  public JGTIGraph ( DefaultGraphModel graphModel )
+  public JGTIGraph ( DefaultGraphModel defaultGraphModel )
   {
-    super ( graphModel );
+    super ( defaultGraphModel );
     ToolTipManager.sharedInstance ().registerComponent ( this );
+  }
+
+
+  /**
+   * Allocates a new {@link JGTIGraph}.
+   * 
+   * @param defaultMachineModel The {@link DefaultMachineModel}.
+   * @param defaultGraphModel The {@link DefaultGraphModel}.
+   */
+  public JGTIGraph ( DefaultMachineModel defaultMachineModel,
+      DefaultGraphModel defaultGraphModel )
+  {
+    this ( defaultGraphModel );
+    this.defaultMachineModel = defaultMachineModel;
   }
 
 
@@ -234,8 +298,6 @@ public final class JGTIGraph extends JGraph implements Printable
         int y = ( int ) bounds.getY ();
         int width = ( int ) bounds.getWidth ();
 
-        boolean powerSet = false;
-
         if ( this.stateView.getCell () instanceof DefaultStateView )
         {
           State state = ( ( DefaultStateView ) this.stateView.getCell () )
@@ -243,60 +305,57 @@ public final class JGTIGraph extends JGraph implements Printable
 
           if ( state.isLoopTransition () )
           {
-            g.setColor ( PreferenceManager.getInstance ()
-                .getColorItemTransitionSelected ().getColor () );
-            y += StateView.LOOP_TRANSITION_OFFSET;
+            for ( Transition current : state.getTransitionBegin () )
+            {
+              if ( current.getStateEnd () == state )
+              {
+                current.setSelected ( true );
+              }
+            }
+            return;
           }
+
           if ( state.isStartState () )
           {
             x += StateView.START_OFFSET;
             width -= StateView.START_OFFSET;
           }
-          powerSet = state.isPowerState ();
         }
 
-        x += width / 2 - 10;
-
-        // TODOCF optimize the scale
-        g.scale ( this.scale, this.scale );
-
-        // loop
-        g.drawLine ( x - 0, y, x - 0, y - 1 );
-        if ( powerSet )
+        if ( this.scale == 0.5 )
         {
-          g.drawLine ( x - 1, y - 2, x - 1, y - 4 );
-          g.drawLine ( x - 2, y - 5, x - 2, y - 15 );
+          x = ( int ) ( ( x * 0.5 ) + ( width * 0.5 ) / 2 - 6 );
+          y = ( int ) ( y * 0.5 - LOOP_TRANSITION_50.getHeight () + 1 );
+          g.drawImage ( LOOP_TRANSITION_50, x, y, null );
+        }
+        else if ( this.scale == 1.0 )
+        {
+          x = x + width / 2 - 12;
+          y = y - LOOP_TRANSITION_100.getHeight () + 1;
+          g.drawImage ( LOOP_TRANSITION_100, x, y, null );
+        }
+        else if ( this.scale == 1.5 )
+        {
+          x = ( int ) ( ( x * 1.5 ) + ( width * 1.5 ) / 2 - 18 );
+          y = ( int ) ( y * 1.5 - LOOP_TRANSITION_150.getHeight () + 1 );
+          g.drawImage ( LOOP_TRANSITION_150, x, y, null );
         }
         else
         {
-          g.drawLine ( x - 1, y - 2, x - 1, y - 3 );
-          g.drawLine ( x - 2, y - 4, x - 2, y - 15 );
+          throw new IllegalArgumentException ( "unsupported scale" ); //$NON-NLS-1$
         }
-        g.drawLine ( x - 1, y - 16, x - 1, y - 17 );
-        g.drawLine ( x - 0, y - 18, x - 0, y - 19 );
-        g.drawLine ( x + 1, y - 20, x + 1, y - 21 );
-        g.drawLine ( x + 2, y - 22, x + 4, y - 22 );
-        g.drawLine ( x + 5, y - 23, x + 14, y - 23 );
-        g.drawLine ( x + 15, y - 22, x + 16, y - 22 );
-        g.drawLine ( x + 17, y - 21, x + 18, y - 21 );
-        g.drawLine ( x + 19, y - 20, x + 19, y - 19 );
-        g.drawLine ( x + 20, y - 18, x + 20, y - 17 );
-        g.drawLine ( x + 21, y - 16, x + 21, y - 1 );
-
-        // arrow
-        g.drawLine ( x + 20, y - 7, x + 20, y );
-        g.drawLine ( x + 19, y - 9, x + 19, y - 2 );
-        g.drawLine ( x + 18, y - 10, x + 18, y - 6 );
-        g.drawLine ( x + 17, y - 11, x + 17, y - 10 );
-        g.drawLine ( x + 22, y - 7, x + 22, y - 2 );
-        g.drawLine ( x + 23, y - 7, x + 23, y - 4 );
-        g.drawLine ( x + 24, y - 8, x + 24, y - 5 );
-        g.drawLine ( x + 25, y - 8, x + 25, y - 6 );
-        g.drawLine ( x + 26, y - 9, x + 26, y - 8 );
-        g.drawLine ( x + 27, y - 9, x + 27, y - 9 );
       }
       else
       {
+        if ( this.defaultMachineModel != null )
+        {
+          for ( Transition current : this.defaultMachineModel.getMachine ()
+              .getTransition () )
+          {
+            current.setSelected ( false );
+          }
+        }
+
         g.scale ( this.scale, this.scale );
 
         g.drawLine ( x1, y1, x2, y2 );

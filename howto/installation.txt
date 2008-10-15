@@ -8,5 +8,5 @@ eclipse      3.4.0
 netbeans     6.1
 java         1.5.0_16
 ant          1.7.0
-subclipse    1.4.3
+subclipse    1.4.5
 texlipse     1.2.2

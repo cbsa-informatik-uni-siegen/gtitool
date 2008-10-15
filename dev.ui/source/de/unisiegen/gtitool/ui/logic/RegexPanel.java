@@ -25,6 +25,8 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
+import de.unisiegen.gtitool.ui.jgraph.DefaultNodeView;
+import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
@@ -49,6 +51,15 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * The modified flag
    */
   private boolean modified;
+
+
+  private JGTIGraph jGTIGraph;
+
+
+  private final int Y_SPACE = 50;
+
+
+  private final int X_SPACE = 100;
 
 
   /**
@@ -148,6 +159,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.mainWindowForm = mainWindowForm;
     this.file = file;
     this.model = model;
+    this.model.initializeGraph ();
+    this.jGTIGraph = this.model.getJGTIGraph ();
     this.regex = model.getRegex ();
     this.gui = new RegexPanelForm ( this );
 
@@ -201,6 +214,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         } );
 
     this.modified = true;
+
+    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
   }
 
 
@@ -340,7 +355,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     catch ( StoreException e )
     {
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, e
-          .getMessage (), Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+          .getMessage (), Messages.getString ( "RegexPanel.Save" ) ); //$NON-NLS-1$
       infoDialog.show ();
     }
     resetModify ();
@@ -383,10 +398,14 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param evt
    */
-  public void handleRegexChangeButtonClicked (
-      @SuppressWarnings ( "unused" ) ActionEvent evt )
+  public void handleRegexChangeButtonClicked ( @SuppressWarnings ( "unused" )
+  ActionEvent evt )
   {
     String newRegex = JOptionPane.showInputDialog ( this );
+    if ( newRegex == null || newRegex.length () < 1 )
+    {
+      return;
+    }
     RegexParseable regexParseable = new RegexParseable ();
     try
     {
@@ -398,7 +417,70 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       exc.printStackTrace ();
     }
     this.gui.jGTITextFieldRegex.setText ( this.regex.getRegexNode ()
-        .toString () );
+        .toPrettyString ().toString () );
+
+    this.model.initializeGraph ();
+    this.jGTIGraph = this.model.getJGTIGraph ();
+    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+
+    DefaultNodeView parent = this.model.createNodeView (
+        this.gui.jGTIPanelGraph.getWidth () / 3 * 2, 0, this.regex
+            .getRegexNode () );
+    addNodesToModel ( parent );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param parent
+   */
+  private void addNodesToModel ( DefaultNodeView parent )
+  {
+
+    int y = parent.getY () + this.Y_SPACE;
+    int x = parent.getX ();
+
+    if ( parent.getNode ().getChildren ().size () > 1 )
+    {
+      for ( int i = 0 ; i < parent.getNode ().getChildren ().size () ; i++ )
+      {
+        RegexNode childNode = parent.getRegexNode ().getChildren ().get ( i );
+        if ( i == 0 )
+        {
+          // Left node
+          x -= this.X_SPACE / 2;
+          for ( int j = 0 ; j < childNode.getRightChildrenCount () ; j++ )
+          {
+            x -= this.X_SPACE / 2;
+          }
+        }
+        else
+        {
+          // Right node
+          x = parent.getX ();
+          x += this.X_SPACE / 2;
+          for ( int j = 0 ; j < childNode.getLeftChildrenCount () ; j++ )
+          {
+            x += this.X_SPACE / 2;
+          }
+        }
+
+        DefaultNodeView child = this.model.createNodeView ( x, y, childNode );
+        x += this.X_SPACE;
+        this.model.createRegexEdgeView ( parent, child );
+        addNodesToModel ( child );
+      }
+
+    }
+    else if ( parent.getNode ().getChildren ().size () == 1 )
+    {
+      DefaultNodeView child = this.model.createNodeView ( x, y, parent
+          .getRegexNode ().getChildren ().get ( 0 ) );
+      this.model.createRegexEdgeView ( parent, child );
+      addNodesToModel ( child );
+    }
+
   }
 
 
@@ -455,8 +537,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       {
         ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
             Messages.getString (
-                "MachinePanel.FileExists", saveDialog.getSelectedFile () //$NON-NLS-1$
-                    .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
+                "RegexPanel.FileExists", saveDialog.getSelectedFile () //$NON-NLS-1$
+                    .getName () ), Messages.getString ( "RegexPanel.Save" ), //$NON-NLS-1$
             true, false, true, false, false );
         confirmDialog.show ();
         if ( confirmDialog.isNotConfirmed () )
@@ -480,7 +562,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     catch ( StoreException e )
     {
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, e
-          .getMessage (), Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+          .getMessage (), Messages.getString ( "RegexPanel.Save" ) ); //$NON-NLS-1$
       infoDialog.show ();
     }
     resetModify ();
@@ -570,10 +652,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#isModified()
+   * @see Modifyable#isModified()
    */
   public boolean isModified ()
   {
@@ -594,9 +675,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#resetModify()
+   * @see Modifyable#resetModify()
    */
   public void resetModify ()
   {

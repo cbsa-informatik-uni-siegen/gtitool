@@ -54,99 +54,99 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        this.toolbarButton = new javax.swing.ButtonGroup();
-        this.jGTISplitPaneWord = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        this.jGTISplitPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        this.jGTIPanelRegex = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        this.jGTISplitPaneTable = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        this.jGTIPanelGraph = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        this.jGTIScrollPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        this.jGTIPanelTable = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        this.jGTISplitPanePDATable = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        this.jGTIScrollPaneMachine = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        this.jGTITableMachine = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        this.jGTIScrollPaneMachinePDA = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        this.jGTITableMachinePDA = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        this.jGTIPanelRegexControl = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        this.jGTIButtonChangeRegex = new de.unisiegen.gtitool.ui.swing.JGTIButton();
-        this.jGTITextFieldRegex = new de.unisiegen.gtitool.ui.swing.JGTITextField();
-        this.jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        this.jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
-        this.jGTIScrollPaneErrors = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        this.jGTITableErrors = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        this.jGTIScrollPaneWarnings = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        this.jGTITableWarnings = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        this.wordPanelForm = new de.unisiegen.gtitool.ui.netbeans.WordPanelForm();
+        toolbarButton = new javax.swing.ButtonGroup();
+        jGTISplitPaneWord = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTISplitPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTIPanelRegex = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTISplitPaneTable = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTIPanelGraph = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIScrollPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTIPanelTable = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTISplitPanePDATable = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTIScrollPaneMachine = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTITableMachine = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        jGTIScrollPaneMachinePDA = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTITableMachinePDA = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        jGTIPanelRegexControl = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIButtonChangeRegex = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTITextFieldRegex = new de.unisiegen.gtitool.ui.swing.JGTITextField();
+        jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
+        jGTIScrollPaneErrors = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTITableErrors = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        jGTIScrollPaneWarnings = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTITableWarnings = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        wordPanelForm = new de.unisiegen.gtitool.ui.netbeans.WordPanelForm();
 
         setLayout(new java.awt.GridBagLayout());
 
-        this.jGTISplitPaneWord.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        this.jGTISplitPaneWord.setResizeWeight(1.0);
+        jGTISplitPaneWord.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jGTISplitPaneWord.setResizeWeight(1.0);
 
-        this.jGTISplitPaneConsole.setDividerLocation(200);
-        this.jGTISplitPaneConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        this.jGTISplitPaneConsole.setResizeWeight(1.0);
+        jGTISplitPaneConsole.setDividerLocation(200);
+        jGTISplitPaneConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jGTISplitPaneConsole.setResizeWeight(1.0);
 
-        this.jGTISplitPaneTable.setDividerLocation(400);
-        this.jGTISplitPaneTable.setResizeWeight(1.0);
+        jGTISplitPaneTable.setDividerLocation(400);
+        jGTISplitPaneTable.setResizeWeight(1.0);
 
-        this.jGTIScrollPaneGraph.setBorder(null);
+        jGTIScrollPaneGraph.setBorder(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        this.jGTIPanelGraph.add(this.jGTIScrollPaneGraph, gridBagConstraints);
+        jGTIPanelGraph.add(jGTIScrollPaneGraph, gridBagConstraints);
 
-        this.jGTISplitPaneTable.setLeftComponent(this.jGTIPanelGraph);
+        jGTISplitPaneTable.setLeftComponent(jGTIPanelGraph);
 
-        this.jGTIPanelTable.setMinimumSize(new java.awt.Dimension(200, 200));
+        jGTIPanelTable.setMinimumSize(new java.awt.Dimension(200, 200));
 
-        this.jGTISplitPanePDATable.setDividerLocation(100);
-        this.jGTISplitPanePDATable.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jGTISplitPanePDATable.setDividerLocation(100);
+        jGTISplitPanePDATable.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-        this.jGTIScrollPaneMachine.setBorder(null);
-        this.jGTIScrollPaneMachine.setMinimumSize(new java.awt.Dimension(150, 150));
+        jGTIScrollPaneMachine.setBorder(null);
+        jGTIScrollPaneMachine.setMinimumSize(new java.awt.Dimension(150, 150));
 
-        this.jGTITableMachine.addMouseListener(new java.awt.event.MouseAdapter() {
+        jGTITableMachine.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jGTITableMachineMouseExited(evt);
             }
         });
-        this.jGTITableMachine.addFocusListener(new java.awt.event.FocusAdapter() {
+        jGTITableMachine.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jGTITableMachineFocusLost(evt);
             }
         });
-        this.jGTIScrollPaneMachine.setViewportView(this.jGTITableMachine);
+        jGTIScrollPaneMachine.setViewportView(jGTITableMachine);
 
-        this.jGTISplitPanePDATable.setLeftComponent(this.jGTIScrollPaneMachine);
+        jGTISplitPanePDATable.setLeftComponent(jGTIScrollPaneMachine);
 
-        this.jGTIScrollPaneMachinePDA.setBorder(null);
-        this.jGTIScrollPaneMachinePDA.setMinimumSize(new java.awt.Dimension(150, 150));
+        jGTIScrollPaneMachinePDA.setBorder(null);
+        jGTIScrollPaneMachinePDA.setMinimumSize(new java.awt.Dimension(150, 150));
 
-        this.jGTITableMachinePDA.addMouseListener(new java.awt.event.MouseAdapter() {
+        jGTITableMachinePDA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jGTITableMachinePDAMouseExited(evt);
             }
         });
-        this.jGTITableMachinePDA.addFocusListener(new java.awt.event.FocusAdapter() {
+        jGTITableMachinePDA.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jGTITableMachinePDAFocusLost(evt);
             }
         });
-        this.jGTIScrollPaneMachinePDA.setViewportView(this.jGTITableMachinePDA);
+        jGTIScrollPaneMachinePDA.setViewportView(jGTITableMachinePDA);
 
-        this.jGTISplitPanePDATable.setRightComponent(this.jGTIScrollPaneMachinePDA);
+        jGTISplitPanePDATable.setRightComponent(jGTIScrollPaneMachinePDA);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        this.jGTIPanelTable.add(this.jGTISplitPanePDATable, gridBagConstraints);
+        jGTIPanelTable.add(jGTISplitPanePDATable, gridBagConstraints);
 
-        this.jGTISplitPaneTable.setRightComponent(this.jGTIPanelTable);
+        jGTISplitPaneTable.setRightComponent(jGTIPanelTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -154,10 +154,10 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        this.jGTIPanelRegex.add(this.jGTISplitPaneTable, gridBagConstraints);
+        jGTIPanelRegex.add(jGTISplitPaneTable, gridBagConstraints);
 
-        this.jGTIButtonChangeRegex.setText("Change Regex");
-        this.jGTIButtonChangeRegex.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonChangeRegex.setText("Change Regex");
+        jGTIButtonChangeRegex.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonChangeRegexActionPerformed(evt);
             }
@@ -165,71 +165,56 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        this.jGTIPanelRegexControl.add(this.jGTIButtonChangeRegex, gridBagConstraints);
-
-        this.jGTITextFieldRegex.setText("jGTITextField1");
+        jGTIPanelRegexControl.add(jGTIButtonChangeRegex, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        this.jGTIPanelRegexControl.add(this.jGTITextFieldRegex, gridBagConstraints);
+        jGTIPanelRegexControl.add(jGTITextFieldRegex, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
-        this.jGTIPanelRegex.add(this.jGTIPanelRegexControl, gridBagConstraints);
+        jGTIPanelRegex.add(jGTIPanelRegexControl, gridBagConstraints);
 
-        this.jGTISplitPaneConsole.setLeftComponent(this.jGTIPanelRegex);
+        jGTISplitPaneConsole.setLeftComponent(jGTIPanelRegex);
 
-        this.jGTITabbedPaneConsole.setMinimumSize(new java.awt.Dimension(200, 200));
+        jGTITabbedPaneConsole.setMinimumSize(new java.awt.Dimension(200, 200));
 
-        this.jGTIScrollPaneErrors.setBorder(null);
+        jGTIScrollPaneErrors.setBorder(null);
 
-        this.jGTITableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
+        jGTITableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jGTITableErrorsMouseExited(evt);
             }
         });
-        this.jGTITableErrors.addFocusListener(new java.awt.event.FocusAdapter() {
+        jGTITableErrors.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jGTITableErrorsFocusLost(evt);
             }
         });
-        this.jGTIScrollPaneErrors.setViewportView(this.jGTITableErrors);
+        jGTIScrollPaneErrors.setViewportView(jGTITableErrors);
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        this.jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/error.png")), this.jGTIScrollPaneErrors); // NOI18N
+        jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/error.png")), jGTIScrollPaneErrors); // NOI18N
 
-        this.jGTIScrollPaneWarnings.setBorder(null);
+        jGTIScrollPaneWarnings.setBorder(null);
 
-        this.jGTITableWarnings.addMouseListener(new java.awt.event.MouseAdapter() {
+        jGTITableWarnings.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jGTITableWarningsMouseExited(evt);
             }
         });
-        this.jGTITableWarnings.addFocusListener(new java.awt.event.FocusAdapter() {
+        jGTITableWarnings.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jGTITableWarningsFocusLost(evt);
             }
         });
-        this.jGTIScrollPaneWarnings.setViewportView(this.jGTITableWarnings);
+        jGTIScrollPaneWarnings.setViewportView(jGTITableWarnings);
 
-        this.jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Warning"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/warning.png")), this.jGTIScrollPaneWarnings); // NOI18N
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        this.jGTIPanelConsole.add(this.jGTITabbedPaneConsole, gridBagConstraints);
-
-        this.jGTISplitPaneConsole.setRightComponent(this.jGTIPanelConsole);
-
-        this.jGTISplitPaneWord.setLeftComponent(this.jGTISplitPaneConsole);
-        this.jGTISplitPaneWord.setBottomComponent(this.wordPanelForm);
+        jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Warning"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/warning.png")), jGTIScrollPaneWarnings); // NOI18N
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -237,7 +222,20 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        add(this.jGTISplitPaneWord, gridBagConstraints);
+        jGTIPanelConsole.add(jGTITabbedPaneConsole, gridBagConstraints);
+
+        jGTISplitPaneConsole.setRightComponent(jGTIPanelConsole);
+
+        jGTISplitPaneWord.setLeftComponent(jGTISplitPaneConsole);
+        jGTISplitPaneWord.setBottomComponent(wordPanelForm);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(jGTISplitPaneWord, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jGTITableMachinePDAMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableMachinePDAMouseExited

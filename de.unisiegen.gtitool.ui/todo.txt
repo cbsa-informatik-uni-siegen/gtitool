@@ -1,11 +1,11 @@
 *** TODO ***
-CF		- Wortnavigation: Die Meldungen anpassen, damit sich diese immer
+CF		- Wort-Navigation: Die Meldungen anpassen, damit sich diese immer
           auf das Gesamtwort beziehen
 
 *** FEATURE ***
 
-CF		- Wörter ausgeben, die erkannt werden
-CF		- Doppeltes Handling aus dem Popupmenüs entfernen
+CF		- Erkannte Wörter ausgeben
+CF		- Doppeltes Handling aus den Popupmenüs entfernen
 CF		- PDA Machinen Tabelle editierbar machen
 CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
 CF		- Popupmenü auf der Machine Tabelle

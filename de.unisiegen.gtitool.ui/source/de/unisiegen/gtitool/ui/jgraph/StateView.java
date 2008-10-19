@@ -590,6 +590,27 @@ public final class StateView extends VertexView
 
 
   /**
+   * Return the {@link Color} of the {@link BufferedImage} with the given
+   * coordinates.
+   * 
+   * @param image The {@link BufferedImage}.
+   * @param x The x coordinate.
+   * @param y The y coordinate.
+   * @return The {@link Color} of the {@link BufferedImage} with the given
+   *         coordinates.
+   */
+  private static final Color getColor ( BufferedImage image, int x, int y )
+  {
+    if ( ( x < 0 ) || ( x >= image.getWidth () ) || ( y < 0 )
+        || ( y >= image.getHeight () ) )
+    {
+      return Color.WHITE;
+    }
+    return new Color ( image.getRGB ( x, y ) );
+  }
+
+
+  /**
    * Returns the height.
    * 
    * @param state The {@link State}.
@@ -708,8 +729,8 @@ public final class StateView extends VertexView
 
     double x = r.getX ();
     double y = r.getY ();
-    double a = ( r.getWidth () + 1 ) / 2;
-    double b = ( r.getHeight () + 1 ) / 2;
+    double a = r.getWidth () / 2;
+    double b = r.getHeight () / 2;
 
     // x1, y1 - point
     double x1 = p.getX ();
@@ -816,86 +837,58 @@ public final class StateView extends VertexView
 
       if ( ( checkX >= a ) && ( checkY <= b ) )
       {
-        try
+        Color color = getColor ( POWER_STATE_100, checkX, checkY );
+        while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+            && ( color.getBlue () == 0 ) )
         {
-          Color color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
-          while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
-              && ( color.getBlue () == 0 ) )
-          {
-            xout = xout + 1;
-            yout = yout - 1;
-            checkX = ( int ) ( xout - x );
-            checkY = ( int ) ( yout - y );
+          xout = xout + 1;
+          yout = yout - 1;
+          checkX = ( int ) ( xout - x );
+          checkY = ( int ) ( yout - y );
 
-            color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
-          }
-        }
-        catch ( ArrayIndexOutOfBoundsException exc )
-        {
-          // do nothing
+          color = getColor ( POWER_STATE_100, checkX, checkY );
         }
       }
       else if ( ( checkX <= a ) && ( checkY <= b ) )
       {
-        try
+        Color color = getColor ( POWER_STATE_100, checkX, checkY );
+        while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+            && ( color.getBlue () == 0 ) )
         {
-          Color color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
-          while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
-              && ( color.getBlue () == 0 ) )
-          {
-            xout = xout - 1;
-            yout = yout - 1;
-            checkX = ( int ) ( xout - x );
-            checkY = ( int ) ( yout - y );
+          xout = xout - 1;
+          yout = yout - 1;
+          checkX = ( int ) ( xout - x );
+          checkY = ( int ) ( yout - y );
 
-            color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
-          }
-        }
-        catch ( ArrayIndexOutOfBoundsException exc )
-        {
-          // do nothing
+          color = getColor ( POWER_STATE_100, checkX, checkY );
         }
       }
       else if ( ( checkX <= a ) && ( checkY >= b ) )
       {
-        try
+        Color color = getColor ( POWER_STATE_100, checkX, checkY );
+        while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+            && ( color.getBlue () == 0 ) )
         {
-          Color color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
-          while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
-              && ( color.getBlue () == 0 ) )
-          {
-            xout = xout - 1;
-            yout = yout + 1;
-            checkX = ( int ) ( xout - x );
-            checkY = ( int ) ( yout - y );
+          xout = xout - 1;
+          yout = yout + 1;
+          checkX = ( int ) ( xout - x );
+          checkY = ( int ) ( yout - y );
 
-            color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
-          }
-        }
-        catch ( ArrayIndexOutOfBoundsException exc )
-        {
-          // do nothing
+          color = getColor ( POWER_STATE_100, checkX, checkY );
         }
       }
       else if ( ( checkX >= a ) && ( checkY >= b ) )
       {
-        try
+        Color color = getColor ( POWER_STATE_100, checkX, checkY );
+        while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+            && ( color.getBlue () == 0 ) )
         {
-          Color color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
-          while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
-              && ( color.getBlue () == 0 ) )
-          {
-            xout = xout + 1;
-            yout = yout + 1;
-            checkX = ( int ) ( xout - x );
-            checkY = ( int ) ( yout - y );
+          xout = xout + 1;
+          yout = yout + 1;
+          checkX = ( int ) ( xout - x );
+          checkY = ( int ) ( yout - y );
 
-            color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
-          }
-        }
-        catch ( ArrayIndexOutOfBoundsException exc )
-        {
-          // do nothing
+          color = getColor ( POWER_STATE_100, checkX, checkY );
         }
       }
     }

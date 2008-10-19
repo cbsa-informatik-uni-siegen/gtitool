@@ -3387,109 +3387,97 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   private final void updateAcceptedState ()
   {
-    if ( this.machineMode.equals ( MachineMode.WORD_NAVIGATION ) )
+    if ( this.machineMode.equals ( MachineMode.WORD_NAVIGATION )
+        && !this.machine.isNextSymbolAvailable () )
     {
+      // word accepted
       if ( this.machine.isWordAccepted () )
       {
         this.gui.wordPanelForm.styledWordParserPanel
             .setAcceptedStatus ( AcceptedStatus.ACCEPTED );
 
-        Word word = new DefaultWord ();
-        try
-        {
-          word.add ( this.machine.getReadedSymbols () );
-        }
-        catch ( WordFinishedException exc )
-        {
-          // do nothing
-        }
-        catch ( WordResetedException exc )
-        {
-          // do nothing
-        }
-
+        // user input
         if ( this.userInputNeeded )
         {
-          if ( word.size () == 0 )
+          if ( this.machine.getWord ().size () == 0 )
           {
-            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-                .getPrettyString ( "WordPanel.StatusAcceptedEmptyPDA", //$NON-NLS-1$
-                    word.toPrettyString () ).toHTMLString () );
+            this.gui.wordPanelForm.jGTILabelStatus
+                .setText ( Messages.getPrettyString (
+                    "WordPanel.StatusAcceptedEmptyPDA", //$NON-NLS-1$
+                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
           }
           else
           {
-            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-                .getPrettyString ( "WordPanel.StatusAcceptedPDA", //$NON-NLS-1$
-                    word.toPrettyString () ).toHTMLString () );
+            this.gui.wordPanelForm.jGTILabelStatus
+                .setText ( Messages.getPrettyString (
+                    "WordPanel.StatusAcceptedPDA", //$NON-NLS-1$
+                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
           }
         }
+        // no user input
         else
         {
-          if ( word.size () == 0 )
+          if ( this.machine.getWord ().size () == 0 )
           {
-            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-                .getPrettyString ( "WordPanel.StatusAcceptedEmpty", //$NON-NLS-1$
-                    word.toPrettyString () ).toHTMLString () );
+            this.gui.wordPanelForm.jGTILabelStatus
+                .setText ( Messages.getPrettyString (
+                    "WordPanel.StatusAcceptedEmpty", //$NON-NLS-1$
+                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
           }
           else
           {
-            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-                .getPrettyString ( "WordPanel.StatusAccepted", //$NON-NLS-1$
-                    word.toPrettyString () ).toHTMLString () );
+            this.gui.wordPanelForm.jGTILabelStatus
+                .setText ( Messages.getPrettyString (
+                    "WordPanel.StatusAccepted", //$NON-NLS-1$
+                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
           }
         }
       }
+      // word not accepted
       else
       {
         this.gui.wordPanelForm.styledWordParserPanel
             .setAcceptedStatus ( AcceptedStatus.NOT_ACCEPTED );
 
-        Word word = new DefaultWord ();
-        try
-        {
-          word.add ( this.machine.getReadedSymbols () );
-        }
-        catch ( WordFinishedException exc )
-        {
-          // do nothing
-        }
-        catch ( WordResetedException exc )
-        {
-          // do nothing
-        }
-
+        // user input
         if ( this.userInputNeeded )
         {
-          if ( word.size () == 0 )
+          if ( this.machine.getWord ().size () == 0 )
           {
-            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-                .getPrettyString ( "WordPanel.StatusNotAcceptedEmptyPDA", //$NON-NLS-1$
-                    word.toPrettyString () ).toHTMLString () );
+            this.gui.wordPanelForm.jGTILabelStatus
+                .setText ( Messages.getPrettyString (
+                    "WordPanel.StatusNotAcceptedEmptyPDA", //$NON-NLS-1$
+                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
           }
           else
           {
-            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-                .getPrettyString ( "WordPanel.StatusNotAcceptedPDA", //$NON-NLS-1$
-                    word.toPrettyString () ).toHTMLString () );
+            this.gui.wordPanelForm.jGTILabelStatus
+                .setText ( Messages.getPrettyString (
+                    "WordPanel.StatusNotAcceptedPDA", //$NON-NLS-1$
+                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
           }
         }
+        // no user input
         else
         {
-          if ( word.size () == 0 )
+          if ( this.machine.getWord ().size () == 0 )
           {
-            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-                .getPrettyString ( "WordPanel.StatusNotAcceptedEmpty", //$NON-NLS-1$
-                    word.toPrettyString () ).toHTMLString () );
+            this.gui.wordPanelForm.jGTILabelStatus
+                .setText ( Messages.getPrettyString (
+                    "WordPanel.StatusNotAcceptedEmpty", //$NON-NLS-1$
+                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
           }
           else
           {
-            this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
-                .getPrettyString ( "WordPanel.StatusNotAccepted", //$NON-NLS-1$
-                    word.toPrettyString () ).toHTMLString () );
+            this.gui.wordPanelForm.jGTILabelStatus
+                .setText ( Messages.getPrettyString (
+                    "WordPanel.StatusNotAccepted", //$NON-NLS-1$
+                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
           }
         }
       }
     }
+    // no status
     else
     {
       this.gui.wordPanelForm.styledWordParserPanel

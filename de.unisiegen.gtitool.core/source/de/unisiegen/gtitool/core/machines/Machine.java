@@ -390,6 +390,14 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
+   * Returns the {@link Word}.
+   * 
+   * @return The {@link Word}.
+   */
+  public Word getWord ();
+
+
+  /**
    * Returns true if every {@link State} name is unique in this {@link Machine},
    * otherwise false.
    * 

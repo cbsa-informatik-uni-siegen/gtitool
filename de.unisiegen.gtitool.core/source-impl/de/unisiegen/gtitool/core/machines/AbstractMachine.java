@@ -1721,6 +1721,17 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
+   * @see Machine#getWord()
+   */
+  public Word getWord ()
+  {
+    return this.word;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see TableModel#isCellEditable(int, int)
    */
   public final boolean isCellEditable (

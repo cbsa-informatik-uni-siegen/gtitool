@@ -1,6 +1,4 @@
 *** TODO ***
-CF		- Wort-Navigation: Die Meldungen anpassen, damit sich diese immer
-          auf das Gesamtwort beziehen
 
 *** FEATURE ***
 

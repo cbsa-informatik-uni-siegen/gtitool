@@ -13,7 +13,10 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 import org.jgraph.graph.CellViewRenderer;
@@ -522,6 +525,71 @@ public final class StateView extends VertexView
 
 
   /**
+   * The {@link State} with 50 percent zzom factor.
+   */
+  private static BufferedImage STATE_50 = null;
+
+
+  /**
+   * The {@link State} with 100 percent zzom factor.
+   */
+  private static BufferedImage STATE_100 = null;
+
+
+  /**
+   * The {@link State} with 150 percent zzom factor.
+   */
+  private static BufferedImage STATE_150 = null;
+
+
+  /**
+   * The power {@link State} with 50 percent zzom factor.
+   */
+  private static BufferedImage POWER_STATE_50 = null;
+
+
+  /**
+   * The power {@link State} with 100 percent zzom factor.
+   */
+  private static BufferedImage POWER_STATE_100 = null;
+
+
+  /**
+   * The power {@link State} with 150 percent zzom factor.
+   */
+  private static BufferedImage POWER_STATE_150 = null;
+
+  static
+  {
+    try
+    {
+      STATE_50 = ImageIO.read ( JGTIGraph.class
+          .getResource ( "/de/unisiegen/gtitool/ui/icon/jgraph/state_50.png" ) );//$NON-NLS-1$
+      STATE_100 = ImageIO
+          .read ( JGTIGraph.class
+              .getResource ( "/de/unisiegen/gtitool/ui/icon/jgraph/state_100.png" ) );//$NON-NLS-1$
+      STATE_150 = ImageIO
+          .read ( JGTIGraph.class
+              .getResource ( "/de/unisiegen/gtitool/ui/icon/jgraph/state_150.png" ) );//$NON-NLS-1$
+      POWER_STATE_50 = ImageIO
+          .read ( JGTIGraph.class
+              .getResource ( "/de/unisiegen/gtitool/ui/icon/jgraph/powerstate_50.png" ) );//$NON-NLS-1$
+      POWER_STATE_100 = ImageIO
+          .read ( JGTIGraph.class
+              .getResource ( "/de/unisiegen/gtitool/ui/icon/jgraph/powerstate_100.png" ) );//$NON-NLS-1$
+      POWER_STATE_150 = ImageIO
+          .read ( JGTIGraph.class
+              .getResource ( "/de/unisiegen/gtitool/ui/icon/jgraph/powerstate_150.png" ) );//$NON-NLS-1$
+    }
+    catch ( IOException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
+
+
+  /**
    * Returns the height.
    * 
    * @param state The {@link State}.
@@ -603,13 +671,10 @@ public final class StateView extends VertexView
     Rectangle2D r = getBounds ();
 
     State state = null;
-    double zoomFactor = 1.0;
     if ( getCell () instanceof DefaultStateView )
     {
       DefaultStateView defaultStateView = ( DefaultStateView ) getCell ();
       state = defaultStateView.getState ();
-      zoomFactor = defaultStateView.getMachineModel ().getJGTIGraph ()
-          .getScale ();
     }
 
     boolean loopTransition = false;
@@ -645,8 +710,6 @@ public final class StateView extends VertexView
     double y = r.getY ();
     double a = ( r.getWidth () + 1 ) / 2;
     double b = ( r.getHeight () + 1 ) / 2;
-    int width = ( int ) r.getWidth ();
-    int height = ( int ) r.getHeight ();
 
     // x1, y1 - point
     double x1 = p.getX ();
@@ -690,13 +753,11 @@ public final class StateView extends VertexView
       {
         x = r.getX () + START_OFFSET;
         a = ( r.getWidth () - START_OFFSET + 1 ) / 2;
-        width -= START_OFFSET;
       }
       if ( state.isLoopTransition () )
       {
         y = r.getY () + LOOP_TRANSITION_OFFSET;
         b = ( r.getHeight () - LOOP_TRANSITION_OFFSET + 1 ) / 2;
-        height -= LOOP_TRANSITION_OFFSET;
       }
     }
 
@@ -755,46 +816,86 @@ public final class StateView extends VertexView
 
       if ( ( checkX >= a ) && ( checkY <= b ) )
       {
-        while ( !isOutOfPaintedPowerStateAreaTopRight ( checkX, checkY,
-            width - 1, zoomFactor ) )
+        try
         {
-          xout = xout + 1;
-          yout = yout - 1;
-          checkX = ( int ) ( xout - x );
-          checkY = ( int ) ( yout - y );
+          Color color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
+          while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+              && ( color.getBlue () == 0 ) )
+          {
+            xout = xout + 1;
+            yout = yout - 1;
+            checkX = ( int ) ( xout - x );
+            checkY = ( int ) ( yout - y );
+
+            color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
+          }
+        }
+        catch ( ArrayIndexOutOfBoundsException exc )
+        {
+          // do nothing
         }
       }
       else if ( ( checkX <= a ) && ( checkY <= b ) )
       {
-        while ( !isOutOfPaintedPowerStateAreaTopLeft ( checkX, checkY,
-            zoomFactor ) )
+        try
         {
-          xout = xout - 1;
-          yout = yout - 1;
-          checkX = ( int ) ( xout - x );
-          checkY = ( int ) ( yout - y );
+          Color color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
+          while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+              && ( color.getBlue () == 0 ) )
+          {
+            xout = xout - 1;
+            yout = yout - 1;
+            checkX = ( int ) ( xout - x );
+            checkY = ( int ) ( yout - y );
+
+            color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
+          }
+        }
+        catch ( ArrayIndexOutOfBoundsException exc )
+        {
+          // do nothing
         }
       }
       else if ( ( checkX <= a ) && ( checkY >= b ) )
       {
-        while ( !isOutOfPaintedPowerStateAreaBottomLeft ( checkX, checkY,
-            height - 1, zoomFactor ) )
+        try
         {
-          xout = xout - 1;
-          yout = yout + 1;
-          checkX = ( int ) ( xout - x );
-          checkY = ( int ) ( yout - y );
+          Color color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
+          while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+              && ( color.getBlue () == 0 ) )
+          {
+            xout = xout - 1;
+            yout = yout + 1;
+            checkX = ( int ) ( xout - x );
+            checkY = ( int ) ( yout - y );
+
+            color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
+          }
+        }
+        catch ( ArrayIndexOutOfBoundsException exc )
+        {
+          // do nothing
         }
       }
       else if ( ( checkX >= a ) && ( checkY >= b ) )
       {
-        while ( !isOutOfPaintedPowerStateAreaBottomRight ( checkX, checkY,
-            width - 1, height - 1, zoomFactor ) )
+        try
         {
-          xout = xout + 1;
-          yout = yout + 1;
-          checkX = ( int ) ( xout - x );
-          checkY = ( int ) ( yout - y );
+          Color color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
+          while ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+              && ( color.getBlue () == 0 ) )
+          {
+            xout = xout + 1;
+            yout = yout + 1;
+            checkX = ( int ) ( xout - x );
+            checkY = ( int ) ( yout - y );
+
+            color = new Color ( POWER_STATE_100.getRGB ( checkX, checkY ) );
+          }
+        }
+        catch ( ArrayIndexOutOfBoundsException exc )
+        {
+          // do nothing
         }
       }
     }
@@ -816,195 +917,6 @@ public final class StateView extends VertexView
 
 
   /**
-   * Returns true if the given point is out of the painted state area, otherwise
-   * false.
-   * 
-   * @param x The x value.
-   * @param y The y value.
-   * @param height The height.
-   * @param zoomFactor The zoom factor.
-   * @return True if the given point is out of the painted state area, otherwise
-   *         false.
-   */
-  private final boolean isOutOfPaintedPowerStateAreaBottomLeft ( int x, int y,
-      int height, @SuppressWarnings ( "unused" ) double zoomFactor )
-  {
-    // TODOCF use the zoom factor
-    if ( ( ( x == 1 ) && ( y < height - 17 ) )
-        || ( ( x == 2 ) && ( y < height - 14 ) )
-        || ( ( x == 3 ) && ( y < height - 12 ) )
-        || ( ( x == 4 ) && ( y < height - 11 ) )
-        || ( ( x == 5 ) && ( y < height - 10 ) )
-        || ( ( x == 6 ) && ( y < height - 8 ) )
-        || ( ( x == 7 ) && ( y < height - 7 ) )
-        || ( ( x == 8 ) && ( y < height - 6 ) )
-        || ( ( x == 9 ) && ( y < height - 5 ) )
-        || ( ( x == 10 ) && ( y < height - 5 ) )
-        || ( ( x == 11 ) && ( y < height - 4 ) )
-        || ( ( x == 12 ) && ( y < height - 3 ) )
-        || ( ( x == 13 ) && ( y < height - 2 ) )
-        || ( ( x == 14 ) && ( y < height - 2 ) )
-        || ( ( x == 15 ) && ( y < height - 1 ) )
-        || ( ( x == 16 ) && ( y < height - 1 ) )
-        || ( ( x == 17 ) && ( y < height - 1 ) )
-        || ( ( x == 18 ) && ( y < height - 0 ) )
-        || ( ( x == 19 ) && ( y < height - 0 ) )
-        || ( ( x >= 20 ) && ( y < height - 0 ) ) )
-    {
-      return false;
-    }
-    return true;
-  }
-
-
-  /**
-   * Returns true if the given point is out of the painted state area, otherwise
-   * false.
-   * 
-   * @param x The x value.
-   * @param y The y value.
-   * @param width The width.
-   * @param height The height.
-   * @param zoomFactor The zoom factor.
-   * @return True if the given point is out of the painted state area, otherwise
-   *         false.
-   */
-  private final boolean isOutOfPaintedPowerStateAreaBottomRight ( int x, int y,
-      int width, int height, @SuppressWarnings ( "unused" ) double zoomFactor )
-  {
-    // TODOCF use the zoom factor
-    if ( ( ( x == width - 1 ) && ( y < height - 17 ) )
-        || ( ( x == width - 2 ) && ( y < height - 14 ) )
-        || ( ( x == width - 3 ) && ( y < height - 12 ) )
-        || ( ( x == width - 4 ) && ( y < height - 11 ) )
-        || ( ( x == width - 5 ) && ( y < height - 10 ) )
-        || ( ( x == width - 6 ) && ( y < height - 8 ) )
-        || ( ( x == width - 7 ) && ( y < height - 7 ) )
-        || ( ( x == width - 8 ) && ( y < height - 6 ) )
-        || ( ( x == width - 9 ) && ( y < height - 5 ) )
-        || ( ( x == width - 10 ) && ( y < height - 5 ) )
-        || ( ( x == width - 11 ) && ( y < height - 4 ) )
-        || ( ( x == width - 12 ) && ( y < height - 3 ) )
-        || ( ( x == width - 13 ) && ( y < height - 2 ) )
-        || ( ( x == width - 14 ) && ( y < height - 2 ) )
-        || ( ( x == width - 15 ) && ( y < height - 1 ) )
-        || ( ( x == width - 16 ) && ( y < height - 1 ) )
-        || ( ( x == width - 17 ) && ( y < height - 1 ) )
-        || ( ( x == width - 18 ) && ( y < height - 0 ) )
-        || ( ( x == width - 19 ) && ( y < height - 0 ) )
-        || ( ( x <= width - 20 ) && ( y < height - 0 ) ) )
-    {
-      return false;
-    }
-    return true;
-  }
-
-
-  /**
-   * Returns true if the given point is out of the painted state area, otherwise
-   * false.
-   * 
-   * @param x The x value.
-   * @param y The y value.
-   * @param zoomFactor The zoom factor.
-   * @return True if the given point is out of the painted state area, otherwise
-   *         false.
-   */
-  private final boolean isOutOfPaintedPowerStateAreaTopLeft ( int x, int y,
-      @SuppressWarnings ( "unused" ) double zoomFactor )
-  {
-    // TODOCF use the zoom factor
-    if ( ( ( x == 1 ) && ( y > 17 ) ) || ( ( x == 2 ) && ( y > 14 ) )
-        || ( ( x == 3 ) && ( y > 12 ) ) || ( ( x == 4 ) && ( y > 11 ) )
-        || ( ( x == 5 ) && ( y > 10 ) ) || ( ( x == 6 ) && ( y > 8 ) )
-        || ( ( x == 7 ) && ( y > 7 ) ) || ( ( x == 8 ) && ( y > 6 ) )
-        || ( ( x == 9 ) && ( y > 5 ) ) || ( ( x == 10 ) && ( y > 5 ) )
-        || ( ( x == 11 ) && ( y > 4 ) ) || ( ( x == 12 ) && ( y > 3 ) )
-        || ( ( x == 13 ) && ( y > 2 ) ) || ( ( x == 14 ) && ( y > 2 ) )
-        || ( ( x == 15 ) && ( y > 1 ) ) || ( ( x == 16 ) && ( y > 1 ) )
-        || ( ( x == 17 ) && ( y > 1 ) ) || ( ( x == 18 ) && ( y > 0 ) )
-        || ( ( x == 19 ) && ( y > 0 ) ) || ( ( x >= 20 ) && ( y > 0 ) ) )
-    {
-      return false;
-    }
-    return true;
-  }
-
-
-  /**
-   * Returns true if the given point is out of the painted state area, otherwise
-   * false.
-   * 
-   * @param x The x value.
-   * @param y The y value.
-   * @param width The width.
-   * @param zoomFactor The zoom factor.
-   * @return True if the given point is out of the painted state area, otherwise
-   *         false.
-   */
-  private final boolean isOutOfPaintedPowerStateAreaTopRight ( int x, int y,
-      int width, @SuppressWarnings ( "unused" ) double zoomFactor )
-  {
-    // TODOCF use the zoom factor
-    if ( ( ( x == width - 1 ) && ( y > 17 ) )
-        || ( ( x == width - 2 ) && ( y > 14 ) )
-        || ( ( x == width - 3 ) && ( y > 12 ) )
-        || ( ( x == width - 4 ) && ( y > 11 ) )
-        || ( ( x == width - 5 ) && ( y > 10 ) )
-        || ( ( x == width - 6 ) && ( y > 8 ) )
-        || ( ( x == width - 7 ) && ( y > 7 ) )
-        || ( ( x == width - 8 ) && ( y > 6 ) )
-        || ( ( x == width - 9 ) && ( y > 5 ) )
-        || ( ( x == width - 10 ) && ( y > 5 ) )
-        || ( ( x == width - 11 ) && ( y > 4 ) )
-        || ( ( x == width - 12 ) && ( y > 3 ) )
-        || ( ( x == width - 13 ) && ( y > 2 ) )
-        || ( ( x == width - 14 ) && ( y > 2 ) )
-        || ( ( x == width - 15 ) && ( y > 1 ) )
-        || ( ( x == width - 16 ) && ( y > 1 ) )
-        || ( ( x == width - 17 ) && ( y > 1 ) )
-        || ( ( x == width - 18 ) && ( y > 0 ) )
-        || ( ( x == width - 19 ) && ( y > 0 ) )
-        || ( ( x <= width - 20 ) && ( y > 0 ) ) )
-    {
-      return false;
-    }
-    return true;
-  }
-
-
-  /**
-   * Returns true if the given point is out of the painted state area, otherwise
-   * false.
-   * 
-   * @param x The x value.
-   * @param y The y value.
-   * @param width The width.
-   * @param height The height.
-   * @return True if the given point is out of the painted state area, otherwise
-   *         false.
-   */
-  private final boolean isOutOfPaintedStateArea ( int x, int y, int width,
-      int height )
-  {
-    int mX = width / 2;
-    int mY = height / 2;
-
-    int diffX = mX - x;
-    int diffY = mY - y > 0 ? mY - y : y - mY;
-
-    int maxDiffY = ( int ) Math.sqrt ( mY * mY - diffX * diffX );
-
-    if ( diffY > maxDiffY )
-    {
-      return true;
-    }
-
-    return false;
-  }
-
-
-  /**
    * Returns true if the selection is allowed, otherwise false.
    * 
    * @param absoluteX The absolute x position of the {@link MouseEvent}.
@@ -1022,26 +934,6 @@ public final class StateView extends VertexView
     int width = ( int ) ( r.getWidth () * zoomFactor );
     int height = ( int ) ( r.getHeight () * zoomFactor );
 
-    int relativeX = absoluteX - x;
-    if ( relativeX < 0 )
-    {
-      relativeX = 0;
-    }
-    if ( relativeX >= width )
-    {
-      relativeX = width - 1;
-    }
-
-    int relativeY = absoluteY - y;
-    if ( relativeY < 0 )
-    {
-      relativeY = 0;
-    }
-    if ( relativeY >= height )
-    {
-      relativeY = height - 1;
-    }
-
     State state = null;
     if ( getCell () instanceof DefaultStateView )
     {
@@ -1050,36 +942,101 @@ public final class StateView extends VertexView
 
     if ( state != null )
     {
+      int relativeX = absoluteX - x;
+      int relativeY = absoluteY - y;
+
+      relativeX = relativeX < 0 ? 0 : relativeX;
+      relativeX = relativeX >= width ? width - 1 : relativeX;
+
+      relativeY = relativeY < 0 ? 0 : relativeY;
+      relativeY = relativeY >= height ? height - 1 : relativeY;
+
       if ( state.isStartState () )
       {
-        relativeX -= START_OFFSET;
-        width -= START_OFFSET;
+        relativeX -= START_OFFSET * zoomFactor;
+        width -= START_OFFSET * zoomFactor;
       }
       if ( state.isLoopTransition () )
       {
-        relativeY -= LOOP_TRANSITION_OFFSET;
-        height -= LOOP_TRANSITION_OFFSET;
+        relativeY -= LOOP_TRANSITION_OFFSET * zoomFactor;
+        height -= LOOP_TRANSITION_OFFSET * zoomFactor;
+      }
+
+      if ( ( relativeX < 0 ) || ( relativeX >= width ) || ( relativeY < 0 )
+          || ( relativeY >= height ) )
+      {
+        return false;
       }
 
       if ( state.isPowerState () )
       {
-        if ( !isOutOfPaintedPowerStateAreaTopLeft ( relativeX, relativeY,
-            zoomFactor )
-            && !isOutOfPaintedPowerStateAreaTopRight ( relativeX, relativeY,
-                width, zoomFactor )
-            && !isOutOfPaintedPowerStateAreaBottomLeft ( relativeX, relativeY,
-                height, zoomFactor )
-            && !isOutOfPaintedPowerStateAreaBottomRight ( relativeX, relativeY,
-                width, height, zoomFactor ) )
+        if ( zoomFactor == 0.5 )
         {
-          return true;
+          Color color = new Color ( POWER_STATE_50.getRGB ( relativeX,
+              relativeY ) );
+          if ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+              && ( color.getBlue () == 0 ) )
+          {
+            return true;
+          }
+        }
+        else if ( zoomFactor == 1.0 )
+        {
+          Color color = new Color ( POWER_STATE_100.getRGB ( relativeX,
+              relativeY ) );
+          if ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+              && ( color.getBlue () == 0 ) )
+          {
+            return true;
+          }
+        }
+        else if ( zoomFactor == 1.5 )
+        {
+          Color color = new Color ( POWER_STATE_150.getRGB ( relativeX,
+              relativeY ) );
+          if ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+              && ( color.getBlue () == 0 ) )
+          {
+            return true;
+          }
+        }
+        else
+        {
+          throw new IllegalArgumentException ( "unsupported scale" ); //$NON-NLS-1$
         }
       }
       else
       {
-        if ( !isOutOfPaintedStateArea ( relativeX, relativeY, width, height ) )
+        if ( zoomFactor == 0.5 )
         {
-          return true;
+          Color color = new Color ( STATE_50.getRGB ( relativeX, relativeY ) );
+          if ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+              && ( color.getBlue () == 0 ) )
+          {
+            return true;
+          }
+        }
+        else if ( zoomFactor == 1.0 )
+        {
+          Color color = new Color ( STATE_100.getRGB ( relativeX, relativeY ) );
+          if ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+              && ( color.getBlue () == 0 ) )
+          {
+            return true;
+          }
+        }
+        else if ( zoomFactor == 1.5 )
+        {
+          Color color = new Color ( STATE_150.getRGB ( relativeX, relativeY ) );
+          if ( ( color.getRed () == 0 ) && ( color.getGreen () == 0 )
+              && ( color.getBlue () == 0 ) )
+          {
+            return true;
+          }
+        }
+        else
+        {
+          throw new IllegalArgumentException ( "unsupported scale" ); //$NON-NLS-1$
         }
       }
     }

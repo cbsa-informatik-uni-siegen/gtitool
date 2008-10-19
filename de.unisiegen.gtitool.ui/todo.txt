@@ -1,10 +1,9 @@
 *** TODO ***
-CF		- In gezoomten Automaten wird beim öffnen des 
-		  Kontextmenues der Zoomfaktor nicht berücksichtigt
 CF		- Wortnavigation: Die Meldungen anpassen, damit sich diese immer
           auf das Gesamtwort beziehen
 CF		- Fehlerhafte Stati im EnterWord-Popupmenu
-CF		- Fehlerhafte SplitPane Position
+CF		- Fehlerhafte SplitPane Position wenn die Tabelle geschlossen ist
+CF		- DnD: Nur wenn auch über Item, nicht einfach selektiertes Item verwenden
 
 *** FEATURE ***
 

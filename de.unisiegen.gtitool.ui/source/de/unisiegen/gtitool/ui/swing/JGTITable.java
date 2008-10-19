@@ -375,7 +375,8 @@ public final class JGTITable extends JTable implements DropTargetListener
       public void mouseDragged ( MouseEvent event )
       {
         if ( getDragEnabled ()
-            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 ) )
+            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 )
+            && ( rowAtPoint ( event.getPoint () ) != -1 ) )
         {
           TransferHandler transferHandler = getTransferHandler ();
           transferHandler.exportAsDrag ( JGTITable.this, event, transferHandler

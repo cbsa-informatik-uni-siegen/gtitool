@@ -2,7 +2,6 @@
 CF		- Wortnavigation: Die Meldungen anpassen, damit sich diese immer
           auf das Gesamtwort beziehen
 CF		- Fehlerhafte Stati im EnterWord-Popupmenu
-CF		- DnD: Nur wenn auch über Item, nicht einfach selektiertes Item verwenden
 
 *** FEATURE ***
 

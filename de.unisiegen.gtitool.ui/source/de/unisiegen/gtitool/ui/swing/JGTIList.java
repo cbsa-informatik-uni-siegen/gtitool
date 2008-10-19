@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -287,6 +288,12 @@ public final class JGTIList extends JList implements DropTargetListener
     setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.allowedDndSources = new ArrayList < JComponent > ();
 
+    // must be removed because of problems with the drag and drop
+    for ( MouseMotionListener current : getMouseMotionListeners () )
+    {
+      removeMouseMotionListener ( current );
+    }
+
     // swing bugfix
     addMouseMotionListener ( new MouseMotionAdapter ()
     {
@@ -302,6 +309,15 @@ public final class JGTIList extends JList implements DropTargetListener
         if ( getDragEnabled ()
             && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 ) )
         {
+          // return if the drag begins not over an item
+          int rowIndex = locationToIndex ( event.getPoint () );
+          Rectangle rect = getCellBounds ( rowIndex, rowIndex );
+          if ( ( rect == null )
+              || ( event.getPoint ().getY () > rect.y + rect.height ) )
+          {
+            return;
+          }
+
           TransferHandler transferHandler = getTransferHandler ();
           transferHandler.exportAsDrag ( JGTIList.this, event, transferHandler
               .getSourceActions ( JGTIList.this ) );

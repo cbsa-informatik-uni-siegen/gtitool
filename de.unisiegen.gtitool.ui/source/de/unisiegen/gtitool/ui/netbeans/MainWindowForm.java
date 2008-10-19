@@ -460,14 +460,14 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
     
     /**
-     * Returns the jGTIToolBarButtonPrevious.
+     * Returns the jGTIToolBarButtonPreviousStep.
      *
-     * @return The jGTIToolBarButtonPrevious.
-     * @see #jGTIToolBarButtonPrevious
+     * @return The jGTIToolBarButtonPreviousStep.
+     * @see #jGTIToolBarButtonPreviousStep
      */
-    public final JGTIToolBarButton getJGTIToolBarButtonPrevious ()
+    public final JGTIToolBarButton getJGTIToolBarButtonPreviousStep ()
     {
-      return this.jGTIToolBarButtonPrevious;
+      return this.jGTIToolBarButtonPreviousStep;
     }
 
     
@@ -1047,7 +1047,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jGTIToolBarButtonAddProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jSeparatorNavigation = new javax.swing.JSeparator();
         jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonPrevious = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonPreviousStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
         jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
@@ -1305,14 +1305,14 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jToolBarNavigation.add(jGTIToolBarButtonStart);
 
-        jGTIToolBarButtonPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"))); // NOI18N
-        jGTIToolBarButtonPrevious.setToolTipText(bundle.getString("MachinePanel.WordModePreviousStep")); // NOI18N
-        jGTIToolBarButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
+        jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"))); // NOI18N
+        jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("MachinePanel.WordModePreviousStep")); // NOI18N
+        jGTIToolBarButtonPreviousStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIToolBarButtonPreviousActionPerformed(evt);
+                jGTIToolBarButtonPreviousStepActionPerformed(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarButtonPrevious);
+        jToolBarNavigation.add(jGTIToolBarButtonPreviousStep);
 
         jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/forward.png"))); // NOI18N
         jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("MachinePanel.WordModeNextStep")); // NOI18N
@@ -1981,9 +1981,9 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         this.logic.handleWordNextStep();
     }//GEN-LAST:event_jGTIToolBarButtonNextStepActionPerformed
 
-    private void jGTIToolBarButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonPreviousActionPerformed
+    private void jGTIToolBarButtonPreviousStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonPreviousStepActionPerformed
         this.logic.handleWordPreviousStep();
-    }//GEN-LAST:event_jGTIToolBarButtonPreviousActionPerformed
+}//GEN-LAST:event_jGTIToolBarButtonPreviousStepActionPerformed
 
     private void jGTIToolBarButtonStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonStartActionPerformed
         this.logic.handleWordStart();
@@ -2133,7 +2133,7 @@ private void jMenuItemExportPictureActionPerformed(java.awt.event.ActionEvent ev
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonNew;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonNextStep;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonOpen;
-    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonPrevious;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonPreviousStep;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonRedo;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonSave;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonSaveAs;

@@ -704,7 +704,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList
           .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
-      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonPreviousStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( false );
@@ -723,7 +723,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList
           .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
-      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonPreviousStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
@@ -742,7 +742,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList
           .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( true );
-      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonPreviousStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( false );
@@ -761,7 +761,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList
           .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
-      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonPreviousStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
@@ -780,7 +780,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList
           .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
-      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonPreviousStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( true );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
@@ -799,7 +799,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList
           .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
-      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( true );
+      this.gui.getJGTIToolBarButtonPreviousStep ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
@@ -819,7 +819,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList
           .add ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
-      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( true );
+      this.gui.getJGTIToolBarButtonPreviousStep ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( true );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
@@ -1161,7 +1161,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( true );
       this.gui.getJGTIToolBarButtonStart ().setVisible ( true );
-      this.gui.getJGTIToolBarButtonPrevious ().setVisible ( true );
+      this.gui.getJGTIToolBarButtonPreviousStep ().setVisible ( true );
       this.gui.getJGTIToolBarButtonNextStep ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setVisible ( true );
       this.gui.getJGTIToolBarButtonStop ().setVisible ( true );
@@ -4461,7 +4461,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     MainWindow.this.gui.getJGTIToolBarButtonEditDocument ().setToolTipText (
         Messages.getString ( "MachinePanel.EditDocument" ) ); //$NON-NLS-1$
     // Previous Step
-    MainWindow.this.gui.getJGTIToolBarButtonPrevious ().setToolTipText (
+    MainWindow.this.gui.getJGTIToolBarButtonPreviousStep ().setToolTipText (
         Messages.getString ( "MachinePanel.WordModePreviousStep" ) ); //$NON-NLS-1$
     // Start Word
     MainWindow.this.gui.getJGTIToolBarButtonStart ().setToolTipText (
@@ -4928,7 +4928,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( false );
       this.gui.getJGTIToolBarButtonStart ().setVisible ( false );
-      this.gui.getJGTIToolBarButtonPrevious ().setVisible ( false );
+      this.gui.getJGTIToolBarButtonPreviousStep ().setVisible ( false );
       this.gui.getJGTIToolBarButtonNextStep ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setVisible ( false );
       this.gui.getJGTIToolBarButtonStop ().setVisible ( false );

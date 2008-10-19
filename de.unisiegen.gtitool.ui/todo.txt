@@ -1,7 +1,6 @@
 *** TODO ***
 CF		- Wortnavigation: Die Meldungen anpassen, damit sich diese immer
           auf das Gesamtwort beziehen
-CF		- Fehlerhafte Stati im EnterWord-Popupmenu
 
 *** FEATURE ***
 
@@ -22,5 +21,3 @@ CF		- Benutzerinteraktionen einbauen
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout
 BM		- Farben beim Minimieren dynamisch berechnen
-
-		- Wort-Navigation ersetzen durch ...

@@ -1054,7 +1054,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonStartActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonPrevious">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonPreviousStep">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"/>
@@ -1064,7 +1064,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonPreviousActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonPreviousStepActionPerformed"/>
               </Events>
             </Component>
             <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonNextStep">

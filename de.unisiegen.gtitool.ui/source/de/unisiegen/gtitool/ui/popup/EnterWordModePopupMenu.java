@@ -8,18 +8,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.ui.i18n.Messages;
-import de.unisiegen.gtitool.ui.logic.MachinePanel;
-import de.unisiegen.gtitool.ui.logic.MainWindow;
-import de.unisiegen.gtitool.ui.logic.MachinePanel.MachineMode;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
 /**
- * A Popup Menu for {@link State}s
+ * The popup menu for the enter word and the word navigation mode.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
 public final class EnterWordModePopupMenu extends JPopupMenu
@@ -32,31 +29,25 @@ public final class EnterWordModePopupMenu extends JPopupMenu
 
 
   /**
-   * The {@link MachinePanel}
-   */
-  private MachinePanel machinePanel;
-
-
-  /**
-   * The start item
+   * The start item.
    */
   private JMenuItem jMenuItemStart;
 
 
   /**
-   * The previous step item
+   * The previous step item.
    */
   private JMenuItem jMenuItemPreviousStep;
 
 
   /**
-   * The next step item
+   * The next step item.
    */
   private JMenuItem jMenuItemNextStep;
 
 
   /**
-   * The rename checkbox item
+   * The stop item.
    */
   private JMenuItem jMenuItemStop;
 
@@ -68,15 +59,12 @@ public final class EnterWordModePopupMenu extends JPopupMenu
 
 
   /**
-   * Allocates a new {@link StatePopupMenu}.
+   * Allocates a new {@link EnterWordModePopupMenu}.
    * 
-   * @param machinePanel The {@link MachinePanel}.
-   * @param mainWindowForm The {@link MainWindow}.
+   * @param mainWindowForm The {@link MainWindowForm}.
    */
-  public EnterWordModePopupMenu ( MachinePanel machinePanel,
-      MainWindowForm mainWindowForm )
+  public EnterWordModePopupMenu ( MainWindowForm mainWindowForm )
   {
-    this.machinePanel = machinePanel;
     this.mainWindowForm = mainWindowForm;
     populateMenues ();
   }
@@ -103,8 +91,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
             .handleWordStart ();
       }
     } );
-    this.jMenuItemStart.setEnabled ( !this.machinePanel.getMachineMode ()
-        .equals ( MachineMode.WORD_NAVIGATION ) );
+    this.jMenuItemStart.setEnabled ( this.mainWindowForm.getLogic ()
+        .isEnabledStart () );
     add ( this.jMenuItemStart );
 
     // previous step
@@ -124,8 +112,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
             .handleWordPreviousStep ();
       }
     } );
-    this.jMenuItemPreviousStep.setEnabled ( this.machinePanel.getMachineMode ()
-        .equals ( MachineMode.WORD_NAVIGATION ) );
+    this.jMenuItemPreviousStep.setEnabled ( this.mainWindowForm.getLogic ()
+        .isEnabledPreviousStep () );
     add ( this.jMenuItemPreviousStep );
 
     // next step
@@ -144,8 +132,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
             .handleWordNextStep ();
       }
     } );
-    this.jMenuItemNextStep.setEnabled ( this.machinePanel.getMachineMode ()
-        .equals ( MachineMode.WORD_NAVIGATION ) );
+    this.jMenuItemNextStep.setEnabled ( this.mainWindowForm.getLogic ()
+        .isEnabledNextStep () );
     add ( this.jMenuItemNextStep );
 
     // stop
@@ -164,8 +152,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
             .handleWordStop ();
       }
     } );
-    this.jMenuItemStop.setEnabled ( this.machinePanel.getMachineMode ().equals (
-        MachineMode.WORD_NAVIGATION ) );
+    this.jMenuItemStop.setEnabled ( this.mainWindowForm.getLogic ()
+        .isEnabledStop () );
     add ( this.jMenuItemStop );
   }
 }

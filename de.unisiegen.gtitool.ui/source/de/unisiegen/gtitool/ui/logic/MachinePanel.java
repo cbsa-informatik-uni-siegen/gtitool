@@ -783,7 +783,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   private final EnterWordModePopupMenu createEnterWordModePopupMenu ()
   {
-    return new EnterWordModePopupMenu ( this, this.mainWindowForm );
+    return new EnterWordModePopupMenu ( this.mainWindowForm );
   }
 
 

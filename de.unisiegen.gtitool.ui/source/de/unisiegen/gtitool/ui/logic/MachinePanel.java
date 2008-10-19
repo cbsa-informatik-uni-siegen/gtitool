@@ -3257,22 +3257,16 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     if ( visible )
     {
-      if ( this.gui.jGTISplitPaneConsole.getRightComponent () == null )
-      {
-        this.gui.jGTISplitPaneConsole
-            .setRightComponent ( this.gui.jGTITabbedPaneConsole );
-        this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
-        this.gui.jGTISplitPaneConsole
-            .setDividerLocation ( this.gui.jGTISplitPaneConsole.getHeight () - 203 );
-      }
+      this.gui.jGTISplitPaneConsole
+          .setRightComponent ( this.gui.jGTITabbedPaneConsole );
+      this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
+      this.gui.jGTISplitPaneConsole.setDividerLocation ( this.mainWindowForm
+          .getHeight () - 322 );
     }
     else
     {
-      if ( this.gui.jGTISplitPaneConsole.getRightComponent () != null )
-      {
-        this.gui.jGTISplitPaneConsole.setRightComponent ( null );
-        this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
-      }
+      this.gui.jGTISplitPaneConsole.setRightComponent ( null );
+      this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
     }
   }
 

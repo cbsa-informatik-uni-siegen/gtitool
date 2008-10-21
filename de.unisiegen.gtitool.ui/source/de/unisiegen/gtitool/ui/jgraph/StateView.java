@@ -773,12 +773,12 @@ public final class StateView extends VertexView
       if ( state.isStartState () )
       {
         x = r.getX () + START_OFFSET;
-        a = ( r.getWidth () - START_OFFSET + 1 ) / 2;
+        a = ( r.getWidth () - START_OFFSET ) / 2;
       }
       if ( state.isLoopTransition () )
       {
         y = r.getY () + LOOP_TRANSITION_OFFSET;
-        b = ( r.getHeight () - LOOP_TRANSITION_OFFSET + 1 ) / 2;
+        b = ( r.getHeight () - LOOP_TRANSITION_OFFSET ) / 2;
       }
     }
 

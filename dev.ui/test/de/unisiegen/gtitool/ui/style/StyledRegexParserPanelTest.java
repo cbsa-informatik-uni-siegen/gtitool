@@ -3,7 +3,10 @@ package de.unisiegen.gtitool.ui.style;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -23,6 +26,14 @@ public class StyledRegexParserPanelTest
   {
     JFrame jFrame = new JFrame ( "RegexPanelTest" ); //$NON-NLS-1$
     StyledRegexParserPanel styledRegexParserPanel = new StyledRegexParserPanel ();
+    try
+    {
+      styledRegexParserPanel.setAlphabet ( new DefaultAlphabet(new DefaultSymbol("a"), new DefaultSymbol("b")) );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace();
+    }
     styledRegexParserPanel
         .addParseableChangedListener ( new ParseableChangedListener < RegexNode > ()
         {

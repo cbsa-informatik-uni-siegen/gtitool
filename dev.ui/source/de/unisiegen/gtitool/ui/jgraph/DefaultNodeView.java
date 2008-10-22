@@ -1,8 +1,11 @@
 package de.unisiegen.gtitool.ui.jgraph;
 
 
+import java.awt.geom.Rectangle2D;
+
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
+import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
@@ -138,6 +141,23 @@ public class DefaultNodeView extends DefaultGraphCell implements Storable,
   public void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
+  }
+  
+  /**
+   * Moves this {@link DefaultStateView} relative to the current position.
+   * 
+   * @param x The x offset value.
+   * @param y The y offset value.
+   */
+  public final void moveRelative ( double x, double y )
+  {
+    Rectangle2D bounds = GraphConstants.getBounds ( getAttributes () );
+
+    double newX = bounds.getX () + x < 0 ? 0 : bounds.getX () + x;
+    double newY = bounds.getY () + y < 0 ? 0 : bounds.getY () + y;
+
+    bounds.setRect ( newX, newY, bounds.getWidth (), bounds.getHeight () );
+    GraphConstants.setBounds ( getAttributes (), bounds );
   }
 
 

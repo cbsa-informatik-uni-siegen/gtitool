@@ -35,6 +35,24 @@ import de.unisiegen.gtitool.ui.jgraph.NodeView;
 public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 {
 
+
+  /**
+   * The default y-space in the graph
+   */
+  private final int Y_SPACE = 20;
+
+
+  /**
+   * The default x-space in the graph
+   */
+  private final int X_SPACE = 50;
+
+
+  /**
+   * The default x-border of the graph
+   */
+  private final int X_BORDER = 20;
+  
   private DefaultRegex regex;
 
 
@@ -78,6 +96,18 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   public DefaultRegex getRegex ()
   {
     return this.regex;
+  }
+  
+  
+  /**
+   * Sets the regex.
+   *
+   * @param regex The regex to set.
+   * @see #regex
+   */
+  public void setRegex ( DefaultRegex regex )
+  {
+    this.regex = regex;
   }
 
 
@@ -213,6 +243,101 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     this.regex.resetModify ();
   }
 
+  /**
+   * Creates the Tree
+   */
+  public void createTree() {
+
+    DefaultNodeView parent = createNodeView (
+        0, 0, this.regex
+            .getRegexNode () );
+    addNodesToModel ( parent );
+
+    int x_overhead = 0;
+
+    for ( DefaultNodeView nodeView : getNodeViewList () )
+    {
+      int act_x = nodeView.getX ();
+      if ( act_x < 0 && Math.abs ( act_x ) > x_overhead )
+      {
+        x_overhead = Math.abs ( act_x );
+      }
+    }
+    if ( x_overhead > 0 )
+    {
+      x_overhead += this.X_BORDER;
+
+      for ( DefaultNodeView nodeView : getNodeViewList () )
+      {
+        nodeView.moveRelative ( x_overhead, 0 );
+      }
+      getGraphModel ().cellsChanged (
+          DefaultGraphModel.getAll ( getGraphModel () ));
+    }
+  }
+
+  /**
+   * TODO
+   * 
+   * @param parent
+   */
+  private void addNodesToModel ( DefaultNodeView parent )
+  {
+
+    int y = parent.getY () + this.Y_SPACE;
+    int x = parent.getX ();
+
+    if ( parent.getNode ().getChildren ().size () > 1 )
+    {
+      for ( int i = 0 ; i < parent.getNode ().getChildren ().size () ; i++ )
+      {
+        RegexNode childNode = parent.getRegexNode ().getChildren ().get ( i );
+        if ( i == 0 )
+        {
+          // Left node
+          x -= this.X_SPACE / 2;
+          for ( int j = 0 ; j < childNode.getRightChildrenCount () ; j++ )
+          {
+            x -= this.X_SPACE / 2;
+          }
+          if ( childNode.getRightChildrenCount () >= 2 )
+          {
+            x -= ( this.X_SPACE / 2 )
+                * ( childNode.getRightChildrenCount () - 1 );
+          }
+        }
+        else
+        {
+          // Right node
+          x = parent.getX ();
+          x += this.X_SPACE / 2;
+          for ( int j = 0 ; j < childNode.getLeftChildrenCount () ; j++ )
+          {
+            x += this.X_SPACE / 2;
+          }
+          if ( childNode.getLeftChildrenCount () >= 2 )
+          {
+            x += ( this.X_SPACE / 2 )
+                * ( childNode.getLeftChildrenCount () - 1 );
+          }
+        }
+
+        DefaultNodeView child = createNodeView ( x, y, childNode );
+        x += this.X_SPACE;
+        createRegexEdgeView ( parent, child );
+        addNodesToModel ( child );
+      }
+
+    }
+    else if ( parent.getNode ().getChildren ().size () == 1 )
+    {
+      DefaultNodeView child = createNodeView ( x, y, parent
+          .getRegexNode ().getChildren ().get ( 0 ) );
+      createRegexEdgeView ( parent, child );
+      addNodesToModel ( child );
+    }
+
+  }
 
   /**
    * TODO
@@ -288,6 +413,30 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     nodeView.resetModify ();
 
     return nodeView;
+  }
+  
+  
+  /**
+   * Returns the nodeViewList.
+   *
+   * @return The nodeViewList.
+   * @see #nodeViewList
+   */
+  public ArrayList < DefaultNodeView > getNodeViewList ()
+  {
+    return this.nodeViewList;
+  }
+  
+  
+  /**
+   * Returns the graphModel.
+   *
+   * @return The graphModel.
+   * @see #graphModel
+   */
+  public DefaultGraphModel getGraphModel ()
+  {
+    return this.graphModel;
   }
 
 }

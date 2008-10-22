@@ -4,7 +4,6 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
@@ -18,14 +17,12 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
-import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
-import de.unisiegen.gtitool.ui.jgraph.DefaultNodeView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
@@ -48,18 +45,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 {
 
   /**
-   * The modified flag
+   * The {@link JGTIGraph} for this Panel
    */
-  private boolean modified;
-
-
   private JGTIGraph jGTIGraph;
 
-
-  private final int Y_SPACE = 50;
-
-
-  private final int X_SPACE = 100;
 
 
   /**
@@ -161,6 +150,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.model = model;
     this.model.initializeGraph ();
     this.jGTIGraph = this.model.getJGTIGraph ();
+    this.jGTIGraph.setEditable ( false );
     this.regex = model.getRegex ();
     this.gui = new RegexPanelForm ( this );
 
@@ -183,20 +173,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   private void initialize ()
   {
     this.errorTableModel = new RegexConsoleTableModel ();
-    this.gui.jGTITableErrors.setModel ( this.errorTableModel );
-    this.gui.jGTITableErrors.setColumnModel ( new ConsoleColumnModel () );
-    this.gui.jGTITableErrors.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTITableErrors
-        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jGTITableErrors.getSelectionModel ().addListSelectionListener (
-        new ListSelectionListener ()
-        {
-
-          public void valueChanged ( ListSelectionEvent event )
-          {
-            // TODO
-          }
-        } );
     this.warningTableModel = new RegexConsoleTableModel ();
     this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
     this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
@@ -212,9 +188,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
             // TODO
           }
         } );
-
-    this.modified = true;
-
     this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
   }
 
@@ -227,6 +200,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public final void addError ( RegexException regexException )
   {
     this.errorTableModel.addRow ( regexException );
+  }
+
+
+  /**
+   * Returns the mainWindowForm.
+   * 
+   * @return The mainWindowForm.
+   * @see #mainWindowForm
+   */
+  public MainWindowForm getMainWindowForm ()
+  {
+    return this.mainWindowForm;
   }
 
 
@@ -401,86 +386,28 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public void handleRegexChangeButtonClicked ( @SuppressWarnings ( "unused" )
   ActionEvent evt )
   {
-    String newRegex = JOptionPane.showInputDialog ( this );
-    if ( newRegex == null || newRegex.length () < 1 )
-    {
-      return;
-    }
-    RegexParseable regexParseable = new RegexParseable ();
-    try
-    {
-      this.regex.changeRegexNode ( ( RegexNode ) regexParseable.newParser (
-          newRegex ).parse () );
-    }
-    catch ( Exception exc )
-    {
-      exc.printStackTrace ();
-    }
-    this.gui.jGTITextFieldRegex.setText ( this.regex.getRegexNode ()
-        .toPrettyString ().toString () );
-
-    this.model.initializeGraph ();
-    this.jGTIGraph = this.model.getJGTIGraph ();
-    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
-
-    DefaultNodeView parent = this.model.createNodeView (
-        this.gui.jGTIPanelGraph.getWidth () / 3 * 2, 0, this.regex
-            .getRegexNode () );
-    addNodesToModel ( parent );
+    new RegexDialog ( this );
   }
 
 
   /**
-   * TODO
+   * Changes the Regex
    * 
-   * @param parent
+   * @param newRegexNode The new {@link RegexNode}
    */
-  private void addNodesToModel ( DefaultNodeView parent )
+  public void changeRegex ( RegexNode newRegexNode )
   {
-
-    int y = parent.getY () + this.Y_SPACE;
-    int x = parent.getX ();
-
-    if ( parent.getNode ().getChildren ().size () > 1 )
-    {
-      for ( int i = 0 ; i < parent.getNode ().getChildren ().size () ; i++ )
-      {
-        RegexNode childNode = parent.getRegexNode ().getChildren ().get ( i );
-        if ( i == 0 )
-        {
-          // Left node
-          x -= this.X_SPACE / 2;
-          for ( int j = 0 ; j < childNode.getRightChildrenCount () ; j++ )
-          {
-            x -= this.X_SPACE / 2;
-          }
-        }
-        else
-        {
-          // Right node
-          x = parent.getX ();
-          x += this.X_SPACE / 2;
-          for ( int j = 0 ; j < childNode.getLeftChildrenCount () ; j++ )
-          {
-            x += this.X_SPACE / 2;
-          }
-        }
-
-        DefaultNodeView child = this.model.createNodeView ( x, y, childNode );
-        x += this.X_SPACE;
-        this.model.createRegexEdgeView ( parent, child );
-        addNodesToModel ( child );
-      }
-
-    }
-    else if ( parent.getNode ().getChildren ().size () == 1 )
-    {
-      DefaultNodeView child = this.model.createNodeView ( x, y, parent
-          .getRegexNode ().getChildren ().get ( 0 ) );
-      this.model.createRegexEdgeView ( parent, child );
-      addNodesToModel ( child );
-    }
-
+    this.regex.changeRegexNode ( newRegexNode );
+    this.gui.jGTITextFieldRegex.setText ( this.regex.getRegexString () );
+    
+    this.model.getRegex ().changeRegexNode ( newRegexNode );
+    this.model.initializeGraph ();
+    this.jGTIGraph = this.model.getJGTIGraph ();
+    this.jGTIGraph.setEditable ( false );
+    this.jGTIGraph.setEnabled ( false );
+    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+    
+    this.model.createTree ();
   }
 
 
@@ -681,7 +608,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void resetModify ()
   {
-    this.modified = false;
+    this.model.resetModify ();
   }
 
 

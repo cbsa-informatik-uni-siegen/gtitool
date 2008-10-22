@@ -64,42 +64,51 @@ precedence left 	IDENT;
  * Regex *
  ************/
 
-regex							::= regex:reg1 OR regex:reg2
+regex							::= regex:reg1 OR:or regex:reg2
 									{:
 										RESULT = new DisjunctionNode(reg1, reg2);
+									   	RESULT.setParserOffset(new ParserOffset(reg1left, reg2right));
 									:}
 								|	simple_regex:regex
 									{:
 										RESULT = regex;
+									   	RESULT.setParserOffset(new ParserOffset(regexleft,regexright));
 									:}
 								|	concatenation:c
 									{:
 										RESULT = c;
+									   	RESULT.setParserOffset(new ParserOffset(cleft,cright));
 									:}
 								;
-simple_regex					::= simple_regex:reg STAR
+simple_regex					::= simple_regex:reg STAR:star
 									{:
 										RESULT = new KleeneNode(reg);
+									   	RESULT.setParserOffset(new ParserOffset(regleft,starright));
 									:}
-								|	simple_regex:reg PLUS
+								|	simple_regex:reg PLUS:plus
 									{:
 										RESULT = new PlusNode(reg);
+									   	RESULT.setParserOffset(new ParserOffset(regleft,plusright));
 									:}
-								|	simple_regex:reg QUESTION
+								|	simple_regex:reg QUESTION:question
 									{:
 										RESULT = new OptionalNode(reg);
+									   	RESULT.setParserOffset(new ParserOffset(regleft,questionright));
 									:}
-								|	LBRACE regex:reg RBRACE
+								|	LBRACE:l regex:reg RBRACE:r
 									{:
 										RESULT = reg;
+									   	RESULT.setParserOffset(new ParserOffset(lleft,rright));
 									:}
 								|	IDENT:i
 									{:
 										RESULT = new TokenNode(i);
+									   	RESULT.setParserOffset(new ParserOffset(ileft,iright));
 									:}
-								|	EPSILON
+								|	EPSILON:e
 									{:
 										RESULT = new EpsilonNode();
+									   	RESULT.setParserOffset(new ParserOffset(eleft,eright));
 									:}
 								;
 simple_regex_list				::= simple_regex:regex simple_regex_list:srl
@@ -125,7 +134,8 @@ concatenation					::= simple_regex:regex simple_regex_list:srl
 						  			   {
 						    			 regex = new ConcatenationNode(regex, srl[n] );
 						   			   }
-						   			   RESULT = regex; 
+						   			   RESULT = regex;
+									   RESULT.setParserOffset(new ParserOffset(regexleft,srlright));
 									:}
 								|	simple_regex:regex CONCAT simple_regex_list:srl
 									{:
@@ -133,6 +143,7 @@ concatenation					::= simple_regex:regex simple_regex_list:srl
 						  			   {
 						    			 regex = new ConcatenationNode(regex, srl[n] );
 						   			   }
-						   			   RESULT = regex; 
+						   			   RESULT = regex;
+									   RESULT.setParserOffset(new ParserOffset(regexleft,srlright));
 									:}
 								;

@@ -121,7 +121,7 @@ public class ParserTest
       }
       System.out.println ( "LastPos: {" + lastpos + "}" );
 
-      DefaultRegex conv = new DefaultRegex (new DefaultAlphabet(new DefaultSymbol("a"),new DefaultSymbol("b"),new DefaultSymbol("c"),new DefaultSymbol("d")));
+      DefaultRegex conv = new DefaultRegex (new DefaultAlphabet(new DefaultSymbol("a"),new DefaultSymbol("b"),new DefaultSymbol("c"),new DefaultSymbol("d")), regexText);
       conv.setRegexNode ( regex );
       for ( int i = 1 ; i < currentPosition ; i++ )
       {

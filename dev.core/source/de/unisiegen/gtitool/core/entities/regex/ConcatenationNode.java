@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -75,9 +77,9 @@ public class ConcatenationNode extends RegexNode
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
-  public ArrayList < RegexNode > getTokenNodes ()
+  public ArrayList < TokenNode > getTokenNodes ()
   {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    ArrayList < TokenNode > nodes = new ArrayList < TokenNode > ();
     nodes.addAll ( this.regex1.getTokenNodes () );
     nodes.addAll ( this.regex2.getTokenNodes () );
     return nodes;
@@ -196,25 +198,33 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * TODO
+   * The offset of this {@link DefaultAlphabet} in the source code.
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
+   * @see #getParserOffset()
+   * @see #setParserOffset(ParserOffset)
+   */
+  private ParserOffset parserOffset = NO_PARSER_OFFSET;
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public ParserOffset getParserOffset ()
   {
-    return null;
+    return this.parserOffset;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param parserOffset
-   * @see de.unisiegen.gtitool.core.entities.Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public void setParserOffset ( ParserOffset parserOffset )
   {
+    this.parserOffset = parserOffset;
   }
 
 

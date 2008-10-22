@@ -41,7 +41,7 @@ public abstract class RegexNode implements Entity < RegexNode >, Storable
    * 
    * @return All Tokennodes that are in this node
    */
-  public abstract ArrayList < RegexNode > getTokenNodes ();
+  public abstract ArrayList < TokenNode > getTokenNodes ();
 
 
   /**

@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
@@ -30,9 +32,10 @@ public class CharacterClassNode extends RegexNode
     this.chars = chars;
   }
 
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getLeftChildrenCount()
    */
@@ -41,10 +44,11 @@ public class CharacterClassNode extends RegexNode
   {
     return 0;
   }
-  
+
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getRightChildrenCount()
    */
@@ -53,6 +57,7 @@ public class CharacterClassNode extends RegexNode
   {
     return 0;
   }
+
 
   /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
@@ -63,8 +68,9 @@ public class CharacterClassNode extends RegexNode
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
     for ( char c : this.chars )
     {
-      nodes.add ( new TokenNode ( new String ( new char []
-      { c } ) ) );
+      /*
+       * nodes.add ( new TokenNode ( new String ( new char [] { c } ) ) );
+       */
     }
     return nodes;
   }
@@ -80,8 +86,9 @@ public class CharacterClassNode extends RegexNode
     nodes.add ( this );
     for ( char c : this.chars )
     {
-      nodes.add ( new TokenNode ( new String ( new char []
-      { c } ) ) );
+      /*
+       * nodes.add ( new TokenNode ( new String ( new char [] { c } ) ) );
+       */
     }
     return nodes;
   }
@@ -91,13 +98,14 @@ public class CharacterClassNode extends RegexNode
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
-  public ArrayList < RegexNode > getTokenNodes ()
+  public ArrayList < TokenNode > getTokenNodes ()
   {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    ArrayList < TokenNode > nodes = new ArrayList < TokenNode > ();
     for ( char c : this.chars )
     {
-      nodes.add ( new TokenNode ( new String ( new char []
-      { c } ) ) );
+      /*
+       * nodes.add ( new TokenNode ( new String ( new char [] { c } ) ) );
+       */
     }
     return nodes;
   }
@@ -112,8 +120,9 @@ public class CharacterClassNode extends RegexNode
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
     for ( char c : this.chars )
     {
-      nodes.add ( new TokenNode ( new String ( new char []
-      { c } ) ) );
+      /*
+       * nodes.add ( new TokenNode ( new String ( new char [] { c } ) ) );
+       */
     }
     return nodes;
   }
@@ -171,25 +180,33 @@ public class CharacterClassNode extends RegexNode
 
 
   /**
-   * TODO
+   * The offset of this {@link DefaultAlphabet} in the source code.
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
+   * @see #getParserOffset()
+   * @see #setParserOffset(ParserOffset)
+   */
+  private ParserOffset parserOffset = NO_PARSER_OFFSET;
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public ParserOffset getParserOffset ()
   {
-    return null;
+    return this.parserOffset;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param parserOffset
-   * @see de.unisiegen.gtitool.core.entities.Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public void setParserOffset ( ParserOffset parserOffset )
   {
+    this.parserOffset = parserOffset;
   }
 
 
@@ -257,7 +274,7 @@ public class CharacterClassNode extends RegexNode
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */

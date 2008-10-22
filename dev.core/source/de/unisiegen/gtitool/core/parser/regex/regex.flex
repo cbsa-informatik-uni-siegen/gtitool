@@ -87,7 +87,7 @@ Ident					= [:jletterdigit:]
 	"+"					{ return symbol(PLUS); }
 	"|"					{ return symbol(OR); }
 	"·"					{ return symbol(CONCAT); }
-	"1"					{ return symbol(EPSILON); }
+	"Epsilon"			{ return symbol(EPSILON); }
 	"?"					{ return symbol(QUESTION); }
 	"("					{ return symbol(LBRACE); }
 	")"					{ return symbol(RBRACE); }

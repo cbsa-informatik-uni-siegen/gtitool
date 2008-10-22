@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -39,12 +41,13 @@ public class TokenNode extends RegexNode
    */
   public TokenNode ( String name )
   {
-    this.name = name;
+    this.name = name.toString ();
   }
+
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getLeftChildrenCount()
    */
@@ -53,10 +56,11 @@ public class TokenNode extends RegexNode
   {
     return 0;
   }
-  
+
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getRightChildrenCount()
    */
@@ -65,6 +69,7 @@ public class TokenNode extends RegexNode
   {
     return 0;
   }
+
 
   /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
@@ -85,10 +90,11 @@ public class TokenNode extends RegexNode
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
     return nodes;
   }
-  
+
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
@@ -104,9 +110,9 @@ public class TokenNode extends RegexNode
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
-  public ArrayList < RegexNode > getTokenNodes ()
+  public ArrayList < TokenNode > getTokenNodes ()
   {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    ArrayList < TokenNode > nodes = new ArrayList < TokenNode > ();
     nodes.add ( this );
     return nodes;
   }
@@ -157,6 +163,18 @@ public class TokenNode extends RegexNode
 
 
   /**
+   * Returns the name.
+   * 
+   * @return The name.
+   * @see #name
+   */
+  public String getName ()
+  {
+    return this.name;
+  }
+
+
+  /**
    * Sets the position.
    * 
    * @param position The position to set.
@@ -195,25 +213,33 @@ public class TokenNode extends RegexNode
 
 
   /**
-   * TODO
+   * The offset of this {@link DefaultAlphabet} in the source code.
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
+   * @see #getParserOffset()
+   * @see #setParserOffset(ParserOffset)
+   */
+  private ParserOffset parserOffset = NO_PARSER_OFFSET;
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public ParserOffset getParserOffset ()
   {
-    return null;
+    return this.parserOffset;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param parserOffset
-   * @see de.unisiegen.gtitool.core.entities.Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public void setParserOffset ( ParserOffset parserOffset )
   {
+    this.parserOffset = parserOffset;
   }
 
 
@@ -275,7 +301,7 @@ public class TokenNode extends RegexNode
   @Override
   public PrettyString getNodeString ()
   {
-    return new PrettyString( new PrettyToken (this.name, Style.TOKEN));
+    return new PrettyString ( new PrettyToken ( this.name, Style.TOKEN ) );
   }
 
 }

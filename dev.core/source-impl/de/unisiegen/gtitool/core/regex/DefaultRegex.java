@@ -99,19 +99,26 @@ public class DefaultRegex implements Regex, Storable
 
 
   /**
+   * The String the user has typed
+   */
+  private String regexString;
+
+
+  /**
    * The Constructor for a {@link DefaultRegex}
    * 
    * @param a The {@link Alphabet} of this Regex
    */
-  public DefaultRegex ( Alphabet a )
+  public DefaultRegex ( Alphabet a, String regexString )
   {
     this.alphabet = a;
+    this.regexString = regexString;
   }
 
 
-  public DefaultRegex ( Element e )
+  public DefaultRegex ( Element e, String regexString )
   {
-
+    this.regexString = regexString;
   }
 
 
@@ -310,7 +317,7 @@ public class DefaultRegex implements Regex, Storable
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
    */
@@ -322,7 +329,7 @@ public class DefaultRegex implements Regex, Storable
 
   /**
    * TODO
-   *
+   * 
    * @param parserOffset
    * @see de.unisiegen.gtitool.core.entities.Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
    */
@@ -333,7 +340,7 @@ public class DefaultRegex implements Regex, Storable
 
   /**
    * TODO
-   *
+   * 
    * @param listener
    * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
    */
@@ -345,7 +352,7 @@ public class DefaultRegex implements Regex, Storable
 
   /**
    * TODO
-   *
+   * 
    * @param listener
    * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
    */
@@ -357,7 +364,7 @@ public class DefaultRegex implements Regex, Storable
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
    */
@@ -369,7 +376,7 @@ public class DefaultRegex implements Regex, Storable
 
   /**
    * TODO
-   *
+   * 
    * @param o
    * @return
    * @see java.lang.Comparable#compareTo(java.lang.Object)
@@ -377,5 +384,29 @@ public class DefaultRegex implements Regex, Storable
   public int compareTo ( Regex o )
   {
     return 0;
+  }
+
+
+  /**
+   * Returns the regexString.
+   * 
+   * @return The regexString.
+   * @see #regexString
+   */
+  public String getRegexString ()
+  {
+    return this.regexString;
+  }
+  
+  
+  /**
+   * Sets the regexString.
+   *
+   * @param regexString The regexString to set.
+   * @see #regexString
+   */
+  public void setRegexString ( String regexString )
+  {
+    this.regexString = regexString;
   }
 }

@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -36,10 +38,11 @@ public class EpsilonNode extends RegexNode
   {
     return this;
   }
-  
+
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getLeftChildrenCount()
    */
@@ -48,10 +51,11 @@ public class EpsilonNode extends RegexNode
   {
     return 0;
   }
-  
+
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getRightChildrenCount()
    */
@@ -76,14 +80,15 @@ public class EpsilonNode extends RegexNode
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
-  public ArrayList < RegexNode > getTokenNodes ()
+  public ArrayList < TokenNode > getTokenNodes ()
   {
-    return new ArrayList < RegexNode > ();
+    return new ArrayList < TokenNode > ();
   }
-  
+
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
    */
@@ -130,7 +135,7 @@ public class EpsilonNode extends RegexNode
   @Override
   public String toString ()
   {
-    return "1"; //$NON-NLS-1$
+    return "\u03B5"; //$NON-NLS-1$
   }
 
 
@@ -148,25 +153,33 @@ public class EpsilonNode extends RegexNode
 
 
   /**
-   * TODO
+   * The offset of this {@link DefaultAlphabet} in the source code.
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
+   * @see #getParserOffset()
+   * @see #setParserOffset(ParserOffset)
+   */
+  private ParserOffset parserOffset = NO_PARSER_OFFSET;
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public ParserOffset getParserOffset ()
   {
-    return null;
+    return this.parserOffset;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param parserOffset
-   * @see de.unisiegen.gtitool.core.entities.Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public void setParserOffset ( ParserOffset parserOffset )
   {
+    this.parserOffset = parserOffset;
   }
 
 
@@ -202,7 +215,7 @@ public class EpsilonNode extends RegexNode
    */
   public PrettyString toPrettyString ()
   {
-    return new PrettyString ( new PrettyToken ( "§", Style.TOKEN ) );
+    return new PrettyString ( new PrettyToken ( "\u03B5", Style.TOKEN ) );
   }
 
 
@@ -228,6 +241,6 @@ public class EpsilonNode extends RegexNode
   @Override
   public PrettyString getNodeString ()
   {
-    return new PrettyString ( new PrettyToken ( "Epsilon", Style.REGEX_SYMBOL ) );
+    return new PrettyString ( new PrettyToken ( "\u03B5", Style.TOKEN ) );
   }
 }

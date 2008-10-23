@@ -82,7 +82,6 @@ public class KleeneNode extends RegexNode
   public ArrayList < RegexNode > getAllChildren ()
   {
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    nodes.add ( this.content );
     nodes.addAll ( this.content.getAllChildren () );
     return nodes;
   }

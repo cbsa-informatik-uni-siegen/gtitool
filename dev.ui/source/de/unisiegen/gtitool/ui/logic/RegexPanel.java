@@ -398,7 +398,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public void changeRegex ( RegexNode newRegexNode )
   {
     this.regex.changeRegexNode ( newRegexNode );
-    this.gui.jGTITextFieldRegex.setText ( this.regex.getRegexString () );
+    this.gui.jGTITextFieldRegex.setText ( newRegexNode.toPrettyString ().toString () );
     
     this.model.getRegex ().changeRegexNode ( newRegexNode );
     this.model.initializeGraph ();

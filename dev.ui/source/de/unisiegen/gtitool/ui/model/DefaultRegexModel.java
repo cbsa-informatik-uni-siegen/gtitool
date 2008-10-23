@@ -10,6 +10,11 @@ import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
+import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
+import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
+import de.unisiegen.gtitool.core.entities.regex.OptionalNode;
+import de.unisiegen.gtitool.core.entities.regex.PlusNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -35,24 +40,24 @@ import de.unisiegen.gtitool.ui.jgraph.NodeView;
 public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 {
 
-
   /**
    * The default y-space in the graph
    */
-  private final int Y_SPACE = 20;
+  private final int Y_SPACE = 40;
 
 
   /**
    * The default x-space in the graph
    */
-  private final int X_SPACE = 50;
+  private final int X_SPACE = 60;
 
 
   /**
    * The default x-border of the graph
    */
   private final int X_BORDER = 20;
-  
+
+
   private DefaultRegex regex;
 
 
@@ -64,7 +69,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   private ArrayList < DefaultNodeView > nodeViewList = new ArrayList < DefaultNodeView > ();
 
-  private ArrayList <DefaultRegexEdgeView> regexEdgeViewList = new ArrayList < DefaultRegexEdgeView >();
+
+  private ArrayList < DefaultRegexEdgeView > regexEdgeViewList = new ArrayList < DefaultRegexEdgeView > ();
+
 
   /**
    * The {@link DefaultGraphModel} for this model.
@@ -97,11 +104,11 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   {
     return this.regex;
   }
-  
-  
+
+
   /**
    * Sets the regex.
-   *
+   * 
    * @param regex The regex to set.
    * @see #regex
    */
@@ -170,7 +177,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
   /**
    * TODO
-   *
    */
   public void initializeGraph ()
   {
@@ -189,7 +195,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     this.jGTIGraph.setEditable ( false );
     this.jGTIGraph.setHandleSize ( 0 );
     this.jGTIGraph.setXorEnabled ( false );
-    
+
     EdgeView.renderer = new EdgeRenderer ();
     EdgeView.renderer.setForeground ( Color.BLACK );
   }
@@ -243,14 +249,14 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     this.regex.resetModify ();
   }
 
+
   /**
    * Creates the Tree
    */
-  public void createTree() {
+  public void createTree ()
+  {
 
-    DefaultNodeView parent = createNodeView (
-        0, 0, this.regex
-            .getRegexNode () );
+    DefaultNodeView parent = createNodeView ( 0, 0, this.regex.getRegexNode () );
     addNodesToModel ( parent );
 
     int x_overhead = 0;
@@ -272,9 +278,10 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
         nodeView.moveRelative ( x_overhead, 0 );
       }
       getGraphModel ().cellsChanged (
-          DefaultGraphModel.getAll ( getGraphModel () ));
+          DefaultGraphModel.getAll ( getGraphModel () ) );
     }
   }
+
 
   /**
    * TODO
@@ -294,36 +301,51 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
         RegexNode childNode = parent.getRegexNode ().getChildren ().get ( i );
         if ( i == 0 )
         {
-          // Left node
-          x -= this.X_SPACE / 2;
-          for ( int j = 0 ; j < childNode.getRightChildrenCount () ; j++ )
+          // Left Node
+          x -= ( this.X_SPACE / 2 );
+          if ( childNode instanceof ConcatenationNode )
           {
-            x -= this.X_SPACE / 2;
+            ConcatenationNode con = ( ConcatenationNode ) childNode;
+            x -= ( ( this.X_SPACE / 2 ) * con.countRightChildren () );
           }
-          if ( childNode.getRightChildrenCount () >= 2 )
+          else if ( childNode instanceof DisjunctionNode )
           {
-            x -= ( this.X_SPACE / 2 )
-                * ( childNode.getRightChildrenCount () - 1 );
+            DisjunctionNode dis = ( DisjunctionNode ) childNode;
+            x -= ( ( this.X_SPACE / 2 ) * dis.countRightChildren () );
+          }
+          else if ( childNode instanceof KleeneNode
+              || childNode instanceof PlusNode
+              || childNode instanceof OptionalNode )
+          {
+            x -= ( ( this.X_SPACE / 2 ) * ( childNode.getRightChildrenCount () ) );
           }
         }
         else
         {
           // Right node
           x = parent.getX ();
-          x += this.X_SPACE / 2;
-          for ( int j = 0 ; j < childNode.getLeftChildrenCount () ; j++ )
+          x += ( this.X_SPACE / 2 );
+          if ( childNode instanceof ConcatenationNode )
           {
-            x += this.X_SPACE / 2;
+            ConcatenationNode con = ( ConcatenationNode ) childNode;
+            x += ( ( this.X_SPACE / 2 ) * con.countLeftChildren () );
           }
-          if ( childNode.getLeftChildrenCount () >= 2 )
+          else if ( childNode instanceof DisjunctionNode )
           {
-            x += ( this.X_SPACE / 2 )
-                * ( childNode.getLeftChildrenCount () - 1 );
+            DisjunctionNode dis = ( DisjunctionNode ) childNode;
+            x += ( ( this.X_SPACE / 2 ) * dis.countLeftChildren () );
+          }
+          else if ( childNode instanceof KleeneNode
+              || childNode instanceof PlusNode
+              || childNode instanceof OptionalNode )
+          {
+            x += ( ( this.X_SPACE / 2 ) * ( childNode.getLeftChildrenCount () ) );
           }
         }
 
+        // TODO: Stern, Plus und so weiter geht noch nicht wirklich!!!
+
         DefaultNodeView child = createNodeView ( x, y, childNode );
-        x += this.X_SPACE;
         createRegexEdgeView ( parent, child );
         addNodesToModel ( child );
       }
@@ -331,17 +353,18 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     }
     else if ( parent.getNode ().getChildren ().size () == 1 )
     {
-      DefaultNodeView child = createNodeView ( x, y, parent
-          .getRegexNode ().getChildren ().get ( 0 ) );
+      DefaultNodeView child = createNodeView ( x, y, parent.getRegexNode ()
+          .getChildren ().get ( 0 ) );
       createRegexEdgeView ( parent, child );
       addNodesToModel ( child );
     }
 
   }
 
+
   /**
    * TODO
-   *
+   * 
    * @param parent
    * @param child
    * @return
@@ -349,44 +372,41 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   public DefaultRegexEdgeView createRegexEdgeView ( DefaultNodeView parent,
       DefaultNodeView child )
   {
-    DefaultRegexEdgeView edgeView = new DefaultRegexEdgeView(parent, child);
+    DefaultRegexEdgeView edgeView = new DefaultRegexEdgeView ( parent, child );
 
-    
     // Set the parallel routing
     JGraphpadParallelSplineRouter.getSharedInstance ().setEdgeSeparation ( 25 );
     GraphConstants.setRouting ( edgeView.getAttributes (),
         JGraphpadParallelSplineRouter.getSharedInstance () );
 
-    
     this.jGTIGraph.getGraphLayoutCache ().insertEdge ( edgeView,
         parent.getChildAt ( 0 ), child.getChildAt ( 0 ) );
-    
+
     this.regexEdgeViewList.add ( edgeView );
-    
+
     return edgeView;
   }
 
 
   /**
    * TODO
-   *
+   * 
    * @param x
    * @param y
    * @param node
    * @return
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings ( "unchecked" )
   public DefaultNodeView createNodeView ( double x, double y, RegexNode node )
   {
     DefaultNodeView nodeView = new DefaultNodeView ( this, this.graphModel,
-        node, (int)x, (int)y );
+        node, ( int ) x, ( int ) y );
 
     String viewClass = NodeView.class.getName ();
 
-    //Set bounds
+    // Set bounds
     GraphConstants.setBounds ( nodeView.getAttributes (),
         new Rectangle2D.Double ( x, y, 20, 20 ) );
-        
 
     // set the view class (indirection for the renderer and the editor)
     GPCellViewFactory.setViewClass ( nodeView.getAttributes (), viewClass );
@@ -396,7 +416,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
     // Gradient
     GraphConstants.setGradientColor ( nodeView.getAttributes (), Color.BLACK );
-    
+
     // Set black border
     GraphConstants.setBorderColor ( nodeView.getAttributes (), Color.BLACK );
 
@@ -414,11 +434,11 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
     return nodeView;
   }
-  
-  
+
+
   /**
    * Returns the nodeViewList.
-   *
+   * 
    * @return The nodeViewList.
    * @see #nodeViewList
    */
@@ -426,11 +446,11 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   {
     return this.nodeViewList;
   }
-  
-  
+
+
   /**
    * Returns the graphModel.
-   *
+   * 
    * @return The graphModel.
    * @see #graphModel
    */

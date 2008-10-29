@@ -268,7 +268,9 @@ public final class NewDialog implements LogicClass < NewDialogForm >
     }
     else
     {
-      this.newPanel = new RegexPanel(this.mainWindowForm, new DefaultRegexModel(new DefaultRegex(this.newDialogAlphabet.getAlphabet (), "")), null); //$NON-NLS-1$
+      this.newPanel = new RegexPanel ( this.mainWindowForm,
+          new DefaultRegexModel ( new DefaultRegex ( this.newDialogAlphabet
+              .getAlphabet (), "" ) ), null ); //$NON-NLS-1$
 
       PreferenceManager.getInstance ().setLastChoosenEntityType (
           RegexType.REGEX );
@@ -308,16 +310,18 @@ public final class NewDialog implements LogicClass < NewDialogForm >
         NewDialogChoice.Choice.MACHINE ) )
     {
       this.newDialogAlphabet.getGUI ().alphabetPanelForm.jGTICheckBoxPushDownAlphabet
-      .setVisible ( true );
+          .setVisible ( true );
       this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelPushDown
-      .setVisible ( true );
+          .setVisible ( true );
       try
       {
-        this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput.setText ( new DefaultAlphabet(new DefaultSymbol("0"), new DefaultSymbol("1")) );
+        this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput
+            .setText ( new DefaultAlphabet ( new DefaultSymbol ( "0" ),
+                new DefaultSymbol ( "1" ) ) );
       }
       catch ( AlphabetException exc )
       {
-        exc.printStackTrace();
+        exc.printStackTrace ();
       }
       this.machineChoice.getGUI ().setVisible ( true );
     }
@@ -325,33 +329,29 @@ public final class NewDialog implements LogicClass < NewDialogForm >
         NewDialogChoice.Choice.GRAMMAR ) )
     {
       this.newDialogAlphabet.getGUI ().alphabetPanelForm.jGTICheckBoxPushDownAlphabet
-      .setVisible ( true );
+          .setVisible ( true );
       this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelPushDown
-      .setVisible ( true );
+          .setVisible ( true );
       try
       {
-        this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput.setText ( new DefaultAlphabet(new DefaultSymbol("0"), new DefaultSymbol("1")) );
+        this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput
+            .setText ( new DefaultAlphabet ( new DefaultSymbol ( "0" ),
+                new DefaultSymbol ( "1" ) ) );
       }
       catch ( AlphabetException exc )
       {
-        exc.printStackTrace();
+        exc.printStackTrace ();
       }
       this.grammarChoice.getGUI ().setVisible ( true );
     }
     else
     {
       this.newDialogAlphabet.getGUI ().alphabetPanelForm.jGTICheckBoxPushDownAlphabet
-      .setVisible ( false );
+          .setVisible ( false );
       this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelPushDown
-      .setVisible ( false );
-      try
-      {
-        this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput.setText ( new DefaultAlphabet(new DefaultSymbol("a"), new DefaultSymbol("b")) );
-      }
-      catch ( AlphabetException exc )
-      {
-        exc.printStackTrace();
-      }
+          .setVisible ( false );
+      this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput
+          .setText ( "[A-Z],[a-z],[0-9]" );
       this.newDialogAlphabet.getGUI ().setVisible ( true );
     }
     this.newDialogChoice.getGUI ().setVisible ( false );

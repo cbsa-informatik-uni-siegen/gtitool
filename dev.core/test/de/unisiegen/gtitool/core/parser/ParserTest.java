@@ -34,7 +34,7 @@ public class ParserTest
      * Alphabet
      */
     AlphabetParseable alphabetParseable = new AlphabetParseable ();
-    String alphabetText = "{a,b,c}";
+    String alphabetText = "Z,[a-z],[0-9], A, B";
     try
     {
       Alphabet alphabet = ( Alphabet ) alphabetParseable.newParser (

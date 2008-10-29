@@ -71,13 +71,17 @@ public class ConcatenationNode extends RegexNode
     nodes.addAll ( this.regex2.getAllChildren () );
     return nodes;
   }
-  
-  public int countRightChildren() {
-    return 1+this.regex2.getAllChildren ().size ();
+
+
+  public int countRightChildren ()
+  {
+    return 1 + this.regex2.getAllChildren ().size ();
   }
-  
-  public int countLeftChildren() {
-    return 1+this.regex1.getAllChildren ().size ();
+
+
+  public int countLeftChildren ()
+  {
+    return 1 + this.regex1.getAllChildren ().size ();
   }
 
 

@@ -7,8 +7,9 @@ import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
-import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Element;
 
 
@@ -19,17 +20,28 @@ import de.unisiegen.gtitool.core.storage.Element;
 public class CharacterClassNode extends RegexNode
 {
 
-  private char [] chars;
+  /**
+   * TODO
+   */
+  private static final long serialVersionUID = -700140811311936745L;
 
+
+  private char char1;
+
+
+  private char char2;
+
+  private String[] chars;
 
   /**
    * TODO
    * 
    * @param chars
    */
-  public CharacterClassNode ( char ... chars )
+  public CharacterClassNode ( char char1, char char2 )
   {
-    this.chars = chars;
+    this.char1 = char1;
+    this.char2 = char2;
   }
 
 
@@ -66,12 +78,7 @@ public class CharacterClassNode extends RegexNode
   public ArrayList < RegexNode > firstPos ()
   {
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    for ( char c : this.chars )
-    {
-      /*
-       * nodes.add ( new TokenNode ( new String ( new char [] { c } ) ) );
-       */
-    }
+    nodes.add ( this );
     return nodes;
   }
 
@@ -83,13 +90,6 @@ public class CharacterClassNode extends RegexNode
   public ArrayList < RegexNode > getAllChildren ()
   {
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    nodes.add ( this );
-    for ( char c : this.chars )
-    {
-      /*
-       * nodes.add ( new TokenNode ( new String ( new char [] { c } ) ) );
-       */
-    }
     return nodes;
   }
 
@@ -101,12 +101,6 @@ public class CharacterClassNode extends RegexNode
   public ArrayList < TokenNode > getTokenNodes ()
   {
     ArrayList < TokenNode > nodes = new ArrayList < TokenNode > ();
-    for ( char c : this.chars )
-    {
-      /*
-       * nodes.add ( new TokenNode ( new String ( new char [] { c } ) ) );
-       */
-    }
     return nodes;
   }
 
@@ -118,12 +112,7 @@ public class CharacterClassNode extends RegexNode
   public ArrayList < RegexNode > lastPos ()
   {
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    for ( char c : this.chars )
-    {
-      /*
-       * nodes.add ( new TokenNode ( new String ( new char [] { c } ) ) );
-       */
-    }
+    nodes.add ( this );
     return nodes;
   }
 
@@ -143,27 +132,11 @@ public class CharacterClassNode extends RegexNode
    */
   @Override
   public RegexNode toCoreSyntax ()
-  {
-    String coreSyntax = "";
-    for ( char c : this.chars )
-    {
-      if ( coreSyntax.length () > 0 )
-      {
-        coreSyntax += "|";
-      }
-      coreSyntax += c;
+  { 
+    if(this.char1 < this.char2 - 1){
+      return new DisjunctionNode(new TokenNode(Character.toString ( this.char1)), (new CharacterClassNode(( char ) ( this.char1 + 1 ), this.char2).toCoreSyntax ()));
     }
-    RegexParseable regexParseable = new RegexParseable ();
-    try
-    {
-      return ( RegexNode ) regexParseable.newParser ( coreSyntax ).parse ();
-    }
-    catch ( Exception exc )
-    {
-      exc.printStackTrace ();
-    }
-    ;
-    return null;
+    return new DisjunctionNode(new TokenNode(Character.toString ( this.char1)), new TokenNode(Character.toString ( this.char2)));
   }
 
 
@@ -175,7 +148,8 @@ public class CharacterClassNode extends RegexNode
    */
   public Element getElement ()
   {
-    return null;
+    Element newElement = new Element ( "CharClass" );
+    return newElement;
   }
 
 
@@ -242,7 +216,8 @@ public class CharacterClassNode extends RegexNode
    */
   public PrettyString toPrettyString ()
   {
-    return null;
+    return new PrettyString ( new PrettyToken (
+        "[" + this.char1 + "-" + this.char2 + "]", Style.TOKEN ) ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
   }
 
 
@@ -268,9 +243,21 @@ public class CharacterClassNode extends RegexNode
   @Override
   public PrettyString getNodeString ()
   {
-    return null;
+    return new PrettyString ( new PrettyToken (
+        "[" + this.char1 + "-" + this.char2 + "]", Style.TOKEN ) ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
   }
 
+  /**
+   * TODO
+   *
+   * @return
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString ()
+  {
+    return "[" + this.char1 + "-" + this.char2 + "]";
+  }
 
   /**
    * TODO
@@ -281,7 +268,7 @@ public class CharacterClassNode extends RegexNode
   @Override
   public ArrayList < RegexNode > getChildren ()
   {
-    return null;
+    return new ArrayList < RegexNode > ();
   }
 
 }

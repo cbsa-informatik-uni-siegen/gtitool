@@ -81,7 +81,7 @@ public class ParserTest
      * Regex
      */
     RegexParseable regexParseable = new RegexParseable ();
-    String regexText = "a|b|c|d";
+    String regexText = "ab";
     try
     {
       RegexNode regex = ( RegexNode ) regexParseable.newParser ( regexText )
@@ -89,7 +89,7 @@ public class ParserTest
       regex = new ConcatenationNode ( regex, new TokenNode ( "#" ) );
 
       int currentPosition = 1;
-      for ( RegexNode current : regex.getTokenNodes () )
+      /**for ( RegexNode current : regex.getTokenNodes () )
       {
 
         if ( current instanceof TokenNode )
@@ -97,7 +97,7 @@ public class ParserTest
           ( ( TokenNode ) current ).setPosition ( currentPosition );
           currentPosition++ ;
         }
-      }
+      }*/
       System.out.println ( regex );
       String firstpos = "";
       for ( RegexNode current : regex.firstPos () )
@@ -142,6 +142,14 @@ public class ParserTest
     }
     catch ( Exception e )
     {
+      e.printStackTrace ();
+    }
+    try{
+      RegexNode regex = ( RegexNode ) regexParseable.newParser ( "[a-z]" )
+          .parse ();
+      System.err.println (regex);
+      System.err.println (regex.toCoreSyntax ());
+    } catch (Exception e){
       e.printStackTrace ();
     }
   }

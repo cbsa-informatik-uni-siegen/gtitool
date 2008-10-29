@@ -57,6 +57,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	  	case RBRACE:
 	  	case SLBRACE:
 	  	case SRBRACE:
+	  	case MINUS:
 	  	  return Style.REGEX_SYMBOL;
 		case IDENT:
 		  return Style.TOKEN;
@@ -93,6 +94,7 @@ Ident					= [:jletterdigit:]
 	")"					{ return symbol(RBRACE); }
 	"["					{ return symbol(SLBRACE); }
 	"]"					{ return symbol(SRBRACE); }
+	"-"					{ return symbol(MINUS); }
 	{Ident}				{ return symbol(IDENT, yytext()); }
 	{WhiteSpace}		{ }
 }

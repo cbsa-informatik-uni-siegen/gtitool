@@ -7,6 +7,7 @@ import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.EpsilonNode;
 import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
+import de.unisiegen.gtitool.core.entities.regex.CharacterClassNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
 import de.unisiegen.gtitool.core.entities.regex.OptionalNode;
 import de.unisiegen.gtitool.core.entities.regex.PlusNode;
@@ -34,6 +35,7 @@ terminal String				LBRACE;
 terminal String				RBRACE;
 terminal String				SLBRACE;
 terminal String				SRBRACE;
+terminal String				MINUS;
 terminal String				IDENT;
 
 
@@ -53,12 +55,13 @@ non terminal RegexNode		simple_regex;
 precedence left 	OR;
 precedence left 	CONCAT;
 precedence right 	LBRACE;
-precedence right 	SLBRACE;
 precedence left 	QUESTION;
 precedence left 	PLUS;
 precedence left 	STAR;
 precedence left 	EPSILON;
 precedence left 	IDENT;
+precedence right 	SLBRACE;
+precedence right 	MINUS;
 
 /************
  * Regex *
@@ -73,6 +76,15 @@ regex							::= regex:reg1 OR:or regex:reg2
 									{:
 										RESULT = regex;
 									   	RESULT.setParserOffset(new ParserOffset(regexleft,regexright));
+									:}
+								|	SLBRACE:slb IDENT:i1 MINUS:m IDENT:i2 SRBRACE:srb
+									{:
+										if(i1.compareTo(i2) < 1){
+											RESULT = new CharacterClassNode(i1.charAt(0), i2.charAt(0));
+									   		RESULT.setParserOffset(new ParserOffset(slbleft,srbright));
+										} else {
+											throw new Exception("Shiss");
+										} 
 									:}
 								|	concatenation:c
 									{:

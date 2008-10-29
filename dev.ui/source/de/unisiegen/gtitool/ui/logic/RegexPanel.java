@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.TreeSet;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -48,7 +49,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * The {@link JGTIGraph} for this Panel
    */
   private JGTIGraph jGTIGraph;
-
 
 
   /**
@@ -159,7 +159,11 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
         .getState () );
 
-    this.gui.jGTISplitPaneConsole.setDividerLocation ( 1.0 );
+    this.gui.jGTISplitPaneConsole.setDividerLocation ( 0.5 );
+    if ( this.regex.getRegexNode () != null )
+    {
+      changeRegex ( this.regex.getRegexNode () );
+    }
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
@@ -212,6 +216,51 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public MainWindowForm getMainWindowForm ()
   {
     return this.mainWindowForm;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param evt
+   */
+  public void handleToCoreSyntaxButtonClicked (
+      @SuppressWarnings ( "unused" ) ActionEvent evt )
+  {
+    DefaultRegex newRegex = new DefaultRegex ( this.regex.getAlphabet (),
+        this.regex.getRegexString () );
+    newRegex.setRegexNode ( this.regex.getRegexNode ().toCoreSyntax () );
+
+    EditorPanel newEditorPanel = new RegexPanel ( this.mainWindowForm,
+        new DefaultRegexModel ( newRegex ), null );
+    TreeSet < String > nameList = new TreeSet < String > ();
+    int count = 0;
+    for ( EditorPanel current : this.mainWindowForm.getJGTIMainSplitPane ()
+        .getJGTIEditorPanelTabbedPane () )
+    {
+      if ( current.getFile () == null )
+      {
+        nameList.add ( current.getName () );
+        count++ ;
+      }
+    }
+
+    String newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+        + "." + RegexType.REGEX.getFileEnding (); //$NON-NLS-1$
+    while ( nameList.contains ( newName ) )
+    {
+      count++ ;
+      newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+          + "." + RegexType.REGEX.getFileEnding (); //$NON-NLS-1$
+    }
+
+    newEditorPanel.setName ( newName );
+    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
+        .addEditorPanel ( newEditorPanel );
+    newEditorPanel
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
+        .setSelectedEditorPanel ( newEditorPanel );
   }
 
 
@@ -383,8 +432,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param evt
    */
-  public void handleRegexChangeButtonClicked ( @SuppressWarnings ( "unused" )
-  ActionEvent evt )
+  public void handleRegexChangeButtonClicked (
+      @SuppressWarnings ( "unused" ) ActionEvent evt )
   {
     new RegexDialog ( this );
   }
@@ -398,15 +447,16 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public void changeRegex ( RegexNode newRegexNode )
   {
     this.regex.changeRegexNode ( newRegexNode );
-    this.gui.jGTITextFieldRegex.setText ( newRegexNode.toPrettyString ().toString () );
-    
+    this.gui.jGTITextFieldRegex.setText ( newRegexNode.toPrettyString ()
+        .toString () );
+
     this.model.getRegex ().changeRegexNode ( newRegexNode );
     this.model.initializeGraph ();
     this.jGTIGraph = this.model.getJGTIGraph ();
     this.jGTIGraph.setEditable ( false );
     this.jGTIGraph.setEnabled ( false );
     this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
-    
+
     this.model.createTree ();
   }
 

@@ -47,6 +47,7 @@ import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
+import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu.TabPopupMenuType;
@@ -4610,6 +4611,27 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         DefaultGrammarModel model = ( DefaultGrammarModel ) element;
         EditorPanel newEditorPanel = new GrammarPanel ( this.gui, model, file );
+
+        jGTIEditorPanelTabbedPane.addEditorPanel ( newEditorPanel );
+        newEditorPanel
+            .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+        jGTIEditorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
+        jGTIEditorPanelTabbedPane.setEditorPanelTitle ( newEditorPanel, file
+            .getName () );
+
+        addButtonState ( ButtonState.ENABLED_SAVE_AS );
+        addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+        addButtonState ( ButtonState.ENABLED_CLOSE );
+        addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+        addButtonState ( ButtonState.ENABLED_PRINT );
+        addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+        addButtonState ( ButtonState.ENABLED_VALIDATE );
+        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+      }
+      else if ( element instanceof DefaultRegexModel )
+      {
+        DefaultRegexModel model = ( DefaultRegexModel ) element;
+        EditorPanel newEditorPanel = new RegexPanel ( this.gui, model, file );
 
         jGTIEditorPanelTabbedPane.addEditorPanel ( newEditorPanel );
         newEditorPanel

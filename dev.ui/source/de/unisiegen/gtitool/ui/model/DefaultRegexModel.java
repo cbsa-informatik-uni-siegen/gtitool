@@ -9,6 +9,7 @@ import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
 
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
@@ -18,6 +19,7 @@ import de.unisiegen.gtitool.core.entities.regex.PlusNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.i18n.Messages;
+import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
@@ -121,11 +123,13 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   /**
    * TODO
    * 
-   * @throws StoreException
+   * @param element
+   * @throws Exception
    */
-  public DefaultRegexModel ( Element element ) throws StoreException
+  public DefaultRegexModel ( Element element ) throws Exception
   {
     boolean foundVersion = false;
+    String regexString = new String();
     for ( Attribute attr : element.getAttribute () )
     {
       if ( attr.getName ().equals ( "regexVersion" ) ) //$NON-NLS-1$
@@ -137,7 +141,22 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
               .getString ( "StoreException.IncompatibleVersion" ) ); //$NON-NLS-1$
         }
       }
+      if ( attr.getName ().equals ( "regexString" ) )
+      {
+        regexString = attr.getValue ();
+      }
     }
+    if ( regexString == null || regexString.length () == 0)
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
+    }
+    DefaultAlphabet da = new DefaultAlphabet ( element.getElement ( 0 ) );
+    this.regex = new DefaultRegex ( da, regexString );
+    RegexParseable rp = new RegexParseable ();
+    this.regex.setRegexNode ( ( RegexNode ) rp.newParser ( regexString )
+        .parse () );
+
     if ( !foundVersion )
     {
       throw new StoreException ( Messages
@@ -161,7 +180,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   /**
    * TODO
    * 
-   * @return
    * @see de.unisiegen.gtitool.ui.model.DefaultModel#getElement()
    */
   public Element getElement ()
@@ -169,8 +187,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     Element newElement = new Element ( "RegexModel" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "regexVersion", //$NON-NLS-1$
         REGEX_VERSION ) );
-    newElement.addElement ( this.regex.getAlphabet ().getElement () );
-    newElement.addElement ( this.regex.getElement () );
+    newElement.addElement ( this.regex.getAlphabet () );
+    newElement.addAttribute ( new Attribute ( "regexString", //$NON-NLS-1$
+        this.regex.getRegexNode ().toString () ) );
     return newElement;
   }
 

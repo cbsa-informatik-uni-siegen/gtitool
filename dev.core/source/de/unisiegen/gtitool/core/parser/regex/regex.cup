@@ -47,6 +47,7 @@ non terminal RegexNode		regex;
 non terminal RegexNode		concatenation;
 non terminal RegexNode[]	simple_regex_list;
 non terminal RegexNode		simple_regex;
+non terminal char[]			char_list;
 
 /****************
  * Precedence *
@@ -54,13 +55,14 @@ non terminal RegexNode		simple_regex;
 
 precedence left 	OR;
 precedence left 	CONCAT;
+precedence right 	SLBRACE;
 precedence right 	LBRACE;
 precedence left 	QUESTION;
 precedence left 	PLUS;
 precedence left 	STAR;
 precedence left 	EPSILON;
 precedence left 	IDENT;
-precedence right 	SLBRACE;
+precedence right 	SRBRACE;
 precedence right 	MINUS;
 
 /************
@@ -76,15 +78,6 @@ regex							::= regex:reg1 OR:or regex:reg2
 									{:
 										RESULT = regex;
 									   	RESULT.setParserOffset(new ParserOffset(regexleft,regexright));
-									:}
-								|	SLBRACE:slb IDENT:i1 MINUS:m IDENT:i2 SRBRACE:srb
-									{:
-										if(i1.compareTo(i2) < 1){
-											RESULT = new CharacterClassNode(i1.charAt(0), i2.charAt(0));
-									   		RESULT.setParserOffset(new ParserOffset(slbleft,srbright));
-										} else {
-											throw new Exception("Shiss");
-										} 
 									:}
 								|	concatenation:c
 									{:
@@ -111,6 +104,20 @@ simple_regex					::= simple_regex:reg STAR:star
 									{:
 										RESULT = reg;
 									   	RESULT.setParserOffset(new ParserOffset(lleft,rright));
+									:}
+								|	SLBRACE:slb IDENT:i1 MINUS:m IDENT:i2 SRBRACE:srb
+									{:
+										if(i1.compareTo(i2) < 1){
+											RESULT = new CharacterClassNode(i1.charAt(0), i2.charAt(0));
+									   		RESULT.setParserOffset(new ParserOffset(slbleft,srbright));
+										} else {
+											throw new Exception("Shiss");
+										} 
+									:}
+								|	SLBRACE:slb char_list:l SRBRACE:srb
+									{:
+										RESULT = new CharacterClassNode(l);
+									   	RESULT.setParserOffset(new ParserOffset(slbleft,srbright));
 									:}
 								|	IDENT:i
 									{:
@@ -157,5 +164,16 @@ concatenation					::= simple_regex:regex simple_regex_list:srl
 						   			   }
 						   			   RESULT = regex;
 									   RESULT.setParserOffset(new ParserOffset(regexleft,srlright));
+									:}
+								;
+char_list						::= char_list:cl IDENT:i
+									{:
+										RESULT = new char[cl.length + 1];
+									   	System.arraycopy(cl, 0, RESULT, 0, cl.length);
+									   	RESULT[cl.length] = i.charAt(0);
+									:}
+								|	IDENT:i
+									{:
+										RESULT = new char[] {i.charAt(0)};
 									:}
 								;

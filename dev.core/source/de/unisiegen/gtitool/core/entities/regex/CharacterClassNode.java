@@ -10,7 +10,6 @@ import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
-import de.unisiegen.gtitool.core.storage.Element;
 
 
 /**
@@ -31,7 +30,12 @@ public class CharacterClassNode extends RegexNode
 
   private char char2;
 
-  private String[] chars;
+
+  private char [] chars;
+
+
+  private boolean array;
+
 
   /**
    * TODO
@@ -40,8 +44,19 @@ public class CharacterClassNode extends RegexNode
    */
   public CharacterClassNode ( char char1, char char2 )
   {
+    this.array = false;
     this.char1 = char1;
     this.char2 = char2;
+  }
+
+
+  /**
+   * TODO
+   */
+  public CharacterClassNode ( char ... chars )
+  {
+    this.array = true;
+    this.chars = chars;
   }
 
 
@@ -132,24 +147,30 @@ public class CharacterClassNode extends RegexNode
    */
   @Override
   public RegexNode toCoreSyntax ()
-  { 
-    if(this.char1 < this.char2 - 1){
-      return new DisjunctionNode(new TokenNode(Character.toString ( this.char1)), (new CharacterClassNode(( char ) ( this.char1 + 1 ), this.char2).toCoreSyntax ()));
-    }
-    return new DisjunctionNode(new TokenNode(Character.toString ( this.char1)), new TokenNode(Character.toString ( this.char2)));
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
-   */
-  public Element getElement ()
   {
-    Element newElement = new Element ( "CharClass" );
-    return newElement;
+    if ( !this.array )
+    {
+      if ( this.char1 < this.char2 - 1 )
+      {
+        return new DisjunctionNode ( new TokenNode ( Character
+            .toString ( this.char1 ) ), ( new CharacterClassNode (
+            ( char ) ( this.char1 + 1 ), this.char2 ).toCoreSyntax () ) );
+      }
+      return new DisjunctionNode ( new TokenNode ( Character
+          .toString ( this.char1 ) ), new TokenNode ( Character
+          .toString ( this.char2 ) ) );
+    }
+    if ( this.chars.length > 2 )
+    {
+      char [] newChars = new char [ this.chars.length - 1 ];
+      System.arraycopy ( this.chars, 1, newChars, 0, this.chars.length - 1 );
+      return new DisjunctionNode ( new TokenNode ( Character
+          .toString ( this.chars [ 0 ] ) ), new CharacterClassNode ( newChars )
+          .toCoreSyntax () );
+    }
+    return new DisjunctionNode ( new TokenNode ( Character
+        .toString ( this.chars [ 0 ] ) ), new TokenNode ( Character
+        .toString ( this.chars [ 1 ] ) ) );
   }
 
 
@@ -216,8 +237,18 @@ public class CharacterClassNode extends RegexNode
    */
   public PrettyString toPrettyString ()
   {
-    return new PrettyString ( new PrettyToken (
-        "[" + this.char1 + "-" + this.char2 + "]", Style.TOKEN ) ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    if ( !this.array )
+    {
+      return new PrettyString ( new PrettyToken (
+          "[" + this.char1 + "-" + this.char2 + "]", Style.TOKEN ) ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    }
+    String s = "[";
+    for ( char c : this.chars )
+    {
+      s += c;
+    }
+    s += "]";
+    return new PrettyString (new PrettyToken(s, Style.TOKEN));
   }
 
 
@@ -243,21 +274,43 @@ public class CharacterClassNode extends RegexNode
   @Override
   public PrettyString getNodeString ()
   {
-    return new PrettyString ( new PrettyToken (
-        "[" + this.char1 + "-" + this.char2 + "]", Style.TOKEN ) ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    if ( !this.array )
+    {
+      return new PrettyString ( new PrettyToken (
+          "[" + this.char1 + "-" + this.char2 + "]", Style.TOKEN ) ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    }
+    String s = "[";
+    for ( char c : this.chars )
+    {
+      s += c;
+    }
+    s += "]";
+    return new PrettyString (new PrettyToken(s, Style.TOKEN));
   }
+
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString ()
   {
-    return "[" + this.char1 + "-" + this.char2 + "]";
+    if ( !this.array )
+    {
+      return "[" + this.char1 + "-" + this.char2 + "]";
+    }
+    String s = "[";
+    for ( char c : this.chars )
+    {
+      s += c;
+    }
+    s += "]";
+    return s;
   }
+
 
   /**
    * TODO

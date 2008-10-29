@@ -311,7 +311,7 @@ public class DefaultRegex implements Regex, Storable
    */
   public Element getElement ()
   {
-    return this.regexNode.getElement ();
+    return null;
   }
 
 

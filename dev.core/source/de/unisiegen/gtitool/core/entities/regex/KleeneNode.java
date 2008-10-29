@@ -10,7 +10,6 @@ import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
-import de.unisiegen.gtitool.core.storage.Element;
 
 
 /**
@@ -149,21 +148,6 @@ public class KleeneNode extends RegexNode
   public String toString ()
   {
     return this.content.toString () + "*"; //$NON-NLS-1$
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
-   */
-  public Element getElement ()
-  {
-
-    Element newElement = new Element ( "Kleene" );
-    newElement.addElement ( this.content.getElement () );
-    return newElement;
   }
 
 

@@ -145,7 +145,7 @@ public class ParserTest
       e.printStackTrace ();
     }
     try{
-      RegexNode regex = ( RegexNode ) regexParseable.newParser ( "[a-z]" )
+      RegexNode regex = ( RegexNode ) regexParseable.newParser ( "a[a-z][abc]" )
           .parse ();
       System.err.println (regex);
       System.err.println (regex.toCoreSyntax ());

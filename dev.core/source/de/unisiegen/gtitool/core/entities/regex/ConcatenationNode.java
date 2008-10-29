@@ -10,7 +10,6 @@ import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
-import de.unisiegen.gtitool.core.storage.Element;
 
 
 /**
@@ -148,7 +147,7 @@ public class ConcatenationNode extends RegexNode
   @Override
   public String toString ()
   {
-    return "(" + this.regex1.toString () + this.regex2.toString () + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+    return this.regex1.toString () + this.regex2.toString (); //$NON-NLS-1$ //$NON-NLS-2$
   }
 
 
@@ -191,21 +190,6 @@ public class ConcatenationNode extends RegexNode
   public int getRightChildrenCount ()
   {
     return 1 + this.regex2.getAllChildren ().size ();
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
-   */
-  public Element getElement ()
-  {
-    Element newElement = new Element ( "Concatenation" );
-    newElement.addElement ( this.regex1.getElement () );
-    newElement.addElement ( this.regex2.getElement () );
-    return newElement;
   }
 
 

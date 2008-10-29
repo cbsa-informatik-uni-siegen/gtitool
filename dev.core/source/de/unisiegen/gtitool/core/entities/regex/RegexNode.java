@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
-import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
@@ -14,7 +13,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Simon Meurer
  * @version
  */
-public abstract class RegexNode implements Entity < RegexNode >, Storable
+public abstract class RegexNode implements Entity < RegexNode >
 {
 
   /**

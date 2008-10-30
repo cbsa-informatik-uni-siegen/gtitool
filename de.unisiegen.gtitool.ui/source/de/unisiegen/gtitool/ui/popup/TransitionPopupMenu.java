@@ -38,31 +38,31 @@ public final class TransitionPopupMenu extends JPopupMenu
   /**
    * The {@link MachinePanelForm}.
    */
-  private MachinePanelForm parent;
+  protected MachinePanelForm parent;
 
 
   /**
    * The {@link Alphabet}.
    */
-  private Alphabet alphabet;
+  protected Alphabet alphabet;
 
 
   /**
    * The push down {@link Alphabet}.
    */
-  private Alphabet pushDownAlphabet;
+  protected Alphabet pushDownAlphabet;
 
 
   /**
    * The {@link DefaultTransitionView}.
    */
-  private DefaultTransitionView transition;
+  protected DefaultTransitionView transition;
 
 
   /**
    * The delete item.
    */
-  private JMenuItem delete;
+  protected JMenuItem delete;
 
 
   /**
@@ -96,7 +96,6 @@ public final class TransitionPopupMenu extends JPopupMenu
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             TransitionPopupMenu.this.delete.setText ( Messages
@@ -118,7 +117,6 @@ public final class TransitionPopupMenu extends JPopupMenu
     this.delete.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -135,7 +133,6 @@ public final class TransitionPopupMenu extends JPopupMenu
     this.config.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {

@@ -77,7 +77,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   /**
    * The {@link GrammarPanelForm}.
    */
-  private GrammarPanelForm gui;
+  protected GrammarPanelForm gui;
 
 
   /**
@@ -89,7 +89,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   /**
    * The {@link Grammar}.
    */
-  private Grammar grammar;
+  protected Grammar grammar;
 
 
   /**
@@ -119,7 +119,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   /**
    * The {@link MainWindowForm}
    */
-  private MainWindowForm mainWindowForm;
+  protected MainWindowForm mainWindowForm;
 
 
   /**
@@ -188,7 +188,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
           private static final long serialVersionUID = -1544518703030919808L;
 
 
-          @SuppressWarnings ( "synthetic-access" )
           @Override
           protected boolean importTableModelRows ( JGTITable jGTITable,
               JGTITableModelRows rows, int targetIndex )
@@ -202,7 +201,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         new ColorChangedAdapter ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           @Override
           public void colorChanged ()
           {
@@ -726,7 +724,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       FileFilter fileFilter = new FileFilter ()
       {
 
-        @SuppressWarnings ( "synthetic-access" )
         @Override
         public boolean accept ( File acceptedFile )
         {
@@ -743,7 +740,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         }
 
 
-        @SuppressWarnings ( "synthetic-access" )
         @Override
         public String getDescription ()
         {
@@ -1050,7 +1046,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     MouseListener mouseListener = new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -1062,7 +1057,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     MouseMotionListener mouseMotionListener = new MouseMotionAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseDragged ( MouseEvent event )
       {
@@ -1160,7 +1154,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * @param rows The {@link JGTITableModelRows}.
    * @param targetIndex The target index.
    */
-  private final void moveRows (
+  protected final void moveRows (
       @SuppressWarnings ( "unused" ) JGTITable jGTITable,
       JGTITableModelRows rows, int targetIndex )
   {

@@ -14,6 +14,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
@@ -84,6 +85,12 @@ public final class JGTIList extends JList implements DropTargetListener
    * The allowed drag and drop sources.
    */
   private ArrayList < JComponent > allowedDndSources;
+
+
+  /**
+   * Flag that indicates that the drag and drop is allowed.
+   */
+  protected boolean dragAndDropAllowed = true;
 
 
   /**
@@ -294,6 +301,27 @@ public final class JGTIList extends JList implements DropTargetListener
       removeMouseMotionListener ( current );
     }
 
+    // store the drag and drop allowed state
+    addMouseListener ( new MouseAdapter ()
+    {
+
+      @Override
+      public void mousePressed ( MouseEvent event )
+      {
+        int rowIndex = locationToIndex ( event.getPoint () );
+        Rectangle rect = getCellBounds ( rowIndex, rowIndex );
+        if ( ( rect == null )
+            || ( event.getPoint ().getY () > rect.y + rect.height ) )
+        {
+          JGTIList.this.dragAndDropAllowed = false;
+        }
+        else
+        {
+          JGTIList.this.dragAndDropAllowed = true;
+        }
+      }
+    } );
+
     // swing bugfix
     addMouseMotionListener ( new MouseMotionAdapter ()
     {
@@ -307,17 +335,9 @@ public final class JGTIList extends JList implements DropTargetListener
       public void mouseDragged ( MouseEvent event )
       {
         if ( getDragEnabled ()
-            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 ) )
+            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 )
+            && JGTIList.this.dragAndDropAllowed )
         {
-          // return if the drag begins not over an item
-          int rowIndex = locationToIndex ( event.getPoint () );
-          Rectangle rect = getCellBounds ( rowIndex, rowIndex );
-          if ( ( rect == null )
-              || ( event.getPoint ().getY () > rect.y + rect.height ) )
-          {
-            return;
-          }
-
           TransferHandler transferHandler = getTransferHandler ();
           transferHandler.exportAsDrag ( JGTIList.this, event, transferHandler
               .getSourceActions ( JGTIList.this ) );

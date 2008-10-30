@@ -73,13 +73,14 @@ public abstract class CoreException extends Exception
    */
   public CoreException ( PrettyString message, PrettyString description )
   {
-    // Message
+    // message
     if ( message == null )
     {
       throw new NullPointerException ( "message is null" ); //$NON-NLS-1$
     }
     this.message = message;
-    // Description
+
+    // description
     if ( description == null )
     {
       throw new NullPointerException ( "description is null" ); //$NON-NLS-1$

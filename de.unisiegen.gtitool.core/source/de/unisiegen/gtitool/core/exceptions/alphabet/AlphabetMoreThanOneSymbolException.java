@@ -14,8 +14,7 @@ import de.unisiegen.gtitool.core.i18n.Messages;
  * {@link Alphabet} is not correct.
  * 
  * @author Christian Fehler
- * @version $Id: AlphabetMoreThanOneSymbolException.java 189 2007-11-17
- *          15:55:30Z fehler $
+ * @version $Id$
  */
 public final class AlphabetMoreThanOneSymbolException extends AlphabetException
 {
@@ -36,9 +35,12 @@ public final class AlphabetMoreThanOneSymbolException extends AlphabetException
       ArrayList < Symbol > symbolList )
   {
     super ( alphabet, symbolList );
-    // Message and description
+
+    // message
     setPrettyMessage ( Messages
         .getPrettyString ( "AlphabetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
+
+    // description
     setPrettyDescription ( Messages.getPrettyString (
         "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( 0 ) //$NON-NLS-1$
             .toPrettyString (), alphabet.toPrettyString () ) );

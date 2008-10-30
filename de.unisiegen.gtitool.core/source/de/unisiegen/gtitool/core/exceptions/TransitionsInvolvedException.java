@@ -10,8 +10,7 @@ import de.unisiegen.gtitool.core.entities.Transition;
  * Involved {@link Transition} interface.
  * 
  * @author Christian Fehler
- * @version $Id: MachineEpsilonTransitionException.java 90 2007-11-04 16:20:27Z
- *          fehler $
+ * @version $Id$
  */
 public interface TransitionsInvolvedException
 {
@@ -22,5 +21,4 @@ public interface TransitionsInvolvedException
    * @return The {@link Transition}s.
    */
   public ArrayList < Transition > getTransition ();
-
 }

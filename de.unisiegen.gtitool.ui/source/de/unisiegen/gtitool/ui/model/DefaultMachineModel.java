@@ -80,7 +80,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   /**
    * The {@link JGTIGraph} containing the diagramm.
    */
-  private JGTIGraph jGTIGraph;
+  protected JGTIGraph jGTIGraph;
 
 
   /**
@@ -110,13 +110,13 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   /**
    * The {@link MultiItem}.
    */
-  private MultiItem multiItem;
+  protected MultiItem multiItem;
 
 
   /**
    * The {@link RedoUndoHandler}
    */
-  private RedoUndoHandler redoUndoHandler;
+  protected RedoUndoHandler redoUndoHandler;
 
 
   /**
@@ -494,7 +494,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * 
    * @param forceModify True if the modify is forced, otherwise false.
    */
-  private final void fireModifyStatusChanged ( boolean forceModify )
+  protected final void fireModifyStatusChanged ( boolean forceModify )
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
@@ -711,7 +711,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
         new ColorChangedAdapter ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           @Override
           public void colorChanged ()
           {
@@ -738,14 +737,12 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.machineChangedListener = new MachineChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void startEditing ()
       {
         DefaultMachineModel.this.multiItem = new MultiItem ();
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       public void stopEditing ()
       {
         if ( DefaultMachineModel.this.redoUndoHandler != null )
@@ -756,7 +753,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       public void symbolAdded ( Transition transition,
           ArrayList < Symbol > addedSymbols )
       {
@@ -770,7 +766,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       public void symbolRemoved ( Transition transition,
           ArrayList < Symbol > removedSymbols )
       {
@@ -784,7 +779,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       public void transitionAdded ( Transition newTransition )
       {
         createTransitionView ( newTransition,
@@ -798,7 +792,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       public void transitionRemoved ( Transition transition )
       {
         DefaultTransitionView transitionView = getTransitionViewForTransition ( transition );
@@ -820,7 +813,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void modifyStatusChanged ( boolean modified )
       {
         fireModifyStatusChanged ( modified );
@@ -845,7 +837,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
        * @see StatePositionChangedListener#statePositionChanged(DefaultStateView,
        *      double, double, double, double)
        */
-      @SuppressWarnings ( "synthetic-access" )
       public void statePositionChanged ( DefaultStateView stateView,
           double oldX, double oldY, double newX, double newY )
       {

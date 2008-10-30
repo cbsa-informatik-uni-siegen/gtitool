@@ -43,25 +43,25 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
   /**
    * The {@link ExchangeDialogForm}.
    */
-  private ExchangeDialogForm gui;
+  protected ExchangeDialogForm gui;
 
 
   /**
    * The {@link MainWindow}.
    */
-  private MainWindow mainWindow;
+  protected MainWindow mainWindow;
 
 
   /**
    * The server {@link Network}.
    */
-  private Network networkServer = null;
+  protected Network networkServer = null;
 
 
   /**
    * The client {@link Network}.
    */
-  private Network networkClient = null;
+  protected Network networkClient = null;
 
 
   /**
@@ -117,7 +117,7 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
    * @param message The message to append.
    * @param error Flag that indicates if the message should be a error message.
    */
-  private final void appendMessage ( String message, boolean error )
+  protected final void appendMessage ( String message, boolean error )
   {
     SimpleAttributeSet set = new SimpleAttributeSet ();
     if ( error )
@@ -274,7 +274,6 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
           .addExchangeReceivedListener ( new ExchangeReceivedListener ()
           {
 
-            @SuppressWarnings ( "synthetic-access" )
             public void exchangeReceived ( Exchange exchange )
             {
               if ( exchange.getDescription ().equals ( "" ) ) //$NON-NLS-1$
@@ -334,7 +333,6 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
           .addNetworkConnectedListener ( new NetworkConnectedListener ()
           {
 
-            @SuppressWarnings ( "synthetic-access" )
             public void networkConnected ()
             {
               appendMessage ( Messages.getString ( "ExchangeDialog.Sending", //$NON-NLS-1$
@@ -345,7 +343,6 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
           .addExchangeFinishedListener ( new ExchangeFinishedListener ()
           {
 
-            @SuppressWarnings ( "synthetic-access" )
             public void exchangeFinished ()
             {
               appendMessage ( Messages
@@ -380,7 +377,7 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
    * 
    * @param enabled The enable flag.
    */
-  private final void setNormalMode ( boolean enabled )
+  protected final void setNormalMode ( boolean enabled )
   {
     // Port
     boolean portOkay = true;

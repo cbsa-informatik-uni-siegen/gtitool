@@ -243,7 +243,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    * 
    * @param forceModify True if the modify is forced, otherwise false.
    */
-  private final void fireModifyStatusChanged ( boolean forceModify )
+  protected final void fireModifyStatusChanged ( boolean forceModify )
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
@@ -309,7 +309,6 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void modifyStatusChanged ( boolean modified )
       {
         fireModifyStatusChanged ( modified );

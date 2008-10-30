@@ -10,8 +10,7 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
  * The listener interface for receiving {@link NonterminalSymbolSet} changes.
  * 
  * @author Christian Fehler
- * @version $Id: NonterminalSymbolSetChangedListener.java 731 2008-04-04
- *          16:20:30Z fehler $
+ * @version $Id$
  */
 public interface NonterminalSymbolSetChangedListener extends EventListener
 {

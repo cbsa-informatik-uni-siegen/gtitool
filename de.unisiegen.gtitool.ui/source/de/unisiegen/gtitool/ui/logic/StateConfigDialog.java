@@ -35,7 +35,7 @@ public final class StateConfigDialog implements
   /**
    * The {@link StateConfigDialogForm}.
    */
-  private StateConfigDialogForm gui;
+  protected StateConfigDialogForm gui;
 
 
   /**
@@ -121,7 +121,6 @@ public final class StateConfigDialog implements
         .addParseableChangedListener ( new ParseableChangedListener < State > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void parseableChanged ( State newState )
           {
             if ( newState == null )

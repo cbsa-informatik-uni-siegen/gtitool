@@ -268,13 +268,13 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   /**
    * The {@link StyledParserDocument}.
    */
-  private StyledParserDocument < E > document;
+  protected StyledParserDocument < E > document;
 
 
   /**
    * The {@link StyledParserEditor}.
    */
-  private StyledParserEditor < E > editor;
+  protected StyledParserEditor < E > editor;
 
 
   /**
@@ -286,31 +286,31 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   /**
    * The copy {@link JMenuItem}.
    */
-  private JMenuItem jMenuItemCopy;
+  protected JMenuItem jMenuItemCopy;
 
 
   /**
    * The cut {@link JMenuItem}.
    */
-  private JMenuItem jMenuItemCut;
+  protected JMenuItem jMenuItemCut;
 
 
   /**
    * The paste {@link JMenuItem}.
    */
-  private JMenuItem jMenuItemPaste;
+  protected JMenuItem jMenuItemPaste;
 
 
   /**
    * The redo {@link JMenuItem}.
    */
-  private JMenuItem jMenuItemRedo;
+  protected JMenuItem jMenuItemRedo;
 
 
   /**
    * The undo {@link JMenuItem}.
    */
-  private JMenuItem jMenuItemUndo;
+  protected JMenuItem jMenuItemUndo;
 
 
   /**
@@ -329,13 +329,13 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
    * The {@link ParseableChangedListener} for the other
    * {@link StyledParserPanel}.
    */
-  private ParseableChangedListener < E > parseableChangedListenerOther;
+  protected ParseableChangedListener < E > parseableChangedListenerOther;
 
 
   /**
    * The {@link ParseableChangedListener} for this {@link StyledParserPanel}.
    */
-  private ParseableChangedListener < E > parseableChangedListenerThis;
+  protected ParseableChangedListener < E > parseableChangedListenerThis;
 
 
   /**
@@ -347,7 +347,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   /**
    * The {@link StyledParserPanel}.
    */
-  private StyledParserPanel < E > synchronizedStyledParserPanel = null;
+  protected StyledParserPanel < E > synchronizedStyledParserPanel = null;
 
 
   /**
@@ -383,7 +383,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.jMenuItemUndo.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -404,7 +403,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.jMenuItemRedo.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -427,7 +425,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.jMenuItemCut.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -462,7 +459,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.jMenuItemCopy.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -484,7 +480,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.jMenuItemPaste.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -499,7 +494,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             StyledParserPanel.this.jMenuItemUndo.setText ( Messages
@@ -529,7 +523,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.editor.addMouseListener ( new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mousePressed ( MouseEvent event )
       {
@@ -540,7 +533,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -557,7 +549,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
         .addParseableChangedListener ( new ParseableChangedListener < E > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void parseableChanged ( E newObject )
           {
             fireParseableChanged ( newObject );
@@ -578,7 +569,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
        * @param index The index in the text, where the text should be inserted.
        * @param insertText The text which should be inserted.
        */
-      @SuppressWarnings ( "synthetic-access" )
+
       public void insertText ( int index, String insertText )
       {
         int countSpaces = 0;
@@ -626,7 +617,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
        * @param left The left offset of the text which should be marked.
        * @param right The right offset of the text which should be marked.
        */
-      @SuppressWarnings ( "synthetic-access" )
+
       public void markText ( int left, int right )
       {
         if ( ( StyledParserPanel.this.editor.getSelectionStart () == left )
@@ -648,7 +639,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.editor.registerKeyboardAction ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -661,7 +651,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.editor.registerKeyboardAction ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -748,7 +737,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
    * @param newObject The new {@link Object}.
    */
   @SuppressWarnings ( "unchecked" )
-  private final void fireParseableChanged ( E newObject )
+  protected final void fireParseableChanged ( E newObject )
   {
     E checkedObject = checkParsedObject ( newObject );
     setErrorIndicator ( checkedObject == null );
@@ -806,7 +795,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   /**
    * Handles the redo action.
    */
-  private final void handleRedo ()
+  protected final void handleRedo ()
   {
     if ( this.history.canRedo () )
     {
@@ -818,7 +807,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   /**
    * Handles the undo action.
    */
-  private final void handleUndo ()
+  protected final void handleUndo ()
   {
     if ( this.history.canUndo () )
     {
@@ -949,7 +938,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   /**
    * Removes the selectedText.
    */
-  private final void removeSelectedText ()
+  protected final void removeSelectedText ()
   {
     int start = this.editor.getSelectionStart ();
     int end = this.editor.getSelectionEnd ();
@@ -989,7 +978,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
    * @param left The left index.
    * @param right The right index.
    */
-  private final void selectErrorText ( int left, int right )
+  protected final void selectErrorText ( int left, int right )
   {
     this.editor.select ( left, right );
   }
@@ -1255,7 +1244,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
    * 
    * @param event
    */
-  private final void showPopupMenu ( MouseEvent event )
+  protected final void showPopupMenu ( MouseEvent event )
   {
     if ( !isEnabled () )
     {
@@ -1314,7 +1303,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.parseableChangedListenerOther = new ParseableChangedListener < E > ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void parseableChanged ( @SuppressWarnings ( "unused" ) E newObject )
       {
         removeParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerThis );
@@ -1327,7 +1315,6 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.parseableChangedListenerThis = new ParseableChangedListener < E > ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void parseableChanged ( @SuppressWarnings ( "unused" ) E newObject )
       {
         StyledParserPanel.this.synchronizedStyledParserPanel

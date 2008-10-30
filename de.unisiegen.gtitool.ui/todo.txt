@@ -1,7 +1,5 @@
 *** TODO ***
 
-CF		- DnD optimieren
-
 *** FEATURE ***
 
 CF		- Erkannte Wörter ausgeben

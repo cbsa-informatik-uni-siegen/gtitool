@@ -8,8 +8,7 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
  * Involved {@link NonterminalSymbol} interface.
  * 
  * @author Benjamin Mies
- * @version $Id: NonterminalSymbolInvolvedException.java 695 2008-03-28
- *          18:02:32Z fehler $
+ * @version $Id$
  */
 public interface NonterminalSymbolInvolvedException
 {
@@ -20,5 +19,4 @@ public interface NonterminalSymbolInvolvedException
    * @return The {@link NonterminalSymbol}.
    */
   public NonterminalSymbol getNonterminalSymbol ();
-
 }

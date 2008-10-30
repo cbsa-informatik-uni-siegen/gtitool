@@ -39,7 +39,8 @@ public final class JGTITextField extends JTextField
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger.getLogger ( JGTITextField.class );
+  protected static final Logger logger = Logger
+      .getLogger ( JGTITextField.class );
 
 
   /**
@@ -126,7 +127,6 @@ public final class JGTITextField extends JTextField
       private static final long serialVersionUID = 1L;
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public final void insertString ( int offset, String string,
           AttributeSet attributeSet ) throws BadLocationException

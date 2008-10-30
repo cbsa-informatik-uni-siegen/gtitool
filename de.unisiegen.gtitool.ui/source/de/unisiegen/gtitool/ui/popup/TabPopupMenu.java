@@ -93,7 +93,7 @@ public final class TabPopupMenu extends JPopupMenu
   /**
    * The {@link MainWindow}.
    */
-  private MainWindow mainWindow;
+  protected MainWindow mainWindow;
 
 
   /**
@@ -140,7 +140,6 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemNew.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -161,7 +160,6 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemOpen.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -182,7 +180,6 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemClose.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -207,7 +204,6 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemSave.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -230,7 +226,6 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemSaveAs.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -258,7 +253,6 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemMoveToLeftEditor.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -281,7 +275,6 @@ public final class TabPopupMenu extends JPopupMenu
     this.jMenuItemMoveToRightEditor.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {

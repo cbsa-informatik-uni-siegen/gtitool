@@ -307,7 +307,6 @@ public abstract class AbstractMachine implements Machine
     this.alphabetChangedListener = new AlphabetChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void alphabetChanged (
           @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
       {
@@ -320,7 +319,6 @@ public abstract class AbstractMachine implements Machine
     this.transitionChangedListener = new TransitionChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void transitionChanged (
           @SuppressWarnings ( "unused" ) Transition newTransition )
       {
@@ -332,7 +330,6 @@ public abstract class AbstractMachine implements Machine
     this.stateChangedListener = new StateChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void stateChanged ( boolean nameChanged,
           @SuppressWarnings ( "unused" ) boolean startChanged,
           @SuppressWarnings ( "unused" ) boolean loopTransitionChanged )
@@ -348,7 +345,6 @@ public abstract class AbstractMachine implements Machine
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void modifyStatusChanged ( boolean modified )
       {
         fireModifyStatusChanged ( modified );
@@ -1078,7 +1074,7 @@ public abstract class AbstractMachine implements Machine
    * 
    * @param forceModify True if the modify is forced, otherwise false.
    */
-  private final void fireModifyStatusChanged ( boolean forceModify )
+  protected final void fireModifyStatusChanged ( boolean forceModify )
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
@@ -1130,7 +1126,7 @@ public abstract class AbstractMachine implements Machine
    * @see EventListenerList
    * @see JTable#tableChanged(TableModelEvent)
    */
-  private final void fireTableDataChanged ()
+  protected final void fireTableDataChanged ()
   {
     fireTableChanged ( new TableModelEvent ( this ) );
   }
@@ -1142,7 +1138,7 @@ public abstract class AbstractMachine implements Machine
    * @see TableModelEvent
    * @see EventListenerList
    */
-  private final void fireTableStructureChanged ()
+  protected final void fireTableStructureChanged ()
   {
     fireTableChanged ( new TableModelEvent ( this, TableModelEvent.HEADER_ROW ) );
   }

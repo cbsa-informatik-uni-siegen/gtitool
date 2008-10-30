@@ -17,8 +17,10 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -91,6 +93,12 @@ public final class JGTITable extends JTable implements DropTargetListener
    * The allowed drag and drop sources.
    */
   private ArrayList < JComponent > allowedDndSources;
+
+
+  /**
+   * Flag that indicates that the drag and drop is allowed.
+   */
+  protected boolean dragAndDropAllowed = true;
 
 
   /**
@@ -362,6 +370,23 @@ public final class JGTITable extends JTable implements DropTargetListener
   {
     this.allowedDndSources = new ArrayList < JComponent > ();
 
+    // must be removed because of problems with the drag and drop
+    for ( MouseMotionListener current : getMouseMotionListeners () )
+    {
+      removeMouseMotionListener ( current );
+    }
+
+    // store the drag and drop allowed state
+    addMouseListener ( new MouseAdapter ()
+    {
+
+      @Override
+      public void mousePressed ( MouseEvent event )
+      {
+        JGTITable.this.dragAndDropAllowed = rowAtPoint ( event.getPoint () ) != -1;
+      }
+    } );
+
     // swing bugfix
     addMouseMotionListener ( new MouseMotionAdapter ()
     {
@@ -376,7 +401,7 @@ public final class JGTITable extends JTable implements DropTargetListener
       {
         if ( getDragEnabled ()
             && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 )
-            && ( rowAtPoint ( event.getPoint () ) != -1 ) )
+            && JGTITable.this.dragAndDropAllowed )
         {
           TransferHandler transferHandler = getTransferHandler ();
           transferHandler.exportAsDrag ( JGTITable.this, event, transferHandler

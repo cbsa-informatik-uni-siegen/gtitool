@@ -10,8 +10,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
  * The listener interface for receiving {@link PrettyString} changes.
  * 
  * @author Christian Fehler
- * @version $Id: PrettyStringChangedListener.java 446 2008-01-18 15:37:55Z
- *          fehler $
+ * @version $Id$
  */
 public interface PrettyStringChangedListener extends EventListener
 {

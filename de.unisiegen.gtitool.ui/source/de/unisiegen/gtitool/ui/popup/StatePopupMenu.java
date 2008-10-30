@@ -39,13 +39,13 @@ public final class StatePopupMenu extends JPopupMenu
   /**
    * The {@link DefaultStateView}
    */
-  private DefaultStateView state;
+  protected DefaultStateView state;
 
 
   /**
    * DefaultMachineModel {@link GraphModel}
    */
-  private DefaultMachineModel model;
+  protected DefaultMachineModel model;
 
 
   /**
@@ -75,13 +75,13 @@ public final class StatePopupMenu extends JPopupMenu
   /**
    * The parent {@link JFrame}.
    */
-  private JFrame parent;
+  protected JFrame parent;
 
 
   /**
    * The {@link MachinePanel}.
    */
-  private MachinePanel machinePanel;
+  protected MachinePanel machinePanel;
 
 
   /**
@@ -114,7 +114,6 @@ public final class StatePopupMenu extends JPopupMenu
     this.delete.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -129,7 +128,6 @@ public final class StatePopupMenu extends JPopupMenu
     this.startState.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -156,7 +154,6 @@ public final class StatePopupMenu extends JPopupMenu
     this.finalState.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -185,7 +182,6 @@ public final class StatePopupMenu extends JPopupMenu
     this.configurate.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {

@@ -16,8 +16,7 @@ import de.unisiegen.gtitool.core.i18n.Messages;
  * regular.
  * 
  * @author Benjamin Mies
- * @version $Id: GrammarNonterminalNotReachableException.java 695 2008-03-28
- *          18:02:32Z fehler $
+ * @version $Id$
  */
 public final class GrammarRegularGrammarException extends GrammarException
     implements ProductionWordMembersInvolvedException
@@ -52,17 +51,25 @@ public final class GrammarRegularGrammarException extends GrammarException
   {
     super ();
 
-    // Production
+    // production
     if ( production == null )
     {
       throw new NullPointerException ( "production is null" ); //$NON-NLS-1$
     }
     this.production = production;
 
+    // symbols
+    if ( symbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
     this.symbols = symbols;
-    // Message and description
+
+    // message
     setPrettyMessage ( Messages
         .getPrettyString ( "GrammarRegularGrammarException.Message" ) ); //$NON-NLS-1$
+
+    // description
     setPrettyDescription ( Messages.getPrettyString (
         "GrammarRegularGrammarException.Description", //$NON-NLS-1$
         this.production.toPrettyString () ) );

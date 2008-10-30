@@ -195,7 +195,7 @@ public final class TransitionDialog implements
   /**
    * The {@link TransitionDialogForm}.
    */
-  private TransitionDialogForm gui;
+  protected TransitionDialogForm gui;
 
 
   /**
@@ -656,7 +656,6 @@ public final class TransitionDialog implements
           private static final long serialVersionUID = 0L;
 
 
-          @SuppressWarnings ( "synthetic-access" )
           @Override
           protected boolean importListModelRows ( JGTIList jGTIList,
               JGTIListModelRows rows, int targetIndex )
@@ -679,7 +678,6 @@ public final class TransitionDialog implements
       private static final long serialVersionUID = 0L;
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       protected boolean importListModelRows ( JGTIList jGTIList,
           JGTIListModelRows rows, int targetIndex )
@@ -748,7 +746,6 @@ public final class TransitionDialog implements
         .addParseableChangedListener ( new ParseableChangedListener < Word > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void parseableChanged ( Word newWord )
           {
             if ( newWord != null )
@@ -768,7 +765,6 @@ public final class TransitionDialog implements
         .addParseableChangedListener ( new ParseableChangedListener < Word > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void parseableChanged ( Word newWord )
           {
             if ( newWord != null )
@@ -837,7 +833,7 @@ public final class TransitionDialog implements
    * @param rows The {@link JGTIListModelRows}.
    * @param targetIndex The target index.
    */
-  private final void moveRowsToAlphabet (
+  protected final void moveRowsToAlphabet (
       @SuppressWarnings ( "unused" ) JGTIList jGTIList, JGTIListModelRows rows,
       @SuppressWarnings ( "unused" ) int targetIndex )
   {
@@ -863,7 +859,7 @@ public final class TransitionDialog implements
    * @param rows The {@link JGTIListModelRows}.
    * @param targetIndex The target index.
    */
-  private final void moveRowsToChangeOverSet (
+  protected final void moveRowsToChangeOverSet (
       @SuppressWarnings ( "unused" ) JGTIList jGTIList, JGTIListModelRows rows,
       @SuppressWarnings ( "unused" ) int targetIndex )
   {
@@ -903,7 +899,7 @@ public final class TransitionDialog implements
   /**
    * Sets the status of the buttons.
    */
-  private final void setButtonStatus ()
+  protected final void setButtonStatus ()
   {
     if ( ( this.gui.styledWordParserPanelRead.getParsedObject () == null )
         || ( this.gui.styledWordParserPanelWrite.getParsedObject () == null )
@@ -965,7 +961,7 @@ public final class TransitionDialog implements
   /**
    * Updates the current resulting {@link Transition}.
    */
-  private final void updateResultingTransition ()
+  protected final void updateResultingTransition ()
   {
     try
     {

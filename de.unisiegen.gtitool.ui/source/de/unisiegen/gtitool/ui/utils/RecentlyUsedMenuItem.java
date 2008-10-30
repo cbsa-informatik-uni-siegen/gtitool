@@ -27,13 +27,13 @@ public final class RecentlyUsedMenuItem extends JMenuItem
   /**
    * The {@link MainWindow}
    */
-  private MainWindow mainWindow;
+  protected MainWindow mainWindow;
 
 
   /**
    * The File this RecentlyUsedItem is associated with
    */
-  private File file;
+  protected File file;
 
 
   /**
@@ -52,7 +52,6 @@ public final class RecentlyUsedMenuItem extends JMenuItem
     addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {

@@ -38,7 +38,7 @@ public final class JGTITextArea extends JTextArea
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger.getLogger ( JGTITextArea.class );
+  protected static final Logger logger = Logger.getLogger ( JGTITextArea.class );
 
 
   /**
@@ -142,7 +142,6 @@ public final class JGTITextArea extends JTextArea
       private static final long serialVersionUID = 1L;
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public final void insertString ( int offset, String string,
           AttributeSet attributeSet ) throws BadLocationException

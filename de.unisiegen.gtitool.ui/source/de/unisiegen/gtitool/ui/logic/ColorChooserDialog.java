@@ -73,13 +73,11 @@ public final class ColorChooserDialog implements
         new ChangeListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void stateChanged (
               @SuppressWarnings ( "unused" ) ChangeEvent event )
           {
             updatePreview ();
           }
-
         } );
   }
 
@@ -166,7 +164,7 @@ public final class ColorChooserDialog implements
   /**
    * Updates the preview.
    */
-  private final void updatePreview ()
+  protected final void updatePreview ()
   {
     this.gui.jGTILabelNewColorColor.setBackground ( this.gui.getColor () );
     this.gui.jGTILabelNewColorText.setForeground ( this.gui.getColor () );

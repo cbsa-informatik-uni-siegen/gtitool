@@ -73,7 +73,7 @@ public abstract class Connection extends Thread
   /**
    * The {@link Network}.
    */
-  private Network network;
+  protected Network network;
 
 
   /**
@@ -301,7 +301,6 @@ public abstract class Connection extends Thread
     SwingUtilities.invokeLater ( new Runnable ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void run ()
       {
         Connection.this.network.fireExchangeFinished ();
@@ -320,7 +319,6 @@ public abstract class Connection extends Thread
     SwingUtilities.invokeLater ( new Runnable ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void run ()
       {
         Connection.this.network.fireExchangeReceived ( newExchange );
@@ -337,7 +335,6 @@ public abstract class Connection extends Thread
     SwingUtilities.invokeLater ( new Runnable ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void run ()
       {
         Connection.this.network.fireNetworkConnected ();

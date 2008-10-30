@@ -153,7 +153,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @author Benjamin Mies
    */
-  private final class AutoStepTimerTask extends TimerTask
+  protected final class AutoStepTimerTask extends TimerTask
   {
 
     /**
@@ -167,7 +167,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       SwingUtilities.invokeLater ( new Runnable ()
       {
 
-        @SuppressWarnings ( "synthetic-access" )
         public void run ()
         {
           if ( MachinePanel.this.machine.isNextSymbolAvailable () )
@@ -251,19 +250,19 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   /**
    * Flag that indicates if a cell is edited.
    */
-  private boolean cellEditingMode = false;
+  protected boolean cellEditingMode = false;
 
 
   /**
    * Signals if drag in progress.
    */
-  private boolean dragged;
+  protected boolean dragged;
 
 
   /**
    * The {@link MachineMode}.
    */
-  private MachineMode machineMode = MachineMode.EDIT_MACHINE;
+  protected MachineMode machineMode = MachineMode.EDIT_MACHINE;
 
 
   /**
@@ -287,13 +286,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   /**
    * The source state for a new {@link Transition}.
    */
-  private StateView firstState;
+  protected StateView firstState;
 
 
   /**
    * The {@link JGTIGraph} containing the diagramm.
    */
-  private JGTIGraph jGTIGraph;
+  protected JGTIGraph jGTIGraph;
 
 
   /**
@@ -305,7 +304,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   /**
    * The {@link MachinePanelForm}.
    */
-  private MachinePanelForm gui;
+  protected MachinePanelForm gui;
 
 
   /**
@@ -317,19 +316,19 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   /**
    * The {@link Machine}.
    */
-  private Machine machine;
+  protected Machine machine;
 
 
   /**
    * The {@link MainWindowForm}.
    */
-  private MainWindowForm mainWindowForm;
+  protected MainWindowForm mainWindowForm;
 
 
   /**
    * The {@link DefaultMachineModel}.
    */
-  private DefaultMachineModel model;
+  protected DefaultMachineModel model;
 
 
   /**
@@ -341,7 +340,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   /**
    * Flag signals if mouse button is down.
    */
-  private boolean mouseDown = false;
+  protected boolean mouseDown = false;
 
 
   /**
@@ -359,7 +358,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   /**
    * The {@link JPopupMenu}.
    */
-  private JPopupMenu popup;
+  protected JPopupMenu popup;
 
 
   /**
@@ -383,7 +382,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   /**
    * The zoom factor for this graph.
    */
-  private double zoomFactor = 1.0;
+  protected double zoomFactor = 1.0;
 
 
   /**
@@ -451,7 +450,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         new WordModeChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void wordModeChanged ( WordModeItem newValue )
           {
             if ( newValue.equals ( WordModeItem.LEFT ) )
@@ -508,7 +506,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
 
       @Override
-      @SuppressWarnings ( "synthetic-access" )
       public void keyPressed ( KeyEvent event )
       {
         if ( event.getKeyCode () == KeyEvent.VK_ESCAPE )
@@ -537,7 +534,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.jGTIGraph.addGraphSelectionListener ( new GraphSelectionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void valueChanged (
           @SuppressWarnings ( "unused" ) GraphSelectionEvent event )
       {
@@ -551,7 +547,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       /**
        * Invoked when a mouse button has been pressed on a component.
        */
-      @SuppressWarnings ( "synthetic-access" )
+
       @Override
       public void mousePressed ( @SuppressWarnings ( "unused" ) MouseEvent e )
       {
@@ -563,7 +559,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
        * Invoked when a mouse button has been released on a component.
        */
       @Override
-      @SuppressWarnings ( "synthetic-access" )
       public void mouseReleased ( @SuppressWarnings ( "unused" ) MouseEvent e )
       {
         MachinePanel.this.mouseDown = false;
@@ -574,7 +569,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void modifyStatusChanged ( boolean modified )
       {
         fireModifyStatusChanged ( modified );
@@ -781,7 +775,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @return the new created Popup Menu
    */
-  private final EnterWordModePopupMenu createEnterWordModePopupMenu ()
+  protected final EnterWordModePopupMenu createEnterWordModePopupMenu ()
   {
     return new EnterWordModePopupMenu ( this.mainWindowForm );
   }
@@ -871,7 +865,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param forceModify True if the modify is forced, otherwise false.
    */
-  private final void fireModifyStatusChanged ( boolean forceModify )
+  protected final void fireModifyStatusChanged ( boolean forceModify )
   {
     clearValidationMessages ();
 
@@ -1662,7 +1656,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       FileFilter fileFilter = new FileFilter ()
       {
 
-        @SuppressWarnings ( "synthetic-access" )
         @Override
         public boolean accept ( File acceptedFile )
         {
@@ -1679,7 +1672,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         }
 
 
-        @SuppressWarnings ( "synthetic-access" )
         @Override
         public String getDescription ()
         {
@@ -2317,7 +2309,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       cellEditor.addCellEditorListener ( new CellEditorListener ()
       {
 
-        @SuppressWarnings ( "synthetic-access" )
         public void editingCanceled (
             @SuppressWarnings ( "unused" ) ChangeEvent event )
         {
@@ -2327,7 +2318,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         }
 
 
-        @SuppressWarnings ( "synthetic-access" )
         public void editingStopped (
             @SuppressWarnings ( "unused" ) ChangeEvent event )
         {
@@ -2399,7 +2389,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           new PDAModeChangedListener ()
           {
 
-            @SuppressWarnings ( "synthetic-access" )
             public void pdaModeChanged ( PDAModeItem newValue )
             {
               if ( newValue.equals ( PDAModeItem.SHOW ) )
@@ -2446,7 +2435,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     MouseListener mouseListener = new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -2458,7 +2446,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     MouseMotionListener mouseMotionListener = new MouseMotionAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseDragged ( MouseEvent event )
       {
@@ -2532,7 +2519,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       /**
        * Invoked when the mouse has been clicked on a component.
        */
-      @SuppressWarnings ( "synthetic-access" )
+
       @Override
       public void mouseClicked ( MouseEvent event )
       {
@@ -2564,7 +2551,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
        * Invoked when the mouse button has been clicked (pressed and released)
        * on a component.
        */
-      @SuppressWarnings ( "synthetic-access" )
+
       @Override
       public void mouseClicked ( MouseEvent event )
       {
@@ -2644,7 +2631,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.addTransition = new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseClicked ( MouseEvent event )
       {
@@ -2716,7 +2702,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -2739,7 +2724,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.transitionMove = new MouseMotionAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseDragged ( MouseEvent event )
       {
@@ -2789,7 +2773,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
        * Invoked when the mouse button has been moved on a component (with no
        * buttons no down).
        */
-      @SuppressWarnings ( "synthetic-access" )
+
       @Override
       public void mouseMoved ( MouseEvent event )
       {
@@ -2808,7 +2792,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
        * Invoked when the mouse button has been clicked (pressed and released)
        * on a component.
        */
-      @SuppressWarnings ( "synthetic-access" )
+
       @Override
       public void mouseClicked ( MouseEvent event )
       {
@@ -2893,7 +2877,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
        * Invoked when the mouse button has been clicked (pressed and released)
        * on a component.
        */
-      @SuppressWarnings ( "synthetic-access" )
+
       @Override
       public void mouseClicked ( MouseEvent event )
       {
@@ -2977,7 +2961,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
        * Invoked when the mouse button has been clicked (pressed and released)
        * on a component.
        */
-      @SuppressWarnings ( "synthetic-access" )
+
       @Override
       public void mouseClicked ( MouseEvent event )
       {
@@ -3371,7 +3355,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * @param delayed Flag that indicates that the timer should start after a
    *          delay.
    */
-  @SuppressWarnings ( "synthetic-access" )
+
   private final void startAutoStepTimer ( boolean delayed )
   {
     this.autoStepTimer = new Timer ();
@@ -3530,7 +3514,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * Updates the selected {@link Transition}s and {@link State}s or clears the
    * selected.
    */
-  private final void updateSelected ()
+  protected final void updateSelected ()
   {
     Object cell = this.jGTIGraph.getSelectionCell ();
 
@@ -3563,7 +3547,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link MouseEvent}.
    */
-  private final void updateSelected ( MouseEvent event )
+  protected final void updateSelected ( MouseEvent event )
   {
     if ( this.jGTIGraph.getSelectionCell () == null )
     {

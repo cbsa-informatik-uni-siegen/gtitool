@@ -33,7 +33,7 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
   /**
    * The {@link ConfirmDialogForm}.
    */
-  private ConfirmDialogForm gui;
+  protected ConfirmDialogForm gui;
 
 
   /**
@@ -75,13 +75,13 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
   /**
    * The rows.
    */
-  private int rows = 4;
+  protected int rows = 4;
 
 
   /**
    * The columns.
    */
-  private int columns = 18;
+  protected int columns = 18;
 
 
   /**
@@ -193,7 +193,7 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
   /**
    * Centers the dialog.
    */
-  private final void centerDialog ()
+  protected final void centerDialog ()
   {
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
@@ -347,7 +347,6 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
         new AdjustmentListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void adjustmentValueChanged (
               @SuppressWarnings ( "unused" ) AdjustmentEvent event )
           {

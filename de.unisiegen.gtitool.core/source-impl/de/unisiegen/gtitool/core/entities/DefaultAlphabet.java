@@ -87,7 +87,6 @@ public final class DefaultAlphabet implements Alphabet
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void prettyStringChanged ()
       {
         firePrettyStringChanged ();
@@ -466,7 +465,7 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * Let the listeners know that the {@link PrettyString} has changed.
    */
-  private final void firePrettyStringChanged ()
+  protected final void firePrettyStringChanged ()
   {
     this.cachedPrettyString = null;
 

@@ -53,7 +53,7 @@ public final class ReachableStatesDialog implements
    * 
    * @author Christian Fehler
    */
-  private final class AutoStepTimerTask extends TimerTask
+  protected final class AutoStepTimerTask extends TimerTask
   {
 
     /**
@@ -67,7 +67,6 @@ public final class ReachableStatesDialog implements
       SwingUtilities.invokeLater ( new Runnable ()
       {
 
-        @SuppressWarnings ( "synthetic-access" )
         public void run ()
         {
           if ( ReachableStatesDialog.this.endReached )
@@ -406,7 +405,7 @@ public final class ReachableStatesDialog implements
   /**
    * Flag that indicates if the end is reached.
    */
-  private boolean endReached = false;
+  protected boolean endReached = false;
 
 
   /**
@@ -953,7 +952,7 @@ public final class ReachableStatesDialog implements
    * @param manualStep Flag that indicates if the {@link Step} is a manual
    *          {@link Step}.
    */
-  private final void performNextStep ( boolean manualStep )
+  protected final void performNextStep ( boolean manualStep )
   {
     addStepItem ();
 
@@ -1389,7 +1388,6 @@ public final class ReachableStatesDialog implements
   /**
    * Starts the auto step timer.
    */
-  @SuppressWarnings ( "synthetic-access" )
   private final void startAutoStepTimer ()
   {
     cancelAutoStepTimer ();

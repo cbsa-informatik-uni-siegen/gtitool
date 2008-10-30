@@ -69,7 +69,6 @@ public final class MinimizeMachineDialog implements
       SwingUtilities.invokeLater ( new Runnable ()
       {
 
-        @SuppressWarnings ( "synthetic-access" )
         public void run ()
         {
           handleNextStep ();
@@ -77,7 +76,6 @@ public final class MinimizeMachineDialog implements
           {
             handleStop ();
           }
-
         }
       } );
     }
@@ -106,7 +104,7 @@ public final class MinimizeMachineDialog implements
   /**
    * Flag that indicates if the end is reached.
    */
-  private boolean endReached = false;
+  protected boolean endReached = false;
 
 
   /**

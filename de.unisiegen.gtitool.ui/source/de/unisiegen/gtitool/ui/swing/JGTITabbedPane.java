@@ -14,8 +14,10 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -71,13 +73,19 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
   /**
    * The drop point.
    */
-  private Point dropPoint = null;
+  protected Point dropPoint = null;
 
 
   /**
    * The allowed drag and drop sources.
    */
   private ArrayList < JComponent > allowedDndSources;
+
+
+  /**
+   * Flag that indicates that the drag and drop is allowed.
+   */
+  protected boolean dragAndDropAllowed = true;
 
 
   /**
@@ -274,7 +282,7 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
    * @param y The y position.
    * @return the tab index.
    */
-  private final int getTabIndex ( int x, int y )
+  protected final int getTabIndex ( int x, int y )
   {
     return getUI ().tabForCoordinate ( this, x, y );
   }
@@ -299,7 +307,6 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
       private static final long serialVersionUID = -7483915272887199973L;
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       protected boolean importComponent ( JGTITabbedPane source,
           @SuppressWarnings ( "unused" ) JGTITabbedPane target,
@@ -328,17 +335,34 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
       }
     } );
 
+    // must be removed because of problems with the drag and drop
+    for ( MouseMotionListener current : getMouseMotionListeners () )
+    {
+      removeMouseMotionListener ( current );
+    }
+
+    // store the drag and drop allowed state
+    addMouseListener ( new MouseAdapter ()
+    {
+
+      @Override
+      public void mousePressed ( MouseEvent event )
+      {
+        JGTITabbedPane.this.dragAndDropAllowed = getTabIndex ( event
+            .getPoint ().x, event.getPoint ().y ) != -1;
+      }
+    } );
+
     // swing bugfix
     addMouseMotionListener ( new MouseMotionAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseDragged ( MouseEvent event )
       {
         if ( getDragEnabled ()
             && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 )
-            && ( getTabIndex ( event.getPoint ().x, event.getPoint ().y ) != -1 ) )
+            && JGTITabbedPane.this.dragAndDropAllowed )
         {
           TransferHandler transferHandler = getTransferHandler ();
           transferHandler.exportAsDrag ( JGTITabbedPane.this, event,

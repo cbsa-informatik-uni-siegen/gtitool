@@ -9,7 +9,10 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
+import org.jgraph.JGraph;
+import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.CellView;
+import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.PortView;
 import org.jgraph.plaf.basic.BasicGraphUI;
 
@@ -62,11 +65,10 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
      * 
      * @param event The {@link MouseEvent}.
      */
-    @SuppressWarnings ( "synthetic-access" )
     private final void handleSelection ( MouseEvent event )
     {
-      PortView portView = JGTIBasicGraphUI.this.graph.getPortViewAt ( event
-          .getX (), event.getY () );
+      PortView portView = getGraph ().getPortViewAt ( event.getX (),
+          event.getY () );
 
       if ( ( portView != null )
           && ( portView.getParentView () instanceof StateView ) )
@@ -74,14 +76,14 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
         StateView stateView = ( StateView ) portView.getParentView ();
 
         if ( stateView.isSelectionAllowed ( event.getX (), event.getY (),
-            JGTIBasicGraphUI.this.graph.getScale () ) )
+            getGraph ().getScale () ) )
         {
           selectCellForEvent ( this.cell.getCell (), event );
-          JGTIBasicGraphUI.this.focus = this.cell;
-          if ( JGTIBasicGraphUI.this.handle != null )
+          setFocus ( this.cell );
+          if ( getHandle () != null )
           {
-            JGTIBasicGraphUI.this.handle.mousePressed ( event );
-            this.handler = JGTIBasicGraphUI.this.handle;
+            getHandle ().mousePressed ( event );
+            this.handler = getHandle ();
           }
           event.consume ();
           this.cell = null;
@@ -90,7 +92,7 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
         {
           event.consume ();
           this.cell = null;
-          JGTIBasicGraphUI.this.graph.clearSelection ();
+          getGraph ().clearSelection ();
         }
       }
     }
@@ -103,7 +105,6 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
      * @param childView The child view.
      * @return True if descendant, otherwise false.
      */
-    @SuppressWarnings ( "synthetic-access" )
     protected final boolean isDescendant ( CellView parentView,
         CellView childView )
     {
@@ -123,8 +124,7 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
           return true;
         }
       }
-      while ( ( ancestor = JGTIBasicGraphUI.this.graphModel
-          .getParent ( ancestor ) ) != null );
+      while ( ( ancestor = getGraphModel ().getParent ( ancestor ) ) != null );
 
       return false;
     }
@@ -135,51 +135,45 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
      * 
      * @see MouseMotionListener#mouseDragged(MouseEvent)
      */
-    @SuppressWarnings ( "synthetic-access" )
     public final void mouseDragged ( MouseEvent event )
     {
-      autoscroll ( JGTIBasicGraphUI.this.graph, event.getPoint () );
-      if ( JGTIBasicGraphUI.this.graph.isEnabled () && !event.isConsumed () )
+      autoscroll ( getGraph (), event.getPoint () );
+      if ( getGraph ().isEnabled () && !event.isConsumed () )
       {
 
-        if ( ( this.handler != null )
-            && ( this.handler == JGTIBasicGraphUI.this.marquee ) )
+        if ( ( this.handler != null ) && ( this.handler == getMarquee () ) )
         {
-          JGTIBasicGraphUI.this.marquee.mouseDragged ( event );
+          getMarquee ().mouseDragged ( event );
         }
-        else if ( ( this.handler == null )
-            && !isEditing ( JGTIBasicGraphUI.this.graph )
-            && ( JGTIBasicGraphUI.this.focus != null ) )
+        else if ( ( this.handler == null ) && !isEditing ( getGraph () )
+            && ( getFocus () != null ) )
         {
-          if ( ( JGTIBasicGraphUI.this.focus != null )
-              && ( JGTIBasicGraphUI.this.focus instanceof StateView ) )
+          if ( ( getFocus () != null ) && ( getFocus () instanceof StateView ) )
           {
-            StateView stateView = ( StateView ) JGTIBasicGraphUI.this.focus;
+            StateView stateView = ( StateView ) getFocus ();
 
             if ( !stateView.isSelectionAllowed ( event.getX (), event.getY (),
-                JGTIBasicGraphUI.this.graph.getScale () ) )
+                getGraph ().getScale () ) )
             {
               event.consume ();
               return;
             }
           }
 
-          if ( !JGTIBasicGraphUI.this.graph
-              .isCellSelected ( JGTIBasicGraphUI.this.focus.getCell () ) )
+          if ( !getGraph ().isCellSelected ( getFocus ().getCell () ) )
           {
-            selectCellForEvent ( JGTIBasicGraphUI.this.focus.getCell (), event );
+            selectCellForEvent ( getFocus ().getCell (), event );
             this.cell = null;
           }
-          if ( JGTIBasicGraphUI.this.handle != null )
+          if ( getHandle () != null )
           {
-            JGTIBasicGraphUI.this.handle.mousePressed ( event );
+            getHandle ().mousePressed ( event );
           }
-          this.handler = JGTIBasicGraphUI.this.handle;
+          this.handler = getHandle ();
         }
-        if ( ( JGTIBasicGraphUI.this.handle != null )
-            && ( this.handler == JGTIBasicGraphUI.this.handle ) )
+        if ( ( getHandle () != null ) && ( this.handler == getHandle () ) )
         {
-          JGTIBasicGraphUI.this.handle.mouseDragged ( event );
+          getHandle ().mouseDragged ( event );
         }
       }
     }
@@ -200,30 +194,27 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
     /**
      * Invoked when a mouse button has been pressed on a component.
      */
-    @SuppressWarnings ( "synthetic-access" )
     @Override
     public final void mousePressed ( MouseEvent event )
     {
       this.handler = null;
-      if ( !event.isConsumed () && JGTIBasicGraphUI.this.graph.isEnabled () )
+      if ( !event.isConsumed () && getGraph ().isEnabled () )
       {
-        JGTIBasicGraphUI.this.graph.requestFocus ();
-        int s = JGTIBasicGraphUI.this.graph.getTolerance ();
-        Rectangle2D r = JGTIBasicGraphUI.this.graph
-            .fromScreen ( new Rectangle2D.Double ( event.getX () - s, event
-                .getY ()
-                - s, 2 * s, 2 * s ) );
-        JGTIBasicGraphUI.this.lastFocus = JGTIBasicGraphUI.this.focus;
-        JGTIBasicGraphUI.this.focus = ( ( JGTIBasicGraphUI.this.focus != null ) && JGTIBasicGraphUI.this.focus
-            .intersects ( JGTIBasicGraphUI.this.graph, r ) ) ? JGTIBasicGraphUI.this.focus
-            : null;
+        getGraph ().requestFocus ();
+        int s = getGraph ().getTolerance ();
+        Rectangle2D r = getGraph ().fromScreen (
+            new Rectangle2D.Double ( event.getX () - s, event.getY () - s,
+                2 * s, 2 * s ) );
+        setLastFocus ( getFocus () );
+        setFocus ( ( ( getFocus () != null ) && getFocus ().intersects (
+            getGraph (), r ) ) ? getFocus () : null );
 
-        this.cell = JGTIBasicGraphUI.this.graph.getNextSelectableViewAt ( null,
-            event.getX (), event.getY () );
+        this.cell = getGraph ().getNextSelectableViewAt ( null, event.getX (),
+            event.getY () );
 
-        if ( JGTIBasicGraphUI.this.focus == null )
+        if ( getFocus () == null )
         {
-          JGTIBasicGraphUI.this.focus = this.cell;
+          setFocus ( this.cell );
         }
         completeEditing ();
 
@@ -232,16 +223,14 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
         {
           if ( !isToggleSelectionEvent ( event ) )
           {
-            if ( JGTIBasicGraphUI.this.handle != null )
+            if ( getHandle () != null )
             {
-              JGTIBasicGraphUI.this.handle.mousePressed ( event );
-              this.handler = JGTIBasicGraphUI.this.handle;
+              getHandle ().mousePressed ( event );
+              this.handler = getHandle ();
             }
 
-            if ( !event.isConsumed ()
-                && ( this.cell != null )
-                && !JGTIBasicGraphUI.this.graph.isCellSelected ( this.cell
-                    .getCell () ) )
+            if ( !event.isConsumed () && ( this.cell != null )
+                && !getGraph ().isCellSelected ( this.cell.getCell () ) )
             {
               if ( this.cell instanceof StateView )
               {
@@ -250,11 +239,11 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
               else
               {
                 selectCellForEvent ( this.cell.getCell (), event );
-                JGTIBasicGraphUI.this.focus = this.cell;
-                if ( JGTIBasicGraphUI.this.handle != null )
+                setFocus ( this.cell );
+                if ( getHandle () != null )
                 {
-                  JGTIBasicGraphUI.this.handle.mousePressed ( event );
-                  this.handler = JGTIBasicGraphUI.this.handle;
+                  getHandle ().mousePressed ( event );
+                  this.handler = getHandle ();
                 }
                 event.consume ();
                 this.cell = null;
@@ -263,12 +252,12 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
             else if ( this.cell == null )
             {
               event.consume ();
-              JGTIBasicGraphUI.this.graph.clearSelection ();
+              getGraph ().clearSelection ();
             }
             else
             {
-              PortView portView = JGTIBasicGraphUI.this.graph.getPortViewAt (
-                  event.getX (), event.getY () );
+              PortView portView = getGraph ().getPortViewAt ( event.getX (),
+                  event.getY () );
 
               if ( ( portView != null )
                   && ( portView.getParentView () instanceof StateView ) )
@@ -276,11 +265,11 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
                 StateView stateView = ( StateView ) portView.getParentView ();
 
                 if ( !stateView.isSelectionAllowed ( event.getX (), event
-                    .getY (), JGTIBasicGraphUI.this.graph.getScale () ) )
+                    .getY (), getGraph ().getScale () ) )
                 {
                   event.consume ();
                   this.cell = null;
-                  JGTIBasicGraphUI.this.graph.clearSelection ();
+                  getGraph ().clearSelection ();
                 }
               }
             }
@@ -288,12 +277,11 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
         }
 
         if ( !event.isConsumed ()
-            && ( JGTIBasicGraphUI.this.marquee != null )
-            && ( !isToggleSelectionEvent ( event )
-                || ( JGTIBasicGraphUI.this.focus == null ) || isForceMarquee ) )
+            && ( getMarquee () != null )
+            && ( !isToggleSelectionEvent ( event ) || ( getGraph () == null ) || isForceMarquee ) )
         {
-          JGTIBasicGraphUI.this.marquee.mousePressed ( event );
-          this.handler = JGTIBasicGraphUI.this.marquee;
+          getMarquee ().mousePressed ( event );
+          this.handler = getMarquee ();
         }
       }
     }
@@ -304,41 +292,36 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
      * 
      * @see MouseAdapter#mouseReleased(MouseEvent)
      */
-    @SuppressWarnings ( "synthetic-access" )
     @Override
     public final void mouseReleased ( MouseEvent event )
     {
       try
       {
         if ( ( event != null ) && !event.isConsumed ()
-            && ( JGTIBasicGraphUI.this.graph != null )
-            && JGTIBasicGraphUI.this.graph.isEnabled () )
+            && ( getGraph () != null ) && getGraph ().isEnabled () )
         {
-          if ( ( this.handler == JGTIBasicGraphUI.this.marquee )
-              && ( JGTIBasicGraphUI.this.marquee != null ) )
+          if ( ( this.handler == getMarquee () ) && ( getMarquee () != null ) )
           {
-            JGTIBasicGraphUI.this.marquee.mouseReleased ( event );
+            getMarquee ().mouseReleased ( event );
           }
-          else if ( ( this.handler == JGTIBasicGraphUI.this.handle )
-              && ( JGTIBasicGraphUI.this.handle != null ) )
+          else if ( ( this.handler == getHandle () ) && ( getHandle () != null ) )
           {
-            JGTIBasicGraphUI.this.handle.mouseReleased ( event );
+            getHandle ().mouseReleased ( event );
           }
-          if ( isDescendant ( this.cell, JGTIBasicGraphUI.this.focus )
+          if ( isDescendant ( this.cell, getFocus () )
               && ( event.getModifiers () != 0 ) )
           {
             // Do not switch to parent if Special Selection
-            this.cell = JGTIBasicGraphUI.this.focus;
+            this.cell = getFocus ();
           }
           if ( !event.isConsumed () && ( this.cell != null ) )
           {
             Object tmp = this.cell.getCell ();
-            boolean wasSelected = JGTIBasicGraphUI.this.graph
-                .isCellSelected ( tmp );
+            boolean wasSelected = getGraph ().isCellSelected ( tmp );
             if ( !event.isPopupTrigger () || !wasSelected )
             {
               selectCellForEvent ( tmp, event );
-              JGTIBasicGraphUI.this.focus = this.cell;
+              setFocus ( this.cell );
             }
           }
         }
@@ -370,11 +353,100 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
   /**
    * {@inheritDoc}
    * 
+   * @see BasicGraphUI#completeEditing()
+   */
+  @Override
+  protected final void completeEditing ()
+  {
+    super.completeEditing ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see BasicGraphUI#createMouseListener()
    */
   @Override
   protected final MouseListener createMouseListener ()
   {
     return new GTIMouseHandler ();
+  }
+
+
+  /**
+   * Returns the focus {@link CellView}.
+   * 
+   * @return The focus {@link CellView}.
+   */
+  protected final CellView getFocus ()
+  {
+    return this.focus;
+  }
+
+
+  /**
+   * Returns the {@link JGraph}.
+   * 
+   * @return The {@link JGraph}.
+   */
+  protected final JGraph getGraph ()
+  {
+    return this.graph;
+  }
+
+
+  /**
+   * Returns the {@link GraphModel}.
+   * 
+   * @return The {@link GraphModel}.
+   */
+  protected final GraphModel getGraphModel ()
+  {
+    return this.graphModel;
+  }
+
+
+  /**
+   * Returns the last focus {@link CellView}.
+   * 
+   * @return The last focus {@link CellView}.
+   */
+  protected final CellView getLastFocus ()
+  {
+    return this.lastFocus;
+  }
+
+
+  /**
+   * Returns the {@link BasicMarqueeHandler}.
+   * 
+   * @return The {@link BasicMarqueeHandler}.
+   */
+  protected final BasicMarqueeHandler getMarquee ()
+  {
+    return this.marquee;
+  }
+
+
+  /**
+   * Sets the focus {@link CellView}.
+   * 
+   * @param focus The focus {@link CellView}.
+   */
+  protected final void setFocus ( CellView focus )
+  {
+    this.focus = focus;
+  }
+
+
+  /**
+   * Sets the last focus {@link CellView}.
+   * 
+   * @param lastFocus The last focus {@link CellView}.
+   */
+  protected final void setLastFocus ( CellView lastFocus )
+  {
+    this.lastFocus = lastFocus;
   }
 }

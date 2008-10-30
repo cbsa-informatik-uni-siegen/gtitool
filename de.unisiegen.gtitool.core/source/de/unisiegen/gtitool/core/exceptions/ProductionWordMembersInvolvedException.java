@@ -11,8 +11,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
  * Involved {@link Symbol} interface.
  * 
  * @author Christian Fehler
- * @version $Id: MachineEpsilonTransitionException.java 90 2007-11-04 16:20:27Z
- *          fehler $
+ * @version $Id$
  */
 public interface ProductionWordMembersInvolvedException
 {
@@ -23,5 +22,4 @@ public interface ProductionWordMembersInvolvedException
    * @return The {@link ProductionWordMember}s.
    */
   public ArrayList < ProductionWordMember > getProductionWordMember ();
-
 }

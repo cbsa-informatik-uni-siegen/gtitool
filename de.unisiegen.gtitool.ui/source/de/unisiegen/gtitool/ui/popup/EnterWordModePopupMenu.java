@@ -55,7 +55,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
   /**
    * The {@link MainWindowForm}
    */
-  private MainWindowForm mainWindowForm;
+  protected MainWindowForm mainWindowForm;
 
 
   /**
@@ -83,7 +83,6 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemStart.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -104,7 +103,6 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemPreviousStep.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -124,7 +122,6 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemNextStep.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -144,7 +141,6 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemStop.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {

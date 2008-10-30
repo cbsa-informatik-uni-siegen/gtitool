@@ -39,7 +39,7 @@ public final class DefaultPopupMenu extends JPopupMenu
   /**
    * The {@link MachinePanel}
    */
-  private MachinePanel panel;
+  protected MachinePanel panel;
 
 
   /**
@@ -117,7 +117,6 @@ public final class DefaultPopupMenu extends JPopupMenu
     this.zoom50.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -130,7 +129,6 @@ public final class DefaultPopupMenu extends JPopupMenu
     this.zoom100.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -143,7 +141,6 @@ public final class DefaultPopupMenu extends JPopupMenu
     this.zoom150.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -178,7 +175,6 @@ public final class DefaultPopupMenu extends JPopupMenu
     this.validate.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -192,7 +188,6 @@ public final class DefaultPopupMenu extends JPopupMenu
     this.layout.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {

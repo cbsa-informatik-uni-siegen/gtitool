@@ -74,7 +74,6 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
         .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void parseableChanged (
               @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
           {
@@ -91,7 +90,6 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
         .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void parseableChanged (
               @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
           {
@@ -223,7 +221,7 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
   /**
    * Sets the status of the buttons.
    */
-  private final void setButtonStatus ()
+  protected final void setButtonStatus ()
   {
     if ( ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .getParsedObject () == null )

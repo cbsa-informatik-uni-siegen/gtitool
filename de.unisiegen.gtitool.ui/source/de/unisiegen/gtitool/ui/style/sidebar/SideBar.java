@@ -98,7 +98,7 @@ public final class SideBar < E extends Entity < E >> extends JComponent
   /**
    * The status if something has changed.
    */
-  private boolean proppertyChanged;
+  protected boolean proppertyChanged;
 
 
   /**
@@ -141,8 +141,8 @@ public final class SideBar < E extends Entity < E >> extends JComponent
     this.verticalScrollBar.addAdjustmentListener ( new AdjustmentListener ()
     {
 
-      public void adjustmentValueChanged ( @SuppressWarnings ( "unused" )
-      AdjustmentEvent event )
+      public void adjustmentValueChanged (
+          @SuppressWarnings ( "unused" ) AdjustmentEvent event )
       {
         repaint ();
       }
@@ -151,7 +151,6 @@ public final class SideBar < E extends Entity < E >> extends JComponent
         .addExceptionsChangedListener ( new ExceptionsChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void exceptionsChanged ()
           {
             SideBar.this.proppertyChanged = true;
@@ -161,7 +160,6 @@ public final class SideBar < E extends Entity < E >> extends JComponent
     this.addMouseMotionListener ( new MouseMotionAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseMoved ( MouseEvent event )
       {
@@ -300,7 +298,7 @@ public final class SideBar < E extends Entity < E >> extends JComponent
    * 
    * @param event The {@link MouseEvent}.
    */
-  private final void mouseMoved ( MouseEvent event )
+  protected final void mouseMoved ( MouseEvent event )
   {
     if ( this.verticalPositions == null )
     {

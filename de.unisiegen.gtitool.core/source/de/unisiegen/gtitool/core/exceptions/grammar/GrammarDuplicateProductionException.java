@@ -14,8 +14,7 @@ import de.unisiegen.gtitool.core.i18n.Messages;
  * {@link Production} that exists more than one time.
  * 
  * @author Benjamin Mies
- * @version $Id: GrammarDuplicateProductionException.java 695 2008-03-28
- *          18:02:32Z fehler $
+ * @version $Id$
  */
 public final class GrammarDuplicateProductionException extends GrammarException
     implements ProductionInvolvedException
@@ -42,15 +41,19 @@ public final class GrammarDuplicateProductionException extends GrammarException
       ArrayList < Production > productionList )
   {
     super ();
-    // Production
+
+    // production list
     if ( productionList == null )
     {
-      throw new NullPointerException ( "production is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "production list is null" ); //$NON-NLS-1$
     }
     this.productionList = productionList;
-    // Message and description
+
+    // message
     setPrettyMessage ( Messages
         .getPrettyString ( "GrammarDuplicatProductionException.Message" ) ); //$NON-NLS-1$
+
+    // description
     setPrettyDescription ( Messages.getPrettyString (
         "GrammarDuplicatProductionException.Description", productionList.get ( //$NON-NLS-1$
             0 ).toPrettyString () ) );

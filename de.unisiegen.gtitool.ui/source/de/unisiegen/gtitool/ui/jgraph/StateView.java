@@ -61,49 +61,49 @@ public final class StateView extends VertexView
     /**
      * The {@link State} color.
      */
-    private Color preferenceState;
+    protected Color preferenceState;
 
 
     /**
      * The active {@link State} color.
      */
-    private Color preferenceStateActive;
+    protected Color preferenceStateActive;
 
 
     /**
      * The {@link State} background color.
      */
-    private Color preferenceStateBackground;
+    protected Color preferenceStateBackground;
 
 
     /**
      * The error {@link State} color.
      */
-    private Color preferenceStateError;
+    protected Color preferenceStateError;
 
 
     /**
      * The final {@link State} color.
      */
-    private Color preferenceStateFinal;
+    protected Color preferenceStateFinal;
 
 
     /**
      * The slected {@link State} color.
      */
-    private Color preferenceStateSelected;
+    protected Color preferenceStateSelected;
 
 
     /**
      * The start {@link State} color.
      */
-    private Color preferenceStateStart;
+    protected Color preferenceStateStart;
 
 
     /**
      * The normal {@link Transition} color.
      */
-    private Color preferenceTransition;
+    protected Color preferenceTransition;
 
 
     /**
@@ -143,7 +143,6 @@ public final class StateView extends VertexView
           new ColorChangedAdapter ()
           {
 
-            @SuppressWarnings ( "synthetic-access" )
             @Override
             public void colorChangedState ( Color newColor )
             {
@@ -151,7 +150,6 @@ public final class StateView extends VertexView
             }
 
 
-            @SuppressWarnings ( "synthetic-access" )
             @Override
             public void colorChangedStateActive ( Color newColor )
             {
@@ -159,7 +157,6 @@ public final class StateView extends VertexView
             }
 
 
-            @SuppressWarnings ( "synthetic-access" )
             @Override
             public void colorChangedStateBackground ( Color newColor )
             {
@@ -167,7 +164,6 @@ public final class StateView extends VertexView
             }
 
 
-            @SuppressWarnings ( "synthetic-access" )
             @Override
             public void colorChangedStateError ( Color newColor )
             {
@@ -175,7 +171,6 @@ public final class StateView extends VertexView
             }
 
 
-            @SuppressWarnings ( "synthetic-access" )
             @Override
             public void colorChangedStateFinal ( Color newColor )
             {
@@ -183,7 +178,6 @@ public final class StateView extends VertexView
             }
 
 
-            @SuppressWarnings ( "synthetic-access" )
             @Override
             public void colorChangedStateSelected ( Color newColor )
             {
@@ -191,7 +185,6 @@ public final class StateView extends VertexView
             }
 
 
-            @SuppressWarnings ( "synthetic-access" )
             @Override
             public void colorChangedStateStart ( Color newColor )
             {
@@ -199,7 +192,6 @@ public final class StateView extends VertexView
             }
 
 
-            @SuppressWarnings ( "synthetic-access" )
             @Override
             public void colorChangedTransition ( Color newColor )
             {

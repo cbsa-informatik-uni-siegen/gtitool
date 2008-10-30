@@ -110,7 +110,7 @@ public final class DefaultStateView extends DefaultGraphCell implements
   /**
    * The {@link State} represented by this view.
    */
-  private State state;
+  protected State state;
 
 
   /**
@@ -150,7 +150,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
     this.state.addStateChangedListener ( new StateChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void stateChanged (
           @SuppressWarnings ( "unused" ) boolean nameChanged,
           boolean startChanged, boolean loopTransitionChanged )
@@ -184,7 +183,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
     this.graphModel.addGraphModelListener ( new GraphModelListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void graphChanged ( GraphModelEvent event )
       {
         GraphModelChange graphModelChange = event.getChange ();
@@ -254,7 +252,7 @@ public final class DefaultStateView extends DefaultGraphCell implements
   /**
    * Let the listeners know that the modify status has changed.
    */
-  private final void fireModifyStatusChanged ()
+  protected final void fireModifyStatusChanged ()
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
@@ -276,7 +274,7 @@ public final class DefaultStateView extends DefaultGraphCell implements
   /**
    * Let the listeners know that the state position has changed.
    */
-  private final void fireStatePositionChanged ()
+  protected final void fireStatePositionChanged ()
   {
     double x = getPositionX ();
     double y = getPositionY ();

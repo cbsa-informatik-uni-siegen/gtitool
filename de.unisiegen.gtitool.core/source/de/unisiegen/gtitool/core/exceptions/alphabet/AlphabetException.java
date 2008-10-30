@@ -44,13 +44,15 @@ public abstract class AlphabetException extends CoreException
   public AlphabetException ( Alphabet alphabet, ArrayList < Symbol > symbolList )
   {
     super ();
-    // Alphabet
+    
+    // alphabet
     if ( alphabet == null )
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
     this.alphabet = alphabet;
-    // SymbolList
+    
+    // symbolList
     if ( symbolList == null )
     {
       throw new NullPointerException ( "symbol list is null" ); //$NON-NLS-1$

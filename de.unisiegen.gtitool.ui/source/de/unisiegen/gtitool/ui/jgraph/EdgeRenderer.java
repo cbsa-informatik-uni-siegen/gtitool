@@ -146,25 +146,25 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
   /**
    * The error {@link Transition} color.
    */
-  private Color preferenceTransitionError;
+	protected Color preferenceTransitionError;
 
 
   /**
    * The active {@link Transition} color.
    */
-  private Color preferenceTransitionActive;
+	protected Color preferenceTransitionActive;
 
 
   /**
    * The selected {@link Transition} color.
    */
-  private Color preferenceTransitionSelected;
+	protected Color preferenceTransitionSelected;
 
 
   /**
    * The normal {@link Transition} color.
    */
-  private Color preferenceTransition;
+	protected Color preferenceTransition;
   // MODIFYEND
   
   
@@ -189,28 +189,24 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
         new ColorChangedAdapter ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void colorChangedTransition ( Color newColor )
           {
             EdgeRenderer.this.preferenceTransition = newColor;
           }
 
 
-          @SuppressWarnings ( "synthetic-access" )
           public void colorChangedTransitionActive ( Color newColor )
           {
             EdgeRenderer.this.preferenceTransitionActive = newColor;
           }
 
 
-          @SuppressWarnings ( "synthetic-access" )
           public void colorChangedTransitionError ( Color newColor )
           {
             EdgeRenderer.this.preferenceTransitionError = newColor;
           }
 
 
-          @SuppressWarnings ( "synthetic-access" )
           public void colorChangedTransitionSelected ( Color newColor )
           {
             EdgeRenderer.this.preferenceTransitionSelected = newColor;

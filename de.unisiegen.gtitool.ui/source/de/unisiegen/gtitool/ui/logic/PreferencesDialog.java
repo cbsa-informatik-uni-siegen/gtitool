@@ -537,7 +537,7 @@ public final class PreferencesDialog implements
   /**
    * The {@link AlphabetItem}.
    */
-  private AlphabetItem alphabetItem;
+  protected AlphabetItem alphabetItem;
 
 
   /**
@@ -687,7 +687,7 @@ public final class PreferencesDialog implements
   /**
    * The {@link PreferencesDialogForm}.
    */
-  private PreferencesDialogForm gui;
+  protected PreferencesDialogForm gui;
 
 
   /**
@@ -928,61 +928,61 @@ public final class PreferencesDialog implements
   /**
    * The auto interval {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuAutoStep;
+  protected JPopupMenu jPopupMenuAutoStep;
 
 
   /**
    * The color list {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuColorList;
+  protected JPopupMenu jPopupMenuColorList;
 
 
   /**
    * The language {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuLanguage;
+  protected JPopupMenu jPopupMenuLanguage;
 
 
   /**
    * The look and feel {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuLookAndFeel;
+  protected JPopupMenu jPopupMenuLookAndFeel;
 
 
   /**
    * The mouse selection {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuMouseSelection;
+  protected JPopupMenu jPopupMenuMouseSelection;
 
 
   /**
    * The {@link PDA} mode {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuPDAMode;
+  protected JPopupMenu jPopupMenuPDAMode;
 
 
   /**
    * The {@link Word} mode {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuWordMode;
+  protected JPopupMenu jPopupMenuWordMode;
 
 
   /**
    * The {@link Transition} {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuTransition;
+  protected JPopupMenu jPopupMenuTransition;
 
 
   /**
    * The push down {@link Alphabet} {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuUsePushDownAlphabet;
+  protected JPopupMenu jPopupMenuUsePushDownAlphabet;
 
 
   /**
    * The zoom factor {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuZoomFactor;
+  protected JPopupMenu jPopupMenuZoomFactor;
 
 
   /**
@@ -1024,7 +1024,7 @@ public final class PreferencesDialog implements
   /**
    * The {@link NonterminalSymbolSetItem}.
    */
-  private NonterminalSymbolSetItem nonterminalSymbolSetItem;
+  protected NonterminalSymbolSetItem nonterminalSymbolSetItem;
 
 
   /**
@@ -1042,7 +1042,7 @@ public final class PreferencesDialog implements
   /**
    * The push down {@link AlphabetItem}.
    */
-  private AlphabetItem pushDownAlphabetItem;
+  protected AlphabetItem pushDownAlphabetItem;
 
 
   /**
@@ -1054,7 +1054,7 @@ public final class PreferencesDialog implements
   /**
    * The start {@link NonterminalSymbolItem}.
    */
-  private NonterminalSymbolItem startSymbolItem;
+  protected NonterminalSymbolItem startSymbolItem;
 
 
   /**
@@ -1084,7 +1084,7 @@ public final class PreferencesDialog implements
   /**
    * The {@link TerminalSymbolSetItem}.
    */
-  private TerminalSymbolSetItem terminalSymbolSetItem;
+  protected TerminalSymbolSetItem terminalSymbolSetItem;
 
 
   /**
@@ -1367,7 +1367,6 @@ public final class PreferencesDialog implements
     jMenuItemRestoreAlphabet.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -1397,7 +1396,6 @@ public final class PreferencesDialog implements
         .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void parseableChanged ( Alphabet newAlphabet )
           {
             setButtonStatus ();
@@ -1431,7 +1429,6 @@ public final class PreferencesDialog implements
     jMenuItemRestoreAutoStep.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -1456,7 +1453,6 @@ public final class PreferencesDialog implements
     this.gui.jGTISliderAutoStep.addMouseListener ( new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mousePressed ( MouseEvent event )
       {
@@ -1468,7 +1464,6 @@ public final class PreferencesDialog implements
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -1607,7 +1602,6 @@ public final class PreferencesDialog implements
     jMenuItemRestoreColorList.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -1626,7 +1620,6 @@ public final class PreferencesDialog implements
     this.gui.jGTITreeColors.addMouseListener ( new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mousePressed ( MouseEvent event )
       {
@@ -1650,7 +1643,6 @@ public final class PreferencesDialog implements
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -1820,7 +1812,6 @@ public final class PreferencesDialog implements
     jMenuItemRestoreLanguage.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -1835,7 +1826,6 @@ public final class PreferencesDialog implements
     this.gui.jGTIComboBoxLanguage.addMouseListener ( new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mousePressed ( MouseEvent event )
       {
@@ -1847,7 +1837,6 @@ public final class PreferencesDialog implements
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -1924,7 +1913,6 @@ public final class PreferencesDialog implements
     jMenuItemRestoreLookAndFeel.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -1938,7 +1926,6 @@ public final class PreferencesDialog implements
     this.gui.jGTIComboBoxLookAndFeel.addMouseListener ( new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mousePressed ( MouseEvent event )
       {
@@ -1950,7 +1937,6 @@ public final class PreferencesDialog implements
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -2005,7 +1991,6 @@ public final class PreferencesDialog implements
     jMenuItemRestoreMouseSelection.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -2018,7 +2003,6 @@ public final class PreferencesDialog implements
     this.gui.jGTIComboBoxMouseSelection.addMouseListener ( new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mousePressed ( MouseEvent event )
       {
@@ -2030,7 +2014,6 @@ public final class PreferencesDialog implements
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -2083,7 +2066,6 @@ public final class PreferencesDialog implements
         .addActionListener ( new ActionListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void actionPerformed (
               @SuppressWarnings ( "unused" ) ActionEvent event )
           {
@@ -2115,7 +2097,6 @@ public final class PreferencesDialog implements
         .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbolSet > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void parseableChanged (
               NonterminalSymbolSet newNonterminalSymbolSet )
           {
@@ -2155,7 +2136,6 @@ public final class PreferencesDialog implements
     jMenuItemRestorePDAMode.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -2168,7 +2148,6 @@ public final class PreferencesDialog implements
     this.gui.jGTIComboBoxPDAMode.addMouseListener ( new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mousePressed ( MouseEvent event )
       {
@@ -2180,7 +2159,6 @@ public final class PreferencesDialog implements
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -2234,7 +2212,6 @@ public final class PreferencesDialog implements
     jMenuItemRestorePushDownAlphabet.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -2265,7 +2242,6 @@ public final class PreferencesDialog implements
         .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void parseableChanged ( Alphabet newAlphabet )
           {
             setButtonStatus ();
@@ -2290,7 +2266,6 @@ public final class PreferencesDialog implements
         .addActionListener ( new ActionListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void actionPerformed (
               @SuppressWarnings ( "unused" ) ActionEvent event )
           {
@@ -2304,7 +2279,6 @@ public final class PreferencesDialog implements
         .addMouseListener ( new MouseAdapter ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           @Override
           public void mousePressed ( MouseEvent event )
           {
@@ -2316,7 +2290,6 @@ public final class PreferencesDialog implements
           }
 
 
-          @SuppressWarnings ( "synthetic-access" )
           @Override
           public void mouseReleased ( MouseEvent event )
           {
@@ -2354,7 +2327,6 @@ public final class PreferencesDialog implements
     jMenuItemRestoreTerminalSymbolSet.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -2385,7 +2357,6 @@ public final class PreferencesDialog implements
         .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbol > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void parseableChanged ( NonterminalSymbol newNonterminalSymbol )
           {
             setButtonStatus ();
@@ -2424,7 +2395,6 @@ public final class PreferencesDialog implements
     jMenuItemRestoreTerminalSymbolSet.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -2455,7 +2425,6 @@ public final class PreferencesDialog implements
         .addParseableChangedListener ( new ParseableChangedListener < TerminalSymbolSet > ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void parseableChanged ( TerminalSymbolSet newTerminalSymbolSet )
           {
             setButtonStatus ();
@@ -2494,7 +2463,6 @@ public final class PreferencesDialog implements
     jMenuItemRestoreTranstion.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -2507,7 +2475,6 @@ public final class PreferencesDialog implements
     this.gui.jGTIComboBoxTransition.addMouseListener ( new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mousePressed ( MouseEvent event )
       {
@@ -2519,7 +2486,6 @@ public final class PreferencesDialog implements
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -2570,7 +2536,6 @@ public final class PreferencesDialog implements
     jMenuItemRestoreWordMode.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -2583,7 +2548,6 @@ public final class PreferencesDialog implements
     this.gui.jGTIComboBoxWordMode.addMouseListener ( new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mousePressed ( MouseEvent event )
       {
@@ -2595,7 +2559,6 @@ public final class PreferencesDialog implements
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -2641,7 +2604,6 @@ public final class PreferencesDialog implements
     jMenuItemRestoreZoomFactor.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -2653,7 +2615,6 @@ public final class PreferencesDialog implements
     this.gui.jGTISliderZoom.addMouseListener ( new MouseAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mousePressed ( MouseEvent event )
       {
@@ -2665,7 +2626,6 @@ public final class PreferencesDialog implements
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -3660,7 +3620,7 @@ public final class PreferencesDialog implements
   /**
    * Sets the status of the buttons.
    */
-  private final void setButtonStatus ()
+  protected final void setButtonStatus ()
   {
     boolean enabled = true;
 

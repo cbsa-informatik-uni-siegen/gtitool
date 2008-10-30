@@ -186,7 +186,6 @@ public final class DefaultTransition implements Transition
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void prettyStringChanged ()
       {
         firePrettyStringChanged ();
@@ -241,7 +240,6 @@ public final class DefaultTransition implements Transition
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void prettyStringChanged ()
       {
         firePrettyStringChanged ();
@@ -302,7 +300,6 @@ public final class DefaultTransition implements Transition
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void prettyStringChanged ()
       {
         firePrettyStringChanged ();
@@ -346,7 +343,6 @@ public final class DefaultTransition implements Transition
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void prettyStringChanged ()
       {
         firePrettyStringChanged ();
@@ -460,7 +456,6 @@ public final class DefaultTransition implements Transition
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void prettyStringChanged ()
       {
         firePrettyStringChanged ();
@@ -503,7 +498,6 @@ public final class DefaultTransition implements Transition
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void prettyStringChanged ()
       {
         firePrettyStringChanged ();
@@ -722,7 +716,7 @@ public final class DefaultTransition implements Transition
   /**
    * Let the listeners know that the {@link PrettyString} has changed.
    */
-  private final void firePrettyStringChanged ()
+  protected final void firePrettyStringChanged ()
   {
     this.cachedPrettyString = null;
     this.cachedStackPrettyString = null;

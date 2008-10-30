@@ -38,19 +38,19 @@ public final class ProductionPopupMenu extends JPopupMenu
   /**
    * The {@link GrammarPanel}.
    */
-  private GrammarPanel grammarPanel;
+  protected GrammarPanel grammarPanel;
 
 
   /**
    * The {@link DefaultGrammarModel}.
    */
-  private DefaultGrammarModel model;
+  protected DefaultGrammarModel model;
 
 
   /**
    * The selected {@link Production}.
    */
-  private ArrayList < Production > productions;
+  protected ArrayList < Production > productions;
 
 
   /**
@@ -106,7 +106,6 @@ public final class ProductionPopupMenu extends JPopupMenu
     this.add.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -130,7 +129,6 @@ public final class ProductionPopupMenu extends JPopupMenu
     this.config.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -159,7 +157,6 @@ public final class ProductionPopupMenu extends JPopupMenu
     this.delete.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
@@ -175,7 +172,6 @@ public final class ProductionPopupMenu extends JPopupMenu
     this.validate.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {

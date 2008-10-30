@@ -73,7 +73,7 @@ public final class ConvertMachineDialog implements
    * 
    * @author Christian Fehler
    */
-  private final class AutoStepTimerTask extends TimerTask
+  protected final class AutoStepTimerTask extends TimerTask
   {
 
     /**
@@ -87,7 +87,6 @@ public final class ConvertMachineDialog implements
       SwingUtilities.invokeLater ( new Runnable ()
       {
 
-        @SuppressWarnings ( "synthetic-access" )
         public void run ()
         {
           if ( ConvertMachineDialog.this.endReached )
@@ -690,7 +689,7 @@ public final class ConvertMachineDialog implements
   /**
    * Flag that indicates if the end is reached.
    */
-  private boolean endReached = false;
+  protected boolean endReached = false;
 
 
   /**
@@ -1715,7 +1714,7 @@ public final class ConvertMachineDialog implements
    * @param manualStep Flag that indicates if the {@link Step} is a manual
    *          {@link Step}.
    */
-  private final void performNextStep ( boolean manualStep )
+  protected final void performNextStep ( boolean manualStep )
   {
     addStepItem ();
 
@@ -2903,7 +2902,6 @@ public final class ConvertMachineDialog implements
   /**
    * Starts the auto step timer.
    */
-  @SuppressWarnings ( "synthetic-access" )
   private final void startAutoStepTimer ()
   {
     cancelAutoStepTimer ();

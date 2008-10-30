@@ -75,7 +75,6 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
     /**
      * Cancels the editing.
      */
-    @SuppressWarnings ( "synthetic-access" )
     public final void cancelCellEditing ()
     {
       fireEditingCanceled ();
@@ -163,7 +162,6 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
      * 
      * @return True.
      */
-    @SuppressWarnings ( "synthetic-access" )
     public final boolean stopCellEditing ()
     {
       fireEditingStopped ();
@@ -181,7 +179,7 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
   /**
    * The {@link StyledParserPanel}.
    */
-  private StyledParserPanel < E > styledParserPanel;
+  protected StyledParserPanel < E > styledParserPanel;
 
 
   /**
@@ -218,7 +216,6 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
       private static final long serialVersionUID = -6531666207572045343L;
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public final Object getCellEditorValue ()
       {
@@ -226,7 +223,6 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
       }
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public final void setValue ( Object value )
       {
@@ -245,6 +241,30 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
   public final void cancelCellEditing ()
   {
     this.delegate.cancelCellEditing ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see AbstractCellEditor#fireEditingCanceled()
+   */
+  @Override
+  protected final void fireEditingCanceled ()
+  {
+    super.fireEditingCanceled ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see AbstractCellEditor#fireEditingStopped()
+   */
+  @Override
+  protected final void fireEditingStopped ()
+  {
+    super.fireEditingStopped ();
   }
 
 

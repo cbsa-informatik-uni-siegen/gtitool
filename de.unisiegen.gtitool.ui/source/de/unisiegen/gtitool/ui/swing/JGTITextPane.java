@@ -35,7 +35,7 @@ public final class JGTITextPane extends JTextPane
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger.getLogger ( JGTITextPane.class );
+  protected static final Logger logger = Logger.getLogger ( JGTITextPane.class );
 
 
   /**
@@ -76,7 +76,6 @@ public final class JGTITextPane extends JTextPane
       private static final long serialVersionUID = 1L;
 
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public final void insertString ( int offset, String string,
           AttributeSet attributeSet ) throws BadLocationException

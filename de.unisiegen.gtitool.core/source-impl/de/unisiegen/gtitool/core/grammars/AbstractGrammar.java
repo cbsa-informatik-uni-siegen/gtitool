@@ -115,7 +115,6 @@ public abstract class AbstractGrammar implements Grammar
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void modifyStatusChanged ( boolean modified )
       {
         fireModifyStatusChanged ( modified );
@@ -316,7 +315,7 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @param forceModify True if the modify is forced, otherwise false.
    */
-  private final void fireModifyStatusChanged ( boolean forceModify )
+  protected final void fireModifyStatusChanged ( boolean forceModify )
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );

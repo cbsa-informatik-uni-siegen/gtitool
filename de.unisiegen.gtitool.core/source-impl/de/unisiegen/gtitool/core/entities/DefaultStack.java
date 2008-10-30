@@ -69,7 +69,6 @@ public final class DefaultStack implements Stack
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void prettyStringChanged ()
       {
         firePrettyStringChanged ();
@@ -142,7 +141,7 @@ public final class DefaultStack implements Stack
   /**
    * Let the listeners know that the {@link PrettyString} has changed.
    */
-  private final void firePrettyStringChanged ()
+  protected final void firePrettyStringChanged ()
   {
     this.cachedPrettyString = null;
 

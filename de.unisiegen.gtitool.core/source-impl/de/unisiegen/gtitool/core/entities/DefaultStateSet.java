@@ -88,7 +88,6 @@ public final class DefaultStateSet implements StateSet
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void prettyStringChanged ()
       {
         firePrettyStringChanged ();
@@ -415,7 +414,7 @@ public final class DefaultStateSet implements StateSet
   /**
    * Let the listeners know that the {@link PrettyString} has changed.
    */
-  private final void firePrettyStringChanged ()
+  protected final void firePrettyStringChanged ()
   {
     this.cachedPrettyString = null;
 

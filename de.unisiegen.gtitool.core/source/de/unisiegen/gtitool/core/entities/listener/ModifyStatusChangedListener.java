@@ -5,11 +5,10 @@ import java.util.EventListener;
 
 
 /**
- * The listener interface for receiving modify changes.
+ * The listener interface for receiving modify status changes.
  * 
  * @author Christian Fehler
- * @version $Id: ModifyStatusChangedListener.java 446 2008-01-18 15:37:55Z
- *          fehler $
+ * @version $Id$
  */
 public interface ModifyStatusChangedListener extends EventListener
 {

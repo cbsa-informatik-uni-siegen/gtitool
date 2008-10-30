@@ -10,8 +10,7 @@ import de.unisiegen.gtitool.core.entities.State;
  * Involved {@link State} interface.
  * 
  * @author Christian Fehler
- * @version $Id: MachineEpsilonTransitionException.java 90 2007-11-04 16:20:27Z
- *          fehler $
+ * @version $Id$
  */
 public interface StatesInvolvedException
 {
@@ -22,5 +21,4 @@ public interface StatesInvolvedException
    * @return The {@link State}s.
    */
   public ArrayList < State > getState ();
-
 }

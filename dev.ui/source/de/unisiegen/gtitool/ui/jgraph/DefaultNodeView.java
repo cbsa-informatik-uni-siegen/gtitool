@@ -4,31 +4,27 @@ package de.unisiegen.gtitool.ui.jgraph;
 import java.awt.geom.Rectangle2D;
 
 import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 
-import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
-import de.unisiegen.gtitool.core.storage.Element;
-import de.unisiegen.gtitool.core.storage.Modifyable;
-import de.unisiegen.gtitool.core.storage.Storable;
-import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 
 
 /**
  * TODO
  */
-public class DefaultNodeView extends DefaultGraphCell implements Storable,
-    Modifyable
+public class DefaultNodeView extends DefaultGraphCell
 {
 
+  /**
+   * The serial version uid
+   */
+  private static final long serialVersionUID = -3502132571376216090L;
+
+
+  /**
+   * The {@link RegexNode}
+   */
   private RegexNode regexNode;
-
-
-  private DefaultRegexModel regexModel;
-
-
-  private DefaultGraphModel graphModel;
 
 
   /**
@@ -44,19 +40,18 @@ public class DefaultNodeView extends DefaultGraphCell implements Storable,
 
 
   /**
-   * TODO
+   * @param regexNode
+   * @param x
+   * @param y
    */
-  public DefaultNodeView ( DefaultRegexModel regexModel,
-      DefaultGraphModel graphModel, RegexNode regexNode, int x, int y )
+  public DefaultNodeView ( RegexNode regexNode, int x, int y )
   {
     super ( regexNode );
 
     this.x = x;
     this.y = y;
-    
-    this.regexModel = regexModel;
+
     this.regexNode = regexNode;
-    this.graphModel = graphModel;
   }
 
 
@@ -85,76 +80,17 @@ public class DefaultNodeView extends DefaultGraphCell implements Storable,
 
 
   /**
-   * Returns the regexNode.
-   * 
-   * @return The regexNode.
-   * @see #regexNode
-   */
-  public RegexNode getRegexNode ()
-  {
-    return this.regexNode;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
-   */
-  public Element getElement ()
-  {
-    return null;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
-   */
-  public void addModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#isModified()
-   */
-  public boolean isModified ()
-  {
-    return false;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
-   */
-  public void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-  }
-  
-  /**
    * Moves this {@link DefaultStateView} relative to the current position.
    * 
-   * @param x The x offset value.
-   * @param y The y offset value.
+   * @param dx The x offset value.
+   * @param dy The y offset value.
    */
-  public final void moveRelative ( double x, double y )
+  public final void moveRelative ( double dx, double dy )
   {
     Rectangle2D bounds = GraphConstants.getBounds ( getAttributes () );
 
-    double newX = bounds.getX () + x < 0 ? 0 : bounds.getX () + x;
-    double newY = bounds.getY () + y < 0 ? 0 : bounds.getY () + y;
+    double newX = bounds.getX () + dx < 0 ? 0 : bounds.getX () + dx;
+    double newY = bounds.getY () + dy < 0 ? 0 : bounds.getY () + dy;
 
     bounds.setRect ( newX, newY, bounds.getWidth (), bounds.getHeight () );
     GraphConstants.setBounds ( getAttributes (), bounds );
@@ -162,15 +98,10 @@ public class DefaultNodeView extends DefaultGraphCell implements Storable,
 
 
   /**
-   * TODO
-   * 
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#resetModify()
+   * Returns the {@link RegexNode}
+   *
+   * @return The {@link RegexNode}
    */
-  public void resetModify ()
-  {
-  }
-
-
   public RegexNode getNode ()
   {
     return this.regexNode;

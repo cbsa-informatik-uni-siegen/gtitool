@@ -28,7 +28,6 @@ import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.jgraph.DefaultNodeView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultRegexEdgeView;
-import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.EdgeRenderer;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
@@ -45,13 +44,13 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   /**
    * The default y-space in the graph
    */
-  private final int Y_SPACE = 40;
+  private final int Y_SPACE = 50;
 
 
   /**
    * The default x-space in the graph
    */
-  private final int X_SPACE = 60;
+  private final int X_SPACE = 70;
 
 
   /**
@@ -60,18 +59,27 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   private final int X_BORDER = 20;
 
 
+  /**
+   * The {@link DefaultRegex}
+   */
   private DefaultRegex regex;
 
 
+  /**
+   * The {@link JGTIGraph}
+   */
   private JGTIGraph jGTIGraph;
 
 
   /**
-   * A list of all {@link DefaultStateView}s
+   * A list of all {@link DefaultNodeView}s
    */
   private ArrayList < DefaultNodeView > nodeViewList = new ArrayList < DefaultNodeView > ();
 
 
+  /**
+   * A list of all {@link DefaultRegexEdgeView}s
+   */
   private ArrayList < DefaultRegexEdgeView > regexEdgeViewList = new ArrayList < DefaultRegexEdgeView > ();
 
 
@@ -88,7 +96,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
+   * Constructor for a new {@link DefaultRegexModel}
+   * 
+   * @param regex The {@link DefaultRegex} for this model
    */
   public DefaultRegexModel ( DefaultRegex regex )
   {
@@ -121,15 +131,15 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
+   * Constructor for a saved {@link DefaultRegexModel}
    * 
-   * @param element
+   * @param element The saved {@link DefaultRegex}
    * @throws Exception
    */
   public DefaultRegexModel ( Element element ) throws Exception
   {
     boolean foundVersion = false;
-    String regexString = new String();
+    String regexString = new String ();
     for ( Attribute attr : element.getAttribute () )
     {
       if ( attr.getName ().equals ( "regexVersion" ) ) //$NON-NLS-1$
@@ -141,12 +151,12 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
               .getString ( "StoreException.IncompatibleVersion" ) ); //$NON-NLS-1$
         }
       }
-      if ( attr.getName ().equals ( "regexString" ) )
+      if ( attr.getName ().equals ( "regexString" ) ) //$NON-NLS-1$
       {
         regexString = attr.getValue ();
       }
     }
-    if ( regexString == null || regexString.length () == 0)
+    if ( regexString == null || regexString.length () == 0 )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
@@ -221,55 +231,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
-   * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
-   */
-  public void addModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.regex.addModifyStatusChangedListener ( listener );
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#isModified()
-   */
-  public boolean isModified ()
-  {
-    return this.regex.isModified ();
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
-   */
-  public void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.regex.removeModifyStatusChangedListener ( listener );
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#resetModify()
-   */
-  public void resetModify ()
-  {
-    this.regex.resetModify ();
-  }
-
-
-  /**
    * Creates the Tree
    */
   public void createTree ()
@@ -317,7 +278,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     {
       for ( int i = 0 ; i < parent.getNode ().getChildren ().size () ; i++ )
       {
-        RegexNode childNode = parent.getRegexNode ().getChildren ().get ( i );
+        RegexNode childNode = parent.getNode ().getChildren ().get ( i );
         if ( i == 0 )
         {
           // Left Node
@@ -362,8 +323,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
           }
         }
 
-        // TODO: Stern, Plus und so weiter geht noch nicht wirklich!!!
-
         DefaultNodeView child = createNodeView ( x, y, childNode );
         createRegexEdgeView ( parent, child );
         addNodesToModel ( child );
@@ -372,7 +331,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     }
     else if ( parent.getNode ().getChildren ().size () == 1 )
     {
-      DefaultNodeView child = createNodeView ( x, y, parent.getRegexNode ()
+      DefaultNodeView child = createNodeView ( x, y, parent.getNode ()
           .getChildren ().get ( 0 ) );
       createRegexEdgeView ( parent, child );
       addNodesToModel ( child );
@@ -418,14 +377,15 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   @SuppressWarnings ( "unchecked" )
   public DefaultNodeView createNodeView ( double x, double y, RegexNode node )
   {
-    DefaultNodeView nodeView = new DefaultNodeView ( this, this.graphModel,
-        node, ( int ) x, ( int ) y );
+    DefaultNodeView nodeView = new DefaultNodeView ( node, ( int ) x, ( int ) y );
 
     String viewClass = NodeView.class.getName ();
 
+    
+    
     // Set bounds
     GraphConstants.setBounds ( nodeView.getAttributes (),
-        new Rectangle2D.Double ( x, y, 20, 20 ) );
+        new Rectangle2D.Double ( x, y, 30, 40 ) );
 
     // set the view class (indirection for the renderer and the editor)
     GPCellViewFactory.setViewClass ( nodeView.getAttributes (), viewClass );
@@ -447,9 +407,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
     this.jGTIGraph.getGraphLayoutCache ().insert ( nodeView );
     this.nodeViewList.add ( nodeView );
-
-    // Reset modify
-    nodeView.resetModify ();
 
     return nodeView;
   }
@@ -476,6 +433,53 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   public DefaultGraphModel getGraphModel ()
   {
     return this.graphModel;
+  }
+
+
+  /**
+   * TODO
+   *
+   * @param listener
+   * @see de.unisiegen.gtitool.core.storage.Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
+   */
+  public void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+  }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.storage.Modifyable#isModified()
+   */
+  public boolean isModified ()
+  {
+    return this.regex.isModified ();
+  }
+
+
+  /**
+   * TODO
+   *
+   * @param listener
+   * @see de.unisiegen.gtitool.core.storage.Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
+   */
+  public void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+  }
+
+
+  /**
+   * TODO
+   *
+   * @see de.unisiegen.gtitool.core.storage.Modifyable#resetModify()
+   */
+  public void resetModify ()
+  {
+    this.regex.resetModify ();
   }
 
 }

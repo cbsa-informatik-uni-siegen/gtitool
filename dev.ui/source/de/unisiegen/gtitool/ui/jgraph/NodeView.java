@@ -15,6 +15,7 @@ import org.jgraph.graph.CellViewRenderer;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
+import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
@@ -100,7 +101,7 @@ public class NodeView extends VertexView
       {
         return;
       }
-      
+
       boolean b = false;
 
       if ( b && super.isOpaque () )
@@ -132,11 +133,11 @@ public class NodeView extends VertexView
 
         FontMetrics metrics = g.getFontMetrics ();
 
-        dx = ( ( d.width ) / 2 )
-            - ( metrics.stringWidth ( node.getNodeString ().toString () ) / 2 ) - 1;
-        dy = ( ( d.height ) / 2 )
-            + ( metrics.getHeight () / 2 ) - 3;
-        
+        dx = ( ( d.width     ) / 2 )
+            - ( metrics.stringWidth ( node.getNodeString ().toString () ) / 2 )
+            - 1;
+        dy = ( ( d.height     ) / 2 ) + ( metrics.getHeight () / 2 ) - 5;
+
         g.setFont ( getFont () );
 
         PrettyString prettyString = new PrettyString ();
@@ -164,17 +165,25 @@ public class NodeView extends VertexView
           }
 
           g.setFont ( font );
-          if(b) {
+          if ( b )
+          {
             g.setColor ( Color.WHITE );
-          } else {
+          }
+          else
+          {
             g.setColor ( Color.BLACK );
           }
         }
       }
       finally
       {
-        g.drawString ( node.getNodeString ().toString (), dx,
-            dy );
+        g.drawString ( node.getNodeString ().toString (), dx, dy );
+        if ( node instanceof LeafNode )
+        {
+          FontMetrics metrics = g.getFontMetrics ();
+          g.drawString ( ( ( LeafNode ) node ).getPosition () + "", dx, dy
+              + metrics.getHeight () );
+        }
       }
     }
   }

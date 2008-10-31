@@ -1,11 +1,13 @@
 package de.unisiegen.gtitool.ui.style;
 
+
 import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
@@ -13,7 +15,6 @@ import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
-
 
 
 /**
@@ -57,18 +58,23 @@ public final class StyledRegexParserPanel extends
   protected RegexNode checkParsedObject ( RegexNode regexNode )
   {
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-    
+
     if ( ( this.alphabet != null ) && ( regexNode != null ) )
     {
-      for ( TokenNode current : regexNode.getTokenNodes () )
+      for ( LeafNode current : regexNode.getTokenNodes () )
       {
-        if ( !this.alphabet.contains ( new DefaultSymbol(current.getName ()) ) )
+        if ( current instanceof TokenNode )
         {
-          exceptionList.add ( new ParserException ( current.getParserOffset ()
-              .getStart (), current.getParserOffset ().getEnd (), Messages
-              .getPrettyString ( "StyledWordParserPanel.SymbolNotInAlphabet", //$NON-NLS-1$
-                  current.toPrettyString (), this.alphabet.toPrettyString () )
-              .toHTMLString () ) );
+          if ( !this.alphabet.contains ( new DefaultSymbol (
+              ( ( TokenNode ) current ).getName () ) ) )
+          {
+            exceptionList.add ( new ParserException ( current
+                .getParserOffset ().getStart (), current.getParserOffset ()
+                .getEnd (), Messages.getPrettyString (
+                "StyledWordParserPanel.SymbolNotInAlphabet", //$NON-NLS-1$
+                current.toPrettyString (), this.alphabet.toPrettyString () )
+                .toHTMLString () ) );
+          }
         }
       }
     }

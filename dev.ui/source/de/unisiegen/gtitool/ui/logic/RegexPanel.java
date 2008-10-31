@@ -658,7 +658,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void resetModify ()
   {
-    this.model.resetModify ();
   }
 
 

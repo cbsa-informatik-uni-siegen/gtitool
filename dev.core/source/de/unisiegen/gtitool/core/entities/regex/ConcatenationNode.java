@@ -88,9 +88,9 @@ public class ConcatenationNode extends RegexNode
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
-  public ArrayList < TokenNode > getTokenNodes ()
+  public ArrayList < LeafNode > getTokenNodes ()
   {
-    ArrayList < TokenNode > nodes = new ArrayList < TokenNode > ();
+    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
     nodes.addAll ( this.regex1.getTokenNodes () );
     nodes.addAll ( this.regex2.getTokenNodes () );
     return nodes;
@@ -287,5 +287,25 @@ public class ConcatenationNode extends RegexNode
   public PrettyString getNodeString ()
   {
     return new PrettyString ( new PrettyToken ( "·", Style.REGEX_SYMBOL ) );
+  }
+  
+  /**
+   * TODO
+   *
+   * @param obj
+   * @return
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals ( Object obj )
+  {
+    if(obj == this) {
+      return true;
+    }
+    if(obj instanceof ConcatenationNode) {
+      ConcatenationNode con = ( ConcatenationNode ) obj;
+      return this.regex1.equals ( con.regex1 ) && this.regex2.equals ( con.regex2 );
+    }
+    return false;
   }
 }

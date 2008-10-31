@@ -16,13 +16,19 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  * @author Simon Meurer
  * @version
  */
-public class CharacterClassNode extends RegexNode
+public class CharacterClassNode extends LeafNode
 {
 
   /**
    * TODO
    */
   private static final long serialVersionUID = -700140811311936745L;
+
+
+  /**
+   * The position in the Syntaxtree
+   */
+  private int position;
 
 
   private char char1;
@@ -99,6 +105,32 @@ public class CharacterClassNode extends RegexNode
 
 
   /**
+   * Sets the position.
+   * 
+   * @param position The position to set.
+   * @see #position
+   */
+  @Override
+  public void setPosition ( int position )
+  {
+    this.position = position;
+  }
+
+
+  /**
+   * Returns the position.
+   * 
+   * @return The position.
+   * @see #position
+   */
+  @Override
+  public int getPosition ()
+  {
+    return this.position;
+  }
+
+
+  /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getAllChildren()
    */
   @Override
@@ -113,9 +145,10 @@ public class CharacterClassNode extends RegexNode
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
-  public ArrayList < TokenNode > getTokenNodes ()
+  public ArrayList < LeafNode > getTokenNodes ()
   {
-    ArrayList < TokenNode > nodes = new ArrayList < TokenNode > ();
+    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
+    nodes.add ( this );
     return nodes;
   }
 
@@ -140,8 +173,7 @@ public class CharacterClassNode extends RegexNode
   {
     return false;
   }
-
-
+  
   /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
    */
@@ -248,7 +280,7 @@ public class CharacterClassNode extends RegexNode
       s += c;
     }
     s += "]";
-    return new PrettyString (new PrettyToken(s, Style.TOKEN));
+    return new PrettyString ( new PrettyToken ( s, Style.TOKEN ) );
   }
 
 
@@ -285,7 +317,7 @@ public class CharacterClassNode extends RegexNode
       s += c;
     }
     s += "]";
-    return new PrettyString (new PrettyToken(s, Style.TOKEN));
+    return new PrettyString ( new PrettyToken ( s, Style.TOKEN ) );
   }
 
 
@@ -309,6 +341,32 @@ public class CharacterClassNode extends RegexNode
     }
     s += "]";
     return s;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param obj
+   * @return
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals ( Object obj )
+  {
+    if ( obj == this )
+    {
+      return true;
+    }
+    if ( obj instanceof CharacterClassNode )
+    {
+      CharacterClassNode charNode = ( CharacterClassNode ) obj;
+      if ( this.char1 == charNode.char1 && this.char2 == charNode.char2 )
+      {
+        return this.position == ( ( CharacterClassNode ) obj ).position;
+      }
+    }
+    return false;
   }
 
 

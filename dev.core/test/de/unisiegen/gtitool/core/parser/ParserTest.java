@@ -6,9 +6,8 @@ import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Word;
-import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
+import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
-import de.unisiegen.gtitool.core.entities.regex.TokenNode;
 import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
 import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
 import de.unisiegen.gtitool.core.parser.symbol.SymbolParseable;
@@ -81,23 +80,14 @@ public class ParserTest
      * Regex
      */
     RegexParseable regexParseable = new RegexParseable ();
-    String regexText = "ab";
+    String regexText = "[a-z]?aa";
     try
     {
       RegexNode regex = ( RegexNode ) regexParseable.newParser ( regexText )
           .parse ();
-      regex = new ConcatenationNode ( regex, new TokenNode ( "#" ) );
 
-      int currentPosition = 1;
-      /**for ( RegexNode current : regex.getTokenNodes () )
-      {
-
-        if ( current instanceof TokenNode )
-        {
-          ( ( TokenNode ) current ).setPosition ( currentPosition );
-          currentPosition++ ;
-        }
-      }*/
+      DefaultRegex conv = new DefaultRegex (new DefaultAlphabet(new DefaultSymbol("a"),new DefaultSymbol("b"),new DefaultSymbol("c"),new DefaultSymbol("d")), regexText);
+      conv.setRegexNode ( regex );
       System.out.println ( regex );
       String firstpos = "";
       for ( RegexNode current : regex.firstPos () )
@@ -106,7 +96,13 @@ public class ParserTest
         {
           firstpos += ";";
         }
-        firstpos += ( ( TokenNode ) current ).getPosition ();
+        
+
+
+        if ( current instanceof LeafNode )
+        {
+          firstpos += ( ( LeafNode ) current ).getPosition ();
+        }
       }
       System.out.println ( "FirstPos: {" + firstpos + "}" );
 
@@ -117,25 +113,11 @@ public class ParserTest
         {
           lastpos += ";";
         }
-        lastpos += ( ( TokenNode ) current ).getPosition ();
+        lastpos += ( ( LeafNode ) current ).getPosition ();
       }
       System.out.println ( "LastPos: {" + lastpos + "}" );
 
-      DefaultRegex conv = new DefaultRegex (new DefaultAlphabet(new DefaultSymbol("a"),new DefaultSymbol("b"),new DefaultSymbol("c"),new DefaultSymbol("d")), regexText);
-      conv.setRegexNode ( regex );
-      for ( int i = 1 ; i < currentPosition ; i++ )
-      {
-        String followPos = "";
-        for ( RegexNode current : conv.followPos ( i ) )
-        {
-          if ( followPos.length () > 0 )
-          {
-            followPos += ";";
-          }
-          followPos += ( ( TokenNode ) current ).getPosition ();
-        }
-        System.out.println ( "FollowPos(" + i + ") = " + followPos );
-      }
+      
 
       RegexNode coreSyntax = regex.toCoreSyntax ();
       System.out.println ( coreSyntax.toString () );

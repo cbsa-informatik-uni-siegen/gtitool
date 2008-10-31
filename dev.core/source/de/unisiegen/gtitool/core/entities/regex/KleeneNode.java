@@ -105,7 +105,7 @@ public class KleeneNode extends RegexNode
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getAllChildren()
    */
   @Override
-  public ArrayList < TokenNode > getTokenNodes ()
+  public ArrayList < LeafNode > getTokenNodes ()
   {
     return this.content.getTokenNodes ();
   }
@@ -231,6 +231,26 @@ public class KleeneNode extends RegexNode
   public int compareTo ( RegexNode o )
   {
     return 0;
+  }
+  
+  /**
+   * TODO
+   *
+   * @param obj
+   * @return
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals ( Object obj )
+  {
+    if(obj == this) {
+      return true;
+    }
+    if(obj instanceof KleeneNode) {
+      KleeneNode node = ( KleeneNode ) obj;
+      return this.content.equals (node.content);
+    }
+    return false;
   }
 
 

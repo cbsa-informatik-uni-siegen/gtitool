@@ -18,8 +18,14 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  * @author Simon Meurer
  * @version
  */
-public class TokenNode extends RegexNode
+public class TokenNode extends LeafNode
 {
+
+  /**
+   * The serial version uid
+   */
+  private static final long serialVersionUID = -4513107256319511073L;
+
 
   /**
    * The name of the Token
@@ -109,9 +115,9 @@ public class TokenNode extends RegexNode
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
-  public ArrayList < TokenNode > getTokenNodes ()
+  public ArrayList < LeafNode > getTokenNodes ()
   {
-    ArrayList < TokenNode > nodes = new ArrayList < TokenNode > ();
+    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
     nodes.add ( this );
     return nodes;
   }
@@ -179,6 +185,7 @@ public class TokenNode extends RegexNode
    * @param position The position to set.
    * @see #position
    */
+  @Override
   public void setPosition ( int position )
   {
     this.position = position;
@@ -191,6 +198,7 @@ public class TokenNode extends RegexNode
    * @return The position.
    * @see #position
    */
+  @Override
   public int getPosition ()
   {
     return this.position;
@@ -260,7 +268,7 @@ public class TokenNode extends RegexNode
    */
   public PrettyString toPrettyString ()
   {
-    return new PrettyString ( new PrettyToken ( this.name, Style.TOKEN ) );
+    return new PrettyString ( new PrettyToken ( this.name , Style.TOKEN ) );
   }
 
 
@@ -275,18 +283,39 @@ public class TokenNode extends RegexNode
   {
     return 0;
   }
+  
+  /**
+   * TODO
+   *
+   * @param obj
+   * @return
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals ( Object obj )
+  {
+    if(obj == this) {
+      return true;
+    }
+    if(obj instanceof TokenNode) {
+      if(this.name.equals ( ((TokenNode) obj).name ))
+      {
+        return this.position == ((TokenNode) obj).position;
+      }
+    }
+    return false;
+  }
 
 
   /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNodeString()
    */
   @Override
   public PrettyString getNodeString ()
   {
-    return new PrettyString ( new PrettyToken ( this.name, Style.TOKEN ) );
+    PrettyString prettyString = new PrettyString();
+    prettyString.add ( new PrettyToken (this.name, Style.TOKEN) );
+    return prettyString;
   }
 
 }

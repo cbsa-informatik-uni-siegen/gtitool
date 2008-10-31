@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 
 
 /**
@@ -31,7 +33,20 @@ public abstract class RegexNode implements Entity < RegexNode >
    */
   public abstract ArrayList < RegexNode > getChildren ();
 
+  
+  /**
+   * 
+   * Counts the right children
+   *
+   * @return the right children count
+   */
   public abstract int getRightChildrenCount();
+  
+  /**
+   * Counts the left children
+   *
+   * @return the left children count
+   */
   public abstract int getLeftChildrenCount();
 
 
@@ -40,7 +55,7 @@ public abstract class RegexNode implements Entity < RegexNode >
    * 
    * @return All Tokennodes that are in this node
    */
-  public abstract ArrayList < TokenNode > getTokenNodes ();
+  public abstract ArrayList < LeafNode > getTokenNodes ();
 
 
   /**
@@ -83,5 +98,42 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return The {@link PrettyString} for the Node in the JGTIGraph
    */
   public abstract PrettyString getNodeString ();
+  
+  public PrettyString getToolTipString() {
+    PrettyString ps = new PrettyString();
+    ps.add (new PrettyToken( "Nullable: ", Style.REGEX_TOOL_TIP_TEXT ));
+    ps.add (new PrettyToken( "" + nullable (), Style.REGEX_POSITION ));
+    ps.add (new PrettyToken(  ", Firstpos: {", Style.REGEX_TOOL_TIP_TEXT ));
+    int i = 0;
+    for ( RegexNode current : firstPos () )
+    {
+      if ( i > 0 )
+      {
+        i++;
+        ps.add ( new PrettyToken(";",Style.REGEX_TOOL_TIP_TEXT));
+      }
+      if ( current instanceof LeafNode )
+      {
+        ps.add (new PrettyToken( "" + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ));
+      }
+    }
+    ps.add (new PrettyToken(  "}, Lastpos: {", Style.REGEX_TOOL_TIP_TEXT ));
+    i = 0;
+    for ( RegexNode current : lastPos ())
+    {
+      if ( i > 0 )
+      {
+        i++;
+        ps.add ( new PrettyToken(";",Style.REGEX_TOOL_TIP_TEXT));
+      }
+      if ( current instanceof LeafNode )
+      {
+        ps.add (new PrettyToken( "" + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ));
+      }
+    }
 
+    ps.add (new PrettyToken(  "}", Style.REGEX_TOOL_TIP_TEXT ));
+    return ps;
+  }
+  
 }

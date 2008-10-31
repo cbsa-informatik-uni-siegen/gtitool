@@ -106,7 +106,7 @@ public class OptionalNode extends RegexNode
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
-  public ArrayList < TokenNode > getTokenNodes ()
+  public ArrayList < LeafNode > getTokenNodes ()
   {
     return this.content.getTokenNodes ();
   }
@@ -151,6 +151,26 @@ public class OptionalNode extends RegexNode
     return this.content.toString () + "?"; //$NON-NLS-1$
   }
 
+  
+  /**
+   * TODO
+   *
+   * @param obj
+   * @return
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals ( Object obj )
+  {
+    if(obj == this) {
+      return true;
+    }
+    if(obj instanceof OptionalNode) {
+      OptionalNode node = ( OptionalNode ) obj;
+      return this.content.equals (node.content);
+    }
+    return false;
+  }
 
   /**
    * The offset of this {@link DefaultAlphabet} in the source code.

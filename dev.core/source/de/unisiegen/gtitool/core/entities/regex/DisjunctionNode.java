@@ -126,9 +126,9 @@ public class DisjunctionNode extends RegexNode
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getAllChildren()
    */
   @Override
-  public ArrayList < TokenNode > getTokenNodes ()
+  public ArrayList < LeafNode > getTokenNodes ()
   {
-    ArrayList < TokenNode > nodes = new ArrayList < TokenNode > ();
+    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
     nodes.addAll ( this.regex1.getTokenNodes () );
     nodes.addAll ( this.regex2.getTokenNodes () );
     return nodes;
@@ -275,5 +275,25 @@ public class DisjunctionNode extends RegexNode
   public PrettyString getNodeString ()
   {
     return new PrettyString ( new PrettyToken ( "|", Style.REGEX_SYMBOL ) );
+  }
+  
+  /**
+   * TODO
+   *
+   * @param obj
+   * @return
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals ( Object obj )
+  {
+    if(obj == this) {
+      return true;
+    }
+    if(obj instanceof DisjunctionNode) {
+      DisjunctionNode dis = ( DisjunctionNode ) obj;
+      return this.regex1.equals ( dis.regex1 ) && this.regex2.equals ( dis.regex2 );
+    }
+    return false;
   }
 }

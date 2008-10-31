@@ -94,16 +94,26 @@ public enum Style
    * Style of keywords.
    */
   KEYWORD ( true, false ),
-  
+
   /**
    * Style of RegexTokens
    */
-  TOKEN(true, false),
-  
+  TOKEN ( true, false ),
+
   /**
    * Style of RegexSymbols
    */
-  REGEX_SYMBOL(true, false);
+  REGEX_SYMBOL ( true, false ),
+
+  /**
+   * Style of a Tool tip text of a Regex
+   */
+  REGEX_TOOL_TIP_TEXT ( false, false ),
+
+  /**
+   * Style of a RegexPosition
+   */
+  REGEX_POSITION ( true, false );
 
   /**
    * The bold value.
@@ -213,10 +223,14 @@ public enum Style
         return PreferenceManager.getInstance ().getColorItemParserKeyword ()
             .getColor ();
       }
-      //TODO SM
-      case REGEX_SYMBOL:
-      case TOKEN:
+        // TODO SM
+      case REGEX_SYMBOL :
+      case TOKEN :
+      case REGEX_POSITION :
         return Color.BLACK;
+      case REGEX_TOOL_TIP_TEXT :
+        return PreferenceManager.getInstance ().getColorItemRegexToolTipText ()
+            .getColor ();
       default :
       {
         throw new IllegalArgumentException ( "enum value not supported" ); //$NON-NLS-1$

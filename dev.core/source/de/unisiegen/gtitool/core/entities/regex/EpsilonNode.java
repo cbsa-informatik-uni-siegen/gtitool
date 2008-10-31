@@ -18,8 +18,14 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  * @author Simon Meurer
  * @version
  */
-public class EpsilonNode extends RegexNode
+public class EpsilonNode extends LeafNode
 {
+
+
+  /**
+   * The position in the Syntaxtree
+   */
+  private int position;
 
   /**
    * Constructor of an {@link EpsilonNode}
@@ -79,11 +85,39 @@ public class EpsilonNode extends RegexNode
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
    */
   @Override
-  public ArrayList < TokenNode > getTokenNodes ()
+  public ArrayList < LeafNode > getTokenNodes ()
   {
-    return new ArrayList < TokenNode > ();
+    ArrayList<LeafNode> nodes = new ArrayList < LeafNode > ();
+    nodes.add ( this );
+    return nodes;
   }
 
+
+
+  /**
+   * Sets the position.
+   * 
+   * @param position The position to set.
+   * @see #position
+   */
+  @Override
+  public void setPosition ( int position )
+  {
+    this.position = position;
+  }
+  
+  
+  /**
+   * Returns the position.
+   *
+   * @return The position.
+   * @see #position
+   */
+  @Override
+  public int getPosition ()
+  {
+    return this.position;
+  }
 
   /**
    * TODO
@@ -216,7 +250,26 @@ public class EpsilonNode extends RegexNode
   {
     return 0;
   }
+  
+  
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals ( Object obj )
+  {
+    if(obj == this) {
+      return true;
+    }
+    if(obj instanceof EpsilonNode) {
+      EpsilonNode e = (EpsilonNode)obj;
+      return this.position == e.position;
+    }
+    return false;
+  }
 
   /**
    * TODO

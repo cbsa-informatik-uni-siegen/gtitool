@@ -10,6 +10,7 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
+import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
@@ -130,7 +131,17 @@ public class DefaultRegex implements Regex, Storable
   public void setRegexNode ( RegexNode regexNode )
   {
     this.initialNode = regexNode;
-    this.regexNode = regexNode;
+    this.regexNode = new ConcatenationNode ( regexNode, new TokenNode ( "#" ) );
+
+    int currentPosition = 1;
+    for ( RegexNode current : this.regexNode.getTokenNodes () )
+    {
+      if ( current instanceof LeafNode )
+      {
+        ( ( LeafNode ) current ).setPosition ( currentPosition );
+        currentPosition++ ;
+      }
+    }
   }
 
 
@@ -198,10 +209,10 @@ public class DefaultRegex implements Regex, Storable
         boolean foundInLastPosN1 = false;
         for ( RegexNode searchNode : n1.lastPos () )
         {
-          if ( searchNode instanceof TokenNode )
+          if ( searchNode instanceof LeafNode )
           {
-            TokenNode tokenNode = ( TokenNode ) searchNode;
-            if ( tokenNode.getPosition () == pos )
+            LeafNode leafNode = ( LeafNode ) searchNode;
+            if ( leafNode.getPosition () == pos )
             {
               foundInLastPosN1 = true;
             }
@@ -219,10 +230,10 @@ public class DefaultRegex implements Regex, Storable
         boolean foundInLastPosN = false;
         for ( RegexNode searchNode : n.lastPos () )
         {
-          if ( searchNode instanceof TokenNode )
+          if ( searchNode instanceof LeafNode )
           {
-            TokenNode tokenNode = ( TokenNode ) searchNode;
-            if ( tokenNode.getPosition () == pos )
+            LeafNode leafNode = ( LeafNode ) searchNode;
+            if ( leafNode.getPosition () == pos )
             {
               foundInLastPosN = true;
             }

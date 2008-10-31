@@ -111,7 +111,8 @@ simple_regex					::= simple_regex:reg STAR:star
 											RESULT = new CharacterClassNode(i1.charAt(0), i2.charAt(0));
 									   		RESULT.setParserOffset(new ParserOffset(slbleft,srbright));
 										} else {
-											throw new Exception("Shiss");
+											ParserException.throwCharacterClassException(
+												i1.charAt(0), i2.charAt(0), slbleft, srbright);
 										} 
 									:}
 								|	SLBRACE:slb char_list:l SRBRACE:srb

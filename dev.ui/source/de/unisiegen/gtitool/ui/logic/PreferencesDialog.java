@@ -104,7 +104,8 @@ public final class PreferencesDialog implements
     @Override
     public final Component getTreeCellRendererComponent ( JTree tree,
         Object value, boolean sel, boolean expanded, boolean leaf, int row,
-        @SuppressWarnings ( "unused" ) boolean focus )
+        @SuppressWarnings ( "unused" )
+        boolean focus )
     {
       super.getTreeCellRendererComponent ( tree, value, sel, expanded, leaf,
           row, sel );
@@ -155,7 +156,8 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" )
+    Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -217,7 +219,8 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" )
+    Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -280,7 +283,8 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" )
+    Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -331,7 +335,8 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" )
+    Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -393,7 +398,8 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" )
+    Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -455,7 +461,8 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" )
+    Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -618,6 +625,21 @@ public final class PreferencesDialog implements
   private ColorItem colorItemStateFinal;
 
 
+  private ColorItem colorItemRegex;
+
+
+  private ColorItem colorItemRegexToolTip;
+
+
+  private ColorItem colorItemRegexToken;
+
+
+  private ColorItem colorItemRegexPosition;
+
+
+  private ColorItem colorItemRegexSymbol;
+
+
   /**
    * The {@link ColorItem} of the selected {@link State}.
    */
@@ -715,8 +737,7 @@ public final class PreferencesDialog implements
 
 
   /**
-   * The initial {@link ColorItem} of the parser start {@link NonterminalSymbol}
-   * .
+   * The initial {@link ColorItem} of the parser start {@link NonterminalSymbol} .
    */
   private ColorItem initialColorItemStartNonterminalSymbol;
 
@@ -749,6 +770,18 @@ public final class PreferencesDialog implements
    * The initial {@link ColorItem} of the parser {@link State}.
    */
   private ColorItem initialColorItemState;
+
+
+  private ColorItem initialColorItemRegexToolTip;
+
+
+  private ColorItem initialColorItemRegexToken;
+
+
+  private ColorItem initialColorItemRegexPosition;
+
+
+  private ColorItem initialColorItemRegexSymbol;
 
 
   /**
@@ -1063,6 +1096,9 @@ public final class PreferencesDialog implements
   private ColorItem stateNode;
 
 
+  private ColorItem regexNode;
+
+
   /**
    * The color tree {@link Symbol} node.
    */
@@ -1249,6 +1285,12 @@ public final class PreferencesDialog implements
     this.colorItemStateActive.restore ();
     this.colorItemStateError.restore ();
 
+    this.colorItemRegex.restore ();
+    this.colorItemRegexToolTip.restore ();
+    this.colorItemRegexPosition.restore ();
+    this.colorItemRegexToken.restore ();
+    this.colorItemRegexSymbol.restore ();
+
     this.colorItemTransition.restore ();
     this.colorItemTransitionSelected.restore ();
     this.colorItemTransitionActive.restore ();
@@ -1368,8 +1410,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.alphabetItem.restore ();
         PreferencesDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
@@ -1432,8 +1474,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTISliderAutoStep
             .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM
@@ -1515,6 +1557,20 @@ public final class PreferencesDialog implements
     this.colorItemStateError = PreferenceManager.getInstance ()
         .getColorItemStateError ();
     this.initialColorItemStateError = this.colorItemStateError.clone ();
+
+    // Regex
+    this.colorItemRegexToolTip = PreferenceManager.getInstance ()
+        .getColorItemRegexToolTipText ();
+    this.initialColorItemRegexToolTip = this.colorItemRegexToolTip.clone ();
+    this.colorItemRegexToken = PreferenceManager.getInstance ()
+        .getColorItemRegexToken ();
+    this.initialColorItemRegexToken = this.colorItemRegexToken.clone ();
+    this.colorItemRegexPosition = PreferenceManager.getInstance ()
+        .getColorItemRegexPosition ();
+    this.initialColorItemRegexPosition = this.colorItemRegexPosition.clone ();
+    this.colorItemRegexSymbol = PreferenceManager.getInstance ()
+        .getColorItemRegexSymbol ();
+    this.initialColorItemRegexSymbol = this.colorItemRegexSymbol.clone ();
 
     // Transition
     this.colorItemTransition = PreferenceManager.getInstance ()
@@ -1608,8 +1664,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         TreePath selectedPath = PreferencesDialog.this.gui.jGTITreeColors
             .getSelectionModel ().getSelectionPath ();
@@ -1699,6 +1755,12 @@ public final class PreferencesDialog implements
     this.stateNode.add ( this.colorItemStateActive );
     this.stateNode.add ( this.colorItemStateError );
 
+    this.regexNode = PreferenceManager.getInstance ().getColorItemRegexGroup ();
+    this.regexNode.add ( this.colorItemRegexToken );
+    this.regexNode.add ( this.colorItemRegexSymbol );
+    this.regexNode.add ( this.colorItemRegexPosition );
+    this.regexNode.add ( this.colorItemRegexToolTip );
+
     this.transitionNode = PreferenceManager.getInstance ()
         .getColorItemTransitionGroup ();
     this.transitionNode.add ( this.colorItemTransition );
@@ -1742,6 +1804,7 @@ public final class PreferencesDialog implements
     this.rootNode.add ( this.nonterminalSymbolNode );
     this.rootNode.add ( this.terminalSymbolNode );
     this.rootNode.add ( this.parserNode );
+    this.rootNode.add ( this.regexNode );
 
     DefaultTreeModel model = new DefaultTreeModel ( this.rootNode );
     this.gui.jGTITreeColors.setModel ( model );
@@ -1749,6 +1812,11 @@ public final class PreferencesDialog implements
     if ( this.stateNode.isExpanded () )
     {
       this.gui.jGTITreeColors.expandPath ( new TreePath ( this.stateNode
+          .getPath () ) );
+    }
+    if ( this.regexNode.isExpanded () )
+    {
+      this.gui.jGTITreeColors.expandPath ( new TreePath ( this.regexNode
           .getPath () ) );
     }
     if ( this.transitionNode.isExpanded () )
@@ -1821,8 +1889,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxLanguage
             .setSelectedItem ( new LanguageItem (
@@ -1925,8 +1993,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxLookAndFeel
             .setSelectedItem ( new LookAndFeelItem (
@@ -2006,8 +2074,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxMouseSelection
             .setSelectedIndex ( PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM
@@ -2084,8 +2152,8 @@ public final class PreferencesDialog implements
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void actionPerformed (
-              @SuppressWarnings ( "unused" ) ActionEvent event )
+          public void actionPerformed ( @SuppressWarnings ( "unused" )
+          ActionEvent event )
           {
             PreferencesDialog.this.nonterminalSymbolSetItem.restore ();
             PreferencesDialog.this.gui.terminalPanelForm
@@ -2156,8 +2224,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxPDAMode
             .setSelectedIndex ( PreferenceManager.DEFAULT_PDA_MODE_ITEM
@@ -2235,8 +2303,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.pushDownAlphabetItem.restore ();
         PreferencesDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
@@ -2291,8 +2359,8 @@ public final class PreferencesDialog implements
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void actionPerformed (
-              @SuppressWarnings ( "unused" ) ActionEvent event )
+          public void actionPerformed ( @SuppressWarnings ( "unused" )
+          ActionEvent event )
           {
             PreferencesDialog.this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
                 .setSelected ( de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
@@ -2355,8 +2423,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.startSymbolItem.restore ();
         PreferencesDialog.this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
@@ -2425,8 +2493,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.terminalSymbolSetItem.restore ();
         PreferencesDialog.this.gui.terminalPanelForm
@@ -2495,8 +2563,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxTransition
             .setSelectedIndex ( PreferenceManager.DEFAULT_TRANSITION_ITEM
@@ -2571,8 +2639,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxWordMode
             .setSelectedIndex ( PreferenceManager.DEFAULT_WORD_MODE_ITEM
@@ -2642,8 +2710,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTISliderZoom
             .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM.getFactor () );
@@ -2775,49 +2843,49 @@ public final class PreferencesDialog implements
 
     // Look and feel
     this.gui.jGTILabelLookAndFeel.setText ( Messages
-        .getString ( "PreferencesDialog.LookAndFeel" ) ); //$NON-NLS-1$    
+        .getString ( "PreferencesDialog.LookAndFeel" ) ); //$NON-NLS-1$
     this.gui.jGTILabelLookAndFeel.setDisplayedMnemonic ( Messages.getString (
-        "PreferencesDialog.LookAndFeelMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+        "PreferencesDialog.LookAndFeelMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTIComboBoxLookAndFeel.setToolTipText ( Messages
         .getString ( "PreferencesDialog.LookAndFeelToolTip" ) ); //$NON-NLS-1$
 
     // word mode
     this.gui.jGTILabelWordMode.setText ( Messages
-        .getString ( "PreferencesDialog.WordMode" ) ); //$NON-NLS-1$    
+        .getString ( "PreferencesDialog.WordMode" ) ); //$NON-NLS-1$
     this.gui.jGTILabelWordMode.setDisplayedMnemonic ( Messages.getString (
-        "PreferencesDialog.WordModeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+        "PreferencesDialog.WordModeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTIComboBoxWordMode.setToolTipText ( Messages
         .getString ( "PreferencesDialog.WordModeToolTip" ) ); //$NON-NLS-1$
 
     // Zoom
     this.gui.jGTILabelZoom.setText ( Messages
-        .getString ( "PreferencesDialog.Zoom" ) ); //$NON-NLS-1$    
+        .getString ( "PreferencesDialog.Zoom" ) ); //$NON-NLS-1$
     this.gui.jGTILabelZoom.setDisplayedMnemonic ( Messages.getString (
-        "PreferencesDialog.ZoomMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+        "PreferencesDialog.ZoomMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTISliderZoom.setToolTipText ( Messages
         .getString ( "PreferencesDialog.ZoomToolTip" ) ); //$NON-NLS-1$
 
     // Auto Step
     this.gui.jGTILabelAutoStep.setText ( Messages
-        .getString ( "PreferencesDialog.AutoStep" ) ); //$NON-NLS-1$    
+        .getString ( "PreferencesDialog.AutoStep" ) ); //$NON-NLS-1$
     this.gui.jGTILabelAutoStep.setDisplayedMnemonic ( Messages.getString (
-        "PreferencesDialog.AutoStepMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+        "PreferencesDialog.AutoStepMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTISliderAutoStep.setToolTipText ( Messages
         .getString ( "PreferencesDialog.AutoStepToolTip" ) ); //$NON-NLS-1$
 
     // Mouse selection
     this.gui.jGTILabelMouseSelection.setText ( Messages
-        .getString ( "PreferencesDialog.MouseSelection" ) ); //$NON-NLS-1$    
+        .getString ( "PreferencesDialog.MouseSelection" ) ); //$NON-NLS-1$
     this.gui.jGTILabelMouseSelection.setDisplayedMnemonic ( Messages.getString (
-        "PreferencesDialog.MouseSelectionMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+        "PreferencesDialog.MouseSelectionMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTIComboBoxMouseSelection.setToolTipText ( Messages
         .getString ( "PreferencesDialog.MouseSelectionToolTip" ) ); //$NON-NLS-1$
 
     // pda mode
     this.gui.jGTILabelPDAMode.setText ( Messages
-        .getString ( "PreferencesDialog.PDAMode" ) ); //$NON-NLS-1$    
+        .getString ( "PreferencesDialog.PDAMode" ) ); //$NON-NLS-1$
     this.gui.jGTILabelPDAMode.setDisplayedMnemonic ( Messages.getString (
-        "PreferencesDialog.PDAModeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+        "PreferencesDialog.PDAModeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTIComboBoxPDAMode.setToolTipText ( Messages
         .getString ( "PreferencesDialog.PDAModeToolTip" ) ); //$NON-NLS-1$
 
@@ -3222,6 +3290,48 @@ public final class PreferencesDialog implements
           this.colorItemTransitionError );
       PreferenceManager.getInstance ().fireColorChangedTransitionError (
           this.colorItemTransitionError.getColor () );
+    }
+
+    // Regex
+    if ( this.gui.jGTITreeColors.isExpanded ( new TreePath ( this.regexNode
+        .getPath () ) ) != this.regexNode.isExpanded () )
+    {
+
+      this.regexNode.setExpanded ( this.gui.jGTITreeColors
+          .isExpanded ( new TreePath ( this.regexNode.getPath () ) ) );
+      PreferenceManager.getInstance ().setColorItemRegexGroup ( this.regexNode );
+    }
+    if ( !this.initialColorItemRegexToolTip.getColor ().equals (
+        this.colorItemRegexToolTip.getColor () ) )
+    {
+      PreferenceManager.getInstance ().setColorItemRegexToolTip (
+          this.colorItemRegexToolTip );
+      PreferenceManager.getInstance ().fireColorChangedRegexToolTip (
+          this.colorItemRegexToolTip.getColor () );
+    }
+    if ( !this.initialColorItemRegexToken.getColor ().equals (
+        this.colorItemRegexToken.getColor () ) )
+    {
+      PreferenceManager.getInstance ().setColorItemRegexToken (
+          this.colorItemRegexToken );
+      PreferenceManager.getInstance ().fireColorChangedRegexToken (
+          this.colorItemRegexToken.getColor () );
+    }
+    if ( !this.initialColorItemRegexPosition.getColor ().equals (
+        this.colorItemRegexPosition.getColor () ) )
+    {
+      PreferenceManager.getInstance ().setColorItemRegexPosition (
+          this.colorItemRegexPosition );
+      PreferenceManager.getInstance ().fireColorChangedRegexPosition (
+          this.colorItemRegexPosition.getColor () );
+    }
+    if ( !this.initialColorItemRegexSymbol.getColor ().equals (
+        this.colorItemRegexSymbol.getColor () ) )
+    {
+      PreferenceManager.getInstance ().setColorItemRegexSymbol (
+          this.colorItemRegexSymbol );
+      PreferenceManager.getInstance ().fireColorChangedRegexSymbol (
+          this.colorItemRegexSymbol.getColor () );
     }
 
     // Symbol

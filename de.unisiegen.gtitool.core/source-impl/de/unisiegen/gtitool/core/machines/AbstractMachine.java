@@ -63,6 +63,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.core.util.ObjectTriple;
+import de.unisiegen.gtitool.core.util.Util;
 import de.unisiegen.gtitool.logger.Logger;
 
 
@@ -1147,6 +1148,55 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
+   * @see Machine#getAcceptedWords(int)
+   */
+  public final ArrayList < Word > getAcceptedWords ( int maxLength )
+  {
+    ArrayList < Word > result = new ArrayList < Word > ();
+    ArrayList < Word > words = new ArrayList < Word > ();
+    ArrayList < Word > tmpWords = new ArrayList < Word > ();
+    int length = 0;
+    while ( length <= maxLength )
+    {
+      if ( length == 0 )
+      {
+        Word newWord = new DefaultWord ();
+        words.add ( newWord );
+        if ( isWordAccepted ( newWord ) )
+        {
+          result.add ( newWord );
+        }
+      }
+      else
+      {
+        tmpWords.clear ();
+        for ( Word currentWord : words )
+        {
+          for ( Symbol currentSymbol : this.alphabet )
+          {
+            Word newWord = new DefaultWord ( currentWord );
+            newWord.add ( currentSymbol );
+            tmpWords.add ( newWord );
+            if ( isWordAccepted ( newWord ) )
+            {
+              result.add ( newWord );
+            }
+          }
+        }
+
+        words.clear ();
+        words.addAll ( tmpWords );
+      }
+      length++ ;
+    }
+
+    return result;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Machine#getAlphabet()
    */
   public final Alphabet getAlphabet ()
@@ -1719,7 +1769,7 @@ public abstract class AbstractMachine implements Machine
    * 
    * @see Machine#getWord()
    */
-  public Word getWord ()
+  public final Word getWord ()
   {
     return this.word;
   }
@@ -1949,6 +1999,74 @@ public abstract class AbstractMachine implements Machine
     for ( State current : this.stateList )
     {
       if ( current.isActive () && current.isFinalState () )
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#isWordAccepted(Word)
+   */
+  public final boolean isWordAccepted ( Word testWord )
+  {
+    testWord.start ();
+
+    ArrayList < State > activeStates = new ArrayList < State > ( this.stateList
+        .size () );
+    ArrayList < State > tmpActiveStates = new ArrayList < State > (
+        this.stateList.size () );
+
+    // start states
+    for ( State current : this.stateList )
+    {
+      if ( current.isStartState () )
+      {
+        activeStates.addAll ( Util.getClosure ( current ) );
+      }
+    }
+
+    try
+    {
+      while ( !testWord.isFinished () )
+      {
+        tmpActiveStates.clear ();
+        Symbol symbol = testWord.nextSymbol ();
+        for ( State currentState : activeStates )
+        {
+          for ( Transition currentTransition : currentState
+              .getTransitionBegin () )
+          {
+            if ( currentTransition.contains ( symbol ) )
+            {
+              if ( !tmpActiveStates.contains ( currentState ) )
+              {
+                tmpActiveStates.add ( currentTransition.getStateEnd () );
+                break;
+              }
+            }
+          }
+        }
+
+        activeStates.clear ();
+        activeStates.addAll ( Util.getClosure ( tmpActiveStates ) );
+      }
+    }
+    catch ( WordFinishedException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return false;
+    }
+
+    for ( State current : activeStates )
+    {
+      if ( current.isFinalState () )
       {
         return true;
       }

@@ -251,6 +251,15 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
+   * Returns the accepted {@link Word} list.
+   * 
+   * @param maxLength The maximum {@link Word} length.
+   * @return The accepted {@link Word} list.
+   */
+  public ArrayList < Word > getAcceptedWords ( int maxLength );
+
+
+  /**
    * Returns the {@link Alphabet}.
    * 
    * @return The {@link Alphabet}.
@@ -447,6 +456,15 @@ public interface Machine extends InputEntity, Serializable, TableModel,
    *         otherwise false.
    */
   public boolean isWordAccepted ();
+
+
+  /**
+   * Returns true if the given {@link Word} is accepted, otherwise false.
+   * 
+   * @param testWord The {@link Word} to test.
+   * @return True if the given {@link Word} is accepted, otherwise false.
+   */
+  public boolean isWordAccepted ( Word testWord );
 
 
   /**

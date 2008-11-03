@@ -23,7 +23,6 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
-import de.unisiegen.gtitool.core.entities.Transition.TransitionType;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
@@ -41,6 +40,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.core.util.ObjectPair;
+import de.unisiegen.gtitool.core.util.Util;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -1302,79 +1302,6 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Returns the epsilon closure of the given {@link State}s.
-   * 
-   * @param stateList The {@link State}s.
-   * @return The epsilon closure of the given {@link State}s.
-   */
-  private final ArrayList < State > getClosure ( ArrayList < State > stateList )
-  {
-    ArrayList < State > result = new ArrayList < State > ();
-    for ( State current : stateList )
-    {
-      for ( State currentResult : getClosure ( current ) )
-      {
-        if ( !result.contains ( currentResult ) )
-        {
-          result.add ( currentResult );
-        }
-      }
-    }
-    return result;
-  }
-
-
-  /**
-   * Returns the epsilon closure of the given {@link State}.
-   * 
-   * @param state The {@link State}.
-   * @return The epsilon closure of the given {@link State}.
-   */
-  private final ArrayList < State > getClosure ( State state )
-  {
-    return getClosure ( state, new ArrayList < State > () );
-  }
-
-
-  /**
-   * Returns the epsilon closure of the given {@link State}.
-   * 
-   * @param state The {@link State}.
-   * @param finishedStates The {@link State}s which are finished.
-   * @return The epsilon closure of the given {@link State}.
-   */
-  private final ArrayList < State > getClosure ( State state,
-      ArrayList < State > finishedStates )
-  {
-    ArrayList < State > result = new ArrayList < State > ();
-    if ( finishedStates.contains ( state ) )
-    {
-      return result;
-    }
-
-    result.add ( state );
-    finishedStates.add ( state );
-    for ( Transition current : state.getTransitionBegin () )
-    {
-      if ( ( current.getTransitionType ().equals ( TransitionType.EPSILON_ONLY ) || current
-          .getTransitionType ().equals ( TransitionType.EPSILON_SYMBOL ) )
-          && !result.contains ( current.getStateEnd () ) )
-      {
-        for ( State currentState : getClosure ( current.getStateEnd (),
-            finishedStates ) )
-        {
-          if ( !result.contains ( currentState ) )
-          {
-            result.add ( currentState );
-          }
-        }
-      }
-    }
-    return result;
-  }
-
-
-  /**
    * Returns the convertMachineTableModel.
    * 
    * @return The convertMachineTableModel.
@@ -1791,7 +1718,7 @@ public final class ConvertMachineDialog implements
       Collections.sort ( activeStateList );
 
       ArrayList < State > activeClosureStateList = new ArrayList < State > ();
-      for ( State current : getClosure ( activeStateList ) )
+      for ( State current : Util.getClosure ( activeStateList ) )
       {
         current.setActive ( true );
         activeClosureStateList.add ( current );
@@ -2040,7 +1967,7 @@ public final class ConvertMachineDialog implements
       Collections.sort ( activeStateList );
 
       ArrayList < State > activeClosureStateList = new ArrayList < State > ();
-      for ( State current : getClosure ( activeStateList ) )
+      for ( State current : Util.getClosure ( activeStateList ) )
       {
         current.setActive ( true );
         activeClosureStateList.add ( current );
@@ -2304,7 +2231,7 @@ public final class ConvertMachineDialog implements
       }
 
       ArrayList < State > activeClosureStateList = new ArrayList < State > ();
-      for ( State current : getClosure ( activeStateList ) )
+      for ( State current : Util.getClosure ( activeStateList ) )
       {
         current.setActive ( true );
         activeClosureStateList.add ( current );

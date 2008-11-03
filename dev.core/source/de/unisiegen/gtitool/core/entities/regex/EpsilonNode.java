@@ -272,14 +272,13 @@ public class EpsilonNode extends LeafNode
   }
 
   /**
-   * TODO
+   * {inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNodeString()
+   * RegexNode#getNodeString()
    */
   @Override
   public PrettyString getNodeString ()
   {
-    return new PrettyString ( new PrettyToken ( "\u03B5", Style.TOKEN ) );
+    return new PrettyString ( new PrettyToken ( "\u03B5", Style.TOKEN ) ); //$NON-NLS-1$
   }
 }

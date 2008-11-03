@@ -263,6 +263,6 @@ public class KleeneNode extends RegexNode
   @Override
   public PrettyString getNodeString ()
   {
-    return new PrettyString ( new PrettyToken ( "*", Style.REGEX_SYMBOL ) );
+    return new PrettyString ( new PrettyToken ( "*", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
   }
 }

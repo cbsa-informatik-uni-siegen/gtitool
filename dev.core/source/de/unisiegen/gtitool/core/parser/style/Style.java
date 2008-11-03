@@ -225,9 +225,14 @@ public enum Style
       }
         // TODO SM
       case REGEX_SYMBOL :
+        return PreferenceManager.getInstance ().getColorItemRegexSymbol ()
+        .getColor ();
       case TOKEN :
+        return PreferenceManager.getInstance ().getColorItemRegexToken ()
+        .getColor ();
       case REGEX_POSITION :
-        return Color.BLACK;
+        return PreferenceManager.getInstance ().getColorItemRegexPosition ()
+            .getColor ();
       case REGEX_TOOL_TIP_TEXT :
         return PreferenceManager.getInstance ().getColorItemRegexToolTipText ()
             .getColor ();

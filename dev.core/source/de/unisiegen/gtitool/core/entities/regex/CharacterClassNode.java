@@ -173,7 +173,8 @@ public class CharacterClassNode extends LeafNode
   {
     return false;
   }
-  
+
+
   /**
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
    */
@@ -308,16 +309,24 @@ public class CharacterClassNode extends LeafNode
   {
     if ( !this.array )
     {
-      return new PrettyString ( new PrettyToken (
-          "[" + this.char1 + "-" + this.char2 + "]", Style.TOKEN ) ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+      PrettyString string = new PrettyString ();
+      string.add ( new PrettyToken ( "[", Style.SYMBOL ) ); //$NON-NLS-1$
+      string.add ( new PrettyToken ( Character.toString ( this.char1 ),
+          Style.TOKEN ) );
+      string.add ( new PrettyToken ( "-", Style.SYMBOL ) ); //$NON-NLS-1$
+      string.add ( new PrettyToken ( Character.toString ( this.char2 ),
+          Style.TOKEN ) );
+      string.add ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
+      return string;
     }
-    String s = "[";
+    PrettyString string = new PrettyString ();
+    string.add ( new PrettyToken ( "[", Style.SYMBOL ) ); //$NON-NLS-1$
     for ( char c : this.chars )
     {
-      s += c;
+      string.add ( new PrettyToken ( Character.toString ( c ), Style.TOKEN ) );
     }
-    s += "]";
-    return new PrettyString ( new PrettyToken ( s, Style.TOKEN ) );
+    string.add ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
+    return string;
   }
 
 

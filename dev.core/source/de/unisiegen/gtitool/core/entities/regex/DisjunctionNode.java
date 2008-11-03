@@ -266,15 +266,14 @@ public class DisjunctionNode extends RegexNode
 
 
   /**
-   * TODO
+   * {inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNodeString()
+   * RegexNode#getNodeString()
    */
   @Override
   public PrettyString getNodeString ()
   {
-    return new PrettyString ( new PrettyToken ( "|", Style.REGEX_SYMBOL ) );
+    return new PrettyString ( new PrettyToken ( "|", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
   }
   
   /**

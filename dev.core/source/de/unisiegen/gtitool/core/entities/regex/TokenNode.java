@@ -3,10 +3,12 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import javax.swing.event.EventListenerList;
+
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -28,9 +30,24 @@ public class TokenNode extends LeafNode
 
 
   /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
+
+
+  /**
    * The name of the Token
    */
   private String name;
+
+
+  /**
+   * The offset of this {@link TokenNode} in the source code.
+   * 
+   * @see #getParserOffset()
+   * @see #setParserOffset(ParserOffset)
+   */
+  private ParserOffset parserOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -51,80 +68,56 @@ public class TokenNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getLeftChildrenCount()
+   * @see PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
    */
-  @Override
-  public int getLeftChildrenCount ()
+  public void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo ( @SuppressWarnings ( "unused" )
+  RegexNode o )
   {
     return 0;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getRightChildrenCount()
+   * @see Object#equals(java.lang.Object)
    */
   @Override
-  public int getRightChildrenCount ()
+  public boolean equals ( Object obj )
   {
-    return 0;
+    if ( obj == this )
+    {
+      return true;
+    }
+    if ( obj instanceof TokenNode )
+    {
+      if ( this.name.equals ( ( ( TokenNode ) obj ).name ) )
+      {
+        return this.position == ( ( TokenNode ) obj ).position;
+      }
+    }
+    return false;
   }
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
-   */
-  @Override
-  public RegexNode toCoreSyntax ()
-  {
-    return this;
-  }
-
-
-  /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getAllChildren()
-   */
-  @Override
-  public ArrayList < RegexNode > getAllChildren ()
-  {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    return nodes;
-  }
-
-
-  /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
-   */
-  @Override
-  public ArrayList < RegexNode > getChildren ()
-  {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    return nodes;
-  }
-
-
-  /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
-   */
-  @Override
-  public ArrayList < LeafNode > getTokenNodes ()
-  {
-    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
-    nodes.add ( this );
-    return nodes;
-  }
-
-
-  /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
+   * @see RegexNode#firstPos()
    */
   @Override
   public ArrayList < RegexNode > firstPos ()
@@ -136,34 +129,40 @@ public class TokenNode extends LeafNode
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getAllChildren()
    */
   @Override
-  public ArrayList < RegexNode > lastPos ()
+  public ArrayList < RegexNode > getAllChildren ()
   {
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    nodes.add ( this );
     return nodes;
   }
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getChildren()
    */
   @Override
-  public boolean nullable ()
+  public ArrayList < RegexNode > getChildren ()
   {
-    return false;
+    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    return nodes;
   }
 
 
   /**
-   * @see java.lang.Object#toString()
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getLeftChildrenCount()
    */
   @Override
-  public String toString ()
+  public int getLeftChildrenCount ()
   {
-    return this.name;
+    return 0;
   }
 
 
@@ -180,38 +179,17 @@ public class TokenNode extends LeafNode
 
 
   /**
-   * Sets the position.
+   * {@inheritDoc}
    * 
-   * @param position The position to set.
-   * @see #position
+   * @see RegexNode#getNodeString()
    */
   @Override
-  public void setPosition ( int position )
+  public PrettyString getNodeString ()
   {
-    this.position = position;
+    PrettyString prettyString = new PrettyString ();
+    prettyString.add ( new PrettyToken ( this.name, Style.TOKEN ) );
+    return prettyString;
   }
-
-
-  /**
-   * Returns the position.
-   * 
-   * @return The position.
-   * @see #position
-   */
-  @Override
-  public int getPosition ()
-  {
-    return this.position;
-  }
-
-
-  /**
-   * The offset of this {@link DefaultAlphabet} in the source code.
-   * 
-   * @see #getParserOffset()
-   * @see #setParserOffset(ParserOffset)
-   */
-  private ParserOffset parserOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -228,6 +206,82 @@ public class TokenNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
+   * @see LeafNode#getPosition()
+   */
+  @Override
+  public int getPosition ()
+  {
+    return this.position;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getRightChildrenCount()
+   */
+  @Override
+  public int getRightChildrenCount ()
+  {
+    return 0;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getTokenNodes()
+   */
+  @Override
+  public ArrayList < LeafNode > getTokenNodes ()
+  {
+    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
+    nodes.add ( this );
+    return nodes;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#lastPos()
+   */
+  @Override
+  public ArrayList < RegexNode > lastPos ()
+  {
+    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    nodes.add ( this );
+    return nodes;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#nullable()
+   */
+  @Override
+  public boolean nullable ()
+  {
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Entity#setParserOffset(ParserOffset)
    */
   public void setParserOffset ( ParserOffset parserOffset )
@@ -237,85 +291,49 @@ public class TokenNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   * @see LeafNode#setPosition(int)
    */
-  public void addPrettyStringChangedListener (
-      PrettyStringChangedListener listener )
+  @Override
+  public void setPosition ( int position )
   {
+    this.position = position;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   * @see RegexNode#toCoreSyntax()
    */
-  public void removePrettyStringChangedListener (
-      PrettyStringChangedListener listener )
+  @Override
+  public RegexNode toCoreSyntax ()
   {
+    return this;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
+   * @see PrettyPrintable#toPrettyString()
    */
   public PrettyString toPrettyString ()
   {
-    return new PrettyString ( new PrettyToken ( this.name , Style.TOKEN ) );
+    return new PrettyString ( new PrettyToken ( this.name, Style.TOKEN ) );
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param o
-   * @return
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
-  public int compareTo ( RegexNode o )
-  {
-    return 0;
-  }
-  
-  /**
-   * TODO
-   *
-   * @param obj
-   * @return
-   * @see java.lang.Object#equals(java.lang.Object)
+   * @see Object#toString()
    */
   @Override
-  public boolean equals ( Object obj )
+  public String toString ()
   {
-    if(obj == this) {
-      return true;
-    }
-    if(obj instanceof TokenNode) {
-      if(this.name.equals ( ((TokenNode) obj).name ))
-      {
-        return this.position == ((TokenNode) obj).position;
-      }
-    }
-    return false;
-  }
-
-
-  /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNodeString()
-   */
-  @Override
-  public PrettyString getNodeString ()
-  {
-    PrettyString prettyString = new PrettyString();
-    prettyString.add ( new PrettyToken (this.name, Style.TOKEN) );
-    return prettyString;
+    return this.name;
   }
 
 }

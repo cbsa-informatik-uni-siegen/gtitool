@@ -3,10 +3,12 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import javax.swing.event.EventListenerList;
+
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -22,9 +24,30 @@ public class OptionalNode extends RegexNode
 {
 
   /**
+   * The serial version uid
+   */
+  private static final long serialVersionUID = -3765287389883494587L;
+
+
+  /**
    * The {@link RegexNode} in the Question
    */
   private RegexNode content;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
+
+
+  /**
+   * The offset of this {@link OptionalNode} in the source code.
+   * 
+   * @see #getParserOffset()
+   * @see #setParserOffset(ParserOffset)
+   */
+  private ParserOffset parserOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -39,44 +62,66 @@ public class OptionalNode extends RegexNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getLeftChildrenCount()
+   * @see PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
    */
-  @Override
-  public int getLeftChildrenCount ()
+  public void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
   {
-    return this.content.getLeftChildrenCount ();
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getRightChildrenCount()
+   * @see Comparable#compareTo(java.lang.Object)
    */
-  @Override
-  public int getRightChildrenCount ()
+  public int compareTo ( @SuppressWarnings ( "unused" )
+  RegexNode o )
   {
-    return this.content.getRightChildrenCount ();
+    return 0;
   }
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(java.lang.Object)
    */
   @Override
-  public RegexNode toCoreSyntax ()
+  public boolean equals ( Object obj )
   {
-    return new DisjunctionNode ( this.content.toCoreSyntax (),
-        new EpsilonNode () );
+    if ( obj == this )
+    {
+      return true;
+    }
+    if ( obj instanceof OptionalNode )
+    {
+      OptionalNode node = ( OptionalNode ) obj;
+      return this.content.equals ( node.content );
+    }
+    return false;
   }
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getAllChildren()
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#firstPos()
+   */
+  @Override
+  public ArrayList < RegexNode > firstPos ()
+  {
+    return this.content.firstPos ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getAllChildren()
    */
   @Override
   public ArrayList < RegexNode > getAllChildren ()
@@ -88,10 +133,9 @@ public class OptionalNode extends RegexNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
+   * @see RegexNode#getChildren()
    */
   @Override
   public ArrayList < RegexNode > getChildren ()
@@ -103,82 +147,27 @@ public class OptionalNode extends RegexNode
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
-   */
-  @Override
-  public ArrayList < LeafNode > getTokenNodes ()
-  {
-    return this.content.getTokenNodes ();
-  }
-
-
-  /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
-   */
-  @Override
-  public ArrayList < RegexNode > firstPos ()
-  {
-    return this.content.firstPos ();
-  }
-
-
-  /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
-   */
-  @Override
-  public ArrayList < RegexNode > lastPos ()
-  {
-    return this.content.lastPos ();
-  }
-
-
-  /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
-   */
-  @Override
-  public boolean nullable ()
-  {
-    return true;
-  }
-
-
-  /**
-   * @see java.lang.Object#toString()
-   */
-  @Override
-  public String toString ()
-  {
-    return this.content.toString () + "?"; //$NON-NLS-1$
-  }
-
-  
-  /**
-   * TODO
-   *
-   * @param obj
-   * @return
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public boolean equals ( Object obj )
-  {
-    if(obj == this) {
-      return true;
-    }
-    if(obj instanceof OptionalNode) {
-      OptionalNode node = ( OptionalNode ) obj;
-      return this.content.equals (node.content);
-    }
-    return false;
-  }
-
-  /**
-   * The offset of this {@link DefaultAlphabet} in the source code.
+   * {@inheritDoc}
    * 
-   * @see #getParserOffset()
-   * @see #setParserOffset(ParserOffset)
+   * @see RegexNode#getLeftChildrenCount()
    */
-  private ParserOffset parserOffset = NO_PARSER_OFFSET;
+  @Override
+  public int getLeftChildrenCount ()
+  {
+    return this.content.getLeftChildrenCount ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getNodeString()
+   */
+  @Override
+  public PrettyString getNodeString ()
+  {
+    return new PrettyString ( new PrettyToken ( "?", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
+  }
 
 
   /**
@@ -195,6 +184,66 @@ public class OptionalNode extends RegexNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#getRightChildrenCount()
+   */
+  @Override
+  public int getRightChildrenCount ()
+  {
+    return this.content.getRightChildrenCount ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getTokenNodes()
+   */
+  @Override
+  public ArrayList < LeafNode > getTokenNodes ()
+  {
+    return this.content.getTokenNodes ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#lastPos()
+   */
+  @Override
+  public ArrayList < RegexNode > lastPos ()
+  {
+    return this.content.lastPos ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#nullable()
+   */
+  @Override
+  public boolean nullable ()
+  {
+    return true;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Entity#setParserOffset(ParserOffset)
    */
   public void setParserOffset ( ParserOffset parserOffset )
@@ -204,66 +253,40 @@ public class OptionalNode extends RegexNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   * @see RegexNode#toCoreSyntax()
    */
-  public void addPrettyStringChangedListener (
-      PrettyStringChangedListener listener )
+  @Override
+  public RegexNode toCoreSyntax ()
   {
+    return new DisjunctionNode ( this.content.toCoreSyntax (),
+        new EpsilonNode () );
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
-   */
-  public void removePrettyStringChangedListener (
-      PrettyStringChangedListener listener )
-  {
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
+   * @see PrettyPrintable#toPrettyString()
    */
   public PrettyString toPrettyString ()
   {
     PrettyString string = this.content.toPrettyString ();
     string
-        .add ( new PrettyString ( new PrettyToken ( "?", Style.REGEX_SYMBOL ) ) );
+        .add ( new PrettyString ( new PrettyToken ( "?", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
     return string;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param o
-   * @return
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
-  public int compareTo ( RegexNode o )
-  {
-    return 0;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNodeString()
+   * @see Object#toString()
    */
   @Override
-  public PrettyString getNodeString ()
+  public String toString ()
   {
-    return new PrettyString ( new PrettyToken ( "?", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
+    return this.content.toString () + "?"; //$NON-NLS-1$
   }
 }

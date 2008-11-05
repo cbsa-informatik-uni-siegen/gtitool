@@ -3,10 +3,12 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import javax.swing.event.EventListenerList;
+
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -20,6 +22,24 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  */
 public class ConcatenationNode extends RegexNode
 {
+
+  /**
+   * The serial version uid
+   */
+  private static final long serialVersionUID = 8972113015715049815L;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
+
+
+  /**
+   * The offset of this {@link ConcatenationNode} in the source code.
+   */
+  private ParserOffset parserOffset = NO_PARSER_OFFSET;
+
 
   /**
    * First element of the Concatenation
@@ -47,37 +67,34 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax()
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
    */
-  @Override
-  public RegexNode toCoreSyntax ()
+  public void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
   {
-    return new ConcatenationNode ( this.regex1.toCoreSyntax (), this.regex2
-        .toCoreSyntax () );
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
   }
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getAllChildren()
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo(java.lang.Object)
    */
-  @Override
-  public ArrayList < RegexNode > getAllChildren ()
+  public int compareTo ( @SuppressWarnings("unused")
+  RegexNode o )
   {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    nodes.add ( this.regex1 );
-    nodes.add ( this.regex2 );
-    nodes.addAll ( this.regex1.getAllChildren () );
-    nodes.addAll ( this.regex2.getAllChildren () );
-    return nodes;
+    return 0;
   }
 
 
-  public int countRightChildren ()
-  {
-    return 1 + this.regex2.getAllChildren ().size ();
-  }
-
-
+  /**
+   * Counts the left Children of the {@link ConcatenationNode}
+   * 
+   * @return The leftChildren count
+   */
   public int countLeftChildren ()
   {
     return 1 + this.regex1.getAllChildren ().size ();
@@ -85,20 +102,42 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getTokenNodes()
+   * Counts the right Children of the {@link ConcatenationNode}
+   * 
+   * @return The rightChildren count
    */
-  @Override
-  public ArrayList < LeafNode > getTokenNodes ()
+  public int countRightChildren ()
   {
-    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
-    nodes.addAll ( this.regex1.getTokenNodes () );
-    nodes.addAll ( this.regex2.getTokenNodes () );
-    return nodes;
+    return 1 + this.regex2.getAllChildren ().size ();
   }
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals ( Object obj )
+  {
+    if ( obj == this )
+    {
+      return true;
+    }
+    if ( obj instanceof ConcatenationNode )
+    {
+      ConcatenationNode con = ( ConcatenationNode ) obj;
+      return this.regex1.equals ( con.regex1 )
+          && this.regex2.equals ( con.regex2 );
+    }
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#firstPos()
    */
   @Override
   public ArrayList < RegexNode > firstPos ()
@@ -115,47 +154,26 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getAllChildren()
    */
   @Override
-  public ArrayList < RegexNode > lastPos ()
+  public ArrayList < RegexNode > getAllChildren ()
   {
-    if ( !this.regex2.nullable () )
-    {
-      return this.regex2.lastPos ();
-    }
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    nodes.addAll ( this.regex1.lastPos () );
-    nodes.addAll ( this.regex2.lastPos () );
+    nodes.add ( this.regex1 );
+    nodes.add ( this.regex2 );
+    nodes.addAll ( this.regex1.getAllChildren () );
+    nodes.addAll ( this.regex2.getAllChildren () );
     return nodes;
   }
 
 
   /**
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
-   */
-  @Override
-  public boolean nullable ()
-  {
-    return this.regex1.nullable () && this.regex2.nullable ();
-  }
-
-
-  /**
-   * @see java.lang.Object#toString()
-   */
-  @Override
-  public String toString ()
-  {
-    return this.regex1.toString () + this.regex2.toString (); //$NON-NLS-1$ //$NON-NLS-2$
-  }
-
-
-  /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
+   * @see RegexNode#getChildren()
    */
   @Override
   public ArrayList < RegexNode > getChildren ()
@@ -168,10 +186,9 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getLeftChildrenCount()
+   * @see RegexNode#getLeftChildrenCount()
    */
   @Override
   public int getLeftChildrenCount ()
@@ -181,25 +198,15 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getRightChildrenCount()
+   * @see RegexNode#getNodeString()
    */
   @Override
-  public int getRightChildrenCount ()
+  public PrettyString getNodeString ()
   {
-    return 1 + this.regex2.getAllChildren ().size ();
+    return new PrettyString ( new PrettyToken ( "·", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
   }
-
-
-  /**
-   * The offset of this {@link DefaultAlphabet} in the source code.
-   * 
-   * @see #getParserOffset()
-   * @see #setParserOffset(ParserOffset)
-   */
-  private ParserOffset parserOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -216,6 +223,76 @@ public class ConcatenationNode extends RegexNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#getRightChildrenCount()
+   */
+  @Override
+  public int getRightChildrenCount ()
+  {
+    return 1 + this.regex2.getAllChildren ().size ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getTokenNodes()
+   */
+  @Override
+  public ArrayList < LeafNode > getTokenNodes ()
+  {
+    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
+    nodes.addAll ( this.regex1.getTokenNodes () );
+    nodes.addAll ( this.regex2.getTokenNodes () );
+    return nodes;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#lastPos()
+   */
+  @Override
+  public ArrayList < RegexNode > lastPos ()
+  {
+    if ( !this.regex2.nullable () )
+    {
+      return this.regex2.lastPos ();
+    }
+    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    nodes.addAll ( this.regex1.lastPos () );
+    nodes.addAll ( this.regex2.lastPos () );
+    return nodes;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#nullable()
+   */
+  @Override
+  public boolean nullable ()
+  {
+    return this.regex1.nullable () && this.regex2.nullable ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Entity#setParserOffset(ParserOffset)
    */
   public void setParserOffset ( ParserOffset parserOffset )
@@ -225,87 +302,41 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * TODO
+   * /** {@inheritDoc}
    * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   * @see RegexNode#toCoreSyntax()
    */
-  public void addPrettyStringChangedListener (
-      PrettyStringChangedListener listener )
+  @Override
+  public RegexNode toCoreSyntax ()
   {
+    return new ConcatenationNode ( this.regex1.toCoreSyntax (), this.regex2
+        .toCoreSyntax () );
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
-   */
-  public void removePrettyStringChangedListener (
-      PrettyStringChangedListener listener )
-  {
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
+   * @see PrettyPrintable#toPrettyString()
    */
   public PrettyString toPrettyString ()
   {
     PrettyString string = this.regex1.toPrettyString ();
     string
-        .add ( new PrettyString ( new PrettyToken ( "·", Style.REGEX_SYMBOL ) ) );
+        .add ( new PrettyString ( new PrettyToken ( "·", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
     string.add ( this.regex2.toPrettyString () );
     return string;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param o
-   * @return
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
-  public int compareTo ( RegexNode o )
-  {
-    return 0;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNodeString()
+   * @see Object#toString()
    */
   @Override
-  public PrettyString getNodeString ()
+  public String toString ()
   {
-    return new PrettyString ( new PrettyToken ( "·", Style.REGEX_SYMBOL ) );
-  }
-  
-  /**
-   * TODO
-   *
-   * @param obj
-   * @return
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public boolean equals ( Object obj )
-  {
-    if(obj == this) {
-      return true;
-    }
-    if(obj instanceof ConcatenationNode) {
-      ConcatenationNode con = ( ConcatenationNode ) obj;
-      return this.regex1.equals ( con.regex1 ) && this.regex2.equals ( con.regex2 );
-    }
-    return false;
+    return this.regex1.toString () + this.regex2.toString ();
   }
 }

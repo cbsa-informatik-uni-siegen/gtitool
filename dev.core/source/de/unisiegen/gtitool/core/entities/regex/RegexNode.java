@@ -28,26 +28,26 @@ public abstract class RegexNode implements Entity < RegexNode >
 
   /**
    * Gets the direct children of this Node
-   *
+   * 
    * @return The dircet children of this Node
    */
   public abstract ArrayList < RegexNode > getChildren ();
 
-  
+
   /**
-   * 
    * Counts the right children
-   *
+   * 
    * @return the right children count
    */
-  public abstract int getRightChildrenCount();
-  
+  public abstract int getRightChildrenCount ();
+
+
   /**
    * Counts the left children
-   *
+   * 
    * @return the left children count
    */
-  public abstract int getLeftChildrenCount();
+  public abstract int getLeftChildrenCount ();
 
 
   /**
@@ -98,42 +98,54 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return The {@link PrettyString} for the Node in the JGTIGraph
    */
   public abstract PrettyString getNodeString ();
-  
-  public PrettyString getToolTipString() {
-    PrettyString ps = new PrettyString();
-    ps.add (new PrettyToken( "Nullable: ", Style.REGEX_TOOL_TIP_TEXT ));
-    ps.add (new PrettyToken( "" + nullable (), Style.REGEX_POSITION ));
-    ps.add (new PrettyToken(  ", Firstpos: {", Style.REGEX_TOOL_TIP_TEXT ));
+
+
+  /**
+   * Get the {@link PrettyString} for the Tooltip that contains nullable,
+   * firstpos and lastpos
+   * 
+   * @return The {@link PrettyString} for the Tooltip
+   */
+  public PrettyString getToolTipString ()
+  {
+    PrettyString ps = new PrettyString ();
+    ps.add ( new PrettyToken ( "Nullable: ", Style.REGEX_TOOL_TIP_TEXT ) );
+    ps.add ( new PrettyToken ( "" + nullable (), Style.REGEX_POSITION ) );
+    ps.add ( new PrettyToken ( ", Firstpos: {", Style.REGEX_TOOL_TIP_TEXT ) );
     int i = 0;
     for ( RegexNode current : firstPos () )
     {
       if ( i > 0 )
       {
-        i++;
-        ps.add ( new PrettyToken(";",Style.REGEX_TOOL_TIP_TEXT));
+        i++ ;
+        ps.add ( new PrettyToken ( ";", Style.REGEX_TOOL_TIP_TEXT ) );
       }
       if ( current instanceof LeafNode )
       {
-        ps.add (new PrettyToken( "" + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ));
+        ps
+            .add ( new PrettyToken ( ""
+                + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ) );
       }
     }
-    ps.add (new PrettyToken(  "}, Lastpos: {", Style.REGEX_TOOL_TIP_TEXT ));
+    ps.add ( new PrettyToken ( "}, Lastpos: {", Style.REGEX_TOOL_TIP_TEXT ) );
     i = 0;
-    for ( RegexNode current : lastPos ())
+    for ( RegexNode current : lastPos () )
     {
       if ( i > 0 )
       {
-        i++;
-        ps.add ( new PrettyToken(";",Style.REGEX_TOOL_TIP_TEXT));
+        i++ ;
+        ps.add ( new PrettyToken ( ";", Style.REGEX_TOOL_TIP_TEXT ) );
       }
       if ( current instanceof LeafNode )
       {
-        ps.add (new PrettyToken( "" + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ));
+        ps
+            .add ( new PrettyToken ( ""
+                + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ) );
       }
     }
 
-    ps.add (new PrettyToken(  "}", Style.REGEX_TOOL_TIP_TEXT ));
+    ps.add ( new PrettyToken ( "}", Style.REGEX_TOOL_TIP_TEXT ) );
     return ps;
   }
-  
+
 }

@@ -33,6 +33,7 @@ import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.jgraph.JGraphpadParallelSplineRouter;
 import de.unisiegen.gtitool.ui.jgraph.NodeView;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 
 
 /**
@@ -41,6 +42,13 @@ import de.unisiegen.gtitool.ui.jgraph.NodeView;
 public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 {
 
+
+  /**
+   * The {@link RedoUndoHandler}
+   */
+  private RedoUndoHandler redoUndoHandler;
+  
+  
   /**
    * The default y-space in the graph
    */
@@ -236,6 +244,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   public void createTree ()
   {
 
+    this.regexEdgeViewList.clear ();
+    this.nodeViewList.clear ();
+    
     DefaultNodeView parent = createNodeView ( 0, 0, this.regex.getRegexNode () );
     addNodesToModel ( parent );
 
@@ -445,6 +456,19 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   public void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
+  }
+  
+
+
+
+  /**
+   * Set a new {@link RedoUndoHandler}
+   * 
+   * @param redoUndoHandler the new {@link RedoUndoHandler}
+   */
+  public final void setRedoUndoHandler ( RedoUndoHandler redoUndoHandler )
+  {
+    this.redoUndoHandler = redoUndoHandler;
   }
 
 

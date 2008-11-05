@@ -97,7 +97,7 @@ public class RegexDialog implements LogicClass < RegexDialogForm >
   public void handleOk ()
   {
     this.panel
-        .changeRegex ( this.gui.styledRegexParserPanel.getParsedObject () );
+        .changeRegex ( this.gui.styledRegexParserPanel.getParsedObject (), true );
     this.panel.getRegex ().setRegexString ( this.gui.styledRegexParserPanel.getText () );
     this.gui.dispose ();
   }

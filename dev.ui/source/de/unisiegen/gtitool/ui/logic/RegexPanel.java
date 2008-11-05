@@ -35,6 +35,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.RegexPanelForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
+import de.unisiegen.gtitool.ui.redoundo.RegexChangedItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
 
 
@@ -156,13 +157,14 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
 
+    this.model.setRedoUndoHandler ( this.redoUndoHandler );
     setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
         .getState () );
 
     this.gui.jGTISplitPaneConsole.setDividerLocation ( 0.5 );
     if ( this.regex.getRegexNode () != null )
     {
-      changeRegex ( this.regex.getRegexNode () );
+      changeRegex ( this.regex.getRegexNode (), false );
     }
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
@@ -224,8 +226,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param evt
    */
-  public void handleToCoreSyntaxButtonClicked (
-      @SuppressWarnings ( "unused" ) ActionEvent evt )
+  public void handleToCoreSyntaxButtonClicked ( @SuppressWarnings ( "unused" )
+  ActionEvent evt )
   {
     DefaultRegex newRegex = new DefaultRegex ( this.regex.getAlphabet (),
         this.regex.getRegexString () );
@@ -367,6 +369,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void handleRedo ()
   {
+    this.redoUndoHandler.redo ();
+    this.gui.repaint ();
   }
 
 
@@ -432,8 +436,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param evt
    */
-  public void handleRegexChangeButtonClicked (
-      @SuppressWarnings ( "unused" ) ActionEvent evt )
+  public void handleRegexChangeButtonClicked ( @SuppressWarnings ( "unused" )
+  ActionEvent evt )
   {
     new RegexDialog ( this );
   }
@@ -444,13 +448,21 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param newRegexNode The new {@link RegexNode}
    */
-  public void changeRegex ( RegexNode newRegexNode )
+  public void changeRegex ( RegexNode newRegexNode, boolean addRedoUndoItem )
   {
-    this.regex.changeRegexNode ( newRegexNode );
+    if ( addRedoUndoItem )
+    {
+      RegexNode old = this.regex.getRegexNode ();
+      this.regex.setRegexNode ( newRegexNode );
+      this.redoUndoHandler.addItem ( new RegexChangedItem ( this, this.regex.getRegexNode (),
+          old ) );
+    }
+    else
+    {
+      this.regex.changeRegexNode ( newRegexNode );
+    }
     this.gui.jGTITextFieldRegex.setText ( newRegexNode.toPrettyString ()
         .toString () );
-
-    this.model.getRegex ().changeRegexNode ( newRegexNode );
     this.model.initializeGraph ();
     this.jGTIGraph = this.model.getJGTIGraph ();
     this.jGTIGraph.setEditable ( false );
@@ -565,6 +577,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void handleUndo ()
   {
+    this.redoUndoHandler.undo ();
+    this.gui.repaint ();
   }
 
 
@@ -576,7 +590,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public boolean isRedoAble ()
   {
-    return false;
+    return this.redoUndoHandler.isRedoAble ();
   }
 
 
@@ -588,7 +602,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public boolean isUndoAble ()
   {
-    return false;
+    return this.redoUndoHandler.isUndoAble ();
   }
 
 

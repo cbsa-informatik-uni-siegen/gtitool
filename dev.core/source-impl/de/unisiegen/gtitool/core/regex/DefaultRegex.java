@@ -109,6 +109,7 @@ public class DefaultRegex implements Regex, Storable
    * The Constructor for a {@link DefaultRegex}
    * 
    * @param a The {@link Alphabet} of this Regex
+   * @param regexString
    */
   public DefaultRegex ( Alphabet a, String regexString )
   {
@@ -117,6 +118,12 @@ public class DefaultRegex implements Regex, Storable
   }
 
 
+  /**
+   * TODO
+   *
+   * @param e
+   * @param regexString
+   */
   public DefaultRegex ( Element e, String regexString )
   {
     this.regexString = regexString;
@@ -153,6 +160,16 @@ public class DefaultRegex implements Regex, Storable
   public void changeRegexNode ( RegexNode newRegexNode )
   {
     this.regexNode = newRegexNode;
+
+    int currentPosition = 1;
+    for ( RegexNode current : this.regexNode.getTokenNodes () )
+    {
+      if ( current instanceof LeafNode )
+      {
+        ( ( LeafNode ) current ).setPosition ( currentPosition );
+        currentPosition++ ;
+      }
+    }
   }
 
 
@@ -408,11 +425,11 @@ public class DefaultRegex implements Regex, Storable
   {
     return this.regexString;
   }
-  
-  
+
+
   /**
    * Sets the regexString.
-   *
+   * 
    * @param regexString The regexString to set.
    * @see #regexString
    */

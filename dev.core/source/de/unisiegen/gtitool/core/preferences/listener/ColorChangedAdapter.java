@@ -112,6 +112,54 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
   /**
    * {@inheritDoc}
    * 
+   * @see ColorChangedListener#colorChangedRegexPosition(Color)
+   */
+  public void colorChangedRegexPosition ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedRegexSymbol(Color)
+   */
+  public void colorChangedRegexSymbol ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedRegexToken(Color)
+   */
+  public void colorChangedRegexToken ( @SuppressWarnings("unused")
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedRegexToolTip(Color)
+   */
+  public void colorChangedRegexToolTip ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see ColorChangedListener#colorChangedStartNonterminalSymbol(Color)
    */
   public void colorChangedStartNonterminalSymbol (
@@ -169,44 +217,6 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
     // Override this method if needed.
   }
 
-
-  /**
-   * TODO
-   * 
-   * @param newColor
-   * @see de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener#colorChangedRegexToolTip(java.awt.Color)
-   */
-  public void colorChangedRegexToolTip ( Color newColor )
-  {
-    // Override this method if needed.
-  }
-  
-  /**
-   * TODO
-   *
-   * @param newColor
-   * @see de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener#colorChangedRegexPosition(java.awt.Color)
-   */
-  public void colorChangedRegexPosition ( Color newColor )
-  {
-  }
-  /**
-   * TODO
-   *
-   * @param newColor
-   * @see de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener#colorChangedRegexSymbol(java.awt.Color)
-   */
-  public void colorChangedRegexSymbol ( Color newColor )
-  {
-  }
-  /**
-   * TODO
-   *
-   * @param newColor
-   * @see de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener#colorChangedRegexToken(java.awt.Color)
-   */
-  public void colorChangedRegexToken ( Color newColor )
-  {}
 
   /**
    * {@inheritDoc}

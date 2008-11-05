@@ -84,6 +84,38 @@ public interface ColorChangedListener extends EventListener
 
 
   /**
+   * Invoked when the color of the Regex position changed.
+   * 
+   * @param newColor The new color of the Regex position.
+   */
+  public void colorChangedRegexPosition ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the Regex symbol changed.
+   * 
+   * @param newColor The new color of the Regex symbol.
+   */
+  public void colorChangedRegexSymbol ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the Regex token changed.
+   * 
+   * @param newColor The new color of the Regex token.
+   */
+  public void colorChangedRegexToken ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the Regex tool tip changed.
+   * 
+   * @param newColor The new color of the Regex tool tip.
+   */
+  public void colorChangedRegexToolTip ( Color newColor );
+
+
+  /**
    * Invoked when the color of the start {@link NonterminalSymbol} changed.
    * 
    * @param newColor The new color of the start{@link NonterminalSymbol}.
@@ -147,14 +179,6 @@ public interface ColorChangedListener extends EventListener
   public void colorChangedStateStart ( Color newColor );
 
 
-  public void colorChangedRegexToolTip ( Color newColor );
-
-  public void colorChangedRegexToken (Color newColor);
-  
-  public void colorChangedRegexSymbol (Color newColor);
-
-  public void colorChangedRegexPosition ( Color newColor);
-  
   /**
    * Invoked when the color of the {@link Symbol} changed.
    * 

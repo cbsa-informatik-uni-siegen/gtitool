@@ -548,12 +548,6 @@ public final class PreferencesDialog implements
 
 
   /**
-   * The {@link ColorItem} of the error {@link Production}.
-   */
-  private ColorItem colorItemProductionError;
-
-
-  /**
    * The {@link ColorItem} of the parser {@link NonterminalSymbol}.
    */
   private ColorItem colorItemNonterminalSymbol;
@@ -563,12 +557,6 @@ public final class PreferencesDialog implements
    * The {@link ColorItem} of the error {@link NonterminalSymbol}.
    */
   private ColorItem colorItemNonterminalSymbolError;
-
-
-  /**
-   * The {@link ColorItem} of the parser start {@link NonterminalSymbol}.
-   */
-  private ColorItem colorItemStartNonterminalSymbol;
 
 
   /**
@@ -593,6 +581,48 @@ public final class PreferencesDialog implements
    * The {@link ColorItem} of the parser warning.
    */
   private ColorItem colorItemParserWarning;
+
+
+  /**
+   * The {@link ColorItem} of the error {@link Production}.
+   */
+  private ColorItem colorItemProductionError;
+
+
+  /**
+   * The {@link ColorItem} of the regex.
+   */
+  private ColorItem colorItemRegex;
+
+
+  /**
+   * The {@link ColorItem} of the regex position.
+   */
+  private ColorItem colorItemRegexPosition;
+
+
+  /**
+   * The {@link ColorItem} of the regex symbol.
+   */
+  private ColorItem colorItemRegexSymbol;
+
+
+  /**
+   * The {@link ColorItem} of the regex token.
+   */
+  private ColorItem colorItemRegexToken;
+
+
+  /**
+   * The {@link ColorItem} of the regex tool tip.
+   */
+  private ColorItem colorItemRegexToolTip;
+
+
+  /**
+   * The {@link ColorItem} of the parser start {@link NonterminalSymbol}.
+   */
+  private ColorItem colorItemStartNonterminalSymbol;
 
 
   /**
@@ -623,21 +653,6 @@ public final class PreferencesDialog implements
    * The {@link ColorItem} of the final {@link State}.
    */
   private ColorItem colorItemStateFinal;
-
-
-  private ColorItem colorItemRegex;
-
-
-  private ColorItem colorItemRegexToolTip;
-
-
-  private ColorItem colorItemRegexToken;
-
-
-  private ColorItem colorItemRegexPosition;
-
-
-  private ColorItem colorItemRegexSymbol;
 
 
   /**
@@ -737,12 +752,6 @@ public final class PreferencesDialog implements
 
 
   /**
-   * The initial {@link ColorItem} of the parser start {@link NonterminalSymbol} .
-   */
-  private ColorItem initialColorItemStartNonterminalSymbol;
-
-
-  /**
    * The initial {@link ColorItem} of the parser error.
    */
   private ColorItem initialColorItemParserError;
@@ -767,21 +776,45 @@ public final class PreferencesDialog implements
 
 
   /**
-   * The initial {@link ColorItem} of the parser {@link State}.
+   * The initial {@link ColorItem} of the error {@link Production}.
    */
-  private ColorItem initialColorItemState;
+  private ColorItem initialColorItemProductionError;
 
 
-  private ColorItem initialColorItemRegexToolTip;
-
-
-  private ColorItem initialColorItemRegexToken;
-
-
+  /**
+   * The initial {@link ColorItem} of the Regex position.
+   */
   private ColorItem initialColorItemRegexPosition;
 
 
+  /**
+   * The initial {@link ColorItem} of the Regex symbol.
+   */
   private ColorItem initialColorItemRegexSymbol;
+
+
+  /**
+   * The initial {@link ColorItem} of the Regex token.
+   */
+  private ColorItem initialColorItemRegexToken;
+
+
+  /**
+   * The initial {@link ColorItem} of the Regex tool tip.
+   */
+  private ColorItem initialColorItemRegexToolTip;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser start {@link NonterminalSymbol} .
+   */
+  private ColorItem initialColorItemStartNonterminalSymbol;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser {@link State}.
+   */
+  private ColorItem initialColorItemState;
 
 
   /**
@@ -851,12 +884,6 @@ public final class PreferencesDialog implements
 
 
   /**
-   * The initial {@link ColorItem} of the error {@link Production}.
-   */
-  private ColorItem initialColorItemProductionError;
-
-
-  /**
    * The initial {@link ColorItem} of the {@link Transition}.
    */
   private ColorItem initialColorItemTransition;
@@ -905,21 +932,15 @@ public final class PreferencesDialog implements
 
 
   /**
-   * The initial {@link PDAModeItem}.
-   */
-  private PDAModeItem initialPDAModeItem;
-
-
-  /**
-   * The initial {@link WordModeItem}.
-   */
-  private WordModeItem initialWordModeItem;
-
-
-  /**
    * The initial {@link NonterminalSymbolSetItem}.
    */
   private NonterminalSymbolSetItem initialNonterminalSymbolSetItem;
+
+
+  /**
+   * The initial {@link PDAModeItem}.
+   */
+  private PDAModeItem initialPDAModeItem;
 
 
   /**
@@ -950,6 +971,12 @@ public final class PreferencesDialog implements
    * The initial use push down {@link Alphabet}.
    */
   private boolean initialUsePushDownAlphabet;
+
+
+  /**
+   * The initial {@link WordModeItem}.
+   */
+  private WordModeItem initialWordModeItem;
 
 
   /**
@@ -995,12 +1022,6 @@ public final class PreferencesDialog implements
 
 
   /**
-   * The {@link Word} mode {@link JPopupMenu}.
-   */
-  private JPopupMenu jPopupMenuWordMode;
-
-
-  /**
    * The {@link Transition} {@link JPopupMenu}.
    */
   private JPopupMenu jPopupMenuTransition;
@@ -1010,6 +1031,12 @@ public final class PreferencesDialog implements
    * The push down {@link Alphabet} {@link JPopupMenu}.
    */
   private JPopupMenu jPopupMenuUsePushDownAlphabet;
+
+
+  /**
+   * The {@link Word} mode {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuWordMode;
 
 
   /**
@@ -1037,18 +1064,6 @@ public final class PreferencesDialog implements
 
 
   /**
-   * The {@link PDAModeComboBoxModel}.
-   */
-  private PDAModeComboBoxModel pdaModeComboBoxModel;
-
-
-  /**
-   * The {@link WordModeComboBoxModel}.
-   */
-  private WordModeComboBoxModel wordModeComboBoxModel;
-
-
-  /**
    * The color tree {@link NonterminalSymbol} node.
    */
   private ColorItem nonterminalSymbolNode;
@@ -1073,9 +1088,27 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The {@link PDAModeComboBoxModel}.
+   */
+  private PDAModeComboBoxModel pdaModeComboBoxModel;
+
+
+  /**
+   * The color tree {@link Production} node.
+   */
+  private ColorItem productionNode;
+
+
+  /**
    * The push down {@link AlphabetItem}.
    */
   private AlphabetItem pushDownAlphabetItem;
+
+
+  /**
+   * The color tree Regex node.
+   */
+  private ColorItem regexNode;
 
 
   /**
@@ -1096,19 +1129,10 @@ public final class PreferencesDialog implements
   private ColorItem stateNode;
 
 
-  private ColorItem regexNode;
-
-
   /**
    * The color tree {@link Symbol} node.
    */
   private ColorItem symbolNode;
-
-
-  /**
-   * The color tree {@link Production} node.
-   */
-  private ColorItem productionNode;
 
 
   /**
@@ -1133,6 +1157,12 @@ public final class PreferencesDialog implements
    * The color tree {@link Transition} node.
    */
   private ColorItem transitionNode;
+
+
+  /**
+   * The {@link WordModeComboBoxModel}.
+   */
+  private WordModeComboBoxModel wordModeComboBoxModel;
 
 
   /**
@@ -3330,8 +3360,6 @@ public final class PreferencesDialog implements
     {
       PreferenceManager.getInstance ().setColorItemRegexSymbol (
           this.colorItemRegexSymbol );
-      PreferenceManager.getInstance ().fireColorChangedRegexSymbol (
-          this.colorItemRegexSymbol.getColor () );
     }
 
     // Symbol

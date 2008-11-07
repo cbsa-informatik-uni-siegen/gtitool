@@ -501,25 +501,32 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     ArrayList < DefaultNodeView > nodes = this.nodeViewList;
     Collections.sort ( nodes );
 
-
     int j = 0;
-    
+
     for ( int i = 0 ; i < nodes.size () ; i++ )
     {
       DefaultNodeView view = nodes.get ( i );
       int x_over = ( view.getX () ) / ( this.X_SPACE / 2 );
-      
-        x_over += this.x_moving;
+
+      x_over += this.x_moving;
       for ( ; j < x_over ; j++ )
       {
         s += " & ";
       }
       String name = view.getNode ().getNodeString ().toString ();
-      if(name.equals("#")) {
+      if ( name.equals ( "#" ) )
+      {
         name = "\\#";
       }
-      s += "\\node{r" + i + "}{" +name
-          + "}";
+      else if ( name.equals ( "|" ) )
+      {
+        name = "$|$";
+      }
+      else if ( name.equals ( "\u03B5" ) )
+      {
+        name = "$\\epsilon$";
+      }
+      s += "\\node{r" + i + "}{" + name + "}";
       if ( !view.equals ( nodes.get ( nodes.size () - 1 ) )
           && view.getY () != nodes.get ( i + 1 ).getY () )
       {
@@ -528,10 +535,11 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
       }
     }
     s += "\n\\end{tabular}\n";
-    for(DefaultRegexEdgeView v: this.regexEdgeViewList) {
+    for ( DefaultRegexEdgeView v : this.regexEdgeViewList )
+    {
       int parentId = nodes.indexOf ( v.getParentView () );
       int childId = nodes.indexOf ( v.getChildView () );
-      s+="\\nodeconnect{r" + parentId + "}{r" + childId + "}\n";
+      s += "\\nodeconnect{r" + parentId + "}{r" + childId + "}\n";
     }
     return s;
   }

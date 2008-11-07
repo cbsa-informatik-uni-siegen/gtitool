@@ -48,33 +48,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 {
 
   /**
-   * The {@link JGTIGraph} for this Panel
+   * The {@link RegexConsoleTableModel} for the error table.
    */
-  private JGTIGraph jGTIGraph;
-
-
-  /**
-   * The {@link ModifyStatusChangedListener}.
-   */
-  private ModifyStatusChangedListener modifyStatusChangedListener;
-
-
-  /**
-   * The {@link EventListenerList}.
-   */
-  private EventListenerList listenerList = new EventListenerList ();
-
-
-  /**
-   * The {@link RegexPanelForm}
-   */
-  private RegexPanelForm gui;
-
-
-  /**
-   * The {@link Regex}
-   */
-  private DefaultRegex regex;
+  private RegexConsoleTableModel errorTableModel;
 
 
   /**
@@ -84,9 +60,21 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * The name of this {@link GrammarPanel}.
+   * The {@link RegexPanelForm}
    */
-  private String name = null;
+  private RegexPanelForm gui;
+
+
+  /**
+   * The {@link JGTIGraph} for this Panel
+   */
+  private JGTIGraph jGTIGraph;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -96,15 +84,21 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * The {@link RegexConsoleTableModel} for the warning table.
+   * The {@link DefaultRegexModel}.
    */
-  private RegexConsoleTableModel warningTableModel;
+  private DefaultRegexModel model;
 
 
   /**
-   * The {@link RegexConsoleTableModel} for the error table.
+   * The {@link ModifyStatusChangedListener}.
    */
-  private RegexConsoleTableModel errorTableModel;
+  private ModifyStatusChangedListener modifyStatusChangedListener;
+
+
+  /**
+   * The name of this {@link GrammarPanel}.
+   */
+  private String name = null;
 
 
   /**
@@ -114,27 +108,15 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
-   * 
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#clearValidationMessages()
+   * The {@link Regex}
    */
-  public void clearValidationMessages ()
-  {
-    this.errorTableModel.clearData ();
-    this.warningTableModel.clearData ();
-  }
+  private DefaultRegex regex;
 
 
   /**
-   * Returns the regex.
-   * 
-   * @return The regex.
-   * @see #regex
+   * The {@link RegexConsoleTableModel} for the warning table.
    */
-  public DefaultRegex getRegex ()
-  {
-    return this.regex;
-  }
+  private RegexConsoleTableModel warningTableModel;
 
 
   /**
@@ -175,31 +157,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * Initialize
-   */
-  private void initialize ()
-  {
-    this.errorTableModel = new RegexConsoleTableModel ();
-    this.warningTableModel = new RegexConsoleTableModel ();
-    this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
-    this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
-    this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTITableWarnings
-        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (
-        new ListSelectionListener ()
-        {
-
-          public void valueChanged ( ListSelectionEvent event )
-          {
-            // TODO
-          }
-        } );
-    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
-  }
-
-
-  /**
    * Add a new Error
    * 
    * @param regexException The {@link GrammarException} containing the data
@@ -211,70 +168,85 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * Returns the mainWindowForm.
+   * {@inheritDoc}
    * 
-   * @return The mainWindowForm.
-   * @see #mainWindowForm
+   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public MainWindowForm getMainWindowForm ()
+  public final void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
   {
-    return this.mainWindowForm;
+    this.model.addModifyStatusChangedListener ( listener );
   }
 
-  /**
-   * 
-   * TODO
-   *
-   * @param evt
-   */
-  public void handleToLatexButtonClicked(ActionEvent evt){
-    LatexExporter exp = new LatexExporter();
-    exp.buildLatexFile ( this.model.toLatexString (),  new File(this.file.getParentFile () + "/test.tex"));
-    
-  }
 
   /**
-   * TODO
+   * Changes the Regex
    * 
-   * @param evt
+   * @param newRegexNode The new {@link RegexNode}
    */
-  public void handleToCoreSyntaxButtonClicked ( @SuppressWarnings ( "unused" )
-  ActionEvent evt )
+  public void changeRegex ( RegexNode newRegexNode, boolean addRedoUndoItem )
   {
-    DefaultRegex newRegex = new DefaultRegex ( this.regex.getAlphabet (),
-        this.regex.getRegexString () );
-    newRegex.setRegexNode ( this.regex.getRegexNode ().toCoreSyntax (), true );
-
-    EditorPanel newEditorPanel = new RegexPanel ( this.mainWindowForm,
-        new DefaultRegexModel ( newRegex ), null );
-    TreeSet < String > nameList = new TreeSet < String > ();
-    int count = 0;
-    for ( EditorPanel current : this.mainWindowForm.getJGTIMainSplitPane ()
-        .getJGTIEditorPanelTabbedPane () )
+    if ( addRedoUndoItem )
     {
-      if ( current.getFile () == null )
+      RegexNode old = this.regex.getRegexNode ();
+      this.regex.setRegexNode ( newRegexNode, true );
+      this.redoUndoHandler.addItem ( new RegexChangedItem ( this, this.regex
+          .getRegexNode (), old ) );
+    }
+    else
+    {
+      this.regex.changeRegexNode ( newRegexNode );
+    }
+    this.gui.jGTITextFieldRegex.setText ( newRegexNode.toPrettyString ()
+        .toString () );
+    this.model.initializeGraph ();
+    this.jGTIGraph = this.model.getJGTIGraph ();
+    this.jGTIGraph.setEditable ( false );
+    this.jGTIGraph.setEnabled ( false );
+    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+
+    this.model.createTree ();
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#clearValidationMessages()
+   */
+  public void clearValidationMessages ()
+  {
+    this.errorTableModel.clearData ();
+    this.warningTableModel.clearData ();
+  }
+
+
+  /**
+   * Let the listeners know that the modify status has changed.
+   * 
+   * @param forceModify True if the modify is forced, otherwise false.
+   */
+  public final void fireModifyStatusChanged ( boolean forceModify )
+  {
+    clearValidationMessages ();
+
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    if ( forceModify )
+    {
+      for ( ModifyStatusChangedListener current : listeners )
       {
-        nameList.add ( current.getName () );
-        count++ ;
+        current.modifyStatusChanged ( true );
       }
     }
-
-    String newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-        + "." + RegexType.REGEX.getFileEnding (); //$NON-NLS-1$
-    while ( nameList.contains ( newName ) )
+    else
     {
-      count++ ;
-      newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-          + "." + RegexType.REGEX.getFileEnding (); //$NON-NLS-1$
+      boolean newModifyStatus = isModified ();
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( newModifyStatus );
+      }
     }
-
-    newEditorPanel.setName ( newName );
-    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
-        .addEditorPanel ( newEditorPanel );
-    newEditorPanel
-        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
-        .setSelectedEditorPanel ( newEditorPanel );
   }
 
 
@@ -313,6 +285,17 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public RegexPanelForm getGUI ()
+  {
+    return this.gui;
+  }
+
+
+  /**
    * TODO
    * 
    * @return
@@ -325,9 +308,15 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * The {@link DefaultRegexModel}.
+   * Returns the mainWindowForm.
+   * 
+   * @return The mainWindowForm.
+   * @see #mainWindowForm
    */
-  private DefaultRegexModel model;
+  public MainWindowForm getMainWindowForm ()
+  {
+    return this.mainWindowForm;
+  }
 
 
   /**
@@ -365,6 +354,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
+   * Returns the regex.
+   * 
+   * @return The regex.
+   * @see #regex
+   */
+  public DefaultRegex getRegex ()
+  {
+    return this.regex;
+  }
+
+
+  /**
    * TODO
    * 
    * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#handleExchange()
@@ -383,6 +384,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   {
     this.redoUndoHandler.redo ();
     this.gui.repaint ();
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param evt
+   */
+  public void handleRegexChangeButtonClicked ( @SuppressWarnings ( "unused" )
+  ActionEvent evt )
+  {
+    new RegexDialog ( this );
   }
 
 
@@ -411,77 +424,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     resetModify ();
     fireModifyStatusChanged ( false );
     return this.file;
-  }
-
-
-  /**
-   * Let the listeners know that the modify status has changed.
-   * 
-   * @param forceModify True if the modify is forced, otherwise false.
-   */
-  public final void fireModifyStatusChanged ( boolean forceModify )
-  {
-    clearValidationMessages ();
-
-    ModifyStatusChangedListener [] listeners = this.listenerList
-        .getListeners ( ModifyStatusChangedListener.class );
-    if ( forceModify )
-    {
-      for ( ModifyStatusChangedListener current : listeners )
-      {
-        current.modifyStatusChanged ( true );
-      }
-    }
-    else
-    {
-      boolean newModifyStatus = isModified ();
-      for ( ModifyStatusChangedListener current : listeners )
-      {
-        current.modifyStatusChanged ( newModifyStatus );
-      }
-    }
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param evt
-   */
-  public void handleRegexChangeButtonClicked ( @SuppressWarnings ( "unused" )
-  ActionEvent evt )
-  {
-    new RegexDialog ( this );
-  }
-
-
-  /**
-   * Changes the Regex
-   * 
-   * @param newRegexNode The new {@link RegexNode}
-   */
-  public void changeRegex ( RegexNode newRegexNode, boolean addRedoUndoItem )
-  {
-    if ( addRedoUndoItem )
-    {
-      RegexNode old = this.regex.getRegexNode ();
-      this.regex.setRegexNode ( newRegexNode, true );
-      this.redoUndoHandler.addItem ( new RegexChangedItem ( this, this.regex.getRegexNode (),
-          old ) );
-    }
-    else
-    {
-      this.regex.changeRegexNode ( newRegexNode );
-    }
-    this.gui.jGTITextFieldRegex.setText ( newRegexNode.toPrettyString ()
-        .toString () );
-    this.model.initializeGraph ();
-    this.jGTIGraph = this.model.getJGTIGraph ();
-    this.jGTIGraph.setEditable ( false );
-    this.jGTIGraph.setEnabled ( false );
-    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
-
-    this.model.createTree ();
   }
 
 
@@ -575,6 +517,94 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   /**
    * TODO
    * 
+   * @param evt
+   */
+  public void handleToCoreSyntaxButtonClicked ( @SuppressWarnings ( "unused" )
+  ActionEvent evt )
+  {
+    DefaultRegex newRegex = new DefaultRegex ( this.regex.getAlphabet (),
+        this.regex.getRegexString () );
+    newRegex.changeRegexNode (  this.regex.getRegexNode ().toCoreSyntax ());
+
+    EditorPanel newEditorPanel = new RegexPanel ( this.mainWindowForm,
+        new DefaultRegexModel ( newRegex ), null );
+    TreeSet < String > nameList = new TreeSet < String > ();
+    int count = 0;
+    for ( EditorPanel current : this.mainWindowForm.getJGTIMainSplitPane ()
+        .getJGTIEditorPanelTabbedPane () )
+    {
+      if ( current.getFile () == null )
+      {
+        nameList.add ( current.getName () );
+        count++ ;
+      }
+    }
+
+    String newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+        + "." + RegexType.REGEX.getFileEnding (); //$NON-NLS-1$
+    while ( nameList.contains ( newName ) )
+    {
+      count++ ;
+      newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+          + "." + RegexType.REGEX.getFileEnding (); //$NON-NLS-1$
+    }
+
+    newEditorPanel.setName ( newName );
+    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
+        .addEditorPanel ( newEditorPanel );
+    newEditorPanel
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
+        .setSelectedEditorPanel ( newEditorPanel );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param evt
+   */
+  public void handleToLatexButtonClicked ( ActionEvent evt )
+  {
+    FileFilter ff = new FileFilter ()
+    {
+
+      @Override
+      public boolean accept ( File acceptedFile )
+      {
+        if ( acceptedFile.isDirectory () )
+        {
+          return false;
+        }
+        if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
+            + "tex" ) )
+        {
+          return true;
+        }
+        return false;
+      }
+
+
+      @Override
+      public String getDescription ()
+      {
+        return Messages.getString ( "NewDialog." //$NON-NLS-1$
+            + RegexType.REGEX.toString () ) + " (*." //$NON-NLS-1$
+            + "tex" + ")"; //$NON-NLS-1$
+      }
+
+    };
+    SaveDialog sd = new SaveDialog ( getMainWindowForm (), PreferenceManager
+        .getInstance ().getWorkingPath (), ff, ff );
+    sd.show ();
+    LatexExporter exp = new LatexExporter ();
+    exp.buildLatexFile ( this.model.toLatexString (), sd.getSelectedFile () );
+  }
+
+
+  /**
+   * TODO
+   * 
    * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#handleToolbarEditDocument()
    */
   public void handleToolbarEditDocument ()
@@ -591,6 +621,42 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   {
     this.redoUndoHandler.undo ();
     this.gui.repaint ();
+  }
+
+
+  /**
+   * Initialize
+   */
+  private void initialize ()
+  {
+    this.errorTableModel = new RegexConsoleTableModel ();
+    this.warningTableModel = new RegexConsoleTableModel ();
+    this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
+    this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableWarnings
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (
+        new ListSelectionListener ()
+        {
+
+          public void valueChanged ( ListSelectionEvent event )
+          {
+            // TODO
+          }
+        } );
+    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#isModified()
+   */
+  public boolean isModified ()
+  {
+    return this.model.isModified ();
   }
 
 
@@ -621,47 +687,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   /**
    * TODO
    * 
-   * @param name
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#setName(java.lang.String)
+   * @see de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener#languageChanged()
    */
-  public void setName ( String name )
+  public void languageChanged ()
   {
-    this.name = name;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param visible
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#setVisibleConsole(boolean)
-   */
-  public void setVisibleConsole ( boolean visible )
-  {
-    this.gui.jGTIPanelConsole.setVisible ( visible );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
-   */
-  public final void addModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.model.addModifyStatusChangedListener ( listener );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#isModified()
-   */
-  public boolean isModified ()
-  {
-    return this.model.isModified ();
   }
 
 
@@ -691,21 +720,24 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   /**
    * TODO
    * 
-   * @see de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener#languageChanged()
+   * @param name
+   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#setName(java.lang.String)
    */
-  public void languageChanged ()
+  public void setName ( String name )
   {
+    this.name = name;
   }
 
 
   /**
-   * {@inheritDoc}
+   * TODO
    * 
-   * @see LogicClass#getGUI()
+   * @param visible
+   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#setVisibleConsole(boolean)
    */
-  public RegexPanelForm getGUI ()
+  public void setVisibleConsole ( boolean visible )
   {
-    return this.gui;
+    this.gui.jGTIPanelConsole.setVisible ( visible );
   }
 
 }

@@ -1,0 +1,45 @@
+package de.unisiegen.gtitool.core.entities.regex;
+
+
+/**
+ * TODO
+ */
+public abstract class TwoChildNode extends RegexNode
+{
+
+  /**
+   * The first {@link RegexNode}
+   */
+  protected RegexNode regex1;
+
+
+  /**
+   * The second {@link RegexNode}
+   */
+  protected RegexNode regex2;
+
+
+  /**
+   * Constructor for a {@link RegexNode} with two direct children
+   * 
+   * @param regex1 The first {@link RegexNode}
+   * @param regex2 The second {@link RegexNode}
+   */
+  public TwoChildNode ( RegexNode regex1, RegexNode regex2 )
+  {
+    this.regex1 = regex1;
+    this.regex2 = regex2;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getWidth()
+   */
+  @Override
+  public int getWidth ()
+  {
+    return 1 + this.regex1.getWidth () + this.regex2.getWidth ();
+  }
+}

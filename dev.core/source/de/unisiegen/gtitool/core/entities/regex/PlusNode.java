@@ -20,19 +20,13 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  * @author Simon Meurer
  * @version
  */
-public class PlusNode extends RegexNode
+public class PlusNode extends OneChildNode
 {
 
   /**
    * The serial version uid
    */
   private static final long serialVersionUID = -2857280261104753164L;
-
-
-  /**
-   * The {@link RegexNode} in the Plus
-   */
-  RegexNode content;
 
 
   /**
@@ -57,7 +51,7 @@ public class PlusNode extends RegexNode
    */
   public PlusNode ( RegexNode regex )
   {
-    this.content = regex;
+    super ( regex );
   }
 
 
@@ -100,7 +94,7 @@ public class PlusNode extends RegexNode
     if ( obj instanceof PlusNode )
     {
       PlusNode node = ( PlusNode ) obj;
-      return this.content.equals ( node.content );
+      return this.regex.equals ( node.regex );
     }
     return false;
   }
@@ -114,7 +108,7 @@ public class PlusNode extends RegexNode
   @Override
   public ArrayList < RegexNode > firstPos ()
   {
-    return this.content.firstPos ();
+    return this.regex.firstPos ();
   }
 
 
@@ -127,7 +121,7 @@ public class PlusNode extends RegexNode
   public ArrayList < RegexNode > getAllChildren ()
   {
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    nodes.addAll ( this.content.getAllChildren () );
+    nodes.addAll ( this.regex.getAllChildren () );
     return nodes;
   }
 
@@ -141,7 +135,7 @@ public class PlusNode extends RegexNode
   public ArrayList < RegexNode > getChildren ()
   {
     ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    nodes.add ( this.content );
+    nodes.add ( this.regex );
     return nodes;
   }
 
@@ -154,7 +148,7 @@ public class PlusNode extends RegexNode
   @Override
   public int getLeftChildrenCount ()
   {
-    return this.content.getLeftChildrenCount ();
+    return this.regex.getLeftChildrenCount ();
   }
 
 
@@ -189,7 +183,7 @@ public class PlusNode extends RegexNode
   @Override
   public int getRightChildrenCount ()
   {
-    return this.content.getRightChildrenCount ();
+    return this.regex.getRightChildrenCount ();
   }
 
 
@@ -201,7 +195,7 @@ public class PlusNode extends RegexNode
   @Override
   public ArrayList < LeafNode > getTokenNodes ()
   {
-    return this.content.getTokenNodes ();
+    return this.regex.getTokenNodes ();
   }
 
 
@@ -213,7 +207,7 @@ public class PlusNode extends RegexNode
   @Override
   public ArrayList < RegexNode > lastPos ()
   {
-    return this.content.lastPos ();
+    return this.regex.lastPos ();
   }
 
 
@@ -225,7 +219,7 @@ public class PlusNode extends RegexNode
   @Override
   public boolean nullable ()
   {
-    return this.content.nullable ();
+    return this.regex.nullable ();
   }
 
 
@@ -260,8 +254,8 @@ public class PlusNode extends RegexNode
   @Override
   public RegexNode toCoreSyntax ()
   {
-    return new ConcatenationNode ( this.content.toCoreSyntax (),
-        new KleeneNode ( this.content.toCoreSyntax () ) );
+    return new ConcatenationNode ( this.regex.toCoreSyntax (),
+        new KleeneNode ( this.regex.toCoreSyntax () ) );
   }
 
 
@@ -272,7 +266,7 @@ public class PlusNode extends RegexNode
    */
   public PrettyString toPrettyString ()
   {
-    PrettyString string = this.content.toPrettyString ();
+    PrettyString string = this.regex.toPrettyString ();
     string
         .add ( new PrettyString ( new PrettyToken ( "+", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
     return string;
@@ -287,6 +281,6 @@ public class PlusNode extends RegexNode
   @Override
   public String toString ()
   {
-    return this.content.toString () + "+"; //$NON-NLS-1$
+    return this.regex.toString () + "+"; //$NON-NLS-1$
   }
 }

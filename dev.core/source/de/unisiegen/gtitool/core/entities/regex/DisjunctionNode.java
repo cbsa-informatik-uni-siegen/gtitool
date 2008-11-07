@@ -20,7 +20,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  * @author Simon Meurer
  * @version
  */
-public class DisjunctionNode extends RegexNode
+public class DisjunctionNode extends TwoChildNode
 {
 
   /**
@@ -45,18 +45,6 @@ public class DisjunctionNode extends RegexNode
 
 
   /**
-   * First element of the Disjunction
-   */
-  private RegexNode regex1;
-
-
-  /**
-   * Second element of the Disjunction
-   */
-  private RegexNode regex2;
-
-
-  /**
    * Constructor for a {@link DisjunctionNode}
    * 
    * @param regex1 First element of the {@link DisjunctionNode}
@@ -64,8 +52,7 @@ public class DisjunctionNode extends RegexNode
    */
   public DisjunctionNode ( RegexNode regex1, RegexNode regex2 )
   {
-    this.regex1 = regex1;
-    this.regex2 = regex2;
+    super ( regex1, regex2 );
   }
 
 

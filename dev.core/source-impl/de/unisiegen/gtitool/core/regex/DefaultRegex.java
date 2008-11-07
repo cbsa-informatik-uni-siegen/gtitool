@@ -120,7 +120,7 @@ public class DefaultRegex implements Regex, Storable
 
   /**
    * TODO
-   *
+   * 
    * @param e
    * @param regexString
    */
@@ -135,11 +135,15 @@ public class DefaultRegex implements Regex, Storable
    * 
    * @param regexNode The {@link RegexNode} to set.
    */
-  public void setRegexNode ( RegexNode regexNode )
+  public void setRegexNode ( RegexNode regexNode, boolean change )
   {
-    this.initialNode = regexNode;
     this.regexNode = new ConcatenationNode ( regexNode, new TokenNode ( "#" ) );
-
+    this.initialNode = regexNode;
+    
+    if(change && !this.initialNode.equals ( this.regexNode )) {
+      fireModifyStatusChanged ( true );
+    }
+    
     int currentPosition = 1;
     for ( RegexNode current : this.regexNode.getTokenNodes () )
     {
@@ -161,6 +165,10 @@ public class DefaultRegex implements Regex, Storable
   {
     this.regexNode = newRegexNode;
 
+    if(!this.initialNode.equals ( this.regexNode )) {
+      fireModifyStatusChanged ( true );
+    }
+    
     int currentPosition = 1;
     for ( RegexNode current : this.regexNode.getTokenNodes () )
     {
@@ -291,6 +299,29 @@ public class DefaultRegex implements Regex, Storable
   }
 
 
+  private void fireModifyStatusChanged ( boolean forceModify )
+  {
+    System.err.println ("lala");
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    if ( forceModify )
+    {
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( true );
+      }
+    }
+    else
+    {
+      boolean newModifyStatus = isModified ();
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( newModifyStatus );
+      }
+    }
+  }
+
+
   /**
    * TODO
    * 
@@ -303,7 +334,7 @@ public class DefaultRegex implements Regex, Storable
     {
       return true;
     }
-    return this.initialNode.equals ( this.regexNode );
+    return !this.initialNode.equals ( this.regexNode );
   }
 
 

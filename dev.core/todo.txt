@@ -1,3 +1,2 @@
 -	SM	Regex -> Automat
--	SM	Regex als Graph darstellen.
 -	SM	CharacterClasses ermöglichen.

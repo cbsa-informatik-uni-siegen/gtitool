@@ -16,10 +16,21 @@ public abstract class LeafNode extends RegexNode
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getWidth()
+   */
+  @Override
+  public int getWidth ()
+  {
+    return 1;
+  }
+  
+  /**
    * Sets the Position of the {@link LeafNode}
    * 
    * @param p The Position of the {@link LeafNode}
    */
   public abstract void setPosition ( int p );
-
+  
 }

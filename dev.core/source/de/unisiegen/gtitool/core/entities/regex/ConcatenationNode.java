@@ -20,7 +20,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  * @author Simon Meurer
  * @version
  */
-public class ConcatenationNode extends RegexNode
+public class ConcatenationNode extends TwoChildNode
 {
 
   /**
@@ -42,18 +42,6 @@ public class ConcatenationNode extends RegexNode
 
 
   /**
-   * First element of the Concatenation
-   */
-  private RegexNode regex1;
-
-
-  /**
-   * Second element of the Concatenation
-   */
-  private RegexNode regex2;
-
-
-  /**
    * Constructor for a {@link ConcatenationNode}
    * 
    * @param regex1 First element of the {@link ConcatenationNode}
@@ -61,8 +49,7 @@ public class ConcatenationNode extends RegexNode
    */
   public ConcatenationNode ( RegexNode regex1, RegexNode regex2 )
   {
-    this.regex1 = regex1;
-    this.regex2 = regex2;
+    super(regex1, regex2);
   }
 
 

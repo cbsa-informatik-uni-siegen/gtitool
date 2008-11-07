@@ -87,7 +87,7 @@ public class ParserTest
           .parse ();
 
       DefaultRegex conv = new DefaultRegex (new DefaultAlphabet(new DefaultSymbol("a"),new DefaultSymbol("b"),new DefaultSymbol("c"),new DefaultSymbol("d")), regexText);
-      conv.setRegexNode ( regex );
+      conv.setRegexNode ( regex, false );
       System.out.println ( regex );
       String firstpos = "";
       for ( RegexNode current : regex.firstPos () )
@@ -124,14 +124,6 @@ public class ParserTest
     }
     catch ( Exception e )
     {
-      e.printStackTrace ();
-    }
-    try{
-      RegexNode regex = ( RegexNode ) regexParseable.newParser ( "a[a-z][abc]" )
-          .parse ();
-      System.err.println (regex);
-      System.err.println (regex.toCoreSyntax ());
-    } catch (Exception e){
       e.printStackTrace ();
     }
   }

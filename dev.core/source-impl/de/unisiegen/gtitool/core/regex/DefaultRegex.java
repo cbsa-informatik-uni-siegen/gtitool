@@ -165,7 +165,11 @@ public class DefaultRegex implements Regex, Storable
   {
     this.regexNode = newRegexNode;
 
-    if(!this.initialNode.equals ( this.regexNode )) {
+    if(this.initialNode != null && !this.initialNode.equals ( this.regexNode )) {
+      fireModifyStatusChanged ( true );
+    } else if(this.initialNode == null) {
+      //Initial Case after toCoreSyntax()
+      this.initialNode = this.regexNode;
       fireModifyStatusChanged ( true );
     }
     

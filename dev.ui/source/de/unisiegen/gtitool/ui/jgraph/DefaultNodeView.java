@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 /**
  * TODO
  */
-public class DefaultNodeView extends DefaultGraphCell
+public class DefaultNodeView extends DefaultGraphCell implements Comparable < DefaultNodeView >
 {
 
   /**
@@ -105,6 +105,22 @@ public class DefaultNodeView extends DefaultGraphCell
   public RegexNode getNode ()
   {
     return this.regexNode;
+  }
+
+
+  /**
+   * TODO
+   *
+   * @param o
+   * @return
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo ( DefaultNodeView o )
+  {
+    if(this.y - o.y == 0) {
+      return this.x - o.x;
+    }
+    return this.y - o.y;
   }
 
 }

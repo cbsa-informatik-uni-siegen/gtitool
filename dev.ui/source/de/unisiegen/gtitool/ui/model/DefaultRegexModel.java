@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.model;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
@@ -42,13 +43,12 @@ import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 {
 
-
   /**
    * The {@link RedoUndoHandler}
    */
   private RedoUndoHandler redoUndoHandler;
-  
-  
+
+
   /**
    * The default y-space in the graph
    */
@@ -173,7 +173,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     this.regex = new DefaultRegex ( da, regexString );
     RegexParseable rp = new RegexParseable ();
     this.regex.setRegexNode ( ( RegexNode ) rp.newParser ( regexString )
-        .parse () );
+        .parse (), false );
 
     if ( !foundVersion )
     {
@@ -207,7 +207,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
         REGEX_VERSION ) );
     newElement.addElement ( this.regex.getAlphabet () );
     newElement.addAttribute ( new Attribute ( "regexString", //$NON-NLS-1$
-        this.regex.getRegexNode ().toString () ) );
+        this.regex.getRegexString () ) );
     return newElement;
   }
 
@@ -238,6 +238,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   }
 
 
+  private int x_moving = 0;
+
+
   /**
    * Creates the Tree
    */
@@ -246,7 +249,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
     this.regexEdgeViewList.clear ();
     this.nodeViewList.clear ();
-    
+
     DefaultNodeView parent = createNodeView ( 0, 0, this.regex.getRegexNode () );
     addNodesToModel ( parent );
 
@@ -260,6 +263,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
         x_overhead = Math.abs ( act_x );
       }
     }
+    this.x_moving = x_overhead / ( this.X_SPACE / 2 );
     if ( x_overhead > 0 )
     {
       x_overhead += this.X_BORDER;
@@ -392,8 +396,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
     String viewClass = NodeView.class.getName ();
 
-    
-    
     // Set bounds
     GraphConstants.setBounds ( nodeView.getAttributes (),
         new Rectangle2D.Double ( x, y, 30, 40 ) );
@@ -449,16 +451,15 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
   /**
    * TODO
-   *
+   * 
    * @param listener
    * @see de.unisiegen.gtitool.core.storage.Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
    */
   public void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
+    this.regex.addModifyStatusChangedListener ( listener );
   }
-  
-
 
 
   /**
@@ -474,7 +475,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.storage.Modifyable#isModified()
    */
@@ -484,21 +485,74 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   }
 
 
+  public String toLatexString ()
+  {
+    String s = "";
+    RegexNode node = this.regex.getRegexNode ();
+
+    int w = node.getWidth ();
+    s += "\\begin{tabular}{";
+    for ( int i = 0 ; i < w ; i++ )
+    {
+      s += "c";
+    }
+    s += "}\n";
+
+    ArrayList < DefaultNodeView > nodes = this.nodeViewList;
+    Collections.sort ( nodes );
+
+
+    int j = 0;
+    
+    for ( int i = 0 ; i < nodes.size () ; i++ )
+    {
+      DefaultNodeView view = nodes.get ( i );
+      int x_over = ( view.getX () ) / ( this.X_SPACE / 2 );
+      
+        x_over += this.x_moving;
+      for ( ; j < x_over ; j++ )
+      {
+        s += " & ";
+      }
+      String name = view.getNode ().getNodeString ().toString ();
+      if(name.equals("#")) {
+        name = "\\#";
+      }
+      s += "\\node{r" + i + "}{" +name
+          + "}";
+      if ( !view.equals ( nodes.get ( nodes.size () - 1 ) )
+          && view.getY () != nodes.get ( i + 1 ).getY () )
+      {
+        s += "\\\\[4ex]\n";
+        j = 0;
+      }
+    }
+    s += "\n\\end{tabular}\n";
+    for(DefaultRegexEdgeView v: this.regexEdgeViewList) {
+      int parentId = nodes.indexOf ( v.getParentView () );
+      int childId = nodes.indexOf ( v.getChildView () );
+      s+="\\nodeconnect{r" + parentId + "}{r" + childId + "}\n";
+    }
+    return s;
+  }
+
+
   /**
    * TODO
-   *
+   * 
    * @param listener
    * @see de.unisiegen.gtitool.core.storage.Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
    */
   public void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
+    this.regex.removeModifyStatusChangedListener ( listener );
   }
 
 
   /**
    * TODO
-   *
+   * 
    * @see de.unisiegen.gtitool.core.storage.Modifyable#resetModify()
    */
   public void resetModify ()

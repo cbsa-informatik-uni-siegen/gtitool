@@ -61,6 +61,7 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         jGTITextFieldRegex = new de.unisiegen.gtitool.ui.swing.JGTITextField();
         jGTIButtonChangeRegex = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCoreSyntax = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonToLatex = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIScrollPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
@@ -91,6 +92,7 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelRegexControl.add(jGTIButtonChangeRegex, gridBagConstraints);
 
@@ -106,6 +108,19 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelRegexControl.add(jGTIButtonCoreSyntax, gridBagConstraints);
+
+        jGTIButtonToLatex.setText("To Latex");
+        jGTIButtonToLatex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIButtonToLatexActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelRegexControl.add(jGTIButtonToLatex, gridBagConstraints);
 
         jGTISplitPaneTable.setLeftComponent(jGTIPanelRegexControl);
         jGTISplitPaneTable.setRightComponent(jGTIScrollPaneGraph);
@@ -172,11 +187,16 @@ private void jGTIButtonChangeRegexActionPerformed(java.awt.event.ActionEvent evt
 private void jGTIButtonCoreSyntaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCoreSyntaxActionPerformed
       this.logic.handleToCoreSyntaxButtonClicked(evt);
 }//GEN-LAST:event_jGTIButtonCoreSyntaxActionPerformed
+
+private void jGTIButtonToLatexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonToLatexActionPerformed
+    this.logic.handleToLatexButtonClicked(evt);
+}//GEN-LAST:event_jGTIButtonToLatexActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonChangeRegex;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCoreSyntax;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonToLatex;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelConsole;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelRegex;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelRegexControl;

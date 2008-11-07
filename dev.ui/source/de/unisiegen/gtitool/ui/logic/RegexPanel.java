@@ -25,6 +25,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
+import de.unisiegen.gtitool.ui.latex.LatexExporter;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
@@ -220,6 +221,17 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     return this.mainWindowForm;
   }
 
+  /**
+   * 
+   * TODO
+   *
+   * @param evt
+   */
+  public void handleToLatexButtonClicked(ActionEvent evt){
+    LatexExporter exp = new LatexExporter();
+    exp.buildLatexFile ( this.model.toLatexString (),  new File(this.file.getParentFile () + "/test.tex"));
+    
+  }
 
   /**
    * TODO
@@ -231,7 +243,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   {
     DefaultRegex newRegex = new DefaultRegex ( this.regex.getAlphabet (),
         this.regex.getRegexString () );
-    newRegex.setRegexNode ( this.regex.getRegexNode ().toCoreSyntax () );
+    newRegex.setRegexNode ( this.regex.getRegexNode ().toCoreSyntax (), true );
 
     EditorPanel newEditorPanel = new RegexPanel ( this.mainWindowForm,
         new DefaultRegexModel ( newRegex ), null );
@@ -453,7 +465,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     if ( addRedoUndoItem )
     {
       RegexNode old = this.regex.getRegexNode ();
-      this.regex.setRegexNode ( newRegexNode );
+      this.regex.setRegexNode ( newRegexNode, true );
       this.redoUndoHandler.addItem ( new RegexChangedItem ( this, this.regex.getRegexNode (),
           old ) );
     }
@@ -638,7 +650,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
-    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+    this.model.addModifyStatusChangedListener ( listener );
   }
 
 
@@ -661,7 +673,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
-    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+    this.model.removeModifyStatusChangedListener ( listener );
   }
 
 
@@ -672,6 +684,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void resetModify ()
   {
+    this.model.resetModify ();
   }
 
 

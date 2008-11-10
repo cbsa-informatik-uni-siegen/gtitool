@@ -347,7 +347,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
      * The grammar visible button state.
      */
     VISIBLE_GRAMMAR,
-    
+
     /**
      * The regex visible button state.
      */
@@ -3636,7 +3636,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
       }
-
       // Save status
       if ( panel.isModified () )
       {

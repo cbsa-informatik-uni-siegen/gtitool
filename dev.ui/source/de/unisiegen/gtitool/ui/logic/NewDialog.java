@@ -138,6 +138,17 @@ public final class NewDialog implements LogicClass < NewDialogForm >
     return this.machineChoice.getUserChoice ();
   }
 
+  
+  /**
+   * Returns the newDialogChoice.
+   *
+   * @return The newDialogChoice.
+   * @see #newDialogChoice
+   */
+  public NewDialogChoice getNewDialogChoice ()
+  {
+    return this.newDialogChoice;
+  }
 
   /**
    * Handle previous button pressed for the {@link NewDialogAlphabet}
@@ -270,7 +281,7 @@ public final class NewDialog implements LogicClass < NewDialogForm >
     {
       this.newPanel = new RegexPanel ( this.mainWindowForm,
           new DefaultRegexModel ( new DefaultRegex ( this.newDialogAlphabet
-              .getAlphabet (), "" ) ), null ); //$NON-NLS-1$
+              .getRegexAlphabet (), "" ) ), null ); //$NON-NLS-1$
 
       PreferenceManager.getInstance ().setLastChoosenEntityType (
           RegexType.REGEX );
@@ -313,6 +324,9 @@ public final class NewDialog implements LogicClass < NewDialogForm >
           .setVisible ( true );
       this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelPushDown
           .setVisible ( true );
+      this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput.setVisible ( true );
+      this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledRegexAlphabetParserPanelInput.setVisible ( false );
+
       try
       {
         this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput
@@ -332,6 +346,9 @@ public final class NewDialog implements LogicClass < NewDialogForm >
           .setVisible ( true );
       this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelPushDown
           .setVisible ( true );
+      this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput.setVisible ( true );
+      this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledRegexAlphabetParserPanelInput.setVisible ( false );
+
       try
       {
         this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput
@@ -350,8 +367,9 @@ public final class NewDialog implements LogicClass < NewDialogForm >
           .setVisible ( false );
       this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelPushDown
           .setVisible ( false );
-      this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput
-          .setText ( "[A-Z],[a-z],[0-9]" );
+      this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput.setVisible ( false );
+      this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledRegexAlphabetParserPanelInput.setVisible ( true );
+      this.newDialogAlphabet.getGUI ().alphabetPanelForm.styledRegexAlphabetParserPanelInput.setText ( "[A-Z],[a-z],[0-9]" );
       this.newDialogAlphabet.getGUI ().setVisible ( true );
     }
     this.newDialogChoice.getGUI ().setVisible ( false );

@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.entities.exceptions.RegexException;
+import de.unisiegen.gtitool.core.exceptions.RegexException;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 

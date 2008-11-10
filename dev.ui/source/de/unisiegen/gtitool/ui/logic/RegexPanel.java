@@ -524,7 +524,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   {
     DefaultRegex newRegex = new DefaultRegex ( this.regex.getAlphabet (),
         this.regex.getRegexString () );
-    newRegex.changeRegexNode (  this.regex.getRegexNode ().toCoreSyntax ());
+    newRegex.changeRegexNode ( this.regex.getRegexNode ().toCoreSyntax () );
 
     EditorPanel newEditorPanel = new RegexPanel ( this.mainWindowForm,
         new DefaultRegexModel ( newRegex ), null );
@@ -597,8 +597,11 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     SaveDialog sd = new SaveDialog ( getMainWindowForm (), PreferenceManager
         .getInstance ().getWorkingPath (), ff, ff );
     sd.show ();
-    LatexExporter exp = new LatexExporter ();
-    exp.buildLatexFile ( this.model.toLatexString (), sd.getSelectedFile () );
+    if ( sd.getSelectedFile () != null )
+    {
+      LatexExporter exp = new LatexExporter ();
+      exp.buildLatexFile ( this.model.toLatexString (), sd.getSelectedFile () );
+    }
   }
 
 

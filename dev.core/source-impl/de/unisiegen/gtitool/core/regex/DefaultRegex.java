@@ -7,15 +7,12 @@ import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
-import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
-import de.unisiegen.gtitool.core.parser.ParserOffset;
-import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 
@@ -303,9 +300,13 @@ public class DefaultRegex implements Regex, Storable
   }
 
 
-  private void fireModifyStatusChanged ( boolean forceModify )
+  /**
+   * TODO
+   *
+   * @param forceModify
+   */
+  private void fireModifyStatusChanged ( final boolean forceModify )
   {
-    System.err.println ("lala");
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
@@ -334,11 +335,33 @@ public class DefaultRegex implements Regex, Storable
    */
   public boolean isModified ()
   {
-    if ( this.initialNode == null || this.regexNode == null )
+    System.err.println ("Initial: " + this.initialNode);
+    System.err.println ("Now: " + this.regexNode);
+    if ( this.initialNode == null )
     {
       return true;
     }
     return !this.initialNode.equals ( this.regexNode );
+  }
+  
+  /**
+   * TODO
+   *
+   * @param obj
+   * @return
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals ( Object obj )
+  {
+    if(obj == this) {
+      return true;
+    }
+    if(obj instanceof DefaultRegex) {
+      DefaultRegex dr = ( DefaultRegex ) obj;
+      return this.regexNode.equals ( dr.getRegexNode () );
+    }
+    return false;
   }
 
 
@@ -375,78 +398,6 @@ public class DefaultRegex implements Regex, Storable
   public Element getElement ()
   {
     return null;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
-   */
-  public ParserOffset getParserOffset ()
-  {
-    return null;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param parserOffset
-   * @see de.unisiegen.gtitool.core.entities.Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
-   */
-  public void setParserOffset ( ParserOffset parserOffset )
-  {
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
-   */
-  public void addPrettyStringChangedListener (
-      PrettyStringChangedListener listener )
-  {
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
-   */
-  public void removePrettyStringChangedListener (
-      PrettyStringChangedListener listener )
-  {
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
-   */
-  public PrettyString toPrettyString ()
-  {
-    return null;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param o
-   * @return
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
-  public int compareTo ( Regex o )
-  {
-    return 0;
   }
 
 

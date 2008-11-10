@@ -98,13 +98,25 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return The {@link PrettyString} for the Node in the JGTIGraph
    */
   public abstract PrettyString getNodeString ();
-  
+
+
   /**
    * Get the maximal Width of the whole Regex
-   *
+   * 
    * @return The maximal Width of the wohle Regex
    */
-  public abstract int getWidth();
+  public abstract int getWidth ();
+  
+  /**
+   * TODO
+   *
+   * @param o
+   * @return
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public abstract boolean equals(Object o);
+
 
   /**
    * Get the {@link PrettyString} for the Tooltip that contains nullable,

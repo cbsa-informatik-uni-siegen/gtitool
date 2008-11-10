@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.parser.alphabet;
+package de.unisiegen.gtitool.core.parser.regexAlphabet;
 
 
 import java_cup.runtime.Symbol;
@@ -13,7 +13,7 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
  * @author Christian Fehler
  * @version $Id: RegexAlphabetParser.java 1032 2008-06-25 18:53:30Z fehler $
  */
-public final class AlphabetParser extends AlphabetAbstractParser
+public final class RegexAlphabetParser extends RegexAlphabetAbstractParser
 {
 
   /**
@@ -21,7 +21,7 @@ public final class AlphabetParser extends AlphabetAbstractParser
    * 
    * @param gtiScanner The {@link GTIScanner}.
    */
-  public AlphabetParser ( GTIScanner gtiScanner )
+  public RegexAlphabetParser ( GTIScanner gtiScanner )
   {
     super ( gtiScanner );
   }

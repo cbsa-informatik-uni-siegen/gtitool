@@ -31,7 +31,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * @author Christian Fehler
  * @version $Id: DefaultAlphabet.java 1147 2008-07-15 23:45:46Z fehler $
  */
-public final class DefaultAlphabet implements Alphabet
+public class DefaultAlphabet implements Alphabet
 {
 
   /**
@@ -58,7 +58,7 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * The set of {@link Symbol}s.
    */
-  private TreeSet < Symbol > symbolSet;
+  protected TreeSet < Symbol > symbolSet;
 
 
   /**
@@ -222,7 +222,7 @@ public final class DefaultAlphabet implements Alphabet
    * 
    * @see Alphabet#add(Symbol)
    */
-  public final void add ( Symbol symbol ) throws AlphabetException
+  public void add ( Symbol symbol ) throws AlphabetException
   {
     // Symbol
     if ( symbol == null )
@@ -262,7 +262,7 @@ public final class DefaultAlphabet implements Alphabet
    * 
    * @see Alphabet#add(Symbol[])
    */
-  public final void add ( Symbol ... symbols ) throws AlphabetException
+  public void add ( Symbol ... symbols ) throws AlphabetException
   {
     if ( symbols == null )
     {

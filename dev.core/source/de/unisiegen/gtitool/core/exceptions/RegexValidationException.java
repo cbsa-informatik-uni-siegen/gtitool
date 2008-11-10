@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.entities.exceptions;
+package de.unisiegen.gtitool.core.exceptions;
 
 
 import java.util.ArrayList;

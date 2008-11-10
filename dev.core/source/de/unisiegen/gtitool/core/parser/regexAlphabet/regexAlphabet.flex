@@ -1,9 +1,10 @@
 /**
- * The lexer file of the regex scanner.
+ * The lexer file of the alphabet scanner.
  * 
- * @author Simon Meurer
+ * @author Christian Fehler
+ * @version $Id: alphabet.flex 1277 2008-08-20 07:43:44Z fehler $
  */
-package de.unisiegen.gtitool.core.parser.regex;
+package de.unisiegen.gtitool.core.parser.regexAlphabet;
 
 import java.io.StringReader;
 import java_cup.runtime.Symbol;
@@ -14,9 +15,9 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 
 %%
 
-%class RegexScanner
+%class RegexAlphabetScanner
 %extends AbstractScanner
-%implements RegexTerminals
+%implements RegexAlphabetTerminals
 
 %function nextSymbol
 %type Symbol
@@ -47,20 +48,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	{
 	  switch (id)
 	  {
-	  	case STAR:
-	  	case PLUS:
-	  	case OR:
-	  	case CONCAT:
-	  	case EPSILON:
-	  	case QUESTION:
-	  	case LBRACE:
-	  	case RBRACE:
-	  	case SLBRACE:
-	  	case SRBRACE:
-	  	case MINUS:
-	  	  return Style.REGEX_SYMBOL;
 		case SYMBOL:
-		  return Style.TOKEN;
+		  return Style.SYMBOL;
 		default:
 		  return Style.NONE;
 	  }
@@ -83,16 +72,11 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 
 <YYINITIAL>
 {
-	"*"					{ return symbol(STAR); }
-	"+"					{ return symbol(PLUS); }
-	"|"					{ return symbol(OR); }
-	"·"					{ return symbol(CONCAT); }
-	"Epsilon"			{ return symbol(EPSILON); }
-	"?"					{ return symbol(QUESTION); }
-	"("					{ return symbol(LBRACE); }
-	")"					{ return symbol(RBRACE); }
-	"["					{ return symbol(SLBRACE); }
-	"]"					{ return symbol(SRBRACE); }
+	","					{ return symbol(COMMA); }
+	"{"					{ return symbol(LCBRACE); }
+	"}"					{ return symbol(RCBRACE); }
+	"["					{ return symbol(LSBRACE); }
+	"]"					{ return symbol(RSBRACE); }
 	"-"					{ return symbol(MINUS); }
 	{WhiteSpace}		{ }
 	.'*					{ return symbol(SYMBOL, yytext()); }

@@ -25,18 +25,18 @@ import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
  * Terminal *
  ************/
 
-terminal String				STAR;
-terminal String				PLUS;
-terminal String				QUESTION;
-terminal String				OR;
-terminal String				CONCAT;
-terminal String				EPSILON;
-terminal String				LBRACE;
-terminal String				RBRACE;
-terminal String				SLBRACE;
-terminal String				SRBRACE;
-terminal String				MINUS;
-terminal String				IDENT;
+terminal 					STAR;
+terminal 					PLUS;
+terminal 					QUESTION;
+terminal 					OR;
+terminal 					CONCAT;
+terminal 					EPSILON;
+terminal 					LBRACE;
+terminal 					RBRACE;
+terminal 					SLBRACE;
+terminal 					SRBRACE;
+terminal 					MINUS;
+terminal String				SYMBOL;
 
 
 /****************
@@ -61,7 +61,7 @@ precedence left 	QUESTION;
 precedence left 	PLUS;
 precedence left 	STAR;
 precedence left 	EPSILON;
-precedence left 	IDENT;
+precedence left 	SYMBOL;
 precedence right 	SRBRACE;
 precedence right 	MINUS;
 
@@ -105,7 +105,7 @@ simple_regex					::= simple_regex:reg STAR:star
 										RESULT = reg;
 									   	RESULT.setParserOffset(new ParserOffset(lleft,rright));
 									:}
-								|	SLBRACE:slb IDENT:i1 MINUS:m IDENT:i2 SRBRACE:srb
+								|	SLBRACE:slb SYMBOL:i1 MINUS:m SYMBOL:i2 SRBRACE:srb
 									{:
 										if(i1.compareTo(i2) < 1){
 											RESULT = new CharacterClassNode(i1.charAt(0), i2.charAt(0));
@@ -120,7 +120,7 @@ simple_regex					::= simple_regex:reg STAR:star
 										RESULT = new CharacterClassNode(l);
 									   	RESULT.setParserOffset(new ParserOffset(slbleft,srbright));
 									:}
-								|	IDENT:i
+								|	SYMBOL:i
 									{:
 										RESULT = new TokenNode(i);
 									   	RESULT.setParserOffset(new ParserOffset(ileft,iright));
@@ -167,13 +167,13 @@ concatenation					::= simple_regex:regex simple_regex_list:srl
 									   RESULT.setParserOffset(new ParserOffset(regexleft,srlright));
 									:}
 								;
-char_list						::= char_list:cl IDENT:i
+char_list						::= char_list:cl SYMBOL:i
 									{:
 										RESULT = new char[cl.length + 1];
 									   	System.arraycopy(cl, 0, RESULT, 0, cl.length);
 									   	RESULT[cl.length] = i.charAt(0);
 									:}
-								|	IDENT:i
+								|	SYMBOL:i
 									{:
 										RESULT = new char[] {i.charAt(0)};
 									:}

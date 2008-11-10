@@ -65,7 +65,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-regex" description="Generate parsers and lexers" />
+	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-regex,parser-regex-alphabet" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -84,5 +84,11 @@
 	<target name="parser-alphabet">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.flex" destdir="${sourcegenerateddir}" nobak="yes" />
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/alphabet" package="de.unisiegen.gtitool.core.parser.alphabet" parser="AlphabetAbstractParser" symbols="AlphabetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
+	<!-- parser regex-alphabet -->
+	<target name="parser-regex-alphabet">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/regexAlphabet/regexAlphabet.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/regexAlphabet/regexAlphabet.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/regexAlphabet" package="de.unisiegen.gtitool.core.parser.regexAlphabet" parser="RegexAlphabetAbstractParser" symbols="RegexAlphabetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 </project>

@@ -1,10 +1,11 @@
-package de.unisiegen.gtitool.core.parser.alphabet;
+package de.unisiegen.gtitool.core.parser.regexAlphabet;
 
 
 import java.io.StringReader;
 
 import java_cup.runtime.lr_parser;
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.parser.GTIParser;
 import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
@@ -16,7 +17,7 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
  * @author Christian Fehler
  * @version $Id: RegexAlphabetParseable.java 1043 2008-06-27 00:09:58Z fehler $
  */
-public final class AlphabetParseable implements Parseable
+public final class RegexAlphabetParseable implements Parseable
 {
 
   /**
@@ -32,13 +33,13 @@ public final class AlphabetParseable implements Parseable
     {
       throw new NullPointerException ( "scanner is null" ); //$NON-NLS-1$
     }
-    final lr_parser parser = new AlphabetParser ( gtiScanner );
+    final lr_parser parser = new RegexAlphabetParser ( gtiScanner );
     return new GTIParser ()
     {
 
-      public Alphabet parse () throws Exception
+      public DefaultRegexAlphabet parse () throws Exception
       {
-        return ( Alphabet ) parser.parse ().value;
+        return ( DefaultRegexAlphabet ) parser.parse ().value;
       }
     };
   }
@@ -70,6 +71,6 @@ public final class AlphabetParseable implements Parseable
     {
       throw new NullPointerException ( "text is null" ); //$NON-NLS-1$
     }
-    return new AlphabetScanner ( new StringReader ( text ) );
+    return new RegexAlphabetScanner ( new StringReader ( text ) );
   }
 }

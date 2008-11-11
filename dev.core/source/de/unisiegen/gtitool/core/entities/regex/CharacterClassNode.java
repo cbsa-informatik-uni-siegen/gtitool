@@ -5,8 +5,11 @@ import java.util.ArrayList;
 
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -64,6 +67,20 @@ public class CharacterClassNode extends LeafNode
 
 
   /**
+   * TODO
+   * 
+   * @return
+   * @throws StateException
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toNFA()
+   */
+  @Override
+  public DefaultENFA toNFA (Alphabet a) throws StateException
+  {
+    return toCoreSyntax ().toNFA (a);
+  }
+
+
+  /**
    * The position in the Syntaxtree
    */
   private int position;
@@ -115,7 +132,8 @@ public class CharacterClassNode extends LeafNode
    */
   public int compareTo ( RegexNode arg0 )
   {
-    if(arg0 instanceof LeafNode) {
+    if ( arg0 instanceof LeafNode )
+    {
       LeafNode leaf = ( LeafNode ) arg0;
       return this.position - leaf.getPosition ();
     }
@@ -348,8 +366,10 @@ public class CharacterClassNode extends LeafNode
       if ( this.char1 < this.char2 - 1 )
       {
         return new DisjunctionNode ( new TokenNode ( Character
-            .toString ( this.char1 ) ), ( new CharacterClassNode (
-            ( char ) ( this.char1 + 1 ), this.char2 ).toCoreSyntax () ) );
+            .toString ( this.char1 ) ),
+            ( new CharacterClassNode (
+                ( char ) ( this.char1 + 1 ), this.char2 ).toCoreSyntax () )
+             );
       }
       return new DisjunctionNode ( new TokenNode ( Character
           .toString ( this.char1 ) ), new TokenNode ( Character
@@ -360,12 +380,12 @@ public class CharacterClassNode extends LeafNode
       char [] newChars = new char [ this.chars.length - 1 ];
       System.arraycopy ( this.chars, 1, newChars, 0, this.chars.length - 1 );
       return new DisjunctionNode ( new TokenNode ( Character
-          .toString ( this.chars [ 0 ] ) ), new CharacterClassNode ( newChars )
-          .toCoreSyntax () );
+          .toString ( this.chars [ 0 ] ) ),
+          new CharacterClassNode (  newChars ).toCoreSyntax () );
     }
     return new DisjunctionNode ( new TokenNode ( Character
-        .toString ( this.chars [ 0 ] ) ), new TokenNode ( Character
-        .toString ( this.chars [ 1 ] ) ) );
+        .toString ( this.chars [ 0 ] ) ), new TokenNode (
+        Character.toString ( this.chars [ 1 ] ) ) );
   }
 
 
@@ -397,7 +417,8 @@ public class CharacterClassNode extends LeafNode
     string.add ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
     return string;
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
@@ -408,7 +429,7 @@ public class CharacterClassNode extends LeafNode
   {
     if ( !this.array )
     {
-      return "[" + this.char1 + "-" + this.char2 + "]";  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+      return "[" + this.char1 + "-" + this.char2 + "]"; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
     }
     String s = "["; //$NON-NLS-1$
     for ( char c : this.chars )

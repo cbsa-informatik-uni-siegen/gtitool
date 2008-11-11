@@ -5,8 +5,11 @@ import java.util.ArrayList;
 
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -49,7 +52,7 @@ public class OptionalNode extends OneChildNode
    * 
    * @param regex The Regex in the Optionalnode
    */
-  public OptionalNode ( RegexNode regex )
+  public OptionalNode ( RegexNode regex)
   {
     super ( regex );
   }
@@ -254,10 +257,21 @@ public class OptionalNode extends OneChildNode
   @Override
   public RegexNode toCoreSyntax ()
   {
-    return new DisjunctionNode ( this.regex.toCoreSyntax (),
-        new EpsilonNode () );
+    return new DisjunctionNode ( this.regex.toCoreSyntax (), new EpsilonNode ());
   }
 
+  /**
+   * TODO
+   *
+   * @return
+   * @throws StateException
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toNFA()
+   */
+  @Override
+  public DefaultENFA toNFA (Alphabet a) throws StateException
+  {
+    return toCoreSyntax ().toNFA (a);
+  }
 
   /**
    * {@inheritDoc}

@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.entities.regex;
 
 
+
 /**
  * TODO
  */
@@ -29,6 +30,22 @@ public abstract class TwoChildNode extends RegexNode
   {
     this.regex1 = regex1;
     this.regex2 = regex2;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getHeight()
+   */
+  @Override
+  public int getHeight ()
+  {
+    if ( this.regex1.getHeight () > this.regex2.getHeight () )
+    {
+      return 1 + this.regex1.getHeight ();
+    }
+    return 1 + this.regex2.getHeight ();
   }
 
 

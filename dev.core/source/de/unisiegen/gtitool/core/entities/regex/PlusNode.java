@@ -5,8 +5,11 @@ import java.util.ArrayList;
 
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -255,9 +258,21 @@ public class PlusNode extends OneChildNode
   public RegexNode toCoreSyntax ()
   {
     return new ConcatenationNode ( this.regex.toCoreSyntax (),
-        new KleeneNode ( this.regex.toCoreSyntax () ) );
+        new KleeneNode ( this.regex.toCoreSyntax ()) );
   }
 
+  /**
+   * TODO
+   *
+   * @return
+   * @throws StateException
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toNFA()
+   */
+  @Override
+  public DefaultENFA toNFA (Alphabet a) throws StateException
+  {
+    return toCoreSyntax ().toNFA (a);
+  }
 
   /**
    * {@inheritDoc}

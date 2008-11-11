@@ -6,6 +6,7 @@ import java.util.HashSet;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
@@ -13,6 +14,7 @@ import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 
@@ -111,6 +113,18 @@ public class DefaultRegex implements Regex, Storable
   public DefaultRegex ( Alphabet a, String regexString )
   {
     this.alphabet = a;
+
+    try
+    {
+      if ( !this.alphabet.contains ( new DefaultSymbol ( "#" ) ) )
+      {
+        this.alphabet.add ( new DefaultSymbol ( "#" ) );
+      }
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+    }
     this.regexString = regexString;
   }
 
@@ -135,12 +149,19 @@ public class DefaultRegex implements Regex, Storable
   public void setRegexNode ( RegexNode regexNode, boolean change )
   {
     this.regexNode = new ConcatenationNode ( regexNode, new TokenNode ( "#" ) );
-    this.initialNode = regexNode;
-    
-    if(change && !this.initialNode.equals ( this.regexNode )) {
-      fireModifyStatusChanged ( true );
+
+    if ( change )
+    {
+      if ( this.initialNode == null
+          || !this.initialNode.equals ( this.regexNode ) )
+      {
+        fireModifyStatusChanged ( false );
+      }
     }
-    
+    else
+    {
+      this.initialNode = this.regexNode;
+    }
     int currentPosition = 1;
     for ( RegexNode current : this.regexNode.getTokenNodes () )
     {
@@ -162,14 +183,8 @@ public class DefaultRegex implements Regex, Storable
   {
     this.regexNode = newRegexNode;
 
-    if(this.initialNode != null && !this.initialNode.equals ( this.regexNode )) {
-      fireModifyStatusChanged ( true );
-    } else if(this.initialNode == null) {
-      //Initial Case after toCoreSyntax()
-      this.initialNode = this.regexNode;
-      fireModifyStatusChanged ( true );
-    }
-    
+    fireModifyStatusChanged ( false );
+
     int currentPosition = 1;
     for ( RegexNode current : this.regexNode.getTokenNodes () )
     {
@@ -302,7 +317,7 @@ public class DefaultRegex implements Regex, Storable
 
   /**
    * TODO
-   *
+   * 
    * @param forceModify
    */
   private void fireModifyStatusChanged ( final boolean forceModify )
@@ -335,18 +350,29 @@ public class DefaultRegex implements Regex, Storable
    */
   public boolean isModified ()
   {
-    System.err.println ("Initial: " + this.initialNode);
-    System.err.println ("Now: " + this.regexNode);
-    if ( this.initialNode == null )
+    if ( this.initialNode == null || this.regexNode == null )
     {
       return true;
     }
     return !this.initialNode.equals ( this.regexNode );
   }
-  
+
+
+  /**
+   * Returns the initialNode.
+   * 
+   * @return The initialNode.
+   * @see #initialNode
+   */
+  public RegexNode getInitialNode ()
+  {
+    return this.initialNode;
+  }
+
+
   /**
    * TODO
-   *
+   * 
    * @param obj
    * @return
    * @see java.lang.Object#equals(java.lang.Object)
@@ -354,10 +380,12 @@ public class DefaultRegex implements Regex, Storable
   @Override
   public boolean equals ( Object obj )
   {
-    if(obj == this) {
+    if ( obj == this )
+    {
       return true;
     }
-    if(obj instanceof DefaultRegex) {
+    if ( obj instanceof DefaultRegex )
+    {
       DefaultRegex dr = ( DefaultRegex ) obj;
       return this.regexNode.equals ( dr.getRegexNode () );
     }

@@ -2,11 +2,21 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.Entity;
+import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -49,7 +59,7 @@ public class ConcatenationNode extends TwoChildNode
    */
   public ConcatenationNode ( RegexNode regex1, RegexNode regex2 )
   {
-    super(regex1, regex2);
+    super ( regex1, regex2 );
   }
 
 
@@ -70,7 +80,7 @@ public class ConcatenationNode extends TwoChildNode
    * 
    * @see Comparable#compareTo(java.lang.Object)
    */
-  public int compareTo ( @SuppressWarnings("unused")
+  public int compareTo ( @SuppressWarnings ( "unused" )
   RegexNode o )
   {
     return 0;
@@ -325,5 +335,110 @@ public class ConcatenationNode extends TwoChildNode
   public String toString ()
   {
     return this.regex1.toString () + this.regex2.toString ();
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @throws StateException
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toNFA()
+   */
+  @Override
+  public DefaultENFA toNFA (Alphabet a) throws StateException
+  {
+    DefaultENFA nfa = new DefaultENFA ( a, a, false );
+    DefaultENFA nfaRegex1 = this.regex1.toNFA (a);
+    DefaultENFA nfaRegex2 = this.regex2.toNFA (a);
+    HashMap<Integer, State> newStates = new HashMap < Integer, State >();
+    for(State s : nfaRegex1.getState ()) {
+      State newState = new DefaultState(s.getAlphabet (), s.getPushDownAlphabet (), s.getName (), s.isStartState (), s.isFinalState ());
+      nfa.addState ( newState );
+      newStates.put ( s.getId (), newState );
+    }
+    for(Transition t : nfaRegex1.getTransition ()) {
+      try
+      {
+        nfa.addTransition ( new DefaultTransition(t.getAlphabet (), t.getPushDownAlphabet (), t.getPushDownWordRead (), t.getPushDownWordWrite (), newStates.get ( t.getStateBegin ().getId () ), newStates.get ( t.getStateEnd ().getId () ), t.getSymbol ()) );
+      }
+      catch ( TransitionSymbolNotInAlphabetException exc )
+      {
+        exc.printStackTrace();
+      }
+      catch ( TransitionSymbolOnlyOneTimeException exc )
+      {
+        exc.printStackTrace();
+      }
+    }
+    for(State s : nfaRegex2.getState ()) {
+      State newState = new DefaultState(s.getAlphabet (), s.getPushDownAlphabet (), s.getName (), s.isStartState (), s.isFinalState ());
+      nfa.addState ( newState );
+      newStates.put ( s.getId (), newState );
+    }
+    for(Transition t : nfaRegex2.getTransition ()) {
+      try
+      {
+        nfa.addTransition ( new DefaultTransition(t.getAlphabet (), t.getPushDownAlphabet (), t.getPushDownWordRead (), t.getPushDownWordWrite (), newStates.get ( t.getStateBegin ().getId () ), newStates.get ( t.getStateEnd ().getId () ), t.getSymbol ()) );
+      }
+      catch ( TransitionSymbolNotInAlphabetException exc )
+      {
+        exc.printStackTrace();
+      }
+      catch ( TransitionSymbolOnlyOneTimeException exc )
+      {
+        exc.printStackTrace();
+      }
+    }
+    State startState2 = null;
+    State finalState1 = null;
+    for ( State s : nfa.getState () )
+    {
+      if ( s.isFinalState () )
+      {
+        finalState1 = s;
+        break;
+      }
+    }
+    boolean b = false;
+    for ( State s : nfa.getState () )
+    {
+      if ( s.isStartState () )
+      {
+        if ( !b )
+        {
+          b = true;
+        }
+        else
+        {
+          startState2 = s;
+          break;
+        }
+      }
+    }
+    if ( finalState1 == null || startState2 == null )
+    {
+      throw new IllegalArgumentException (
+          "Start state or final state does not exist" );
+    }
+    finalState1.setFinalState ( false );
+    for ( Transition t : startState2.getTransitionBegin () )
+    {
+      try
+      {
+        nfa.addTransition ( new DefaultTransition(t.getAlphabet (), t.getPushDownAlphabet (), t.getPushDownWordRead (), t.getPushDownWordWrite (), finalState1, t.getStateEnd (), t.getSymbol ()) );
+      }
+      catch ( TransitionSymbolNotInAlphabetException exc )
+      {
+        exc.printStackTrace();
+      }
+      catch ( TransitionSymbolOnlyOneTimeException exc )
+      {
+        exc.printStackTrace();
+      }
+    }
+    
+    nfa.removeState ( startState2 );
+    return nfa;
   }
 }

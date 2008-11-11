@@ -3,7 +3,10 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -17,6 +20,25 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  */
 public abstract class RegexNode implements Entity < RegexNode >
 {
+  
+  /**
+   * TODO
+   * 
+   * @param o
+   * @return
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public abstract boolean equals ( Object o );
+
+  /**
+   * Function firstpos as defined in the dragonbook
+   * 
+   * @return {@link ArrayList} of {@link RegexNode} that can be the first
+   *         positions of the {@link RegexNode}
+   */
+  public abstract ArrayList < RegexNode > firstPos ();
+
 
   /**
    * Gets all Children of this Node
@@ -34,13 +56,7 @@ public abstract class RegexNode implements Entity < RegexNode >
   public abstract ArrayList < RegexNode > getChildren ();
 
 
-  /**
-   * Counts the right children
-   * 
-   * @return the right children count
-   */
-  public abstract int getRightChildrenCount ();
-
+  public abstract int getHeight ();
 
   /**
    * Counts the left children
@@ -48,48 +64,6 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return the left children count
    */
   public abstract int getLeftChildrenCount ();
-
-
-  /**
-   * Gets all Tokennodes that are in this node
-   * 
-   * @return All Tokennodes that are in this node
-   */
-  public abstract ArrayList < LeafNode > getTokenNodes ();
-
-
-  /**
-   * Function nullable as defined in the dragonbook
-   * 
-   * @return true, if the node can be epsilon
-   */
-  public abstract boolean nullable ();
-
-
-  /**
-   * Function firstpos as defined in the dragonbook
-   * 
-   * @return {@link ArrayList} of {@link RegexNode} that can be the first
-   *         positions of the {@link RegexNode}
-   */
-  public abstract ArrayList < RegexNode > firstPos ();
-
-
-  /**
-   * Function lastpos as defined in the dragonbook
-   * 
-   * @return {@link ArrayList} of {@link RegexNode} that can be the last
-   *         positions of the {@link RegexNode}
-   */
-  public abstract ArrayList < RegexNode > lastPos ();
-
-
-  /**
-   * Translate the RegexNode to Core Syntax
-   * 
-   * @return the RegexNode in Core Syntax
-   */
-  public abstract RegexNode toCoreSyntax ();
 
 
   /**
@@ -101,21 +75,19 @@ public abstract class RegexNode implements Entity < RegexNode >
 
 
   /**
-   * Get the maximal Width of the whole Regex
+   * Counts the right children
    * 
-   * @return The maximal Width of the wohle Regex
+   * @return the right children count
    */
-  public abstract int getWidth ();
-  
+  public abstract int getRightChildrenCount ();
+
+
   /**
-   * TODO
-   *
-   * @param o
-   * @return
-   * @see java.lang.Object#equals(java.lang.Object)
+   * Gets all Tokennodes that are in this node
+   * 
+   * @return All Tokennodes that are in this node
    */
-  @Override
-  public abstract boolean equals(Object o);
+  public abstract ArrayList < LeafNode > getTokenNodes ();
 
 
   /**
@@ -165,5 +137,40 @@ public abstract class RegexNode implements Entity < RegexNode >
     ps.add ( new PrettyToken ( "}", Style.REGEX_TOOL_TIP_TEXT ) );
     return ps;
   }
+
+
+  /**
+   * Get the maximal Width of the whole Regex
+   * 
+   * @return The maximal Width of the wohle Regex
+   */
+  public abstract int getWidth ();
+
+
+  /**
+   * Function lastpos as defined in the dragonbook
+   * 
+   * @return {@link ArrayList} of {@link RegexNode} that can be the last
+   *         positions of the {@link RegexNode}
+   */
+  public abstract ArrayList < RegexNode > lastPos ();
+
+
+  /**
+   * Function nullable as defined in the dragonbook
+   * 
+   * @return true, if the node can be epsilon
+   */
+  public abstract boolean nullable ();
+
+
+  /**
+   * Translate the RegexNode to Core Syntax
+   * 
+   * @return the RegexNode in Core Syntax
+   */
+  public abstract RegexNode toCoreSyntax ();
+  
+  public abstract DefaultENFA toNFA(Alphabet a) throws StateException;
 
 }

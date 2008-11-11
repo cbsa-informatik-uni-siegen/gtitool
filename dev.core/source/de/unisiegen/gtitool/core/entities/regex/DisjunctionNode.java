@@ -2,11 +2,21 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.Entity;
+import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -321,4 +331,135 @@ public class DisjunctionNode extends TwoChildNode
   {
     return "(" + this.regex1.toString () + "|" + this.regex2.toString () + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
   }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @throws StateException
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toNFA()
+   */
+  @Override
+  public DefaultENFA toNFA (Alphabet a) throws StateException
+  {
+    DefaultENFA nfa = new DefaultENFA ( a, a, false );
+
+    DefaultENFA nfaRegex1 = this.regex1.toNFA (a);
+    DefaultENFA nfaRegex2 = this.regex2.toNFA (a);
+
+    HashMap<Integer, State> newStates = new HashMap < Integer, State >();
+    for(State s : nfaRegex1.getState ()) {
+      State newState = new DefaultState(s.getAlphabet (), s.getPushDownAlphabet (), s.getName (), s.isStartState (), s.isFinalState ());
+      nfa.addState ( newState );
+      newStates.put ( s.getId (), newState );
+    }
+    for(Transition t : nfaRegex1.getTransition ()) {
+      try
+      {
+        nfa.addTransition ( new DefaultTransition(t.getAlphabet (), t.getPushDownAlphabet (), t.getPushDownWordRead (), t.getPushDownWordWrite (), newStates.get ( t.getStateBegin ().getId () ), newStates.get ( t.getStateEnd ().getId () ), t.getSymbol ()) );
+      }
+      catch ( TransitionSymbolNotInAlphabetException exc )
+      {
+        exc.printStackTrace();
+      }
+      catch ( TransitionSymbolOnlyOneTimeException exc )
+      {
+        exc.printStackTrace();
+      }
+    }
+    for(State s : nfaRegex2.getState ()) {
+      State newState = new DefaultState(s.getAlphabet (), s.getPushDownAlphabet (), s.getName (), s.isStartState (), s.isFinalState ());
+      nfa.addState ( newState );
+      newStates.put ( s.getId (), newState );
+    }
+    for(Transition t : nfaRegex2.getTransition ()) {
+      try
+      {
+        nfa.addTransition ( new DefaultTransition(t.getAlphabet (), t.getPushDownAlphabet (), t.getPushDownWordRead (), t.getPushDownWordWrite (), newStates.get ( t.getStateBegin ().getId () ), newStates.get ( t.getStateEnd ().getId () ), t.getSymbol ()) );
+      }
+      catch ( TransitionSymbolNotInAlphabetException exc )
+      {
+        exc.printStackTrace();
+      }
+      catch ( TransitionSymbolOnlyOneTimeException exc )
+      {
+        exc.printStackTrace();
+      }
+    }
+    
+
+    State start1 = null;
+    State start2 = null;
+    State final1 = null;
+    State final2 = null;
+
+    boolean first = false;
+    boolean second = false;
+
+    for ( State s : nfa.getState () )
+    {
+      if ( s.isStartState () )
+      {
+        if ( !first )
+        {
+          start1 = s;
+          first = true;
+        }
+        else
+        {
+          start2 = s;
+        }
+      }
+      else if ( s.isFinalState () )
+      {
+        if ( !second )
+        {
+          final1 = s;
+          second = true;
+        }
+        else
+        {
+          final2 = s;
+        }
+      }
+    }
+    if(final1 == null || final2 == null || start1 == null || start2 == null) {
+      throw new IllegalArgumentException("A State is null");
+    }
+
+    DefaultState start = new DefaultState ( "s" );
+    start.setStartState ( true );
+    nfa.addState ( start );
+
+    DefaultState fin = new DefaultState ( "f" );
+    fin.setFinalState ( true );
+    nfa.addState ( fin );
+
+    DefaultTransition startStart1 = new DefaultTransition();
+    startStart1.setStateBegin ( start );
+    startStart1.setStateEnd ( start1 );
+    DefaultTransition startStart2 = new DefaultTransition();
+    startStart2.setStateBegin ( start );
+    startStart2.setStateEnd ( start2 );
+    DefaultTransition final1Final = new DefaultTransition();
+    final1Final.setStateBegin ( final1 );
+    final1Final.setStateEnd ( fin );
+    DefaultTransition final2Final = new DefaultTransition();
+    final2Final.setStateBegin ( final2 );
+    final2Final.setStateEnd ( fin );
+
+    nfa.addTransition ( startStart1 );
+    nfa.addTransition ( startStart2 );
+    nfa.addTransition ( final1Final );
+    nfa.addTransition ( final2Final );
+    
+    start1.setStartState ( false );
+    start2.setStartState ( false );
+    final1.setFinalState ( false );
+    final2.setFinalState ( false );
+    
+    return nfa;
+  }
+
 }

@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.entities.regex;
 
 
+
 /**
  * Representation of a LeafNode in the Regex
  */
@@ -22,6 +23,17 @@ public abstract class LeafNode extends RegexNode
    */
   @Override
   public int getWidth ()
+  {
+    return 1;
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getHeight()
+   */
+  @Override
+  public int getHeight ()
   {
     return 1;
   }

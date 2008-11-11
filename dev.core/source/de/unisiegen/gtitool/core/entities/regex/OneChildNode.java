@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.entities.regex;
 
 
+
 /**
  * TODO
  */
@@ -11,7 +12,6 @@ public abstract class OneChildNode extends RegexNode
    * The Child of this {@link OneChildNode}
    */
   protected RegexNode regex;
-
 
   /**
    * Constructor for a Node with one direct child
@@ -24,6 +24,17 @@ public abstract class OneChildNode extends RegexNode
     this.regex = regex;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getHeight()
+   */
+  @Override
+  public int getHeight ()
+  {
+    return 1 + this.regex.getHeight ();
+  }
+  
   /**
    * {@inheritDoc}
    * 

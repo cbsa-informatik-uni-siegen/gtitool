@@ -5,8 +5,19 @@ import java.util.ArrayList;
 
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.Entity;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -334,6 +345,49 @@ public class TokenNode extends LeafNode
   public String toString ()
   {
     return this.name;
+  }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @throws StateException
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toNFA()
+   */
+  @Override
+  public DefaultENFA toNFA (Alphabet a) throws StateException
+  {
+    DefaultENFA nfa =new DefaultENFA(a, a, false);
+    DefaultState start = new DefaultState("s" + this.position);
+    start.setStartState ( true );
+    start.setFinalState ( false );
+    nfa.addState ( start );
+
+    DefaultState fin = new DefaultState("f" + this.position);
+    fin.setFinalState ( true );
+    fin.setStartState ( false );
+    nfa.addState ( fin );
+    
+    ArrayList<Symbol> symbols = new ArrayList < Symbol >();
+    symbols.add ( new DefaultSymbol(this.name) );
+    Transition t;
+    try
+    {
+      t = new DefaultTransition(a, a, new DefaultWord(), new DefaultWord(), start, fin, symbols);
+
+      nfa.addTransition ( t );
+    }
+    catch ( TransitionSymbolNotInAlphabetException exc )
+    {
+      exc.printStackTrace();
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
+    {
+      exc.printStackTrace();
+    }
+    
+    return nfa;
   }
 
 }

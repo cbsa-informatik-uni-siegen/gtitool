@@ -1,5 +1,7 @@
 *** TODO ***
 
+CF		- Fehler beim Konvertieren, wenn PowerSet-Zustände verwendet werden
+
 *** FEATURE ***
 
 CF		- Erkannte Wörter ausgeben

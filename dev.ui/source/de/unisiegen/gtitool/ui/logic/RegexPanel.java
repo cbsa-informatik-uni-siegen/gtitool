@@ -13,11 +13,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 
+import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.RegexException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
+import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -29,6 +34,7 @@ import de.unisiegen.gtitool.ui.latex.LatexExporter;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.model.RegexConsoleTableModel;
@@ -38,6 +44,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.redoundo.RegexChangedItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
 /**
@@ -258,7 +265,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public Converter getConverter ()
   {
-    return null;
+    return new ConvertRegexToMachineDialog(this.mainWindowForm, this);
   }
 
 
@@ -602,6 +609,60 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       LatexExporter exp = new LatexExporter ();
       exp.buildLatexFile ( this.model.toLatexString (), sd.getSelectedFile () );
     }
+  }
+
+  public void handleToNFAButton(ActionEvent evt) {
+    DefaultMachineModel machineModel = new DefaultMachineModel ( new DefaultENFA(this.regex.getAlphabet (), this.regex.getAlphabet (), false));
+    try
+    {
+      DefaultENFA nfa = this.regex.getRegexNode ().toNFA ( this.regex.getAlphabet () );
+      String stateName = "z"; //$NON-NLS-1$
+      int count = 0;
+      for(State s : nfa.getState ()) {
+        s.setName ( stateName + count++ );
+        machineModel.createStateView ( 0, 0, s, false );
+      }
+      for(Transition t : nfa.getTransition ()) {
+        machineModel.createTransitionView ( t, machineModel.getStateViewForState ( t.getStateBegin () ), machineModel.getStateViewForState ( t.getStateEnd () ), true, false, false );
+      }
+      
+      LayoutManager manager = new LayoutManager(machineModel, null);
+      manager.doLayout ();
+    }
+    catch ( StateException exc )
+    {
+      exc.printStackTrace();
+    }
+    EditorPanel newEditorPanel = new MachinePanel ( this.mainWindowForm, machineModel
+         , null );
+    TreeSet < String > nameList = new TreeSet < String > ();
+    int count = 0;
+    for ( EditorPanel current : this.mainWindowForm.getJGTIMainSplitPane ()
+        .getJGTIEditorPanelTabbedPane () )
+    {
+      if ( current.getFile () == null )
+      {
+        nameList.add ( current.getName () );
+        count++ ;
+      }
+    }
+
+    String newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+        + "." + MachineType.ENFA.getFileEnding (); //$NON-NLS-1$
+    while ( nameList.contains ( newName ) )
+    {
+      count++ ;
+      newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+          + "." + MachineType.ENFA.getFileEnding (); //$NON-NLS-1$
+    }
+
+    newEditorPanel.setName ( newName );
+    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
+        .addEditorPanel ( newEditorPanel );
+    newEditorPanel
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
+        .setSelectedEditorPanel ( newEditorPanel );
   }
 
 

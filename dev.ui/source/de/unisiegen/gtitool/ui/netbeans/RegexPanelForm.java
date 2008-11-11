@@ -62,6 +62,7 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         jGTIButtonChangeRegex = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCoreSyntax = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonToLatex = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonToNFA = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIScrollPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
@@ -121,6 +122,19 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelRegexControl.add(jGTIButtonToLatex, gridBagConstraints);
+
+        jGTIButtonToNFA.setText("To NFA");
+        jGTIButtonToNFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIButtonToNFAActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelRegexControl.add(jGTIButtonToNFA, gridBagConstraints);
 
         jGTISplitPaneTable.setLeftComponent(jGTIPanelRegexControl);
         jGTISplitPaneTable.setRightComponent(jGTIScrollPaneGraph);
@@ -191,12 +205,17 @@ private void jGTIButtonCoreSyntaxActionPerformed(java.awt.event.ActionEvent evt)
 private void jGTIButtonToLatexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonToLatexActionPerformed
     this.logic.handleToLatexButtonClicked(evt);
 }//GEN-LAST:event_jGTIButtonToLatexActionPerformed
+
+private void jGTIButtonToNFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonToNFAActionPerformed
+    this.logic.handleToNFAButton(evt);
+}//GEN-LAST:event_jGTIButtonToNFAActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonChangeRegex;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCoreSyntax;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonToLatex;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonToNFA;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelConsole;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelRegex;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelRegexControl;

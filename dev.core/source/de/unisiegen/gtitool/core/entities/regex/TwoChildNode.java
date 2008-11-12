@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.core.entities.regex;
 
 
-
 /**
  * TODO
  */
@@ -30,6 +29,19 @@ public abstract class TwoChildNode extends RegexNode
   {
     this.regex1 = regex1;
     this.regex2 = regex2;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return this.regex1.isInCoreSyntax () && this.regex2.isInCoreSyntax ();
   }
 
 

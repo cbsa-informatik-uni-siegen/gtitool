@@ -40,6 +40,19 @@ public class KleeneNode extends OneChildNode
 
 
   /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return true;
+  }
+
+
+  /**
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
@@ -280,91 +293,104 @@ public class KleeneNode extends OneChildNode
         .add ( new PrettyString ( new PrettyToken ( "*", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
     return string;
   }
-  
+
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @throws StateException
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toNFA()
    */
   @Override
-  public DefaultENFA toNFA (Alphabet a) throws StateException
+  public DefaultENFA toNFA ( Alphabet a ) throws StateException
   {
-    DefaultENFA nfa =new DefaultENFA(a, a, false);
+    DefaultENFA nfa = new DefaultENFA ( a, a, false );
     DefaultENFA nfaRegex1 = this.regex.toNFA ( a );
-    HashMap<Integer, State> newStates = new HashMap < Integer, State >();
-    for(State s : nfaRegex1.getState ()) {
-      State newState = new DefaultState(s.getAlphabet (), s.getPushDownAlphabet (), s.getName (), s.isStartState (), s.isFinalState ());
+    HashMap < Integer, State > newStates = new HashMap < Integer, State > ();
+    for ( State s : nfaRegex1.getState () )
+    {
+      State newState = new DefaultState ( s.getAlphabet (), s
+          .getPushDownAlphabet (), s.getName (), s.isStartState (), s
+          .isFinalState () );
       nfa.addState ( newState );
       newStates.put ( s.getId (), newState );
     }
-    for(Transition t : nfaRegex1.getTransition ()) {
+    for ( Transition t : nfaRegex1.getTransition () )
+    {
       try
       {
-        nfa.addTransition ( new DefaultTransition(t.getAlphabet (), t.getPushDownAlphabet (), t.getPushDownWordRead (), t.getPushDownWordWrite (), newStates.get ( t.getStateBegin ().getId () ), newStates.get ( t.getStateEnd ().getId () ), t.getSymbol ()) );
+        nfa.addTransition ( new DefaultTransition ( t.getAlphabet (), t
+            .getPushDownAlphabet (), t.getPushDownWordRead (), t
+            .getPushDownWordWrite (), newStates.get ( t.getStateBegin ()
+            .getId () ), newStates.get ( t.getStateEnd ().getId () ), t
+            .getSymbol () ) );
       }
       catch ( TransitionSymbolNotInAlphabetException exc )
       {
-        exc.printStackTrace();
+        exc.printStackTrace ();
       }
       catch ( TransitionSymbolOnlyOneTimeException exc )
       {
-        exc.printStackTrace();
+        exc.printStackTrace ();
       }
     }
-    
+
     State startRegex = null;
     State endRegex = null;
-    
-    for(State s : nfa.getState ()) {
-      if(s.isStartState ()) {
+
+    for ( State s : nfa.getState () )
+    {
+      if ( s.isStartState () )
+      {
         startRegex = s;
-      } else if(s.isFinalState ()){
+      }
+      else if ( s.isFinalState () )
+      {
         endRegex = s;
       }
     }
-    
-    if(startRegex == null || endRegex == null) {
-      throw new IllegalArgumentException("States are wrong");
+
+    if ( startRegex == null || endRegex == null )
+    {
+      throw new IllegalArgumentException ( "States are wrong" );
     }
-    
-    DefaultState start = new DefaultState("s");
+
+    DefaultState start = new DefaultState ( "s" );
     start.setStartState ( true );
     nfa.addState ( start );
 
-    DefaultState fin = new DefaultState("f");
+    DefaultState fin = new DefaultState ( "f" );
     fin.setFinalState ( true );
     nfa.addState ( fin );
-    
 
     // From start to final
-    Transition t = new DefaultTransition();
+    Transition t = new DefaultTransition ();
     t.setStateBegin ( start );
     t.setStateEnd ( fin );
     nfa.addTransition ( t );
 
     // From start to begin of N(s)
-    t = new DefaultTransition();
+    t = new DefaultTransition ();
     t.setStateBegin ( start );
     t.setStateEnd ( startRegex );
     nfa.addTransition ( t );
-    
+
     // From end to begin of N(s)
-    t = new DefaultTransition();
+    t = new DefaultTransition ();
     t.setStateBegin ( endRegex );
     t.setStateEnd ( startRegex );
     nfa.addTransition ( t );
 
     // From end of N(s) to final
-    t = new DefaultTransition();
+    t = new DefaultTransition ();
     t.setStateBegin ( endRegex );
     t.setStateEnd ( fin );
     nfa.addTransition ( t );
-    
+
     startRegex.setStartState ( false );
     endRegex.setFinalState ( false );
-    
+
     return nfa;
   }
 

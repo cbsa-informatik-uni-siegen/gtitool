@@ -46,6 +46,17 @@ public class PlusNode extends OneChildNode
    */
   private ParserOffset parserOffset = NO_PARSER_OFFSET;
 
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return false;
+  }
 
   /**
    * Constructor for a {@link PlusNode}

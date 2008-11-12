@@ -173,4 +173,5 @@ public abstract class RegexNode implements Entity < RegexNode >
   
   public abstract DefaultENFA toNFA(Alphabet a) throws StateException;
 
+  public abstract boolean isInCoreSyntax();
 }

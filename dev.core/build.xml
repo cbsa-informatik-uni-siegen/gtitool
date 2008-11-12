@@ -22,11 +22,14 @@
 	<property name="logger.distdir" value="${logger.basedir}/dist" />
 	<property name="javacup.basedir" value="${basedir}/../gtitool.javacup" />
 	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
+	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
+	<property name="core.distdir" value="${core.basedir}/dist" />
 	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
+	<property name="devcorefile" value="gtitool.dev.core-${gtitool.version}.jar" />
 	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
 	<property name="loggerfile" value="gtitool.logger-${gtitool.version}.jar" />
-
+		
 	<!-- declare -->
 	<target name="declare">
 		<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${jflex.distdir}/${jflexfile}" />
@@ -34,20 +37,53 @@
 	</target>
 
 	<!-- dist -->
-	<target name="dist" depends="dist-jflex,dist-javacup,dist-compile" description="Build distribution">
+	<target name="dist" depends="dist-core,dist-jar,dist-internal" description="Build distribution">
 		<echo message="Distribution ready" />
 	</target>
+	
+	<!-- dist core -->
+	<target name="dist-core">
+		<ant dir="${core.basedir}" target="dist" inheritall="no" />
+	</target>
+	
 
-	<!-- dist jflex -->
-	<target name="dist-jflex">
-		<ant dir="${jflex.basedir}" target="dist" inheritall="false" />
+
+	<!-- dist internal -->
+	<target name="dist-internal">
+		<mkdir dir="${gtitooldir}" />
+		<!-- copy files -->
+		<copy todir="${gtitooldir}">
+			<fileset dir="${core.distdir}" includes="*.jar" />
+		</copy>
+		<!-- move files -->
+		<move todir="${distdir}">
+			<fileset dir="${gtitooldir}" includes="*" />
+		</move>
+		<!-- delete dir -->
+		<delete dir="${gtitooldir}" includeemptydirs="true" />
 	</target>
 
-	<!-- dist javacup -->
-	<target name="dist-javacup">
-		<ant dir="${javacup.basedir}" target="dist" inheritall="false" />
+	<!-- dist jar -->
+	<target name="dist-jar" depends="dist-compile">
+		<!-- manifest -->
+		<manifest file="${distdir}/MANIFEST.MF">
+		</manifest>
+		<!-- make dir meta-inf -->
+		<mkdir dir="${classesdir}/META-INF" />
+		<!-- jar file -->
+		<jar jarfile="${distdir}/${devcorefile}" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
+			<fileset dir="${sourcedir}">
+				<include name="**/*.properties" />
+			</fileset>
+			<fileset dir="${sourceimpldir}">
+				<include name="**/*.properties" />
+			</fileset>
+		</jar>
+		<!-- delete manifest -->
+		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
-
+	
 	<!-- dist compile -->
 	<target name="dist-compile" depends="parser">
 		<delete dir="${classesdir}" />
@@ -58,6 +94,7 @@
 			<src path="${sourceimpldir}" />
 			<src path="${sourcegenerateddir}" />
 			<classpath>
+				<pathelement location="${core.distdir}/${corefile}" />
 				<pathelement location="${distdir}/${loggerfile}" />
 				<pathelement location="${distdir}/${javacupfile}" />
 			</classpath>

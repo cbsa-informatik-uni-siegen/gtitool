@@ -40,6 +40,17 @@ public class EpsilonNode extends LeafNode
    */
   private EventListenerList listenerList = new EventListenerList ();
 
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return true;
+  }
 
   /**
    * The offset of this {@link EpsilonNode} in the source code.

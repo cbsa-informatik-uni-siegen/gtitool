@@ -47,6 +47,19 @@ public class TokenNode extends LeafNode
 
 
   /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return true;
+  }
+
+
+  /**
    * The name of the Token
    */
   private String name;
@@ -350,43 +363,44 @@ public class TokenNode extends LeafNode
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @throws StateException
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toNFA()
    */
   @Override
-  public DefaultENFA toNFA (Alphabet a) throws StateException
+  public DefaultENFA toNFA ( Alphabet a ) throws StateException
   {
-    DefaultENFA nfa =new DefaultENFA(a, a, false);
-    DefaultState start = new DefaultState("s" + this.position);
+    DefaultENFA nfa = new DefaultENFA ( a, a, false );
+    DefaultState start = new DefaultState ( "s" + this.position );
     start.setStartState ( true );
     start.setFinalState ( false );
     nfa.addState ( start );
 
-    DefaultState fin = new DefaultState("f" + this.position);
+    DefaultState fin = new DefaultState ( "f" + this.position );
     fin.setFinalState ( true );
     fin.setStartState ( false );
     nfa.addState ( fin );
-    
-    ArrayList<Symbol> symbols = new ArrayList < Symbol >();
-    symbols.add ( new DefaultSymbol(this.name) );
+
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    symbols.add ( new DefaultSymbol ( this.name ) );
     Transition t;
     try
     {
-      t = new DefaultTransition(a, a, new DefaultWord(), new DefaultWord(), start, fin, symbols);
+      t = new DefaultTransition ( a, a, new DefaultWord (), new DefaultWord (),
+          start, fin, symbols );
 
       nfa.addTransition ( t );
     }
     catch ( TransitionSymbolNotInAlphabetException exc )
     {
-      exc.printStackTrace();
+      exc.printStackTrace ();
     }
     catch ( TransitionSymbolOnlyOneTimeException exc )
     {
-      exc.printStackTrace();
+      exc.printStackTrace ();
     }
-    
+
     return nfa;
   }
 

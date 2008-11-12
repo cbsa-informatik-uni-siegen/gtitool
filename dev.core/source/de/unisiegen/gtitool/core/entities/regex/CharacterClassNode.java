@@ -73,13 +73,24 @@ public class CharacterClassNode extends LeafNode
    * @throws StateException
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toNFA()
    */
-  @Override
   public DefaultENFA toNFA (Alphabet a) throws StateException
   {
     return toCoreSyntax ().toNFA (a);
   }
 
 
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return false;
+  }
+  
   /**
    * The position in the Syntaxtree
    */

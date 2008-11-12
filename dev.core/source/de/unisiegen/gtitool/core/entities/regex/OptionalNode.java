@@ -37,6 +37,17 @@ public class OptionalNode extends OneChildNode
    */
   private EventListenerList listenerList = new EventListenerList ();
 
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return false;
+  }
 
   /**
    * The offset of this {@link OptionalNode} in the source code.

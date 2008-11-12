@@ -1,6 +1,9 @@
 *** TODO ***
 
 CF		- Fehler beim Konvertieren, wenn PowerSet-Zustände verwendet werden
+CF		- Die Dev-Projekte in die Homepage integrieren
+CF		- Die SVNVersion Klasse wird zur Laufzeit nicht benötigt
+CF		- About Dialog anpassen
 
 *** FEATURE ***
 

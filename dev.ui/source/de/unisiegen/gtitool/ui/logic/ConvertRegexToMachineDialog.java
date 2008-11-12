@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,19 +14,19 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
+import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
-import de.unisiegen.gtitool.core.util.ObjectPair;
+import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
-import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
-import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
+import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
 /**
@@ -63,7 +64,14 @@ public class ConvertRegexToMachineDialog implements
           }
           else
           {
-            performNextStep ( true );
+            try
+            {
+              performNextStep ( true );
+            }
+            catch ( StateException exc )
+            {
+              exc.printStackTrace ();
+            }
           }
         }
       } );
@@ -148,50 +156,31 @@ public class ConvertRegexToMachineDialog implements
    */
   private enum Step
   {
-    /**
-     * The activate new closure {@link State}s step.
-     */
-    ACTIVATE_NEW_CLOSURE_STATES,
 
     /**
-     * The activate new {@link State}s step.
+     * The convert Token step
      */
-    ACTIVATE_NEW_STATES,
+    CONVERT_TOKEN,
 
     /**
-     * The activate old closure {@link State} step.
+     * The convert Epsilon step
      */
-    ACTIVATE_OLD_CLOSURE_STATE,
+    CONVERT_EPSILON,
 
     /**
-     * The activate old {@link State} step.
+     * The convert concat step
      */
-    ACTIVATE_OLD_STATE,
+    CONVERT_CONCAT,
 
     /**
-     * The activate start closure {@link State} step.
+     * The convert disjunction step
      */
-    ACTIVATE_START_CLOSURE_STATE,
+    CONVERT_DISJUNCTION,
 
     /**
-     * The activate start {@link State} step.
+     * The convert kleene step
      */
-    ACTIVATE_START_STATE,
-
-    /**
-     * The activate {@link Symbol}s step.
-     */
-    ACTIVATE_SYMBOLS,
-
-    /**
-     * The add start {@link State} step.
-     */
-    ADD_START_STATE,
-
-    /**
-     * The add {@link State} and {@link Transition} step.
-     */
-    ADD_STATE_AND_TRANSITION,
+    CONVERT_KLEENE,
 
     /**
      * The finish step.
@@ -208,42 +197,16 @@ public class ConvertRegexToMachineDialog implements
     {
       switch ( this )
       {
-        case ACTIVATE_START_STATE :
-        {
-          return "activate start state"; //$NON-NLS-1$
-        }
-        case ACTIVATE_START_CLOSURE_STATE :
-        {
-          return "activate start closure state"; //$NON-NLS-1$
-        }
-        case ADD_START_STATE :
-        {
-          return "add start state"; //$NON-NLS-1$
-        }
-        case ACTIVATE_OLD_STATE :
-        {
-          return "activate old state"; //$NON-NLS-1$
-        }
-        case ACTIVATE_OLD_CLOSURE_STATE :
-        {
-          return "activate old closure state"; //$NON-NLS-1$
-        }
-        case ACTIVATE_SYMBOLS :
-        {
-          return "activate symbols"; //$NON-NLS-1$
-        }
-        case ACTIVATE_NEW_STATES :
-        {
-          return "activate new states"; //$NON-NLS-1$
-        }
-        case ACTIVATE_NEW_CLOSURE_STATES :
-        {
-          return "activate new closure states"; //$NON-NLS-1$
-        }
-        case ADD_STATE_AND_TRANSITION :
-        {
-          return "add state and transition"; //$NON-NLS-1$
-        }
+        case CONVERT_CONCAT :
+          return "convert concatenation";
+        case CONVERT_DISJUNCTION :
+          return "convert disjunction";
+        case CONVERT_EPSILON :
+          return "convert epsilon";
+        case CONVERT_KLEENE :
+          return "convert kleene";
+        case CONVERT_TOKEN :
+          return "convert token";
         case FINISH :
         {
           return "finish"; //$NON-NLS-1$
@@ -262,76 +225,19 @@ public class ConvertRegexToMachineDialog implements
   private class StepItem
   {
 
-    /**
-     * The current active {@link State}.
-     */
-    private State activeState;
-
-
-    /**
-     * The active {@link State}s of the converted {@link JGTIGraph}.
-     */
-    private ArrayList < State > activeStatesConverted;
-
-
-    /**
-     * The active {@link State}s of the original {@link JGTIGraph}.
-     */
-    private ArrayList < State > activeStatesOriginal;
-
-
-    /**
-     * The active {@link Step}.
-     */
     private Step activeStep;
 
 
-    /**
-     * The current active {@link Symbol}.
-     */
-    private Symbol activeSymbol;
+    private ArrayList < Transition > oldTransitions;
 
 
-    /**
-     * The active {@link Symbol}s of the converted {@link JGTIGraph}.
-     */
-    private ArrayList < Symbol > activeSymbolsConverted;
+    private ArrayList < Transition > newTransitions;
 
 
-    /**
-     * The active {@link Symbol}s of the original {@link JGTIGraph}.
-     */
-    private ArrayList < Symbol > activeSymbolsOriginal;
+    private ArrayList < State > oldStates;
 
 
-    /**
-     * The active {@link Transition}s of the converted {@link JGTIGraph}.
-     */
-    private ArrayList < Transition > activeTransitionsConverted;
-
-
-    /**
-     * The active {@link Transition}s of the original {@link JGTIGraph}.
-     */
-    private ArrayList < Transition > activeTransitionsOriginal;
-
-
-    /**
-     * The added {@link DefaultStateView}.
-     */
-    private DefaultStateView addedDefaultStateView = null;
-
-
-    /**
-     * The added {@link DefaultTransitionView}.
-     */
-    private DefaultTransitionView addedDefaultTransitionView = null;
-
-
-    /**
-     * The added {@link Symbol}.
-     */
-    private ObjectPair < Transition, Symbol > addedSymbol = null;
+    private ArrayList < State > newStates;
 
 
     /**
@@ -353,68 +259,19 @@ public class ConvertRegexToMachineDialog implements
      * @param activeSymbolsConverted The active {@link Symbol}s of the
      *          converted {@link JGTIGraph}.
      */
-    public StepItem ( Step activeStep, Symbol currentActiveSymbol,
-        State currentActiveState, ArrayList < State > activeStatesOriginal,
-        ArrayList < State > activeStatesConverted,
-        ArrayList < Transition > activeTransitionsOriginal,
-        ArrayList < Transition > activeTransitionsConverted,
-        ArrayList < Symbol > activeSymbolsOriginal,
-        ArrayList < Symbol > activeSymbolsConverted )
+    public StepItem ( Step activeStep, ArrayList < Transition > oldTransitions,
+        ArrayList < Transition > newTransitions, ArrayList < State > oldStates,
+        ArrayList < State > newStates )
     {
       if ( activeStep == null )
       {
         throw new IllegalArgumentException ( "active step is null" ); //$NON-NLS-1$
       }
-      if ( currentActiveSymbol == null )
-      {
-        throw new IllegalArgumentException ( "active symbol is null" ); //$NON-NLS-1$
-      }
-
       this.activeStep = activeStep;
-      this.activeSymbol = currentActiveSymbol;
-      this.activeState = currentActiveState;
-      this.activeStatesOriginal = activeStatesOriginal;
-      this.activeStatesConverted = activeStatesConverted;
-      this.activeTransitionsOriginal = activeTransitionsOriginal;
-      this.activeTransitionsConverted = activeTransitionsConverted;
-      this.activeSymbolsOriginal = activeSymbolsOriginal;
-      this.activeSymbolsConverted = activeSymbolsConverted;
-    }
-
-
-    /**
-     * Returns the activeState.
-     * 
-     * @return The activeState.
-     * @see #activeState
-     */
-    public final State getActiveState ()
-    {
-      return this.activeState;
-    }
-
-
-    /**
-     * Returns the activeStatesConverted.
-     * 
-     * @return The activeStatesConverted.
-     * @see #activeStatesConverted
-     */
-    public final ArrayList < State > getActiveStatesConverted ()
-    {
-      return this.activeStatesConverted;
-    }
-
-
-    /**
-     * Returns the activeStatesOriginal.
-     * 
-     * @return The activeStatesOriginal.
-     * @see #activeStatesOriginal
-     */
-    public final ArrayList < State > getActiveStatesOriginal ()
-    {
-      return this.activeStatesOriginal;
+      this.newStates = newStates;
+      this.oldStates = oldStates;
+      this.newTransitions = newTransitions;
+      this.oldTransitions = oldTransitions;
     }
 
 
@@ -431,137 +288,50 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
-     * Returns the activeSymbol.
+     * Returns the newStates.
      * 
-     * @return The activeSymbol.
-     * @see #activeSymbol
+     * @return The newStates.
+     * @see #newStates
      */
-    public final Symbol getActiveSymbol ()
+    public ArrayList < State > getNewStates ()
     {
-      return this.activeSymbol;
+      return this.newStates;
     }
 
 
     /**
-     * Returns the activeSymbolsConverted.
+     * Returns the newTransitions.
      * 
-     * @return The activeSymbolsConverted.
-     * @see #activeSymbolsConverted
+     * @return The newTransitions.
+     * @see #newTransitions
      */
-    public final ArrayList < Symbol > getActiveSymbolsConverted ()
+    public ArrayList < Transition > getNewTransitions ()
     {
-      return this.activeSymbolsConverted;
+      return this.newTransitions;
     }
 
 
     /**
-     * Returns the activeSymbolsOriginal.
+     * Returns the oldStates.
      * 
-     * @return The activeSymbolsOriginal.
-     * @see #activeSymbolsOriginal
+     * @return The oldStates.
+     * @see #oldStates
      */
-    public final ArrayList < Symbol > getActiveSymbolsOriginal ()
+    public ArrayList < State > getOldStates ()
     {
-      return this.activeSymbolsOriginal;
+      return this.oldStates;
     }
 
 
     /**
-     * Returns the activeTransitionsConverted.
+     * Returns the oldTransitions.
      * 
-     * @return The activeTransitionsConverted.
-     * @see #activeTransitionsConverted
+     * @return The oldTransitions.
+     * @see #oldTransitions
      */
-    public final ArrayList < Transition > getActiveTransitionsConverted ()
+    public ArrayList < Transition > getOldTransitions ()
     {
-      return this.activeTransitionsConverted;
-    }
-
-
-    /**
-     * Returns the activeTransitionsOriginal.
-     * 
-     * @return The activeTransitionsOriginal.
-     * @see #activeTransitionsOriginal
-     */
-    public final ArrayList < Transition > getActiveTransitionsOriginal ()
-    {
-      return this.activeTransitionsOriginal;
-    }
-
-
-    /**
-     * Returns the addedDefaultStateView.
-     * 
-     * @return The addedDefaultStateView.
-     * @see #addedDefaultStateView
-     */
-    public final DefaultStateView getAddedDefaultStateView ()
-    {
-      return this.addedDefaultStateView;
-    }
-
-
-    /**
-     * Returns the addedDefaultTransitionView.
-     * 
-     * @return The addedDefaultTransitionView.
-     * @see #addedDefaultTransitionView
-     */
-    public final DefaultTransitionView getAddedDefaultTransitionView ()
-    {
-      return this.addedDefaultTransitionView;
-    }
-
-
-    /**
-     * Returns the addedSymbol.
-     * 
-     * @return The addedSymbol.
-     * @see #addedSymbol
-     */
-    public final ObjectPair < Transition, Symbol > getAddedSymbol ()
-    {
-      return this.addedSymbol;
-    }
-
-
-    /**
-     * Sets the addedDefaultStateView.
-     * 
-     * @param addedDefaultStateView The addedDefaultStateView to set.
-     * @see #addedDefaultStateView
-     */
-    public final void setAddedDefaultStateView (
-        DefaultStateView addedDefaultStateView )
-    {
-      this.addedDefaultStateView = addedDefaultStateView;
-    }
-
-
-    /**
-     * Sets the addedDefaultTransitionView.
-     * 
-     * @param addedDefaultTransitionView The addedDefaultTransitionView to set.
-     * @see #addedDefaultTransitionView
-     */
-    public final void setAddedDefaultTransitionView (
-        DefaultTransitionView addedDefaultTransitionView )
-    {
-      this.addedDefaultTransitionView = addedDefaultTransitionView;
-    }
-
-
-    /**
-     * Sets the addedSymbol.
-     * 
-     * @param addedSymbol The addedSymbol to set.
-     * @see #addedSymbol
-     */
-    public final void setAddedSymbol (
-        ObjectPair < Transition, Symbol > addedSymbol )
-    {
-      this.addedSymbol = addedSymbol;
+      return this.oldTransitions;
     }
   }
 
@@ -618,6 +388,9 @@ public class ConvertRegexToMachineDialog implements
   private JFrame parent;
 
 
+  private RegexNode regexNode;
+
+
   /**
    * The {@link StepItem} list.
    */
@@ -631,6 +404,7 @@ public class ConvertRegexToMachineDialog implements
   {
     this.parent = parent;
     this.panel = panel;
+    this.regexNode = panel.getRegex ().getRegexNode ();
   }
 
 
@@ -662,13 +436,55 @@ public class ConvertRegexToMachineDialog implements
     this.gui = new ConvertRegexToMachineDialogForm ( this, this.parent );
 
     Alphabet a = this.panel.getRegex ().getAlphabet ();
-    this.modelConverted = new DefaultMachineModel ( new DefaultNFA ( a, a,
+    this.modelConverted = new DefaultMachineModel ( new DefaultENFA ( a, a,
         false ) );
     this.modelOriginal = new DefaultRegexModel ( this.panel.getRegex () );
+    this.modelOriginal.initializeGraph ();
+
     this.jGTIGraphOriginal = this.modelOriginal.getJGTIGraph ();
+
     this.jGTIGraphOriginal.setEnabled ( false );
     this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGTIGraphOriginal );
 
+    this.jGTIGraphConverted = this.modelConverted.getJGTIGraph ();
+    this.jGTIGraphConverted.setEnabled ( false );
+    this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGTIGraphConverted );
+
+    while ( !this.endReached )
+    {
+      try
+      {
+        performNextStep ( false );
+      }
+      catch ( StateException exc )
+      {
+        exc.printStackTrace ();
+      }
+    }
+
+    show ();
+  }
+
+
+  /**
+   * Shows the {@link ConvertMachineDialogForm}.
+   */
+  public final void show ()
+  {
+    logger.debug ( "show", "show the convert machine dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    Rectangle rect = PreferenceManager.getInstance ()
+        .getConvertMachineDialogBounds ();
+    if ( ( rect.x == PreferenceManager.DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_X )
+        || ( rect.y == PreferenceManager.DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_Y ) )
+    {
+      rect.x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+          - ( this.gui.getWidth () / 2 );
+      rect.y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+          - ( this.gui.getHeight () / 2 );
+    }
+    this.gui.setBounds ( rect );
+    this.gui.setVisible ( true );
   }
 
 
@@ -696,19 +512,17 @@ public class ConvertRegexToMachineDialog implements
 
   public void handleBeginStep ()
   {
-    throw new UnsupportedOperationException ( "Not yet implemented" );
   }
 
 
   public void handleCancel ()
   {
-    throw new UnsupportedOperationException ( "Not yet implemented" );
+    this.gui.dispose ();
   }
 
 
   public void handleEndStep ()
   {
-    throw new UnsupportedOperationException ( "Not yet implemented" );
   }
 
 
@@ -716,45 +530,70 @@ public class ConvertRegexToMachineDialog implements
   {
     try
     {
-      this.modelConverted = new DefaultMachineModel(this.panel.getRegex ().getRegexNode ().toNFA ( this.panel.getRegex ().getAlphabet () ));
+      this.modelConverted = new DefaultMachineModel ( this.panel.getRegex ()
+          .getRegexNode ().toNFA ( this.panel.getRegex ().getAlphabet () ) );
     }
     catch ( StateException exc )
     {
-      exc.printStackTrace();
+      exc.printStackTrace ();
     }
   }
 
 
   public void handleOk ()
   {
-    throw new UnsupportedOperationException ( "Not yet implemented" );
   }
 
 
   public void handlePreviousStep ()
   {
-    throw new UnsupportedOperationException ( "Not yet implemented" );
   }
 
 
   public void handlePrint ()
   {
-    throw new UnsupportedOperationException ( "Not yet implemented" );
   }
 
 
   public void handleStop ()
   {
-    throw new UnsupportedOperationException ( "Not yet implemented" );
   }
 
 
-  private final void performNextStep ( boolean b )
+  private final void performNextStep ( boolean b ) throws StateException
   {
+    if ( !b )
+    {
+      String stateName = "z"; //$NON-NLS-1$
+      int count = 0;
 
+      DefaultENFA nfa = this.regexNode.toNFA ( this.panel.getRegex ()
+          .getAlphabet () );
+      for ( State s : nfa.getState () )
+      {
+        s.setName ( stateName + count++ );
+        this.modelConverted.createStateView ( 0, 0, s, false );
+      }
+      for ( Transition t : nfa.getTransition () )
+      {
+        this.modelConverted.createTransitionView ( t, this.modelConverted
+            .getStateViewForState ( t.getStateBegin () ), this.modelConverted
+            .getStateViewForState ( t.getStateEnd () ), true, false, false );
+      }
+      LayoutManager manager = new LayoutManager ( this.modelConverted, null );
+      manager.doLayout ();
+
+      this.endReached = true;
+      
+      setStatus ();
+    }
   }
 
 
+  private void addStepItem() {
+    
+  }
+  
   /**
    * Sets the button status.
    */

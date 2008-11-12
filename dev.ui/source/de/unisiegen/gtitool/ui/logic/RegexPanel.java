@@ -13,16 +13,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 
-import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.RegexException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
-import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
-import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -34,7 +30,6 @@ import de.unisiegen.gtitool.ui.latex.LatexExporter;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.model.RegexConsoleTableModel;
@@ -44,7 +39,6 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.redoundo.RegexChangedItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
-import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
 /**
@@ -612,7 +606,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   }
 
   public void handleToNFAButton(ActionEvent evt) {
-    DefaultMachineModel machineModel = new DefaultMachineModel ( new DefaultENFA(this.regex.getAlphabet (), this.regex.getAlphabet (), false));
+    ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog(this.mainWindowForm, this);
+    converter.convert ( RegexType.REGEX, MachineType.ENFA, false );
+    /**DefaultMachineModel machineModel = new DefaultMachineModel ( new DefaultENFA(this.regex.getAlphabet (), this.regex.getAlphabet (), false));
     try
     {
       DefaultENFA nfa = this.regex.getRegexNode ().toNFA ( this.regex.getAlphabet () );
@@ -663,6 +659,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
     this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
         .setSelectedEditorPanel ( newEditorPanel );
+        */
   }
 
 

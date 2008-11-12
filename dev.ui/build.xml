@@ -4,16 +4,282 @@
 	
 	Copyright (c) 2007-2008 Christian Fehler
 -->
-<project name="gtitool.dev.ui" default="dist" basedir=".">
+<project name="de.unisiegen.gtitool.ui" default="dist" basedir=".">
 
 	<!-- property -->
 	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
 	<property file="${buildfilesdir}/build.properties" />
+	<property name="core.basedir" value="${basedir}/../gtitool.dev.core" />
+	<property name="realui.basedir" value="${basedir}/../de.unisiegen.gtitool.ui" />
+	<property name="realui.distdir" value="${realui.basedir}/dist" />
+	<property name="core.distdir" value="${core.basedir}/dist" />
+	<property name="core.libdir" value="${core.basedir}/lib" />
+	<property name="core.docdir" value="${core.basedir}/doc" />
+	<property name="core.sourcedir" value="${core.basedir}/source" />
+	<property name="core.sourceimpldir" value="${core.basedir}/source-impl" />
+	<property name="core.sourcegenerateddir" value="${core.basedir}/source-generated" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
+	<property name="jflex.basedir" value="${basedir}/../gtitool.jflex" />
+	<property name="jflex.distdir" value="${jflex.basedir}/dist" />
+	<property name="javacup.basedir" value="${basedir}/../gtitool.javacup" />
+	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
+	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
+	<property name="logger.basedir" value="${basedir}/../gtitool.logger" />
+	<property name="logger.distdir" value="${logger.basedir}/dist" />
+	<property name="loggerfile" value="gtitool.logger-${gtitool.version}.jar" />
+	<property name="jgraph.basedir" value="${basedir}/../gtitool.jgraph" />
+	<property name="jgraph.distdir" value="${jgraph.basedir}/dist" />
+	<property name="jgraphfile" value="gtitool.jgraph-${gtitool.version}.jar" />
+	<property name="tinylaf.basedir" value="${basedir}/../gtitool.tinylaf" />
+	<property name="tinylaf.distdir" value="${tinylaf.basedir}/dist" />
+	<property name="tinylaffile" value="gtitool.tinylaf-${gtitool.version}.jar" />
+	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
+	<property name="devcorefile" value="gtitool.dev.core-${gtitool.version}.jar" />
+	<property name="devuifile" value="gtitool.dev.ui-${gtitool.version}.jar" />
+	<property name="uifile" value="gtitool.ui-${gtitool.version}.jar" />
+	<property name="distdir" value="${basedir}/dist" />
+	<property name="classesdir" value="${distdir}/classes" />
+	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />
+	<property name="sourcedir" value="${basedir}/source" />
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
+	<property name="keystorefile" value="${buildfilesdir}/keystore" />
+	<property name="storepass" value="ao93iw2l" />
 
 	<!-- dist -->
-	<target name="dist" depends="" description="Build distribution">
-		<echo message="Distribution ready" />
+	<target name="dist" depends="dist-core,dist-ui,version,dist-preclean,dist-compile,dist-jar,dist-clean,dist-internal" description="Build distribution">
+		<!-- message -->
+		<echo message="Distribution ready in ${distdir}" />
+	</target>
+
+	<!-- dist internal -->
+	<target name="dist-internal">
+		<mkdir dir="${gtitooldir}" />
+		<!-- copy files -->
+		<copy todir="${gtitooldir}">
+			<fileset dir="${core.distdir}" includes="*.jar" />
+			<fileset dir="${realui.distdir}" includes="*.jar" />
+			<fileset dir="${jgraph.distdir}" includes="*.jar" />
+			<fileset dir="${tinylaf.distdir}" includes="*.jar" />
+			<fileset dir="${distdir}" includes="*.jar" />
+		</copy>
+		<!-- sign jar files -->
+		<signjar alias="gtitool" keystore="${keystorefile}" storepass="${storepass}">
+			<fileset dir="${gtitooldir}" includes="*.jar" />
+		</signjar>
+		<!-- move files -->
+		<move todir="${distdir}">
+			<fileset dir="${gtitooldir}" includes="*" />
+		</move>
+		<!-- delete dir -->
+		<delete dir="${gtitooldir}" includeemptydirs="true" />
+	</target>
+
+	<!-- dist core -->
+	<target name="dist-core">
+		<ant dir="${core.basedir}" target="dist" inheritall="false" />
+	</target>
+
+	<!-- dist jgraph -->
+	<target name="dist-ui">
+		<ant dir="${realui.basedir}" target="dist" inheritall="false" />
+	</target>
+
+	<!-- dist preclean -->
+	<target name="dist-preclean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${distdir}" includes="**/*" />
+		</delete>
+		<mkdir dir="${distdir}" />
+	</target>
+
+	<!-- dist compile -->
+	<target name="dist-compile">
+		<delete dir="${classesdir}" includeemptydirs="true" />
+		<mkdir dir="${classesdir}" />
+		<javac debug="off" destdir="${classesdir}" encoding="UTF-8" source="1.5" target="1.5">
+			<compilerarg value="-Xlint:deprecation,unchecked" />
+			<src path="${sourcedir}" />
+			<src path="${sourcegenerateddir}" />
+			<classpath>
+				<pathelement location="${core.distdir}/${devcorefile}" />
+				<pathelement location="${core.distdir}/${corefile}" />
+				<pathelement location="${realui.distdir}/${uifile}" />
+				<pathelement location="${core.distdir}/${javacupfile}" />
+				<pathelement location="${core.distdir}/${loggerfile}" />
+				<pathelement location="${jgraph.distdir}/${jgraphfile}" />
+				<pathelement location="${tinylaf.distdir}/${tinylaffile}" />
+			</classpath>
+		</javac>
+	</target>
+
+	<!-- dist jar -->
+	<target name="dist-jar" depends="dist-compile">
+		<!-- manifest -->
+		<manifest file="${distdir}/MANIFEST.MF">
+			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.GTIToolDev" />
+			<attribute name="Class-Path" value="${devcorefile} ${corefile} ${uifile} ${javacupfile} ${jgraphfile} ${tinylaffile} ${loggerfile}" />
+		</manifest>
+		<!-- make dir meta-inf -->
+		<mkdir dir="${classesdir}/META-INF" />
+		<!-- jar file -->
+		<jar jarfile="${distdir}/${devuifile}" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
+			<fileset dir="${sourcedir}">
+				<include name="**/*.txt" />
+				<include name="**/*.gif" />
+				<include name="**/*.png" />
+				<include name="**/*.properties" />
+				<include name="Default.theme" />
+			</fileset>
+		</jar>
+		<!-- delete manifest -->
+		<delete file="${distdir}/MANIFEST.MF" />
+	</target>
+
+	<!-- dist clean -->
+	<target name="dist-clean">
+		<delete dir="${classesdir}" />
+	</target>
+
+	<!-- svn-version -->
+	<target name="svn-version">
+		<mkdir dir="${distdir}" />
+		<delete dir="${classesdir}" includeemptydirs="true" />
+		<mkdir dir="${classesdir}" />
+		<javac includes="de/unisiegen/gtitool/ui/utils/SVNVersion.java" debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on">
+			<src path="${sourcedir}" />
+		</javac>
+		<java classname="de.unisiegen.gtitool.ui.utils.SVNVersion" dir="${basedir}" fork="true" outputproperty="gtitool.version.build">
+			<classpath>
+				<pathelement path="${classesdir}" />
+			</classpath>
+		</java>
+		<delete dir="${classesdir}" includeemptydirs="true" />
+	</target>
+
+	<!-- version -->
+	<target name="version" depends="svn-version" description="Generate the version interface">
+		<delete includeemptydirs="true">
+			<fileset dir="${sourcegenerateddir}" includes="**/*" />
+		</delete>
+		<mkdir dir="${sourcegenerateddir}/de/unisiegen/gtitool/ui" />
+		<echo file="${sourcegenerateddir}/de/unisiegen/gtitool/ui/Version.java" append="false">package de.unisiegen.gtitool.ui;
+
+
+/**
+ * Automatically generated interface for the project versions.
+ * 
+ * @author Christian Fehler
+ */
+public interface Version
+{
+
+  /**
+   * The major version of the project.
+   */
+  public static final int MAJOR = ${gtitool.version.major};
+
+
+  /**
+   * The minor version of the project.
+   */
+  public static final int MINOR = ${gtitool.version.minor};
+
+
+  /**
+   * The micro version of the project.
+   */
+  public static final int MICRO = ${gtitool.version.micro};
+
+
+  /**
+   * The bugfix version of the project.
+   */
+  public static final int BUGFIX = ${gtitool.version.bugfix};
+
+
+  /**
+   * The build version of the project.
+   */
+  public static final int BUILD = ${gtitool.version.build};
+
+
+  /**
+   * The version of the project.
+   */
+  public static final String VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
+      + "." + BUGFIX; //$NON-NLS-1$
+
+
+  /**
+   * The full version of the project.
+   */
+  public static final String FULL_VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
+      + "." + BUGFIX + "_" + BUILD; //$NON-NLS-1$//$NON-NLS-2$
+}
+</echo>
+	</target>
+
+	<!-- version dev -->
+	<target name="version-dev" depends="svn-version" description="Generate the version dev interface">
+		<delete includeemptydirs="true">
+			<fileset dir="${sourcegenerateddir}" includes="**/*" />
+		</delete>
+		<mkdir dir="${sourcegenerateddir}/de/unisiegen/gtitool/ui" />
+		<echo file="${sourcegenerateddir}/de/unisiegen/gtitool/ui/Version.java" append="false">package de.unisiegen.gtitool.ui;
+
+
+/**
+ * Automatically generated interface for the project versions.
+ * 
+ * @author Christian Fehler
+ */
+public interface Version
+{
+
+  /**
+   * The major version of the project.
+   */
+  public static final int MAJOR = ${gtitool.version.major};
+
+
+  /**
+   * The minor version of the project.
+   */
+  public static final int MINOR = ${gtitool.version.minor};
+
+
+  /**
+   * The micro version of the project.
+   */
+  public static final int MICRO = ${gtitool.version.micro} + 1;
+
+
+  /**
+   * The bugfix version of the project.
+   */
+  public static final int BUGFIX = ${gtitool.version.bugfix};
+
+
+  /**
+   * The build version of the project.
+   */
+  public static final int BUILD = ${gtitool.version.build};
+
+
+  /**
+   * The version of the project.
+   */
+  public static final String VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
+      + "." + BUGFIX + " Beta"; //$NON-NLS-1$//$NON-NLS-2$
+
+
+  /**
+   * The full version of the project.
+   */
+  public static final String FULL_VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
+      + "." + BUGFIX + "_" + BUILD + " Beta"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+}
+</echo>
 	</target>
 </project>

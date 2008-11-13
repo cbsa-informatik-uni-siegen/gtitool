@@ -608,58 +608,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public void handleToNFAButton(ActionEvent evt) {
     ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog(this.mainWindowForm, this);
     converter.convert ( RegexType.REGEX, MachineType.ENFA, false );
-    /**DefaultMachineModel machineModel = new DefaultMachineModel ( new DefaultENFA(this.regex.getAlphabet (), this.regex.getAlphabet (), false));
-    try
-    {
-      DefaultENFA nfa = this.regex.getRegexNode ().toNFA ( this.regex.getAlphabet () );
-      String stateName = "z"; //$NON-NLS-1$
-      int count = 0;
-      for(State s : nfa.getState ()) {
-        s.setName ( stateName + count++ );
-        machineModel.createStateView ( 0, 0, s, false );
-      }
-      for(Transition t : nfa.getTransition ()) {
-        machineModel.createTransitionView ( t, machineModel.getStateViewForState ( t.getStateBegin () ), machineModel.getStateViewForState ( t.getStateEnd () ), true, false, false );
-      }
-      
-      LayoutManager manager = new LayoutManager(machineModel, null);
-      manager.doLayout ();
-    }
-    catch ( StateException exc )
-    {
-      exc.printStackTrace();
-    }
-    EditorPanel newEditorPanel = new MachinePanel ( this.mainWindowForm, machineModel
-         , null );
-    TreeSet < String > nameList = new TreeSet < String > ();
-    int count = 0;
-    for ( EditorPanel current : this.mainWindowForm.getJGTIMainSplitPane ()
-        .getJGTIEditorPanelTabbedPane () )
-    {
-      if ( current.getFile () == null )
-      {
-        nameList.add ( current.getName () );
-        count++ ;
-      }
-    }
-
-    String newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-        + "." + MachineType.ENFA.getFileEnding (); //$NON-NLS-1$
-    while ( nameList.contains ( newName ) )
-    {
-      count++ ;
-      newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-          + "." + MachineType.ENFA.getFileEnding (); //$NON-NLS-1$
-    }
-
-    newEditorPanel.setName ( newName );
-    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
-        .addEditorPanel ( newEditorPanel );
-    newEditorPanel
-        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
-        .setSelectedEditorPanel ( newEditorPanel );
-        */
+    
   }
 
 

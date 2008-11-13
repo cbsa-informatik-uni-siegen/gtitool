@@ -5,14 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.event.EventListenerList;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.DefaultState;
-import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.Entity;
-import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
-import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -308,32 +302,6 @@ public class EpsilonNode extends LeafNode
   public PrettyString toPrettyString ()
   {
     return new PrettyString ( new PrettyToken ( "\u03B5", Style.TOKEN ) ); //$NON-NLS-1$
-  }
-  /**
-   * TODO
-   *
-   * @return
-   * @throws StateException
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toNFA()
-   */
-  @Override
-  public DefaultENFA toNFA (Alphabet a) throws StateException
-  {
-    DefaultENFA nfa =new DefaultENFA(a, a, false);
-    DefaultState start = new DefaultState("s" + this.position);
-    start.setStartState ( true );
-    nfa.addState ( start );
-
-    DefaultState fin = new DefaultState("f" + this.position);
-    fin.setFinalState ( true );
-    nfa.addState ( fin );
-    
-    Transition t = new DefaultTransition();
-    t.setStateBegin ( start );
-    t.setStateEnd ( fin );
-    
-    nfa.addTransition ( t );
-    return nfa;
   }
 
 

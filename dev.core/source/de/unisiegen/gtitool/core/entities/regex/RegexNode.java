@@ -3,10 +3,7 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
-import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -162,6 +159,10 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return true, if the node can be epsilon
    */
   public abstract boolean nullable ();
+  
+  public abstract boolean isMarked();
+  
+  public abstract RegexNode getNextNodeForNFA();
 
 
   /**
@@ -170,8 +171,6 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return the RegexNode in Core Syntax
    */
   public abstract RegexNode toCoreSyntax ();
-  
-  public abstract DefaultENFA toNFA(Alphabet a) throws StateException;
 
   public abstract boolean isInCoreSyntax();
 }

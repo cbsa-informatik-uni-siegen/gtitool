@@ -21,8 +21,8 @@ public class RegexTester
   public static void main ( String [] args )
   {
     RegexParseable regexParseable = new RegexParseable ();
-    String regexText1 = "aa|b";
-    String regexText2 = "aa|b";
+    String regexText1 = "ac|b";
+    String regexText2 = "a|b";
     RegexNode regex1;
     RegexNode regex2;
     try
@@ -37,7 +37,11 @@ public class RegexTester
           new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),
           new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ), regexText2 );
       conv2.setRegexNode ( regex2, false );
-      System.err.println (conv1.equals ( conv2 ));
+      System.err.println ( conv1.equals ( conv2 ) );
+      while ( !regex1.isMarked () )
+      {
+        System.err.println ( regex1.getNextNodeForNFA () );
+      }
     }
     catch ( Exception exc )
     {

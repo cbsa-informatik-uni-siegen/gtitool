@@ -71,4 +71,49 @@ public abstract class TwoChildNode extends RegexNode
   {
     return 1 + this.regex1.getWidth () + this.regex2.getWidth ();
   }
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode ()
+  {
+    return (this.regex1.hashCode () * this.regex2.hashCode () * 23);
+  }
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextNodeForNFA()
+   */
+  @Override
+  public RegexNode getNextNodeForNFA ()
+  {
+    if(!this.regex1.isMarked ()) {
+      return this.regex1.getNextNodeForNFA ();
+    }
+    if(!this.regex2.isMarked ()) {
+      return this.regex2.getNextNodeForNFA ();
+    }
+    this.marked = true;
+    return this;
+  }
+
+  private boolean marked = false;
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isMarked()
+   */
+  @Override
+  public boolean isMarked ()
+  {
+    return this.marked;
+  }
 }

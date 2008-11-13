@@ -46,4 +46,46 @@ public abstract class OneChildNode extends RegexNode
     return this.regex.getWidth ();
   }
   
+  private boolean marked = false;
+  
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isMarked()
+   */
+  @Override
+  public boolean isMarked ()
+  {
+    return this.marked;
+  }
+  
+  /**
+   * TODO
+   *
+   * @return
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode ()
+  {
+    return this.regex.hashCode () * 41;
+  }
+  
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextNodeForNFA()
+   */
+  @Override
+  public RegexNode getNextNodeForNFA ()
+  {
+    if(!this.regex.isMarked ()) {
+      return this.regex.getNextNodeForNFA ();
+    }
+    this.marked = true;
+    return this;
+  }
+  
 }

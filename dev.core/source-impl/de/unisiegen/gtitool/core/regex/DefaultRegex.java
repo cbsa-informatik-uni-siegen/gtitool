@@ -148,7 +148,7 @@ public class DefaultRegex implements Regex, Storable
    */
   public void setRegexNode ( RegexNode regexNode, boolean change )
   {
-    this.regexNode = new ConcatenationNode ( regexNode, new TokenNode ( "#" ) );
+    this.regexNode = regexNode;
 
     if ( change )
     {

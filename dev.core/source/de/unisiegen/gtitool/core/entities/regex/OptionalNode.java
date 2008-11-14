@@ -34,9 +34,10 @@ public class OptionalNode extends OneChildNode
    */
   private EventListenerList listenerList = new EventListenerList ();
 
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
    */
@@ -45,6 +46,7 @@ public class OptionalNode extends OneChildNode
   {
     return false;
   }
+
 
   /**
    * The offset of this {@link OptionalNode} in the source code.
@@ -60,7 +62,7 @@ public class OptionalNode extends OneChildNode
    * 
    * @param regex The Regex in the Optionalnode
    */
-  public OptionalNode ( RegexNode regex)
+  public OptionalNode ( RegexNode regex )
   {
     super ( regex );
   }
@@ -265,8 +267,12 @@ public class OptionalNode extends OneChildNode
   @Override
   public RegexNode toCoreSyntax ()
   {
-    return new DisjunctionNode ( this.regex.toCoreSyntax (), new EpsilonNode ());
+    DisjunctionNode dis = new DisjunctionNode ( this.regex.toCoreSyntax (),
+        new EpsilonNode () );
+    dis.setBraces ( this.braces );
+    return dis;
   }
+
 
   /**
    * {@inheritDoc}
@@ -275,9 +281,19 @@ public class OptionalNode extends OneChildNode
    */
   public PrettyString toPrettyString ()
   {
-    PrettyString string = this.regex.toPrettyString ();
+    PrettyString string = new PrettyString ();
+    if ( this.braces )
+    {
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+    }
+    string.add ( this.regex.toPrettyString () );
     string
         .add ( new PrettyString ( new PrettyToken ( "?", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
+
+    if ( this.braces )
+    {
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+    }
     return string;
   }
 

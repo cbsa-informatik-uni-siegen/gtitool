@@ -17,7 +17,16 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  */
 public abstract class RegexNode implements Entity < RegexNode >
 {
-  
+
+  protected boolean braces = false;
+
+
+  public void setBraces ( boolean braces )
+  {
+    this.braces = braces;
+  }
+
+
   /**
    * TODO
    * 
@@ -27,6 +36,7 @@ public abstract class RegexNode implements Entity < RegexNode >
    */
   @Override
   public abstract boolean equals ( Object o );
+
 
   /**
    * Function firstpos as defined in the dragonbook
@@ -54,6 +64,7 @@ public abstract class RegexNode implements Entity < RegexNode >
 
 
   public abstract int getHeight ();
+
 
   /**
    * Counts the left children
@@ -159,10 +170,12 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return true, if the node can be epsilon
    */
   public abstract boolean nullable ();
-  
-  public abstract boolean isMarked();
-  
-  public abstract RegexNode getNextNodeForNFA();
+
+
+  public abstract boolean isMarked ();
+
+
+  public abstract RegexNode getNextNodeForNFA ();
 
 
   /**
@@ -172,5 +185,6 @@ public abstract class RegexNode implements Entity < RegexNode >
    */
   public abstract RegexNode toCoreSyntax ();
 
-  public abstract boolean isInCoreSyntax();
+
+  public abstract boolean isInCoreSyntax ();
 }

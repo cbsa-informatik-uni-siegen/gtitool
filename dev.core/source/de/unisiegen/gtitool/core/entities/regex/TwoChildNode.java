@@ -6,7 +6,7 @@ package de.unisiegen.gtitool.core.entities.regex;
  */
 public abstract class TwoChildNode extends RegexNode
 {
-
+  
   /**
    * The first {@link RegexNode}
    */
@@ -17,7 +17,6 @@ public abstract class TwoChildNode extends RegexNode
    * The second {@link RegexNode}
    */
   protected RegexNode regex2;
-
 
   /**
    * Constructor for a {@link RegexNode} with two direct children

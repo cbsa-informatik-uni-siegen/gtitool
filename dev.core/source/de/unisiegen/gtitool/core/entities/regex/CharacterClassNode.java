@@ -360,29 +360,37 @@ public class CharacterClassNode extends LeafNode
     {
       if ( this.char1 < this.char2 - 1 )
       {
-        return new DisjunctionNode ( new TokenNode ( Character
+        DisjunctionNode dis = new DisjunctionNode ( new TokenNode ( Character
             .toString ( this.char1 ) ),
             ( new CharacterClassNode (
                 ( char ) ( this.char1 + 1 ), this.char2 ).toCoreSyntax () )
              );
+        dis.setBraces ( this.braces );
+        return dis;
       }
-      return new DisjunctionNode ( new TokenNode ( Character
+      DisjunctionNode dis = new DisjunctionNode ( new TokenNode ( Character
           .toString ( this.char1 ) ), new TokenNode ( Character
-          .toString ( this.char2 ) ) );
+              .toString ( this.char2 ) ) );
+      dis.setBraces ( this.braces );
+      return dis;
     }
     if ( this.chars.length > 2 )
     {
       char [] newChars = new char [ this.chars.length - 1 ];
       System.arraycopy ( this.chars, 1, newChars, 0, this.chars.length - 1 );
-      return new DisjunctionNode ( new TokenNode ( Character
+      DisjunctionNode dis = new DisjunctionNode ( new TokenNode ( Character
           .toString ( this.chars [ 0 ] ) ),
           new CharacterClassNode (  newChars ).toCoreSyntax () );
+      dis.setBraces ( this.braces );
+      return dis;
     }
-    return new DisjunctionNode ( new TokenNode ( Character
+    DisjunctionNode dis = new DisjunctionNode ( new TokenNode ( Character
         .toString ( this.chars [ 0 ] ) ), new TokenNode (
-        Character.toString ( this.chars [ 1 ] ) ) );
+            Character.toString ( this.chars [ 1 ] ) ) );
+    dis.setBraces ( this.braces );
+    return dis;
   }
-
+  
 
   /**
    * {@inheritDoc}
@@ -391,9 +399,13 @@ public class CharacterClassNode extends LeafNode
    */
   public PrettyString toPrettyString ()
   {
+    PrettyString string = new PrettyString ();
+    if ( this.braces )
+    {
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+    }
     if ( !this.array )
     {
-      PrettyString string = new PrettyString ();
       string.add ( new PrettyToken ( "[", Style.SYMBOL ) ); //$NON-NLS-1$
       string.add ( new PrettyToken ( Character.toString ( this.char1 ),
           Style.TOKEN ) );
@@ -403,13 +415,16 @@ public class CharacterClassNode extends LeafNode
       string.add ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
       return string;
     }
-    PrettyString string = new PrettyString ();
     string.add ( new PrettyToken ( "[", Style.SYMBOL ) ); //$NON-NLS-1$
     for ( char c : this.chars )
     {
       string.add ( new PrettyToken ( Character.toString ( c ), Style.TOKEN ) );
     }
     string.add ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
+    if ( this.braces )
+    {
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+    }
     return string;
   }
 

@@ -37,16 +37,22 @@
 	</target>
 
 	<!-- dist -->
-	<target name="dist" depends="dist-core,dist-jar,dist-internal" description="Build distribution">
+	<target name="dist" depends="dist-preclean,dist-core,dist-internal,dist-jar" description="Build distribution">
 		<echo message="Distribution ready" />
+	</target>
+
+	<!-- dist preclean -->
+	<target name="dist-preclean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${distdir}" includes="**/*" />
+		</delete>
+		<mkdir dir="${distdir}" />
 	</target>
 	
 	<!-- dist core -->
 	<target name="dist-core">
 		<ant dir="${core.basedir}" target="dist" inheritall="no" />
 	</target>
-	
-
 
 	<!-- dist internal -->
 	<target name="dist-internal">

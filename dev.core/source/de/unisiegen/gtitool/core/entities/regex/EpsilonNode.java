@@ -34,9 +34,10 @@ public class EpsilonNode extends LeafNode
    */
   private EventListenerList listenerList = new EventListenerList ();
 
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
    */
@@ -45,6 +46,7 @@ public class EpsilonNode extends LeafNode
   {
     return true;
   }
+
 
   /**
    * The offset of this {@link EpsilonNode} in the source code.
@@ -86,7 +88,7 @@ public class EpsilonNode extends LeafNode
    * 
    * @see Comparable#compareTo(java.lang.Object)
    */
-  public int compareTo ( @SuppressWarnings("unused")
+  public int compareTo ( @SuppressWarnings ( "unused" )
   RegexNode o )
   {
     return 0;
@@ -301,7 +303,18 @@ public class EpsilonNode extends LeafNode
    */
   public PrettyString toPrettyString ()
   {
-    return new PrettyString ( new PrettyToken ( "\u03B5", Style.TOKEN ) ); //$NON-NLS-1$
+    PrettyString string = new PrettyString ();
+    if ( this.braces )
+    {
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+    }
+    string.add ( ( new PrettyToken ( "\u03B5", Style.TOKEN ) ) ); //$NON-NLS-1$
+
+    if ( this.braces )
+    {
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+    }
+    return string;
   }
 
 

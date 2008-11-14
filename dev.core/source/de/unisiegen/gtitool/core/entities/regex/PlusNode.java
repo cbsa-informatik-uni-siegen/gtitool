@@ -265,8 +265,10 @@ public class PlusNode extends OneChildNode
   @Override
   public RegexNode toCoreSyntax ()
   {
-    return new ConcatenationNode ( this.regex.toCoreSyntax (),
+    ConcatenationNode con = new ConcatenationNode ( this.regex.toCoreSyntax (),
         new KleeneNode ( this.regex.toCoreSyntax ()) );
+    con.setBraces ( this.braces);
+    return con;
   }
 
   /**
@@ -276,9 +278,20 @@ public class PlusNode extends OneChildNode
    */
   public PrettyString toPrettyString ()
   {
-    PrettyString string = this.regex.toPrettyString ();
+    PrettyString string = new PrettyString();
+
+    if ( this.braces )
+    {
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+    }
+    string.add ( this.regex.toPrettyString ());
     string
         .add ( new PrettyString ( new PrettyToken ( "+", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
+
+    if ( this.braces )
+    {
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+    }
     return string;
   }
 

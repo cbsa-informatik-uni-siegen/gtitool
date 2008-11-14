@@ -267,7 +267,7 @@ public class PlusNode extends OneChildNode
   {
     ConcatenationNode con = new ConcatenationNode ( this.regex.toCoreSyntax (),
         new KleeneNode ( this.regex.toCoreSyntax ()) );
-    con.setBraces ( this.braces);
+    con.setBraces ( true);
     return con;
   }
 

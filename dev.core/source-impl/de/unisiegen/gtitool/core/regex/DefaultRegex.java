@@ -150,6 +150,16 @@ public class DefaultRegex implements Regex, Storable
   {
     this.regexNode = regexNode;
 
+    int currentPosition = 1;
+    for ( RegexNode current : this.regexNode.getTokenNodes () )
+    {
+      if ( current instanceof LeafNode )
+      {
+        ( ( LeafNode ) current ).setPosition ( currentPosition );
+        currentPosition++ ;
+      }
+    }
+    
     if ( change )
     {
       if ( this.initialNode == null
@@ -161,15 +171,6 @@ public class DefaultRegex implements Regex, Storable
     else
     {
       this.initialNode = this.regexNode;
-    }
-    int currentPosition = 1;
-    for ( RegexNode current : this.regexNode.getTokenNodes () )
-    {
-      if ( current instanceof LeafNode )
-      {
-        ( ( LeafNode ) current ).setPosition ( currentPosition );
-        currentPosition++ ;
-      }
     }
   }
 
@@ -183,8 +184,6 @@ public class DefaultRegex implements Regex, Storable
   {
     this.regexNode = newRegexNode;
 
-    fireModifyStatusChanged ( false );
-
     int currentPosition = 1;
     for ( RegexNode current : this.regexNode.getTokenNodes () )
     {
@@ -194,6 +193,8 @@ public class DefaultRegex implements Regex, Storable
         currentPosition++ ;
       }
     }
+    fireModifyStatusChanged ( false );
+
   }
 
 

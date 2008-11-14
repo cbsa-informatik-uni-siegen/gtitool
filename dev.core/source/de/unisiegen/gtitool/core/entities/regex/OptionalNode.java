@@ -269,7 +269,7 @@ public class OptionalNode extends OneChildNode
   {
     DisjunctionNode dis = new DisjunctionNode ( this.regex.toCoreSyntax (),
         new EpsilonNode () );
-    dis.setBraces ( this.braces );
+    dis.setBraces ( true );
     return dis;
   }
 

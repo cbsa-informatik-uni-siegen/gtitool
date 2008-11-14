@@ -16,7 +16,6 @@ import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
-import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
@@ -268,22 +267,6 @@ public class ConvertRegexToMachineDialog implements
 
     /**
      * Allocates a new {@link StepItem}.
-     * 
-     * @param activeStep The active {@link Step}.
-     * @param currentActiveSymbol The current active {@link Symbol}.
-     * @param currentActiveState The current active {@link State}.
-     * @param activeStatesOriginal The active {@link State}s of the original
-     *          {@link JGTIGraph}.
-     * @param activeStatesConverted The active {@link State}s of the converted
-     *          {@link JGTIGraph}.
-     * @param activeTransitionsOriginal The active {@link Transition}s of the
-     *          original {@link JGTIGraph}.
-     * @param activeTransitionsConverted The active {@link Transition}s of the
-     *          converted {@link JGTIGraph}.
-     * @param activeSymbolsOriginal The active {@link Symbol}s of the original
-     *          {@link JGTIGraph}.
-     * @param activeSymbolsConverted The active {@link Symbol}s of the
-     *          converted {@link JGTIGraph}.
      */
     public StepItem ( Step activeStep,
         ArrayList < DefaultTransitionView > oldTransitions,
@@ -622,17 +605,19 @@ public class ConvertRegexToMachineDialog implements
 
   public void handlePreviousStep ()
   {
-    
+    //TODO
   }
 
 
   public void handlePrint ()
   {
+    //TODO
   }
 
 
   public void handleStop ()
   {
+    //TODO
   }
 
 

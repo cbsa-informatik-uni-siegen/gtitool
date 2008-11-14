@@ -393,6 +393,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void handleExchange ()
   {
+    ExchangeDialog exchangeDialog = new ExchangeDialog ( this.mainWindowForm
+        .getLogic (), this.model.getElement (), this.file );
+    exchangeDialog.show ();
   }
 
 

@@ -11,13 +11,13 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
  * The {@link de.unisiegen.gtitool.core.entities.Alphabet} parser class.
  * 
  * @author Christian Fehler
- * @version $Id: RegexAlphabetParser.java 1032 2008-06-25 18:53:30Z fehler $
+ * @version
  */
 public final class AlphabetParser extends AlphabetAbstractParser
 {
 
   /**
-   * Allocates a new {@link RegexAlphabetParser}.
+   * Allocates a new {@link AlphabetParser}.
    * 
    * @param gtiScanner The {@link GTIScanner}.
    */

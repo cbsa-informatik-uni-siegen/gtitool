@@ -18,20 +18,15 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 public abstract class RegexNode implements Entity < RegexNode >
 {
 
+  /**
+   * Flag that indicates if user has used braces around the node
+   */
   protected boolean braces = false;
 
 
-  public void setBraces ( boolean braces )
-  {
-    this.braces = braces;
-  }
-
-
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param o
-   * @return
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
@@ -63,6 +58,11 @@ public abstract class RegexNode implements Entity < RegexNode >
   public abstract ArrayList < RegexNode > getChildren ();
 
 
+  /**
+   * Returns the max Height of the tree
+   * 
+   * @return The max Height of the tree
+   */
   public abstract int getHeight ();
 
 
@@ -72,6 +72,14 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return the left children count
    */
   public abstract int getLeftChildrenCount ();
+
+
+  /**
+   * Returns the next node for NFA-Creation
+   * 
+   * @return The next node for NFA-Creation
+   */
+  public abstract RegexNode getNextNodeForNFA ();
 
 
   /**
@@ -106,43 +114,42 @@ public abstract class RegexNode implements Entity < RegexNode >
    */
   public PrettyString getToolTipString ()
   {
+    // TODO Internationalize
     PrettyString ps = new PrettyString ();
-    ps.add ( new PrettyToken ( "Nullable: ", Style.REGEX_TOOL_TIP_TEXT ) );
-    ps.add ( new PrettyToken ( "" + nullable (), Style.REGEX_POSITION ) );
-    ps.add ( new PrettyToken ( ", Firstpos: {", Style.REGEX_TOOL_TIP_TEXT ) );
+    ps.add ( new PrettyToken ( "Nullable: ", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
+    ps.add ( new PrettyToken ( "" + nullable (), Style.REGEX_POSITION ) ); //$NON-NLS-1$
+    ps.add ( new PrettyToken ( ", Firstpos: {", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
     int i = 0;
     for ( RegexNode current : firstPos () )
     {
       if ( i > 0 )
       {
         i++ ;
-        ps.add ( new PrettyToken ( ";", Style.REGEX_TOOL_TIP_TEXT ) );
+        ps.add ( new PrettyToken ( ";", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
       }
       if ( current instanceof LeafNode )
       {
-        ps
-            .add ( new PrettyToken ( ""
-                + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ) );
+        ps.add ( new PrettyToken ( "" //$NON-NLS-1$
+            + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ) );
       }
     }
-    ps.add ( new PrettyToken ( "}, Lastpos: {", Style.REGEX_TOOL_TIP_TEXT ) );
+    ps.add ( new PrettyToken ( "}, Lastpos: {", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
     i = 0;
     for ( RegexNode current : lastPos () )
     {
       if ( i > 0 )
       {
         i++ ;
-        ps.add ( new PrettyToken ( ";", Style.REGEX_TOOL_TIP_TEXT ) );
+        ps.add ( new PrettyToken ( ";", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
       }
       if ( current instanceof LeafNode )
       {
-        ps
-            .add ( new PrettyToken ( ""
-                + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ) );
+        ps.add ( new PrettyToken ( "" //$NON-NLS-1$
+            + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ) );
       }
     }
 
-    ps.add ( new PrettyToken ( "}", Style.REGEX_TOOL_TIP_TEXT ) );
+    ps.add ( new PrettyToken ( "}", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
     return ps;
   }
 
@@ -153,6 +160,22 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return The maximal Width of the wohle Regex
    */
   public abstract int getWidth ();
+
+
+  /**
+   * Returns true if Regex is in CoreSyntax
+   * 
+   * @return True if Regex is in CoreSyntax
+   */
+  public abstract boolean isInCoreSyntax ();
+
+
+  /**
+   * Returns true if Node is marked in creation of NFA
+   * 
+   * @return True if Node is marked in creation of NFA
+   */
+  public abstract boolean isMarked ();
 
 
   /**
@@ -172,10 +195,15 @@ public abstract class RegexNode implements Entity < RegexNode >
   public abstract boolean nullable ();
 
 
-  public abstract boolean isMarked ();
-
-
-  public abstract RegexNode getNextNodeForNFA ();
+  /**
+   * Sets flag that indicates if user used braces around the regex
+   * 
+   * @param braces True if braces are used
+   */
+  public void setBraces ( boolean braces )
+  {
+    this.braces = braces;
+  }
 
 
   /**
@@ -184,7 +212,4 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return the RegexNode in Core Syntax
    */
   public abstract RegexNode toCoreSyntax ();
-
-
-  public abstract boolean isInCoreSyntax ();
 }

@@ -13,7 +13,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
  * @author Simon Meurer
  * @version
  */
-public interface Regex extends  InputEntity, Serializable, Modifyable
+public interface Regex extends InputEntity, Serializable, Modifyable
 {
   // Do nothing
 }

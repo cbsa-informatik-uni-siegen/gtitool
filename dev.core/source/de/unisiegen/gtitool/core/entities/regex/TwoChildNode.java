@@ -6,7 +6,13 @@ package de.unisiegen.gtitool.core.entities.regex;
  */
 public abstract class TwoChildNode extends RegexNode
 {
-  
+
+  /**
+   * Flag that indicates if Node is already used in NFA construction
+   */
+  private boolean marked = false;
+
+
   /**
    * The first {@link RegexNode}
    */
@@ -18,6 +24,7 @@ public abstract class TwoChildNode extends RegexNode
    */
   protected RegexNode regex2;
 
+
   /**
    * Constructor for a {@link RegexNode} with two direct children
    * 
@@ -28,19 +35,6 @@ public abstract class TwoChildNode extends RegexNode
   {
     this.regex1 = regex1;
     this.regex2 = regex2;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
-   */
-  @Override
-  public boolean isInCoreSyntax ()
-  {
-    return this.regex1.isInCoreSyntax () && this.regex2.isInCoreSyntax ();
   }
 
 
@@ -63,6 +57,27 @@ public abstract class TwoChildNode extends RegexNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#getNextNodeForNFA()
+   */
+  @Override
+  public RegexNode getNextNodeForNFA ()
+  {
+    if ( !this.regex1.isMarked () )
+    {
+      return this.regex1.getNextNodeForNFA ();
+    }
+    if ( !this.regex2.isMarked () )
+    {
+      return this.regex2.getNextNodeForNFA ();
+    }
+    this.marked = true;
+    return this;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#getWidth()
    */
   @Override
@@ -71,44 +86,35 @@ public abstract class TwoChildNode extends RegexNode
     return 1 + this.regex1.getWidth () + this.regex2.getWidth ();
   }
 
+
   /**
-   * TODO
-   *
-   * @return
+   * {@inheritDoc}
+   * 
    * @see java.lang.Object#hashCode()
    */
   @Override
   public int hashCode ()
   {
-    return (this.regex1.hashCode () * this.regex2.hashCode () * 23);
+    return ( this.regex1.hashCode () * this.regex2.hashCode () * 23 );
   }
 
+
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextNodeForNFA()
+   * @see RegexNode#isInCoreSyntax()
    */
   @Override
-  public RegexNode getNextNodeForNFA ()
+  public boolean isInCoreSyntax ()
   {
-    if(!this.regex1.isMarked ()) {
-      return this.regex1.getNextNodeForNFA ();
-    }
-    if(!this.regex2.isMarked ()) {
-      return this.regex2.getNextNodeForNFA ();
-    }
-    this.marked = true;
-    return this;
+    return this.regex1.isInCoreSyntax () && this.regex2.isInCoreSyntax ();
   }
 
-  private boolean marked = false;
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isMarked()
+   * @see RegexNode#isMarked()
    */
   @Override
   public boolean isMarked ()

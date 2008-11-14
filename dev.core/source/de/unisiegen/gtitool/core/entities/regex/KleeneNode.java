@@ -30,19 +30,6 @@ public class KleeneNode extends OneChildNode
 
 
   /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
-   */
-  @Override
-  public boolean isInCoreSyntax ()
-  {
-    return true;
-  }
-
-
-  /**
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
@@ -215,6 +202,18 @@ public class KleeneNode extends OneChildNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return true;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#lastPos()
    */
   @Override
@@ -283,14 +282,14 @@ public class KleeneNode extends OneChildNode
     PrettyString string = new PrettyString ();
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     string.add ( this.regex.toPrettyString () );
     string
         .add ( new PrettyString ( new PrettyToken ( "*", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     return string;
   }

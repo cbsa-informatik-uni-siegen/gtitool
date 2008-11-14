@@ -1,28 +1,34 @@
 package de.unisiegen.gtitool.core.entities.regex;
 
 
-
 /**
- * TODO
+ * Node that has only one direct child
  */
 public abstract class OneChildNode extends RegexNode
 {
+
+  /**
+   * Flag that indicates if Node is already used in NFA construction
+   */
+  private boolean marked = false;
+
 
   /**
    * The Child of this {@link OneChildNode}
    */
   protected RegexNode regex;
 
+
   /**
    * Constructor for a Node with one direct child
    * 
    * @param regex Child of this {@link OneChildNode}
-   * 
    */
   public OneChildNode ( RegexNode regex )
   {
     this.regex = regex;
   }
+
 
   /**
    * {@inheritDoc}
@@ -34,7 +40,25 @@ public abstract class OneChildNode extends RegexNode
   {
     return 1 + this.regex.getHeight ();
   }
-  
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getNextNodeForNFA()
+   */
+  @Override
+  public RegexNode getNextNodeForNFA ()
+  {
+    if ( !this.regex.isMarked () )
+    {
+      return this.regex.getNextNodeForNFA ();
+    }
+    this.marked = true;
+    return this;
+  }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -45,25 +69,11 @@ public abstract class OneChildNode extends RegexNode
   {
     return this.regex.getWidth ();
   }
-  
-  private boolean marked = false;
-  
+
+
   /**
-   * TODO
-   *
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isMarked()
-   */
-  @Override
-  public boolean isMarked ()
-  {
-    return this.marked;
-  }
-  
-  /**
-   * TODO
-   *
-   * @return
+   * {@inheritDoc}
+   * 
    * @see java.lang.Object#hashCode()
    */
   @Override
@@ -71,21 +81,17 @@ public abstract class OneChildNode extends RegexNode
   {
     return this.regex.hashCode () * 41;
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextNodeForNFA()
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#isMarked()
    */
   @Override
-  public RegexNode getNextNodeForNFA ()
+  public boolean isMarked ()
   {
-    if(!this.regex.isMarked ()) {
-      return this.regex.getNextNodeForNFA ();
-    }
-    this.marked = true;
-    return this;
+    return this.marked;
   }
-  
+
 }

@@ -21,21 +21,21 @@ public class RegexTester
   public static void main ( String [] args )
   {
     RegexParseable regexParseable = new RegexParseable ();
-    String regexText1 = "ac|b*";
-    String regexText2 = "(ac)|b*";
+    String regexText1 = "ac|b*"; //$NON-NLS-1$
+    String regexText2 = "(ac)|b*";//$NON-NLS-1$
     RegexNode regex1;
     RegexNode regex2;
     try
     {
       regex1 = ( RegexNode ) regexParseable.newParser ( regexText1 ).parse ();
       DefaultRegex conv1 = new DefaultRegex ( new DefaultAlphabet (
-          new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),
-          new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ), regexText1 );
+          new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),//$NON-NLS-1$ //$NON-NLS-2$
+          new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ), regexText1 );//$NON-NLS-1$ //$NON-NLS-2$
       conv1.setRegexNode ( regex1, false );
       regex2 = ( RegexNode ) regexParseable.newParser ( regexText2 ).parse ();
       DefaultRegex conv2 = new DefaultRegex ( new DefaultAlphabet (
-          new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),
-          new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ), regexText2 );
+          new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),//$NON-NLS-1$ //$NON-NLS-2$
+          new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ), regexText2 );//$NON-NLS-1$ //$NON-NLS-2$
       conv2.setRegexNode ( regex2, false );
       System.err.println ( conv1.equals ( conv2 ) );
       while ( !regex1.isMarked () )

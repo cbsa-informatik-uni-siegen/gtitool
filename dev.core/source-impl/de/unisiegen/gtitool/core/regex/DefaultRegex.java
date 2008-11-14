@@ -15,14 +15,13 @@ import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.storage.Element;
-import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 
 
 /**
  * 
  */
-public class DefaultRegex implements Regex, Storable
+public class DefaultRegex implements Regex
 {
 
   /**
@@ -116,9 +115,9 @@ public class DefaultRegex implements Regex, Storable
 
     try
     {
-      if ( !this.alphabet.contains ( new DefaultSymbol ( "#" ) ) )
+      if ( !this.alphabet.contains ( new DefaultSymbol ( "#" ) ) ) //$NON-NLS-1$
       {
-        this.alphabet.add ( new DefaultSymbol ( "#" ) );
+        this.alphabet.add ( new DefaultSymbol ( "#" ) ); //$NON-NLS-1$
       }
     }
     catch ( AlphabetException exc )
@@ -130,21 +129,10 @@ public class DefaultRegex implements Regex, Storable
 
 
   /**
-   * TODO
-   * 
-   * @param e
-   * @param regexString
-   */
-  public DefaultRegex ( Element e, String regexString )
-  {
-    this.regexString = regexString;
-  }
-
-
-  /**
    * Sets the {@link RegexNode} initial.
    * 
    * @param regexNode The {@link RegexNode} to set.
+   * @param change Indicates if a change was made
    */
   public void setRegexNode ( RegexNode regexNode, boolean change )
   {
@@ -304,10 +292,9 @@ public class DefaultRegex implements Regex, Storable
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
+   * @see Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
    */
   public void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -344,10 +331,9 @@ public class DefaultRegex implements Regex, Storable
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#isModified()
+   * @see Modifyable#isModified()
    */
   public boolean isModified ()
   {
@@ -372,10 +358,8 @@ public class DefaultRegex implements Regex, Storable
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param obj
-   * @return
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
@@ -395,10 +379,9 @@ public class DefaultRegex implements Regex, Storable
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
+   * @see Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
    */
   public void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -408,25 +391,13 @@ public class DefaultRegex implements Regex, Storable
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#resetModify()
+   * @see Modifyable#resetModify()
    */
   public void resetModify ()
   {
     this.initialNode = this.regexNode;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
-   */
-  public Element getElement ()
-  {
-    return null;
   }
 
 

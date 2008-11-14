@@ -291,8 +291,8 @@ public class DisjunctionNode extends TwoChildNode
   @Override
   public RegexNode toCoreSyntax ()
   {
-    DisjunctionNode dis = new DisjunctionNode ( this.regex1.toCoreSyntax (), this.regex2
-        .toCoreSyntax () );
+    DisjunctionNode dis = new DisjunctionNode ( this.regex1.toCoreSyntax (),
+        this.regex2.toCoreSyntax () );
     dis.setBraces ( this.braces );
     return dis;
   }
@@ -305,11 +305,11 @@ public class DisjunctionNode extends TwoChildNode
    */
   public PrettyString toPrettyString ()
   {
-    PrettyString string = new PrettyString ( );
+    PrettyString string = new PrettyString ();
 
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     string.add ( this.regex1.toPrettyString () );
     string
@@ -318,7 +318,7 @@ public class DisjunctionNode extends TwoChildNode
 
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     return string;
   }

@@ -64,18 +64,6 @@ public class CharacterClassNode extends LeafNode
 
 
   /**
-   * TODO
-   *
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
-   */
-  @Override
-  public boolean isInCoreSyntax ()
-  {
-    return false;
-  }
-  
-  /**
    * The position in the Syntaxtree
    */
   private int position;
@@ -290,6 +278,18 @@ public class CharacterClassNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#lastPos()
    */
   @Override
@@ -361,16 +361,14 @@ public class CharacterClassNode extends LeafNode
       if ( this.char1 < this.char2 - 1 )
       {
         DisjunctionNode dis = new DisjunctionNode ( new TokenNode ( Character
-            .toString ( this.char1 ) ),
-            ( new CharacterClassNode (
-                ( char ) ( this.char1 + 1 ), this.char2 ).toCoreSyntax () )
-             );
+            .toString ( this.char1 ) ), ( new CharacterClassNode (
+            ( char ) ( this.char1 + 1 ), this.char2 ).toCoreSyntax () ) );
         dis.setBraces ( this.braces );
         return dis;
       }
       DisjunctionNode dis = new DisjunctionNode ( new TokenNode ( Character
           .toString ( this.char1 ) ), new TokenNode ( Character
-              .toString ( this.char2 ) ) );
+          .toString ( this.char2 ) ) );
       dis.setBraces ( this.braces );
       return dis;
     }
@@ -379,18 +377,18 @@ public class CharacterClassNode extends LeafNode
       char [] newChars = new char [ this.chars.length - 1 ];
       System.arraycopy ( this.chars, 1, newChars, 0, this.chars.length - 1 );
       DisjunctionNode dis = new DisjunctionNode ( new TokenNode ( Character
-          .toString ( this.chars [ 0 ] ) ),
-          new CharacterClassNode (  newChars ).toCoreSyntax () );
+          .toString ( this.chars [ 0 ] ) ), new CharacterClassNode ( newChars )
+          .toCoreSyntax () );
       dis.setBraces ( this.braces );
       return dis;
     }
     DisjunctionNode dis = new DisjunctionNode ( new TokenNode ( Character
-        .toString ( this.chars [ 0 ] ) ), new TokenNode (
-            Character.toString ( this.chars [ 1 ] ) ) );
+        .toString ( this.chars [ 0 ] ) ), new TokenNode ( Character
+        .toString ( this.chars [ 1 ] ) ) );
     dis.setBraces ( this.braces );
     return dis;
   }
-  
+
 
   /**
    * {@inheritDoc}
@@ -402,7 +400,7 @@ public class CharacterClassNode extends LeafNode
     PrettyString string = new PrettyString ();
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     if ( !this.array )
     {
@@ -423,7 +421,7 @@ public class CharacterClassNode extends LeafNode
     string.add ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     return string;
   }

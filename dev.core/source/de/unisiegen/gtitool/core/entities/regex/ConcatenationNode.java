@@ -296,8 +296,8 @@ public class ConcatenationNode extends TwoChildNode
   @Override
   public RegexNode toCoreSyntax ()
   {
-    ConcatenationNode con = new ConcatenationNode ( this.regex1.toCoreSyntax (), this.regex2
-        .toCoreSyntax () );
+    ConcatenationNode con = new ConcatenationNode (
+        this.regex1.toCoreSyntax (), this.regex2.toCoreSyntax () );
     con.setBraces ( this.braces );
     return con;
   }
@@ -313,16 +313,16 @@ public class ConcatenationNode extends TwoChildNode
     PrettyString string = new PrettyString ();
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     string.add ( this.regex1.toPrettyString () );
     string
         .add ( new PrettyString ( new PrettyToken ( "·", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
     string.add ( this.regex2.toPrettyString () );
-    
+
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     return string;
   }

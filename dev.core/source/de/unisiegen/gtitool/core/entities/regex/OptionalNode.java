@@ -36,19 +36,6 @@ public class OptionalNode extends OneChildNode
 
 
   /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
-   */
-  @Override
-  public boolean isInCoreSyntax ()
-  {
-    return false;
-  }
-
-
-  /**
    * The offset of this {@link OptionalNode} in the source code.
    * 
    * @see #getParserOffset()
@@ -215,6 +202,18 @@ public class OptionalNode extends OneChildNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#lastPos()
    */
   @Override
@@ -284,7 +283,7 @@ public class OptionalNode extends OneChildNode
     PrettyString string = new PrettyString ();
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     string.add ( this.regex.toPrettyString () );
     string
@@ -292,7 +291,7 @@ public class OptionalNode extends OneChildNode
 
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     return string;
   }

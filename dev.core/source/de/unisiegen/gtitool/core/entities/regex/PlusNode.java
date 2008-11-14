@@ -43,17 +43,6 @@ public class PlusNode extends OneChildNode
    */
   private ParserOffset parserOffset = NO_PARSER_OFFSET;
 
-  /**
-   * TODO
-   *
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
-   */
-  @Override
-  public boolean isInCoreSyntax ()
-  {
-    return false;
-  }
 
   /**
    * Constructor for a {@link PlusNode}
@@ -213,6 +202,18 @@ public class PlusNode extends OneChildNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#lastPos()
    */
   @Override
@@ -266,10 +267,11 @@ public class PlusNode extends OneChildNode
   public RegexNode toCoreSyntax ()
   {
     ConcatenationNode con = new ConcatenationNode ( this.regex.toCoreSyntax (),
-        new KleeneNode ( this.regex.toCoreSyntax ()) );
-    con.setBraces ( true);
+        new KleeneNode ( this.regex.toCoreSyntax () ) );
+    con.setBraces ( true );
     return con;
   }
+
 
   /**
    * {@inheritDoc}
@@ -278,19 +280,19 @@ public class PlusNode extends OneChildNode
    */
   public PrettyString toPrettyString ()
   {
-    PrettyString string = new PrettyString();
+    PrettyString string = new PrettyString ();
 
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
-    string.add ( this.regex.toPrettyString ());
+    string.add ( this.regex.toPrettyString () );
     string
         .add ( new PrettyString ( new PrettyToken ( "+", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
 
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     return string;
   }

@@ -55,30 +55,6 @@ public class ParserMultiException extends ParserException
 
 
   /**
-   * Throws a {@link ParserMultiException} if the {@link Alphabet} consist of
-   * {@link Symbol}s with the same name.
-   * 
-   * @param negativeSymbols The input list of {@link Symbol}s.
-   */
-  public static void throwRegexAlphabetException (
-      ArrayList < Symbol > negativeSymbols )
-  {
-    String [] message = new String [ negativeSymbols.size () ];
-    int [] startOffset = new int [ negativeSymbols.size () ];
-    int [] endOffset = new int [ negativeSymbols.size () ];
-    for ( int j = 0 ; j < negativeSymbols.size () ; j++ )
-    {
-      message [ j ] = Messages.getString ( "Parser.16", negativeSymbols //$NON-NLS-1$
-          .get ( j ) );
-      startOffset [ j ] = negativeSymbols.get ( j ).getParserOffset ()
-          .getStart ();
-      endOffset [ j ] = negativeSymbols.get ( j ).getParserOffset ().getEnd ();
-    }
-    throw new ParserMultiException ( startOffset, endOffset, message );
-  }
-
-
-  /**
    * Throws a {@link ParserMultiException} if the {@link NonterminalSymbolSet}
    * consist of {@link NonterminalSymbol}s with the same name.
    * 
@@ -100,6 +76,30 @@ public class ParserMultiException extends ParserException
           .getParserOffset ().getStart ();
       endOffset [ j ] = negativeNonterminalSymbols.get ( j ).getParserOffset ()
           .getEnd ();
+    }
+    throw new ParserMultiException ( startOffset, endOffset, message );
+  }
+
+
+  /**
+   * Throws a {@link ParserMultiException} if the {@link Alphabet} consist of
+   * {@link Symbol}s with the same name.
+   * 
+   * @param negativeSymbols The input list of {@link Symbol}s.
+   */
+  public static void throwRegexAlphabetException (
+      ArrayList < Symbol > negativeSymbols )
+  {
+    String [] message = new String [ negativeSymbols.size () ];
+    int [] startOffset = new int [ negativeSymbols.size () ];
+    int [] endOffset = new int [ negativeSymbols.size () ];
+    for ( int j = 0 ; j < negativeSymbols.size () ; j++ )
+    {
+      message [ j ] = Messages.getString ( "Parser.16", negativeSymbols //$NON-NLS-1$
+          .get ( j ) );
+      startOffset [ j ] = negativeSymbols.get ( j ).getParserOffset ()
+          .getStart ();
+      endOffset [ j ] = negativeSymbols.get ( j ).getParserOffset ().getEnd ();
     }
     throw new ParserMultiException ( startOffset, endOffset, message );
   }
@@ -184,15 +184,15 @@ public class ParserMultiException extends ParserException
 
 
   /**
-   * The array of parser start offsets.
-   */
-  private int [] parserStartOffset;
-
-
-  /**
    * The array of parser end offsets.
    */
   private int [] parserEndOffset;
+
+
+  /**
+   * The array of parser start offsets.
+   */
+  private int [] parserStartOffset;
 
 
   /**

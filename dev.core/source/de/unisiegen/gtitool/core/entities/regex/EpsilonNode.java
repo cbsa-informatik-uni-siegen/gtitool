@@ -36,19 +36,6 @@ public class EpsilonNode extends LeafNode
 
 
   /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
-   */
-  @Override
-  public boolean isInCoreSyntax ()
-  {
-    return true;
-  }
-
-
-  /**
    * The offset of this {@link EpsilonNode} in the source code.
    * 
    * @see #getParserOffset()
@@ -68,6 +55,7 @@ public class EpsilonNode extends LeafNode
    */
   public EpsilonNode ()
   {
+    // Do nothing
   }
 
 
@@ -228,6 +216,18 @@ public class EpsilonNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return true;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#lastPos()
    */
   @Override
@@ -306,13 +306,13 @@ public class EpsilonNode extends LeafNode
     PrettyString string = new PrettyString ();
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     string.add ( ( new PrettyToken ( "\u03B5", Style.TOKEN ) ) ); //$NON-NLS-1$
 
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     return string;
   }

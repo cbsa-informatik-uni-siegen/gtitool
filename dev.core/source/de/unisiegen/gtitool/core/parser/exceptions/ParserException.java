@@ -23,6 +23,22 @@ public class ParserException extends ScannerException
 
 
   /**
+   * TODO
+   * 
+   * @param c1
+   * @param c2
+   * @param pos1
+   * @param pos2
+   */
+  public static void throwCharacterClassException ( char c1, char c2, int pos1,
+      int pos2 )
+  {
+    throw new ParserException ( pos1, pos2, Messages.getString (
+        "Parser.14", new Character ( c1 ), new Character ( c2 ) ) ); //$NON-NLS-1$
+  }
+
+
+  /**
    * Throws a {@link ParserException} if the {@link TerminalSymbol} name is not
    * correct.
    * 
@@ -81,22 +97,6 @@ public class ParserException extends ScannerException
   {
     throw new ParserException ( left, right, Messages.getString ( "Parser.10", //$NON-NLS-1$
         illegalName ) );
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param c1
-   * @param c2
-   * @param pos1
-   * @param pos2
-   */
-  public static void throwCharacterClassException ( char c1, char c2, int pos1,
-      int pos2 )
-  {
-    throw new ParserException ( pos1, pos2, Messages.getString (
-        "Parser.14", new Character ( c1 ), new Character ( c2 ) ) ); //$NON-NLS-1$
   }
 
 

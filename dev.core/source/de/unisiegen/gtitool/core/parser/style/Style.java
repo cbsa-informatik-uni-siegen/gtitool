@@ -21,9 +21,49 @@ import de.unisiegen.gtitool.core.preferences.PreferenceManager;
 public enum Style
 {
   /**
+   * Style of keywords.
+   */
+  KEYWORD ( true, false ),
+
+  /**
    * No style.
    */
   NONE ( false, false ),
+
+  /**
+   * Style of {@link NonterminalSymbol}s.
+   */
+  NONTERMINAL_SYMBOL ( true, false ),
+
+  /**
+   * Style of error {@link NonterminalSymbol}s.
+   */
+  NONTERMINAL_SYMBOL_ERROR ( true, false ),
+
+  /**
+   * Style of error {@link Production}s.
+   */
+  PRODUCTION_ERROR ( true, false ),
+
+  /**
+   * Style of a RegexPosition
+   */
+  REGEX_POSITION ( true, false ),
+
+  /**
+   * Style of RegexSymbols
+   */
+  REGEX_SYMBOL ( true, false ),
+
+  /**
+   * Style of a Tool tip text of a Regex
+   */
+  REGEX_TOOL_TIP_TEXT ( false, false ),
+
+  /**
+   * Style of start {@link NonterminalSymbol}s.
+   */
+  START_NONTERMINAL_SYMBOL ( true, false ),
 
   /**
    * Style of {@link State}s.
@@ -41,11 +81,6 @@ public enum Style
   STATE_SELECTED_SYNTAX ( false, false ),
 
   /**
-   * Style of selected {@link Transition}s.
-   */
-  TRANSITION_SELECTED ( true, false ),
-
-  /**
    * Style of {@link Symbol}s.
    */
   SYMBOL ( true, false ),
@@ -61,26 +96,6 @@ public enum Style
   SYMBOL_ERROR ( true, false ),
 
   /**
-   * Style of error {@link Production}s.
-   */
-  PRODUCTION_ERROR ( true, false ),
-
-  /**
-   * Style of {@link NonterminalSymbol}s.
-   */
-  NONTERMINAL_SYMBOL ( true, false ),
-
-  /**
-   * Style of error {@link NonterminalSymbol}s.
-   */
-  NONTERMINAL_SYMBOL_ERROR ( true, false ),
-
-  /**
-   * Style of start {@link NonterminalSymbol}s.
-   */
-  START_NONTERMINAL_SYMBOL ( true, false ),
-
-  /**
    * Style of {@link TerminalSymbol}s.
    */
   TERMINAL_SYMBOL ( true, false ),
@@ -91,29 +106,14 @@ public enum Style
   TERMINAL_SYMBOL_ERROR ( true, false ),
 
   /**
-   * Style of keywords.
-   */
-  KEYWORD ( true, false ),
-
-  /**
    * Style of RegexTokens
    */
   TOKEN ( true, false ),
 
   /**
-   * Style of RegexSymbols
+   * Style of selected {@link Transition}s.
    */
-  REGEX_SYMBOL ( true, false ),
-
-  /**
-   * Style of a Tool tip text of a Regex
-   */
-  REGEX_TOOL_TIP_TEXT ( false, false ),
-
-  /**
-   * Style of a RegexPosition
-   */
-  REGEX_POSITION ( true, false );
+  TRANSITION_SELECTED ( true, false );
 
   /**
    * The bold value.

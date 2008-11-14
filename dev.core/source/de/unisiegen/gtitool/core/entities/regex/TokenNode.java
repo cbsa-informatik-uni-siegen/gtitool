@@ -36,19 +36,6 @@ public class TokenNode extends LeafNode
 
 
   /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
-   */
-  @Override
-  public boolean isInCoreSyntax ()
-  {
-    return true;
-  }
-
-
-  /**
    * The name of the Token
    */
   private String name;
@@ -257,6 +244,18 @@ public class TokenNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#isInCoreSyntax()
+   */
+  @Override
+  public boolean isInCoreSyntax ()
+  {
+    return true;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#lastPos()
    */
   @Override
@@ -337,13 +336,13 @@ public class TokenNode extends LeafNode
     PrettyString string = new PrettyString ();
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
-    string.add ( ( new PrettyToken ( this.name, Style.TOKEN )  ) ); //$NON-NLS-1$
+    string.add ( ( new PrettyToken ( this.name, Style.TOKEN ) ) );
 
     if ( this.braces )
     {
-      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) );
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     return string;
   }

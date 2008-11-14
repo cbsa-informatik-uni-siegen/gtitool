@@ -259,7 +259,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public Converter getConverter ()
   {
-    return new ConvertRegexToMachineDialog(this.mainWindowForm, this);
+    return new ConvertRegexToMachineDialog ( this.mainWindowForm, this );
   }
 
 
@@ -589,9 +589,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       @Override
       public String getDescription ()
       {
-        return Messages.getString ( "NewDialog." //$NON-NLS-1$
-            + RegexType.REGEX.toString () ) + " (*." //$NON-NLS-1$
-            + "tex" + ")"; //$NON-NLS-1$
+        return Messages.getString ( "Latex.FileDescription" ) //$NON-NLS-1$
+            + " (*.tex)"; //$NON-NLS-1$
       }
 
     };
@@ -600,15 +599,22 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     sd.show ();
     if ( sd.getSelectedFile () != null )
     {
-      LatexExporter exp = new LatexExporter ();
-      exp.buildLatexFile ( this.model.toLatexString (), sd.getSelectedFile () );
+      String filename = sd.getSelectedFile ().toString ().matches (
+          ".+\\.tex" ) ? sd //$NON-NLS-1$
+          .getSelectedFile ().toString () : sd.getSelectedFile ()
+          .toString ()
+          + ".tex"; //$NON-NLS-1$
+      LatexExporter.buildLatexFile ( this.model.toLatexString (), new File(filename) );
     }
   }
 
-  public void handleToNFAButton(ActionEvent evt) {
-    ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog(this.mainWindowForm, this);
+
+  public void handleToNFAButton ( ActionEvent evt )
+  {
+    ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
+        this.mainWindowForm, this );
     converter.convert ( RegexType.REGEX, MachineType.ENFA, false );
-    
+
   }
 
 

@@ -19,7 +19,6 @@ import de.unisiegen.gtitool.core.entities.regex.OptionalNode;
 import de.unisiegen.gtitool.core.entities.regex.PlusNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
-import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.storage.Attribute;
@@ -27,6 +26,7 @@ import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultNodeView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultRegexEdgeView;
 import de.unisiegen.gtitool.ui.jgraph.EdgeRenderer;
@@ -155,7 +155,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
         foundVersion = true;
         if ( attr.getValueInt () != REGEX_VERSION )
         {
-          throw new StoreException ( Messages
+          throw new StoreException ( de.unisiegen.gtitool.core.i18n.Messages
               .getString ( "StoreException.IncompatibleVersion" ) ); //$NON-NLS-1$
         }
       }
@@ -166,7 +166,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     }
     if ( regexString == null || regexString.length () == 0 )
     {
-      throw new StoreException ( Messages
+      throw new StoreException ( de.unisiegen.gtitool.core.i18n.Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
     DefaultAlphabet da = new DefaultAlphabet ( element.getElement ( 0 ) );
@@ -177,7 +177,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
     if ( !foundVersion )
     {
-      throw new StoreException ( Messages
+      throw new StoreException ( de.unisiegen.gtitool.core.i18n.Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
   }
@@ -484,62 +484,69 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     return this.regex.isModified ();
   }
 
-
+  /**
+   * Converts the graph to Latex
+   *
+   * @return The latex string
+   */
   public String toLatexString ()
   {
-    String s = "";
+    String s = ""; //$NON-NLS-1$
     RegexNode node = this.regex.getRegexNode ();
 
     int w = node.getWidth ();
-    s += "\\begin{tabular}{";
+    s+= " %" + Messages.getString ( "LatexComment.CreateTabular" ) + "\n";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    s += " \\begin{tabular}{"; //$NON-NLS-1$
     for ( int i = 0 ; i < w ; i++ )
     {
-      s += "c";
+      s += "c"; //$NON-NLS-1$
     }
-    s += "}\n";
+    s += "}\n"; //$NON-NLS-1$
 
     ArrayList < DefaultNodeView > nodes = this.nodeViewList;
     Collections.sort ( nodes );
 
     int j = 0;
-
+    s+="  %" + Messages.getString ( "LatexComment.CreateNodes" ) + "\n";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     for ( int i = 0 ; i < nodes.size () ; i++ )
     {
       DefaultNodeView view = nodes.get ( i );
       int x_over = ( view.getX () ) / ( this.X_SPACE / 2 );
-
+      //Add space
+      s += "  "; //$NON-NLS-1$
       x_over += this.x_moving;
       for ( ; j < x_over ; j++ )
       {
-        s += " & ";
+        s += " & "; //$NON-NLS-1$
       }
       String name = view.getNode ().getNodeString ().toString ();
-      if ( name.equals ( "#" ) )
+      if ( name.equals ( "#" ) ) //$NON-NLS-1$
       {
-        name = "\\#";
+        name = "\\#"; //$NON-NLS-1$
       }
-      else if ( name.equals ( "|" ) )
+      else if ( name.equals ( "|" ) ) //$NON-NLS-1$
       {
-        name = "$|$";
+        name = "$|$"; //$NON-NLS-1$
       }
-      else if ( name.equals ( "\u03B5" ) )
+      else if ( name.equals ( "\u03B5" ) ) //$NON-NLS-1$
       {
-        name = "$\\epsilon$";
+        name = "$\\epsilon$"; //$NON-NLS-1$
       }
-      s += "\\node{r" + i + "}{" + name + "}";
+      s += "\\node{r" + i + "}{" + name + "}";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
       if ( !view.equals ( nodes.get ( nodes.size () - 1 ) )
           && view.getY () != nodes.get ( i + 1 ).getY () )
       {
-        s += "\\\\[4ex]\n";
+        s += "\\\\[4ex]\n"; //$NON-NLS-1$
         j = 0;
       }
     }
-    s += "\n\\end{tabular}\n";
+    s += "\n \\end{tabular}\n"; //$NON-NLS-1$
+    s+= " %" + Messages.getString ( "LatexComment.NodeConnect" ) + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     for ( DefaultRegexEdgeView v : this.regexEdgeViewList )
     {
       int parentId = nodes.indexOf ( v.getParentView () );
       int childId = nodes.indexOf ( v.getChildView () );
-      s += "\\nodeconnect{r" + parentId + "}{r" + childId + "}\n";
+      s += " \\nodeconnect{r" + parentId + "}{r" + childId + "}\n";  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
     }
     return s;
   }

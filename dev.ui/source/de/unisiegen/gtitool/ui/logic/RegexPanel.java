@@ -39,6 +39,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.redoundo.RegexChangedItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -148,8 +149,22 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.gui.jGTISplitPaneConsole.setDividerLocation ( 0.5 );
     if ( this.regex.getRegexNode () != null )
     {
-      changeRegex ( this.regex.getRegexNode (), false );
+      setRegexInitial ( this.regex.getRegexNode () );
     }
+
+    this.gui.styledRegexParserPanel
+        .addParseableChangedListener ( new ParseableChangedListener < RegexNode > ()
+        {
+
+          public void parseableChanged ( RegexNode newEntity )
+          {
+            if ( newEntity != null )
+            {
+              changeRegex ( newEntity, true );
+            }
+          }
+
+        } );
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
@@ -180,6 +195,21 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   }
 
 
+  public void setRegexInitial ( RegexNode newRegexNode )
+  {
+    this.regex.changeRegexNode ( newRegexNode );
+    this.gui.styledRegexParserPanel.setText ( newRegexNode.toPrettyString ()
+        .toString () );
+    this.model.initializeGraph ();
+    this.jGTIGraph = this.model.getJGTIGraph ();
+    this.jGTIGraph.setEditable ( false );
+    this.jGTIGraph.setEnabled ( false );
+    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+
+    this.model.createTree ();
+  }
+
+
   /**
    * Changes the Regex
    * 
@@ -187,19 +217,22 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void changeRegex ( RegexNode newRegexNode, boolean addRedoUndoItem )
   {
+    RegexNode old = this.regex.getRegexNode ();
+    if ( old.equals ( newRegexNode ) )
+    {
+      return;
+    }
     if ( addRedoUndoItem )
     {
-      RegexNode old = this.regex.getRegexNode ();
       this.regex.setRegexNode ( newRegexNode, true );
       this.redoUndoHandler.addItem ( new RegexChangedItem ( this, this.regex
           .getRegexNode (), old ) );
+
     }
     else
     {
       this.regex.changeRegexNode ( newRegexNode );
     }
-    this.gui.jGTITextFieldRegex.setText ( newRegexNode.toPrettyString ()
-        .toString () );
     this.model.initializeGraph ();
     this.jGTIGraph = this.model.getJGTIGraph ();
     this.jGTIGraph.setEditable ( false );
@@ -385,18 +418,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   {
     this.redoUndoHandler.redo ();
     this.gui.repaint ();
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param evt
-   */
-  public void handleRegexChangeButtonClicked ( @SuppressWarnings ( "unused" )
-  ActionEvent evt )
-  {
-    new RegexDialog ( this );
   }
 
 
@@ -599,12 +620,11 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     sd.show ();
     if ( sd.getSelectedFile () != null )
     {
-      String filename = sd.getSelectedFile ().toString ().matches (
-          ".+\\.tex" ) ? sd //$NON-NLS-1$
-          .getSelectedFile ().toString () : sd.getSelectedFile ()
-          .toString ()
-          + ".tex"; //$NON-NLS-1$
-      LatexExporter.buildLatexFile ( this.model.toLatexString (), new File(filename) );
+      String filename = sd.getSelectedFile ().toString ().matches ( ".+\\.tex" ) ? sd //$NON-NLS-1$
+          .getSelectedFile ().toString ()
+          : sd.getSelectedFile ().toString () + ".tex"; //$NON-NLS-1$
+      LatexExporter.buildLatexFile ( this.model.toLatexString (), new File (
+          filename ) );
     }
   }
 
@@ -650,6 +670,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
     this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
     this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.styledRegexAlphabetParserPanel
+        .setText ( this.regex.getAlphabet () );
     this.gui.jGTITableWarnings
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (

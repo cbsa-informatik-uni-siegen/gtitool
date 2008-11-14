@@ -149,6 +149,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.gui.jGTISplitPaneConsole.setDividerLocation ( 0.5 );
     if ( this.regex.getRegexNode () != null )
     {
+      this.gui.jGTIButtonCoreSyntax.setEnabled ( !this.regex.getRegexNode ().isInCoreSyntax () );
       setRegexInitial ( this.regex.getRegexNode () );
     }
 
@@ -161,6 +162,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
             if ( newEntity != null )
             {
               changeRegex ( newEntity, true );
+              getGUI ().jGTIButtonCoreSyntax.setEnabled ( !newEntity.isInCoreSyntax () );
             }
           }
 
@@ -195,21 +197,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   }
 
 
-  public void setRegexInitial ( RegexNode newRegexNode )
-  {
-    this.regex.changeRegexNode ( newRegexNode );
-    this.gui.styledRegexParserPanel.setText ( newRegexNode.toPrettyString ()
-        .toString () );
-    this.model.initializeGraph ();
-    this.jGTIGraph = this.model.getJGTIGraph ();
-    this.jGTIGraph.setEditable ( false );
-    this.jGTIGraph.setEnabled ( false );
-    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
-
-    this.model.createTree ();
-  }
-
-
   /**
    * Changes the Regex
    * 
@@ -218,7 +205,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public void changeRegex ( RegexNode newRegexNode, boolean addRedoUndoItem )
   {
     RegexNode old = this.regex.getRegexNode ();
-    if ( old.equals ( newRegexNode ) )
+    if ( old != null && old.equals ( newRegexNode ) )
     {
       return;
     }
@@ -764,6 +751,21 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public void setName ( String name )
   {
     this.name = name;
+  }
+
+
+  public void setRegexInitial ( RegexNode newRegexNode )
+  {
+    this.regex.changeRegexNode ( newRegexNode );
+    this.gui.styledRegexParserPanel.setText ( newRegexNode.toPrettyString ()
+        .toString () );
+    this.model.initializeGraph ();
+    this.jGTIGraph = this.model.getJGTIGraph ();
+    this.jGTIGraph.setEditable ( false );
+    this.jGTIGraph.setEnabled ( false );
+    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+
+    this.model.createTree ();
   }
 
 

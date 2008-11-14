@@ -705,14 +705,14 @@ public class ConvertRegexToMachineDialog implements
         DefaultState start = new DefaultState ( "s" + token.getPosition () );
         start.setStartState ( true );
         start.setFinalState ( false );
-        this.modelConverted.getMachine ().addState ( start );
+        //this.modelConverted.getMachine ().addState ( start );
         DefaultStateView startView = this.modelConverted.createStateView ( 0,
             0, start, false );
 
         DefaultState fin = new DefaultState ( "f" + token.getPosition () );
         fin.setFinalState ( true );
         fin.setStartState ( false );
-        this.modelConverted.getMachine ().addState ( fin );
+        //this.modelConverted.getMachine ().addState ( fin );
         DefaultStateView finView = this.modelConverted.createStateView ( 0, 0,
             fin, false );
 

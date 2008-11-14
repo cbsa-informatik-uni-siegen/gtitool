@@ -29,7 +29,7 @@
 	<property name="devcorefile" value="gtitool.dev.core-${gtitool.version}.jar" />
 	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
 	<property name="loggerfile" value="gtitool.logger-${gtitool.version}.jar" />
-		
+
 	<!-- declare -->
 	<target name="declare">
 		<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${jflex.distdir}/${jflexfile}" />
@@ -37,8 +37,13 @@
 	</target>
 
 	<!-- dist -->
-	<target name="dist" depends="dist-preclean,dist-core,dist-internal,dist-jar" description="Build distribution">
+	<target name="dist" depends="dist-preclean,dist-core,dist-internal,dist-jar,dist-clean" description="Build distribution">
 		<echo message="Distribution ready" />
+	</target>
+
+	<!-- dist clean -->
+	<target name="dist-clean">
+		<delete dir="${classesdir}" />
 	</target>
 
 	<!-- dist preclean -->
@@ -48,7 +53,7 @@
 		</delete>
 		<mkdir dir="${distdir}" />
 	</target>
-	
+
 	<!-- dist core -->
 	<target name="dist-core">
 		<ant dir="${core.basedir}" target="dist" inheritall="no" />
@@ -89,7 +94,7 @@
 		<!-- delete manifest -->
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
-	
+
 	<!-- dist compile -->
 	<target name="dist-compile" depends="parser">
 		<delete dir="${classesdir}" />

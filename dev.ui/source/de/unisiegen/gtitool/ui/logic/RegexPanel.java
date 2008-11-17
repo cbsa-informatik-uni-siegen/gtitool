@@ -635,6 +635,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void handleToolbarEditDocument ()
   {
+    //TODO
   }
 
 
@@ -719,6 +720,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void languageChanged ()
   {
+    //TODO
   }
 
 

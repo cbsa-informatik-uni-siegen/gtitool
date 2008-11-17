@@ -22,16 +22,10 @@ import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 
 
 /**
- * TODO
+ * A {@link VertexView} for {@link RegexNode}s
  */
 public class NodeView extends VertexView
 {
-
-  /**
-   * TODO
-   */
-  private static final long serialVersionUID = 7696001267184494753L;
-
 
   /**
    * The {@link JGTIGraph} ellipse renderer.
@@ -181,12 +175,18 @@ public class NodeView extends VertexView
         if ( node instanceof LeafNode )
         {
           FontMetrics metrics = g.getFontMetrics ();
-          g.drawString ( ( ( LeafNode ) node ).getPosition () + "", dx, dy
+          g.drawString ( ( ( LeafNode ) node ).getPosition () + "", dx, dy //$NON-NLS-1$
               + metrics.getHeight () );
         }
       }
     }
   }
+
+
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 7696001267184494753L;
 
 
   /**
@@ -196,23 +196,23 @@ public class NodeView extends VertexView
 
 
   /**
-   * TODO
-   * 
-   * @param cell
+   * Creates a new {@link NodeView}
    */
-  public NodeView ( Object cell )
+  public NodeView ()
   {
-    super ( cell );
+    super ();
     this.ellipseRenderer = new JGraphEllipseRenderer ( this );
   }
 
 
   /**
-   * TODO
+   * Creates a new {@link NodeView}
+   * 
+   * @param cell The object for this view
    */
-  public NodeView ()
+  public NodeView ( Object cell )
   {
-    super ();
+    super ( cell );
     this.ellipseRenderer = new JGraphEllipseRenderer ( this );
   }
 

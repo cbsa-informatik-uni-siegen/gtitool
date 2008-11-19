@@ -139,6 +139,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.jGTIGraph.setEditable ( false );
     this.regex = model.getRegex ();
     this.gui = new RegexPanelForm ( this );
+    this.gui.styledRegexParserPanel.setText ( this.regex.getRegexString () );
 
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
 
@@ -150,7 +151,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     if ( this.regex.getRegexNode () != null )
     {
       this.gui.jGTIButtonCoreSyntax.setEnabled ( !this.regex.getRegexNode ().isInCoreSyntax () );
-      setRegexInitial ( this.regex.getRegexNode () );
+      setRegexInitial ( this.regex );
     }
 
     this.gui.styledRegexParserPanel
@@ -761,11 +762,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   }
 
 
-  public void setRegexInitial ( RegexNode newRegexNode )
+  public void setRegexInitial ( DefaultRegex newRegexNode )
   {
-    this.regex.changeRegexNode ( newRegexNode );
-    this.gui.styledRegexParserPanel.setText ( newRegexNode.toPrettyString ()
-        .toString () );
+    this.regex = newRegexNode;
+    this.gui.styledRegexParserPanel.setText ( this.regex.getRegexString () );
     this.model.initializeGraph ();
     this.jGTIGraph = this.model.getJGTIGraph ();
     this.jGTIGraph.setEditable ( false );

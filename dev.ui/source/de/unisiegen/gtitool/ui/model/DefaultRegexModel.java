@@ -171,6 +171,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     }
     DefaultAlphabet da = new DefaultAlphabet ( element.getElement ( 0 ) );
     this.regex = new DefaultRegex ( da, regexString );
+    System.err.println (regexString);
     RegexParseable rp = new RegexParseable ();
     this.regex.setRegexNode ( ( RegexNode ) rp.newParser ( regexString )
         .parse (), false );

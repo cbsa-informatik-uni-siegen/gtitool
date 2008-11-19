@@ -152,6 +152,12 @@ public class PreferenceManager
   public static final Color DEFAULT_REGEX_TOOL_TIP_TEXT_COLOR = new Color (
       255, 255, 255 );
 
+  /**
+   * The default {@link Color} of the regex tool tip text.
+   */
+  public static final Color DEFAULT_REGEX_COMMENT_COLOR = new Color (
+      255, 255, 255 );
+
 
   /**
    * The default {@link Color} of a start {@link NonterminalSymbol}.
@@ -570,6 +576,23 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedRegexToolTip ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of Regex tool tip has changed.
+   * 
+   * @param newColor The new color of the Regex tool tip.
+   */
+  public final void fireColorChangedRegexComment ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedRegexComment ( newColor );
       current.colorChanged ();
     }
   }
@@ -1181,6 +1204,24 @@ public class PreferenceManager
         .getString ( "Preferences.ColorRegexTokenDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_REGEX_TOKEN_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final ColorItem getColorItemRegexComment ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorRegexComment", //$NON-NLS-1$
+        DEFAULT_REGEX_COMMENT_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorRegexCommentCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorRegexCommentDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_REGEX_COMMENT_COLOR );
   }
 
 
@@ -2079,6 +2120,23 @@ public class PreferenceManager
             + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$
             + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorRegexToolTipText", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @param colorItem The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final void setColorItemRegexComment ( ColorItem colorItem )
+  {
+    logger.debug ( "setColorItemRegexComment",//$NON-NLS-1$
+        "set color of the regex tool tip text to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorRegexComment", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 

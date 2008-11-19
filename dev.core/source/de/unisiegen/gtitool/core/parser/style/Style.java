@@ -228,7 +228,6 @@ public enum Style
         return PreferenceManager.getInstance ().getColorItemParserKeyword ()
             .getColor ();
       }
-        // TODO SM
       case REGEX_SYMBOL :
         return PreferenceManager.getInstance ().getColorItemRegexSymbol ()
             .getColor ();
@@ -238,8 +237,10 @@ public enum Style
       case REGEX_POSITION :
         return PreferenceManager.getInstance ().getColorItemRegexPosition ()
             .getColor ();
+      case COMMENT:
+        return PreferenceManager.getInstance ().getColorItemRegexComment ()
+        .getColor ();
       case REGEX_TOOL_TIP_TEXT :
-      case COMMENT: //TODO
         return PreferenceManager.getInstance ().getColorItemRegexToolTipText ()
             .getColor ();
       default :

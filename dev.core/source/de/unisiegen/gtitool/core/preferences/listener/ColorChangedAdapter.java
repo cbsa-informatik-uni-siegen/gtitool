@@ -134,11 +134,24 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
+   * TODO
+   * 
+   * @param newColor
+   * @see de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener#colorChangedRegexComment(java.awt.Color)
+   */
+  public void colorChangedRegexComment ( @SuppressWarnings("unused")
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see ColorChangedListener#colorChangedRegexToken(Color)
    */
-  public void colorChangedRegexToken ( @SuppressWarnings("unused")
+  public void colorChangedRegexToken ( @SuppressWarnings ( "unused" )
   Color newColor )
   {
     // Override this method if needed.

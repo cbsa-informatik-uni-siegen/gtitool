@@ -620,6 +620,12 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The {@link ColorItem} of the regex tool tip.
+   */
+  private ColorItem colorItemRegexComment;
+
+
+  /**
    * The {@link ColorItem} of the parser start {@link NonterminalSymbol}.
    */
   private ColorItem colorItemStartNonterminalSymbol;
@@ -803,6 +809,12 @@ public final class PreferencesDialog implements
    * The initial {@link ColorItem} of the Regex tool tip.
    */
   private ColorItem initialColorItemRegexToolTip;
+
+
+  /**
+   * The initial {@link ColorItem} of the Regex tool tip.
+   */
+  private ColorItem initialColorItemRegexComment;
 
 
   /**
@@ -1317,6 +1329,7 @@ public final class PreferencesDialog implements
 
     this.colorItemRegex.restore ();
     this.colorItemRegexToolTip.restore ();
+    this.colorItemRegexComment.restore ();
     this.colorItemRegexPosition.restore ();
     this.colorItemRegexToken.restore ();
     this.colorItemRegexSymbol.restore ();
@@ -1601,6 +1614,9 @@ public final class PreferencesDialog implements
     this.colorItemRegexSymbol = PreferenceManager.getInstance ()
         .getColorItemRegexSymbol ();
     this.initialColorItemRegexSymbol = this.colorItemRegexSymbol.clone ();
+    this.colorItemRegexComment = PreferenceManager.getInstance ()
+        .getColorItemRegexComment ();
+    this.initialColorItemRegexComment = this.colorItemRegexComment.clone ();
 
     // Transition
     this.colorItemTransition = PreferenceManager.getInstance ()
@@ -1790,6 +1806,7 @@ public final class PreferencesDialog implements
     this.regexNode.add ( this.colorItemRegexSymbol );
     this.regexNode.add ( this.colorItemRegexPosition );
     this.regexNode.add ( this.colorItemRegexToolTip );
+    this.regexNode.add ( this.colorItemRegexComment );
 
     this.transitionNode = PreferenceManager.getInstance ()
         .getColorItemTransitionGroup ();
@@ -3338,6 +3355,14 @@ public final class PreferencesDialog implements
           this.colorItemRegexToolTip );
       PreferenceManager.getInstance ().fireColorChangedRegexToolTip (
           this.colorItemRegexToolTip.getColor () );
+    }
+    if ( !this.initialColorItemRegexComment.getColor ().equals (
+        this.colorItemRegexComment.getColor () ) )
+    {
+      PreferenceManager.getInstance ().setColorItemRegexComment (
+          this.colorItemRegexComment );
+      PreferenceManager.getInstance ().fireColorChangedRegexComment (
+          this.colorItemRegexComment.getColor () );
     }
     if ( !this.initialColorItemRegexToken.getColor ().equals (
         this.colorItemRegexToken.getColor () ) )

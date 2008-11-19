@@ -37,6 +37,7 @@ import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
@@ -268,7 +269,14 @@ public class ConvertRegexToMachineDialog implements
 
 
     private ArrayList < DefaultStateView > setStartFalse;
-    
+
+
+    private ArrayList < DefaultTransitionView > addedTransitions;
+
+
+    private ArrayList < DefaultTransitionView > removedTransitions;
+
+
     private RegexNode actNode;
 
 
@@ -281,8 +289,11 @@ public class ConvertRegexToMachineDialog implements
     public StepItem ( Step activeStep,
         ArrayList < DefaultStateView > addedStates,
         ArrayList < DefaultStateView > removedStates,
+        ArrayList < DefaultTransitionView > addedTransitions,
+        ArrayList < DefaultTransitionView > removedTransitions,
         ArrayList < DefaultStateView > setStartFalse,
-        ArrayList < DefaultStateView > setFinalFalse, int count, RegexNode actNode )
+        ArrayList < DefaultStateView > setFinalFalse, int count,
+        RegexNode actNode )
     {
       if ( activeStep == null )
       {
@@ -293,6 +304,8 @@ public class ConvertRegexToMachineDialog implements
       this.removedStates = removedStates;
       this.setFinalFalse = setFinalFalse;
       this.setStartFalse = setStartFalse;
+      this.addedTransitions = addedTransitions;
+      this.removedTransitions = removedTransitions;
       this.count = count;
       this.actNode = actNode;
     }
@@ -368,17 +381,41 @@ public class ConvertRegexToMachineDialog implements
     {
       return this.setStartFalse;
     }
-    
-    
+
+
     /**
      * Returns the actNode.
-     *
+     * 
      * @return The actNode.
      * @see #actNode
      */
     public RegexNode getActNode ()
     {
       return this.actNode;
+    }
+
+
+    /**
+     * Returns the addedTransitions.
+     * 
+     * @return The addedTransitions.
+     * @see #addedTransitions
+     */
+    public ArrayList < DefaultTransitionView > getAddedTransitions ()
+    {
+      return this.addedTransitions;
+    }
+
+
+    /**
+     * Returns the removedTransitions.
+     * 
+     * @return The removedTransitions.
+     * @see #removedTransitions
+     */
+    public ArrayList < DefaultTransitionView > getRemovedTransitions ()
+    {
+      return this.removedTransitions;
     }
   }
 
@@ -546,7 +583,7 @@ public class ConvertRegexToMachineDialog implements
       performPreviousStep ( false );
     }
     this.endReached = this.regexNode.isMarked ();
-    
+
     setStatus ();
     show ();
   }
@@ -590,7 +627,7 @@ public class ConvertRegexToMachineDialog implements
 
   public void handleBeginStep ()
   {
-    for ( int i = this.stepItemList.indexOf ( this.actualStepItem ) ; i > 0 ; i-- )
+    while ( !this.stepItemList.isEmpty () )
     {
       handlePreviousStep ();
     }
@@ -599,14 +636,14 @@ public class ConvertRegexToMachineDialog implements
 
   public void handleCancel ()
   {
+    this.regexNode.unmarkAll ();
     this.gui.dispose ();
   }
 
 
   public void handleEndStep ()
   {
-    for ( int i = this.stepItemList.indexOf ( this.actualStepItem ) ; i < this.stepItemList
-        .size () ; i++ )
+    while ( !this.endReached )
     {
       handleNextStep ();
     }
@@ -658,6 +695,7 @@ public class ConvertRegexToMachineDialog implements
     this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
         .setSelectedEditorPanel ( newEditorPanel );
 
+    this.regexNode.unmarkAll ();
     this.gui.dispose ();
   }
 
@@ -685,7 +723,12 @@ public class ConvertRegexToMachineDialog implements
    */
   public void handleStop ()
   {
-    // TODO
+    logger.debug ( "handleStop", "handle stop" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    cancelAutoStepTimer ();
+
+    this.gui.jGTIToolBarToggleButtonAutoStep.setSelected ( false );
+    setStatus ();
   }
 
 
@@ -707,6 +750,9 @@ public class ConvertRegexToMachineDialog implements
     ArrayList < DefaultStateView > removedStates = new ArrayList < DefaultStateView > ();
     ArrayList < DefaultStateView > setFinalFalse = new ArrayList < DefaultStateView > ();
     ArrayList < DefaultStateView > setStartFalse = new ArrayList < DefaultStateView > ();
+
+    ArrayList < DefaultTransitionView > addedTransitions = new ArrayList < DefaultTransitionView > ();
+    ArrayList < DefaultTransitionView > removedTransitions = new ArrayList < DefaultTransitionView > ();
     int c = this.count;
 
     RegexNode node = this.regexNode.getNextNodeForNFA ();
@@ -754,8 +800,8 @@ public class ConvertRegexToMachineDialog implements
         t = new DefaultTransition ( a, a, new DefaultWord (),
             new DefaultWord (), start, fin, symbols );
 
-        this.modelConverted.createTransitionView ( t, startView, finView, true,
-            false, true );
+        addedTransitions.add ( this.modelConverted.createTransitionView ( t,
+            startView, finView, true, false, true ) );
       }
       catch ( TransitionSymbolNotInAlphabetException exc )
       {
@@ -809,8 +855,8 @@ public class ConvertRegexToMachineDialog implements
         t = new DefaultTransition ( a, a, new DefaultWord (),
             new DefaultWord (), start, fin, symbols );
 
-        this.modelConverted.createTransitionView ( t, startView, finView, true,
-            false, true );
+        addedTransitions.add ( this.modelConverted.createTransitionView ( t,
+            startView, finView, true, false, true ) );
       }
       catch ( TransitionSymbolNotInAlphabetException exc )
       {
@@ -887,14 +933,14 @@ public class ConvertRegexToMachineDialog implements
       setFinalFalse.add ( final1 );
       setFinalFalse.add ( final2 );
 
-      this.modelConverted.createTransitionView ( startStart1, startView,
-          start1, true, false, true );
-      this.modelConverted.createTransitionView ( startStart2, startView,
-          start2, true, false, true );
-      this.modelConverted.createTransitionView ( final1Final, final1, finView,
-          true, false, true );
-      this.modelConverted.createTransitionView ( final2Final, final2, finView,
-          true, false, true );
+      addedTransitions.add ( this.modelConverted.createTransitionView (
+          startStart1, startView, start1, true, false, true ) );
+      addedTransitions.add ( this.modelConverted.createTransitionView (
+          startStart2, startView, start2, true, false, true ) );
+      addedTransitions.add ( this.modelConverted.createTransitionView (
+          final1Final, final1, finView, true, false, true ) );
+      addedTransitions.add ( this.modelConverted.createTransitionView (
+          final2Final, final2, finView, true, false, true ) );
 
       ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
       views.add ( startView );
@@ -923,11 +969,13 @@ public class ConvertRegexToMachineDialog implements
       {
         try
         {
-          this.modelConverted.createTransitionView ( new DefaultTransition ( t
-              .getAlphabet (), t.getAlphabet (), t.getPushDownWordRead (), t
-              .getPushDownWordWrite (), final1.getState (), t.getStateEnd (), t
-              .getSymbol () ), final1, this.modelConverted
-              .getStateViewForState ( t.getStateEnd () ), true, false, true );
+          addedTransitions.add ( this.modelConverted.createTransitionView (
+              new DefaultTransition ( t.getAlphabet (), t.getAlphabet (), t
+                  .getPushDownWordRead (), t.getPushDownWordWrite (), final1
+                  .getState (), t.getStateEnd (), t.getSymbol () ), final1,
+              this.modelConverted.getStateViewForState ( t.getStateEnd () ),
+              true, false, true ) );
+
         }
         catch ( TransitionSymbolNotInAlphabetException exc )
         {
@@ -938,6 +986,16 @@ public class ConvertRegexToMachineDialog implements
           exc.printStackTrace ();
         }
       }
+      for ( DefaultTransitionView view : this.modelConverted
+          .getTransitionViewList () )
+      {
+        if ( view.getSourceView ().equals ( start2 )
+            || view.getTargetView ().equals ( start2 ) )
+        {
+          addedTransitions.add ( view );
+        }
+      }
+      removedStates.add ( start2 );
       this.modelConverted.removeState ( start2, false );
 
       ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
@@ -978,34 +1036,36 @@ public class ConvertRegexToMachineDialog implements
       {
         finView.move ( p.getX (), p.getY () );
       }
+      addedStates.add ( startView );
+      addedStates.add ( finView );
 
       // From start to final
       Transition t = new DefaultTransition ();
       t.setStateBegin ( start );
       t.setStateEnd ( fin );
-      this.modelConverted.createTransitionView ( t, startView, finView, true,
-          false, true );
+      addedTransitions.add ( this.modelConverted.createTransitionView ( t,
+          startView, finView, true, false, true ) );
 
       // From start to begin of N(s)
       t = new DefaultTransition ();
       t.setStateBegin ( start );
       t.setStateEnd ( start1.getState () );
-      this.modelConverted.createTransitionView ( t, startView, start1, true,
-          false, true );
+      addedTransitions.add ( this.modelConverted.createTransitionView ( t,
+          startView, start1, true, false, true ) );
 
       // From end to begin of N(s)
       t = new DefaultTransition ();
       t.setStateBegin ( final1.getState () );
       t.setStateEnd ( start1.getState () );
-      this.modelConverted.createTransitionView ( t, final1, start1, true,
-          false, true );
+      addedTransitions.add ( this.modelConverted.createTransitionView ( t,
+          final1, start1, true, false, true ) );
 
       // From end of N(s) to final
       t = new DefaultTransition ();
       t.setStateBegin ( final1.getState () );
       t.setStateEnd ( fin );
-      this.modelConverted.createTransitionView ( t, final1, finView, true,
-          false, true );
+      addedTransitions.add ( this.modelConverted.createTransitionView ( t,
+          final1, finView, true, false, true ) );
 
       start1.getState ().setStartState ( false );
       final1.getState ().setFinalState ( false );
@@ -1019,7 +1079,8 @@ public class ConvertRegexToMachineDialog implements
       this.stateViewList.put ( k, views );
     }
     this.stepItemList.add ( new StepItem ( this.actualStep, addedStates,
-        removedStates, setStartFalse, setFinalFalse, c, node ) );
+        removedStates, addedTransitions, removedTransitions, setStartFalse,
+        setFinalFalse, c, node ) );
 
     this.endReached = this.regexNode.isMarked ();
 
@@ -1042,19 +1103,37 @@ public class ConvertRegexToMachineDialog implements
         .remove ( this.stepItemList.size () - 1 );
     for ( DefaultStateView view : stepItem.getAddedStates () )
     {
-      this.modelConverted.removeState ( view, false );
+      if ( view != null )
+      {
+        this.modelConverted.removeState ( view, false );
+      }
     }
 
-    for ( DefaultStateView view : stepItem.getRemovedStates () )
+    for ( DefaultStateView view : stepItem.getSetFinalFalse () )
     {
-      this.modelConverted.createStateView ( view.getPositionX (), view
-          .getPositionX (), view.getState (), false );
-    }
-    for(DefaultStateView view : stepItem.getSetFinalFalse ()) {
       view.getState ().setFinalState ( true );
     }
-    for(DefaultStateView view : stepItem.getSetStartFalse () ) {
+    for ( DefaultStateView view : stepItem.getSetStartFalse () )
+    {
       view.getState ().setStartState ( true );
+    }
+    for ( DefaultTransitionView view : stepItem.getAddedTransitions () )
+    {
+      this.modelConverted.removeTransition ( view, false );
+    }
+    if ( stepItem.getActNode () instanceof ConcatenationNode )
+    {
+      DefaultStateView state = null;
+
+      for ( DefaultStateView view : stepItem.getRemovedStates () )
+      {
+        state = this.modelConverted.createStateView ( view.getPositionX (), view
+            .getPositionX (), view.getState (), false );
+      }
+      DefaultStateView end = this.stateViewList.get (
+          stepItem.getActNode ().getChildren ().get ( 1 ) ).get ( 1 );
+      this.modelConverted.createTransitionView ( new DefaultTransition (),
+          state, end, true, false, true );
     }
     this.actualStep = stepItem.getActiveStep ();
     stepItem.getActNode ().unmark ();
@@ -1074,6 +1153,7 @@ public class ConvertRegexToMachineDialog implements
    */
   private final void setStatus ()
   {
+    this.endReached = this.regexNode.isMarked ();
     if ( this.gui.jGTIToolBarToggleButtonAutoStep.isSelected () )
     {
       this.gui.jGTIToolBarButtonBeginStep.setEnabled ( false );

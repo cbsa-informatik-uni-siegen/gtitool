@@ -212,6 +212,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     if ( addRedoUndoItem )
     {
       this.regex.setRegexNode ( newRegexNode, true );
+      this.regex.setRegexString ( this.gui.styledRegexParserPanel.getText () );
       this.redoUndoHandler.addItem ( new RegexChangedItem ( this, this.regex
           .getRegexNode (), old ) );
 
@@ -219,6 +220,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     else
     {
       this.regex.changeRegexNode ( newRegexNode );
+      this.regex.setRegexString ( this.gui.styledRegexParserPanel.getText () );
     }
     this.model.initializeGraph ();
     this.jGTIGraph = this.model.getJGTIGraph ();

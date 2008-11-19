@@ -177,7 +177,15 @@ public abstract class RegexNode implements Entity < RegexNode >
    */
   public abstract boolean isMarked ();
   
+  /**
+   * Resets the mark flag.
+   */
   public abstract void unmark();
+  
+  /**
+   * Resets the mark flag of the whole regex
+   */
+  public abstract void unmarkAll();
 
 
   /**

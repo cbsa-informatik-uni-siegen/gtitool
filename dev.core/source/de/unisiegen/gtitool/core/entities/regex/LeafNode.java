@@ -12,9 +12,10 @@ public abstract class LeafNode extends RegexNode
    */
   private boolean marked = false;
 
+
   /**
    * TODO
-   *
+   * 
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmark()
    */
   @Override
@@ -22,6 +23,19 @@ public abstract class LeafNode extends RegexNode
   {
     this.marked = false;
   }
+
+
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmarkAll()
+   */
+  @Override
+  public void unmarkAll ()
+  {
+    unmark ();
+  }
+
 
   /**
    * {@inheritDoc}

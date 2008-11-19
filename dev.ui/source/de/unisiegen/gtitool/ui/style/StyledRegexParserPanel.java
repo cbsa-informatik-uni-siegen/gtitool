@@ -86,6 +86,8 @@ public final class StyledRegexParserPanel extends
     }
     return regexNode;
   }
+  
+  
 
 
   /**

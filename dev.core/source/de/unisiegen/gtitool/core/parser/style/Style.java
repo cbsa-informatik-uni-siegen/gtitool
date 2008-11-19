@@ -111,6 +111,11 @@ public enum Style
   TOKEN ( true, false ),
 
   /**
+   * Style of Comments.
+   */
+  COMMENT ( false, true ),
+
+  /**
    * Style of selected {@link Transition}s.
    */
   TRANSITION_SELECTED ( true, false );
@@ -226,14 +231,15 @@ public enum Style
         // TODO SM
       case REGEX_SYMBOL :
         return PreferenceManager.getInstance ().getColorItemRegexSymbol ()
-        .getColor ();
+            .getColor ();
       case TOKEN :
         return PreferenceManager.getInstance ().getColorItemRegexToken ()
-        .getColor ();
+            .getColor ();
       case REGEX_POSITION :
         return PreferenceManager.getInstance ().getColorItemRegexPosition ()
             .getColor ();
       case REGEX_TOOL_TIP_TEXT :
+      case COMMENT: //TODO
         return PreferenceManager.getInstance ().getColorItemRegexToolTipText ()
             .getColor ();
       default :

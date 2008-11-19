@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.scanner.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 
 %%
 
@@ -32,6 +33,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 %char
 
 %{
+	private int yycommentChar = 0;
+	
 	private Symbol symbol(int id)
 	{
 	  return symbol(id, yychar, yychar + yylength(), yytext());
@@ -61,6 +64,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	  	  return Style.REGEX_SYMBOL;
 		case SYMBOL:
 		  return Style.TOKEN;
+		case COMMENT:
+		  return Style.COMMENT;
 		default:
 		  return Style.NONE;
 	  }
@@ -79,6 +84,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 LineTerminator			= \r|\n|\r\n
 WhiteSpace				= {LineTerminator} | [ \t\f]
 
+%state YYCOMMENT, YYCOMMENTEOF, YYCOMMENTSINGLE
+
 %%
 
 <YYINITIAL>
@@ -94,7 +101,28 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	"["					{ return symbol(SLBRACE); }
 	"]"					{ return symbol(SRBRACE); }
 	"-"					{ return symbol(MINUS); }
+	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }
+	"#"					{ yycommentChar = yychar; yybegin(YYCOMMENTSINGLE); }
 	{WhiteSpace}		{ }
 	.'*					{ return symbol(SYMBOL, yytext()); }
 	\".+\"				{ return symbol(SYMBOL, yytext()); }
 }
+
+<YYCOMMENT> 
+{
+	<<EOF>>				{ yybegin(YYCOMMENTEOF); return symbol(COMMENT, yycommentChar, yychar, yytext()); }
+	"*)"				{ yybegin(YYINITIAL); return symbol(COMMENT, yycommentChar, yychar + yylength(), yytext()); }
+	.|\n				{ /* Ignore */ }
+}
+
+<YYCOMMENTEOF> 
+{
+	<<EOF>>				{ ParserException.throwCommentException(yycommentChar,yychar); }
+}
+<YYCOMMENTSINGLE>
+{
+	<<EOF>>				{ yybegin(YYINITIAL);return symbol(COMMENT, yycommentChar, yychar + yylength(), yytext());}
+	\n					{ yybegin(YYINITIAL);return symbol(COMMENT, yycommentChar, yychar + yylength(), yytext());}
+	.					{ /* Ignore */ }
+}
+

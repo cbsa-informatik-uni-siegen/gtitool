@@ -12,6 +12,16 @@ public abstract class OneChildNode extends RegexNode
    */
   private boolean marked = false;
 
+  /**
+   * TODO
+   *
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmark()
+   */
+  @Override
+  public void unmark ()
+  {
+    this.marked = false;
+  }
 
   /**
    * The Child of this {@link OneChildNode}

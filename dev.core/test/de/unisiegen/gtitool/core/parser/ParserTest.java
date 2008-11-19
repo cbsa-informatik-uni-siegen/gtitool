@@ -80,7 +80,7 @@ public class ParserTest
      * Regex
      */
     RegexParseable regexParseable = new RegexParseable ();
-    String regexText = "[a-z]?aa";
+    String regexText = "[a-z]?aa#lala\n(*lalalaaa";
     try
     {
       RegexNode regex = ( RegexNode ) regexParseable.newParser ( regexText )

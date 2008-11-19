@@ -36,6 +36,7 @@ terminal 					RBRACE;
 terminal 					SLBRACE;
 terminal 					SRBRACE;
 terminal 					MINUS;
+terminal					COMMENT;
 terminal String				SYMBOL;
 
 /****************

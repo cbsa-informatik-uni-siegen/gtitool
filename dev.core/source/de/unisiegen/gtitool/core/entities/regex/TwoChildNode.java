@@ -121,4 +121,15 @@ public abstract class TwoChildNode extends RegexNode
   {
     return this.marked;
   }
+  
+  /**
+   * TODO
+   *
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmark()
+   */
+  @Override
+  public void unmark ()
+  {
+    this.marked = false;
+  }
 }

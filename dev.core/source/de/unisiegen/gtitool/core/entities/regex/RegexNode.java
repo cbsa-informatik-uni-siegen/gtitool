@@ -176,6 +176,8 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return True if Node is marked in creation of NFA
    */
   public abstract boolean isMarked ();
+  
+  public abstract void unmark();
 
 
   /**

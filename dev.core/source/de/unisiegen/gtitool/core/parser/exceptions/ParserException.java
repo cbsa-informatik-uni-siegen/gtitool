@@ -36,6 +36,10 @@ public class ParserException extends ScannerException
     throw new ParserException ( pos1, pos2, Messages.getString (
         "Parser.14", new Character ( c1 ), new Character ( c2 ) ) ); //$NON-NLS-1$
   }
+  
+  public static void throwCommentException (int pos1, int pos2) {
+    throw new ParserException(pos1, pos2, "Missing *)");
+  }
 
 
   /**

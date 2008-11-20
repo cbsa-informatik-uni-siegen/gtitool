@@ -253,11 +253,15 @@ public class DefaultRegex implements Regex
     if ( obj instanceof DefaultRegex )
     {
       DefaultRegex dr = ( DefaultRegex ) obj;
+      if(this.regexString == null) {
+        return dr.getRegexString () != null;
+      }
       return this.regexString.equals ( dr.getRegexString () )
           && this.regexNode.equals ( dr.getRegexNode () );
     }
     return false;
   }
+
 
   /**
    * @see java.lang.Object#toString()
@@ -267,6 +271,7 @@ public class DefaultRegex implements Regex
   {
     return this.regexNode.toString ();
   }
+
 
   /**
    * Returns the regexString.
@@ -278,14 +283,18 @@ public class DefaultRegex implements Regex
   {
     return this.regexString;
   }
-  
+
+
   /**
    */
   @Override
   public DefaultRegex clone ()
   {
-    DefaultRegex r = new DefaultRegex(this.alphabet);
-    r.setRegexNode ( getRegexNode(), getRegexString() );
+    DefaultRegex r = new DefaultRegex ( this.alphabet );
+    if ( this.regexNode != null && this.regexString != null )
+    {
+      r.setRegexNode ( getRegexNode (), getRegexString () );
+    }
     return r;
   }
 }

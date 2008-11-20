@@ -121,7 +121,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public DefaultRegexModel ( DefaultRegex regex )
   {
-    System.err.println ("Schon wieder!");
     this.regex = regex;
     this.initialRegex = regex.clone ();
   }
@@ -141,7 +140,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
   /**
    * TODO
-   *
+   * 
    * @param node
    * @param regexString
    */
@@ -523,7 +522,10 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public boolean isModified ()
   {
-    return !this.regex.equals ( this.initialRegex );
+    if(this.regex != null) {
+      return !this.regex.equals ( this.initialRegex );
+    }
+    return this.initialRegex != null;
   }
 
 

@@ -131,7 +131,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.jGTIGraph = this.model.getJGTIGraph ();
     this.jGTIGraph.setEditable ( false );
     this.gui = new RegexPanelForm ( this );
-    this.gui.styledRegexParserPanel.setText ( this.model.getRegex().getRegexString () );
+    this.gui.styledRegexParserPanel.setText ( this.model.getRegex ()
+        .getRegexString () );
 
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
 
@@ -140,11 +141,11 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         .getState () );
 
     this.gui.jGTISplitPaneConsole.setDividerLocation ( 0.5 );
-    if ( this.model.getRegex().getRegexNode () != null )
+    if ( this.model.getRegex ().getRegexNode () != null )
     {
-      this.gui.jGTIButtonCoreSyntax.setEnabled ( !this.model.getRegex().getRegexNode ()
-          .isInCoreSyntax () );
-      changeRegex ( this.model.getRegex().getRegexNode (), false );
+      this.gui.jGTIButtonCoreSyntax.setEnabled ( !this.model.getRegex ()
+          .getRegexNode ().isInCoreSyntax () );
+      changeRegex ( this.model.getRegex ().getRegexNode (), false );
     }
 
     this.gui.styledRegexParserPanel
@@ -199,14 +200,14 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void changeRegex ( RegexNode newRegexNode, boolean addRedoUndoItem )
   {
-    RegexNode old = this.model.getRegex().getRegexNode ();
-    
-    this.model.changeRegexNode ( newRegexNode,
-        this.gui.styledRegexParserPanel.getText () );
+    RegexNode old = this.model.getRegex ().getRegexNode ();
+
+    this.model.changeRegexNode ( newRegexNode, this.gui.styledRegexParserPanel
+        .getText () );
     if ( addRedoUndoItem )
     {
-      this.redoUndoHandler.addItem ( new RegexChangedItem ( this, this.model.getRegex()
-          .getRegexNode (), old ) );
+      this.redoUndoHandler.addItem ( new RegexChangedItem ( this, this.model
+          .getRegex ().getRegexNode (), old ) );
 
     }
     this.model.initializeGraph ();
@@ -371,7 +372,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public DefaultRegex getRegex ()
   {
-    return this.model.getRegex();
+    return this.model.getRegex ();
   }
 
 
@@ -523,9 +524,11 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public void handleToCoreSyntaxButtonClicked ( @SuppressWarnings ( "unused" )
   ActionEvent evt )
   {
-    DefaultRegex newRegex = new DefaultRegex ( this.model.getRegex().getAlphabet () );
-    newRegex.setRegexNode ( this.model.getRegex().getRegexNode ().toCoreSyntax (),
-        this.model.getRegex().getRegexNode ().toCoreSyntax ().toString () );
+    DefaultRegex newRegex = new DefaultRegex ( this.model.getRegex ()
+        .getAlphabet () );
+    newRegex.setRegexNode ( this.model.getRegex ().getRegexNode ()
+        .toCoreSyntax (), this.model.getRegex ().getRegexNode ()
+        .toCoreSyntax ().toString () );
 
     EditorPanel newEditorPanel = new RegexPanel ( this.mainWindowForm,
         new DefaultRegexModel ( newRegex ), null );
@@ -557,6 +560,14 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
     this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
         .setSelectedEditorPanel ( newEditorPanel );
+  }
+
+
+  public void handleToDFAButton ( ActionEvent evt )
+  {
+    ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
+        this.mainWindowForm, this );
+    converter.convert ( RegexType.REGEX, MachineType.DFA, false );
   }
 
 
@@ -613,7 +624,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
         this.mainWindowForm, this );
     converter.convert ( RegexType.REGEX, MachineType.ENFA, false );
-
   }
 
 
@@ -650,8 +660,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
     this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
     this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.styledRegexAlphabetParserPanel
-        .setText ( this.model.getRegex().getAlphabet () );
+    this.gui.styledRegexAlphabetParserPanel.setText ( this.model.getRegex ()
+        .getAlphabet () );
     this.gui.jGTITableWarnings
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (

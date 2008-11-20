@@ -122,14 +122,22 @@ public class DefaultRegex implements Regex
     this.regexString = regexString;
 
     int currentPosition = 1;
-    for ( RegexNode current : this.regexNode.getTokenNodes () )
+    for ( LeafNode current : this.regexNode.getTokenNodes () )
     {
-      if ( current instanceof LeafNode )
-      {
-        ( ( LeafNode ) current ).setPosition ( currentPosition );
-        currentPosition++ ;
+      current.setPosition ( currentPosition );
+      currentPosition++ ;
+    }
+  }
+
+
+  public String symbolAtPosition(int position) {
+    String s = null;
+    for(LeafNode current : this.regexNode.getTokenNodes ()) {
+      if(current.getPosition () == position) {
+        s = current.getNodeString ().toString ();
       }
     }
+    return s;
   }
 
 
@@ -172,9 +180,9 @@ public class DefaultRegex implements Regex
    * @param pos The position
    * @return followPos as defined in the dragon book
    */
-  public HashSet < RegexNode > followPos ( int pos )
+  public HashSet < Integer > followPos ( int pos )
   {
-    HashSet < RegexNode > followPos = new HashSet < RegexNode > ();
+    HashSet < Integer > followPos = new HashSet < Integer > ();
 
     HashSet < RegexNode > nodeList = getAllNodes ( this.regexNode );
 
@@ -182,8 +190,8 @@ public class DefaultRegex implements Regex
     {
       if ( node instanceof ConcatenationNode )
       {
-        RegexNode n1 = node.getAllChildren ().get ( 0 );
-        boolean foundInLastPosN1 = false;
+        RegexNode n1 = node.getChildren ().get ( 0 );
+        boolean foundPosInLastPosN1 = false;
         for ( RegexNode searchNode : n1.lastPos () )
         {
           if ( searchNode instanceof LeafNode )
@@ -191,19 +199,21 @@ public class DefaultRegex implements Regex
             LeafNode leafNode = ( LeafNode ) searchNode;
             if ( leafNode.getPosition () == pos )
             {
-              foundInLastPosN1 = true;
+              foundPosInLastPosN1 = true;
             }
           }
         }
-        if ( foundInLastPosN1 )
+        if ( foundPosInLastPosN1 )
         {
-          RegexNode n2 = node.getAllChildren ().get ( 1 );
-          followPos.addAll ( n2.firstPos () );
+          RegexNode n2 = node.getChildren ().get ( 1 );
+          for(RegexNode firstPosNode : n2.firstPos ()) {
+            followPos.add(((LeafNode)firstPosNode).getPosition ());
+          }
         }
       }
       else if ( node instanceof KleeneNode )
       {
-        RegexNode n = node.getAllChildren ().get ( 0 );
+        RegexNode n = node.getChildren ().get ( 0 );
         boolean foundInLastPosN = false;
         for ( RegexNode searchNode : n.lastPos () )
         {
@@ -218,7 +228,9 @@ public class DefaultRegex implements Regex
         }
         if ( foundInLastPosN )
         {
-          followPos.addAll ( n.firstPos () );
+          for(RegexNode firstPosNode : n.firstPos ()) {
+            followPos.add(((LeafNode)firstPosNode).getPosition ());
+          }
         }
       }
     }
@@ -253,7 +265,8 @@ public class DefaultRegex implements Regex
     if ( obj instanceof DefaultRegex )
     {
       DefaultRegex dr = ( DefaultRegex ) obj;
-      if(this.regexString == null) {
+      if ( this.regexString == null )
+      {
         return dr.getRegexString () != null;
       }
       return this.regexString.equals ( dr.getRegexString () )

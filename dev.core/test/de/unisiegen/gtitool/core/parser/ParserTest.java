@@ -80,7 +80,7 @@ public class ParserTest
      * Regex
      */
     RegexParseable regexParseable = new RegexParseable ();
-    String regexText = "[a-z]?aa#lala\n(*lalalaaa*)";
+    String regexText = "(a|b)*aa#";
     try
     {
       RegexNode regex = ( RegexNode ) regexParseable.newParser ( regexText )
@@ -119,6 +119,17 @@ public class ParserTest
 
       RegexNode coreSyntax = regex.toCoreSyntax ();
       System.out.println ( coreSyntax.toString () );
+
+      String followPos = "";
+      for ( Integer current : conv.followPos ( 1 ) )
+      {
+        if ( followPos.length () > 0 )
+        {
+          followPos += ";";
+        }
+        followPos += current;
+      }
+      System.out.println ( "FollowPos(1): {" + followPos + "}" );
     }
     catch ( Exception e )
     {

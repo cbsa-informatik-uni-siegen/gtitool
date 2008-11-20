@@ -86,8 +86,10 @@ public class ParserTest
       RegexNode regex = ( RegexNode ) regexParseable.newParser ( regexText )
           .parse ();
 
-      DefaultRegex conv = new DefaultRegex (new DefaultAlphabet(new DefaultSymbol("a"),new DefaultSymbol("b"),new DefaultSymbol("c"),new DefaultSymbol("d")), regexText);
-      conv.setRegexNode ( regex, false );
+      DefaultRegex conv = new DefaultRegex ( new DefaultAlphabet (
+          new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),
+          new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ) );
+      conv.setRegexNode ( regex, regexText );
       System.out.println ( regex );
       String firstpos = "";
       for ( RegexNode current : regex.firstPos () )
@@ -96,8 +98,6 @@ public class ParserTest
         {
           firstpos += ";";
         }
-        
-
 
         if ( current instanceof LeafNode )
         {
@@ -116,8 +116,6 @@ public class ParserTest
         lastpos += ( ( LeafNode ) current ).getPosition ();
       }
       System.out.println ( "LastPos: {" + lastpos + "}" );
-
-      
 
       RegexNode coreSyntax = regex.toCoreSyntax ();
       System.out.println ( coreSyntax.toString () );

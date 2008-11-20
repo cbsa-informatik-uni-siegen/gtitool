@@ -3,11 +3,8 @@ package de.unisiegen.gtitool.core.regex;
 
 import java.util.HashSet;
 
-import javax.swing.event.EventListenerList;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
-import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
@@ -15,7 +12,6 @@ import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.storage.Modifyable;
 
 
 /**
@@ -74,18 +70,6 @@ public class DefaultRegex implements Regex
 
 
   /**
-   * List of listeners
-   */
-  private EventListenerList listenerList = new EventListenerList ();
-
-
-  /**
-   * The initial RegexNode
-   */
-  private RegexNode initialNode;
-
-
-  /**
    * The root node of this regex
    */
   private RegexNode regexNode;
@@ -107,9 +91,8 @@ public class DefaultRegex implements Regex
    * The Constructor for a {@link DefaultRegex}
    * 
    * @param a The {@link Alphabet} of this Regex
-   * @param regexString
    */
-  public DefaultRegex ( Alphabet a, String regexString )
+  public DefaultRegex ( Alphabet a )
   {
     this.alphabet = a;
 
@@ -124,7 +107,6 @@ public class DefaultRegex implements Regex
     {
       exc.printStackTrace ();
     }
-    this.regexString = regexString;
   }
 
 
@@ -132,11 +114,12 @@ public class DefaultRegex implements Regex
    * Sets the {@link RegexNode} initial.
    * 
    * @param regexNode The {@link RegexNode} to set.
-   * @param change Indicates if a change was made
+   * @param regexString The new {@link String} for the regex
    */
-  public void setRegexNode ( RegexNode regexNode, boolean change )
+  public void setRegexNode ( RegexNode regexNode, String regexString )
   {
     this.regexNode = regexNode;
+    this.regexString = regexString;
 
     int currentPosition = 1;
     for ( RegexNode current : this.regexNode.getTokenNodes () )
@@ -147,42 +130,6 @@ public class DefaultRegex implements Regex
         currentPosition++ ;
       }
     }
-    
-    if ( change )
-    {
-      if ( this.initialNode == null
-          || !this.initialNode.equals ( this.regexNode ) )
-      {
-        fireModifyStatusChanged ( false );
-      }
-    }
-    else
-    {
-      this.initialNode = this.regexNode;
-    }
-  }
-
-
-  /**
-   * Changes the {@link RegexNode}
-   * 
-   * @param newRegexNode The new {@link RegexNode}
-   */
-  public void changeRegexNode ( RegexNode newRegexNode )
-  {
-    this.regexNode = newRegexNode;
-
-    int currentPosition = 1;
-    for ( RegexNode current : this.regexNode.getTokenNodes () )
-    {
-      if ( current instanceof LeafNode )
-      {
-        ( ( LeafNode ) current ).setPosition ( currentPosition );
-        currentPosition++ ;
-      }
-    }
-    fireModifyStatusChanged ( false );
-
   }
 
 
@@ -294,72 +241,6 @@ public class DefaultRegex implements Regex
   /**
    * {@inheritDoc}
    * 
-   * @see Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
-   */
-  public void addModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param forceModify
-   */
-  private void fireModifyStatusChanged ( final boolean forceModify )
-  {
-    ModifyStatusChangedListener [] listeners = this.listenerList
-        .getListeners ( ModifyStatusChangedListener.class );
-    if ( forceModify )
-    {
-      for ( ModifyStatusChangedListener current : listeners )
-      {
-        current.modifyStatusChanged ( true );
-      }
-    }
-    else
-    {
-      boolean newModifyStatus = isModified ();
-      for ( ModifyStatusChangedListener current : listeners )
-      {
-        current.modifyStatusChanged ( newModifyStatus );
-      }
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#isModified()
-   */
-  public boolean isModified ()
-  {
-    if ( this.initialNode == null || this.regexNode == null )
-    {
-      return true;
-    }
-    return !this.initialNode.equals ( this.regexNode );
-  }
-
-
-  /**
-   * Returns the initialNode.
-   * 
-   * @return The initialNode.
-   * @see #initialNode
-   */
-  public RegexNode getInitialNode ()
-  {
-    return this.initialNode;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
@@ -372,34 +253,20 @@ public class DefaultRegex implements Regex
     if ( obj instanceof DefaultRegex )
     {
       DefaultRegex dr = ( DefaultRegex ) obj;
-      return this.regexNode.equals ( dr.getRegexNode () );
+      return this.regexString.equals ( dr.getRegexString () )
+          && this.regexNode.equals ( dr.getRegexNode () );
     }
     return false;
   }
 
-
   /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
+   * @see java.lang.Object#toString()
    */
-  public void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
+  @Override
+  public String toString ()
   {
-    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+    return this.regexNode.toString ();
   }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#resetModify()
-   */
-  public void resetModify ()
-  {
-    this.initialNode = this.regexNode;
-  }
-
 
   /**
    * Returns the regexString.
@@ -411,16 +278,14 @@ public class DefaultRegex implements Regex
   {
     return this.regexString;
   }
-
-
+  
   /**
-   * Sets the regexString.
-   * 
-   * @param regexString The regexString to set.
-   * @see #regexString
    */
-  public void setRegexString ( String regexString )
+  @Override
+  public DefaultRegex clone ()
   {
-    this.regexString = regexString;
+    DefaultRegex r = new DefaultRegex(this.alphabet);
+    r.setRegexNode ( getRegexNode(), getRegexString() );
+    return r;
   }
 }

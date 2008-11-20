@@ -4,7 +4,6 @@ package de.unisiegen.gtitool.core.entities.regex;
 import java.io.Serializable;
 
 import de.unisiegen.gtitool.core.entities.InputEntity;
-import de.unisiegen.gtitool.core.storage.Modifyable;
 
 
 /**
@@ -13,7 +12,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
  * @author Simon Meurer
  * @version
  */
-public interface Regex extends InputEntity, Serializable, Modifyable
+public interface Regex extends InputEntity, Serializable
 {
   // Do nothing
 }

@@ -6,6 +6,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.swing.event.EventListenerList;
+
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
@@ -73,10 +75,19 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   private DefaultRegex regex;
 
 
+  private DefaultRegex initialRegex;
+
+
   /**
    * The {@link JGTIGraph}
    */
   private JGTIGraph jGTIGraph;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -110,7 +121,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public DefaultRegexModel ( DefaultRegex regex )
   {
+    System.err.println ("Schon wieder!");
     this.regex = regex;
+    this.initialRegex = regex.clone ();
   }
 
 
@@ -127,14 +140,15 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * Sets the regex.
-   * 
-   * @param regex The regex to set.
-   * @see #regex
+   * TODO
+   *
+   * @param node
+   * @param regexString
    */
-  public void setRegex ( DefaultRegex regex )
+  public void changeRegexNode ( RegexNode node, String regexString )
   {
-    this.regex = regex;
+    this.regex.setRegexNode ( node, regexString );
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -170,11 +184,11 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
     DefaultAlphabet da = new DefaultAlphabet ( element.getElement ( 0 ) );
-    this.regex = new DefaultRegex ( da, regexString );
-    System.err.println (regexString);
+    this.regex = new DefaultRegex ( da );
     RegexParseable rp = new RegexParseable ();
     this.regex.setRegexNode ( ( RegexNode ) rp.newParser ( regexString )
-        .parse (), false );
+        .parse (), regexString );
+    this.initialRegex = this.regex.clone ();
 
     if ( !foundVersion )
     {
@@ -459,7 +473,34 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   public void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
-    this.regex.addModifyStatusChangedListener ( listener );
+    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param forceModify
+   */
+  private void fireModifyStatusChanged ( final boolean forceModify )
+  {
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    if ( forceModify )
+    {
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( true );
+      }
+    }
+    else
+    {
+      boolean newModifyStatus = isModified ();
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( newModifyStatus );
+      }
+    }
   }
 
 
@@ -482,12 +523,25 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public boolean isModified ()
   {
-    return this.regex.isModified ();
+    return !this.regex.equals ( this.initialRegex );
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
+   */
+  public void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
 
   /**
    * Converts the graph to Latex
-   *
+   * 
    * @return The latex string
    */
   public String toLatexString ()
@@ -496,7 +550,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     RegexNode node = this.regex.getRegexNode ();
 
     int w = node.getWidth ();
-    s+= " %" + Messages.getString ( "LatexComment.CreateTabular" ) + "\n";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    s += " %" + Messages.getString ( "LatexComment.CreateTabular" ) + "\n"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     s += " \\begin{tabular}{"; //$NON-NLS-1$
     for ( int i = 0 ; i < w ; i++ )
     {
@@ -508,12 +562,12 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     Collections.sort ( nodes );
 
     int j = 0;
-    s+="  %" + Messages.getString ( "LatexComment.CreateNodes" ) + "\n";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    s += "  %" + Messages.getString ( "LatexComment.CreateNodes" ) + "\n"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     for ( int i = 0 ; i < nodes.size () ; i++ )
     {
       DefaultNodeView view = nodes.get ( i );
       int x_over = ( view.getX () ) / ( this.X_SPACE / 2 );
-      //Add space
+      // Add space
       s += "  "; //$NON-NLS-1$
       x_over += this.x_moving;
       for ( ; j < x_over ; j++ )
@@ -533,7 +587,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
       {
         name = "$\\epsilon$"; //$NON-NLS-1$
       }
-      s += "\\node{r" + i + "}{" + name + "}";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+      s += "\\node{r" + i + "}{" + name + "}"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
       if ( !view.equals ( nodes.get ( nodes.size () - 1 ) )
           && view.getY () != nodes.get ( i + 1 ).getY () )
       {
@@ -542,27 +596,14 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
       }
     }
     s += "\n \\end{tabular}\n"; //$NON-NLS-1$
-    s+= " %" + Messages.getString ( "LatexComment.NodeConnect" ) + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    s += " %" + Messages.getString ( "LatexComment.NodeConnect" ) + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     for ( DefaultRegexEdgeView v : this.regexEdgeViewList )
     {
       int parentId = nodes.indexOf ( v.getParentView () );
       int childId = nodes.indexOf ( v.getChildView () );
-      s += " \\nodeconnect{r" + parentId + "}{r" + childId + "}\n";  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+      s += " \\nodeconnect{r" + parentId + "}{r" + childId + "}\n"; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
     }
     return s;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
-   */
-  public void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.regex.removeModifyStatusChangedListener ( listener );
   }
 
 
@@ -573,7 +614,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public void resetModify ()
   {
-    this.regex.resetModify ();
+    this.initialRegex = this.regex.clone ();
   }
 
 }

@@ -30,13 +30,13 @@ public class RegexTester
       regex1 = ( RegexNode ) regexParseable.newParser ( regexText1 ).parse ();
       DefaultRegex conv1 = new DefaultRegex ( new DefaultAlphabet (
           new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),//$NON-NLS-1$ //$NON-NLS-2$
-          new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ), regexText1 );//$NON-NLS-1$ //$NON-NLS-2$
-      conv1.setRegexNode ( regex1, false );
+          new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ) );//$NON-NLS-1$ //$NON-NLS-2$
+      conv1.setRegexNode ( regex1, regexText1 );
       regex2 = ( RegexNode ) regexParseable.newParser ( regexText2 ).parse ();
       DefaultRegex conv2 = new DefaultRegex ( new DefaultAlphabet (
           new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),//$NON-NLS-1$ //$NON-NLS-2$
-          new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ), regexText2 );//$NON-NLS-1$ //$NON-NLS-2$
-      conv2.setRegexNode ( regex2, false );
+          new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ));//$NON-NLS-1$ //$NON-NLS-2$
+      conv2.setRegexNode ( regex2, regexText2 );
       System.err.println ( conv1.equals ( conv2 ) );
       while ( !regex1.isMarked () )
       {

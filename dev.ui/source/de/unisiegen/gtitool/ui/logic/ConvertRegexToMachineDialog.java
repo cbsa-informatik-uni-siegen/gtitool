@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.TreeSet;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -31,25 +30,20 @@ import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
-import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
-import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
-import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
@@ -614,6 +608,8 @@ public class ConvertRegexToMachineDialog implements
     this.jGTIGraphConverted.setEnabled ( false );
     this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGTIGraphConverted );
 
+    ArrayList<RegexNode> lastPos = this.regexNode.lastPos ();
+    this.count = ((LeafNode)lastPos.get ( lastPos.size () - 1 )).getPosition () + 1;
     this.positionMap = new HashMap < String, Position > ();
 
     while ( !this.endReached )
@@ -727,75 +723,26 @@ public class ConvertRegexToMachineDialog implements
 
   public void handleOk ()
   {
-    TreeSet < String > nameList = new TreeSet < String > ();
-    int fileCount = 0;
-    for ( EditorPanel current : this.mainWindowForm.getJGTIMainSplitPane ()
-        .getJGTIEditorPanelTabbedPane () )
+    logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    cancelAutoStepTimer ();
+
+    this.gui.setVisible ( false );
+
+    while ( !this.endReached )
     {
-      if ( current.getFile () == null )
+      try
       {
-        nameList.add ( current.getName () );
-        fileCount++ ;
+        performNextStep ( false );
+      }
+      catch ( StateException exc )
+      {
+        exc.printStackTrace();
       }
     }
 
-    String newName;
-    if ( this.toEntityType.equals ( MachineType.ENFA ) )
-    {
-      newName = Messages.getString ( "MainWindow.NewFile" ) + fileCount //$NON-NLS-1$
-          + "." + MachineType.ENFA.getFileEnding (); //$NON-NLS-1$
-      while ( nameList.contains ( newName ) )
-      {
-        fileCount++ ;
-        newName = Messages.getString ( "MainWindow.NewFile" ) + fileCount //$NON-NLS-1$
-            + "." + MachineType.ENFA.getFileEnding (); //$NON-NLS-1$
-      }
-    }
-    else
-    {
-
-      newName = Messages.getString ( "MainWindow.NewFile" ) + fileCount //$NON-NLS-1$
-          + "." + MachineType.DFA.getFileEnding (); //$NON-NLS-1$
-      while ( nameList.contains ( newName ) )
-      {
-        fileCount++ ;
-        newName = Messages.getString ( "MainWindow.NewFile" ) + fileCount //$NON-NLS-1$
-            + "." + MachineType.DFA.getFileEnding (); //$NON-NLS-1$
-      }
-    }
-    EditorPanel newEditorPanel = null;
-    try
-    {
-      newEditorPanel = new MachinePanel ( this.mainWindowForm,
-          new DefaultMachineModel ( this.modelConverted.getElement (),
-              this.toEntityType.toString () ), null );
-    }
-    catch ( TransitionSymbolOnlyOneTimeException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( StateException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( AlphabetException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( TransitionException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( StoreException exc )
-    {
-      exc.printStackTrace ();
-    }
-
-    newEditorPanel.setName ( newName );
-    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
-        .addEditorPanel ( newEditorPanel );
-    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
-        .setSelectedEditorPanel ( newEditorPanel );
+    this.panel.getMainWindow ().handleNew (
+        this.modelConverted.getElement (), true );
 
     this.regexNode.unmarkAll ();
     this.gui.dispose ();

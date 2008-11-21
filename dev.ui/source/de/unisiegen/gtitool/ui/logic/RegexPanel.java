@@ -102,6 +102,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   private String name = null;
 
 
+
+  /**
+   * Returns the {@link MainWindow}.
+   * 
+   * @return The {@link MainWindow}.
+   * @see #mainWindowForm
+   */
+  public final MainWindow getMainWindow ()
+  {
+    return this.mainWindowForm.getLogic ();
+  }
+
   /**
    * The {@link RedoUndoHandler}
    */

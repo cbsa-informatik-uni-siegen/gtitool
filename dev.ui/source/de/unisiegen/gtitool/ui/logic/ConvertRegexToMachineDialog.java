@@ -51,6 +51,7 @@ import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
@@ -262,13 +263,37 @@ public class ConvertRegexToMachineDialog implements
     /**
      * TODO
      */
+    private int actCount = 0;
+
+
+    /**
+     * TODO
+     */
     private Step activeStep;
 
 
     /**
      * TODO
      */
+    private RegexNode actNode;
+
+
+    /**
+     * TODO
+     */
     private ArrayList < String > addedStates;
+
+
+    /**
+     * TODO
+     */
+    private ArrayList < DefaultTransitionView > addedTransitions;
+
+
+    private ArrayList < ObjectPair < Symbol, DefaultStateView >> removedTransitions;
+
+
+    private RedoUndoItem redoUndoItem;
 
 
     /**
@@ -284,36 +309,12 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
-     * TODO
-     */
-    private ArrayList < DefaultTransitionView > addedTransitions;
-
-
-    private ArrayList < ObjectPair < Symbol, DefaultStateView >> removedTransitions;
-
-
-    private String removeStateName;
-
-
-    /**
-     * TODO
-     */
-    private RegexNode actNode;
-
-
-    /**
-     * TODO
-     */
-    private int actCount = 0;
-
-
-    /**
      * Allocates a new {@link StepItem}.
      */
     public StepItem (
         Step activeStep,
         ArrayList < String > addedStates,
-        String removedStateName,
+        RedoUndoItem redoUndoItem,
         ArrayList < DefaultTransitionView > addedTransitions,
         ArrayList < ObjectPair < Symbol, DefaultStateView > > removedTransitions,
         ArrayList < DefaultStateView > setStartFalse,
@@ -326,25 +327,13 @@ public class ConvertRegexToMachineDialog implements
       }
       this.activeStep = activeStep;
       this.addedStates = addedStates;
-      this.removeStateName = removedStateName;
+      this.redoUndoItem = redoUndoItem;
       this.setFinalFalse = setFinalFalse;
       this.setStartFalse = setStartFalse;
       this.addedTransitions = addedTransitions;
       this.removedTransitions = removedTransitions;
       this.actCount = count;
       this.actNode = actNode;
-    }
-
-
-    /**
-     * Returns the activeStep.
-     * 
-     * @return The activeStep.
-     * @see #activeStep
-     */
-    public final Step getActiveStep ()
-    {
-      return this.activeStep;
     }
 
 
@@ -361,50 +350,14 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
-     * Returns the addedStates.
+     * Returns the activeStep.
      * 
-     * @return The addedStates.
-     * @see #addedStates
+     * @return The activeStep.
+     * @see #activeStep
      */
-    public ArrayList < String > getAddedStates ()
+    public final Step getActiveStep ()
     {
-      return this.addedStates;
-    }
-
-
-    /**
-     * Returns the removeStateName.
-     * 
-     * @return The removeStateName.
-     * @see #removeStateName
-     */
-    public String getRemoveStateName ()
-    {
-      return this.removeStateName;
-    }
-
-
-    /**
-     * Returns the setFinalFalse.
-     * 
-     * @return The setFinalFalse.
-     * @see #setFinalFalse
-     */
-    public ArrayList < DefaultStateView > getSetFinalFalse ()
-    {
-      return this.setFinalFalse;
-    }
-
-
-    /**
-     * Returns the setStartFalse.
-     * 
-     * @return The setStartFalse.
-     * @see #setStartFalse
-     */
-    public ArrayList < DefaultStateView > getSetStartFalse ()
-    {
-      return this.setStartFalse;
+      return this.activeStep;
     }
 
 
@@ -417,6 +370,18 @@ public class ConvertRegexToMachineDialog implements
     public RegexNode getActNode ()
     {
       return this.actNode;
+    }
+
+
+    /**
+     * Returns the addedStates.
+     * 
+     * @return The addedStates.
+     * @see #addedStates
+     */
+    public ArrayList < String > getAddedStates ()
+    {
+      return this.addedStates;
     }
 
 
@@ -442,6 +407,42 @@ public class ConvertRegexToMachineDialog implements
     {
       return this.removedTransitions;
     }
+
+
+    /**
+     * Returns the redoUndoItem.
+     * 
+     * @return The redoUndoItem.
+     * @see #redoUndoItem
+     */
+    public RedoUndoItem getRedoUndoItem ()
+    {
+      return this.redoUndoItem;
+    }
+
+
+    /**
+     * Returns the setFinalFalse.
+     * 
+     * @return The setFinalFalse.
+     * @see #setFinalFalse
+     */
+    public ArrayList < DefaultStateView > getSetFinalFalse ()
+    {
+      return this.setFinalFalse;
+    }
+
+
+    /**
+     * Returns the setStartFalse.
+     * 
+     * @return The setStartFalse.
+     * @see #setStartFalse
+     */
+    public ArrayList < DefaultStateView > getSetStartFalse ()
+    {
+      return this.setStartFalse;
+    }
   }
 
 
@@ -465,12 +466,27 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * TODO
+   */
+  private int count = 0;
+
+
+  private DefaultRegex defaultRegex;
+
+
+  private boolean emptyStateCreated = false;
+
+
+  /**
    * Flag that indicates if the end is reached.
    */
   private boolean endReached = false;
 
 
   private ConvertRegexToMachineDialogForm gui;
+
+
+  private boolean isEmptyStateCreated = false;
 
 
   /**
@@ -506,16 +522,16 @@ public class ConvertRegexToMachineDialog implements
   private JFrame parent;
 
 
-  private boolean emptyStateCreated = false;
-
-
   private HashMap < String, Position > positionMap;
 
 
-  private RegexNode regexNode;
-
-
   private ArrayList < DefaultPositionState > positionStates;
+
+
+  private HashMap < DefaultPositionState, DefaultStateView > positionStateViewList = new HashMap < DefaultPositionState, DefaultStateView > ();
+
+
+  private RegexNode regexNode;
 
 
   private HashMap < RegexNode, ArrayList < DefaultStateView > > stateViewList = new HashMap < RegexNode, ArrayList < DefaultStateView > > ();
@@ -527,7 +543,7 @@ public class ConvertRegexToMachineDialog implements
   private ArrayList < StepItem > stepItemList = new ArrayList < StepItem > ();
 
 
-  private DefaultRegex defaultRegex;
+  private EntityType toEntityType;
 
 
   /**
@@ -557,9 +573,6 @@ public class ConvertRegexToMachineDialog implements
       this.autoStepTimer = null;
     }
   }
-
-
-  private EntityType toEntityType;
 
 
   /**
@@ -608,8 +621,9 @@ public class ConvertRegexToMachineDialog implements
     this.jGTIGraphConverted.setEnabled ( false );
     this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGTIGraphConverted );
 
-    ArrayList<RegexNode> lastPos = this.regexNode.lastPos ();
-    this.count = ((LeafNode)lastPos.get ( lastPos.size () - 1 )).getPosition () + 1;
+    ArrayList < RegexNode > lastPos = this.regexNode.lastPos ();
+    this.count = ( ( LeafNode ) lastPos.get ( lastPos.size () - 1 ) )
+        .getPosition () + 1;
     this.positionMap = new HashMap < String, Position > ();
 
     while ( !this.endReached )
@@ -647,6 +661,31 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.ui.logic.interfaces.LogicClass#getGUI()
+   */
+  public ConvertRegexToMachineDialogForm getGUI ()
+  {
+    return this.gui;
+  }
+
+
+  private DefaultPositionState getNextUnmarkedState ()
+  {
+    for ( DefaultPositionState state : this.positionStates )
+    {
+      if ( !state.isMarked () )
+      {
+        return state;
+      }
+    }
+    return null;
+  }
+
+
+  /**
    * Returns the position of the {@link State} or null if the position is not
    * defined.
    * 
@@ -657,18 +696,6 @@ public class ConvertRegexToMachineDialog implements
   private final Position getPosition ( State state )
   {
     return this.positionMap.get ( state.getName () );
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.LogicClass#getGUI()
-   */
-  public ConvertRegexToMachineDialogForm getGUI ()
-  {
-    return this.gui;
   }
 
 
@@ -737,12 +764,12 @@ public class ConvertRegexToMachineDialog implements
       }
       catch ( StateException exc )
       {
-        exc.printStackTrace();
+        exc.printStackTrace ();
       }
     }
 
-    this.panel.getMainWindow ().handleNew (
-        this.modelConverted.getElement (), true );
+    this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
+        true );
 
     this.regexNode.unmarkAll ();
     this.gui.dispose ();
@@ -783,12 +810,6 @@ public class ConvertRegexToMachineDialog implements
 
   /**
    * TODO
-   */
-  private int count = 0;
-
-
-  /**
-   * TODO
    * 
    * @param b
    * @throws StateException
@@ -804,6 +825,7 @@ public class ConvertRegexToMachineDialog implements
       ArrayList < DefaultTransitionView > addedTransitions = new ArrayList < DefaultTransitionView > ();
       ArrayList < ObjectPair < Symbol, DefaultStateView > > removedTransitions = new ArrayList < ObjectPair < Symbol, DefaultStateView > > ();
       int c = this.count;
+      RedoUndoItem redoUndoItem = null;
 
       RegexNode node = this.regexNode.getNextNodeForNFA ();
 
@@ -1037,9 +1059,8 @@ public class ConvertRegexToMachineDialog implements
             exc.printStackTrace ();
           }
         }
-        removedStateName = start2.getState ().getName ();
 
-        this.modelConverted.removeState ( start2, false );
+        redoUndoItem = this.modelConverted.removeState ( start2, false );
 
         ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
         views.add ( start1 );
@@ -1123,8 +1144,8 @@ public class ConvertRegexToMachineDialog implements
         this.stateViewList.put ( k, views );
       }
       this.stepItemList.add ( new StepItem ( this.actualStep, addedStates,
-          removedStateName, addedTransitions, removedTransitions,
-          setStartFalse, setFinalFalse, c, node ) );
+          redoUndoItem, addedTransitions, removedTransitions, setStartFalse,
+          setFinalFalse, c, node ) );
 
       this.endReached = this.regexNode.isMarked ();
 
@@ -1241,7 +1262,9 @@ public class ConvertRegexToMachineDialog implements
                         a ), this.positionStateViewList.get ( positionState ),
                     this.positionStateViewList.get ( uState ), true, false,
                     true );
-              } else {
+              }
+              else
+              {
                 old.getTransition ().add ( a );
               }
             }
@@ -1281,25 +1304,6 @@ public class ConvertRegexToMachineDialog implements
   }
 
 
-  private boolean isEmptyStateCreated = false;
-
-
-  private HashMap < DefaultPositionState, DefaultStateView > positionStateViewList = new HashMap < DefaultPositionState, DefaultStateView > ();
-
-
-  private DefaultPositionState getNextUnmarkedState ()
-  {
-    for ( DefaultPositionState state : this.positionStates )
-    {
-      if ( !state.isMarked () )
-      {
-        return state;
-      }
-    }
-    return null;
-  }
-
-
   /**
    * TODO
    * 
@@ -1310,10 +1314,8 @@ public class ConvertRegexToMachineDialog implements
     StepItem stepItem = this.stepItemList
         .remove ( this.stepItemList.size () - 1 );
 
-    System.err.println ( "StepItem: " + stepItem.getActiveStep () );
     for ( String name : stepItem.getAddedStates () )
     {
-      System.err.println ( name );
       for ( int i = 0 ; i < this.modelConverted.getStateViewList ().size () ; i++ )
       {
         if ( this.modelConverted.getStateViewList ().get ( i ).getState ()
@@ -1333,44 +1335,19 @@ public class ConvertRegexToMachineDialog implements
     {
       view.getState ().setStartState ( true );
     }
-    if ( !stepItem.getActiveStep ().equals ( Step.CONVERT_CONCAT ) )
+    for ( DefaultTransitionView view : stepItem.getAddedTransitions () )
     {
-      for ( DefaultTransitionView view : stepItem.getAddedTransitions () )
-      {
-        this.modelConverted.removeTransition ( view, false );
-      }
+      this.modelConverted.removeTransition ( view, false );
     }
     if ( stepItem.getActiveStep ().equals ( Step.CONVERT_CONCAT ) )
     {
-      try
-      {
-        DefaultStateView start2 = this.modelConverted.createStateView ( 0, 0,
-            new DefaultState ( stepItem.getRemoveStateName () ), false );
-        start2.getState ().setStartState ( true );
-        for ( DefaultTransitionView transitionView : stepItem
-            .getAddedTransitions () )
-        {
-          transitionView.setSource ( start2 );
-        }
-
-        ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
-        views.add ( start2 );
-        views
-            .add ( this.stateViewList.get ( stepItem.getActNode () ).get ( 1 ) );
-        this.stateViewList.put ( stepItem.getActNode (), views );
-
-      }
-      catch ( StateException exc )
-      {
-        exc.printStackTrace ();
-      }
+      stepItem.getRedoUndoItem ().undo ();
     }
     this.actualStep = stepItem.getActiveStep ();
     stepItem.getActNode ().unmark ();
 
     this.count = stepItem.getActCount ();
 
-    System.err.println ( "Step complete!" );
     if ( manual )
     {
       setStatus ();

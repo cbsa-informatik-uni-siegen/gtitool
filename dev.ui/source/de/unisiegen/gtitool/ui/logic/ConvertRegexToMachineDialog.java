@@ -37,7 +37,6 @@ import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
-import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
@@ -49,7 +48,6 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
-import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
@@ -92,14 +90,7 @@ public class ConvertRegexToMachineDialog implements
           }
           else
           {
-            try
-            {
-              performNextStep ( true );
-            }
-            catch ( StateException exc )
-            {
-              exc.printStackTrace ();
-            }
+            performNextStep ( true );
           }
         }
       } );
@@ -231,21 +222,19 @@ public class ConvertRegexToMachineDialog implements
       switch ( this )
       {
         case CONVERT_CONCAT :
-          return "convert concatenation";
+          return "convert concatenation"; //$NON-NLS-1$
         case CONVERT_DISJUNCTION :
-          return "convert disjunction";
+          return "convert disjunction"; //$NON-NLS-1$
         case CONVERT_EPSILON :
-          return "convert epsilon";
+          return "convert epsilon"; //$NON-NLS-1$
         case CONVERT_KLEENE :
-          return "convert kleene";
+          return "convert kleene"; //$NON-NLS-1$
         case CONVERT_TOKEN :
-          return "convert token";
+          return "convert token"; //$NON-NLS-1$
         case INITIAL :
-          return "initial";
+          return "initial"; //$NON-NLS-1$
         case FINISH :
-        {
           return "finish"; //$NON-NLS-1$
-        }
       }
       throw new RuntimeException ( "unsupported step" );//$NON-NLS-1$
     }
@@ -261,62 +250,68 @@ public class ConvertRegexToMachineDialog implements
   {
 
     /**
-     * TODO
+     * The act count
      */
     private int actCount = 0;
 
 
     /**
-     * TODO
+     * The active {@link Step}
      */
     private Step activeStep;
 
 
     /**
-     * TODO
+     * The active {@link RegexNode}
      */
     private RegexNode actNode;
 
 
     /**
-     * TODO
+     * The added states
      */
     private ArrayList < String > addedStates;
 
 
     /**
-     * TODO
+     * The added {@link DefaultTransitionView}s
      */
     private ArrayList < DefaultTransitionView > addedTransitions;
 
 
-    private ArrayList < ObjectPair < Symbol, DefaultStateView >> removedTransitions;
-
-
+    /**
+     * The {@link RedoUndoItem} for the concatenation
+     */
     private RedoUndoItem redoUndoItem;
 
 
     /**
-     * TODO
+     * The final states that where made normal
      */
     private ArrayList < DefaultStateView > setFinalFalse;
 
 
     /**
-     * TODO
+     * The start states that where made normal
      */
     private ArrayList < DefaultStateView > setStartFalse;
 
 
     /**
      * Allocates a new {@link StepItem}.
+     * 
+     * @param activeStep The active {@link Step}
+     * @param addedStates The added states
+     * @param redoUndoItem The {@link RedoUndoItem} for Concatenation
+     * @param addedTransitions The added Transitions
+     * @param setStartFalse The start states that where made normal
+     * @param setFinalFalse The final states that where made normal
+     * @param count The act count
+     * @param actNode The active {@link RegexNode}
      */
-    public StepItem (
-        Step activeStep,
-        ArrayList < String > addedStates,
+    public StepItem ( Step activeStep, ArrayList < String > addedStates,
         RedoUndoItem redoUndoItem,
         ArrayList < DefaultTransitionView > addedTransitions,
-        ArrayList < ObjectPair < Symbol, DefaultStateView > > removedTransitions,
         ArrayList < DefaultStateView > setStartFalse,
         ArrayList < DefaultStateView > setFinalFalse, int count,
         RegexNode actNode )
@@ -331,7 +326,6 @@ public class ConvertRegexToMachineDialog implements
       this.setFinalFalse = setFinalFalse;
       this.setStartFalse = setStartFalse;
       this.addedTransitions = addedTransitions;
-      this.removedTransitions = removedTransitions;
       this.actCount = count;
       this.actNode = actNode;
     }
@@ -398,18 +392,6 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
-     * Returns the removedTransitions.
-     * 
-     * @return The removedTransitions.
-     * @see #removedTransitions
-     */
-    public ArrayList < ObjectPair < Symbol, DefaultStateView >> getRemovedTransitions ()
-    {
-      return this.removedTransitions;
-    }
-
-
-    /**
      * Returns the redoUndoItem.
      * 
      * @return The redoUndoItem.
@@ -453,10 +435,10 @@ public class ConvertRegexToMachineDialog implements
       .getLogger ( ConvertRegexToMachineDialog.class );
 
 
+  /**
+   * The actual {@link Step}
+   */
   private Step actualStep = null;
-
-
-  private StepItem actualStepItem = null;
 
 
   /**
@@ -466,14 +448,20 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * TODO
+   * The count of states
    */
   private int count = 0;
 
 
+  /**
+   * The {@link DefaultRegex}
+   */
   private DefaultRegex defaultRegex;
 
 
+  /**
+   * Flag indicates if the empty state is already created
+   */
   private boolean emptyStateCreated = false;
 
 
@@ -483,10 +471,10 @@ public class ConvertRegexToMachineDialog implements
   private boolean endReached = false;
 
 
+  /**
+   * The {@link ConvertRegexToMachineDialogForm}
+   */
   private ConvertRegexToMachineDialogForm gui;
-
-
-  private boolean isEmptyStateCreated = false;
 
 
   /**
@@ -501,9 +489,6 @@ public class ConvertRegexToMachineDialog implements
   private JGTIGraph jGTIGraphOriginal;
 
 
-  private MainWindowForm mainWindowForm;
-
-
   /**
    * The converted {@link DefaultMachineModel}.
    */
@@ -516,24 +501,47 @@ public class ConvertRegexToMachineDialog implements
   private DefaultRegexModel modelOriginal;
 
 
+  /**
+   * The {@link RegexPanel}
+   */
   private RegexPanel panel;
 
 
+  /**
+   * The parent {@link JFrame}
+   */
   private JFrame parent;
 
 
+  /**
+   * The Position Map containing the position of a State
+   */
   private HashMap < String, Position > positionMap;
 
 
+  /**
+   * An {@link ArrayList} of {@link DefaultPositionState}s
+   */
   private ArrayList < DefaultPositionState > positionStates;
 
 
+  /**
+   * A {@link HashMap} containing the {@link DefaultStateView} for a
+   * {@link DefaultPositionState}
+   */
   private HashMap < DefaultPositionState, DefaultStateView > positionStateViewList = new HashMap < DefaultPositionState, DefaultStateView > ();
 
 
+  /**
+   * The {@link RegexNode}
+   */
   private RegexNode regexNode;
 
 
+  /**
+   * The state view list containing the start and final {@link DefaultStateView}
+   * for a {@link RegexNode}
+   */
   private HashMap < RegexNode, ArrayList < DefaultStateView > > stateViewList = new HashMap < RegexNode, ArrayList < DefaultStateView > > ();
 
 
@@ -543,17 +551,22 @@ public class ConvertRegexToMachineDialog implements
   private ArrayList < StepItem > stepItemList = new ArrayList < StepItem > ();
 
 
-  private EntityType toEntityType;
+  /**
+   * The {@link EntityType} that should be converted to.
+   */
+  private EntityType entityType;
 
 
   /**
-   * TODO
+   * Creates new from {@link ConvertRegexToMachineDialog}
+   * 
+   * @param parent The parent {@link JFrame}
+   * @param panel The {@link RegexPanel}
    */
   public ConvertRegexToMachineDialog ( JFrame parent, RegexPanel panel )
   {
     this.parent = parent;
     this.panel = panel;
-    this.mainWindowForm = panel.getMainWindowForm ();
     this.regexNode = panel.getRegex ().getRegexNode ();
     if ( !this.regexNode.isInCoreSyntax () )
     {
@@ -576,35 +589,34 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param fromEntityType
-   * @param toEntityType
-   * @param complete
-   * @see de.unisiegen.gtitool.ui.convert.Converter#convert(de.unisiegen.gtitool.core.entities.InputEntity.EntityType,
+   * @see Converter#convert(de.unisiegen.gtitool.core.entities.InputEntity.EntityType,
    *      de.unisiegen.gtitool.core.entities.InputEntity.EntityType, boolean)
    */
   public void convert ( @SuppressWarnings ( "unused" )
-  EntityType fromEntityType, EntityType toEntityType, boolean complete )
+  EntityType fromEntityType, EntityType toEntityType,
+      @SuppressWarnings ( "unused" )
+      boolean complete )
   {
     this.gui = new ConvertRegexToMachineDialogForm ( this, this.parent );
 
-    this.toEntityType = toEntityType;
+    this.entityType = toEntityType;
     Alphabet a = this.panel.getRegex ().getAlphabet ();
     this.defaultRegex = this.panel.getRegex ().clone ();
-    if ( this.toEntityType.equals ( MachineType.ENFA ) )
+    if ( this.entityType.equals ( MachineType.ENFA ) )
     {
       this.modelConverted = new DefaultMachineModel ( new DefaultENFA ( a, a,
           false ) );
     }
-    else if ( this.toEntityType.equals ( MachineType.DFA ) )
+    else if ( this.entityType.equals ( MachineType.DFA ) )
     {
       this.modelConverted = new DefaultMachineModel ( new DefaultDFA ( a, a,
           false ) );
       this.positionStates = new ArrayList < DefaultPositionState > ();
 
       this.defaultRegex.setRegexNode ( new ConcatenationNode (
-          this.defaultRegex.getRegexNode (), new TokenNode ( "#" ) ),
+          this.defaultRegex.getRegexNode (), new TokenNode ( "#" ) ), //$NON-NLS-1$
           this.defaultRegex.getRegexString () );
       this.regexNode = this.defaultRegex.getRegexNode ();
     }
@@ -628,15 +640,7 @@ public class ConvertRegexToMachineDialog implements
 
     while ( !this.endReached )
     {
-      try
-      {
-        performNextStep ( false );
-      }
-      catch ( StateException exc )
-      {
-        exc.printStackTrace ();
-
-      }
+      performNextStep ( false );
     }
     new LayoutManager ( this.modelConverted, null ).doLayout ();
     for ( DefaultStateView current : this.modelConverted.getStateViewList () )
@@ -646,7 +650,7 @@ public class ConvertRegexToMachineDialog implements
       this.positionMap.put ( current.getState ().getName (), new Position (
           current.getPositionX (), current.getPositionY () + yOffset ) );
     }
-    if ( this.toEntityType.equals ( MachineType.ENFA ) )
+    if ( this.entityType.equals ( MachineType.ENFA ) )
     {
       while ( !this.stepItemList.isEmpty () )
       {
@@ -661,10 +665,9 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.LogicClass#getGUI()
+   * @see LogicClass#getGUI()
    */
   public ConvertRegexToMachineDialogForm getGUI ()
   {
@@ -672,6 +675,11 @@ public class ConvertRegexToMachineDialog implements
   }
 
 
+  /**
+   * Returns the next unmarked PositionState
+   * 
+   * @return The next unmarked PositionState
+   */
   private DefaultPositionState getNextUnmarkedState ()
   {
     for ( DefaultPositionState state : this.positionStates )
@@ -699,6 +707,9 @@ public class ConvertRegexToMachineDialog implements
   }
 
 
+  /**
+   * Handles the action on the auto step button.
+   */
   public void handleAutoStep ()
   {
     logger.debug ( "handleAutoStep", "handle auto step" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -709,6 +720,9 @@ public class ConvertRegexToMachineDialog implements
   }
 
 
+  /**
+   * Handles the action on the begin step button.
+   */
   public void handleBeginStep ()
   {
     while ( !this.stepItemList.isEmpty () )
@@ -718,6 +732,9 @@ public class ConvertRegexToMachineDialog implements
   }
 
 
+  /**
+   * Handles the action on the cancel button.
+   */
   public void handleCancel ()
   {
     this.regexNode.unmarkAll ();
@@ -725,6 +742,9 @@ public class ConvertRegexToMachineDialog implements
   }
 
 
+  /**
+   * Handles the action on the end step button.
+   */
   public void handleEndStep ()
   {
     while ( !this.endReached )
@@ -734,20 +754,19 @@ public class ConvertRegexToMachineDialog implements
   }
 
 
+  /**
+   * Handles the action on the next step button.
+   */
   public void handleNextStep ()
   {
-    try
-    {
-      performNextStep ( true );
-      setStatus ();
-    }
-    catch ( StateException exc )
-    {
-      exc.printStackTrace ();
-    }
+    performNextStep ( true );
+    setStatus ();
   }
 
 
+  /**
+   * Handles the action on the ok button.
+   */
   public void handleOk ()
   {
     logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -758,14 +777,7 @@ public class ConvertRegexToMachineDialog implements
 
     while ( !this.endReached )
     {
-      try
-      {
-        performNextStep ( false );
-      }
-      catch ( StateException exc )
-      {
-        exc.printStackTrace ();
-      }
+      performNextStep ( false );
     }
 
     this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
@@ -777,7 +789,7 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * TODO
+   * Handles the action on the previous step button.
    */
   public void handlePreviousStep ()
   {
@@ -786,7 +798,7 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * TODO
+   * Handles the action on the print button.
    */
   public void handlePrint ()
   {
@@ -795,7 +807,7 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * TODO
+   * Handles the action on the stop button.
    */
   public void handleStop ()
   {
@@ -809,21 +821,18 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * TODO
+   * Performs the next step.
    * 
-   * @param b
-   * @throws StateException
+   * @param manual Indicates if step was made manually
    */
-  private final void performNextStep ( boolean b ) throws StateException
+  private final void performNextStep ( boolean manual )
   {
-    if ( this.toEntityType.equals ( MachineType.ENFA ) )
+    if ( this.entityType.equals ( MachineType.ENFA ) )
     {
       ArrayList < String > addedStates = new ArrayList < String > ();
       ArrayList < DefaultStateView > setFinalFalse = new ArrayList < DefaultStateView > ();
       ArrayList < DefaultStateView > setStartFalse = new ArrayList < DefaultStateView > ();
-      String removedStateName = null;
       ArrayList < DefaultTransitionView > addedTransitions = new ArrayList < DefaultTransitionView > ();
-      ArrayList < ObjectPair < Symbol, DefaultStateView > > removedTransitions = new ArrayList < ObjectPair < Symbol, DefaultStateView > > ();
       int c = this.count;
       RedoUndoItem redoUndoItem = null;
 
@@ -834,7 +843,18 @@ public class ConvertRegexToMachineDialog implements
       {
         this.actualStep = Step.CONVERT_TOKEN;
         TokenNode token = ( TokenNode ) node;
-        DefaultState start = new DefaultState ( "s" + token.getPosition () );
+
+        DefaultState start;
+        try
+        {
+          start = new DefaultState ( "s" + token.getPosition () ); //$NON-NLS-1$
+        }
+        catch ( StateException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
         start.setStartState ( true );
         // this.modelConverted.getMachine ().addState ( start );
         DefaultStateView startView = this.modelConverted.createStateView ( 0,
@@ -845,7 +865,17 @@ public class ConvertRegexToMachineDialog implements
           startView.move ( p.getX (), p.getY () );
         }
 
-        DefaultState fin = new DefaultState ( "f" + token.getPosition () );
+        DefaultState fin;
+        try
+        {
+          fin = new DefaultState ( "f" + token.getPosition () ); //$NON-NLS-1$
+        }
+        catch ( StateException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
         fin.setFinalState ( true );
         // this.modelConverted.getMachine ().addState ( fin );
         DefaultStateView finView = this.modelConverted.createStateView ( 0, 0,
@@ -889,7 +919,17 @@ public class ConvertRegexToMachineDialog implements
       {
         this.actualStep = Step.CONVERT_EPSILON;
         EpsilonNode token = ( EpsilonNode ) node;
-        DefaultState start = new DefaultState ( "s" + token.getPosition () );
+        DefaultState start;
+        try
+        {
+          start = new DefaultState ( "s" + token.getPosition () ); //$NON-NLS-1$
+        }
+        catch ( StateException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
         start.setStartState ( true );
         // this.modelConverted.getMachine ().addState ( start );
         DefaultStateView startView = this.modelConverted.createStateView ( 0,
@@ -900,7 +940,17 @@ public class ConvertRegexToMachineDialog implements
           startView.move ( p.getX (), p.getY () );
         }
 
-        DefaultState fin = new DefaultState ( "f" + token.getPosition () );
+        DefaultState fin;
+        try
+        {
+          fin = new DefaultState ( "f" + token.getPosition () ); //$NON-NLS-1$
+        }
+        catch ( StateException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
         fin.setFinalState ( true );
         // this.modelConverted.getMachine ().addState ( fin );
         DefaultStateView finView = this.modelConverted.createStateView ( 0, 0,
@@ -956,14 +1006,34 @@ public class ConvertRegexToMachineDialog implements
         if ( final1 == null || final2 == null || start1 == null
             || start2 == null )
         {
-          throw new IllegalArgumentException ( "A State is null" );
+          throw new IllegalArgumentException ( "A State is null" ); //$NON-NLS-1$
         }
 
-        DefaultState start = new DefaultState ( "s" + this.count );
+        DefaultState start;
+        try
+        {
+          start = new DefaultState ( "s" + this.count ); //$NON-NLS-1$
+        }
+        catch ( StateException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
         start.setStartState ( true );
         // this.modelConverted.getMachine ().addState ( start );
 
-        DefaultState fin = new DefaultState ( "f" + this.count++ );
+        DefaultState fin;
+        try
+        {
+          fin = new DefaultState ( "f" + this.count++ ); //$NON-NLS-1$
+        }
+        catch ( StateException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
         fin.setFinalState ( true );
         // this.modelConverted.getMachine ().addState ( fin );
 
@@ -1079,11 +1149,31 @@ public class ConvertRegexToMachineDialog implements
         DefaultStateView final1 = this.stateViewList.get (
             k.getChildren ().get ( 0 ) ).get ( 1 );
 
-        DefaultState start = new DefaultState ( "s" + this.count );
+        DefaultState start;
+        try
+        {
+          start = new DefaultState ( "s" + this.count ); //$NON-NLS-1$
+        }
+        catch ( StateException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
         start.setStartState ( true );
         // this.modelConverted.getMachine ().addState ( start );
 
-        DefaultState fin = new DefaultState ( "f" + this.count++ );
+        DefaultState fin;
+        try
+        {
+          fin = new DefaultState ( "f" + this.count++ ); //$NON-NLS-1$
+        }
+        catch ( StateException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
         fin.setFinalState ( true );
         // this.modelConverted.getMachine ().addState ( fin );
 
@@ -1143,24 +1233,24 @@ public class ConvertRegexToMachineDialog implements
 
         this.stateViewList.put ( k, views );
       }
-      this.stepItemList.add ( new StepItem ( this.actualStep, addedStates,
-          redoUndoItem, addedTransitions, removedTransitions, setStartFalse,
-          setFinalFalse, c, node ) );
+      this.stepItemList
+          .add ( new StepItem ( this.actualStep, addedStates, redoUndoItem,
+              addedTransitions, setStartFalse, setFinalFalse, c, node ) );
 
       this.endReached = this.regexNode.isMarked ();
 
-      if ( b )
+      if ( manual )
       {
         setStatus ();
         updateGraph ();
       }
     }
-    else if ( this.toEntityType.equals ( MachineType.DFA ) )
+    else if ( this.entityType.equals ( MachineType.DFA ) )
     {
       if ( this.positionStates.isEmpty () )
       {
         HashSet < Integer > positions = new HashSet < Integer > ();
-        String name = "";
+        String name = ""; //$NON-NLS-1$
         ArrayList < RegexNode > firstPos = this.defaultRegex.getRegexNode ()
             .firstPos ();
         for ( RegexNode node : firstPos )
@@ -1170,7 +1260,17 @@ public class ConvertRegexToMachineDialog implements
           name += leaf.getPosition ();
 
         }
-        DefaultPositionState state = new DefaultPositionState ( name, positions );
+        DefaultPositionState state;
+        try
+        {
+          state = new DefaultPositionState ( name, positions );
+        }
+        catch ( StateException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
         this.positionStates.add ( state );
         state.setStartState ( true );
         this.positionStateViewList.put ( state, this.modelConverted
@@ -1181,7 +1281,7 @@ public class ConvertRegexToMachineDialog implements
         DefaultPositionState positionState = getNextUnmarkedState ();
         if ( positionState == null )
         {
-          throw new RuntimeException ( "Da ging wohl was schief!" );
+          throw new RuntimeException ( "Internal Error: PositionState is null" ); //$NON-NLS-1$
         }
         positionState.mark ();
         for ( Symbol a : this.defaultRegex.getAlphabet () )
@@ -1198,12 +1298,22 @@ public class ConvertRegexToMachineDialog implements
               }
             }
           }
-          String name = "";
+          String name = ""; //$NON-NLS-1$
           for ( Integer i : u )
           {
             name += i;
           }
-          DefaultPositionState uState = new DefaultPositionState ( name, u );
+          DefaultPositionState uState;
+          try
+          {
+            uState = new DefaultPositionState ( name, u );
+          }
+          catch ( StateException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+            return;
+          }
 
           if ( !u.isEmpty () )
           {
@@ -1223,7 +1333,17 @@ public class ConvertRegexToMachineDialog implements
           }
           else
           {
-            uState.setName ( "error" );
+            try
+            {
+              // TODO Internationalize!
+              uState.setName ( "empty" ); //$NON-NLS-1$
+            }
+            catch ( StateException exc )
+            {
+              exc.printStackTrace ();
+              System.exit ( 1 );
+              return;
+            }
             if ( !this.emptyStateCreated )
             {
               this.positionStates.add ( uState );
@@ -1271,10 +1391,14 @@ public class ConvertRegexToMachineDialog implements
             catch ( TransitionSymbolNotInAlphabetException exc )
             {
               exc.printStackTrace ();
+              System.exit ( 1 );
+              return;
             }
             catch ( TransitionSymbolOnlyOneTimeException exc )
             {
               exc.printStackTrace ();
+              System.exit ( 1 );
+              return;
             }
           }
 
@@ -1295,7 +1419,7 @@ public class ConvertRegexToMachineDialog implements
 
       this.endReached = ready;
 
-      if ( b )
+      if ( manual )
       {
         setStatus ();
         updateGraph ();
@@ -1305,9 +1429,9 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * TODO
+   * Performs previous step
    * 
-   * @param manual
+   * @param manual Indicates if step was made manually
    */
   private void performPreviousStep ( boolean manual )
   {
@@ -1361,7 +1485,7 @@ public class ConvertRegexToMachineDialog implements
    */
   private final void setStatus ()
   {
-    if ( this.toEntityType.equals ( MachineType.ENFA ) )
+    if ( this.entityType.equals ( MachineType.ENFA ) )
     {
       this.endReached = this.regexNode.isMarked ();
     }

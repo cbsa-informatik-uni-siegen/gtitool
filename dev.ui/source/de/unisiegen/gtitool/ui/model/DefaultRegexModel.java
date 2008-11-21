@@ -75,6 +75,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   private DefaultRegex regex;
 
 
+  /**
+   * The initial {@link DefaultRegex}
+   */
   private DefaultRegex initialRegex;
 
 
@@ -252,6 +255,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   }
 
 
+  /**
+   * The x overhead
+   */
   private int x_moving = 0;
 
 

@@ -11,16 +11,25 @@ import de.unisiegen.gtitool.ui.logic.RegexPanel;
 public class RegexChangedItem extends RedoUndoItem
 {
   
+  /**
+   * TODO
+   */
   private RegexPanel panel;
   
+  /**
+   * TODO
+   */
   private RegexNode newRegex;
   
+  /**
+   * TODO
+   */
   private RegexNode oldRegex;
   
   
   /**
    * TODO
-   * @param model
+   * @param panel
    * @param newRegex
    *
    */

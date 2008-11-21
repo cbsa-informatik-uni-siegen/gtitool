@@ -699,7 +699,7 @@ public class DefaultState implements State
    * @see Entity#hashCode()
    */
   @Override
-  public final int hashCode ()
+  public int hashCode ()
   {
     if ( this.id == ID_NOT_DEFINED )
     {

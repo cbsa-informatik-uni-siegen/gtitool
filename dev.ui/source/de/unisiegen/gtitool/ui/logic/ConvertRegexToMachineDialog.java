@@ -31,13 +31,16 @@ import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
@@ -182,7 +185,7 @@ public class ConvertRegexToMachineDialog implements
   /**
    * The {@link Step} enum.
    * 
-   * @author Christian Fehler
+   * @author Simon Meurer
    */
   private enum Step
   {
@@ -581,6 +584,7 @@ public class ConvertRegexToMachineDialog implements
 
     this.toEntityType = toEntityType;
     Alphabet a = this.panel.getRegex ().getAlphabet ();
+    this.defaultRegex = this.panel.getRegex ().clone ();
     if ( this.toEntityType.equals ( MachineType.ENFA ) )
     {
       this.modelConverted = new DefaultMachineModel ( new DefaultENFA ( a, a,
@@ -592,13 +596,12 @@ public class ConvertRegexToMachineDialog implements
           false ) );
       this.positionStates = new ArrayList < DefaultPositionState > ();
 
-      this.defaultRegex = this.panel.getRegex ();
       this.defaultRegex.setRegexNode ( new ConcatenationNode (
           this.defaultRegex.getRegexNode (), new TokenNode ( "#" ) ),
           this.defaultRegex.getRegexString () );
       this.regexNode = this.defaultRegex.getRegexNode ();
     }
-    this.modelOriginal = new DefaultRegexModel ( this.panel.getRegex () );
+    this.modelOriginal = new DefaultRegexModel ( this.defaultRegex );
     this.modelOriginal.initializeGraph ();
     this.modelOriginal.createTree ();
 
@@ -724,27 +727,68 @@ public class ConvertRegexToMachineDialog implements
 
   public void handleOk ()
   {
-    EditorPanel newEditorPanel = new MachinePanel ( this.mainWindowForm,
-        this.modelConverted, null );
     TreeSet < String > nameList = new TreeSet < String > ();
-    int count = 0;
+    int fileCount = 0;
     for ( EditorPanel current : this.mainWindowForm.getJGTIMainSplitPane ()
         .getJGTIEditorPanelTabbedPane () )
     {
       if ( current.getFile () == null )
       {
         nameList.add ( current.getName () );
-        count++ ;
+        fileCount++ ;
       }
     }
 
-    String newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-        + "." + MachineType.ENFA.getFileEnding (); //$NON-NLS-1$
-    while ( nameList.contains ( newName ) )
+    String newName;
+    if ( this.toEntityType.equals ( MachineType.ENFA ) )
     {
-      count++ ;
-      newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+      newName = Messages.getString ( "MainWindow.NewFile" ) + fileCount //$NON-NLS-1$
           + "." + MachineType.ENFA.getFileEnding (); //$NON-NLS-1$
+      while ( nameList.contains ( newName ) )
+      {
+        fileCount++ ;
+        newName = Messages.getString ( "MainWindow.NewFile" ) + fileCount //$NON-NLS-1$
+            + "." + MachineType.ENFA.getFileEnding (); //$NON-NLS-1$
+      }
+    }
+    else
+    {
+
+      newName = Messages.getString ( "MainWindow.NewFile" ) + fileCount //$NON-NLS-1$
+          + "." + MachineType.DFA.getFileEnding (); //$NON-NLS-1$
+      while ( nameList.contains ( newName ) )
+      {
+        fileCount++ ;
+        newName = Messages.getString ( "MainWindow.NewFile" ) + fileCount //$NON-NLS-1$
+            + "." + MachineType.DFA.getFileEnding (); //$NON-NLS-1$
+      }
+    }
+    EditorPanel newEditorPanel = null;
+    try
+    {
+      newEditorPanel = new MachinePanel ( this.mainWindowForm,
+          new DefaultMachineModel ( this.modelConverted.getElement (),
+              this.toEntityType.toString () ), null );
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( StateException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( TransitionException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( StoreException exc )
+    {
+      exc.printStackTrace ();
     }
 
     newEditorPanel.setName ( newName );
@@ -1161,7 +1205,8 @@ public class ConvertRegexToMachineDialog implements
         DefaultPositionState state = new DefaultPositionState ( name, positions );
         this.positionStates.add ( state );
         state.setStartState ( true );
-        this.modelConverted.createStateView ( 0, 0, state, false );
+        this.positionStateViewList.put ( state, this.modelConverted
+            .createStateView ( 0, 0, state, false ) );
       }
       else
       {
@@ -1179,56 +1224,90 @@ public class ConvertRegexToMachineDialog implements
             if ( a.getName ().equals (
                 this.defaultRegex.symbolAtPosition ( p.intValue () ) ) )
             {
-              System.err.println ( "a: " + a + ", p: " + p );
               for ( Integer n : this.defaultRegex.followPos ( p.intValue () ) )
               {
                 u.add ( n );
               }
             }
-
           }
-          String name = "{";
+          String name = "";
           for ( Integer i : u )
           {
             name += i;
           }
-          name += "}";
           DefaultPositionState uState = new DefaultPositionState ( name, u );
 
           if ( !u.isEmpty () )
           {
             if ( !this.positionStates.contains ( uState ) )
             {
+              LeafNode end = ( LeafNode ) this.regexNode.lastPos ().get ( 0 );
+              if ( uState.getPositions ().contains (
+                  new Integer ( end.getPosition () ) ) )
+              {
+                uState.setFinalState ( true );
+              }
               this.positionStates.add ( uState );
-              this.modelConverted.createStateView ( 0, 0, uState, false );
-
+              this.positionStateViewList.put ( uState, this.modelConverted
+                  .createStateView ( 0, 0, uState, false ) );
             }
+
           }
           else
           {
+            uState.setName ( "error" );
             if ( !this.emptyStateCreated )
             {
               this.positionStates.add ( uState );
-              this.modelConverted.createStateView ( 0, 0, uState, false );
+              this.positionStateViewList.put ( uState, this.modelConverted
+                  .createStateView ( 0, 0, uState, false ) );
               this.emptyStateCreated = true;
             }
           }
-          try
+          if ( this.positionStateViewList.get ( uState ) != null
+              && this.positionStateViewList.get ( positionState ) != null )
           {
-            this.modelConverted.createTransitionView ( new DefaultTransition (
-                new DefaultWord (), new DefaultWord (), a ),
-                this.modelConverted.getStateViewForState ( positionState ),
-                this.modelConverted.getStateViewForState ( uState ), true,
-                false, true );
+            ArrayList < Symbol > s = new ArrayList < Symbol > ();
+            s.add ( a );
+            try
+            {
+              DefaultTransitionView old = null;
+              for ( DefaultTransitionView t : this.modelConverted
+                  .getTransitionViewList () )
+              {
+                if ( t.getSourceView ().equals (
+                    this.positionStateViewList.get ( positionState ) )
+                    && t.getTargetView ().equals (
+                        this.positionStateViewList.get ( uState ) ) )
+                {
+                  old = t;
+                }
+              }
+              if ( old == null )
+              {
+                this.modelConverted.createTransitionView (
+                    new DefaultTransition ( this.defaultRegex.getAlphabet (),
+                        this.defaultRegex.getAlphabet (), new DefaultWord (),
+                        new DefaultWord (), this.positionStateViewList.get (
+                            positionState ).getState (),
+                        this.positionStateViewList.get ( uState ).getState (),
+                        a ), this.positionStateViewList.get ( positionState ),
+                    this.positionStateViewList.get ( uState ), true, false,
+                    true );
+              } else {
+                old.getTransition ().add ( a );
+              }
+            }
+            catch ( TransitionSymbolNotInAlphabetException exc )
+            {
+              exc.printStackTrace ();
+            }
+            catch ( TransitionSymbolOnlyOneTimeException exc )
+            {
+              exc.printStackTrace ();
+            }
           }
-          catch ( TransitionSymbolNotInAlphabetException exc )
-          {
-            exc.printStackTrace ();
-          }
-          catch ( TransitionSymbolOnlyOneTimeException exc )
-          {
-            exc.printStackTrace ();
-          }
+
         }
       }
       boolean ready = true;
@@ -1253,6 +1332,12 @@ public class ConvertRegexToMachineDialog implements
       }
     }
   }
+
+
+  private boolean isEmptyStateCreated = false;
+
+
+  private HashMap < DefaultPositionState, DefaultStateView > positionStateViewList = new HashMap < DefaultPositionState, DefaultStateView > ();
 
 
   private DefaultPositionState getNextUnmarkedState ()

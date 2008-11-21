@@ -40,7 +40,7 @@ public class DefaultPositionState extends DefaultState
   public DefaultPositionState ( String name, HashSet < Integer > positions )
       throws StateException
   {
-    super ( name );
+    super ( "{" + name + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.positions = positions;
     this.mark = false;
   }
@@ -71,28 +71,55 @@ public class DefaultPositionState extends DefaultState
 
 
   /**
+   * Unmarks the State
+   */
+  public void unMark ()
+  {
+    this.mark = false;
+  }
+
+
+  /**
    * Marks the State
    */
   public void mark ()
   {
     this.mark = true;
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @param other
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.DefaultState#equals(java.lang.Object)
+   * {@inheritDoc}
+   * 
+   * @see DefaultState#equals(java.lang.Object)
    */
   @Override
   public boolean equals ( Object other )
   {
-    if(other instanceof DefaultPositionState) {
+    if ( other instanceof DefaultPositionState )
+    {
       DefaultPositionState positionState = ( DefaultPositionState ) other;
       return this.positions.equals ( positionState.getPositions () );
     }
     return false;
   }
-  
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.DefaultState#hashCode()
+   */
+  @Override
+  public int hashCode ()
+  {
+    int i = 0;
+    for ( Integer n : this.positions )
+    {
+      i += n * n;
+    }
+    return i;
+  }
+
 }

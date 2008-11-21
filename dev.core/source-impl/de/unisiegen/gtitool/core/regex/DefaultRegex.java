@@ -299,6 +299,9 @@ public class DefaultRegex implements Regex
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#clone()
    */
   @Override
   public DefaultRegex clone ()

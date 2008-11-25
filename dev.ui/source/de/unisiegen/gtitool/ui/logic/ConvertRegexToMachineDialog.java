@@ -292,6 +292,9 @@ public class ConvertRegexToMachineDialog implements
     private ArrayList < DefaultTransitionView > addedTransitions;
 
 
+    /**
+     * The added Symbols to Transitions
+     */
     private ArrayList < ObjectPair < DefaultTransitionView, Symbol > > addedSymbolsToTransition;
 
 
@@ -324,6 +327,9 @@ public class ConvertRegexToMachineDialog implements
      * @param setFinalFalse The final states that where made normal
      * @param count The act count
      * @param actNode The active {@link RegexNode}
+     * @param errorCreated Is error state created
+     * @param markedPositionState The last marked position state
+     * @param addedSymbolsToTransition The added Symbols to Transitions
      */
     public StepItem (
         Step activeStep,

@@ -33,6 +33,7 @@ import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.core.util.ObjectPair;
@@ -1525,6 +1526,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         {
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
         }
+      }
+      else if ( panel instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) panel;
+        regexPanel.getConverter ().convert ( RegexType.REGEX, entityType, false );
       }
       else
       {
@@ -3868,10 +3874,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
     }
+    else if ( panel instanceof RegexPanel )
+    {
+      machinePanelSelected = false;
+    }
     else
     {
       throw new RuntimeException (
-          "the select panel is not a machine or grammar panel" ); //$NON-NLS-1$
+          "the select panel is not a regex, machine or grammar panel" ); //$NON-NLS-1$
     }
 
     // Return if only errors should be displayes

@@ -1,6 +1,5 @@
 package de.unisiegen.gtitool.ui.redoundo;
 
-import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.ui.logic.RegexPanel;
 
 
@@ -19,25 +18,26 @@ public class RegexChangedItem extends RedoUndoItem
   /**
    * TODO
    */
-  private RegexNode newRegex;
+  private String newText;
   
   /**
    * TODO
    */
-  private RegexNode oldRegex;
+  private String oldText;
   
   
   /**
    * TODO
    * @param panel
-   * @param newRegex
+   * @param newText 
+   * @param oldText 
    *
    */
-  public RegexChangedItem (RegexPanel panel, RegexNode newRegex, RegexNode oldRegex)
+  public RegexChangedItem (RegexPanel panel, String newText, String oldText)
   {
     this.panel = panel;
-    this.newRegex = newRegex;
-    this.oldRegex = oldRegex;
+    this.oldText = oldText;
+    this.newText = newText;
   }
 
   /**
@@ -48,7 +48,7 @@ public class RegexChangedItem extends RedoUndoItem
   @Override
   public void redo ()
   {
-    this.panel.changeRegex ( this.newRegex, false );
+    this.panel.changeRegexText ( this.newText );
   }
 
 
@@ -60,7 +60,7 @@ public class RegexChangedItem extends RedoUndoItem
   @Override
   public void undo ()
   {
-    this.panel.changeRegex ( this.oldRegex, false );
+    this.panel.changeRegexText ( this.oldText );
   }
 
 }

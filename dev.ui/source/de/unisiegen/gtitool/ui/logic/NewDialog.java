@@ -282,7 +282,7 @@ public final class NewDialog implements LogicClass < NewDialogForm >
     {
       this.newPanel = new RegexPanel ( this.mainWindowForm,
           new DefaultRegexModel ( new DefaultRegex ( this.newDialogAlphabet
-              .getRegexAlphabet () ) ), null ); //$NON-NLS-1$
+              .getRegexAlphabet () ) ), null );
 
       PreferenceManager.getInstance ().setLastChoosenEntityType (
           RegexType.REGEX );

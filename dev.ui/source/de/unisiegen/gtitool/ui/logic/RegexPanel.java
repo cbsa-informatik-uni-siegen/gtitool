@@ -102,7 +102,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   private String name = null;
 
 
-
   /**
    * Returns the {@link MainWindow}.
    * 
@@ -113,6 +112,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   {
     return this.mainWindowForm.getLogic ();
   }
+
 
   /**
    * The {@link RedoUndoHandler}
@@ -168,7 +168,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           {
             if ( newEntity != null )
             {
-              changeRegex ( newEntity, true );
+              changeRegex ( newEntity, !isRedoUndo () );
+              setRedoUndo ( false );
               getGUI ().jGTIButtonCoreSyntax.setEnabled ( !newEntity
                   .isInCoreSyntax () );
             }
@@ -206,20 +207,61 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
+   * TODO
+   */
+  private boolean redoUndo = false;
+
+  
+  /**
+   * Sets the redoUndo.
+   *
+   * @param redoUndo The redoUndo to set.
+   * @see #redoUndo
+   */
+  public void setRedoUndo ( boolean redoUndo )
+  {
+    this.redoUndo = redoUndo;
+  }
+
+  /**
+   * Returns the redoUndo.
+   * 
+   * @return The redoUndo.
+   * @see #redoUndo
+   */
+  public boolean isRedoUndo ()
+  {
+    return this.redoUndo;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param newText
+   */
+  public void changeRegexText ( String newText )
+  {
+    this.redoUndo = true;
+    this.gui.styledRegexParserPanel.setText ( newText );
+  }
+
+
+  /**
    * Changes the Regex
    * 
    * @param newRegexNode The new {@link RegexNode}
    */
   public void changeRegex ( RegexNode newRegexNode, boolean addRedoUndoItem )
   {
-    RegexNode old = this.model.getRegex ().getRegexNode ();
+    String oldText = this.model.getRegex ().getRegexString ();
 
     this.model.changeRegexNode ( newRegexNode, this.gui.styledRegexParserPanel
         .getText () );
     if ( addRedoUndoItem )
     {
-      this.redoUndoHandler.addItem ( new RegexChangedItem ( this, this.model
-          .getRegex ().getRegexNode (), old ) );
+      this.redoUndoHandler.addItem ( new RegexChangedItem ( this,
+          this.gui.styledRegexParserPanel.getText (), oldText ) );
 
     }
     this.model.initializeGraph ();
@@ -274,10 +316,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#getConverter()
+   * @see EditorPanel#getConverter()
    */
   public Converter getConverter ()
   {
@@ -533,8 +574,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param evt
    */
-  public void handleToCoreSyntaxButtonClicked ( @SuppressWarnings ( "unused" )
-  ActionEvent evt )
+  public void handleToCoreSyntaxButtonClicked (
+      @SuppressWarnings ( "unused" ) ActionEvent evt )
   {
     DefaultRegex newRegex = new DefaultRegex ( this.model.getRegex ()
         .getAlphabet () );

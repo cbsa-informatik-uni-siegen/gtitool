@@ -106,10 +106,9 @@ public class DefaultPositionState extends DefaultState
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.DefaultState#hashCode()
+   * @see DefaultState#hashCode()
    */
   @Override
   public int hashCode ()
@@ -117,7 +116,7 @@ public class DefaultPositionState extends DefaultState
     int i = 0;
     for ( Integer n : this.positions )
     {
-      i += n * n;
+      i += n.hashCode () * n.hashCode ();
     }
     return i;
   }

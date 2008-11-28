@@ -18,22 +18,20 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
 /**
- * TODO
+ * A panel for the RegexParser
  */
 public final class StyledRegexParserPanel extends
     StyledParserPanel < RegexNode >
 {
 
   /**
-   * TODO
+   * The serial version uid.
    */
   private static final long serialVersionUID = -6169359927866826626L;
 
 
   /**
-   * TODO
-   * 
-   * @param parseable
+   * Creates a new from {@link StyledRegexParserPanel}
    */
   public StyledRegexParserPanel ()
   {
@@ -48,11 +46,9 @@ public final class StyledRegexParserPanel extends
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param parsedObject
-   * @return
-   * @see de.unisiegen.gtitool.ui.style.parser.StyledParserPanel#checkParsedObject(de.unisiegen.gtitool.core.entities.Entity)
+   * @see StyledParserPanel#checkParsedObject(de.unisiegen.gtitool.core.entities.Entity)
    */
   @Override
   protected RegexNode checkParsedObject ( RegexNode regexNode )

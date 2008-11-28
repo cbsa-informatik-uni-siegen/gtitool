@@ -130,10 +130,19 @@ public class DefaultRegex implements Regex
   }
 
 
-  public String symbolAtPosition(int position) {
+  /**
+   * Gets the Symbol at Position in the Regex
+   *
+   * @param position The position
+   * @return The Symbol at Position in the Regex or null if position is empty
+   */
+  public String symbolAtPosition ( int position )
+  {
     String s = null;
-    for(LeafNode current : this.regexNode.getTokenNodes ()) {
-      if(current.getPosition () == position) {
+    for ( LeafNode current : this.regexNode.getTokenNodes () )
+    {
+      if ( current.getPosition () == position )
+      {
         s = current.getNodeString ().toString ();
       }
     }
@@ -206,8 +215,10 @@ public class DefaultRegex implements Regex
         if ( foundPosInLastPosN1 )
         {
           RegexNode n2 = node.getChildren ().get ( 1 );
-          for(RegexNode firstPosNode : n2.firstPos ()) {
-            followPos.add(((LeafNode)firstPosNode).getPosition ());
+          for ( RegexNode firstPosNode : n2.firstPos () )
+          {
+            followPos.add ( new Integer ( ( ( LeafNode ) firstPosNode )
+                .getPosition () ) );
           }
         }
       }
@@ -228,8 +239,10 @@ public class DefaultRegex implements Regex
         }
         if ( foundInLastPosN )
         {
-          for(RegexNode firstPosNode : n.firstPos ()) {
-            followPos.add(((LeafNode)firstPosNode).getPosition ());
+          for ( RegexNode firstPosNode : n.firstPos () )
+          {
+            followPos.add ( new Integer ( ( ( LeafNode ) firstPosNode )
+                .getPosition () ) );
           }
         }
       }

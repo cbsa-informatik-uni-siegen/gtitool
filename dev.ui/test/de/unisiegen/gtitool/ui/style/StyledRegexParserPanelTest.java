@@ -28,7 +28,7 @@ public class StyledRegexParserPanelTest
     StyledRegexParserPanel styledRegexParserPanel = new StyledRegexParserPanel ();
     try
     {
-      styledRegexParserPanel.setAlphabet ( new DefaultAlphabet(new DefaultSymbol("a"), new DefaultSymbol("b")) );
+      styledRegexParserPanel.setAlphabet ( new DefaultAlphabet(new DefaultSymbol("a"), new DefaultSymbol("b")) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
     catch ( AlphabetException exc )
     {

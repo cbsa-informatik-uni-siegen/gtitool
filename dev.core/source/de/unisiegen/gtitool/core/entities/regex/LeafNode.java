@@ -8,6 +8,12 @@ public abstract class LeafNode extends RegexNode
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -7062093234164837073L;
+
+
+  /**
    * Flag that indicates if Node is already used in NFA construction
    */
   private boolean marked = false;

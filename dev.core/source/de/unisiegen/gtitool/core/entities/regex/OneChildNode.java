@@ -8,13 +8,20 @@ public abstract class OneChildNode extends RegexNode
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -3109784857649152942L;
+
+
+  /**
    * Flag that indicates if Node is already used in NFA construction
    */
   private boolean marked = false;
 
+
   /**
    * TODO
-   *
+   * 
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmark()
    */
   @Override
@@ -22,10 +29,11 @@ public abstract class OneChildNode extends RegexNode
   {
     this.marked = false;
   }
-  
+
+
   /**
    * TODO
-   *
+   * 
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmarkAll()
    */
   @Override
@@ -34,6 +42,7 @@ public abstract class OneChildNode extends RegexNode
     unmark ();
     this.regex.unmarkAll ();
   }
+
 
   /**
    * The Child of this {@link OneChildNode}

@@ -36,20 +36,13 @@ import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.jgraph.JGraphpadParallelSplineRouter;
 import de.unisiegen.gtitool.ui.jgraph.NodeView;
-import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 
 
 /**
- * TODO
+ * The Default model for a Regex
  */
 public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 {
-
-  /**
-   * The {@link RedoUndoHandler}
-   */
-  private RedoUndoHandler redoUndoHandler;
-
 
   /**
    * The default y-space in the graph
@@ -142,10 +135,10 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
+   * Changes the RegexNode
    * 
-   * @param node
-   * @param regexString
+   * @param node The new {@link RegexNode}
+   * @param regexString The new String for the Regex
    */
   public void changeRegexNode ( RegexNode node, String regexString )
   {
@@ -213,9 +206,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.model.DefaultModel#getElement()
+   * @see DefaultModel#getElement()
    */
   public Element getElement ()
   {
@@ -230,7 +223,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
+   * Initializes the {@link JGTIGraph}
    */
   public void initializeGraph ()
   {
@@ -299,9 +292,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
+   * Recursivly add the Nodes to the Model
    * 
-   * @param parent
+   * @param parent The parent {@link DefaultNodeView}
    */
   private void addNodesToModel ( DefaultNodeView parent )
   {
@@ -376,11 +369,11 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
+   * Creates a new {@link DefaultRegexEdgeView}
    * 
-   * @param parent
-   * @param child
-   * @return
+   * @param parent The parent {@link DefaultNodeView}
+   * @param child The child {@link DefaultNodeView}
+   * @return The created {@link DefaultRegexEdgeView}
    */
   public DefaultRegexEdgeView createRegexEdgeView ( DefaultNodeView parent,
       DefaultNodeView child )
@@ -402,12 +395,12 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
+   * Creates a new {@link DefaultNodeView}
    * 
-   * @param x
-   * @param y
-   * @param node
-   * @return
+   * @param x The x value
+   * @param y The y value
+   * @param node The content
+   * @return The created {@link DefaultNodeView}
    */
   @SuppressWarnings ( "unchecked" )
   public DefaultNodeView createNodeView ( double x, double y, RegexNode node )
@@ -470,10 +463,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
+   * @see Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
    */
   public void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -483,9 +475,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
+   * Fired if the Regex was modified
    * 
-   * @param forceModify
+   * @param forceModify Flag indicates that modify was forced
    */
   private void fireModifyStatusChanged ( final boolean forceModify )
   {
@@ -510,25 +502,14 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * Set a new {@link RedoUndoHandler}
+   * {@inheritDoc}
    * 
-   * @param redoUndoHandler the new {@link RedoUndoHandler}
-   */
-  public final void setRedoUndoHandler ( RedoUndoHandler redoUndoHandler )
-  {
-    this.redoUndoHandler = redoUndoHandler;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#isModified()
+   * @see Modifyable#isModified()
    */
   public boolean isModified ()
   {
-    if(this.regex != null) {
+    if ( this.regex != null )
+    {
       return !this.regex.equals ( this.initialRegex );
     }
     return this.initialRegex != null;
@@ -616,9 +597,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#resetModify()
+   * @see Modifyable#resetModify()
    */
   public void resetModify ()
   {

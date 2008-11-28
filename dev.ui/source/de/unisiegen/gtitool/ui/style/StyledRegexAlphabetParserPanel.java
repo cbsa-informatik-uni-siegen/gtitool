@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
 /**
- * TODO
+ * A panel for a RegexAlphabetParser
  */
 public class StyledRegexAlphabetParserPanel extends
     StyledParserPanel < Alphabet >
@@ -33,7 +33,7 @@ public class StyledRegexAlphabetParserPanel extends
 
 
   /**
-   * TODO
+   * Creates a new {@link StyledAlphabetParserPanel}
    */
   public StyledRegexAlphabetParserPanel ()
   {
@@ -42,11 +42,9 @@ public class StyledRegexAlphabetParserPanel extends
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param parsedObject
-   * @return
-   * @see de.unisiegen.gtitool.ui.style.parser.StyledParserPanel#checkParsedObject(de.unisiegen.gtitool.core.entities.Entity)
+   * @see StyledParserPanel#checkParsedObject(de.unisiegen.gtitool.core.entities.Entity)
    */
   @Override
   protected Alphabet checkParsedObject ( Alphabet alphabet )

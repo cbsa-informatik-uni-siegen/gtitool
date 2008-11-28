@@ -8,6 +8,12 @@ public abstract class TwoChildNode extends RegexNode
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 3752945655164551118L;
+
+
+  /**
    * Flag that indicates if Node is already used in NFA construction
    */
   private boolean marked = false;

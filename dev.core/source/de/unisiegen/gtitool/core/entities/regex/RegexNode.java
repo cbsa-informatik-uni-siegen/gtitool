@@ -19,6 +19,12 @@ public abstract class RegexNode implements Entity < RegexNode >
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -6437803797773026712L;
+
+
+  /**
    * Flag that indicates if user has used braces around the node
    */
   protected boolean braces = false;
@@ -176,16 +182,18 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return True if Node is marked in creation of NFA
    */
   public abstract boolean isMarked ();
-  
+
+
   /**
    * Resets the mark flag.
    */
-  public abstract void unmark();
-  
+  public abstract void unmark ();
+
+
   /**
    * Resets the mark flag of the whole regex
    */
-  public abstract void unmarkAll();
+  public abstract void unmarkAll ();
 
 
   /**

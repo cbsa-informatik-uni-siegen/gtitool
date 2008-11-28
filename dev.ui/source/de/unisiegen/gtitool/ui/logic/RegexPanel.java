@@ -17,6 +17,7 @@ import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.RegexException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
+import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -90,12 +91,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * The {@link ModifyStatusChangedListener}.
-   */
-  private ModifyStatusChangedListener modifyStatusChangedListener;
-
-
-  /**
    * The name of this {@link GrammarPanel}.
    */
   private String name = null;
@@ -147,7 +142,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
 
-    this.model.setRedoUndoHandler ( this.redoUndoHandler );
     setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
         .getState () );
 
@@ -263,6 +257,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * Changes the Regex
    * 
    * @param newRegexNode The new {@link RegexNode}
+   * @param addRedoUndoItem Should a RedoUndoItem be added
    */
   public void changeRegex ( RegexNode newRegexNode, boolean addRedoUndoItem )
   {
@@ -372,10 +367,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#getJTabbedPaneConsole()
+   * @see EditorPanel#getJTabbedPaneConsole()
    */
   public JTabbedPane getJTabbedPaneConsole ()
   {
@@ -433,7 +427,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * Returns the regex.
    * 
    * @return The regex.
-   * @see #regex
    */
   public DefaultRegex getRegex ()
   {
@@ -442,9 +435,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#handleExchange()
+   * @see EditorPanel#handleExchange()
    */
   public void handleExchange ()
   {
@@ -455,9 +448,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#handleRedo()
+   * @see EditorPanel#handleRedo()
    */
   public void handleRedo ()
   {
@@ -467,10 +460,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#handleSave()
+   * @see EditorPanel#handleSave()
    */
   public File handleSave ()
   {
@@ -495,10 +487,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#handleSaveAs()
+   * @see EditorPanel#handleSaveAs()
    */
   public File handleSaveAs ()
   {
@@ -613,11 +604,11 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * Handles Click on the toLatexButton
    * 
    * @param evt
    */
-  public void handleToLatexButtonClicked ( ActionEvent evt )
+  public void handleToLatexButtonClicked ( @SuppressWarnings("unused") ActionEvent evt )
   {
     FileFilter ff = new FileFilter ()
     {
@@ -627,10 +618,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       {
         if ( acceptedFile.isDirectory () )
         {
-          return false;
+          return true;
         }
         if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
-            + "tex" ) )
+            + "tex" ) ) //$NON-NLS-1$
         {
           return true;
         }
@@ -660,7 +651,12 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   }
 
 
-  public void handleToNFAButton ( ActionEvent evt )
+  /**
+   * Handles the Click on the NFA Button
+   *
+   * @param evt
+   */
+  public void handleToNFAButton ( @SuppressWarnings("unused") ActionEvent evt )
   {
     ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
         this.mainWindowForm, this );
@@ -669,20 +665,20 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#handleToolbarEditDocument()
+   * @see EditorPanel#handleToolbarEditDocument()
    */
   public void handleToolbarEditDocument ()
   {
-    // TODO
+    // TODO Add AlphabetChanger
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#handleUndo()
+   * @see EditorPanel#handleUndo()
    */
   public void handleUndo ()
   {
@@ -709,7 +705,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         new ListSelectionListener ()
         {
 
-          public void valueChanged ( ListSelectionEvent event )
+          public void valueChanged ( @SuppressWarnings("unused") ListSelectionEvent event )
           {
             // TODO
           }
@@ -730,10 +726,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#isRedoAble()
+   * @see EditorPanel#isRedoAble()
    */
   public boolean isRedoAble ()
   {
@@ -742,10 +737,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#isUndoAble()
+   * @see EditorPanel#isUndoAble()
    */
   public boolean isUndoAble ()
   {
@@ -754,9 +748,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener#languageChanged()
+   * @see LanguageChangedListener#languageChanged()
    */
   public void languageChanged ()
   {
@@ -788,10 +782,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param name
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#setName(java.lang.String)
+   * @see EditorPanel#setName(java.lang.String)
    */
   public void setName ( String name )
   {
@@ -800,10 +793,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param visible
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#setVisibleConsole(boolean)
+   * @see EditorPanel#setVisibleConsole(boolean)
    */
   public void setVisibleConsole ( boolean visible )
   {

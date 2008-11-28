@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.TreeSet;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -195,6 +194,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
+   * Returns the jGTIGraph.
+   * 
+   * @return The jGTIGraph.
+   * @see #jGTIGraph
+   */
+  public JGTIGraph getJGTIGraph ()
+  {
+    return this.jGTIGraph;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
@@ -211,10 +222,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   private boolean redoUndo = false;
 
-  
+
   /**
    * Sets the redoUndo.
-   *
+   * 
    * @param redoUndo The redoUndo to set.
    * @see #redoUndo
    */
@@ -222,6 +233,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   {
     this.redoUndo = redoUndo;
   }
+
 
   /**
    * Returns the redoUndo.
@@ -583,40 +595,16 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         .toCoreSyntax (), this.model.getRegex ().getRegexNode ()
         .toCoreSyntax ().toString () );
 
-    EditorPanel newEditorPanel = new RegexPanel ( this.mainWindowForm,
-        new DefaultRegexModel ( newRegex ), null );
-    TreeSet < String > nameList = new TreeSet < String > ();
-    int count = 0;
-    for ( EditorPanel current : this.mainWindowForm.getJGTIMainSplitPane ()
-        .getJGTIEditorPanelTabbedPane () )
-    {
-      if ( current.getFile () == null )
-      {
-        nameList.add ( current.getName () );
-        count++ ;
-      }
-    }
-
-    String newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-        + "." + RegexType.REGEX.getFileEnding (); //$NON-NLS-1$
-    while ( nameList.contains ( newName ) )
-    {
-      count++ ;
-      newName = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-          + "." + RegexType.REGEX.getFileEnding (); //$NON-NLS-1$
-    }
-
-    newEditorPanel.setName ( newName );
-    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
-        .addEditorPanel ( newEditorPanel );
-    newEditorPanel
-        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-    this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
-        .setSelectedEditorPanel ( newEditorPanel );
+    getMainWindow ().handleNew ( new DefaultRegexModel ( newRegex ) );
   }
 
 
-  public void handleToDFAButton ( ActionEvent evt )
+  /**
+   * TODO
+   * 
+   * @param evt
+   */
+  public void handleToDFAButton ( @SuppressWarnings ( "unused" ) ActionEvent evt )
   {
     ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
         this.mainWindowForm, this );

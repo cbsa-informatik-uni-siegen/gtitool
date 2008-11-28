@@ -9,6 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 import org.jgraph.graph.DefaultGraphModel;
@@ -36,15 +37,19 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
+import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
+import de.unisiegen.gtitool.ui.model.ConvertMachineTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
@@ -606,6 +611,12 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * The {@link ConvertMachineTableModel}.
+   */
+  private ConvertMachineTableModel convertMachineTableModel;
+
+
+  /**
    * The state view list containing the start and final {@link DefaultStateView}
    * for a {@link RegexNode}
    */
@@ -622,6 +633,26 @@ public class ConvertRegexToMachineDialog implements
    * The {@link EntityType} that should be converted to.
    */
   private EntityType entityType;
+
+
+  /**
+   * The {@link ConvertMachineTableColumnModel}.
+   */
+  private ConvertMachineTableColumnModel tableColumnModel = new ConvertMachineTableColumnModel ();
+
+
+  /**
+   * Adds a outline comment.
+   * 
+   * @param prettyString The {@link PrettyString} to add.
+   */
+  private final void addOutlineComment ( PrettyString prettyString )
+  {
+    this.convertMachineTableModel.addRow ( prettyString );
+    this.gui.jGTITableOutline.changeSelection ( this.convertMachineTableModel
+        .getRowCount () - 1, ConvertMachineTableModel.OUTLINE_COLUMN, false,
+        false );
+  }
 
 
   /**
@@ -674,6 +705,10 @@ public class ConvertRegexToMachineDialog implements
     {
       this.modelConverted = new DefaultMachineModel ( new DefaultENFA ( a, a,
           false ) );
+      this.gui
+          .setTitle ( Messages
+              .getString (
+                  "ConvertRegexToMachineDialog.Title", Messages.getString ( "ConvertRegexToMachineDialog.ENFA" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
     else if ( this.entityType.equals ( MachineType.DFA ) )
     {
@@ -685,10 +720,25 @@ public class ConvertRegexToMachineDialog implements
           this.defaultRegex.getRegexNode (), new TokenNode ( "#" ) ), //$NON-NLS-1$
           this.defaultRegex.getRegexString () );
       this.regexNode = this.defaultRegex.getRegexNode ();
+      this.gui
+          .setTitle ( Messages
+              .getString (
+                  "ConvertRegexToMachineDialog.Title", Messages.getString ( "ConvertRegexToMachineDialog.DFA" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported convert to Type" ); //$NON-NLS-1$
     }
     this.modelOriginal = new DefaultRegexModel ( this.defaultRegex );
     this.modelOriginal.initializeGraph ();
     this.modelOriginal.createTree ();
+
+    this.convertMachineTableModel = new ConvertMachineTableModel ();
+    this.gui.jGTITableOutline.setModel ( this.convertMachineTableModel );
+    this.gui.jGTITableOutline.setColumnModel ( this.tableColumnModel );
+    this.gui.jGTITableOutline.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableOutline.getSelectionModel ().setSelectionMode (
+        ListSelectionModel.SINGLE_SELECTION );
 
     this.jGTIGraphOriginal = this.modelOriginal.getJGTIGraph ();
 
@@ -735,6 +785,66 @@ public class ConvertRegexToMachineDialog implements
   public ConvertRegexToMachineDialogForm getGUI ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the panel.
+   * 
+   * @return The panel.
+   * @see #panel
+   */
+  public RegexPanel getRegexPanel ()
+  {
+    return this.panel;
+  }
+
+
+  /**
+   * Returns the modelConverted.
+   * 
+   * @return The modelConverted.
+   * @see #modelConverted
+   */
+  public DefaultMachineModel getModelConverted ()
+  {
+    return this.modelConverted;
+  }
+
+
+  /**
+   * Returns the modelOriginal.
+   * 
+   * @return The modelOriginal.
+   * @see #modelOriginal
+   */
+  public DefaultRegexModel getModelOriginal ()
+  {
+    return this.modelOriginal;
+  }
+
+
+  /**
+   * Returns the convertMachineTableModel.
+   * 
+   * @return The convertMachineTableModel.
+   * @see #convertMachineTableModel
+   */
+  public ConvertMachineTableModel getConvertMachineTableModel ()
+  {
+    return this.convertMachineTableModel;
+  }
+
+
+  /**
+   * Returns the tableColumnModel.
+   * 
+   * @return The tableColumnModel.
+   * @see #tableColumnModel
+   */
+  public ConvertMachineTableColumnModel getTableColumnModel ()
+  {
+    return this.tableColumnModel;
   }
 
 
@@ -865,7 +975,8 @@ public class ConvertRegexToMachineDialog implements
    */
   public void handlePrint ()
   {
-    // TODO
+    PrintDialog dialog = new PrintDialog ( this.parent, this );
+    dialog.show ();
   }
 
 
@@ -905,11 +1016,18 @@ public class ConvertRegexToMachineDialog implements
     {
       node = this.regexNode.getNextNodeForNFA ();
 
+      PrettyString pretty = new PrettyString ();
+
       // Token
       if ( node instanceof TokenNode )
       {
         this.actualStep = Step.CONVERT_TOKEN;
         TokenNode token = ( TokenNode ) node;
+
+        pretty
+            .add ( Messages
+                .getPrettyString (
+                    "ConvertRegexToMachineDialog.StepConvertToken", token.toPrettyString () ) ); //$NON-NLS-1$
 
         DefaultState start;
         try
@@ -986,6 +1104,12 @@ public class ConvertRegexToMachineDialog implements
       {
         this.actualStep = Step.CONVERT_EPSILON;
         EpsilonNode token = ( EpsilonNode ) node;
+
+        pretty
+            .add ( Messages
+                .getPrettyString (
+                    "ConvertRegexToMachineDialog.StepConvertEpsilon", token.toPrettyString () ) ); //$NON-NLS-1$
+
         DefaultState start;
         try
         {
@@ -1061,6 +1185,12 @@ public class ConvertRegexToMachineDialog implements
       {
         this.actualStep = Step.CONVERT_DISJUNCTION;
         DisjunctionNode dis = ( DisjunctionNode ) node;
+
+        pretty
+            .add ( Messages
+                .getPrettyString (
+                    "ConvertRegexToMachineDialog.StepConvertDisjunction", dis.toPrettyString () ) ); //$NON-NLS-1$
+
         DefaultStateView start1 = this.stateViewList.get (
             dis.getChildren ().get ( 0 ) ).get ( 0 );
         DefaultStateView start2 = this.stateViewList.get (
@@ -1163,6 +1293,11 @@ public class ConvertRegexToMachineDialog implements
       {
         this.actualStep = Step.CONVERT_CONCAT;
         ConcatenationNode con = ( ConcatenationNode ) node;
+        pretty
+            .add ( Messages
+                .getPrettyString (
+                    "ConvertRegexToMachineDialog.StepConvertConcatenation", con.toPrettyString () ) ); //$NON-NLS-1$
+
         DefaultStateView start1 = this.stateViewList.get (
             con.getChildren ().get ( 0 ) ).get ( 0 );
         DefaultStateView start2 = this.stateViewList.get (
@@ -1210,6 +1345,10 @@ public class ConvertRegexToMachineDialog implements
       {
         this.actualStep = Step.CONVERT_KLEENE;
         KleeneNode k = ( KleeneNode ) node;
+        pretty
+            .add ( Messages
+                .getPrettyString (
+                    "ConvertRegexToMachineDialog.StepConvertKleene", k.toPrettyString () ) ); //$NON-NLS-1$
 
         DefaultStateView start1 = this.stateViewList.get (
             k.getChildren ().get ( 0 ) ).get ( 0 );
@@ -1308,6 +1447,7 @@ public class ConvertRegexToMachineDialog implements
         setStatus ();
         updateGraph ();
       }
+      addOutlineComment ( pretty );
     }
     else if ( this.entityType.equals ( MachineType.DFA ) )
     {
@@ -1416,8 +1556,8 @@ public class ConvertRegexToMachineDialog implements
           {
             try
             {
-              // TODO Internationalize!
-              uState.setName ( "error" ); //$NON-NLS-1$
+              uState.setName ( Messages
+                  .getString ( "ConvertRegexToMachineDialog.ErrorState" ) ); //$NON-NLS-1$
             }
             catch ( StateException exc )
             {
@@ -1589,6 +1729,15 @@ public class ConvertRegexToMachineDialog implements
     if ( actNode != null )
     {
       actNode.unmark ();
+    }
+
+    if ( this.entityType.equals ( MachineType.ENFA ) )
+    {
+      // outline
+      this.convertMachineTableModel.removeLastRow ();
+      this.gui.jGTITableOutline.changeSelection ( this.convertMachineTableModel
+          .getRowCount () - 1, ConvertMachineTableModel.OUTLINE_COLUMN, false,
+          false );
     }
 
     this.count = stepItem.getActCount ();

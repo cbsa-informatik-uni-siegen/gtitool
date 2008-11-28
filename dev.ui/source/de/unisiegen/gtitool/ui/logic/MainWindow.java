@@ -1530,7 +1530,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       else if ( panel instanceof RegexPanel )
       {
         RegexPanel regexPanel = ( RegexPanel ) panel;
-        regexPanel.getConverter ().convert ( RegexType.REGEX, entityType, false );
+        regexPanel.getConverter ()
+            .convert ( RegexType.REGEX, entityType, false );
       }
       else
       {
@@ -2088,6 +2089,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         newEditorPanel = new GrammarPanel ( this.gui,
             ( DefaultGrammarModel ) defaultModel, null );
       }
+      else if ( defaultModel instanceof DefaultRegexModel )
+      {
+        newEditorPanel = new RegexPanel ( this.gui,
+            ( DefaultRegexModel ) defaultModel, null );
+      }
       else
       {
         throw new RuntimeException ( "unsupported model" ); //$NON-NLS-1$
@@ -2265,6 +2271,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       GrammarPanel grammarPanel = ( GrammarPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       PrintDialog printDialog = new PrintDialog ( this.gui, grammarPanel );
+      printDialog.show ();
+    }
+    else if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof RegexPanel )
+    {
+      RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      PrintDialog printDialog = new PrintDialog ( this.gui, regexPanel );
       printDialog.show ();
     }
     else

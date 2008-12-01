@@ -38,6 +38,8 @@ import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
@@ -274,6 +276,12 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
+     * The last controlled Symbol
+     */
+    private Symbol controlledSymbol;
+
+
+    /**
      * The active {@link Step}
      */
     private Step activeStep;
@@ -334,6 +342,7 @@ public class ConvertRegexToMachineDialog implements
      * @param actNode The active {@link RegexNode}
      * @param errorCreated Is error state created
      * @param markedPositionState The last marked position state
+     * @param controlledSymbol The last controlled Symbol
      * @param addedSymbolsToTransition The added Symbols to Transitions
      */
     public StepItem (
@@ -347,6 +356,7 @@ public class ConvertRegexToMachineDialog implements
         RegexNode actNode,
         boolean errorCreated,
         DefaultPositionState markedPositionState,
+        Symbol controlledSymbol,
         ArrayList < ObjectPair < DefaultTransitionView, Symbol > > addedSymbolsToTransition )
     {
       if ( activeStep == null )
@@ -363,6 +373,7 @@ public class ConvertRegexToMachineDialog implements
       this.actNode = actNode;
       this.errorCreated = errorCreated;
       this.markedPositionState = markedPositionState;
+      this.controlledSymbol = controlledSymbol;
       this.addedSymbolsToTransition = addedSymbolsToTransition;
     }
 
@@ -376,6 +387,18 @@ public class ConvertRegexToMachineDialog implements
     public int getActCount ()
     {
       return this.actCount;
+    }
+
+
+    /**
+     * Returns the controlledSymbol.
+     * 
+     * @return The controlledSymbol.
+     * @see #controlledSymbol
+     */
+    public Symbol getControlledSymbol ()
+    {
+      return this.controlledSymbol;
     }
 
 
@@ -692,9 +715,10 @@ public class ConvertRegexToMachineDialog implements
    * @see Converter#convert(de.unisiegen.gtitool.core.entities.InputEntity.EntityType,
    *      de.unisiegen.gtitool.core.entities.InputEntity.EntityType, boolean)
    */
-  public void convert (
-      @SuppressWarnings ( "unused" ) EntityType fromEntityType,
-      EntityType toEntityType, @SuppressWarnings ( "unused" ) boolean complete )
+  public void convert ( @SuppressWarnings ( "unused" )
+  EntityType fromEntityType, EntityType toEntityType,
+      @SuppressWarnings ( "unused" )
+      boolean complete )
   {
     this.gui = new ConvertRegexToMachineDialogForm ( this, this.parent );
 
@@ -771,7 +795,6 @@ public class ConvertRegexToMachineDialog implements
       performPreviousStep ( false );
     }
     this.endReached = this.regexNode.isMarked ();
-
     setStatus ();
     show ();
   }
@@ -1009,14 +1032,14 @@ public class ConvertRegexToMachineDialog implements
     RedoUndoItem redoUndoItem = null;
     boolean errorCreated = false;
     DefaultPositionState markedPositionState = null;
+    Symbol controlledSymbol = null;
     RegexNode node = null;
     ArrayList < ObjectPair < DefaultTransitionView, Symbol > > addedSymbolsToTransition = new ArrayList < ObjectPair < DefaultTransitionView, Symbol > > ();
 
+    PrettyString pretty = new PrettyString ();
     if ( this.entityType.equals ( MachineType.ENFA ) )
     {
       node = this.regexNode.getNextNodeForNFA ();
-
-      PrettyString pretty = new PrettyString ();
 
       // Token
       if ( node instanceof TokenNode )
@@ -1447,11 +1470,12 @@ public class ConvertRegexToMachineDialog implements
         setStatus ();
         updateGraph ();
       }
-      addOutlineComment ( pretty );
     }
+    // DFA
     else if ( this.entityType.equals ( MachineType.DFA ) )
     {
       this.actualStep = Step.INITIAL;
+      // Initial Step
       if ( this.positionStates.isEmpty () )
       {
         HashSet < Integer > positions = new HashSet < Integer > ();
@@ -1487,8 +1511,13 @@ public class ConvertRegexToMachineDialog implements
         {
           view.move ( p.getX (), p.getY () );
         }
+        pretty
+            .add ( Messages
+                .getPrettyString (
+                    "ConvertRegexToMachineDialog.StepCreateStartState", this.regexNode.toPrettyString (), new PrettyString ( new PrettyToken ( name, Style.NONE ) ) ) ); //$NON-NLS-1$
 
       }
+      // Now the algorithm goes
       else
       {
         DefaultPositionState positionState = getNextUnmarkedState ();
@@ -1496,10 +1525,17 @@ public class ConvertRegexToMachineDialog implements
         {
           throw new RuntimeException ( "Internal Error: PositionState is null" ); //$NON-NLS-1$
         }
-        positionState.mark ();
-        markedPositionState = positionState;
-        for ( Symbol a : this.defaultRegex.getAlphabet () )
+        if ( !this.controlledSymbols.containsKey ( positionState ) )
         {
+          this.controlledSymbols.put ( positionState,
+              new ArrayList < Symbol > () );
+        }
+        markedPositionState = positionState;
+        Symbol a = getNextUnControlledSymbol ( positionState );
+        controlledSymbol = a;
+        if ( a != null )
+        {
+          this.controlledSymbols.get ( positionState ).add ( a );
           HashSet < Integer > u = new HashSet < Integer > ();
           for ( Integer p : positionState.getPositions () )
           {
@@ -1612,9 +1648,18 @@ public class ConvertRegexToMachineDialog implements
                         a ), this.positionStateViewList.get ( positionState ),
                         this.positionStateViewList.get ( uState ), true, false,
                         true ) );
+                pretty
+                    .add ( Messages
+                        .getPrettyString (
+                            "ConvertRegexToMachineDialog.StepTransitionForSymbol", a.toPrettyString () ) ); //$NON-NLS-1$
+
               }
               else
               {
+                pretty
+                    .add ( Messages
+                        .getPrettyString (
+                            "ConvertRegexToMachineDialog.StepSymbolToTransition", a.toPrettyString (), old.getTransition ().toPrettyString () ) ); //$NON-NLS-1$
                 old.getTransition ().add ( a );
                 addedSymbolsToTransition
                     .add ( new ObjectPair < DefaultTransitionView, Symbol > (
@@ -1636,7 +1681,17 @@ public class ConvertRegexToMachineDialog implements
           }
 
         }
+        else
+        {
+          positionState.mark ();
+          pretty
+              .add ( Messages
+                  .getPrettyString (
+                      "ConvertRegexToMachineDialog.StepMarkState", positionState.toPrettyString () ) ); //$NON-NLS-1$
+
+        }
       }
+
       boolean ready = true;
       for ( DefaultPositionState state : this.positionStates )
       {
@@ -1658,9 +1713,44 @@ public class ConvertRegexToMachineDialog implements
         updateGraph ();
       }
     }
+    addOutlineComment ( pretty );
     this.stepItemList.add ( new StepItem ( this.actualStep, addedStates,
         redoUndoItem, addedTransitions, setStartFalse, setFinalFalse, c, node,
-        errorCreated, markedPositionState, addedSymbolsToTransition ) );
+        errorCreated, markedPositionState, controlledSymbol,
+        addedSymbolsToTransition ) );
+  }
+
+
+  /**
+   * HashMap for the controlled {@link Symbol}s for a
+   * {@link DefaultPositionState}
+   */
+  private HashMap < DefaultPositionState, ArrayList < Symbol > > controlledSymbols = new HashMap < DefaultPositionState, ArrayList < Symbol > > ();
+
+
+  /**
+   * Returns the next uncontrolled {@link Symbol} for a given
+   * {@link DefaultPositionState}
+   * 
+   * @param state The {@link DefaultPositionState}
+   * @return The next uncontrolled {@link Symbol} for a given
+   *         {@link DefaultPositionState}
+   */
+  private Symbol getNextUnControlledSymbol ( DefaultPositionState state )
+  {
+    ArrayList < Symbol > c = this.controlledSymbols.get ( state );
+    ArrayList < Symbol > rest = new ArrayList < Symbol > ();
+    rest.addAll ( this.defaultRegex.getAlphabet ().get () );
+    rest.removeAll ( c );
+    rest.remove ( new DefaultSymbol ( "#" ) ); //$NON-NLS-1$
+    try
+    {
+      return rest.get ( 0 );
+    }
+    catch ( IndexOutOfBoundsException e )
+    {
+      return null;
+    }
   }
 
 
@@ -1717,6 +1807,11 @@ public class ConvertRegexToMachineDialog implements
     {
       posState.unMark ();
     }
+    Symbol s = stepItem.getControlledSymbol ();
+    if ( s != null )
+    {
+      this.controlledSymbols.get ( posState ).remove ( s );
+    }
     for ( ObjectPair < DefaultTransitionView, Symbol > pair : stepItem
         .getAddedSymbolsToTransition () )
     {
@@ -1731,14 +1826,11 @@ public class ConvertRegexToMachineDialog implements
       actNode.unmark ();
     }
 
-    if ( this.entityType.equals ( MachineType.ENFA ) )
-    {
-      // outline
-      this.convertMachineTableModel.removeLastRow ();
-      this.gui.jGTITableOutline.changeSelection ( this.convertMachineTableModel
-          .getRowCount () - 1, ConvertMachineTableModel.OUTLINE_COLUMN, false,
-          false );
-    }
+    // outline
+    this.convertMachineTableModel.removeLastRow ();
+    this.gui.jGTITableOutline.changeSelection ( this.convertMachineTableModel
+        .getRowCount () - 1, ConvertMachineTableModel.OUTLINE_COLUMN, false,
+        false );
 
     this.count = stepItem.getActCount ();
 

@@ -972,7 +972,7 @@ public class ConvertRegexToMachineDialog implements
     {
       performNextStep ( false );
     }
-
+    this.modelConverted.getMachine ().getAlphabet ().remove ( new DefaultSymbol("#") ); //$NON-NLS-1$
     this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
         true );
 
@@ -1589,8 +1589,7 @@ public class ConvertRegexToMachineDialog implements
           {
             try
             {
-              uState.setName ( Messages
-                  .getString ( "ConvertRegexToMachineDialog.ErrorState" ) ); //$NON-NLS-1$
+              uState.setName ( "\u2205" ); //$NON-NLS-1$
             }
             catch ( StateException exc )
             {

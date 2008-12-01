@@ -7,35 +7,35 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 
 
 /**
- * TODO
+ * A default state that contains positions and can be marked
  */
 public class DefaultPositionState extends DefaultState
 {
 
   /**
-   * TODO
+   * The serial version uid.
    */
   private static final long serialVersionUID = -7451051647706513194L;
 
 
   /**
-   * TODO
+   * The positions
    */
   private HashSet < Integer > positions;
 
 
   /**
-   * TODO
+   * The mark flag
    */
   private boolean mark;
 
 
   /**
-   * TODO
+   * Creates a new {@link DefaultPositionState}
    * 
-   * @param name
-   * @param positions
-   * @throws StateException
+   * @param name The name of the State
+   * @param positions The positions
+   * @throws StateException is thrown when state cannot be created
    */
   public DefaultPositionState ( String name, HashSet < Integer > positions )
       throws StateException

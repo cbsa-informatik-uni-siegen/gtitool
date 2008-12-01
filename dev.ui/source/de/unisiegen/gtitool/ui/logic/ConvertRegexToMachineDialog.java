@@ -688,11 +688,6 @@ public class ConvertRegexToMachineDialog implements
   {
     this.parent = parent;
     this.panel = panel;
-    this.regexNode = panel.getRegex ().getRegexNode ();
-    if ( !this.regexNode.isInCoreSyntax () )
-    {
-      this.regexNode = this.regexNode.toCoreSyntax ();
-    }
   }
 
 
@@ -727,6 +722,8 @@ public class ConvertRegexToMachineDialog implements
     this.defaultRegex = this.panel.getRegex ().clone ();
     if ( this.entityType.equals ( MachineType.ENFA ) )
     {
+      this.defaultRegex.setRegexNode ( this.defaultRegex.getRegexNode ().toCoreSyntax (), this.defaultRegex.getRegexNode ().toCoreSyntax ().toString ());
+      this.regexNode = this.defaultRegex.getRegexNode ();
       this.modelConverted = new DefaultMachineModel ( new DefaultENFA ( a, a,
           false ) );
       this.gui
@@ -741,8 +738,8 @@ public class ConvertRegexToMachineDialog implements
       this.positionStates = new ArrayList < DefaultPositionState > ();
 
       this.defaultRegex.setRegexNode ( new ConcatenationNode (
-          this.defaultRegex.getRegexNode (), new TokenNode ( "#" ) ), //$NON-NLS-1$
-          this.defaultRegex.getRegexString () );
+          this.defaultRegex.getRegexNode ().toCoreSyntax (), new TokenNode ( "#" ) ), //$NON-NLS-1$
+          this.defaultRegex.getRegexNode ().toCoreSyntax ().toString () );
       this.regexNode = this.defaultRegex.getRegexNode ();
       this.gui
           .setTitle ( Messages

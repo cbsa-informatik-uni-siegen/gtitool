@@ -53,6 +53,8 @@ public final class StyledRegexParserPanel extends
   @Override
   protected RegexNode checkParsedObject ( RegexNode regexNode )
   {
+    System.err.println ("Alphabet: " + this.alphabet);
+    System.err.println ("regexNode: " + regexNode);
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
     if ( ( this.alphabet != null ) && ( regexNode != null ) )

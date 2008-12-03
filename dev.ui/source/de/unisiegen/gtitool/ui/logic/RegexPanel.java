@@ -155,7 +155,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           .getRegexNode ().isInCoreSyntax () );
       changeRegex ( this.model.getRegex ().getRegexNode (), false );
     }
-
+    this.gui.styledRegexParserPanel.setAlphabet ( model.getRegex ().getAlphabet () );
     this.gui.styledRegexParserPanel
         .addParseableChangedListener ( new ParseableChangedListener < RegexNode > ()
         {

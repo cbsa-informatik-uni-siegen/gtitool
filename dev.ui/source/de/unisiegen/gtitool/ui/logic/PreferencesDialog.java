@@ -614,6 +614,18 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The {@link ColorItem} of the regex token.
+   */
+  private ColorItem colorItemRegexNode;
+
+
+  /**
+   * The {@link ColorItem} of the regex token.
+   */
+  private ColorItem colorItemRegexMarkedNode;
+
+
+  /**
    * The {@link ColorItem} of the regex tool tip.
    */
   private ColorItem colorItemRegexToolTip;
@@ -809,6 +821,18 @@ public final class PreferencesDialog implements
    * The initial {@link ColorItem} of the Regex tool tip.
    */
   private ColorItem initialColorItemRegexToolTip;
+
+
+  /**
+   * The initial {@link ColorItem} of the Regex tool tip.
+   */
+  private ColorItem initialColorItemRegexNode;
+
+
+  /**
+   * The initial {@link ColorItem} of the Regex tool tip.
+   */
+  private ColorItem initialColorItemRegexMarkedNode;
 
 
   /**
@@ -1333,6 +1357,8 @@ public final class PreferencesDialog implements
     this.colorItemRegexPosition.restore ();
     this.colorItemRegexToken.restore ();
     this.colorItemRegexSymbol.restore ();
+    this.colorItemRegexNode.restore ();
+    this.colorItemRegexMarkedNode.restore ();
 
     this.colorItemTransition.restore ();
     this.colorItemTransitionSelected.restore ();
@@ -1617,6 +1643,12 @@ public final class PreferencesDialog implements
     this.colorItemRegexComment = PreferenceManager.getInstance ()
         .getColorItemRegexComment ();
     this.initialColorItemRegexComment = this.colorItemRegexComment.clone ();
+    this.colorItemRegexNode = PreferenceManager.getInstance ()
+        .getColorItemRegexNode ();
+    this.initialColorItemRegexNode = this.colorItemRegexNode.clone ();
+    this.colorItemRegexMarkedNode = PreferenceManager.getInstance ()
+        .getColorItemRegexMarkedNode ();
+    this.initialColorItemRegexMarkedNode = this.colorItemRegexMarkedNode.clone ();
 
     // Transition
     this.colorItemTransition = PreferenceManager.getInstance ()
@@ -1807,6 +1839,8 @@ public final class PreferencesDialog implements
     this.regexNode.add ( this.colorItemRegexPosition );
     this.regexNode.add ( this.colorItemRegexToolTip );
     this.regexNode.add ( this.colorItemRegexComment );
+    this.regexNode.add ( this.colorItemRegexNode);
+    this.regexNode.add ( this.colorItemRegexMarkedNode);
 
     this.transitionNode = PreferenceManager.getInstance ()
         .getColorItemTransitionGroup ();
@@ -3363,6 +3397,22 @@ public final class PreferencesDialog implements
           this.colorItemRegexComment );
       PreferenceManager.getInstance ().fireColorChangedRegexComment (
           this.colorItemRegexComment.getColor () );
+    }
+    if ( !this.initialColorItemRegexNode.getColor ().equals (
+        this.colorItemRegexNode.getColor () ) )
+    {
+      PreferenceManager.getInstance ().setColorItemRegexNode (
+          this.colorItemRegexNode );
+      PreferenceManager.getInstance ().fireColorChangedRegexNode (
+          this.colorItemRegexNode.getColor () );
+    }
+    if ( !this.initialColorItemRegexMarkedNode.getColor ().equals (
+        this.colorItemRegexMarkedNode.getColor () ) )
+    {
+      PreferenceManager.getInstance ().setColorItemRegexMarkedNode (
+          this.colorItemRegexMarkedNode );
+      PreferenceManager.getInstance ().fireColorChangedRegexMarkedNode (
+          this.colorItemRegexMarkedNode.getColor () );
     }
     if ( !this.initialColorItemRegexToken.getColor ().equals (
         this.colorItemRegexToken.getColor () ) )

@@ -39,6 +39,30 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
   /**
    * {@inheritDoc}
    * 
+   * @see ColorChangedListener#colorChangedRegexMarkedNode(java.awt.Color)
+   */
+  public void colorChangedRegexMarkedNode ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedRegexNode(java.awt.Color)
+   */
+  public void colorChangedRegexNode ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see ColorChangedListener#colorChangedNonterminalSymbolError(Color)
    */
   public void colorChangedNonterminalSymbolError (
@@ -139,7 +163,7 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
    * @param newColor
    * @see de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener#colorChangedRegexComment(java.awt.Color)
    */
-  public void colorChangedRegexComment ( @SuppressWarnings("unused")
+  public void colorChangedRegexComment ( @SuppressWarnings ( "unused" )
   Color newColor )
   {
     // Override this method if needed.

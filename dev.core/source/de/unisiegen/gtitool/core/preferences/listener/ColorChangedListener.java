@@ -116,6 +116,22 @@ public interface ColorChangedListener extends EventListener
 
 
   /**
+   * Invoked when the color of the Regex node changed.
+   * 
+   * @param newColor The new color of the Regex node.
+   */
+  public void colorChangedRegexNode ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the Regex marked node changed.
+   * 
+   * @param newColor The new color of the Regex marked node.
+   */
+  public void colorChangedRegexMarkedNode ( Color newColor );
+
+
+  /**
    * Invoked when the color of the Regex comment changed.
    * 
    * @param newColor The new color of the Regex comment.

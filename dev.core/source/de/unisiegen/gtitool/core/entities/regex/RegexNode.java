@@ -29,6 +29,35 @@ public abstract class RegexNode implements Entity < RegexNode >
    */
   protected boolean braces = false;
 
+  /**
+   * Flag that indicates if the node is active
+   */
+  private boolean active = false;
+
+
+  /**
+   * Sets the active.
+   * 
+   * @param active The active to set.
+   * @see #active
+   */
+  public void setActive ( boolean active )
+  {
+    this.active = active;
+  }
+
+
+  /**
+   * Returns the active.
+   * 
+   * @return The active.
+   * @see #active
+   */
+  public boolean isActive ()
+  {
+    return this.active;
+  }
+
 
   /**
    * {@inheritDoc}

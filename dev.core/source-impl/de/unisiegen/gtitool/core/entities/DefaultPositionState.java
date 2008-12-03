@@ -75,6 +75,7 @@ public class DefaultPositionState extends DefaultState
    */
   public void unMark ()
   {
+    setActive ( false );
     this.mark = false;
   }
 
@@ -84,6 +85,7 @@ public class DefaultPositionState extends DefaultState
    */
   public void mark ()
   {
+    setActive ( true );
     this.mark = true;
   }
 

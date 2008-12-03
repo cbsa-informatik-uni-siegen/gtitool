@@ -19,6 +19,7 @@ import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
@@ -157,15 +158,17 @@ public class NodeView extends VertexView
           {
             font = g.getFont ().deriveFont ( Font.ITALIC );
           }
-
+          
           g.setFont ( font );
-          if ( b )
+          if ( !node.isActive () )
           {
-            g.setColor ( Color.WHITE );
+            g.setColor ( PreferenceManager.getInstance ()
+                .getColorItemRegexNode ().getColor () );
           }
           else
           {
-            g.setColor ( Color.BLACK );
+            g.setColor ( PreferenceManager.getInstance ()
+                .getColorItemRegexMarkedNode ().getColor () );
           }
         }
       }

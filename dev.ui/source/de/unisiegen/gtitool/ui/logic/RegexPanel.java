@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
@@ -17,6 +18,8 @@ import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.RegexException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
+import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
+import de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
@@ -171,6 +174,22 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         } );
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
+    PreferenceManager.getInstance ().addColorChangedListener (
+        new ColorChangedAdapter ()
+        {
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedListener#colorChangedRegexNode(java.awt.Color)
+           */
+          @Override
+          public void colorChangedRegexNode ( @SuppressWarnings("unused")
+          Color newColor )
+          {
+            getJGTIGraph ().repaint ();
+          }
+        } );
 
     initialize ();
   }
@@ -577,8 +596,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param evt
    */
-  public void handleToCoreSyntaxButtonClicked (
-      @SuppressWarnings ( "unused" ) ActionEvent evt )
+  public void handleToCoreSyntaxButtonClicked ( @SuppressWarnings ( "unused" )
+  ActionEvent evt )
   {
     DefaultRegex newRegex = new DefaultRegex ( this.model.getRegex ()
         .getAlphabet () );
@@ -595,7 +614,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param evt
    */
-  public void handleToDFAButton ( @SuppressWarnings ( "unused" ) ActionEvent evt )
+  public void handleToDFAButton ( @SuppressWarnings ( "unused" )
+  ActionEvent evt )
   {
     ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
         this.mainWindowForm, this );
@@ -608,7 +628,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param evt
    */
-  public void handleToLatexButtonClicked ( @SuppressWarnings("unused") ActionEvent evt )
+  public void handleToLatexButtonClicked ( @SuppressWarnings ( "unused" )
+  ActionEvent evt )
   {
     FileFilter ff = new FileFilter ()
     {
@@ -653,10 +674,11 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
   /**
    * Handles the Click on the NFA Button
-   *
+   * 
    * @param evt
    */
-  public void handleToNFAButton ( @SuppressWarnings("unused") ActionEvent evt )
+  public void handleToNFAButton ( @SuppressWarnings ( "unused" )
+  ActionEvent evt )
   {
     ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
         this.mainWindowForm, this );
@@ -705,7 +727,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         new ListSelectionListener ()
         {
 
-          public void valueChanged ( @SuppressWarnings("unused") ListSelectionEvent event )
+          public void valueChanged ( @SuppressWarnings ( "unused" )
+          ListSelectionEvent event )
           {
             // TODO
           }

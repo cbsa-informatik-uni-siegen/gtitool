@@ -13,6 +13,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
@@ -28,6 +29,7 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.i18n.Messages;
+import de.unisiegen.gtitool.core.parser.regexAlphabet.RegexAlphabetParseable;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
@@ -126,6 +128,12 @@ public class PreferenceManager
    */
   public static Alphabet DEFAULT_PUSH_DOWN_ALPHABET;
 
+  
+  /**
+   * The {@link DefaultRegexAlphabet}
+   */
+  public static Alphabet DEFAULT_REGEX_ALPHABET;
+
 
   /**
    * The default {@link Color} of the regex position.
@@ -147,16 +155,30 @@ public class PreferenceManager
 
 
   /**
+   * The default {@link Color} of the regex token.
+   */
+  public static final Color DEFAULT_REGEX_NODE_COLOR = new Color ( 0, 0, 0 );
+
+
+  /**
+   * The default {@link Color} of the regex token.
+   */
+  public static final Color DEFAULT_REGEX_MARKED_NODE_COLOR = new Color ( 255, 0,
+      0 );
+
+
+  /**
    * The default {@link Color} of the regex tool tip text.
    */
   public static final Color DEFAULT_REGEX_TOOL_TIP_TEXT_COLOR = new Color (
       255, 255, 255 );
 
+
   /**
    * The default {@link Color} of the regex tool tip text.
    */
-  public static final Color DEFAULT_REGEX_COMMENT_COLOR = new Color (
-      255, 255, 255 );
+  public static final Color DEFAULT_REGEX_COMMENT_COLOR = new Color ( 255, 255,
+      255 );
 
 
   /**
@@ -319,6 +341,9 @@ public class PreferenceManager
 
       DEFAULT_TERMINAL_SYMBOL_SET = new DefaultTerminalSymbolSet (
           new DefaultTerminalSymbol ( "a" ), new DefaultTerminalSymbol ( "b" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+
+      DEFAULT_REGEX_ALPHABET = ( Alphabet ) new RegexAlphabetParseable ()
+          .newParser ( "[a-z],[A-Z],[0-9]" ).parse (); //$NON-NLS-1$
     }
     catch ( AlphabetException exc )
     {
@@ -331,6 +356,11 @@ public class PreferenceManager
       System.exit ( 1 );
     }
     catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( Exception exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
@@ -576,6 +606,40 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedRegexToolTip ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of Regex tool tip has changed.
+   * 
+   * @param newColor The new color of the Regex tool tip.
+   */
+  public final void fireColorChangedRegexNode ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedRegexNode ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of Regex tool tip has changed.
+   * 
+   * @param newColor The new color of the Regex tool tip.
+   */
+  public final void fireColorChangedRegexMarkedNode ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedRegexMarkedNode ( newColor );
       current.colorChanged ();
     }
   }
@@ -1208,6 +1272,41 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link ColorItem} of the marked Regexnode.
+   * 
+   * @return The {@link ColorItem} of the marked Regexnode.
+   */
+  public final ColorItem getColorItemRegexMarkedNode ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorRegexMarkedNode", //$NON-NLS-1$
+        DEFAULT_REGEX_MARKED_NODE_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorRegexMarkedNodeCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorRegexMarkedNodeDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_REGEX_MARKED_NODE_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the Regexnode.
+   * 
+   * @return The {@link ColorItem} of the Regexnode.
+   */
+  public final ColorItem getColorItemRegexNode ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorRegexNode", //$NON-NLS-1$
+        DEFAULT_REGEX_NODE_COLOR.getRGB () );
+    String caption = Messages.getString ( "Preferences.ColorRegexNodeCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorRegexNodeDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_REGEX_NODE_COLOR );
+  }
+
+
+  /**
    * Returns the {@link ColorItem} of the error {@link TerminalSymbol}.
    * 
    * @return The {@link ColorItem} of the error {@link TerminalSymbol}.
@@ -1711,6 +1810,47 @@ public class PreferenceManager
       return null;
     }
   }
+  
+  
+  /**
+   * Returns the {@link AlphabetItem}.
+   * 
+   * @return The push down {@link AlphabetItem}.
+   */
+  public final AlphabetItem getRegexAlphabetItem ()
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    String end = "no item found"; //$NON-NLS-1$
+    int count = 0;
+    while ( true )
+    {
+      String symbol = this.preferences.get ( "DefaultRegexAlphabet" + count, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break;
+      }
+      symbols.add ( new DefaultSymbol ( symbol ) );
+      count++ ;
+    }
+    // Return the default alphabet if no alphabet is found.
+    if ( symbols.size () == 0 )
+    {
+      return new AlphabetItem ( DEFAULT_REGEX_ALPHABET,
+          DEFAULT_REGEX_ALPHABET );
+    }
+    try
+    {
+      return new AlphabetItem ( new DefaultAlphabet ( symbols ),
+          DEFAULT_REGEX_ALPHABET );
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+      return null;
+    }
+  }
 
 
   /**
@@ -2086,6 +2226,39 @@ public class PreferenceManager
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorRegexToken", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the Regex token.
+   * 
+   * @param colorItem The {@link ColorItem} of the Regex token.
+   */
+  public final void setColorItemRegexNode ( ColorItem colorItem )
+  {
+    logger.debug ( "setColorItemRegexNode", "set color of the regex node to " //$NON-NLS-1$//$NON-NLS-2$
+        + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorRegexNode", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the Regex token.
+   * 
+   * @param colorItem The {@link ColorItem} of the Regex token.
+   */
+  public final void setColorItemRegexMarkedNode ( ColorItem colorItem )
+  {
+    logger.debug (
+        "setColorItemRegexMarkedNode", "set color of the regex marked node to " //$NON-NLS-1$//$NON-NLS-2$
+            + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorRegexMarkedNode", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 

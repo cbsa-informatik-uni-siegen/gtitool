@@ -264,24 +264,6 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
-     * Is in this step the errorState created
-     */
-    private boolean errorCreated = false;
-
-
-    /**
-     * The last marked Position state for unmarking
-     */
-    private DefaultPositionState markedPositionState;
-
-
-    /**
-     * The last controlled Symbol
-     */
-    private Symbol controlledSymbol;
-
-
-    /**
      * The active {@link Step}
      */
     private Step activeStep;
@@ -300,15 +282,33 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
+     * The added Symbols to Transitions
+     */
+    private ArrayList < ObjectPair < DefaultTransitionView, Symbol > > addedSymbolsToTransition;
+
+
+    /**
      * The added {@link DefaultTransitionView}s
      */
     private ArrayList < DefaultTransitionView > addedTransitions;
 
 
     /**
-     * The added Symbols to Transitions
+     * The last controlled Symbol
      */
-    private ArrayList < ObjectPair < DefaultTransitionView, Symbol > > addedSymbolsToTransition;
+    private Symbol controlledSymbol;
+
+
+    /**
+     * Is in this step the errorState created
+     */
+    private boolean errorCreated = false;
+
+
+    /**
+     * The last marked Position state for unmarking
+     */
+    private DefaultPositionState markedPositionState;
 
 
     /**
@@ -391,54 +391,6 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
-     * Returns the controlledSymbol.
-     * 
-     * @return The controlledSymbol.
-     * @see #controlledSymbol
-     */
-    public Symbol getControlledSymbol ()
-    {
-      return this.controlledSymbol;
-    }
-
-
-    /**
-     * Returns the errorCreated.
-     * 
-     * @return The errorCreated.
-     * @see #errorCreated
-     */
-    public boolean isErrorCreated ()
-    {
-      return this.errorCreated;
-    }
-
-
-    /**
-     * Returns the addedSymbolsToTransition.
-     * 
-     * @return The addedSymbolsToTransition.
-     * @see #addedSymbolsToTransition
-     */
-    public ArrayList < ObjectPair < DefaultTransitionView, Symbol >> getAddedSymbolsToTransition ()
-    {
-      return this.addedSymbolsToTransition;
-    }
-
-
-    /**
-     * Returns the markedPositionState.
-     * 
-     * @return The markedPositionState.
-     * @see #markedPositionState
-     */
-    public DefaultPositionState getMarkedPositionState ()
-    {
-      return this.markedPositionState;
-    }
-
-
-    /**
      * Returns the activeStep.
      * 
      * @return The activeStep.
@@ -475,6 +427,18 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
+     * Returns the addedSymbolsToTransition.
+     * 
+     * @return The addedSymbolsToTransition.
+     * @see #addedSymbolsToTransition
+     */
+    public ArrayList < ObjectPair < DefaultTransitionView, Symbol >> getAddedSymbolsToTransition ()
+    {
+      return this.addedSymbolsToTransition;
+    }
+
+
+    /**
      * Returns the addedTransitions.
      * 
      * @return The addedTransitions.
@@ -483,6 +447,30 @@ public class ConvertRegexToMachineDialog implements
     public ArrayList < DefaultTransitionView > getAddedTransitions ()
     {
       return this.addedTransitions;
+    }
+
+
+    /**
+     * Returns the controlledSymbol.
+     * 
+     * @return The controlledSymbol.
+     * @see #controlledSymbol
+     */
+    public Symbol getControlledSymbol ()
+    {
+      return this.controlledSymbol;
+    }
+
+
+    /**
+     * Returns the markedPositionState.
+     * 
+     * @return The markedPositionState.
+     * @see #markedPositionState
+     */
+    public DefaultPositionState getMarkedPositionState ()
+    {
+      return this.markedPositionState;
     }
 
 
@@ -520,6 +508,18 @@ public class ConvertRegexToMachineDialog implements
     {
       return this.setStartFalse;
     }
+
+
+    /**
+     * Returns the errorCreated.
+     * 
+     * @return The errorCreated.
+     * @see #errorCreated
+     */
+    public boolean isErrorCreated ()
+    {
+      return this.errorCreated;
+    }
   }
 
 
@@ -528,6 +528,12 @@ public class ConvertRegexToMachineDialog implements
    */
   private static final Logger logger = Logger
       .getLogger ( ConvertRegexToMachineDialog.class );
+
+
+  /**
+   * The last active {@link RegexNode}. For unmarking.
+   */
+  private RegexNode activeNode = null;
 
 
   /**
@@ -540,6 +546,19 @@ public class ConvertRegexToMachineDialog implements
    * The auto step {@link Timer}.
    */
   private Timer autoStepTimer = null;
+
+
+  /**
+   * HashMap for the controlled {@link Symbol}s for a
+   * {@link DefaultPositionState}
+   */
+  private HashMap < DefaultPositionState, ArrayList < Symbol > > controlledSymbols = new HashMap < DefaultPositionState, ArrayList < Symbol > > ();
+
+
+  /**
+   * The {@link ConvertMachineTableModel}.
+   */
+  private ConvertMachineTableModel convertMachineTableModel;
 
 
   /**
@@ -564,6 +583,12 @@ public class ConvertRegexToMachineDialog implements
    * Flag that indicates if the end is reached.
    */
   private boolean endReached = false;
+
+
+  /**
+   * The {@link EntityType} that should be converted to.
+   */
+  private EntityType entityType;
 
 
   /**
@@ -634,12 +659,6 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * The {@link ConvertMachineTableModel}.
-   */
-  private ConvertMachineTableModel convertMachineTableModel;
-
-
-  /**
    * The state view list containing the start and final {@link DefaultStateView}
    * for a {@link RegexNode}
    */
@@ -653,15 +672,22 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * The {@link EntityType} that should be converted to.
-   */
-  private EntityType entityType;
-
-
-  /**
    * The {@link ConvertMachineTableColumnModel}.
    */
   private ConvertMachineTableColumnModel tableColumnModel = new ConvertMachineTableColumnModel ();
+
+
+  /**
+   * Creates new from {@link ConvertRegexToMachineDialog}
+   * 
+   * @param parent The parent {@link JFrame}
+   * @param panel The {@link RegexPanel}
+   */
+  public ConvertRegexToMachineDialog ( JFrame parent, RegexPanel panel )
+  {
+    this.parent = parent;
+    this.panel = panel;
+  }
 
 
   /**
@@ -675,19 +701,6 @@ public class ConvertRegexToMachineDialog implements
     this.gui.jGTITableOutline.changeSelection ( this.convertMachineTableModel
         .getRowCount () - 1, ConvertMachineTableModel.OUTLINE_COLUMN, false,
         false );
-  }
-
-
-  /**
-   * Creates new from {@link ConvertRegexToMachineDialog}
-   * 
-   * @param parent The parent {@link JFrame}
-   * @param panel The {@link RegexPanel}
-   */
-  public ConvertRegexToMachineDialog ( JFrame parent, RegexPanel panel )
-  {
-    this.parent = parent;
-    this.panel = panel;
   }
 
 
@@ -722,7 +735,9 @@ public class ConvertRegexToMachineDialog implements
     this.defaultRegex = this.panel.getRegex ().clone ();
     if ( this.entityType.equals ( MachineType.ENFA ) )
     {
-      this.defaultRegex.setRegexNode ( this.defaultRegex.getRegexNode ().toCoreSyntax (), this.defaultRegex.getRegexNode ().toCoreSyntax ().toString ());
+      this.defaultRegex.setRegexNode ( this.defaultRegex.getRegexNode ()
+          .toCoreSyntax (), this.defaultRegex.getRegexNode ().toCoreSyntax ()
+          .toString () );
       this.regexNode = this.defaultRegex.getRegexNode ();
       this.modelConverted = new DefaultMachineModel ( new DefaultENFA ( a, a,
           false ) );
@@ -738,7 +753,8 @@ public class ConvertRegexToMachineDialog implements
       this.positionStates = new ArrayList < DefaultPositionState > ();
 
       this.defaultRegex.setRegexNode ( new ConcatenationNode (
-          this.defaultRegex.getRegexNode ().toCoreSyntax (), new TokenNode ( "#" ) ), //$NON-NLS-1$
+          this.defaultRegex.getRegexNode ().toCoreSyntax (), new TokenNode (
+              "#" ) ), //$NON-NLS-1$
           this.defaultRegex.getRegexNode ().toCoreSyntax ().toString () );
       this.regexNode = this.defaultRegex.getRegexNode ();
       this.gui
@@ -798,6 +814,18 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * Returns the convertMachineTableModel.
+   * 
+   * @return The convertMachineTableModel.
+   * @see #convertMachineTableModel
+   */
+  public ConvertMachineTableModel getConvertMachineTableModel ()
+  {
+    return this.convertMachineTableModel;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see LogicClass#getGUI()
@@ -805,18 +833,6 @@ public class ConvertRegexToMachineDialog implements
   public ConvertRegexToMachineDialogForm getGUI ()
   {
     return this.gui;
-  }
-
-
-  /**
-   * Returns the panel.
-   * 
-   * @return The panel.
-   * @see #panel
-   */
-  public RegexPanel getRegexPanel ()
-  {
-    return this.panel;
   }
 
 
@@ -845,26 +861,28 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * Returns the convertMachineTableModel.
+   * Returns the next uncontrolled {@link Symbol} for a given
+   * {@link DefaultPositionState}
    * 
-   * @return The convertMachineTableModel.
-   * @see #convertMachineTableModel
+   * @param state The {@link DefaultPositionState}
+   * @return The next uncontrolled {@link Symbol} for a given
+   *         {@link DefaultPositionState}
    */
-  public ConvertMachineTableModel getConvertMachineTableModel ()
+  private Symbol getNextUnControlledSymbol ( DefaultPositionState state )
   {
-    return this.convertMachineTableModel;
-  }
-
-
-  /**
-   * Returns the tableColumnModel.
-   * 
-   * @return The tableColumnModel.
-   * @see #tableColumnModel
-   */
-  public ConvertMachineTableColumnModel getTableColumnModel ()
-  {
-    return this.tableColumnModel;
+    ArrayList < Symbol > c = this.controlledSymbols.get ( state );
+    ArrayList < Symbol > rest = new ArrayList < Symbol > ();
+    rest.addAll ( this.defaultRegex.getAlphabet ().get () );
+    rest.removeAll ( c );
+    rest.remove ( new DefaultSymbol ( "#" ) ); //$NON-NLS-1$
+    try
+    {
+      return rest.get ( 0 );
+    }
+    catch ( IndexOutOfBoundsException e )
+    {
+      return null;
+    }
   }
 
 
@@ -897,6 +915,30 @@ public class ConvertRegexToMachineDialog implements
   private final Position getPosition ( State state )
   {
     return this.positionMap.get ( state.getName () );
+  }
+
+
+  /**
+   * Returns the panel.
+   * 
+   * @return The panel.
+   * @see #panel
+   */
+  public RegexPanel getRegexPanel ()
+  {
+    return this.panel;
+  }
+
+
+  /**
+   * Returns the tableColumnModel.
+   * 
+   * @return The tableColumnModel.
+   * @see #tableColumnModel
+   */
+  public ConvertMachineTableColumnModel getTableColumnModel ()
+  {
+    return this.tableColumnModel;
   }
 
 
@@ -972,14 +1014,14 @@ public class ConvertRegexToMachineDialog implements
     {
       performNextStep ( false );
     }
-    this.modelConverted.getMachine ().getAlphabet ().remove ( new DefaultSymbol("#") ); //$NON-NLS-1$
+    this.modelConverted.getMachine ().getAlphabet ().remove (
+        new DefaultSymbol ( "#" ) ); //$NON-NLS-1$
     this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
         true );
 
     this.regexNode.unmarkAll ();
     this.gui.dispose ();
   }
-
 
   /**
    * Handles the action on the previous step button.
@@ -988,7 +1030,6 @@ public class ConvertRegexToMachineDialog implements
   {
     performPreviousStep ( true );
   }
-
 
   /**
    * Handles the action on the print button.
@@ -1021,6 +1062,9 @@ public class ConvertRegexToMachineDialog implements
    */
   private final void performNextStep ( boolean manual )
   {
+    if(this.activeNode != null) {
+      this.activeNode.setActive ( false );
+    }
     ArrayList < String > addedStates = new ArrayList < String > ();
     ArrayList < DefaultStateView > setFinalFalse = new ArrayList < DefaultStateView > ();
     ArrayList < DefaultStateView > setStartFalse = new ArrayList < DefaultStateView > ();
@@ -1037,7 +1081,8 @@ public class ConvertRegexToMachineDialog implements
     if ( this.entityType.equals ( MachineType.ENFA ) )
     {
       node = this.regexNode.getNextNodeForNFA ();
-
+      node.setActive ( true );
+      this.activeNode = node;
       // Token
       if ( node instanceof TokenNode )
       {
@@ -1473,6 +1518,7 @@ public class ConvertRegexToMachineDialog implements
     {
       this.actualStep = Step.INITIAL;
       // Initial Step
+      boolean finalStep = false;
       if ( this.positionStates.isEmpty () )
       {
         HashSet < Integer > positions = new HashSet < Integer > ();
@@ -1484,7 +1530,6 @@ public class ConvertRegexToMachineDialog implements
           LeafNode leaf = ( LeafNode ) tmpNode;
           positions.add ( new Integer ( leaf.getPosition () ) );
           name += leaf.getPosition ();
-
         }
         DefaultPositionState state;
         try
@@ -1518,78 +1563,40 @@ public class ConvertRegexToMachineDialog implements
       else
       {
         DefaultPositionState positionState = getNextUnmarkedState ();
-        if ( positionState == null )
+        if ( positionState != null )
         {
-          throw new RuntimeException ( "Internal Error: PositionState is null" ); //$NON-NLS-1$
-        }
-        if ( !this.controlledSymbols.containsKey ( positionState ) )
-        {
-          this.controlledSymbols.put ( positionState,
-              new ArrayList < Symbol > () );
-        }
-        markedPositionState = positionState;
-        Symbol a = getNextUnControlledSymbol ( positionState );
-        controlledSymbol = a;
-        if ( a != null )
-        {
-          this.controlledSymbols.get ( positionState ).add ( a );
-          HashSet < Integer > u = new HashSet < Integer > ();
-          for ( Integer p : positionState.getPositions () )
+          if ( !this.controlledSymbols.containsKey ( positionState ) )
           {
-            if ( a.getName ().equals (
-                this.defaultRegex.symbolAtPosition ( p.intValue () ) ) )
+            this.controlledSymbols.put ( positionState,
+                new ArrayList < Symbol > () );
+          }
+          markedPositionState = positionState;
+          Symbol a = getNextUnControlledSymbol ( positionState );
+          controlledSymbol = a;
+          if ( a != null )
+          {
+            this.controlledSymbols.get ( positionState ).add ( a );
+            HashSet < Integer > u = new HashSet < Integer > ();
+            for ( Integer p : positionState.getPositions () )
             {
-              for ( Integer n : this.defaultRegex.followPos ( p.intValue () ) )
+              if ( a.getName ().equals (
+                  this.defaultRegex.symbolAtPosition ( p.intValue () ) ) )
               {
-                u.add ( n );
+                for ( Integer n : this.defaultRegex.followPos ( p.intValue () ) )
+                {
+                  u.add ( n );
+                }
               }
             }
-          }
-          String name = ""; //$NON-NLS-1$
-          for ( Integer i : u )
-          {
-            name += i;
-          }
-          DefaultPositionState uState;
-          try
-          {
-            uState = new DefaultPositionState ( name, u );
-          }
-          catch ( StateException exc )
-          {
-            exc.printStackTrace ();
-            System.exit ( 1 );
-            return;
-          }
-
-          if ( !u.isEmpty () )
-          {
-            if ( !this.positionStates.contains ( uState ) )
+            String name = ""; //$NON-NLS-1$
+            for ( Integer i : u )
             {
-              LeafNode end = ( LeafNode ) this.regexNode.lastPos ().get ( 0 );
-              if ( uState.getPositions ().contains (
-                  new Integer ( end.getPosition () ) ) )
-              {
-                uState.setFinalState ( true );
-              }
-              this.positionStates.add ( uState );
-              DefaultStateView view = this.modelConverted.createStateView ( 0,
-                  0, uState, false );
-              this.positionStateViewList.put ( uState, view );
-              addedStates.add ( uState.getName () );
-              Position p = getPosition ( uState );
-              if ( p != null )
-              {
-                view.move ( p.getX (), p.getY () );
-              }
+              name += i;
             }
-
-          }
-          else
-          {
+            DefaultPositionState uState;
             try
             {
-              uState.setName ( "\u2205" ); //$NON-NLS-1$
+              uState = new DefaultPositionState ( name, u );
             }
             catch ( StateException exc )
             {
@@ -1597,111 +1604,150 @@ public class ConvertRegexToMachineDialog implements
               System.exit ( 1 );
               return;
             }
-            if ( !this.emptyStateCreated )
+
+            if ( !u.isEmpty () )
             {
-              errorCreated = true;
-              this.positionStates.add ( uState );
-              DefaultStateView view = this.modelConverted.createStateView ( 0,
-                  0, uState, false );
-              this.positionStateViewList.put ( uState, view );
-              this.emptyStateCreated = true;
-              addedStates.add ( uState.getName () );
-              Position p = getPosition ( uState );
-              if ( p != null )
+              if ( !this.positionStates.contains ( uState ) )
               {
-                view.move ( p.getX (), p.getY () );
-              }
-            }
-          }
-          if ( this.positionStateViewList.get ( uState ) != null
-              && this.positionStateViewList.get ( positionState ) != null )
-          {
-            ArrayList < Symbol > s = new ArrayList < Symbol > ();
-            s.add ( a );
-            try
-            {
-              DefaultTransitionView old = null;
-              for ( DefaultTransitionView t : this.modelConverted
-                  .getTransitionViewList () )
-              {
-                if ( t.getSourceView ().equals (
-                    this.positionStateViewList.get ( positionState ) )
-                    && t.getTargetView ().equals (
-                        this.positionStateViewList.get ( uState ) ) )
+                this.positionStates.add ( uState );
+                DefaultStateView view = this.modelConverted.createStateView (
+                    0, 0, uState, false );
+                this.positionStateViewList.put ( uState, view );
+                addedStates.add ( uState.getName () );
+                Position p = getPosition ( uState );
+                if ( p != null )
                 {
-                  old = t;
+                  view.move ( p.getX (), p.getY () );
                 }
               }
-              if ( old == null )
-              {
-                addedTransitions.add ( this.modelConverted
-                    .createTransitionView ( new DefaultTransition (
-                        this.defaultRegex.getAlphabet (), this.defaultRegex
-                            .getAlphabet (), new DefaultWord (),
-                        new DefaultWord (), this.positionStateViewList.get (
-                            positionState ).getState (),
-                        this.positionStateViewList.get ( uState ).getState (),
-                        a ), this.positionStateViewList.get ( positionState ),
-                        this.positionStateViewList.get ( uState ), true, false,
-                        true ) );
-                pretty
-                    .add ( Messages
-                        .getPrettyString (
-                            "ConvertRegexToMachineDialog.StepTransitionForSymbol", a.toPrettyString () ) ); //$NON-NLS-1$
 
-              }
-              else
+            }
+            else
+            {
+              try
               {
-                pretty
-                    .add ( Messages
-                        .getPrettyString (
-                            "ConvertRegexToMachineDialog.StepSymbolToTransition", a.toPrettyString (), old.getTransition ().toPrettyString () ) ); //$NON-NLS-1$
-                old.getTransition ().add ( a );
-                addedSymbolsToTransition
-                    .add ( new ObjectPair < DefaultTransitionView, Symbol > (
-                        old, a ) );
+                uState.setName ( "\u2205" ); //$NON-NLS-1$
+              }
+              catch ( StateException exc )
+              {
+                exc.printStackTrace ();
+                System.exit ( 1 );
+                return;
+              }
+              if ( !this.emptyStateCreated )
+              {
+                errorCreated = true;
+                this.positionStates.add ( uState );
+                DefaultStateView view = this.modelConverted.createStateView (
+                    0, 0, uState, false );
+                this.positionStateViewList.put ( uState, view );
+                this.emptyStateCreated = true;
+                addedStates.add ( uState.getName () );
+                Position p = getPosition ( uState );
+                if ( p != null )
+                {
+                  view.move ( p.getX (), p.getY () );
+                }
               }
             }
-            catch ( TransitionSymbolNotInAlphabetException exc )
+            if ( this.positionStateViewList.get ( uState ) != null
+                && this.positionStateViewList.get ( positionState ) != null )
             {
-              exc.printStackTrace ();
-              System.exit ( 1 );
-              return;
+              ArrayList < Symbol > s = new ArrayList < Symbol > ();
+              s.add ( a );
+              try
+              {
+                DefaultTransitionView old = null;
+                for ( DefaultTransitionView t : this.modelConverted
+                    .getTransitionViewList () )
+                {
+                  if ( t.getSourceView ().equals (
+                      this.positionStateViewList.get ( positionState ) )
+                      && t.getTargetView ().equals (
+                          this.positionStateViewList.get ( uState ) ) )
+                  {
+                    old = t;
+                  }
+                }
+                if ( old == null )
+                {
+                  addedTransitions.add ( this.modelConverted
+                      .createTransitionView (
+                          new DefaultTransition ( this.defaultRegex
+                              .getAlphabet (),
+                              this.defaultRegex.getAlphabet (),
+                              new DefaultWord (), new DefaultWord (),
+                              this.positionStateViewList.get ( positionState )
+                                  .getState (), this.positionStateViewList.get (
+                                  uState ).getState (), a ),
+                          this.positionStateViewList.get ( positionState ),
+                          this.positionStateViewList.get ( uState ), true,
+                          false, true ) );
+                  pretty
+                      .add ( Messages
+                          .getPrettyString (
+                              "ConvertRegexToMachineDialog.StepTransitionForSymbol", a.toPrettyString () ) ); //$NON-NLS-1$
+
+                }
+                else
+                {
+                  pretty
+                      .add ( Messages
+                          .getPrettyString (
+                              "ConvertRegexToMachineDialog.StepSymbolToTransition", a.toPrettyString (), old.getTransition ().toPrettyString () ) ); //$NON-NLS-1$
+                  old.getTransition ().add ( a );
+                  addedSymbolsToTransition
+                      .add ( new ObjectPair < DefaultTransitionView, Symbol > (
+                          old, a ) );
+                }
+              }
+              catch ( TransitionSymbolNotInAlphabetException exc )
+              {
+                exc.printStackTrace ();
+                System.exit ( 1 );
+                return;
+              }
+              catch ( TransitionSymbolOnlyOneTimeException exc )
+              {
+                exc.printStackTrace ();
+                System.exit ( 1 );
+                return;
+              }
             }
-            catch ( TransitionSymbolOnlyOneTimeException exc )
-            {
-              exc.printStackTrace ();
-              System.exit ( 1 );
-              return;
-            }
+
           }
+          else
+          {
+            positionState.mark ();
+            pretty
+                .add ( Messages
+                    .getPrettyString (
+                        "ConvertRegexToMachineDialog.StepMarkState", positionState.toPrettyString () ) ); //$NON-NLS-1$
 
+          }
         }
         else
         {
-          positionState.mark ();
+          finalStep = true;
+          LeafNode end = ( LeafNode ) this.regexNode.lastPos ().get ( 0 );
           pretty
               .add ( Messages
                   .getPrettyString (
-                      "ConvertRegexToMachineDialog.StepMarkState", positionState.toPrettyString () ) ); //$NON-NLS-1$
-
+                      "ConvertRegexToMachineDialog.StepMarkFinalState", new PrettyString ( new PrettyToken ( String.valueOf ( end.getPosition () ), Style.REGEX_POSITION ) ) ) ); //$NON-NLS-1$
+          for ( DefaultPositionState uState : this.positionStates )
+          {
+            if ( uState.getPositions ().contains (
+                new Integer ( end.getPosition () ) ) )
+            {
+              uState.setFinalState ( true );
+              setFinalFalse.add ( this.modelConverted
+                  .getStateViewForState ( uState ) );
+            }
+          }
         }
       }
 
-      boolean ready = true;
-      for ( DefaultPositionState state : this.positionStates )
-      {
-        if ( !state.isMarked () )
-        {
-          ready = false;
-        }
-      }
-      if ( this.positionStates.isEmpty () )
-      {
-        ready = false;
-      }
-
-      this.endReached = ready;
+      this.endReached = finalStep;
 
       if ( manual )
       {
@@ -1718,45 +1764,13 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * HashMap for the controlled {@link Symbol}s for a
-   * {@link DefaultPositionState}
-   */
-  private HashMap < DefaultPositionState, ArrayList < Symbol > > controlledSymbols = new HashMap < DefaultPositionState, ArrayList < Symbol > > ();
-
-
-  /**
-   * Returns the next uncontrolled {@link Symbol} for a given
-   * {@link DefaultPositionState}
-   * 
-   * @param state The {@link DefaultPositionState}
-   * @return The next uncontrolled {@link Symbol} for a given
-   *         {@link DefaultPositionState}
-   */
-  private Symbol getNextUnControlledSymbol ( DefaultPositionState state )
-  {
-    ArrayList < Symbol > c = this.controlledSymbols.get ( state );
-    ArrayList < Symbol > rest = new ArrayList < Symbol > ();
-    rest.addAll ( this.defaultRegex.getAlphabet ().get () );
-    rest.removeAll ( c );
-    rest.remove ( new DefaultSymbol ( "#" ) ); //$NON-NLS-1$
-    try
-    {
-      return rest.get ( 0 );
-    }
-    catch ( IndexOutOfBoundsException e )
-    {
-      return null;
-    }
-  }
-
-
-  /**
    * Performs previous step
    * 
    * @param manual Indicates if step was made manually
    */
   private void performPreviousStep ( boolean manual )
   {
+    this.endReached = false;
     StepItem stepItem = this.stepItemList
         .remove ( this.stepItemList.size () - 1 );
 
@@ -1780,7 +1794,12 @@ public class ConvertRegexToMachineDialog implements
 
     for ( DefaultStateView view : stepItem.getSetFinalFalse () )
     {
-      view.getState ().setFinalState ( true );
+      view.getState ().setFinalState (
+          ( this.entityType.equals ( MachineType.ENFA ) ) );
+      if ( this.entityType.equals ( MachineType.DFA ) )
+      {
+        // this.finalCreated = true;
+      }
     }
     for ( DefaultStateView view : stepItem.getSetStartFalse () )
     {
@@ -1820,6 +1839,7 @@ public class ConvertRegexToMachineDialog implements
     if ( actNode != null )
     {
       actNode.unmark ();
+      actNode.setActive ( false );
     }
 
     // outline
@@ -1843,27 +1863,6 @@ public class ConvertRegexToMachineDialog implements
    */
   private final void setStatus ()
   {
-    if ( this.entityType.equals ( MachineType.ENFA ) )
-    {
-      this.endReached = this.regexNode.isMarked ();
-    }
-    else
-    {
-      boolean ready = true;
-      for ( DefaultPositionState state : this.positionStates )
-      {
-        if ( !state.isMarked () )
-        {
-          ready = false;
-        }
-      }
-      if ( this.positionStates.isEmpty () )
-      {
-        ready = false;
-      }
-
-      this.endReached = ready;
-    }
     if ( this.gui.jGTIToolBarToggleButtonAutoStep.isSelected () )
     {
       this.gui.jGTIToolBarButtonBeginStep.setEnabled ( false );

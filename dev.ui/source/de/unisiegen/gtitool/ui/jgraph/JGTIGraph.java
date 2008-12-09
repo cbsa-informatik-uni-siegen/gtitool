@@ -32,7 +32,7 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
  * @author Christian Fehler
  * @version $Id:GPCellViewFactory.java 910 2008-05-16 00:31:21Z fehler $
  */
-public final class JGTIGraph extends JGraph implements Printable
+public class JGTIGraph extends JGraph implements Printable
 {
 
   /**
@@ -275,7 +275,7 @@ public final class JGTIGraph extends JGraph implements Printable
    * @see JComponent#paintComponent(Graphics)
    */
   @Override
-  protected final void paintComponent ( Graphics graphics )
+  protected void paintComponent ( Graphics graphics )
   {
     super.paintComponent ( graphics );
 

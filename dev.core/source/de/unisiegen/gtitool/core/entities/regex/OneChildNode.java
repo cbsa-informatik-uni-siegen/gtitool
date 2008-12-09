@@ -43,6 +43,17 @@ public abstract class OneChildNode extends RegexNode
     this.regex.unmarkAll ();
   }
 
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isMarkedAll()
+   */
+  @Override
+  public boolean isMarkedAll ()
+  {
+    return this.marked && this.regex.isMarkedAll ();
+  }
 
   /**
    * The Child of this {@link OneChildNode}
@@ -58,6 +69,18 @@ public abstract class OneChildNode extends RegexNode
   public OneChildNode ( RegexNode regex )
   {
     this.regex = regex;
+  }
+  
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#countDisjunctions()
+   */
+  @Override
+  public int countDisjunctions ()
+  {
+    return this.regex.countDisjunctions ();
   }
 
 
@@ -81,12 +104,12 @@ public abstract class OneChildNode extends RegexNode
   @Override
   public RegexNode getNextNodeForNFA ()
   {
-    if ( !this.regex.isMarked () )
+    if ( !this.marked )
     {
-      return this.regex.getNextNodeForNFA ();
+      this.marked = true;
+      return this;
     }
-    this.marked = true;
-    return this;
+    return this.regex.getNextNodeForNFA ();
   }
 
 

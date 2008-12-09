@@ -30,7 +30,29 @@ public abstract class LeafNode extends RegexNode
     this.marked = false;
   }
 
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#countDisjunctions()
+   */
+  @Override
+  public int countDisjunctions ()
+  {
+    return 0;
+  }
 
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isMarkedAll()
+   */
+  @Override
+  public boolean isMarkedAll ()
+  {
+    return this.marked;
+  }
   /**
    * TODO
    * 

@@ -43,6 +43,33 @@ public abstract class TwoChildNode extends RegexNode
     this.regex2 = regex2;
   }
 
+  /**
+   * TODO
+   *
+   * @see RegexNode#countDisjunctions()
+   */
+  @Override
+  public int countDisjunctions ()
+  {
+    int i = 0;
+    if(this instanceof DisjunctionNode) {
+      i = 1;
+    }
+    return i + this.regex1.countDisjunctions () + this.regex2.countDisjunctions ();
+  }
+
+  /**
+   * TODO
+   * 
+   * @see RegexNode#isMarkedAll()
+   */
+  @Override
+  public boolean isMarkedAll ()
+  {
+    return this.marked && this.regex1.isMarkedAll ()
+        && this.regex2.isMarkedAll ();
+  }
+
 
   /**
    * {@inheritDoc}
@@ -68,16 +95,20 @@ public abstract class TwoChildNode extends RegexNode
   @Override
   public RegexNode getNextNodeForNFA ()
   {
-    if ( !this.regex1.isMarked () )
+    if ( !this.marked )
+    {
+      this.marked = true;
+      return this;
+    }
+    if ( !this.regex1.isMarkedAll () )
     {
       return this.regex1.getNextNodeForNFA ();
     }
-    if ( !this.regex2.isMarked () )
+    if ( !this.regex2.isMarkedAll () )
     {
       return this.regex2.getNextNodeForNFA ();
     }
-    this.marked = true;
-    return this;
+    return null;
   }
 
 

@@ -45,8 +45,10 @@ import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
+import de.unisiegen.gtitool.ui.jgraph.DefaultBlackboxView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.jgraph.JGTIBlackboxGraph;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
@@ -600,7 +602,7 @@ public class ConvertRegexToMachineDialog implements
   /**
    * The converted {@link JGTIGraph} containing the diagramm.
    */
-  private JGTIGraph jGTIGraphConverted;
+  private JGTIBlackboxGraph jGTIGraphConverted;
 
 
   /**
@@ -663,6 +665,15 @@ public class ConvertRegexToMachineDialog implements
    * for a {@link RegexNode}
    */
   private HashMap < RegexNode, ArrayList < DefaultStateView > > stateViewList = new HashMap < RegexNode, ArrayList < DefaultStateView > > ();
+
+
+  private HashMap < RegexNode, ArrayList < DefaultStateView > > surroundings = new HashMap < RegexNode, ArrayList < DefaultStateView > > ();
+
+
+  private HashMap < RegexNode, ArrayList < DefaultStateView > > startings = new HashMap < RegexNode, ArrayList < DefaultStateView > > ();
+
+
+  private HashMap < RegexNode, ArrayList < DefaultStateView > > endings = new HashMap < RegexNode, ArrayList < DefaultStateView > > ();
 
 
   /**
@@ -782,31 +793,35 @@ public class ConvertRegexToMachineDialog implements
     this.jGTIGraphOriginal.setEnabled ( false );
     this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGTIGraphOriginal );
 
-    this.jGTIGraphConverted = this.modelConverted.getJGTIGraph ();
+    this.jGTIGraphConverted = ( JGTIBlackboxGraph ) this.modelConverted
+        .getJGTIGraph ();
     this.jGTIGraphConverted.setEnabled ( false );
     this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGTIGraphConverted );
 
     ArrayList < RegexNode > lastPos = this.regexNode.lastPos ();
-    this.count = ( ( LeafNode ) lastPos.get ( lastPos.size () - 1 ) )
-        .getPosition () + 1;
+    this.count = 1;
     this.positionMap = new HashMap < String, Position > ();
 
-    while ( !this.endReached )
+    if ( toEntityType.equals ( MachineType.DFA ) )
     {
-      performNextStep ( false );
+      while ( !this.endReached )
+      {
+        performNextStep ( false );
+      }
+      new LayoutManager ( this.modelConverted, null ).doLayout ();
+      for ( DefaultStateView current : this.modelConverted.getStateViewList () )
+      {
+        int yOffset = current.getState ().isLoopTransition () ? StateView.LOOP_TRANSITION_OFFSET
+            : 0;
+        this.positionMap.put ( current.getState ().getName (), new Position (
+            current.getPositionX (), current.getPositionY () + yOffset ) );
+      }
+      while ( !this.stepItemList.isEmpty () )
+      {
+        performPreviousStep ( false );
+      }
     }
-    new LayoutManager ( this.modelConverted, null ).doLayout ();
-    for ( DefaultStateView current : this.modelConverted.getStateViewList () )
-    {
-      int yOffset = current.getState ().isLoopTransition () ? StateView.LOOP_TRANSITION_OFFSET
-          : 0;
-      this.positionMap.put ( current.getState ().getName (), new Position (
-          current.getPositionX (), current.getPositionY () + yOffset ) );
-    }
-    while ( !this.stepItemList.isEmpty () )
-    {
-      performPreviousStep ( false );
-    }
+
     this.endReached = this.regexNode.isMarked ();
     setStatus ();
     show ();
@@ -999,6 +1014,9 @@ public class ConvertRegexToMachineDialog implements
   }
 
 
+  private ArrayList < DefaultStateView > movedEndings = new ArrayList < DefaultStateView > ();
+
+
   /**
    * Handles the action on the ok button.
    */
@@ -1016,12 +1034,14 @@ public class ConvertRegexToMachineDialog implements
     }
     this.modelConverted.getMachine ().getAlphabet ().remove (
         new DefaultSymbol ( "#" ) ); //$NON-NLS-1$
+    System.err.println ( this.modelConverted.getElement ().getName () );
     this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
-        true );
+        false );
 
     this.regexNode.unmarkAll ();
     this.gui.dispose ();
   }
+
 
   /**
    * Handles the action on the previous step button.
@@ -1030,6 +1050,7 @@ public class ConvertRegexToMachineDialog implements
   {
     performPreviousStep ( true );
   }
+
 
   /**
    * Handles the action on the print button.
@@ -1062,7 +1083,8 @@ public class ConvertRegexToMachineDialog implements
    */
   private final void performNextStep ( boolean manual )
   {
-    if(this.activeNode != null) {
+    if ( this.activeNode != null )
+    {
       this.activeNode.setActive ( false );
     }
     ArrayList < String > addedStates = new ArrayList < String > ();
@@ -1094,63 +1116,38 @@ public class ConvertRegexToMachineDialog implements
                 .getPrettyString (
                     "ConvertRegexToMachineDialog.StepConvertToken", token.toPrettyString () ) ); //$NON-NLS-1$
 
-        DefaultState start;
         try
         {
-          start = new DefaultState ( "s" + token.getPosition () ); //$NON-NLS-1$
-        }
-        catch ( StateException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
-        }
-        start.setStartState ( true );
-        // this.modelConverted.getMachine ().addState ( start );
-        DefaultStateView startView = this.modelConverted.createStateView ( 0,
-            0, start, false );
-        Position p = getPosition ( start );
-        if ( p != null )
-        {
-          startView.move ( p.getX (), p.getY () );
-        }
+          DefaultStateView startView;
+          DefaultStateView finView;
+          if ( this.stateViewList.containsKey ( token ) )
+          {
+            ArrayList < DefaultStateView > views = this.stateViewList
+                .get ( token );
 
-        DefaultState fin;
-        try
-        {
-          fin = new DefaultState ( "f" + token.getPosition () ); //$NON-NLS-1$
-        }
-        catch ( StateException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
-        }
-        fin.setFinalState ( true );
-        // this.modelConverted.getMachine ().addState ( fin );
-        DefaultStateView finView = this.modelConverted.createStateView ( 0, 0,
-            fin, false );
-        p = getPosition ( fin );
-        if ( p != null )
-        {
-          finView.move ( p.getX (), p.getY () );
-        }
-        addedStates.add ( startView.getState ().getName () );
-        addedStates.add ( finView.getState ().getName () );
+            startView = views.get ( 0 );
+            finView = views.get ( 1 );
+          }
+          else
+          {
+            startView = this.modelConverted.createStateView ( 100, 100,
+                new DefaultState ( "start" + this.count ), false ); //$NON-NLS-1$
+            startView.getState ().setStartState ( true );
 
-        ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
-        views.add ( startView );
-        views.add ( finView );
-        this.stateViewList.put ( token, views );
+            finView = this.modelConverted.createStateView ( 200, 100,
+                new DefaultState ( "final" + this.count ), false );//$NON-NLS-1$
+            finView.getState ().setFinalState ( true );
+            this.count++ ;
+          }
+          this.jGTIGraphConverted.removeBlackBox ( token );
 
-        ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-        symbols.add ( new DefaultSymbol ( token.getName () ) );
-        Transition t;
-        Alphabet a = this.modelOriginal.getRegex ().getAlphabet ();
-        try
-        {
+          ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+          symbols.add ( new DefaultSymbol ( token.getName () ) );
+          Transition t;
+          Alphabet a = this.modelOriginal.getRegex ().getAlphabet ();
           t = new DefaultTransition ( a, a, new DefaultWord (),
-              new DefaultWord (), start, fin, symbols );
+              new DefaultWord (), startView.getState (), finView.getState (),
+              symbols );
 
           addedTransitions.add ( this.modelConverted.createTransitionView ( t,
               startView, finView, true, false, true ) );
@@ -1160,6 +1157,10 @@ public class ConvertRegexToMachineDialog implements
           exc.printStackTrace ();
         }
         catch ( TransitionSymbolOnlyOneTimeException exc )
+        {
+          exc.printStackTrace ();
+        }
+        catch ( StateException exc )
         {
           exc.printStackTrace ();
         }
@@ -1168,70 +1169,46 @@ public class ConvertRegexToMachineDialog implements
       if ( node instanceof EpsilonNode )
       {
         this.actualStep = Step.CONVERT_EPSILON;
-        EpsilonNode token = ( EpsilonNode ) node;
+        EpsilonNode epsilon = ( EpsilonNode ) node;
 
         pretty
             .add ( Messages
                 .getPrettyString (
-                    "ConvertRegexToMachineDialog.StepConvertEpsilon", token.toPrettyString () ) ); //$NON-NLS-1$
+                    "ConvertRegexToMachineDialog.StepConvertEpsilon", epsilon.toPrettyString () ) ); //$NON-NLS-1$
 
-        DefaultState start;
         try
         {
-          start = new DefaultState ( "s" + token.getPosition () ); //$NON-NLS-1$
-        }
-        catch ( StateException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
-        }
-        start.setStartState ( true );
-        // this.modelConverted.getMachine ().addState ( start );
-        DefaultStateView startView = this.modelConverted.createStateView ( 0,
-            0, start, false );
-        Position p = getPosition ( start );
-        if ( p != null )
-        {
-          startView.move ( p.getX (), p.getY () );
-        }
+          DefaultStateView startView;
+          DefaultStateView finView;
+          if ( this.stateViewList.containsKey ( epsilon ) )
+          {
+            ArrayList < DefaultStateView > views = this.stateViewList
+                .get ( epsilon );
 
-        DefaultState fin;
-        try
-        {
-          fin = new DefaultState ( "f" + token.getPosition () ); //$NON-NLS-1$
-        }
-        catch ( StateException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
-        }
-        fin.setFinalState ( true );
-        // this.modelConverted.getMachine ().addState ( fin );
-        DefaultStateView finView = this.modelConverted.createStateView ( 0, 0,
-            fin, false );
-        p = getPosition ( fin );
-        if ( p != null )
-        {
-          finView.move ( p.getX (), p.getY () );
-        }
-        addedStates.add ( startView.getState ().getName () );
-        addedStates.add ( finView.getState ().getName () );
+            startView = views.get ( 0 );
+            finView = views.get ( 1 );
+          }
+          else
+          {
+            startView = this.modelConverted.createStateView ( 100, 100,
+                new DefaultState ( "start" + this.count ), false );//$NON-NLS-1$
+            startView.getState ().setStartState ( true );
 
-        ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
-        views.add ( startView );
-        views.add ( finView );
-        this.stateViewList.put ( token, views );
+            finView = this.modelConverted.createStateView ( 200, 100,
+                new DefaultState ( "final" + this.count ), false );//$NON-NLS-1$
+            finView.getState ().setFinalState ( true );
+            this.count++ ;
+          }
 
-        ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-        symbols.add ( new DefaultSymbol () );
-        Transition t;
-        Alphabet a = this.modelOriginal.getRegex ().getAlphabet ();
-        try
-        {
+          this.jGTIGraphConverted.removeBlackBox ( epsilon );
+
+          ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+          symbols.add ( new DefaultSymbol () );
+          Transition t;
+          Alphabet a = this.modelOriginal.getRegex ().getAlphabet ();
           t = new DefaultTransition ( a, a, new DefaultWord (),
-              new DefaultWord (), start, fin, symbols );
+              new DefaultWord (), startView.getState (), finView.getState (),
+              symbols );
 
           addedTransitions.add ( this.modelConverted.createTransitionView ( t,
               startView, finView, true, false, true ) );
@@ -1241,6 +1218,10 @@ public class ConvertRegexToMachineDialog implements
           exc.printStackTrace ();
         }
         catch ( TransitionSymbolOnlyOneTimeException exc )
+        {
+          exc.printStackTrace ();
+        }
+        catch ( StateException exc )
         {
           exc.printStackTrace ();
         }
@@ -1251,165 +1232,287 @@ public class ConvertRegexToMachineDialog implements
         this.actualStep = Step.CONVERT_DISJUNCTION;
         DisjunctionNode dis = ( DisjunctionNode ) node;
 
+        this.jGTIGraphConverted.removeBlackBox ( dis );
+
         pretty
             .add ( Messages
                 .getPrettyString (
                     "ConvertRegexToMachineDialog.StepConvertDisjunction", dis.toPrettyString () ) ); //$NON-NLS-1$
 
-        DefaultStateView start1 = this.stateViewList.get (
-            dis.getChildren ().get ( 0 ) ).get ( 0 );
-        DefaultStateView start2 = this.stateViewList.get (
-            dis.getChildren ().get ( 1 ) ).get ( 0 );
-        DefaultStateView final1 = this.stateViewList.get (
-            dis.getChildren ().get ( 0 ) ).get ( 1 );
-        DefaultStateView final2 = this.stateViewList.get (
-            dis.getChildren ().get ( 1 ) ).get ( 1 );
-
-        if ( final1 == null || final2 == null || start1 == null
-            || start2 == null )
-        {
-          throw new IllegalArgumentException ( "A State is null" ); //$NON-NLS-1$
-        }
-
-        DefaultState start;
         try
         {
-          start = new DefaultState ( "s" + this.count ); //$NON-NLS-1$
+          int regex1Width = this.jGTIGraphConverted.getGraphics ()
+              .getFontMetrics ().stringWidth (
+                  dis.getChildren ().get ( 0 ).toPrettyString ().toString () );
+          int regex2Width = this.jGTIGraphConverted.getGraphics ()
+              .getFontMetrics ().stringWidth (
+                  dis.getChildren ().get ( 1 ).toPrettyString ().toString () );
+
+          if ( this.startings.containsKey ( dis ) )
+          {
+            for ( DefaultStateView view : this.startings.get ( dis ) )
+            {
+              view.moveRelative ( 0, 50 );
+            }
+          }
+
+          DefaultStateView start;
+          DefaultStateView end;
+          if ( this.stateViewList.containsKey ( dis ) )
+          {
+            start = this.stateViewList.get ( dis ).get ( 0 );
+            end = this.stateViewList.get ( dis ).get ( 1 );
+          }
+          else
+          {
+            start = this.modelConverted.createStateView ( 100, 100,
+                new DefaultState ( "start" + this.count ), false );//$NON-NLS-1$
+            start.getState ().setStartState ( true );
+
+            end = this.modelConverted.createStateView ( 100, 100,
+                new DefaultState ( "final" + this.count ), false );//$NON-NLS-1$
+            end.getState ().setFinalState ( true );
+            this.count++ ;
+          }
+
+          if ( this.surroundings.containsKey ( dis ) )
+          {
+            for ( DefaultStateView view : this.surroundings.get ( dis ) )
+            {
+              view.moveRelative ( 0, 100 );
+            }
+          }
+
+          double startX = start.getPositionX () + start.getWidth () / 2;
+          double startY = start.getPositionY () + start.getHeight () / 2;
+
+          DefaultStateView start1 = this.modelConverted.createStateView (
+              startX, startY, new DefaultState ( "start" + this.count ), false ); //$NON-NLS-1$
+          DefaultStateView end1 = this.modelConverted.createStateView ( startX,
+              startY, new DefaultState ( "end" + this.count ), false ); //$NON-NLS-1$
+          ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
+          views.add ( start1 );
+          views.add ( end1 );
+          this.stateViewList.put ( dis.getChildren ().get ( 0 ), views );
+          this.count++ ;
+          DefaultStateView start2 = this.modelConverted.createStateView (
+              startX, startY, new DefaultState ( "start" + this.count ), false ); //$NON-NLS-1$
+          DefaultStateView end2 = this.modelConverted.createStateView ( startX,
+              startY, new DefaultState ( "end" + this.count ), false ); //$NON-NLS-1$
+          views = new ArrayList < DefaultStateView > ();
+          views.add ( start2 );
+          views.add ( end2 );
+          this.stateViewList.put ( dis.getChildren ().get ( 1 ), views );
+          this.count++ ;
+
+          views = new ArrayList < DefaultStateView > ();
+          if ( this.startings.containsKey ( dis ) )
+          {
+            views.addAll ( this.startings.get ( dis ) );
+          }
+          views.add ( start );
+          this.startings.put ( dis.getChildren ().get ( 0 ), views );
+          this.startings.put ( dis.getChildren ().get ( 1 ), views );
+
+          views = new ArrayList < DefaultStateView > ();
+          if ( this.endings.containsKey ( dis ) )
+          {
+            views.addAll ( this.endings.get ( dis ) );
+          }
+          views.add ( end );
+          this.endings.put ( dis.getChildren ().get ( 0 ), views );
+          this.endings.put ( dis.getChildren ().get ( 1 ), views );
+
+          views = new ArrayList < DefaultStateView > ();
+          if ( this.surroundings.containsKey ( dis ) )
+          {
+            views.addAll ( this.surroundings.get ( dis ) );
+          }
+          views.add ( start2 );
+          views.add ( end2 );
+          this.surroundings.put ( dis.getChildren ().get ( 0 ), views );
+
+          start1.moveRelative ( 150, -50 );
+          end1.move ( start1.getPositionX (), start1.getPositionY () );
+          end1.moveRelative ( 2 * JGTIBlackboxGraph.X_SPACE + regex1Width
+              + end1.getWidth (), 0 );
+          start2.moveRelative ( 150, 50 );
+          end2.move ( start2.getPositionX (), start2.getPositionY () );
+          end2.moveRelative ( 2 * JGTIBlackboxGraph.X_SPACE + regex2Width
+              + end2.getWidth (), 0 );
+
+          end.move ( end2.getPositionX (), end.getPositionY () );
+          end.moveRelative ( 150, 0 );
+
+          if ( this.endings.containsKey ( dis ) )
+          {
+            double width = Math.max ( regex1Width, regex2Width ) + 4
+                * JGTIBlackboxGraph.X_SPACE + start1.getWidth ()
+                + end1.getWidth () + 100;
+
+            for ( DefaultStateView view : this.endings.get ( dis ) )
+            {
+              if ( !this.movedEndings.contains ( view ) )
+              {
+                view.moveRelative ( width, 50 );
+                this.movedEndings.add ( view );
+              }
+              else
+              {
+                this.movedEndings.remove ( view );
+              }
+            }
+          }
+          if ( this.surroundings.containsKey ( dis ) )
+          {
+            start.moveRelative ( 0, 50 );
+            start2.moveRelative ( 0, 50 );
+            end2.moveRelative ( 0, 50 );
+            end.moveRelative ( 0, 50 );
+          }
+
+          this.modelConverted.createTransitionView ( new DefaultTransition (
+              this.defaultRegex.getAlphabet (), this.defaultRegex
+                  .getAlphabet (), new DefaultWord (), new DefaultWord (),
+              start.getState (), start1.getState (), new DefaultSymbol () ),
+              start, start1, true, false, true );
+          this.modelConverted.createTransitionView ( new DefaultTransition (
+              this.defaultRegex.getAlphabet (), this.defaultRegex
+                  .getAlphabet (), new DefaultWord (), new DefaultWord (),
+              start.getState (), start2.getState (), new DefaultSymbol () ),
+              start, start2, true, false, true );
+          this.modelConverted.createTransitionView ( new DefaultTransition (
+              this.defaultRegex.getAlphabet (), this.defaultRegex
+                  .getAlphabet (), new DefaultWord (), new DefaultWord (), end1
+                  .getState (), end.getState (), new DefaultSymbol () ), end1,
+              end, true, false, true );
+          this.modelConverted.createTransitionView ( new DefaultTransition (
+              this.defaultRegex.getAlphabet (), this.defaultRegex
+                  .getAlphabet (), new DefaultWord (), new DefaultWord (), end2
+                  .getState (), end.getState (), new DefaultSymbol () ), end2,
+              end, true, false, true );
+
+          DefaultBlackboxView b1 = new DefaultBlackboxView ( start1, end1, dis
+              .getChildren ().get ( 0 ) );
+          DefaultBlackboxView b2 = new DefaultBlackboxView ( start2, end2, dis
+              .getChildren ().get ( 1 ) );
+          this.jGTIGraphConverted.addBlackBox ( b1 );
+          this.jGTIGraphConverted.addBlackBox ( b2 );
+
         }
         catch ( StateException exc )
         {
           exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
         }
-        start.setStartState ( true );
-        // this.modelConverted.getMachine ().addState ( start );
-
-        DefaultState fin;
-        try
-        {
-          fin = new DefaultState ( "f" + this.count++ ); //$NON-NLS-1$
-        }
-        catch ( StateException exc )
+        catch ( TransitionSymbolNotInAlphabetException exc )
         {
           exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
         }
-        fin.setFinalState ( true );
-        // this.modelConverted.getMachine ().addState ( fin );
-
-        DefaultTransition startStart1 = new DefaultTransition ();
-        startStart1.setStateBegin ( start );
-        startStart1.setStateEnd ( start1.getState () );
-        DefaultTransition startStart2 = new DefaultTransition ();
-        startStart2.setStateBegin ( start );
-        startStart2.setStateEnd ( start2.getState () );
-        DefaultTransition final1Final = new DefaultTransition ();
-        final1Final.setStateBegin ( final1.getState () );
-        final1Final.setStateEnd ( fin );
-        DefaultTransition final2Final = new DefaultTransition ();
-        final2Final.setStateBegin ( final2.getState () );
-        final2Final.setStateEnd ( fin );
-
-        DefaultStateView startView = this.modelConverted.createStateView ( 0,
-            0, start, false );
-        DefaultStateView finView = this.modelConverted.createStateView ( 0, 0,
-            fin, false );
-        Position p = getPosition ( start );
-        if ( p != null )
+        catch ( TransitionSymbolOnlyOneTimeException exc )
         {
-          startView.move ( p.getX (), p.getY () );
+          exc.printStackTrace ();
         }
-        p = getPosition ( fin );
-        if ( p != null )
-        {
-          finView.move ( p.getX (), p.getY () );
-        }
-        addedStates.add ( startView.getState ().getName () );
-        addedStates.add ( finView.getState ().getName () );
-
-        start1.getState ().setStartState ( false );
-        start2.getState ().setStartState ( false );
-        final1.getState ().setFinalState ( false );
-        final2.getState ().setFinalState ( false );
-        setStartFalse.add ( start1 );
-        setStartFalse.add ( start2 );
-        setFinalFalse.add ( final1 );
-        setFinalFalse.add ( final2 );
-
-        addedTransitions.add ( this.modelConverted.createTransitionView (
-            startStart1, startView, start1, true, false, true ) );
-        addedTransitions.add ( this.modelConverted.createTransitionView (
-            startStart2, startView, start2, true, false, true ) );
-        addedTransitions.add ( this.modelConverted.createTransitionView (
-            final1Final, final1, finView, true, false, true ) );
-        addedTransitions.add ( this.modelConverted.createTransitionView (
-            final2Final, final2, finView, true, false, true ) );
-
-        ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
-        views.add ( startView );
-        views.add ( finView );
-
-        this.stateViewList.put ( dis, views );
       }
       // Concatenation
       if ( node instanceof ConcatenationNode )
       {
         this.actualStep = Step.CONVERT_CONCAT;
         ConcatenationNode con = ( ConcatenationNode ) node;
+        this.jGTIGraphConverted.removeBlackBox ( con );
         pretty
             .add ( Messages
                 .getPrettyString (
                     "ConvertRegexToMachineDialog.StepConvertConcatenation", con.toPrettyString () ) ); //$NON-NLS-1$
-
-        DefaultStateView start1 = this.stateViewList.get (
-            con.getChildren ().get ( 0 ) ).get ( 0 );
-        DefaultStateView start2 = this.stateViewList.get (
-            con.getChildren ().get ( 1 ) ).get ( 0 );
-        DefaultStateView final1 = this.stateViewList.get (
-            con.getChildren ().get ( 0 ) ).get ( 1 );
-        DefaultStateView final2 = this.stateViewList.get (
-            con.getChildren ().get ( 1 ) ).get ( 1 );
-
-        final1.getState ().setFinalState ( false );
-        setFinalFalse.add ( final1 );
-
-        for ( Transition t : start2.getState ().getTransitionBegin () )
+        try
         {
-          try
-          {
-            addedTransitions.add ( this.modelConverted.createTransitionView (
-                new DefaultTransition ( t.getAlphabet (), t.getAlphabet (), t
-                    .getPushDownWordRead (), t.getPushDownWordWrite (), final1
-                    .getState (), t.getStateEnd (), t.getSymbol () ), final1,
-                this.modelConverted.getStateViewForState ( t.getStateEnd () ),
-                true, false, true ) );
 
-          }
-          catch ( TransitionSymbolNotInAlphabetException exc )
+          int regex1Width = this.jGTIGraphConverted.getGraphics ()
+              .getFontMetrics ().stringWidth (
+                  con.getChildren ().get ( 0 ).toPrettyString ().toString () );
+          int regex2Width = this.jGTIGraphConverted.getGraphics ()
+              .getFontMetrics ().stringWidth (
+                  con.getChildren ().get ( 1 ).toPrettyString ().toString () );
+
+          DefaultStateView start;
+          DefaultStateView end;
+          if ( this.stateViewList.containsKey ( con ) )
           {
-            exc.printStackTrace ();
+            start = this.stateViewList.get ( con ).get ( 0 );
+            end = this.stateViewList.get ( con ).get ( 1 );
           }
-          catch ( TransitionSymbolOnlyOneTimeException exc )
+          else
           {
-            exc.printStackTrace ();
+            start = this.modelConverted.createStateView ( 100, 100,
+                new DefaultState ( "start" + this.count ), false );//$NON-NLS-1$
+            start.getState ().setStartState ( true );
+
+            end = this.modelConverted.createStateView ( 250, 100,
+                new DefaultState ( "final" + this.count ), false );//$NON-NLS-1$
+            end.getState ().setFinalState ( true );
+            this.count++ ;
           }
+          double startX = start.getPositionX () + start.getWidth ();
+          double startY = start.getPositionY () + start.getHeight () / 2;
+          DefaultStateView middle = this.modelConverted
+              .createStateView ( startX, startY, new DefaultState ( "Middle"
+                  + this.count ), false );
+
+          middle.moveRelative ( 2 * JGTIBlackboxGraph.X_SPACE + regex1Width
+              + middle.getWidth (), 0 );
+          end.move ( middle.getPositionX (), end.getPositionY () );
+          end.moveRelative ( 4 * JGTIBlackboxGraph.X_SPACE + regex1Width
+              + middle.getWidth () + regex2Width, 0 );
+
+          ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
+          views.add ( end );
+          if ( this.endings.containsKey ( con ) )
+          {
+            double width = regex1Width + regex2Width + 4
+                * JGTIBlackboxGraph.X_SPACE + middle.getWidth ();
+
+            for ( DefaultStateView view : this.endings.get ( con ) )
+            {
+              if ( !this.movedEndings.contains ( view ) )
+              {
+                view.moveRelative ( width, 0 );
+                this.movedEndings.add ( view );
+              }
+              else
+              {
+                this.movedEndings.remove ( view );
+              }
+            }
+          }
+          views = new ArrayList < DefaultStateView > ();
+          views.add ( start );
+          views.add ( middle );
+          this.stateViewList.put ( con.getChildren ().get ( 0 ), views );
+          views = new ArrayList < DefaultStateView > ();
+          views.add ( middle );
+          views.add ( end );
+          this.stateViewList.put ( con.getChildren ().get ( 1 ), views );
+
+          this.endings.put ( con.getChildren ().get ( 1 ), views );
+          views.add ( middle );
+          this.endings.put ( con.getChildren ().get ( 0 ), views );
+
+          this.jGTIGraphConverted.addBlackBox ( new DefaultBlackboxView (
+              start, middle, con.getChildren ().get ( 0 ) ) );
+          this.jGTIGraphConverted.addBlackBox ( new DefaultBlackboxView (
+              middle, end, con.getChildren ().get ( 1 ) ) );
+        }
+        catch ( StateException e )
+        {
+          e.printStackTrace ();
         }
 
-        redoUndoItem = this.modelConverted.removeState ( start2, false );
-
-        ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
-        views.add ( start1 );
-        views.add ( final2 );
-
-        this.stateViewList.put ( con, views );
       }
       // Kleene Node
       if ( node instanceof KleeneNode )
       {
         this.actualStep = Step.CONVERT_KLEENE;
         KleeneNode k = ( KleeneNode ) node;
+        this.jGTIGraphConverted.removeBlackBox ( k );
         pretty
             .add ( Messages
                 .getPrettyString (
@@ -1505,7 +1608,7 @@ public class ConvertRegexToMachineDialog implements
         this.stateViewList.put ( k, views );
       }
 
-      this.endReached = this.regexNode.isMarked ();
+      this.endReached = this.regexNode.isMarkedAll ();
 
       if ( manual )
       {

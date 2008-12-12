@@ -65,8 +65,8 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         styledRegexAlphabetParserPanel = new de.unisiegen.gtitool.ui.style.StyledRegexAlphabetParserPanel();
         jGTIButtonToDFA = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTISplitPaneRegex = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        jGTIScrollPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         regexNodeInfoPanel = new de.unisiegen.gtitool.ui.netbeans.RegexNodeInfoPanel();
+        jGTIScrollPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
         jGTIScrollPaneWarnings = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
@@ -120,6 +120,8 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelRegexControl.add(jGTIButtonToNFA, gridBagConstraints);
+
+        styledRegexParserPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("RegexPanel.RegexTitle"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -127,6 +129,7 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelRegexControl.add(styledRegexParserPanel, gridBagConstraints);
 
+        styledRegexAlphabetParserPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("RegexPanel.AlphabetTitle"))); // NOI18N
         styledRegexAlphabetParserPanel.setEditable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -152,9 +155,12 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
 
         jGTISplitPaneTable.setLeftComponent(jGTIPanelRegexControl);
 
-        jGTISplitPaneRegex.setLeftComponent(jGTIScrollPaneGraph);
-        jGTISplitPaneRegex.setResizeWeight(0.8);
+        jGTISplitPaneRegex.setResizeWeight(0.7);
         jGTISplitPaneRegex.setRightComponent(regexNodeInfoPanel);
+        jGTISplitPaneRegex.setRightComponent(regexNodeInfoPanel);
+
+        jGTIScrollPaneGraph.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("RegexPanel.GraphTitle"))); // NOI18N
+        jGTISplitPaneRegex.setLeftComponent(jGTIScrollPaneGraph);
 
         jGTISplitPaneTable.setRightComponent(jGTISplitPaneRegex);
 

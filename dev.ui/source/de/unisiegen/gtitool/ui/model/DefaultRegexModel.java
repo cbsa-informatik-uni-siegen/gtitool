@@ -228,7 +228,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   public void initializeGraph ()
   {
     this.graphModel = new DefaultGraphModel ();
-
+    
     this.jGTIGraph = new JGTIGraph ( this.graphModel );
     this.jGTIGraph.setDoubleBuffered ( false );
     this.jGTIGraph.getGraphLayoutCache ()

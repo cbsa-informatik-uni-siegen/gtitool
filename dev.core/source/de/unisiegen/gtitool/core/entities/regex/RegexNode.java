@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
-import de.unisiegen.gtitool.core.parser.style.PrettyToken;
-import de.unisiegen.gtitool.core.parser.style.Style;
 
 
 /**
@@ -141,54 +139,6 @@ public abstract class RegexNode implements Entity < RegexNode >
   public abstract ArrayList < LeafNode > getTokenNodes ();
   
   public abstract int countDisjunctions();
-
-
-  /**
-   * Get the {@link PrettyString} for the Tooltip that contains nullable,
-   * firstpos and lastpos
-   * 
-   * @return The {@link PrettyString} for the Tooltip
-   */
-  public PrettyString getToolTipString ()
-  {
-    // TODO Internationalize
-    PrettyString ps = new PrettyString ();
-    ps.add ( new PrettyToken ( "Nullable: ", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
-    ps.add ( new PrettyToken ( "" + nullable (), Style.REGEX_POSITION ) ); //$NON-NLS-1$
-    ps.add ( new PrettyToken ( ", Firstpos: {", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
-    int i = 0;
-    for ( RegexNode current : firstPos () )
-    {
-      if ( i > 0 )
-      {
-        i++ ;
-        ps.add ( new PrettyToken ( ";", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
-      }
-      if ( current instanceof LeafNode )
-      {
-        ps.add ( new PrettyToken ( "" //$NON-NLS-1$
-            + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ) );
-      }
-    }
-    ps.add ( new PrettyToken ( "}, Lastpos: {", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
-    i = 0;
-    for ( RegexNode current : lastPos () )
-    {
-      if ( i > 0 )
-      {
-        i++ ;
-        ps.add ( new PrettyToken ( ";", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
-      }
-      if ( current instanceof LeafNode )
-      {
-        ps.add ( new PrettyToken ( "" //$NON-NLS-1$
-            + ( ( LeafNode ) current ).getPosition (), Style.REGEX_POSITION ) );
-      }
-    }
-
-    ps.add ( new PrettyToken ( "}", Style.REGEX_TOOL_TIP_TEXT ) ); //$NON-NLS-1$
-    return ps;
-  }
 
 
   /**

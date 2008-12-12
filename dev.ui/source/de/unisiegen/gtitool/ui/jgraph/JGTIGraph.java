@@ -212,10 +212,6 @@ public class JGTIGraph extends JGraph implements Printable
         return state.toPrettyString ().toHTMLString ();
       }
     }
-    if(cell instanceof DefaultNodeView) {
-      DefaultNodeView defaultNodeView = ( DefaultNodeView ) cell;
-      return defaultNodeView.getNode ().getToolTipString ().toHTMLString ();
-    }
     return null;
   }
 

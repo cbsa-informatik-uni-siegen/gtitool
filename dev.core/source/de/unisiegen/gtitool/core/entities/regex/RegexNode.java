@@ -74,7 +74,7 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return {@link ArrayList} of {@link RegexNode} that can be the first
    *         positions of the {@link RegexNode}
    */
-  public abstract ArrayList < RegexNode > firstPos ();
+  public abstract ArrayList < LeafNode > firstPos ();
 
 
   /**
@@ -235,7 +235,7 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return {@link ArrayList} of {@link RegexNode} that can be the last
    *         positions of the {@link RegexNode}
    */
-  public abstract ArrayList < RegexNode > lastPos ();
+  public abstract ArrayList < LeafNode > lastPos ();
 
 
   /**

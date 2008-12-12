@@ -64,7 +64,9 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         styledRegexParserPanel = new de.unisiegen.gtitool.ui.style.StyledRegexParserPanel();
         styledRegexAlphabetParserPanel = new de.unisiegen.gtitool.ui.style.StyledRegexAlphabetParserPanel();
         jGTIButtonToDFA = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTISplitPaneRegex = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTIScrollPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        regexNodeInfoPanel = new de.unisiegen.gtitool.ui.netbeans.RegexNodeInfoPanel();
         jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
         jGTIScrollPaneWarnings = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
@@ -76,8 +78,8 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         jGTISplitPaneConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jGTISplitPaneConsole.setResizeWeight(1.0);
 
-        jGTISplitPaneTable.setDividerLocation(250);
-        jGTISplitPaneTable.setResizeWeight(0.5);
+        jGTISplitPaneTable.setDividerLocation(200);
+        jGTISplitPaneTable.setResizeWeight(0.1);
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTIButtonCoreSyntax.setText(bundle.getString("RegexPanel.ToCoreSyntax")); // NOI18N
@@ -149,7 +151,12 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         jGTIPanelRegexControl.add(jGTIButtonToDFA, gridBagConstraints);
 
         jGTISplitPaneTable.setLeftComponent(jGTIPanelRegexControl);
-        jGTISplitPaneTable.setRightComponent(jGTIScrollPaneGraph);
+
+        jGTISplitPaneRegex.setLeftComponent(jGTIScrollPaneGraph);
+        jGTISplitPaneRegex.setResizeWeight(0.8);
+        jGTISplitPaneRegex.setRightComponent(regexNodeInfoPanel);
+
+        jGTISplitPaneTable.setRightComponent(jGTISplitPaneRegex);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -234,9 +241,11 @@ private void jGTIButtonToDFAActionPerformed(java.awt.event.ActionEvent evt) {//G
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneGraph;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneWarnings;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneConsole;
+    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneRegex;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneTable;
     public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPaneConsole;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableWarnings;
+    public de.unisiegen.gtitool.ui.netbeans.RegexNodeInfoPanel regexNodeInfoPanel;
     public de.unisiegen.gtitool.ui.style.StyledRegexAlphabetParserPanel styledRegexAlphabetParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledRegexParserPanel styledRegexParserPanel;
     // End of variables declaration//GEN-END:variables

@@ -120,9 +120,9 @@ public class TokenNode extends LeafNode
    * @see RegexNode#firstPos()
    */
   @Override
-  public ArrayList < RegexNode > firstPos ()
+  public ArrayList < LeafNode > firstPos ()
   {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
     nodes.add ( this );
     return nodes;
   }
@@ -259,9 +259,9 @@ public class TokenNode extends LeafNode
    * @see RegexNode#lastPos()
    */
   @Override
-  public ArrayList < RegexNode > lastPos ()
+  public ArrayList < LeafNode > lastPos ()
   {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
     nodes.add ( this );
     return nodes;
   }

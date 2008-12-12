@@ -798,7 +798,6 @@ public class ConvertRegexToMachineDialog implements
     this.jGTIGraphConverted.setEnabled ( false );
     this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGTIGraphConverted );
 
-    ArrayList < RegexNode > lastPos = this.regexNode.lastPos ();
     this.count = 1;
     this.positionMap = new HashMap < String, Position > ();
 
@@ -1626,13 +1625,12 @@ public class ConvertRegexToMachineDialog implements
       {
         HashSet < Integer > positions = new HashSet < Integer > ();
         String name = ""; //$NON-NLS-1$
-        ArrayList < RegexNode > firstPos = this.defaultRegex.getRegexNode ()
+        ArrayList < LeafNode > firstPos = this.defaultRegex.getRegexNode ()
             .firstPos ();
-        for ( RegexNode tmpNode : firstPos )
+        for ( LeafNode tmpNode : firstPos )
         {
-          LeafNode leaf = ( LeafNode ) tmpNode;
-          positions.add ( new Integer ( leaf.getPosition () ) );
-          name += leaf.getPosition ();
+          positions.add ( new Integer ( tmpNode.getPosition () ) );
+          name += tmpNode.getPosition ();
         }
         DefaultPositionState state;
         try
@@ -1832,7 +1830,7 @@ public class ConvertRegexToMachineDialog implements
         else
         {
           finalStep = true;
-          LeafNode end = ( LeafNode ) this.regexNode.lastPos ().get ( 0 );
+          LeafNode end = this.regexNode.lastPos ().get ( 0 );
           pretty
               .add ( Messages
                   .getPrettyString (

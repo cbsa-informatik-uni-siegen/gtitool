@@ -110,9 +110,9 @@ public class EpsilonNode extends LeafNode
    * @see RegexNode#firstPos()
    */
   @Override
-  public ArrayList < RegexNode > firstPos ()
+  public ArrayList < LeafNode > firstPos ()
   {
-    return new ArrayList < RegexNode > ();
+    return new ArrayList < LeafNode > ();
   }
 
 
@@ -231,9 +231,9 @@ public class EpsilonNode extends LeafNode
    * @see RegexNode#lastPos()
    */
   @Override
-  public ArrayList < RegexNode > lastPos ()
+  public ArrayList < LeafNode > lastPos ()
   {
-    return new ArrayList < RegexNode > ();
+    return new ArrayList < LeafNode > ();
   }
 
 

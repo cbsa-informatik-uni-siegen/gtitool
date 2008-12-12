@@ -13,7 +13,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 
+import org.jgraph.event.GraphSelectionEvent;
+import org.jgraph.event.GraphSelectionListener;
+import org.jgraph.graph.GraphSelectionModel;
+
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.RegexException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
@@ -27,6 +32,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
+import de.unisiegen.gtitool.ui.jgraph.DefaultNodeView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.latex.LatexExporter;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
@@ -136,9 +142,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.mainWindowForm = mainWindowForm;
     this.file = file;
     this.model = model;
-    this.model.initializeGraph ();
-    this.jGTIGraph = this.model.getJGTIGraph ();
-    this.jGTIGraph.setEditable ( false );
+    initializeJGraph ();
     this.gui = new RegexPanelForm ( this );
     this.gui.styledRegexParserPanel.setText ( this.model.getRegex ()
         .getRegexString () );
@@ -155,7 +159,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           .getRegexNode ().isInCoreSyntax () );
       changeRegex ( this.model.getRegex ().getRegexNode (), false );
     }
-    this.gui.styledRegexParserPanel.setAlphabet ( model.getRegex ().getAlphabet () );
+    this.gui.styledRegexParserPanel.setAlphabet ( model.getRegex ()
+        .getAlphabet () );
     this.gui.styledRegexParserPanel
         .addParseableChangedListener ( new ParseableChangedListener < RegexNode > ()
         {
@@ -184,7 +189,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
            * @see ColorChangedListener#colorChangedRegexNode(java.awt.Color)
            */
           @Override
-          public void colorChangedRegexNode ( @SuppressWarnings("unused")
+          public void colorChangedRegexNode ( @SuppressWarnings ( "unused" )
           Color newColor )
           {
             getJGTIGraph ().repaint ();
@@ -290,13 +295,106 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           this.gui.styledRegexParserPanel.getText (), oldText ) );
 
     }
+    initializeJGraph ();
+    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+    this.model.createTree ();
+    updateRegexNodeInfo ();
+  }
+
+
+  /**
+   * Initializes the JGraph
+   */
+  private void initializeJGraph ()
+  {
     this.model.initializeGraph ();
     this.jGTIGraph = this.model.getJGTIGraph ();
-    this.jGTIGraph.setEditable ( false );
-    this.jGTIGraph.setEnabled ( false );
-    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+    this.jGTIGraph.setMoveable ( false );
+    this.jGTIGraph.getSelectionModel ().setSelectionMode (
+        GraphSelectionModel.SINGLE_GRAPH_SELECTION );
+    this.jGTIGraph.addGraphSelectionListener ( new GraphSelectionListener ()
+    {
 
-    this.model.createTree ();
+      /**
+       * @see org.jgraph.event.GraphSelectionListener#valueChanged(org.jgraph.event.GraphSelectionEvent)
+       */
+      public void valueChanged ( @SuppressWarnings ( "unused" )
+      GraphSelectionEvent e )
+      {
+        updateRegexNodeInfo ();
+      }
+    } );
+  }
+
+
+  /**
+   * Updates the RegexNode infos
+   */
+  protected void updateRegexNodeInfo ()
+  {
+    if ( this.jGTIGraph.getSelectionCell () instanceof DefaultNodeView )
+    {
+      RegexNode node = ( ( DefaultNodeView ) this.jGTIGraph.getSelectionCell () )
+          .getNode ();
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( "" //$NON-NLS-1$
+          + node.nullable () );
+      String firstpos = "{"; //$NON-NLS-1$
+      for ( LeafNode n : node.firstPos () )
+      {
+        firstpos += n.getPosition ();
+        if ( node.firstPos ().indexOf ( n ) != node.firstPos ().size () - 1 )
+        {
+          firstpos += "; "; //$NON-NLS-1$
+        }
+      }
+      firstpos += "}"; //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setText ( firstpos );
+      String lastpos = "{"; //$NON-NLS-1$
+      for ( LeafNode n : node.lastPos () )
+      {
+        lastpos += n.getPosition ();
+        if ( node.lastPos ().indexOf ( n ) != node.lastPos ().size () - 1 )
+        {
+          lastpos += "; "; //$NON-NLS-1$
+        }
+      }
+      lastpos += "}"; //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( lastpos );
+      String followpos = "{"; //$NON-NLS-1$
+      if ( node instanceof LeafNode )
+      {
+        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( true );
+        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( true );
+        LeafNode leaf = ( LeafNode ) node;
+        boolean first = true;
+        for ( Integer n : this.model.getRegex ().followPos (
+            leaf.getPosition () ) )
+        {
+          if ( !first )
+          {
+            followpos += "; "; //$NON-NLS-1$
+          }
+          followpos += n;
+          first = false;
+        }
+        followpos += "}"; //$NON-NLS-1$
+        this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( followpos );
+      }
+      else
+      {
+        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
+        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
+      }
+    }
+    else
+    {
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
+      this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
+    }
   }
 
 

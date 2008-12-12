@@ -124,7 +124,6 @@ public class NodeView extends VertexView
       try
       {
         setOpaque ( false );
-        this.selected = false;
 
         FontMetrics metrics = g.getFontMetrics ();
 
@@ -169,6 +168,9 @@ public class NodeView extends VertexView
           {
             g.setColor ( PreferenceManager.getInstance ()
                 .getColorItemRegexMarkedNode ().getColor () );
+          }
+          if(this.selected) {
+            g.setColor ( Color.YELLOW );
           }
         }
       }

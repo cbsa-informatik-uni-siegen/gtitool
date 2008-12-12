@@ -106,7 +106,7 @@ public class PlusNode extends OneChildNode
    * @see RegexNode#firstPos()
    */
   @Override
-  public ArrayList < RegexNode > firstPos ()
+  public ArrayList < LeafNode > firstPos ()
   {
     return this.regex.firstPos ();
   }
@@ -217,7 +217,7 @@ public class PlusNode extends OneChildNode
    * @see RegexNode#lastPos()
    */
   @Override
-  public ArrayList < RegexNode > lastPos ()
+  public ArrayList < LeafNode > lastPos ()
   {
     return this.regex.lastPos ();
   }

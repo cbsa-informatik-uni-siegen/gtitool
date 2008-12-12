@@ -130,9 +130,9 @@ public class DisjunctionNode extends TwoChildNode
    * @see RegexNode#firstPos()
    */
   @Override
-  public ArrayList < RegexNode > firstPos ()
+  public ArrayList < LeafNode > firstPos ()
   {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
     nodes.addAll ( this.regex1.firstPos () );
     nodes.addAll ( this.regex2.firstPos () );
     return nodes;
@@ -239,9 +239,9 @@ public class DisjunctionNode extends TwoChildNode
    * @see RegexNode#lastPos()
    */
   @Override
-  public ArrayList < RegexNode > lastPos ()
+  public ArrayList < LeafNode > lastPos ()
   {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
+    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
     nodes.addAll ( this.regex1.lastPos () );
     nodes.addAll ( this.regex2.lastPos () );
     return nodes;

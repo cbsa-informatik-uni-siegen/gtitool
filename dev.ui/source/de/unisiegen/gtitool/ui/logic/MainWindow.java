@@ -18,6 +18,8 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.exceptions.RegexException;
+import de.unisiegen.gtitool.core.exceptions.RegexValidationException;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
@@ -255,6 +257,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_CONVERT_TO_SOURCE_CFG,
 
     /**
+     * The convert to source regex enabled button state.
+     */
+    ENABLED_CONVERT_TO_SOURCE_REGEX,
+
+    /**
      * The convert to complete enabled button state.
      */
     ENABLED_CONVERT_TO_COMPLETE,
@@ -290,6 +297,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG,
 
     /**
+     * The convert to complete source regex enabled button state.
+     */
+    ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX,
+
+    /**
      * The minimize enabled button state.
      */
     ENABLED_MINIMIZE,
@@ -313,6 +325,16 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
      * The save enabled button state.
      */
     ENABLED_SAVE,
+
+    /**
+     * The toLatexExport button state.
+     */
+    ENABLED_TO_LATEX,
+
+    /**
+     * The toCoreSyntax button state.
+     */
+    ENABLED_TO_CORE_SYNTAX,
 
     /**
      * The machine table selected button state.
@@ -459,6 +481,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
     removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
     removeButtonState ( ButtonState.ENABLED_SAVE );
+    removeButtonState ( ButtonState.ENABLED_TO_LATEX );
     removeButtonState ( ButtonState.ENABLED_HISTORY );
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
@@ -842,6 +865,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
@@ -857,6 +882,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
@@ -873,6 +900,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
@@ -888,6 +917,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
@@ -903,6 +934,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
@@ -918,10 +951,29 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( true );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
+      this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToENFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE ) )
         && ( !this.buttonStateList
@@ -947,6 +999,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -969,6 +1023,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -991,6 +1047,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -1013,6 +1071,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -1035,6 +1095,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -1057,6 +1119,32 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
+      this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompletePDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX ) ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -1112,6 +1200,21 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
       this.gui.getJGTIToolBarButtonSave ().setEnabled ( true );
       this.gui.getJMenuItemSave ().setEnabled ( true );
+    }
+    // to latex
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_TO_LATEX ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_TO_LATEX ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_TO_LATEX );
+      this.gui.getJMenuItemExportLatex ().setEnabled ( true );
+    }
+    // to core syntax
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_TO_CORE_SYNTAX ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_TO_CORE_SYNTAX ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+      this.gui.getJMenuItemToCoreSyntax ().setEnabled ( true );
     }
     // selected
     else if ( ( buttonState.equals ( ButtonState.SELECTED_MACHINE_TABLE ) )
@@ -1984,6 +2087,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       machinePanel.handleHistory ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Handles the to Latex event
+   */
+  public final void handleToLatex ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof RegexPanel )
+    {
+      RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      regexPanel.handleToLatexButtonClicked ();
     }
     else
     {
@@ -3366,6 +3488,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
       removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
       removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
+      removeButtonState ( ButtonState.ENABLED_TO_LATEX );
       removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
       removeButtonState ( ButtonState.ENABLED_SAVE );
     }
@@ -3379,6 +3502,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.VISIBLE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         removeButtonState ( ButtonState.VISIBLE_REGEX );
+        removeButtonState ( ButtonState.ENABLED_TO_LATEX );
+        removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
@@ -3581,6 +3706,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
         removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
+        removeButtonState ( ButtonState.ENABLED_TO_LATEX );
+        removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
 
         if ( grammarPanel.isUndoAble () )
         {
@@ -3605,8 +3732,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         RegexPanel regexPanel = ( RegexPanel ) panel;
 
+        addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
+        addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
+
         panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
             .isSelected () );
+        if ( regexPanel.getRegex ().getRegexNode ().isInCoreSyntax () )
+        {
+          removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+        }
+        else
+        {
+          addButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+        }
 
         removeButtonState ( ButtonState.VISIBLE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
@@ -3618,10 +3756,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
         addButtonState ( ButtonState.ENABLED_PRINT );
         addButtonState ( ButtonState.ENABLED_CONVERT_TO );
-        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
-        addButtonState ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
         addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+        addButtonState ( ButtonState.ENABLED_TO_LATEX );
 
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
         removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
@@ -3633,6 +3770,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
         removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
+        removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+        removeButtonState ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
+        removeButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
 
         if ( regexPanel.isUndoAble () )
         {
@@ -3695,6 +3835,21 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         PreferenceManager.getInstance ().setVisibleTable ( state );
         machinePanel.setVisibleTable ( state );
       }
+    }
+  }
+
+
+  /**
+   * Handles to core syntax for Regex
+   */
+  public final void handleToCoreSyntax ()
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof RegexPanel )
+    {
+      RegexPanel regexPanel = ( RegexPanel ) panel;
+      regexPanel.handleToCoreSyntaxButtonClicked ();
     }
   }
 
@@ -3890,6 +4045,28 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
     else if ( panel instanceof RegexPanel )
     {
+      panel.clearValidationMessages ();
+      RegexPanel regexPanel = ( RegexPanel ) panel;
+      try
+      {
+        regexPanel.getRegex ().validate ();
+      }
+      catch ( RegexValidationException e )
+      {
+        for ( RegexException error : e.getRegexException () )
+        {
+          if ( error.getType ().equals ( ErrorType.ERROR ) )
+          {
+            regexPanel.addError ( error );
+            errorCount++ ;
+          }
+          else if ( error.getType ().equals ( ErrorType.WARNING ) )
+          {
+            regexPanel.addWarning ( error );
+            warningCount++ ;
+          }
+        }
+      }
       machinePanelSelected = false;
     }
     else
@@ -4043,23 +4220,21 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // No error and no warning
     else
     {
-      // Update the titles
       panel.getJTabbedPaneConsole ().setTitleAt ( 0,
           Messages.getString ( machinePanelSelected ? "MachinePanel.Error"//$NON-NLS-1$
               : "GrammarPanel.Error" ) );//$NON-NLS-1$
       panel.getJTabbedPaneConsole ().setTitleAt ( 1,
           Messages.getString ( machinePanelSelected ? "MachinePanel.Warning"//$NON-NLS-1$
               : "GrammarPanel.Warning" ) );//$NON-NLS-1$
-
-      infoDialog = new InfoDialog (
-          this.gui,
-          Messages
-              .getString ( machinePanelSelected ? "MainWindow.NoErrorNoWarningMachineCount"//$NON-NLS-1$
-                  : "MainWindow.NoErrorNoWarningGrammarCount" ),//$NON-NLS-1$
-          Messages
-              .getString ( machinePanelSelected ? "MainWindow.NoErrorNoWarningMachine"//$NON-NLS-1$
-                  : "MainWindow.NoErrorNoWarningGrammar" ) ); //$NON-NLS-1$
     }
+    infoDialog = new InfoDialog (
+        this.gui,
+        Messages
+            .getString ( machinePanelSelected ? "MainWindow.NoErrorNoWarningMachineCount"//$NON-NLS-1$
+                : "MainWindow.NoErrorNoWarningGrammarCount" ),//$NON-NLS-1$
+        Messages
+            .getString ( machinePanelSelected ? "MainWindow.NoErrorNoWarningMachine"//$NON-NLS-1$
+                : "MainWindow.NoErrorNoWarningGrammar" ) ); //$NON-NLS-1$
 
     addButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
     panel.setVisibleConsole ( true );
@@ -4670,7 +4845,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_PRINT );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_VALIDATE );
-        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       }
       else
       {
@@ -4843,6 +5017,16 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_RECENTLY_USED );
       this.gui.getJMenuRecentlyUsed ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_TO_LATEX ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_TO_LATEX );
+      this.gui.getJMenuItemExportLatex ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_TO_CORE_SYNTAX ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+      this.gui.getJMenuItemToCoreSyntax ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
     {

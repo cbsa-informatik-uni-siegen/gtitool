@@ -4,8 +4,6 @@ package de.unisiegen.gtitool.core.exceptions;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import de.unisiegen.gtitool.core.exceptions.CoreException;
-
 
 /**
  * The {@link RegexValidationException} is thrown, if the validation of a regex
@@ -40,11 +38,11 @@ public final class RegexValidationException extends CoreException implements
   {
     if ( regexExceptionList == null )
     {
-      throw new NullPointerException ( "grammar exception list is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "regex exception list is null" ); //$NON-NLS-1$
     }
     if ( regexExceptionList.size () == 0 )
     {
-      throw new IllegalArgumentException ( "grammar exception list is empty" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "regex exception list is empty" ); //$NON-NLS-1$
     }
     this.regexExceptionList = regexExceptionList;
   }
@@ -55,7 +53,7 @@ public final class RegexValidationException extends CoreException implements
    * 
    * @return The {@link RegexException} list.
    */
-  public final ArrayList < RegexException > getGrammarException ()
+  public final ArrayList < RegexException > getRegexException ()
   {
     return this.regexExceptionList;
   }

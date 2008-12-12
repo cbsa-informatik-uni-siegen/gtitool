@@ -1,17 +1,21 @@
 package de.unisiegen.gtitool.core.regex;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.RegexException;
+import de.unisiegen.gtitool.core.exceptions.RegexSymbolNotUsedException;
+import de.unisiegen.gtitool.core.exceptions.RegexValidationException;
 
 
 /**
@@ -95,18 +99,6 @@ public class DefaultRegex implements Regex
   public DefaultRegex ( Alphabet a )
   {
     this.alphabet = a;
-
-    try
-    {
-      if ( !this.alphabet.contains ( new DefaultSymbol ( "#" ) ) ) //$NON-NLS-1$
-      {
-        this.alphabet.add ( new DefaultSymbol ( "#" ) ); //$NON-NLS-1$
-      }
-    }
-    catch ( AlphabetException exc )
-    {
-      exc.printStackTrace ();
-    }
   }
 
 
@@ -132,7 +124,7 @@ public class DefaultRegex implements Regex
 
   /**
    * Gets the Symbol at Position in the Regex
-   *
+   * 
    * @param position The position
    * @return The Symbol at Position in the Regex or null if position is empty
    */
@@ -325,5 +317,52 @@ public class DefaultRegex implements Regex
       r.setRegexNode ( getRegexNode (), getRegexString () );
     }
     return r;
+  }
+
+
+  /**
+   * Returns the Used symbols
+   * 
+   * @return The Used symbols
+   */
+  private HashSet < Symbol > getUsedSymbols ()
+  {
+    HashSet < Symbol > symbols = new HashSet < Symbol > ();
+    for ( LeafNode l : this.regexNode.getTokenNodes () )
+    {
+      if ( l instanceof TokenNode )
+      {
+        TokenNode t = ( TokenNode ) l;
+        symbols.add ( new DefaultSymbol ( t.getName () ) );
+      }
+    }
+    return symbols;
+  }
+
+
+  /**
+   * Validates the Regex
+   * 
+   * @throws RegexValidationException If validation goes wrong
+   */
+  public void validate () throws RegexValidationException
+  {
+    HashSet < Symbol > usedSymbols = getUsedSymbols ();
+    HashSet < Symbol > unusedSymbols = new HashSet < Symbol > ();
+    unusedSymbols.addAll ( this.alphabet.get () );
+    unusedSymbols.removeAll ( usedSymbols );
+    ArrayList < RegexException > elist = new ArrayList < RegexException > ();
+    if ( unusedSymbols.size () > 0 )
+    {
+      for ( Symbol s : unusedSymbols )
+      {
+        elist.add ( new RegexSymbolNotUsedException ( s ) );
+      }
+
+    }
+    if ( !elist.isEmpty () )
+    {
+      throw new RegexValidationException ( elist );
+    }
   }
 }

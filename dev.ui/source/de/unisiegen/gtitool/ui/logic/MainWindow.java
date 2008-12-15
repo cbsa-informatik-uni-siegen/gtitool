@@ -337,6 +337,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_TO_CORE_SYNTAX,
 
     /**
+     * The regex info button state
+     */
+    ENABLED_REGEX_INFO,
+
+    /**
      * The machine table selected button state.
      */
     SELECTED_MACHINE_TABLE,
@@ -481,7 +486,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
     removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
     removeButtonState ( ButtonState.ENABLED_SAVE );
-    removeButtonState ( ButtonState.ENABLED_TO_LATEX );
     removeButtonState ( ButtonState.ENABLED_HISTORY );
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
@@ -500,6 +504,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
     removeButtonState ( ButtonState.VISIBLE_MACHINE );
     removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
+    removeButtonState ( ButtonState.VISIBLE_REGEX );
+    removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
+    removeButtonState ( ButtonState.ENABLED_TO_LATEX );
+    removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -1215,6 +1223,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_TO_CORE_SYNTAX );
       this.gui.getJMenuItemToCoreSyntax ().setEnabled ( true );
+    }
+    // regex info view
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REGEX_INFO ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_REGEX_INFO );
+      this.gui.getJCheckBoxMenuItemRegexInfo ().setEnabled ( true );
     }
     // selected
     else if ( ( buttonState.equals ( ButtonState.SELECTED_MACHINE_TABLE ) )
@@ -3504,6 +3519,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.VISIBLE_REGEX );
         removeButtonState ( ButtonState.ENABLED_TO_LATEX );
         removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+        removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
@@ -3708,6 +3724,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
         removeButtonState ( ButtonState.ENABLED_TO_LATEX );
         removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+        removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
 
         if ( grammarPanel.isUndoAble () )
         {
@@ -3745,6 +3762,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         {
           addButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
         }
+        addButtonState ( ButtonState.ENABLED_REGEX_INFO );
 
         removeButtonState ( ButtonState.VISIBLE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
@@ -3850,6 +3868,48 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       RegexPanel regexPanel = ( RegexPanel ) panel;
       regexPanel.handleToCoreSyntaxButtonClicked ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Saves the last divider location
+   */
+  private int lastDividerLocation = 0;
+
+
+  /**
+   * Handles regex information window state changed
+   * 
+   * @param b True if window should be shown, else false
+   */
+  public final void handleRegexInfoChanged ( boolean b )
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof RegexPanel )
+    {
+      RegexPanel regexPanel = ( RegexPanel ) panel;
+
+      if ( !b )
+      {
+        this.lastDividerLocation = regexPanel.getGUI ().jGTISplitPaneRegex
+            .getDividerLocation ();
+      }
+      regexPanel.getGUI ().regexNodeInfoPanel.setVisible ( b );
+      if ( b )
+      {
+        regexPanel.getGUI ().jGTISplitPaneRegex
+            .setDividerLocation ( this.lastDividerLocation );
+      }
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
     }
   }
 
@@ -5027,6 +5087,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_TO_CORE_SYNTAX );
       this.gui.getJMenuItemToCoreSyntax ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_REGEX_INFO );
+      this.gui.getJCheckBoxMenuItemRegexInfo ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
     {

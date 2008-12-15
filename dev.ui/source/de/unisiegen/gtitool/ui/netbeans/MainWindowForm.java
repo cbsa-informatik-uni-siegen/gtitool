@@ -857,6 +857,18 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
       return this.jMenuItemHistory;
     }
 
+    
+    /**
+     * Returns the jCheckBoxMenuItemRegexInfo.
+     *
+     * @return The jCheckBoxMenuItemRegexInfo.
+     * @see #jCheckBoxMenuItemRegexInfo
+     */
+    public final JCheckBoxMenuItem getJCheckBoxMenuItemRegexInfo ()
+    {
+      return this.jCheckBoxMenuItemRegexInfo;
+    }
+
 
     /**
      * Returns the jMenuItemReachableStates.
@@ -1106,6 +1118,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuView = new javax.swing.JMenu();
         jCheckBoxMenuItemConsole = new javax.swing.JCheckBoxMenuItem();
         jCheckBoxMenuItemTable = new javax.swing.JCheckBoxMenuItem();
+        jCheckBoxMenuItemRegexInfo = new javax.swing.JCheckBoxMenuItem();
         jSeparatorView = new javax.swing.JSeparator();
         jCheckBoxMenuItemSecondView = new javax.swing.JCheckBoxMenuItem();
         jMenuExecute = new javax.swing.JMenu();
@@ -1640,6 +1653,16 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
             }
         });
         jMenuView.add(jCheckBoxMenuItemTable);
+
+        jCheckBoxMenuItemRegexInfo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RegexInfoMnemonic").charAt(0));
+        jCheckBoxMenuItemRegexInfo.setSelected(true);
+        jCheckBoxMenuItemRegexInfo.setText(bundle.getString("MainWindow.RegexInfo")); // NOI18N
+        jCheckBoxMenuItemRegexInfo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBoxMenuItemRegexInfoItemStateChanged(evt);
+            }
+        });
+        jMenuView.add(jCheckBoxMenuItemRegexInfo);
         jMenuView.add(jSeparatorView);
 
         jCheckBoxMenuItemSecondView.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SecondViewMnemonic").charAt(0));
@@ -2166,9 +2189,14 @@ private void jMenuItemExportLatexActionPerformed(java.awt.event.ActionEvent evt)
 private void jMenuItemToCoreSyntaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemToCoreSyntaxActionPerformed
     this.logic.handleToCoreSyntax();
 }//GEN-LAST:event_jMenuItemToCoreSyntaxActionPerformed
+
+private void jCheckBoxMenuItemRegexInfoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemRegexInfoItemStateChanged
+    this.logic.handleRegexInfoChanged(this.jCheckBoxMenuItemRegexInfo.isSelected());
+}//GEN-LAST:event_jCheckBoxMenuItemRegexInfoItemStateChanged
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemRegexInfo;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemSecondView;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemTable;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane jGTIEditorPanelTabbedPaneLeft;

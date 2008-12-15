@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultBlackBoxState;
 import de.unisiegen.gtitool.core.entities.DefaultPositionState;
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
@@ -1031,6 +1032,22 @@ public class ConvertRegexToMachineDialog implements
     {
       performNextStep ( false );
     }
+    String stateName = "z";
+    int count = 0;
+    if ( this.entityType.equals ( MachineType.ENFA ) )
+    {
+      for ( DefaultStateView s : this.modelConverted.getStateViewList () )
+      {
+        try
+        {
+          s.getState ().setName ( stateName + count++ );
+        }
+        catch ( StateException exc )
+        {
+          exc.printStackTrace ();
+        }
+      }
+    }
     this.modelConverted.getMachine ().getAlphabet ().remove (
         new DefaultSymbol ( "#" ) ); //$NON-NLS-1$
     System.err.println ( this.modelConverted.getElement ().getName () );
@@ -1130,11 +1147,11 @@ public class ConvertRegexToMachineDialog implements
           else
           {
             startView = this.modelConverted.createStateView ( 100, 100,
-                new DefaultState ( "start" + this.count ), false ); //$NON-NLS-1$
+                new DefaultBlackBoxState (), false );
             startView.getState ().setStartState ( true );
 
             finView = this.modelConverted.createStateView ( 200, 100,
-                new DefaultState ( "final" + this.count ), false );//$NON-NLS-1$
+                new DefaultBlackBoxState (), false );
             finView.getState ().setFinalState ( true );
             this.count++ ;
           }
@@ -1190,11 +1207,11 @@ public class ConvertRegexToMachineDialog implements
           else
           {
             startView = this.modelConverted.createStateView ( 100, 100,
-                new DefaultState ( "start" + this.count ), false );//$NON-NLS-1$
+                new DefaultBlackBoxState (), false );//$NON-NLS-1$
             startView.getState ().setStartState ( true );
 
             finView = this.modelConverted.createStateView ( 200, 100,
-                new DefaultState ( "final" + this.count ), false );//$NON-NLS-1$
+                new DefaultBlackBoxState (), false );//$NON-NLS-1$
             finView.getState ().setFinalState ( true );
             this.count++ ;
           }
@@ -1265,11 +1282,11 @@ public class ConvertRegexToMachineDialog implements
           else
           {
             start = this.modelConverted.createStateView ( 100, 100,
-                new DefaultState ( "start" + this.count ), false );//$NON-NLS-1$
+                new DefaultBlackBoxState (), false );//$NON-NLS-1$
             start.getState ().setStartState ( true );
 
             end = this.modelConverted.createStateView ( 100, 100,
-                new DefaultState ( "final" + this.count ), false );//$NON-NLS-1$
+                new DefaultBlackBoxState (), false );//$NON-NLS-1$
             end.getState ().setFinalState ( true );
             this.count++ ;
           }
@@ -1286,18 +1303,18 @@ public class ConvertRegexToMachineDialog implements
           double startY = start.getPositionY () + start.getHeight () / 2;
 
           DefaultStateView start1 = this.modelConverted.createStateView (
-              startX, startY, new DefaultState ( "start" + this.count ), false ); //$NON-NLS-1$
+              startX, startY, new DefaultBlackBoxState (), false ); //$NON-NLS-1$
           DefaultStateView end1 = this.modelConverted.createStateView ( startX,
-              startY, new DefaultState ( "end" + this.count ), false ); //$NON-NLS-1$
+              startY, new DefaultBlackBoxState (), false ); //$NON-NLS-1$
           ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
           views.add ( start1 );
           views.add ( end1 );
           this.stateViewList.put ( dis.getChildren ().get ( 0 ), views );
           this.count++ ;
           DefaultStateView start2 = this.modelConverted.createStateView (
-              startX, startY, new DefaultState ( "start" + this.count ), false ); //$NON-NLS-1$
+              startX, startY, new DefaultBlackBoxState (), false ); //$NON-NLS-1$
           DefaultStateView end2 = this.modelConverted.createStateView ( startX,
-              startY, new DefaultState ( "end" + this.count ), false ); //$NON-NLS-1$
+              startY, new DefaultBlackBoxState (), false ); //$NON-NLS-1$
           views = new ArrayList < DefaultStateView > ();
           views.add ( start2 );
           views.add ( end2 );
@@ -1452,9 +1469,8 @@ public class ConvertRegexToMachineDialog implements
           }
           double startX = start.getPositionX () + start.getWidth ();
           double startY = start.getPositionY () + start.getHeight () / 2;
-          DefaultStateView middle = this.modelConverted
-              .createStateView ( startX, startY, new DefaultState ( "Middle"
-                  + this.count ), false );
+          DefaultStateView middle = this.modelConverted.createStateView (
+              startX, startY, new DefaultBlackBoxState (), false );
 
           middle.moveRelative ( 2 * JGTIBlackboxGraph.X_SPACE + regex1Width
               + middle.getWidth (), 0 );

@@ -1018,7 +1018,7 @@ public class DefaultState implements State
     {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
     }
-    if ( name.equals ( "" ) ) //$NON-NLS-1$
+    if (!(this instanceof DefaultBlackBoxState) && name.equals ( "" ) ) //$NON-NLS-1$
     {
       throw new StateEmptyNameException ();
     }
@@ -1117,7 +1117,11 @@ public class DefaultState implements State
       Style styleName = this.selected ? Style.STATE_SELECTED : Style.STATE;
       Style styleSyntax = this.selected ? Style.STATE_SELECTED_SYNTAX
           : Style.NONE;
-
+      
+      if(this.name.length () == 0) {
+        return this.cachedPrettyString;
+      }
+      
       // power set name
       if ( this.name.charAt ( 0 ) == '{' )
       {

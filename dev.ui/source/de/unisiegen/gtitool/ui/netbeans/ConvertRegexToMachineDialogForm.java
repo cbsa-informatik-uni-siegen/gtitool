@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.netbeans;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog;
 import de.unisiegen.gtitool.ui.logic.ConvertRegexToMachineDialog;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
@@ -38,6 +39,7 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         super(parent, true);
         this.logic = logic;
         initComponents();
+        this.regexNodeInfoPanel.setVisible(logic.getEntityType().equals(MachineType.DFA));
     }
     
     /** This method is called from within the constructor to
@@ -49,22 +51,24 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        this.jGTIToolBarMain = new de.unisiegen.gtitool.ui.swing.JGTIToolBar();
-        this.jGTIToolBarButtonBeginStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        this.jGTIToolBarButtonPreviousStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        this.jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        this.jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
-        this.jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        this.jGTIToolBarButtonEndStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        this.jGTISplitPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        this.jGTISplitPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        this.jGTIScrollPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        this.jGTIScrollPaneConverted = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        this.jGTIScrollPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        this.jGTITableOutline = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        this.jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
-        this.jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
-        this.jGTIButtonPrint = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIToolBarMain = new de.unisiegen.gtitool.ui.swing.JGTIToolBar();
+        jGTIToolBarButtonBeginStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonPreviousStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonEndStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTISplitPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTIScrollPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTITableOutline = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        jGTISplitPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTISplitPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTIScrollPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        regexNodeInfoPanel = new de.unisiegen.gtitool.ui.netbeans.RegexNodeInfoPanel();
+        jGTIScrollPaneConverted = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonPrint = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
@@ -77,59 +81,59 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        this.jGTIToolBarButtonBeginStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/begin.png"))); // NOI18N
-        this.jGTIToolBarButtonBeginStep.setToolTipText(bundle.getString("ConvertMachineDialog.BeginStep")); // NOI18N
-        this.jGTIToolBarButtonBeginStep.addActionListener(new java.awt.event.ActionListener() {
+        jGTIToolBarButtonBeginStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/begin.png"))); // NOI18N
+        jGTIToolBarButtonBeginStep.setToolTipText(bundle.getString("ConvertMachineDialog.BeginStep")); // NOI18N
+        jGTIToolBarButtonBeginStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonBeginStepActionPerformed(evt);
             }
         });
-        this.jGTIToolBarMain.add(this.jGTIToolBarButtonBeginStep);
+        jGTIToolBarMain.add(jGTIToolBarButtonBeginStep);
 
-        this.jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"))); // NOI18N
-        this.jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("ConvertMachineDialog.PreviousStep")); // NOI18N
-        this.jGTIToolBarButtonPreviousStep.addActionListener(new java.awt.event.ActionListener() {
+        jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"))); // NOI18N
+        jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("ConvertMachineDialog.PreviousStep")); // NOI18N
+        jGTIToolBarButtonPreviousStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonPreviousStepActionPerformed(evt);
             }
         });
-        this.jGTIToolBarMain.add(this.jGTIToolBarButtonPreviousStep);
+        jGTIToolBarMain.add(jGTIToolBarButtonPreviousStep);
 
-        this.jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/forward.png"))); // NOI18N
-        this.jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("ConvertMachineDialog.NextStep")); // NOI18N
-        this.jGTIToolBarButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
+        jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/forward.png"))); // NOI18N
+        jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("ConvertMachineDialog.NextStep")); // NOI18N
+        jGTIToolBarButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonNextStepActionPerformed(evt);
             }
         });
-        this.jGTIToolBarMain.add(this.jGTIToolBarButtonNextStep);
+        jGTIToolBarMain.add(jGTIToolBarButtonNextStep);
 
-        this.jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/autostep.png"))); // NOI18N
-        this.jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("ConvertMachineDialog.AutoStep")); // NOI18N
-        this.jGTIToolBarToggleButtonAutoStep.addActionListener(new java.awt.event.ActionListener() {
+        jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/autostep.png"))); // NOI18N
+        jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("ConvertMachineDialog.AutoStep")); // NOI18N
+        jGTIToolBarToggleButtonAutoStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarToggleButtonAutoStepActionPerformed(evt);
             }
         });
-        this.jGTIToolBarMain.add(this.jGTIToolBarToggleButtonAutoStep);
+        jGTIToolBarMain.add(jGTIToolBarToggleButtonAutoStep);
 
-        this.jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/stop.png"))); // NOI18N
-        this.jGTIToolBarButtonStop.setToolTipText(bundle.getString("ConvertMachineDialog.Stop")); // NOI18N
-        this.jGTIToolBarButtonStop.addActionListener(new java.awt.event.ActionListener() {
+        jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/stop.png"))); // NOI18N
+        jGTIToolBarButtonStop.setToolTipText(bundle.getString("ConvertMachineDialog.Stop")); // NOI18N
+        jGTIToolBarButtonStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonStopActionPerformed(evt);
             }
         });
-        this.jGTIToolBarMain.add(this.jGTIToolBarButtonStop);
+        jGTIToolBarMain.add(jGTIToolBarButtonStop);
 
-        this.jGTIToolBarButtonEndStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/end.png"))); // NOI18N
-        this.jGTIToolBarButtonEndStep.setToolTipText(bundle.getString("ConvertMachineDialog.EndStep")); // NOI18N
-        this.jGTIToolBarButtonEndStep.addActionListener(new java.awt.event.ActionListener() {
+        jGTIToolBarButtonEndStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/end.png"))); // NOI18N
+        jGTIToolBarButtonEndStep.setToolTipText(bundle.getString("ConvertMachineDialog.EndStep")); // NOI18N
+        jGTIToolBarButtonEndStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonEndStepActionPerformed(evt);
             }
         });
-        this.jGTIToolBarMain.add(this.jGTIToolBarButtonEndStep);
+        jGTIToolBarMain.add(jGTIToolBarButtonEndStep);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -137,29 +141,35 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        getContentPane().add(this.jGTIToolBarMain, gridBagConstraints);
+        getContentPane().add(jGTIToolBarMain, gridBagConstraints);
 
-        this.jGTISplitPaneOutline.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        this.jGTISplitPaneOutline.setDividerLocation(600);
-        this.jGTISplitPaneOutline.setResizeWeight(1.0);
+        jGTISplitPaneOutline.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jGTISplitPaneOutline.setDividerLocation(600);
+        jGTISplitPaneOutline.setResizeWeight(1.0);
 
-        this.jGTISplitPaneGraph.setDividerLocation(250);
-        this.jGTISplitPaneGraph.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        this.jGTISplitPaneGraph.setResizeWeight(0.5);
+        jGTIScrollPaneOutline.setBorder(null);
+        jGTIScrollPaneOutline.setMinimumSize(new java.awt.Dimension(200, 200));
+        jGTIScrollPaneOutline.setViewportView(jGTITableOutline);
 
-        this.jGTIScrollPaneOriginal.setBorder(null);
-        this.jGTISplitPaneGraph.setTopComponent(this.jGTIScrollPaneOriginal);
+        jGTISplitPaneOutline.setRightComponent(jGTIScrollPaneOutline);
 
-        this.jGTIScrollPaneConverted.setBorder(null);
-        this.jGTISplitPaneGraph.setBottomComponent(this.jGTIScrollPaneConverted);
+        jGTISplitPaneGraph.setDividerLocation(300);
+        jGTISplitPaneGraph.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jGTISplitPaneGraph.setResizeWeight(0.5);
 
-        this.jGTISplitPaneOutline.setLeftComponent(this.jGTISplitPaneGraph);
+        jGTISplitPaneOriginal.setDividerLocation(300);
+        jGTISplitPaneOriginal.setResizeWeight(0.7);
 
-        this.jGTIScrollPaneOutline.setBorder(null);
-        this.jGTIScrollPaneOutline.setMinimumSize(new java.awt.Dimension(200, 200));
-        this.jGTIScrollPaneOutline.setViewportView(this.jGTITableOutline);
+        jGTIScrollPaneOriginal.setBorder(null);
+        jGTISplitPaneOriginal.setLeftComponent(jGTIScrollPaneOriginal);
+        jGTISplitPaneOriginal.setRightComponent(regexNodeInfoPanel);
 
-        this.jGTISplitPaneOutline.setRightComponent(this.jGTIScrollPaneOutline);
+        jGTISplitPaneGraph.setTopComponent(jGTISplitPaneOriginal);
+
+        jGTIScrollPaneConverted.setBorder(null);
+        jGTISplitPaneGraph.setRightComponent(jGTIScrollPaneConverted);
+
+        jGTISplitPaneOutline.setLeftComponent(jGTISplitPaneGraph);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -169,12 +179,12 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        getContentPane().add(this.jGTISplitPaneOutline, gridBagConstraints);
+        getContentPane().add(jGTISplitPaneOutline, gridBagConstraints);
 
-        this.jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.CancelMnemonic").charAt(0));
-        this.jGTIButtonCancel.setText(bundle.getString("ConvertMachineDialog.Cancel")); // NOI18N
-        this.jGTIButtonCancel.setToolTipText(bundle.getString("ConvertMachineDialog.CancelToolTip")); // NOI18N
-        this.jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setText(bundle.getString("ConvertMachineDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setToolTipText(bundle.getString("ConvertMachineDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCancelActionPerformed(evt);
             }
@@ -184,12 +194,12 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
-        getContentPane().add(this.jGTIButtonCancel, gridBagConstraints);
+        getContentPane().add(jGTIButtonCancel, gridBagConstraints);
 
-        this.jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.OkMnemonic").charAt(0));
-        this.jGTIButtonOk.setText(bundle.getString("ConvertMachineDialog.Ok")); // NOI18N
-        this.jGTIButtonOk.setToolTipText(bundle.getString("ConvertMachineDialog.OkToolTip")); // NOI18N
-        this.jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setText(bundle.getString("ConvertMachineDialog.Ok")); // NOI18N
+        jGTIButtonOk.setToolTipText(bundle.getString("ConvertMachineDialog.OkToolTip")); // NOI18N
+        jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonOkActionPerformed(evt);
             }
@@ -200,11 +210,11 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
-        getContentPane().add(this.jGTIButtonOk, gridBagConstraints);
+        getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
-        this.jGTIButtonPrint.setText(bundle.getString("PrintDialog.Print")); // NOI18N
-        this.jGTIButtonPrint.setToolTipText(bundle.getString("PrintDialog.PrintToolTip")); // NOI18N
-        this.jGTIButtonPrint.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonPrint.setText(bundle.getString("PrintDialog.Print")); // NOI18N
+        jGTIButtonPrint.setToolTipText(bundle.getString("PrintDialog.PrintToolTip")); // NOI18N
+        jGTIButtonPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonPrintActionPerformed(evt);
             }
@@ -215,7 +225,7 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
-        getContentPane().add(this.jGTIButtonPrint, gridBagConstraints);
+        getContentPane().add(jGTIButtonPrint, gridBagConstraints);
 
         setSize(new java.awt.Dimension(960, 600));
     }// </editor-fold>//GEN-END:initComponents
@@ -268,6 +278,7 @@ private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//G
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
+    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableOutline;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonBeginStep;
@@ -277,6 +288,7 @@ private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//G
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStop;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBar jGTIToolBarMain;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
+    public de.unisiegen.gtitool.ui.netbeans.RegexNodeInfoPanel regexNodeInfoPanel;
     // End of variables declaration//GEN-END:variables
 
     /**

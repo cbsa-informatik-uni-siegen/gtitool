@@ -12,7 +12,10 @@ import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
+import org.jgraph.event.GraphSelectionEvent;
+import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.DefaultGraphModel;
+import org.jgraph.graph.GraphSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultBlackBoxState;
@@ -47,6 +50,7 @@ import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultBlackboxView;
+import de.unisiegen.gtitool.ui.jgraph.DefaultNodeView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIBlackboxGraph;
@@ -703,6 +707,77 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * Updates the RegexInfo panel
+   */
+  protected void updateRegexInfo ()
+  {
+    if ( this.jGTIGraphOriginal.getSelectionCell () instanceof DefaultNodeView )
+    {
+      RegexNode node = ( ( DefaultNodeView ) this.jGTIGraphOriginal
+          .getSelectionCell () ).getNode ();
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( "" //$NON-NLS-1$
+          + node.nullable () );
+      String firstpos = "{"; //$NON-NLS-1$
+      for ( LeafNode n : node.firstPos () )
+      {
+        firstpos += n.getPosition ();
+        if ( node.firstPos ().indexOf ( n ) != node.firstPos ().size () - 1 )
+        {
+          firstpos += "; "; //$NON-NLS-1$
+        }
+      }
+      firstpos += "}"; //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setText ( firstpos );
+      String lastpos = "{"; //$NON-NLS-1$
+      for ( LeafNode n : node.lastPos () )
+      {
+        lastpos += n.getPosition ();
+        if ( node.lastPos ().indexOf ( n ) != node.lastPos ().size () - 1 )
+        {
+          lastpos += "; "; //$NON-NLS-1$
+        }
+      }
+      lastpos += "}"; //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( lastpos );
+      String followpos = "{"; //$NON-NLS-1$
+      if ( node instanceof LeafNode )
+      {
+        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( true );
+        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( true );
+        LeafNode leaf = ( LeafNode ) node;
+        boolean first = true;
+        for ( Integer n : this.modelOriginal.getRegex ().followPos (
+            leaf.getPosition () ) )
+        {
+          if ( !first )
+          {
+            followpos += "; "; //$NON-NLS-1$
+          }
+          followpos += n;
+          first = false;
+        }
+        followpos += "}"; //$NON-NLS-1$
+        this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( followpos );
+      }
+      else
+      {
+        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
+        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
+      }
+    }
+    else
+    {
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
+      this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
+    }
+  }
+
+
+  /**
    * Adds a outline comment.
    * 
    * @param prettyString The {@link PrettyString} to add.
@@ -740,9 +815,9 @@ public class ConvertRegexToMachineDialog implements
       @SuppressWarnings ( "unused" )
       boolean complete )
   {
+    this.entityType = toEntityType;
     this.gui = new ConvertRegexToMachineDialogForm ( this, this.parent );
 
-    this.entityType = toEntityType;
     Alphabet a = this.panel.getRegex ().getAlphabet ();
     this.defaultRegex = this.panel.getRegex ().clone ();
     if ( this.entityType.equals ( MachineType.ENFA ) )
@@ -790,8 +865,31 @@ public class ConvertRegexToMachineDialog implements
         ListSelectionModel.SINGLE_SELECTION );
 
     this.jGTIGraphOriginal = this.modelOriginal.getJGTIGraph ();
+    if ( this.entityType.equals ( MachineType.DFA ) )
+    {
+      this.jGTIGraphOriginal.setMoveable ( false );
+      this.jGTIGraphOriginal.getSelectionModel ().setSelectionMode (
+          GraphSelectionModel.SINGLE_GRAPH_SELECTION );
+      this.jGTIGraphOriginal
+          .addGraphSelectionListener ( new GraphSelectionListener ()
+          {
 
-    this.jGTIGraphOriginal.setEnabled ( false );
+            /**
+             * TODO
+             * 
+             * @param e
+             * @see org.jgraph.event.GraphSelectionListener#valueChanged(org.jgraph.event.GraphSelectionEvent)
+             */
+            public void valueChanged ( GraphSelectionEvent e )
+            {
+              updateRegexInfo ();
+            }
+          } );
+    }
+    else
+    {
+      this.jGTIGraphOriginal.setEnabled ( false );
+    }
     this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGTIGraphOriginal );
 
     this.jGTIGraphConverted = ( JGTIBlackboxGraph ) this.modelConverted
@@ -1093,6 +1191,18 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * Returns the entityType.
+   * 
+   * @return The entityType.
+   * @see #entityType
+   */
+  public EntityType getEntityType ()
+  {
+    return this.entityType;
+  }
+
+
+  /**
    * Performs the next step.
    * 
    * @param manual Indicates if step was made manually
@@ -1207,11 +1317,11 @@ public class ConvertRegexToMachineDialog implements
           else
           {
             startView = this.modelConverted.createStateView ( 100, 100,
-                new DefaultBlackBoxState (), false );//$NON-NLS-1$
+                new DefaultBlackBoxState (), false );
             startView.getState ().setStartState ( true );
 
             finView = this.modelConverted.createStateView ( 200, 100,
-                new DefaultBlackBoxState (), false );//$NON-NLS-1$
+                new DefaultBlackBoxState (), false );
             finView.getState ().setFinalState ( true );
             this.count++ ;
           }
@@ -1282,11 +1392,11 @@ public class ConvertRegexToMachineDialog implements
           else
           {
             start = this.modelConverted.createStateView ( 100, 100,
-                new DefaultBlackBoxState (), false );//$NON-NLS-1$
+                new DefaultBlackBoxState (), false );
             start.getState ().setStartState ( true );
 
             end = this.modelConverted.createStateView ( 100, 100,
-                new DefaultBlackBoxState (), false );//$NON-NLS-1$
+                new DefaultBlackBoxState (), false );
             end.getState ().setFinalState ( true );
             this.count++ ;
           }
@@ -1303,18 +1413,18 @@ public class ConvertRegexToMachineDialog implements
           double startY = start.getPositionY () + start.getHeight () / 2;
 
           DefaultStateView start1 = this.modelConverted.createStateView (
-              startX, startY, new DefaultBlackBoxState (), false ); //$NON-NLS-1$
+              startX, startY, new DefaultBlackBoxState (), false );
           DefaultStateView end1 = this.modelConverted.createStateView ( startX,
-              startY, new DefaultBlackBoxState (), false ); //$NON-NLS-1$
+              startY, new DefaultBlackBoxState (), false );
           ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
           views.add ( start1 );
           views.add ( end1 );
           this.stateViewList.put ( dis.getChildren ().get ( 0 ), views );
           this.count++ ;
           DefaultStateView start2 = this.modelConverted.createStateView (
-              startX, startY, new DefaultBlackBoxState (), false ); //$NON-NLS-1$
+              startX, startY, new DefaultBlackBoxState (), false );
           DefaultStateView end2 = this.modelConverted.createStateView ( startX,
-              startY, new DefaultBlackBoxState (), false ); //$NON-NLS-1$
+              startY, new DefaultBlackBoxState (), false );
           views = new ArrayList < DefaultStateView > ();
           views.add ( start2 );
           views.add ( end2 );

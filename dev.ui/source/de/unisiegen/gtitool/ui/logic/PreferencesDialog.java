@@ -626,6 +626,12 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The {@link ColorItem} of the regex token.
+   */
+  private ColorItem colorItemRegexSelectedNode;
+
+
+  /**
    * The {@link ColorItem} of the regex tool tip.
    */
   private ColorItem colorItemRegexToolTip;
@@ -833,6 +839,12 @@ public final class PreferencesDialog implements
    * The initial {@link ColorItem} of the Regex tool tip.
    */
   private ColorItem initialColorItemRegexMarkedNode;
+
+
+  /**
+   * The initial {@link ColorItem} of the Regex tool tip.
+   */
+  private ColorItem initialColorItemRegexSelectedNode;
 
 
   /**
@@ -1359,6 +1371,7 @@ public final class PreferencesDialog implements
     this.colorItemRegexSymbol.restore ();
     this.colorItemRegexNode.restore ();
     this.colorItemRegexMarkedNode.restore ();
+    this.colorItemRegexSelectedNode.restore ();
 
     this.colorItemTransition.restore ();
     this.colorItemTransitionSelected.restore ();
@@ -1648,7 +1661,12 @@ public final class PreferencesDialog implements
     this.initialColorItemRegexNode = this.colorItemRegexNode.clone ();
     this.colorItemRegexMarkedNode = PreferenceManager.getInstance ()
         .getColorItemRegexMarkedNode ();
-    this.initialColorItemRegexMarkedNode = this.colorItemRegexMarkedNode.clone ();
+    this.initialColorItemRegexMarkedNode = this.colorItemRegexMarkedNode
+        .clone ();
+    this.colorItemRegexSelectedNode = PreferenceManager.getInstance ()
+        .getColorItemRegexSelectedNode ();
+    this.initialColorItemRegexSelectedNode = this.colorItemRegexSelectedNode
+        .clone ();
 
     // Transition
     this.colorItemTransition = PreferenceManager.getInstance ()
@@ -1839,8 +1857,9 @@ public final class PreferencesDialog implements
     this.regexNode.add ( this.colorItemRegexPosition );
     this.regexNode.add ( this.colorItemRegexToolTip );
     this.regexNode.add ( this.colorItemRegexComment );
-    this.regexNode.add ( this.colorItemRegexNode);
-    this.regexNode.add ( this.colorItemRegexMarkedNode);
+    this.regexNode.add ( this.colorItemRegexNode );
+    this.regexNode.add ( this.colorItemRegexMarkedNode );
+    this.regexNode.add ( this.colorItemRegexSelectedNode );
 
     this.transitionNode = PreferenceManager.getInstance ()
         .getColorItemTransitionGroup ();
@@ -3413,6 +3432,14 @@ public final class PreferencesDialog implements
           this.colorItemRegexMarkedNode );
       PreferenceManager.getInstance ().fireColorChangedRegexMarkedNode (
           this.colorItemRegexMarkedNode.getColor () );
+    }
+    if ( !this.initialColorItemRegexSelectedNode.getColor ().equals (
+        this.colorItemRegexSelectedNode.getColor () ) )
+    {
+      PreferenceManager.getInstance ().setColorItemRegexSelectedNode (
+          this.colorItemRegexSelectedNode );
+      PreferenceManager.getInstance ().fireColorChangedRegexSelectedNode (
+          this.colorItemRegexSelectedNode.getColor () );
     }
     if ( !this.initialColorItemRegexToken.getColor ().equals (
         this.colorItemRegexToken.getColor () ) )

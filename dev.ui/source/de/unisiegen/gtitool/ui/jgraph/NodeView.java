@@ -127,10 +127,10 @@ public class NodeView extends VertexView
 
         FontMetrics metrics = g.getFontMetrics ();
 
-        dx = ( ( d.width     ) / 2 )
+        dx = ( ( d.width      ) / 2 )
             - ( metrics.stringWidth ( node.getNodeString ().toString () ) / 2 )
             - 1;
-        dy = ( ( d.height     ) / 2 ) + ( metrics.getHeight () / 2 ) - 5;
+        dy = ( ( d.height      ) / 2 ) + ( metrics.getHeight () / 2 ) - 5;
 
         g.setFont ( getFont () );
 
@@ -157,7 +157,7 @@ public class NodeView extends VertexView
           {
             font = g.getFont ().deriveFont ( Font.ITALIC );
           }
-          
+
           g.setFont ( font );
           if ( !node.isActive () )
           {
@@ -169,8 +169,10 @@ public class NodeView extends VertexView
             g.setColor ( PreferenceManager.getInstance ()
                 .getColorItemRegexMarkedNode ().getColor () );
           }
-          if(this.selected) {
-            g.setColor ( Color.YELLOW );
+          if ( this.selected )
+          {
+            g.setColor ( PreferenceManager.getInstance ()
+                .getColorItemRegexSelectedNode ().getColor () );
           }
         }
       }

@@ -259,7 +259,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public void createTree ()
   {
-
+    this.X_SPACE = 70;
+    this.Y_SPACE = 50;
+    
     this.regexEdgeViewList.clear ();
     this.nodeViewList.clear ();
    
@@ -295,8 +297,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
       getGraphModel ().cellsChanged (
           DefaultGraphModel.getAll ( getGraphModel () ) );
     }
-    this.X_SPACE = 70;
-    this.Y_SPACE = 50;
   }
 
 

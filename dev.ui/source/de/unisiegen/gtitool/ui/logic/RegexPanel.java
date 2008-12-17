@@ -207,6 +207,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           {
             getJGTIGraph ().repaint ();
           }
+
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedAdapter#colorChangedRegexSelectedNode(java.awt.Color)
+           */
+          @Override
+          public void colorChangedRegexSelectedNode ( Color newColor )
+          {
+            getJGTIGraph ().repaint ();
+          }
         } );
 
     initialize ();

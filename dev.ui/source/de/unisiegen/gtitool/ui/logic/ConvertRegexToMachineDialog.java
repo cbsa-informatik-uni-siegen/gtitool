@@ -1129,15 +1129,15 @@ public class ConvertRegexToMachineDialog implements
     {
       performNextStep ( false );
     }
-    String stateName = "z";
-    int count = 0;
     if ( this.entityType.equals ( MachineType.ENFA ) )
     {
+      String stateName = "z"; //$NON-NLS-1$
+      int c = 0;
       for ( DefaultStateView s : this.modelConverted.getStateViewList () )
       {
         try
         {
-          s.getState ().setName ( stateName + count++ );
+          s.getState ().setName ( stateName + c++ );
         }
         catch ( StateException exc )
         {
@@ -1145,8 +1145,6 @@ public class ConvertRegexToMachineDialog implements
         }
       }
     }
-    this.modelConverted.getMachine ().getAlphabet ().remove (
-        new DefaultSymbol ( "#" ) ); //$NON-NLS-1$
     this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
         false );
 

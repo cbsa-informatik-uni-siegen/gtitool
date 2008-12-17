@@ -143,7 +143,7 @@ public class DefaultRegexAlphabet extends DefaultAlphabet
       {
         string.add ( new PrettyToken ( "[", Style.SYMBOL ) ); //$NON-NLS-1$
         string.add ( a.get ( 0 ) );
-        string.add ( new PrettyToken ( "-", Style.SYMBOL ) ); //$NON-NLS-1$
+        string.add ( new PrettyToken ( "-", Style.NONE ) ); //$NON-NLS-1$
         string.add ( a.get ( a.size () - 1 ) );
         string.add ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
       }
@@ -162,7 +162,7 @@ public class DefaultRegexAlphabet extends DefaultAlphabet
    * @return {@link ArrayList} with the first class, if there is one, else there
    *         is only one Element in the {@link ArrayList}
    */
-  public ArrayList < Symbol > checkForClass ( ArrayList < Symbol > list )
+  public static ArrayList < Symbol > checkForClass ( ArrayList < Symbol > list )
   {
     int dist = 1;
     int counter = 0;

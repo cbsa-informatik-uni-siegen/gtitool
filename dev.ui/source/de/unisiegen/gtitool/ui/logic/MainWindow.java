@@ -3862,6 +3862,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleToCoreSyntax ()
   {
+    handleValidate ();
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof RegexPanel )
@@ -4109,7 +4110,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       RegexPanel regexPanel = ( RegexPanel ) panel;
       try
       {
-        regexPanel.getRegex ().validate ();
+        regexPanel.validate ();
       }
       catch ( RegexValidationException e )
       {

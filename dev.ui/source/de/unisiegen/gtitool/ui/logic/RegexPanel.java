@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -21,6 +22,8 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.RegexException;
+import de.unisiegen.gtitool.core.exceptions.RegexParseException;
+import de.unisiegen.gtitool.core.exceptions.RegexValidationException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
@@ -74,18 +77,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * The {@link RegexPanelForm}
    */
   private RegexPanelForm gui;
-
-
-  /**
-   * Returns the redoUndoHandler.
-   * 
-   * @return The redoUndoHandler.
-   * @see #redoUndoHandler
-   */
-  public RedoUndoHandler getRedoUndoHandler ()
-  {
-    return this.redoUndoHandler;
-  }
 
 
   /**
@@ -215,8 +206,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
            * @see ColorChangedAdapter#colorChangedRegexSelectedNode(java.awt.Color)
            */
           @Override
-          public void colorChangedRegexSelectedNode ( @SuppressWarnings("unused")
-          Color newColor )
+          public void colorChangedRegexSelectedNode (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
           {
             getJGTIGraph ().repaint ();
           }
@@ -238,17 +230,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * Add a new Error
-   * 
-   * @param regexException The {@link GrammarException} containing the data
-   */
-  public final void addWarning ( RegexException regexException )
-  {
-    this.warningTableModel.addRow ( regexException );
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
@@ -257,6 +238,17 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       ModifyStatusChangedListener listener )
   {
     this.model.addModifyStatusChangedListener ( listener );
+  }
+
+
+  /**
+   * Add a new Error
+   * 
+   * @param regexException The {@link GrammarException} containing the data
+   */
+  public final void addWarning ( RegexException regexException )
+  {
+    this.warningTableModel.addRow ( regexException );
   }
 
 
@@ -464,6 +456,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
+   * Returns the redoUndoHandler.
+   * 
+   * @return The redoUndoHandler.
+   * @see #redoUndoHandler
+   */
+  public RedoUndoHandler getRedoUndoHandler ()
+  {
+    return this.redoUndoHandler;
+  }
+
+
+  /**
    * Returns the regex.
    * 
    * @return The regex.
@@ -617,13 +621,16 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void handleToCoreSyntaxButtonClicked ()
   {
-    DefaultRegex newRegex = new DefaultRegex ( this.model.getRegex ()
-        .getAlphabet () );
-    newRegex.setRegexNode ( this.model.getRegex ().getRegexNode ()
-        .toCoreSyntax (), this.model.getRegex ().getRegexNode ()
-        .toCoreSyntax ().toString () );
+    if ( this.errorTableModel.getRowCount () == 0 )
+    {
+      DefaultRegex newRegex = new DefaultRegex ( this.model.getRegex ()
+          .getAlphabet () );
+      newRegex.setRegexNode ( this.model.getRegex ().getRegexNode ()
+          .toCoreSyntax (), this.model.getRegex ().getRegexNode ()
+          .toCoreSyntax ().toString () );
 
-    getMainWindow ().handleNew ( new DefaultRegexModel ( newRegex ) );
+      getMainWindow ().handleNew ( new DefaultRegexModel ( newRegex ) );
+    }
   }
 
 
@@ -635,9 +642,12 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public void handleToDFAButton ( @SuppressWarnings ( "unused" )
   ActionEvent evt )
   {
-    ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
-        this.mainWindowForm, this );
-    converter.convert ( RegexType.REGEX, MachineType.DFA, false );
+    if ( this.errorTableModel.getRowCount () == 0 )
+    {
+      ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
+          this.mainWindowForm, this );
+      converter.convert ( RegexType.REGEX, MachineType.DFA, false );
+    }
   }
 
 
@@ -646,43 +656,47 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void handleToLatexButtonClicked ()
   {
-    FileFilter ff = new FileFilter ()
+    if ( this.errorTableModel.getRowCount () == 0 )
     {
-
-      @Override
-      public boolean accept ( File acceptedFile )
+      FileFilter ff = new FileFilter ()
       {
-        if ( acceptedFile.isDirectory () )
+
+        @Override
+        public boolean accept ( File acceptedFile )
         {
-          return true;
+          if ( acceptedFile.isDirectory () )
+          {
+            return true;
+          }
+          if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
+              + "tex" ) ) //$NON-NLS-1$
+          {
+            return true;
+          }
+          return false;
         }
-        if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
-            + "tex" ) ) //$NON-NLS-1$
-        {
-          return true;
-        }
-        return false;
-      }
 
 
-      @Override
-      public String getDescription ()
+        @Override
+        public String getDescription ()
+        {
+          return Messages.getString ( "Latex.FileDescription" ) //$NON-NLS-1$
+              + " (*.tex)"; //$NON-NLS-1$
+        }
+
+      };
+      SaveDialog sd = new SaveDialog ( getMainWindowForm (), PreferenceManager
+          .getInstance ().getWorkingPath (), ff, ff );
+      sd.show ();
+      if ( sd.getSelectedFile () != null )
       {
-        return Messages.getString ( "Latex.FileDescription" ) //$NON-NLS-1$
-            + " (*.tex)"; //$NON-NLS-1$
+        String filename = sd.getSelectedFile ().toString ().matches (
+            ".+\\.tex" ) ? sd //$NON-NLS-1$
+            .getSelectedFile ().toString () : sd.getSelectedFile ().toString ()
+            + ".tex"; //$NON-NLS-1$
+        LatexExporter.buildLatexFile ( this.model.toLatexString (), new File (
+            filename ) );
       }
-
-    };
-    SaveDialog sd = new SaveDialog ( getMainWindowForm (), PreferenceManager
-        .getInstance ().getWorkingPath (), ff, ff );
-    sd.show ();
-    if ( sd.getSelectedFile () != null )
-    {
-      String filename = sd.getSelectedFile ().toString ().matches ( ".+\\.tex" ) ? sd //$NON-NLS-1$
-          .getSelectedFile ().toString ()
-          : sd.getSelectedFile ().toString () + ".tex"; //$NON-NLS-1$
-      LatexExporter.buildLatexFile ( this.model.toLatexString (), new File (
-          filename ) );
     }
   }
 
@@ -695,9 +709,12 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public void handleToNFAButton ( @SuppressWarnings ( "unused" )
   ActionEvent evt )
   {
-    ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
-        this.mainWindowForm, this );
-    converter.convert ( RegexType.REGEX, MachineType.ENFA, false );
+    if ( this.errorTableModel.getRowCount () == 0 )
+    {
+      ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
+          this.mainWindowForm, this );
+      converter.convert ( RegexType.REGEX, MachineType.ENFA, false );
+    }
   }
 
 
@@ -737,8 +754,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
     this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
     this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.styledRegexAlphabetParserPanel.setText ( this.model.getRegex ()
-        .getAlphabet ().toClassPrettyString () );
+    this.gui.jGTITableWarnings1.setModel ( this.errorTableModel );
+    this.gui.jGTITableWarnings1.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jGTITableWarnings1.getTableHeader ().setReorderingAllowed ( false );
+    initializeAlphabet ();
     this.gui.jGTITableWarnings
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (
@@ -752,6 +771,38 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           }
         } );
     this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+  }
+
+  /**
+   * Validates the Panel
+   *
+   * @throws RegexValidationException When validation goes wrong
+   */
+  public void validate() throws RegexValidationException {
+    ArrayList < RegexException > list = new ArrayList < RegexException >();
+    if(this.gui.styledRegexParserPanel.parse () == null) {
+      list.add ( new RegexParseException() );
+    }
+    try
+    {
+      getRegex ().validate ();
+    }
+    catch ( RegexValidationException exc )
+    {
+      list.addAll ( exc.getRegexException () );
+    }
+    throw new RegexValidationException(list);
+  }
+
+  /**
+   * TODO
+   */
+  public void initializeAlphabet ()
+  {
+    this.gui.styledRegexParserPanel.parse ();
+    this.model.fireModifyStatusChanged ( false );
+    this.gui.styledRegexAlphabetParserPanel.setText ( this.model.getRegex ()
+        .getAlphabet ().toClassPrettyString () );
   }
 
 
@@ -961,17 +1012,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
       this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
     }
-  }
-
-
-  /**
-   * TODO
-   */
-  public void initializeAlphabet ()
-  {
-    this.model.fireModifyStatusChanged ( false );
-    this.gui.styledRegexAlphabetParserPanel.setText ( this.model.getRegex ()
-        .getAlphabet ().toClassPrettyString () );
   }
 
 }

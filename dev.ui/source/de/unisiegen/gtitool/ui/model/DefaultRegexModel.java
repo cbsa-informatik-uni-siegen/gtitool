@@ -47,19 +47,19 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   /**
    * The default y-space in the graph
    */
-  private final int Y_SPACE = 50;
+  private int Y_SPACE = 50;
 
 
   /**
    * The default x-space in the graph
    */
-  private final int X_SPACE = 70;
+  private int X_SPACE = 70;
 
 
   /**
    * The default x-border of the graph
    */
-  private final int X_BORDER = 20;
+  private final int X_BORDER = 15;
 
 
   /**
@@ -262,7 +262,14 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
     this.regexEdgeViewList.clear ();
     this.nodeViewList.clear ();
-
+   
+    if(this.regex.getRegexNode ().getWidth () > 18) {
+      this.X_SPACE -= 20;
+    }
+    if(this.regex.getRegexNode ().getHeight () > 8) {
+      this.Y_SPACE -= 10;
+    }
+    
     DefaultNodeView parent = createNodeView ( 0, 0, this.regex.getRegexNode () );
     addNodesToModel ( parent );
 
@@ -288,6 +295,8 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
       getGraphModel ().cellsChanged (
           DefaultGraphModel.getAll ( getGraphModel () ) );
     }
+    this.X_SPACE = 70;
+    this.Y_SPACE = 50;
   }
 
 
@@ -411,8 +420,8 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
     // Set bounds
     GraphConstants.setBounds ( nodeView.getAttributes (),
-        new Rectangle2D.Double ( x, y, 30, 40 ) );
-
+        new Rectangle2D.Double ( x, y, 25, 35 ) );
+    
     // set the view class (indirection for the renderer and the editor)
     GPCellViewFactory.setViewClass ( nodeView.getAttributes (), viewClass );
 

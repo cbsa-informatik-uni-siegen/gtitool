@@ -215,7 +215,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
            * @see ColorChangedAdapter#colorChangedRegexSelectedNode(java.awt.Color)
            */
           @Override
-          public void colorChangedRegexSelectedNode ( Color newColor )
+          public void colorChangedRegexSelectedNode ( @SuppressWarnings("unused")
+          Color newColor )
           {
             getJGTIGraph ().repaint ();
           }
@@ -613,8 +614,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
   /**
    * TODO
-   * 
-   * @param evt
    */
   public void handleToCoreSyntaxButtonClicked ()
   {
@@ -644,8 +643,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
   /**
    * Handles Click on the toLatexButton
-   * 
-   * @param evt
    */
   public void handleToLatexButtonClicked ()
   {
@@ -741,7 +738,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
     this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
     this.gui.styledRegexAlphabetParserPanel.setText ( this.model.getRegex ()
-        .getAlphabet () );
+        .getAlphabet ().toClassPrettyString () );
     this.gui.jGTITableWarnings
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (
@@ -974,7 +971,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   {
     this.model.fireModifyStatusChanged ( false );
     this.gui.styledRegexAlphabetParserPanel.setText ( this.model.getRegex ()
-        .getAlphabet () );
+        .getAlphabet ().toClassPrettyString () );
   }
 
 }

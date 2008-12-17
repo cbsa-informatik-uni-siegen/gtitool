@@ -12,7 +12,7 @@ import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
 
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
@@ -178,7 +178,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
       throw new StoreException ( de.unisiegen.gtitool.core.i18n.Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
-    DefaultAlphabet da = new DefaultAlphabet ( element.getElement ( 0 ) );
+    DefaultRegexAlphabet da = new DefaultRegexAlphabet ( element.getElement ( 0 ) );
     this.regex = new DefaultRegex ( da );
     RegexParseable rp = new RegexParseable ();
     this.regex.setRegexNode ( ( RegexNode ) rp.newParser ( regexString )

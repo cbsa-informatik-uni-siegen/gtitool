@@ -3,7 +3,7 @@ package de.unisiegen.gtitool.ui.style;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
@@ -28,7 +28,7 @@ public class StyledRegexParserPanelTest
     StyledRegexParserPanel styledRegexParserPanel = new StyledRegexParserPanel ();
     try
     {
-      styledRegexParserPanel.setAlphabet ( new DefaultAlphabet(new DefaultSymbol("a"), new DefaultSymbol("b")) ); //$NON-NLS-1$ //$NON-NLS-2$
+      styledRegexParserPanel.setAlphabet ( new DefaultRegexAlphabet(new DefaultSymbol("a"), new DefaultSymbol("b")) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
     catch ( AlphabetException exc )
     {

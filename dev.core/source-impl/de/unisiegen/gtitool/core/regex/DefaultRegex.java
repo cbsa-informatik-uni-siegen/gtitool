@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
@@ -85,7 +85,7 @@ public class DefaultRegex implements Regex
   /**
    * The alphabet of this {@link Regex}
    */
-  private Alphabet alphabet;
+  private DefaultRegexAlphabet alphabet;
 
 
   /**
@@ -99,7 +99,7 @@ public class DefaultRegex implements Regex
    * 
    * @param a The {@link Alphabet} of this Regex
    */
-  public DefaultRegex ( Alphabet a )
+  public DefaultRegex ( DefaultRegexAlphabet a )
   {
     this.alphabet = a;
   }
@@ -252,7 +252,7 @@ public class DefaultRegex implements Regex
    * @return The alphabet.
    * @see #alphabet
    */
-  public Alphabet getAlphabet ()
+  public DefaultRegexAlphabet getAlphabet ()
   {
     return this.alphabet;
   }
@@ -264,7 +264,7 @@ public class DefaultRegex implements Regex
    * @param alphabet The alphabet to set.
    * @see #alphabet
    */
-  public void setAlphabet ( Alphabet alphabet )
+  public void setAlphabet ( DefaultRegexAlphabet alphabet )
   {
     this.alphabet = alphabet;
   }
@@ -332,21 +332,24 @@ public class DefaultRegex implements Regex
   @Override
   public DefaultRegex clone ()
   {
-    DefaultAlphabet a = new DefaultAlphabet ();
+    DefaultRegexAlphabet a;
     try
     {
+      a = new DefaultRegexAlphabet ();
       a.add ( this.alphabet.get () );
+      DefaultRegex r = new DefaultRegex ( a );
+      if ( this.regexNode != null && this.regexString != null )
+      {
+        r.setRegexNode ( getRegexNode (), getRegexString () );
+      }
+      return r;
     }
     catch ( AlphabetException exc )
     {
       exc.printStackTrace ();
+      System.exit ( 1 );
     }
-    DefaultRegex r = new DefaultRegex ( a );
-    if ( this.regexNode != null && this.regexString != null )
-    {
-      r.setRegexNode ( getRegexNode (), getRegexString () );
-    }
-    return r;
+    return null;
   }
 
 

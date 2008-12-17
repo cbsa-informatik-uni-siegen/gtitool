@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogAlphabetForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -104,9 +105,9 @@ public final class NewDialogAlphabet implements
    * 
    * @return The {@link Alphabet} of the new file.
    */
-  public final Alphabet getRegexAlphabet ()
+  public final DefaultRegexAlphabet getRegexAlphabet ()
   {
-    return this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+    return (DefaultRegexAlphabet)this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
         .getParsedObject ();
   }
 

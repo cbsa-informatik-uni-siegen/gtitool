@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.parser;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Word;
@@ -86,7 +86,7 @@ public class ParserTest
       RegexNode regex = ( RegexNode ) regexParseable.newParser ( regexText )
           .parse ();
 
-      DefaultRegex conv = new DefaultRegex ( new DefaultAlphabet (
+      DefaultRegex conv = new DefaultRegex ( new DefaultRegexAlphabet (
           new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),
           new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ) );
       conv.setRegexNode ( regex, regexText );

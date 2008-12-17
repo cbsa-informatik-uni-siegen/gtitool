@@ -1147,7 +1147,6 @@ public class ConvertRegexToMachineDialog implements
     }
     this.modelConverted.getMachine ().getAlphabet ().remove (
         new DefaultSymbol ( "#" ) ); //$NON-NLS-1$
-    System.err.println ( this.modelConverted.getElement ().getName () );
     this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
         false );
 

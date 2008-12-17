@@ -11,41 +11,50 @@ import de.unisiegen.gtitool.core.i18n.Messages;
 
 
 /**
- * TODO
+ * The {@link AlphabetMoreThanOneSymbolException} is used if the
+ * {@link Alphabet} is not correct.
+ * 
+ * @author Christian Fehler
+ * @version $Id: AlphabetMoreThanOneSymbolException.java 1372 2008-10-30
+ *          08:36:20Z fehler $
  */
-public class AlphabetReservedSymbolException extends AlphabetException
+public final class AlphabetMoreThanOneSymbolException extends AlphabetException
 {
 
   /**
-   * The serial version uid
+   * The serial version uid.
    */
-  private static final long serialVersionUID = 325496713879730627L;
+  private static final long serialVersionUID = 8267857615201989774L;
 
 
   /**
-   * Creates a new {@link AlphabetReservedSymbolException}
+   * Allocates a new {@link AlphabetMoreThanOneSymbolException}.
    * 
-   * @param alphabet The {@link Alphabet}
-   * @param symbolList The error Symbols
+   * @param alphabet The {@link Alphabet}.
+   * @param symbolList The {@link Symbol}s.
    */
-  public AlphabetReservedSymbolException ( Alphabet alphabet,
+  public AlphabetMoreThanOneSymbolException ( Alphabet alphabet,
       ArrayList < Symbol > symbolList )
   {
     super ( alphabet, symbolList );
-    // Message and description
+
+    // message
     setPrettyMessage ( Messages
-        .getPrettyString ( "AlphabetException.ReservedSymbolMessage" ) ); //$NON-NLS-1$
+        .getPrettyString ( "AlphabetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
+
     if ( alphabet instanceof DefaultRegexAlphabet )
     {
+      // description
       setPrettyDescription ( Messages.getPrettyString (
-          "AlphabetException.ReservedSymbolDescription", symbolList.get ( 0 ) //$NON-NLS-1$
+          "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( 0 ) //$NON-NLS-1$
               .toPrettyString (), ( ( DefaultRegexAlphabet ) alphabet )
               .toClassPrettyString () ) );
     }
     else
     {
+      // description
       setPrettyDescription ( Messages.getPrettyString (
-          "AlphabetException.ReservedSymbolDescription", symbolList.get ( 0 ) //$NON-NLS-1$
+          "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( 0 ) //$NON-NLS-1$
               .toPrettyString (), alphabet.toPrettyString () ) );
     }
   }
@@ -57,9 +66,8 @@ public class AlphabetReservedSymbolException extends AlphabetException
    * @see CoreException#getType()
    */
   @Override
-  public ErrorType getType ()
+  public final ErrorType getType ()
   {
     return ErrorType.ERROR;
   }
-
 }

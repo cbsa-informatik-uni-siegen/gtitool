@@ -12,25 +12,25 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 
 /**
- * TODO
+ * A {@link JGTIGraph} with BlackBoxes
  */
 public class JGTIBlackboxGraph extends JGTIGraph
 {
 
   /**
-   * TODO
+   * The serial version uid.
    */
   private static final long serialVersionUID = 3156000727862499906L;
 
 
   /**
-   * TODO
+   * The {@link DefaultBlackboxView}s
    */
   private ArrayList < DefaultBlackboxView > defaultBlackboxViews;
 
 
   /**
-   * TODO
+   * Creates new {@link JGTIBlackboxGraph}
    * 
    * @param defaultMachineModel
    * @param defaultGraphModel
@@ -43,17 +43,22 @@ public class JGTIBlackboxGraph extends JGTIGraph
   }
 
 
-  public static int X_SPACE = 10;
-
-
-  public static int Y_SPACE = 10;
+  /**
+   * The x space
+   */
+  public static int X_SPACE = 8;
 
 
   /**
-   * TODO
+   * The y space
+   */
+  public static int Y_SPACE = 8;
+
+
+  /**
+   * {@inheritDoc}
    * 
-   * @param graphics
-   * @see de.unisiegen.gtitool.ui.jgraph.JGTIGraph#paintComponent(java.awt.Graphics)
+   * @see JGTIGraph#paintComponent(java.awt.Graphics)
    */
   @Override
   protected void paintComponent ( Graphics graphics )
@@ -66,16 +71,17 @@ public class JGTIBlackboxGraph extends JGTIGraph
     {
       DefaultStateView startView = bview.getStartState ();
       DefaultStateView endView = bview.getFinalState ();
-      int x0 = ( int ) ( bview.getStartState ().getPositionX () - this.X_SPACE );
-      int y0 = ( int ) ( bview.getStartState ().getPositionY () - this.X_SPACE );
-      int y1 = ( int ) ( bview.getStartState ().getHeight () + 2 * this.Y_SPACE );
+      int x0 = ( int ) ( bview.getStartState ().getPositionX () - JGTIBlackboxGraph.X_SPACE );
+      int y0 = ( int ) ( bview.getStartState ().getPositionY () - JGTIBlackboxGraph.X_SPACE );
+      int y1 = ( int ) ( bview.getStartState ().getHeight () + 2 * JGTIBlackboxGraph.Y_SPACE );
 
-      int x1 = ( int ) ( 2 * JGTIBlackboxGraph.X_SPACE + endView.getPositionX ()
-          + endView.getWidth () - startView.getPositionX () );
+      int x1 = ( int ) ( 2 * JGTIBlackboxGraph.X_SPACE
+          + endView.getPositionX () + endView.getWidth () - startView
+          .getPositionX () );
       g.drawRoundRect ( x0, y0, x1, y1, 20, 20 );
 
       int xString = ( int ) ( bview.getStartState ().getPositionX ()
-          + bview.getStartState ().getWidth () + this.X_SPACE );
+          + bview.getStartState ().getWidth () + JGTIBlackboxGraph.X_SPACE );
       int yString = ( int ) ( bview.getStartState ().getPositionY () + bview
           .getStartState ().getHeight () / 2 );
       g.drawString ( bview.getContent ().toPrettyString ().toString (),
@@ -85,9 +91,9 @@ public class JGTIBlackboxGraph extends JGTIGraph
 
 
   /**
-   * TODO
+   * Adds a BlackBox for a specified {@link DefaultBlackboxView}
    * 
-   * @param defaultBlackboxView
+   * @param defaultBlackboxView The {@link DefaultBlackboxView}
    */
   public void addBlackBox ( DefaultBlackboxView defaultBlackboxView )
   {
@@ -101,6 +107,12 @@ public class JGTIBlackboxGraph extends JGTIGraph
   }
 
 
+  /**
+   * Returns the {@link DefaultBlackboxView} for a specified {@link RegexNode}
+   * 
+   * @param n The {@link RegexNode}
+   * @return The {@link DefaultBlackboxView} if exists, else <code>null</code>
+   */
   public DefaultBlackboxView getBlackboxViewForRegexNode ( RegexNode n )
   {
     for ( DefaultBlackboxView b : this.defaultBlackboxViews )
@@ -114,6 +126,11 @@ public class JGTIBlackboxGraph extends JGTIGraph
   }
 
 
+  /**
+   * Removes the black box for a specified {@link RegexNode}
+   * 
+   * @param n The {@link RegexNode}
+   */
   public void removeBlackBox ( RegexNode n )
   {
     if ( getBlackboxViewForRegexNode ( n ) != null )
@@ -124,9 +141,9 @@ public class JGTIBlackboxGraph extends JGTIGraph
 
 
   /**
-   * TODO
+   * Removes the blackbox for a specified {@link DefaultBlackboxView}
    * 
-   * @param defaultBlackboxView
+   * @param defaultBlackboxView The {@link DefaultBlackboxView}
    */
   public void removeBlackBox ( DefaultBlackboxView defaultBlackboxView )
   {

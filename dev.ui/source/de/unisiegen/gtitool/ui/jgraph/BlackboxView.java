@@ -19,6 +19,12 @@ public class BlackboxView extends VertexView
 {
 
   /**
+   * TODO
+   */
+  private static final long serialVersionUID = 209723961535408231L;
+
+
+  /**
    * The {@link JGTIGraph} ellipse renderer.
    * 
    * @author Benjamin Mies
@@ -66,10 +72,16 @@ public class BlackboxView extends VertexView
     }
 
 
-    private int Y_SPACE = 5;
+    /**
+     * TODO
+     */
+    private int Y_SPACE = JGTIBlackboxGraph.Y_SPACE;
 
 
-    private int X_SPACE = 5;
+    /**
+     * TODO
+     */
+    private int X_SPACE = JGTIBlackboxGraph.X_SPACE;
 
 
     /**

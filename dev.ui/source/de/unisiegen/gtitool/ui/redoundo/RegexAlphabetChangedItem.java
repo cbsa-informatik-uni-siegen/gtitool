@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.redoundo;
 import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
@@ -19,7 +20,7 @@ public class RegexAlphabetChangedItem extends RedoUndoItem
   /**
    * The {@link Alphabet}.
    */
-  private Alphabet alphabet;
+  private DefaultRegexAlphabet alphabet;
 
 
   /**

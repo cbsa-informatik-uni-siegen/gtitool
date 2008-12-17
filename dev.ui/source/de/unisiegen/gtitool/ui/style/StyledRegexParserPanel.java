@@ -4,9 +4,11 @@ package de.unisiegen.gtitool.ui.style;
 import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.entities.regex.CharacterClassNode;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
@@ -42,7 +44,7 @@ public final class StyledRegexParserPanel extends
   /**
    * Every {@link Symbol} in the {@link Word} has to be in this {@link Alphabet} .
    */
-  private Alphabet alphabet = null;
+  private DefaultRegexAlphabet alphabet = null;
 
 
   /**
@@ -53,8 +55,6 @@ public final class StyledRegexParserPanel extends
   @Override
   protected RegexNode checkParsedObject ( RegexNode regexNode )
   {
-    System.err.println ("Alphabet: " + this.alphabet);
-    System.err.println ("regexNode: " + regexNode);
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
     if ( ( this.alphabet != null ) && ( regexNode != null ) )
@@ -70,8 +70,23 @@ public final class StyledRegexParserPanel extends
                 .getParserOffset ().getStart (), current.getParserOffset ()
                 .getEnd (), Messages.getPrettyString (
                 "StyledWordParserPanel.SymbolNotInAlphabet", //$NON-NLS-1$
-                current.toPrettyString (), this.alphabet.toPrettyString () )
+                current.toPrettyString (), this.alphabet.toClassPrettyString () )
                 .toHTMLString () ) );
+          }
+        }
+        if ( current instanceof CharacterClassNode )
+        {
+          for ( Symbol s : ( ( CharacterClassNode ) current ).getCharacters () )
+          {
+            if ( !this.alphabet.contains ( s ) )
+            {
+              exceptionList.add ( new ParserException ( s
+                  .getParserOffset ().getStart (), s.getParserOffset ()
+                  .getEnd (), Messages.getPrettyString (
+                  "StyledWordParserPanel.SymbolNotInAlphabet", //$NON-NLS-1$
+                  s.toPrettyString (), this.alphabet.toClassPrettyString () )
+                  .toHTMLString () ) );
+            }
           }
         }
       }
@@ -84,8 +99,6 @@ public final class StyledRegexParserPanel extends
     }
     return regexNode;
   }
-  
-  
 
 
   /**
@@ -94,7 +107,7 @@ public final class StyledRegexParserPanel extends
    * 
    * @param alphabet The {@link Alphabet} to set.
    */
-  public final void setAlphabet ( Alphabet alphabet )
+  public final void setAlphabet ( DefaultRegexAlphabet alphabet )
   {
     this.alphabet = alphabet;
   }

@@ -292,7 +292,7 @@ public class DefaultRegex implements Regex
           return this.alphabet.equals ( dr.alphabet );
         }
       }
-      if ( this.regexString.equals ( dr.getRegexString () )
+      else if (this.regexString.equals ( dr.getRegexString () )
           && this.regexNode.equals ( dr.getRegexNode () ) )
       {
         return this.alphabet.equals ( dr.alphabet );

@@ -34,6 +34,49 @@ public final class NewDialogAlphabet implements
 
 
   /**
+   * Changes GUI elements
+   */
+  public void changeGui ()
+  {
+    if ( this.parent.getNewDialogChoice ().getUserChoice ().equals (
+        NewDialogChoice.Choice.REGEX ) )
+    {
+      getGUI ().alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+          .setVisible ( false );
+      getGUI ().alphabetPanelForm.styledAlphabetParserPanelPushDown
+          .setVisible ( false );
+      getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput
+          .setVisible ( false );
+      getGUI ().alphabetPanelForm.styledRegexAlphabetParserPanelInput
+          .setVisible ( true );
+      this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+          .setText ( ((DefaultRegexAlphabet)PreferenceManager.getInstance ().getRegexAlphabetItem ()
+              .getAlphabet ()).toClassPrettyString () );
+    }
+    else
+    {
+      getGUI ().alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+          .setVisible ( true );
+      getGUI ().alphabetPanelForm.styledAlphabetParserPanelPushDown
+          .setVisible ( true );
+      getGUI ().alphabetPanelForm.styledAlphabetParserPanelInput
+          .setVisible ( true );
+      getGUI ().alphabetPanelForm.styledRegexAlphabetParserPanelInput
+          .setVisible ( false );
+      this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+          .setText ( PreferenceManager.getInstance ().getAlphabetItem ()
+              .getAlphabet () );
+      this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+          .setText ( PreferenceManager.getInstance ()
+              .getPushDownAlphabetItem ().getAlphabet () );
+      this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+          .setSelected ( PreferenceManager.getInstance ()
+              .getUsePushDownAlphabet () );
+    }
+  }
+
+
+  /**
    * Allocate a new {@link NewDialogAlphabet}.
    * 
    * @param parent The dialog containing this panel.
@@ -42,16 +85,6 @@ public final class NewDialogAlphabet implements
   {
     this.parent = parent;
     this.gui = new NewDialogAlphabetForm ( this );
-    this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .setText ( PreferenceManager.getInstance ().getAlphabetItem ()
-            .getAlphabet () );
-    this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .setText ( PreferenceManager.getInstance ().getPushDownAlphabetItem ()
-            .getAlphabet () );
-    this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
-        .setSelected ( PreferenceManager.getInstance ()
-            .getUsePushDownAlphabet () );
-
     /*
      * Alphabet changed listener
      */
@@ -101,13 +134,13 @@ public final class NewDialogAlphabet implements
 
 
   /**
-   * Returns the {@link Alphabet} of the new file.
+   * Returns the {@link DefaultRegexAlphabet} of the new file.
    * 
-   * @return The {@link Alphabet} of the new file.
+   * @return The {@link DefaultRegexAlphabet} of the new file.
    */
   public final DefaultRegexAlphabet getRegexAlphabet ()
   {
-    return (DefaultRegexAlphabet)this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+    return ( DefaultRegexAlphabet ) this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
         .getParsedObject ();
   }
 

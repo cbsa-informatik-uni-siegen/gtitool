@@ -3754,7 +3754,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
             .isSelected () );
-        if ( regexPanel.getRegex ().getRegexNode ().isInCoreSyntax () )
+        if ( regexPanel.getRegex ().getRegexNode () == null
+            || regexPanel.getRegex ().getRegexNode ().isInCoreSyntax () )
         {
           removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
         }

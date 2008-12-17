@@ -20,7 +20,6 @@ import org.jgraph.graph.GraphSelectionModel;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultBlackBoxState;
 import de.unisiegen.gtitool.core.entities.DefaultPositionState;
-import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
@@ -1364,7 +1363,6 @@ public class ConvertRegexToMachineDialog implements
             .add ( Messages
                 .getPrettyString (
                     "ConvertRegexToMachineDialog.StepConvertDisjunction", dis.toPrettyString () ) ); //$NON-NLS-1$
-
         try
         {
           int regex1Width = this.jGTIGraphConverted.getGraphics ()
@@ -1569,11 +1567,11 @@ public class ConvertRegexToMachineDialog implements
           else
           {
             start = this.modelConverted.createStateView ( 100, 100,
-                new DefaultState ( "start" + this.count ), false );//$NON-NLS-1$
+                new DefaultBlackBoxState (), false );
             start.getState ().setStartState ( true );
 
             end = this.modelConverted.createStateView ( 250, 100,
-                new DefaultState ( "final" + this.count ), false );//$NON-NLS-1$
+                new DefaultBlackBoxState (), false );
             end.getState ().setFinalState ( true );
             this.count++ ;
           }
@@ -1638,99 +1636,116 @@ public class ConvertRegexToMachineDialog implements
         this.actualStep = Step.CONVERT_KLEENE;
         KleeneNode k = ( KleeneNode ) node;
         this.jGTIGraphConverted.removeBlackBox ( k );
-        pretty
-            .add ( Messages
-                .getPrettyString (
-                    "ConvertRegexToMachineDialog.StepConvertKleene", k.toPrettyString () ) ); //$NON-NLS-1$
 
-        DefaultStateView start1 = this.stateViewList.get (
-            k.getChildren ().get ( 0 ) ).get ( 0 );
-        DefaultStateView final1 = this.stateViewList.get (
-            k.getChildren ().get ( 0 ) ).get ( 1 );
-
-        DefaultState start;
         try
         {
-          start = new DefaultState ( "s" + this.count ); //$NON-NLS-1$
+          int regexWidth = this.jGTIGraphConverted.getGraphics ()
+              .getFontMetrics ().stringWidth (
+                  k.getChildren ().get ( 0 ).toPrettyString ().toString () );
+
+          DefaultStateView start;
+          DefaultStateView end;
+          if ( this.stateViewList.containsKey ( k ) )
+          {
+            start = this.stateViewList.get ( k ).get ( 0 );
+            end = this.stateViewList.get ( k ).get ( 1 );
+          }
+          else
+          {
+            start = this.modelConverted.createStateView ( 100, 100,
+                new DefaultBlackBoxState (), false );
+
+            start.getState ().setStartState ( true );
+
+            end = this.modelConverted.createStateView ( 250, 100,
+                new DefaultBlackBoxState (), false );
+            end.getState ().setFinalState ( true );
+            this.count++ ;
+          }
+          pretty
+              .add ( Messages
+                  .getPrettyString (
+                      "ConvertRegexToMachineDialog.StepConvertKleene", k.toPrettyString () ) ); //$NON-NLS-1$
+
+          double startX = start.getPositionX () + start.getWidth ();
+          double startY = start.getPositionY () + start.getHeight () / 2;
+
+          DefaultStateView startView = this.modelConverted.createStateView (
+              startX, startY, new DefaultBlackBoxState (), false );
+          DefaultStateView finView = this.modelConverted.createStateView (
+              startX, startY, new DefaultBlackBoxState (), false );
+          addedStates.add ( startView.getState ().getId () + "" );
+          addedStates.add ( finView.getState ().getId () + "" );
+          startView.moveRelative ( 50, 0 );
+          finView.moveRelative ( 50 + 2 * JGTIBlackboxGraph.X_SPACE
+              + startView.getWidth () + regexWidth, 0 );
+
+          double width = regexWidth + 2 * JGTIBlackboxGraph.X_SPACE
+              + startView.getWidth () + finView.getWidth ();
+          if ( this.endings.containsKey ( k ) )
+          {
+
+            for ( DefaultStateView view : this.endings.get ( k ) )
+            {
+              if ( !this.movedEndings.contains ( view ) )
+              {
+                view.moveRelative ( width, 0 );
+                this.movedEndings.add ( view );
+              }
+              else
+              {
+                this.movedEndings.remove ( view );
+              }
+            }
+          }
+
+          ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
+          views.add ( end );
+          if ( this.endings.containsKey ( k ) )
+          {
+            views.addAll ( this.endings.get ( k ) );
+          }
+          this.endings.put ( k.getChildren ().get ( 0 ), views );
+
+          end.moveRelative ( width, 0 );
+
+          // From start to begin of N(s)
+          Transition t = new DefaultTransition ();
+          t.setStateBegin ( start.getState () );
+          t.setStateEnd ( startView.getState () );
+          addedTransitions.add ( this.modelConverted.createTransitionView ( t,
+              start, startView, true, false, true ) );
+
+          // From start to final
+          t = new DefaultTransition ();
+          t.setStateBegin ( start.getState () );
+          t.setStateEnd ( end.getState () );
+          addedTransitions.add ( this.modelConverted.createTransitionView ( t,
+              start, end, true, false, true ) );
+
+          // From end to begin of N(s)
+          t = new DefaultTransition ();
+          t.setStateBegin ( finView.getState () );
+          t.setStateEnd ( startView.getState () );
+          addedTransitions.add ( this.modelConverted.createTransitionView ( t,
+              finView, startView, true, false, true ) );
+
+          // From end to final
+          t = new DefaultTransition ();
+          t.setStateBegin ( end.getState () );
+          t.setStateEnd ( finView.getState () );
+          addedTransitions.add ( this.modelConverted.createTransitionView ( t,
+              end, finView, true, false, true ) );
+
+          views = new ArrayList < DefaultStateView > ();
+          views.add ( startView );
+          views.add ( finView );
+          this.stateViewList.put ( k.getChildren ().get ( 0 ), views );
         }
         catch ( StateException exc )
         {
           exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
         }
-        start.setStartState ( true );
-        // this.modelConverted.getMachine ().addState ( start );
-
-        DefaultState fin;
-        try
-        {
-          fin = new DefaultState ( "f" + this.count++ ); //$NON-NLS-1$
-        }
-        catch ( StateException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
-        }
-        fin.setFinalState ( true );
-        // this.modelConverted.getMachine ().addState ( fin );
-
-        DefaultStateView startView = this.modelConverted.createStateView ( 0,
-            0, start, false );
-        DefaultStateView finView = this.modelConverted.createStateView ( 0, 0,
-            fin, false );
-        Position p = getPosition ( start );
-        if ( p != null )
-        {
-          startView.move ( p.getX (), p.getY () );
-        }
-        p = getPosition ( fin );
-        if ( p != null )
-        {
-          finView.move ( p.getX (), p.getY () );
-        }
-        addedStates.add ( startView.getState ().getName () );
-        addedStates.add ( finView.getState ().getName () );
-
-        // From start to final
-        Transition t = new DefaultTransition ();
-        t.setStateBegin ( start );
-        t.setStateEnd ( fin );
-        addedTransitions.add ( this.modelConverted.createTransitionView ( t,
-            startView, finView, true, false, true ) );
-
-        // From start to begin of N(s)
-        t = new DefaultTransition ();
-        t.setStateBegin ( start );
-        t.setStateEnd ( start1.getState () );
-        addedTransitions.add ( this.modelConverted.createTransitionView ( t,
-            startView, start1, true, false, true ) );
-
-        // From end to begin of N(s)
-        t = new DefaultTransition ();
-        t.setStateBegin ( final1.getState () );
-        t.setStateEnd ( start1.getState () );
-        addedTransitions.add ( this.modelConverted.createTransitionView ( t,
-            final1, start1, true, false, true ) );
-
-        // From end of N(s) to final
-        t = new DefaultTransition ();
-        t.setStateBegin ( final1.getState () );
-        t.setStateEnd ( fin );
-        addedTransitions.add ( this.modelConverted.createTransitionView ( t,
-            final1, finView, true, false, true ) );
-
-        start1.getState ().setStartState ( false );
-        final1.getState ().setFinalState ( false );
-        setStartFalse.add ( start1 );
-        setFinalFalse.add ( final1 );
-
-        ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
-        views.add ( startView );
-        views.add ( finView );
-
-        this.stateViewList.put ( k, views );
       }
 
       this.endReached = this.regexNode.isMarkedAll ();

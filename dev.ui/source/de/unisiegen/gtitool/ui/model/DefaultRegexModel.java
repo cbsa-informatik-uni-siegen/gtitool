@@ -479,7 +479,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    * 
    * @param forceModify Flag indicates that modify was forced
    */
-  private void fireModifyStatusChanged ( final boolean forceModify )
+  public void fireModifyStatusChanged ( final boolean forceModify )
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );

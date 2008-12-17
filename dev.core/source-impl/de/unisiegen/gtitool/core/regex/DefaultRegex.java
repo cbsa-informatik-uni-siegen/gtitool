@@ -3,8 +3,10 @@ package de.unisiegen.gtitool.core.regex;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
@@ -16,6 +18,7 @@ import de.unisiegen.gtitool.core.entities.regex.TokenNode;
 import de.unisiegen.gtitool.core.exceptions.RegexException;
 import de.unisiegen.gtitool.core.exceptions.RegexSymbolNotUsedException;
 import de.unisiegen.gtitool.core.exceptions.RegexValidationException;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 
 
 /**
@@ -256,6 +259,18 @@ public class DefaultRegex implements Regex
 
 
   /**
+   * Sets the alphabet.
+   * 
+   * @param alphabet The alphabet to set.
+   * @see #alphabet
+   */
+  public void setAlphabet ( Alphabet alphabet )
+  {
+    this.alphabet = alphabet;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
@@ -272,10 +287,16 @@ public class DefaultRegex implements Regex
       DefaultRegex dr = ( DefaultRegex ) obj;
       if ( this.regexString == null )
       {
-        return dr.getRegexString () != null;
+        if ( dr.getRegexNode () != null )
+        {
+          return this.alphabet.equals ( dr.alphabet );
+        }
       }
-      return this.regexString.equals ( dr.getRegexString () )
-          && this.regexNode.equals ( dr.getRegexNode () );
+      if ( this.regexString.equals ( dr.getRegexString () )
+          && this.regexNode.equals ( dr.getRegexNode () ) )
+      {
+        return this.alphabet.equals ( dr.alphabet );
+      }
     }
     return false;
   }
@@ -311,7 +332,16 @@ public class DefaultRegex implements Regex
   @Override
   public DefaultRegex clone ()
   {
-    DefaultRegex r = new DefaultRegex ( this.alphabet );
+    DefaultAlphabet a = new DefaultAlphabet ();
+    try
+    {
+      a.add ( this.alphabet.get () );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+    }
+    DefaultRegex r = new DefaultRegex ( a );
     if ( this.regexNode != null && this.regexString != null )
     {
       r.setRegexNode ( getRegexNode (), getRegexString () );
@@ -364,5 +394,24 @@ public class DefaultRegex implements Regex
     {
       throw new RegexValidationException ( elist );
     }
+  }
+
+
+  /**
+   * Returns the Not removable symbols
+   * 
+   * @return The Not removable symbols
+   */
+  public TreeSet < Symbol > getNotRemoveableSymbolsFromAlphabet ()
+  {
+    TreeSet < Symbol > set = new TreeSet < Symbol > ();
+    for ( LeafNode l : this.regexNode.getTokenNodes () )
+    {
+      if ( l instanceof TokenNode )
+      {
+        set.add ( new DefaultSymbol ( ( ( TokenNode ) l ).getName () ) );
+      }
+    }
+    return set;
   }
 }

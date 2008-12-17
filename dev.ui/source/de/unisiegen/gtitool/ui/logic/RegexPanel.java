@@ -77,6 +77,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
+   * Returns the redoUndoHandler.
+   * 
+   * @return The redoUndoHandler.
+   * @see #redoUndoHandler
+   */
+  public RedoUndoHandler getRedoUndoHandler ()
+  {
+    return this.redoUndoHandler;
+  }
+
+
+  /**
    * The {@link JGTIGraph} for this Panel
    */
   private JGTIGraph jGTIGraph;
@@ -164,10 +176,15 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
             {
               changeRegex ( newEntity, !isRedoUndo () );
               setRedoUndo ( false );
-              if(newEntity.isInCoreSyntax ()) {
-                getMainWindow ().removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
-              } else {
-                getMainWindow ().addButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+              if ( newEntity.isInCoreSyntax () )
+              {
+                getMainWindow ().removeButtonState (
+                    ButtonState.ENABLED_TO_CORE_SYNTAX );
+              }
+              else
+              {
+                getMainWindow ().addButtonState (
+                    ButtonState.ENABLED_TO_CORE_SYNTAX );
               }
             }
           }
@@ -618,7 +635,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param evt
    */
-  public void handleToLatexButtonClicked ( )
+  public void handleToLatexButtonClicked ()
   {
     FileFilter ff = new FileFilter ()
     {
@@ -682,7 +699,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void handleToolbarEditDocument ()
   {
-    // TODO Add AlphabetChanger
+    AlphabetDialog alphabetDialog = new AlphabetDialog ( this.mainWindowForm,
+        this, getRegex () );
+    alphabetDialog.show ();
+    initializeAlphabet ();
   }
 
 
@@ -932,6 +952,17 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
       this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
     }
+  }
+
+
+  /**
+   * TODO
+   */
+  public void initializeAlphabet ()
+  {
+    this.model.fireModifyStatusChanged ( false );
+    this.gui.styledRegexAlphabetParserPanel.setText ( this.model.getRegex ()
+        .getAlphabet () );
   }
 
 }

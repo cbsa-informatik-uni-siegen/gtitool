@@ -167,6 +167,11 @@ public class DefaultRegexAlphabet extends DefaultAlphabet
     int dist = 1;
     int counter = 0;
     ArrayList < Symbol > s = new ArrayList < Symbol > ();
+    //Epsilon
+    if(list == null || list.get ( counter ).getName ()== null) {
+      s.add ( new DefaultSymbol() );
+      return s;
+    }
     char first = list.get ( counter ).getName ().charAt ( 0 );
     s.add ( new DefaultSymbol ( Character.toString ( first ) ) );
     while ( dist == 1 )

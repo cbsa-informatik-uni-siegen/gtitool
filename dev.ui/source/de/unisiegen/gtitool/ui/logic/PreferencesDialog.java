@@ -30,6 +30,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
@@ -548,6 +549,12 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The {@link AlphabetItem}.
+   */
+  private AlphabetItem regexAlphabetItem;
+
+
+  /**
    * The {@link ColorItem} of the parser {@link NonterminalSymbol}.
    */
   private ColorItem colorItemNonterminalSymbol;
@@ -755,6 +762,12 @@ public final class PreferencesDialog implements
    * The initial {@link AlphabetItem}.
    */
   private AlphabetItem initialAlphabetItem;
+
+
+  /**
+   * The initial {@link AlphabetItem}.
+   */
+  private AlphabetItem initialRegexAlphabetItem;
 
 
   /**
@@ -1404,6 +1417,10 @@ public final class PreferencesDialog implements
     this.alphabetItem.restore ();
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .setText ( this.alphabetItem.getAlphabet () );
+    this.regexAlphabetItem.restore ();
+    this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+        .setText ( ( ( DefaultRegexAlphabet ) this.regexAlphabetItem
+            .getAlphabet () ).toClassPrettyString () );
     this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
         .setSelected ( de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
     this.pushDownAlphabetItem.restore ();
@@ -1477,6 +1494,12 @@ public final class PreferencesDialog implements
     this.initialAlphabetItem = this.alphabetItem.clone ();
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .setText ( this.alphabetItem.getAlphabet () );
+    this.regexAlphabetItem = PreferenceManager.getInstance ()
+        .getRegexAlphabetItem ();
+    this.initialRegexAlphabetItem = this.regexAlphabetItem.clone ();
+    this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+        .setText ( ( ( DefaultRegexAlphabet ) this.regexAlphabetItem
+            .getAlphabet () ).toClassPrettyString () );
 
     // PopupMenu
     JPopupMenu jPopupMenu = this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
@@ -1528,6 +1551,25 @@ public final class PreferencesDialog implements
             if ( newAlphabet != null )
             {
               PreferencesDialog.this.alphabetItem.setAlphabet ( newAlphabet );
+            }
+          }
+        } );
+
+    /*
+     * Regex Alphabet changed listener
+     */
+    this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( Alphabet newAlphabet )
+          {
+            setButtonStatus ();
+            if ( newAlphabet != null )
+            {
+              PreferencesDialog.this.regexAlphabetItem
+                  .setAlphabet ( newAlphabet );
             }
           }
         } );
@@ -3236,6 +3278,12 @@ public final class PreferencesDialog implements
       this.initialAlphabetItem = this.alphabetItem.clone ();
       PreferenceManager.getInstance ().setAlphabetItem ( this.alphabetItem );
     }
+    if ( !this.initialRegexAlphabetItem.equals ( this.regexAlphabetItem ) )
+    {
+      this.initialRegexAlphabetItem = this.regexAlphabetItem.clone ();
+      PreferenceManager.getInstance ().setRegexAlphabetItem (
+          this.regexAlphabetItem );
+    }
   }
 
 
@@ -3908,7 +3956,9 @@ public final class PreferencesDialog implements
     if ( ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .getParsedObject () == null )
         || ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-            .getParsedObject () == null ) )
+            .getParsedObject () == null )
+        || this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+            .getParsedObject () == null )
     {
       enabled = false;
       this.gui.jGTITabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, Color.RED );

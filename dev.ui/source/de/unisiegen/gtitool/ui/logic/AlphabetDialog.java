@@ -178,6 +178,7 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
     this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
         .setVisible ( true );
     this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet.setVisible ( false );
+    this.gui.alphabetPanelForm.jGTILabelRegexAlphabet.setVisible ( false );
 
   }
 

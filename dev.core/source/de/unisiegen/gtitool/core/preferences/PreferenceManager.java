@@ -1881,7 +1881,7 @@ public class PreferenceManager
     }
     try
     {
-      return new AlphabetItem ( new DefaultAlphabet ( symbols ),
+      return new AlphabetItem ( new DefaultRegexAlphabet ( symbols ),
           DEFAULT_REGEX_ALPHABET );
     }
     catch ( AlphabetException e )
@@ -2031,6 +2031,44 @@ public class PreferenceManager
     {
       this.preferences.put (
           "DefaultAlphabet" + i, alphabetItem.getAlphabet ().get ( i ) //$NON-NLS-1$
+              .getName () );
+    }
+  }
+
+
+  /**
+   * Sets the {@link AlphabetItem}.
+   * 
+   * @param alphabetItem The {@link AlphabetItem}.
+   */
+  public final void setRegexAlphabetItem ( AlphabetItem alphabetItem )
+  {
+    logger.debug ( "setRegexAlphabetItem", "set the alphabet to " + Messages.QUOTE //$NON-NLS-1$ //$NON-NLS-2$
+        + alphabetItem.getAlphabet () + Messages.QUOTE );
+
+    // Delete old data
+    String end = "no item found"; //$NON-NLS-1$
+    int count = 0;
+    loop : while ( true )
+    {
+      String symbol = this.preferences.get ( "DefaultRegexAlphabet" + count, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break loop;
+      }
+      count++ ;
+    }
+    for ( int i = 0 ; i < count ; i++ )
+    {
+      this.preferences.remove ( "DefaultRegexAlphabet" + i ); //$NON-NLS-1$
+    }
+
+    // Set the new data
+    for ( int i = 0 ; i < alphabetItem.getAlphabet ().size () ; i++ )
+    {
+      this.preferences.put (
+          "DefaultRegexAlphabet" + i, alphabetItem.getAlphabet ().get ( i ) //$NON-NLS-1$
               .getName () );
     }
   }

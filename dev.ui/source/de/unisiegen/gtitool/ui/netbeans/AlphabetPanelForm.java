@@ -64,6 +64,7 @@ public class AlphabetPanelForm extends JPanel
         jGTICheckBoxPushDownAlphabet = new de.unisiegen.gtitool.ui.swing.JGTICheckBox();
         styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         styledRegexAlphabetParserPanelInput = new de.unisiegen.gtitool.ui.style.StyledRegexAlphabetParserPanel();
+        jGTILabelRegexAlphabet = new de.unisiegen.gtitool.ui.swing.JGTILabel();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -94,13 +95,13 @@ public class AlphabetPanelForm extends JPanel
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 0);
         add(jGTICheckBoxPushDownAlphabet, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -108,12 +109,20 @@ public class AlphabetPanelForm extends JPanel
         add(styledAlphabetParserPanelPushDown, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         add(styledRegexAlphabetParserPanelInput, gridBagConstraints);
+
+        jGTILabelRegexAlphabet.setText(bundle.getString("PreferencesDialog.RegexAlphabet")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 0);
+        add(jGTILabelRegexAlphabet, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jGTICheckBoxPushDownAlphabetItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTICheckBoxPushDownAlphabetItemStateChanged
@@ -131,6 +140,7 @@ public class AlphabetPanelForm extends JPanel
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTICheckBox jGTICheckBoxPushDownAlphabet;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelInputAlphabet;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelRegexAlphabet;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelInput;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelPushDown;
     public de.unisiegen.gtitool.ui.style.StyledRegexAlphabetParserPanel styledRegexAlphabetParserPanelInput;

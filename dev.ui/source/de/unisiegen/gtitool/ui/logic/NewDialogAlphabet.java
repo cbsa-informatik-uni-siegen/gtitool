@@ -49,9 +49,11 @@ public final class NewDialogAlphabet implements
           .setVisible ( false );
       getGUI ().alphabetPanelForm.styledRegexAlphabetParserPanelInput
           .setVisible ( true );
+      getGUI ().alphabetPanelForm.jGTILabelRegexAlphabet.setVisible ( false );
       this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
-          .setText ( ((DefaultRegexAlphabet)PreferenceManager.getInstance ().getRegexAlphabetItem ()
-              .getAlphabet ()).toClassPrettyString () );
+          .setText ( ( ( DefaultRegexAlphabet ) PreferenceManager
+              .getInstance ().getRegexAlphabetItem ().getAlphabet () )
+              .toClassPrettyString () );
     }
     else
     {
@@ -63,6 +65,7 @@ public final class NewDialogAlphabet implements
           .setVisible ( true );
       getGUI ().alphabetPanelForm.styledRegexAlphabetParserPanelInput
           .setVisible ( false );
+      getGUI ().alphabetPanelForm.jGTILabelRegexAlphabet.setVisible ( false );
       this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
           .setText ( PreferenceManager.getInstance ().getAlphabetItem ()
               .getAlphabet () );

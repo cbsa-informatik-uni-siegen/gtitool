@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.machines.Machine;
@@ -42,15 +43,27 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
 
 
   /**
+   * The {@link MachinePanel}.
+   */
+  private MachinePanel machinePanel;
+
+
+  /**
    * The parent {@link JFrame}.
    */
   private JFrame parent;
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link DefaultRegex} of this dialog
    */
-  private MachinePanel machinePanel;
+  private DefaultRegex regex;
+
+
+  /**
+   * The {@link RegexPanel}
+   */
+  private RegexPanel regexPanel;
 
 
   /**
@@ -129,23 +142,11 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
 
 
   /**
-   * TODO
-   */
-  private RegexPanel regexPanel;
-
-
-  /**
-   * TODO
-   */
-  private DefaultRegex regex;
-
-
-  /**
-   * TODO
+   * Creates a new {@link AlphabetDialog} for a {@link DefaultRegexAlphabet}
    * 
-   * @param parent
-   * @param regexPanel
-   * @param regex
+   * @param parent The parnet frame of the Dialog
+   * @param regexPanel The {@link RegexPanel}
+   * @param regex The {@link DefaultRegex}
    */
   public AlphabetDialog ( JFrame parent, RegexPanel regexPanel,
       DefaultRegex regex )

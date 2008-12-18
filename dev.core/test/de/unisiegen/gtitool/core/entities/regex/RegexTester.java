@@ -8,13 +8,13 @@ import de.unisiegen.gtitool.core.regex.DefaultRegex;
 
 
 /**
- * TODO
+ * Tester class for Regex
  */
 public class RegexTester
 {
 
   /**
-   * TODO
+   * Main class for tester
    * 
    * @param args
    */

@@ -107,7 +107,6 @@ public final class RegexConsoleTableModel extends AbstractTableModel
    * 
    * @param regexException the RegexException containing the data for the new
    *          row
-   *          TODO
    */
   public final void addRow ( RegexException regexException )
   {

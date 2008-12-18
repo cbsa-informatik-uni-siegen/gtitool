@@ -1,28 +1,28 @@
 package de.unisiegen.gtitool.core.entities;
 
+
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 
 
 /**
- * TODO
- *
+ * {@link DefaultState} without a name
  */
 public class DefaultBlackBoxState extends DefaultState
 {
 
-  
   /**
-   * TODO
+   * The serial version uid.
    */
   private static final long serialVersionUID = -7052595983183170428L;
 
+
   /**
-   * TODO
-   * @throws StateException
-   *
+   * Creates a new of {@link DefaultBlackBoxState}
+   * 
+   * @throws StateException When State creator has a problem
    */
   public DefaultBlackBoxState () throws StateException
   {
-    super(""); //$NON-NLS-1$
+    super ( "" ); //$NON-NLS-1$
   }
 }

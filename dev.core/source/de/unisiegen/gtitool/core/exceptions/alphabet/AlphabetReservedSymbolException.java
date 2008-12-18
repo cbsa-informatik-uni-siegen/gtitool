@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.i18n.Messages;
 
 
 /**
- * TODO
+ * {@link AlphabetException} for usage of reserved {@link Symbol}s
  */
 public class AlphabetReservedSymbolException extends AlphabetException
 {

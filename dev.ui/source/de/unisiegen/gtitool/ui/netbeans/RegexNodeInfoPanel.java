@@ -40,10 +40,9 @@ public class RegexNodeInfoPanel extends javax.swing.JPanel {
         jGTITextAreaFollowpos = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
         jGTILabelFollowpos = new de.unisiegen.gtitool.ui.swing.JGTILabel();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("RegexPanel.InformationTitle"))); // NOI18N
         setLayout(new java.awt.GridBagLayout());
 
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTILabelNullable.setText(bundle.getString("RegexNodeInfo.Nullable")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

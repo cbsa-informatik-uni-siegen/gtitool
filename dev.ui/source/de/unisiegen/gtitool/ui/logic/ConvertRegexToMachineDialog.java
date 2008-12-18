@@ -874,12 +874,12 @@ public class ConvertRegexToMachineDialog implements
           {
 
             /**
-             * TODO
+             * {@inheritDoc}
              * 
-             * @param e
-             * @see org.jgraph.event.GraphSelectionListener#valueChanged(org.jgraph.event.GraphSelectionEvent)
+             * @see GraphSelectionListener#valueChanged(org.jgraph.event.GraphSelectionEvent)
              */
-            public void valueChanged ( GraphSelectionEvent e )
+            public void valueChanged ( @SuppressWarnings("unused")
+            GraphSelectionEvent e )
             {
               updateRegexInfo ();
             }

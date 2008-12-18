@@ -110,7 +110,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * Flag that indicates if redo undo is active
    */
   private boolean redoUndo = false;
 
@@ -278,9 +278,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * Changes the Regex text
    * 
-   * @param newText
+   * @param newText The new Regex text
    */
   public void changeRegexText ( String newText )
   {
@@ -290,9 +290,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#clearValidationMessages()
+   * @see EditorPanel#clearValidationMessages()
    */
   public void clearValidationMessages ()
   {
@@ -617,7 +617,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * Handles the to Core Syntax
    */
   public void handleToCoreSyntaxButtonClicked ()
   {
@@ -635,9 +635,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * TODO
+   * Handle the DFA button clicked
    * 
-   * @param evt
+   * @param evt Unused
    */
   public void handleToDFAButton ( @SuppressWarnings ( "unused" )
   ActionEvent evt )
@@ -767,7 +767,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           public void valueChanged ( @SuppressWarnings ( "unused" )
           ListSelectionEvent event )
           {
-            // TODO
+            // Nothing to do here
           }
         } );
     this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
@@ -795,7 +795,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   }
 
   /**
-   * TODO
+   * Initializes the Alphabet
    */
   public void initializeAlphabet ()
   {
@@ -883,7 +883,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void languageChanged ()
   {
-    // TODO
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
+        .getString ( "RegexPanel.Error" ) ); //$NON-NLS-1$
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
+        .getString ( "RegexPanel.Warning" ) ); //$NON-NLS-1$
+    this.gui.jGTILabelAlphabet.setText ( Messages
+        .getString ( "RegexPanel.AlphabetTitle" ) ); //$NON-NLS-1$
+    this.gui.jGTILabelGraph.setText ( Messages
+        .getString ( "RegexPanel.GraphTitle" ) ); //$NON-NLS-1$
+    this.gui.jGTILabelInfo.setText ( Messages
+        .getString ( "RegexPanel.InformationTitle" ) ); //$NON-NLS-1$
+    this.gui.jGTILabelRegex.setText ( Messages
+        .getString ( "RegexPanel.RegexTitle" ) ); //$NON-NLS-1$
   }
 
 

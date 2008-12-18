@@ -1,48 +1,51 @@
 package de.unisiegen.gtitool.ui.redoundo;
 
+
 import de.unisiegen.gtitool.ui.logic.RegexPanel;
 
 
 /**
- * TODO
- *
+ * The {@link RedoUndoItem} if the Regex was changed
  */
 public class RegexChangedItem extends RedoUndoItem
 {
-  
+
   /**
-   * TODO
+   * The {@link RegexPanel}
    */
   private RegexPanel panel;
-  
+
+
   /**
-   * TODO
+   * The new text
    */
   private String newText;
-  
+
+
   /**
-   * TODO
+   * The old text
    */
   private String oldText;
-  
-  
+
+
   /**
-   * TODO
-   * @param panel
-   * @param newText 
-   * @param oldText 
-   *
+   * Creates a new of {@link RegexChangedItem}
+   * 
+   * @param panel The {@link RegexPanel}
+   * @param newText The new text
+   * @param oldText The old text
    */
-  public RegexChangedItem (RegexPanel panel, String newText, String oldText)
+  public RegexChangedItem ( RegexPanel panel, String newText, String oldText )
   {
     this.panel = panel;
     this.oldText = oldText;
     this.newText = newText;
   }
 
+
   /**
-   * TODO
-   *
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#redo()
    */
   @Override
@@ -53,8 +56,8 @@ public class RegexChangedItem extends RedoUndoItem
 
 
   /**
-   * TODO
-   *
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#undo()
    */
   @Override

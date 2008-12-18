@@ -13,13 +13,13 @@ import org.jgraph.graph.VertexView;
 
 
 /**
- * TODO
+ * {@link VertexView} for BlackBox in the Regex -> ENFA Converter
  */
 public class BlackboxView extends VertexView
 {
 
   /**
-   * TODO
+   * The serial version uid.
    */
   private static final long serialVersionUID = 209723961535408231L;
 
@@ -34,7 +34,7 @@ public class BlackboxView extends VertexView
   {
 
     /**
-     * TODO
+     * The serial version uid.
      */
     private static final long serialVersionUID = -4785578750364707289L;
 
@@ -73,22 +73,21 @@ public class BlackboxView extends VertexView
 
 
     /**
-     * TODO
+     * The y space to the border of the BlackBox
      */
     private int Y_SPACE = JGTIBlackboxGraph.Y_SPACE;
 
 
     /**
-     * TODO
+     * The x space to the border of the BlackBox
      */
     private int X_SPACE = JGTIBlackboxGraph.X_SPACE;
 
 
     /**
-     * TODO
+     * {@inheritDoc}
      * 
-     * @param g
-     * @see org.jgraph.graph.VertexRenderer#paint(java.awt.Graphics)
+     * @see VertexRenderer#paint(java.awt.Graphics)
      */
     @Override
     public void paint ( Graphics g )

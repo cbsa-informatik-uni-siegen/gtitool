@@ -5,41 +5,41 @@ import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 
 
 /**
- * TODO
+ * Representation of a BlackBox
  */
 public class DefaultBlackboxView
 {
 
   /**
-   * TODO
+   * The serial version uid.
    */
   private static final long serialVersionUID = 1281456646341612718L;
 
 
   /**
-   * TODO
+   * The {@link RegexNode} that is in the {@link DefaultBlackboxView}
    */
   private RegexNode content;
 
 
   /**
-   * TODO
+   * The final state
    */
   private DefaultStateView finalState;
 
 
   /**
-   * TODO
+   * The start state
    */
   private DefaultStateView startState;
 
 
   /**
-   * TODO
+   * Creates new of {@link DefaultBlackboxView}
    * 
-   * @param startState
-   * @param finalState
-   * @param content
+   * @param startState The start state
+   * @param finalState The final state
+   * @param content The {@link RegexNode}
    */
   public DefaultBlackboxView ( DefaultStateView startState,
       DefaultStateView finalState, RegexNode content )

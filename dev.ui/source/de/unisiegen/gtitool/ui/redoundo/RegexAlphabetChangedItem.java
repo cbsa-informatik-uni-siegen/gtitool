@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.ui.logic.RegexPanel;
 
 
 /**
- * TODO
+ * {@link RedoUndoItem} for Alphabet changed
  */
 public class RegexAlphabetChangedItem extends RedoUndoItem
 {
@@ -36,23 +36,23 @@ public class RegexAlphabetChangedItem extends RedoUndoItem
 
 
   /**
-   * TODO
+   * The {@link DefaultRegex}
    */
   private DefaultRegex regex;
 
 
   /**
-   * TODO
+   * The {@link RegexPanel}
    */
   private RegexPanel regexPanel;
 
 
   /**
-   * TODO
+   * Creates a new of {@link RegexAlphabetChangedItem}
    * 
-   * @param regex
-   * @param regexPanel
-   * @param newAlphabet
+   * @param regex The {@link DefaultRegex}
+   * @param regexPanel The {@link RegexPanel}
+   * @param newAlphabet The new {@link Alphabet}
    */
   public RegexAlphabetChangedItem ( DefaultRegex regex, RegexPanel regexPanel,
       Alphabet newAlphabet )
@@ -63,7 +63,6 @@ public class RegexAlphabetChangedItem extends RedoUndoItem
     this.regexPanel = regexPanel;
     performAlphabetCalculation ( this.alphabet, newAlphabet, this.symbolsToAdd,
         this.symbolsToRemove );
-
   }
 
 
@@ -98,9 +97,9 @@ public class RegexAlphabetChangedItem extends RedoUndoItem
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#redo()
+   * @see RedoUndoItem#redo()
    */
   @Override
   public void redo ()
@@ -121,9 +120,9 @@ public class RegexAlphabetChangedItem extends RedoUndoItem
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#undo()
+   * @see RedoUndoItem#undo()
    */
   @Override
   public void undo ()

@@ -1,5 +1,6 @@
 package de.unisiegen.gtitool.ui.style;
 
+
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -11,8 +12,7 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
- * TODO
- *
+ * Test class for {@link StyledRegexParserPanel}
  */
 public class StyledRegexParserPanelTest
 {
@@ -28,11 +28,12 @@ public class StyledRegexParserPanelTest
     StyledRegexParserPanel styledRegexParserPanel = new StyledRegexParserPanel ();
     try
     {
-      styledRegexParserPanel.setAlphabet ( new DefaultRegexAlphabet(new DefaultSymbol("a"), new DefaultSymbol("b")) ); //$NON-NLS-1$ //$NON-NLS-2$
+      styledRegexParserPanel.setAlphabet ( new DefaultRegexAlphabet (
+          new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
     catch ( AlphabetException exc )
     {
-      exc.printStackTrace();
+      exc.printStackTrace ();
     }
     styledRegexParserPanel
         .addParseableChangedListener ( new ParseableChangedListener < RegexNode > ()

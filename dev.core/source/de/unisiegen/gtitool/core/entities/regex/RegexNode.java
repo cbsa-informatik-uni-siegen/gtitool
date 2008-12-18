@@ -23,38 +23,15 @@ public abstract class RegexNode implements Entity < RegexNode >
 
 
   /**
-   * Flag that indicates if user has used braces around the node
-   */
-  protected boolean braces = false;
-
-  /**
    * Flag that indicates if the node is active
    */
   private boolean active = false;
 
 
   /**
-   * Sets the active.
-   * 
-   * @param active The active to set.
-   * @see #active
+   * Flag that indicates if user has used braces around the node
    */
-  public void setActive ( boolean active )
-  {
-    this.active = active;
-  }
-
-
-  /**
-   * Returns the active.
-   * 
-   * @return The active.
-   * @see #active
-   */
-  public boolean isActive ()
-  {
-    return this.active;
-  }
+  protected boolean braces = false;
 
 
   /**
@@ -137,8 +114,6 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return All Tokennodes that are in this node
    */
   public abstract ArrayList < LeafNode > getTokenNodes ();
-  
-  public abstract int countDisjunctions();
 
 
   /**
@@ -150,6 +125,18 @@ public abstract class RegexNode implements Entity < RegexNode >
 
 
   /**
+   * Returns the active.
+   * 
+   * @return The active.
+   * @see #active
+   */
+  public boolean isActive ()
+  {
+    return this.active;
+  }
+
+
+  /**
    * Returns true if Regex is in CoreSyntax
    * 
    * @return True if Regex is in CoreSyntax
@@ -158,25 +145,19 @@ public abstract class RegexNode implements Entity < RegexNode >
 
 
   /**
-   * Returns true if Node is marked in creation of NFA
+   * Returns true if Node is marked in creation of ENFA
    * 
-   * @return True if Node is marked in creation of NFA
+   * @return True if Node is marked in creation of ENFA
    */
   public abstract boolean isMarked ();
-  
+
+
+  /**
+   * Returns true if all Childnodes are marked in creation of ENFA
+   * 
+   * @return True if all Childnodes are marked in creation of ENFA
+   */
   public abstract boolean isMarkedAll ();
-
-
-  /**
-   * Resets the mark flag.
-   */
-  public abstract void unmark ();
-
-
-  /**
-   * Resets the mark flag of the whole regex
-   */
-  public abstract void unmarkAll ();
 
 
   /**
@@ -197,6 +178,18 @@ public abstract class RegexNode implements Entity < RegexNode >
 
 
   /**
+   * Sets the active.
+   * 
+   * @param active The active to set.
+   * @see #active
+   */
+  public void setActive ( boolean active )
+  {
+    this.active = active;
+  }
+
+
+  /**
    * Sets flag that indicates if user used braces around the regex
    * 
    * @param braces True if braces are used
@@ -213,4 +206,16 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return the RegexNode in Core Syntax
    */
   public abstract RegexNode toCoreSyntax ();
+
+
+  /**
+   * Resets the mark flag.
+   */
+  public abstract void unmark ();
+
+
+  /**
+   * Resets the mark flag of the whole regex
+   */
+  public abstract void unmarkAll ();
 }

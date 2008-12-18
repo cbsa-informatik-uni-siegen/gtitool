@@ -20,52 +20,6 @@ public abstract class LeafNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmark()
-   */
-  @Override
-  public void unmark ()
-  {
-    this.marked = false;
-  }
-
-  /**
-   * TODO
-   *
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#countDisjunctions()
-   */
-  @Override
-  public int countDisjunctions ()
-  {
-    return 0;
-  }
-
-  /**
-   * TODO
-   *
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isMarkedAll()
-   */
-  @Override
-  public boolean isMarkedAll ()
-  {
-    return this.marked;
-  }
-  /**
-   * TODO
-   * 
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmarkAll()
-   */
-  @Override
-  public void unmarkAll ()
-  {
-    unmark ();
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see RegexNode#getHeight()
@@ -135,10 +89,46 @@ public abstract class LeafNode extends RegexNode
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#isMarkedAll()
+   */
+  @Override
+  public boolean isMarkedAll ()
+  {
+    return this.marked;
+  }
+
+
+  /**
    * Sets the Position of the {@link LeafNode}
    * 
    * @param p The Position of the {@link LeafNode}
    */
   public abstract void setPosition ( int p );
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmark()
+   */
+  @Override
+  public void unmark ()
+  {
+    this.marked = false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmarkAll()
+   */
+  @Override
+  public void unmarkAll ()
+  {
+    unmark ();
+  }
 
 }

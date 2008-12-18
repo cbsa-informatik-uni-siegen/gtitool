@@ -20,42 +20,6 @@ public abstract class OneChildNode extends RegexNode
 
 
   /**
-   * TODO
-   * 
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmark()
-   */
-  @Override
-  public void unmark ()
-  {
-    this.marked = false;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmarkAll()
-   */
-  @Override
-  public void unmarkAll ()
-  {
-    unmark ();
-    this.regex.unmarkAll ();
-  }
-
-  /**
-   * TODO
-   *
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isMarkedAll()
-   */
-  @Override
-  public boolean isMarkedAll ()
-  {
-    return this.marked && this.regex.isMarkedAll ();
-  }
-
-  /**
    * The Child of this {@link OneChildNode}
    */
   protected RegexNode regex;
@@ -69,18 +33,6 @@ public abstract class OneChildNode extends RegexNode
   public OneChildNode ( RegexNode regex )
   {
     this.regex = regex;
-  }
-  
-  /**
-   * TODO
-   *
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#countDisjunctions()
-   */
-  @Override
-  public int countDisjunctions ()
-  {
-    return this.regex.countDisjunctions ();
   }
 
 
@@ -146,6 +98,43 @@ public abstract class OneChildNode extends RegexNode
   public boolean isMarked ()
   {
     return this.marked;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#isMarkedAll()
+   */
+  @Override
+  public boolean isMarkedAll ()
+  {
+    return this.marked && this.regex.isMarkedAll ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmark()
+   */
+  @Override
+  public void unmark ()
+  {
+    this.marked = false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmarkAll()
+   */
+  @Override
+  public void unmarkAll ()
+  {
+    unmark ();
+    this.regex.unmarkAll ();
   }
 
 }

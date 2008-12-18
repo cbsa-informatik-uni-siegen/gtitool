@@ -176,6 +176,34 @@ public class CharacterClassNode extends LeafNode
 
 
   /**
+   * Returns the Characters in the Character Class as {@link Symbol}s
+   * 
+   * @return The Characters in the Character Class as Symbols
+   */
+  public ArrayList < Symbol > getCharacters ()
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    if ( this.array )
+    {
+      for ( char c : this.chars )
+      {
+        symbols.add ( new DefaultSymbol ( Character.toString ( c ) ) );
+      }
+    }
+    else
+    {
+      char c1 = this.char1;
+      char c2 = this.char2;
+      while ( c1 <= c2 )
+      {
+        symbols.add ( new DefaultSymbol ( Character.toString ( c1++ ) ) );
+      }
+    }
+    return symbols;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see RegexNode#getChildren()
@@ -389,34 +417,6 @@ public class CharacterClassNode extends LeafNode
         .toString ( this.chars [ 1 ] ) ) );
     dis.setBraces ( this.braces );
     return dis;
-  }
-
-
-  /**
-   * Returns the Characters in the Character Class as {@link Symbol}s
-   *
-   * @return The Characters in the Character Class as Symbols
-   */
-  public ArrayList < Symbol > getCharacters ()
-  {
-    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-    if ( this.array )
-    {
-      for ( char c : this.chars )
-      {
-        symbols.add ( new DefaultSymbol ( Character.toString ( c ) ) );
-      }
-    }
-    else
-    {
-      char c1 = this.char1;
-      char c2 = this.char2;
-      while ( c1 <= c2 )
-      {
-        symbols.add ( new DefaultSymbol ( Character.toString ( c1++ ) ) );
-      }
-    }
-    return symbols;
   }
 
 

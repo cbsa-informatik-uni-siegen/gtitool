@@ -43,33 +43,6 @@ public abstract class TwoChildNode extends RegexNode
     this.regex2 = regex2;
   }
 
-  /**
-   * TODO
-   *
-   * @see RegexNode#countDisjunctions()
-   */
-  @Override
-  public int countDisjunctions ()
-  {
-    int i = 0;
-    if(this instanceof DisjunctionNode) {
-      i = 1;
-    }
-    return i + this.regex1.countDisjunctions () + this.regex2.countDisjunctions ();
-  }
-
-  /**
-   * TODO
-   * 
-   * @see RegexNode#isMarkedAll()
-   */
-  @Override
-  public boolean isMarkedAll ()
-  {
-    return this.marked && this.regex1.isMarkedAll ()
-        && this.regex2.isMarkedAll ();
-  }
-
 
   /**
    * {@inheritDoc}
@@ -161,7 +134,20 @@ public abstract class TwoChildNode extends RegexNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#isMarkedAll()
+   */
+  @Override
+  public boolean isMarkedAll ()
+  {
+    return this.marked && this.regex1.isMarkedAll ()
+        && this.regex2.isMarkedAll ();
+  }
+
+
+  /**
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmark()
    */
@@ -173,7 +159,7 @@ public abstract class TwoChildNode extends RegexNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#unmarkAll()
    */

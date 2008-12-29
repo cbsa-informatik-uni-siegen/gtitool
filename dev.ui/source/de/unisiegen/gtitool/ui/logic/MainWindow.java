@@ -4133,9 +4133,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           "the select panel is not a regex, machine or grammar panel" ); //$NON-NLS-1$
     }
 
-    System.err.println ( "WarningCount: " + warningCount );
-    System.err.println ( "ErrorCount: " + errorCount );
-
     String titleWarningString = ""; //$NON-NLS-1$
     String titleErrorString = ""; //$NON-NLS-1$
     String titleWarningFoundString = ""; //$NON-NLS-1$

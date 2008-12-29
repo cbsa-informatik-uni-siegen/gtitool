@@ -671,15 +671,6 @@ public class ConvertRegexToMachineDialog implements
   private HashMap < RegexNode, ArrayList < DefaultStateView > > stateViewList = new HashMap < RegexNode, ArrayList < DefaultStateView > > ();
 
 
-  private HashMap < RegexNode, ArrayList < DefaultStateView > > surroundings = new HashMap < RegexNode, ArrayList < DefaultStateView > > ();
-
-
-  private HashMap < RegexNode, ArrayList < DefaultStateView > > startings = new HashMap < RegexNode, ArrayList < DefaultStateView > > ();
-
-
-  private HashMap < RegexNode, ArrayList < DefaultStateView > > endings = new HashMap < RegexNode, ArrayList < DefaultStateView > > ();
-
-
   /**
    * The {@link StepItem} list.
    */
@@ -878,7 +869,7 @@ public class ConvertRegexToMachineDialog implements
              * 
              * @see GraphSelectionListener#valueChanged(org.jgraph.event.GraphSelectionEvent)
              */
-            public void valueChanged ( @SuppressWarnings("unused")
+            public void valueChanged ( @SuppressWarnings ( "unused" )
             GraphSelectionEvent e )
             {
               updateRegexInfo ();
@@ -1111,9 +1102,6 @@ public class ConvertRegexToMachineDialog implements
   }
 
 
-  private ArrayList < DefaultStateView > movedEndings = new ArrayList < DefaultStateView > ();
-
-
   /**
    * Handles the action on the ok button.
    */
@@ -1198,6 +1186,30 @@ public class ConvertRegexToMachineDialog implements
   }
 
 
+  private static double X_SPACE = 150;
+
+
+  private static double Y_SPACE = 50;
+
+
+  private static double START_X = 100;
+
+
+  private static double START_Y = 100;
+
+
+  private HashMap < RegexNode, HashSet < DefaultStateView > > endings = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
+
+
+  private HashMap < RegexNode, HashSet < DefaultStateView > > surroundings = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
+
+
+  private HashMap < RegexNode, HashSet < DefaultStateView > > others = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
+
+
+  private ArrayList < DefaultStateView > movedEndings = new ArrayList < DefaultStateView > ();
+
+
   /**
    * Performs the next step.
    * 
@@ -1252,14 +1264,13 @@ public class ConvertRegexToMachineDialog implements
           }
           else
           {
-            startView = this.modelConverted.createStateView ( 100, 100,
+            startView = this.modelConverted.createStateView ( START_X, START_Y,
                 new DefaultBlackBoxState (), false );
             startView.getState ().setStartState ( true );
 
-            finView = this.modelConverted.createStateView ( 200, 100,
-                new DefaultBlackBoxState (), false );
+            finView = this.modelConverted.createStateView ( START_X + X_SPACE,
+                START_Y, new DefaultBlackBoxState (), false );
             finView.getState ().setFinalState ( true );
-            this.count++ ;
           }
           this.jGTIGraphConverted.removeBlackBox ( token );
 
@@ -1312,14 +1323,13 @@ public class ConvertRegexToMachineDialog implements
           }
           else
           {
-            startView = this.modelConverted.createStateView ( 100, 100,
+            startView = this.modelConverted.createStateView ( START_X, START_Y,
                 new DefaultBlackBoxState (), false );
             startView.getState ().setStartState ( true );
 
-            finView = this.modelConverted.createStateView ( 200, 100,
-                new DefaultBlackBoxState (), false );
+            finView = this.modelConverted.createStateView ( START_X + X_SPACE,
+                START_Y, new DefaultBlackBoxState (), false );
             finView.getState ().setFinalState ( true );
-            this.count++ ;
           }
 
           this.jGTIGraphConverted.removeBlackBox ( epsilon );
@@ -1369,14 +1379,6 @@ public class ConvertRegexToMachineDialog implements
               .getFontMetrics ().stringWidth (
                   dis.getChildren ().get ( 1 ).toPrettyString ().toString () );
 
-          if ( this.startings.containsKey ( dis ) )
-          {
-            for ( DefaultStateView view : this.startings.get ( dis ) )
-            {
-              view.moveRelative ( 0, 50 );
-            }
-          }
-
           DefaultStateView start;
           DefaultStateView end;
           if ( this.stateViewList.containsKey ( dis ) )
@@ -1386,21 +1388,34 @@ public class ConvertRegexToMachineDialog implements
           }
           else
           {
-            start = this.modelConverted.createStateView ( 100, 100,
+            start = this.modelConverted.createStateView ( START_X, START_Y,
                 new DefaultBlackBoxState (), false );
             start.getState ().setStartState ( true );
 
-            end = this.modelConverted.createStateView ( 100, 100,
+            end = this.modelConverted.createStateView ( START_X, START_Y,
                 new DefaultBlackBoxState (), false );
             end.getState ().setFinalState ( true );
-            this.count++ ;
           }
 
           if ( this.surroundings.containsKey ( dis ) )
           {
-            for ( DefaultStateView view : this.surroundings.get ( dis ) )
+            for ( DefaultStateView v : this.surroundings.get ( dis ) )
             {
-              view.moveRelative ( 0, 100 );
+              if ( v.equals ( start ) || v.equals ( end ) )
+              {
+                v.moveRelative ( 0, Y_SPACE );
+              }
+              else
+              {
+                v.moveRelative ( 0, 2 * Y_SPACE );
+              }
+            }
+          }
+          if ( this.others.containsKey ( dis ) )
+          {
+            for ( DefaultStateView v : this.others.get ( dis ) )
+            {
+              v.moveRelative ( 0, Y_SPACE );
             }
           }
 
@@ -1415,7 +1430,6 @@ public class ConvertRegexToMachineDialog implements
           views.add ( start1 );
           views.add ( end1 );
           this.stateViewList.put ( dis.getChildren ().get ( 0 ), views );
-          this.count++ ;
           DefaultStateView start2 = this.modelConverted.createStateView (
               startX, startY, new DefaultBlackBoxState (), false );
           DefaultStateView end2 = this.modelConverted.createStateView ( startX,
@@ -1424,73 +1438,66 @@ public class ConvertRegexToMachineDialog implements
           views.add ( start2 );
           views.add ( end2 );
           this.stateViewList.put ( dis.getChildren ().get ( 1 ), views );
-          this.count++ ;
 
-          views = new ArrayList < DefaultStateView > ();
-          if ( this.startings.containsKey ( dis ) )
-          {
-            views.addAll ( this.startings.get ( dis ) );
-          }
-          views.add ( start );
-          this.startings.put ( dis.getChildren ().get ( 0 ), views );
-          this.startings.put ( dis.getChildren ().get ( 1 ), views );
-
-          views = new ArrayList < DefaultStateView > ();
-          if ( this.endings.containsKey ( dis ) )
-          {
-            views.addAll ( this.endings.get ( dis ) );
-          }
-          views.add ( end );
-          this.endings.put ( dis.getChildren ().get ( 0 ), views );
-          this.endings.put ( dis.getChildren ().get ( 1 ), views );
-
-          views = new ArrayList < DefaultStateView > ();
-          if ( this.surroundings.containsKey ( dis ) )
-          {
-            views.addAll ( this.surroundings.get ( dis ) );
-          }
-          views.add ( start2 );
-          views.add ( end2 );
-          this.surroundings.put ( dis.getChildren ().get ( 0 ), views );
-
-          start1.moveRelative ( 150, -50 );
+          start1.moveRelative ( X_SPACE, -Y_SPACE );
           end1.move ( start1.getPositionX (), start1.getPositionY () );
           end1.moveRelative ( 2 * JGTIBlackboxGraph.X_SPACE + regex1Width
               + end1.getWidth (), 0 );
-          start2.moveRelative ( 150, 50 );
+          start2.moveRelative ( X_SPACE, Y_SPACE );
           end2.move ( start2.getPositionX (), start2.getPositionY () );
           end2.moveRelative ( 2 * JGTIBlackboxGraph.X_SPACE + regex2Width
               + end2.getWidth (), 0 );
 
           end.move ( end2.getPositionX (), end.getPositionY () );
-          end.moveRelative ( 150, 0 );
+          end.moveRelative ( X_SPACE, 0 );
 
+          double width = end.getPositionX () - start.getPositionX ();
           if ( this.endings.containsKey ( dis ) )
           {
-            double width = Math.max ( regex1Width, regex2Width ) + 4
-                * JGTIBlackboxGraph.X_SPACE + start1.getWidth ()
-                + end1.getWidth () + 100;
-
-            for ( DefaultStateView view : this.endings.get ( dis ) )
+            for ( DefaultStateView v : this.endings.get ( dis ) )
             {
-              if ( !this.movedEndings.contains ( view ) )
+              if ( this.movedEndings.contains ( v ) )
               {
-                view.moveRelative ( width, 50 );
-                this.movedEndings.add ( view );
+                this.movedEndings.remove ( v );
               }
               else
               {
-                this.movedEndings.remove ( view );
+                v.moveRelative ( width, 0 );
+                this.movedEndings.add ( v );
+                this.movedEndings.add ( v );
               }
             }
           }
+
+          HashSet < DefaultStateView > disOthers = new HashSet < DefaultStateView > ();
+          disOthers.add ( start2 );
+          disOthers.add ( end2 );
+          this.others.put ( dis.getChildren ().get ( 1 ), disOthers );
+
+          HashSet < DefaultStateView > disSurroundings = new HashSet < DefaultStateView > ();
+          disSurroundings.add ( start );
+          disSurroundings.add ( start1 );
+          disSurroundings.add ( start2 );
+          disSurroundings.add ( end2 );
+          disSurroundings.add ( end1 );
+          disSurroundings.add ( end );
           if ( this.surroundings.containsKey ( dis ) )
           {
-            start.moveRelative ( 0, 50 );
-            start2.moveRelative ( 0, 50 );
-            end2.moveRelative ( 0, 50 );
-            end.moveRelative ( 0, 50 );
+            disSurroundings.addAll ( this.surroundings.get ( dis ) );
           }
+          this.surroundings
+              .put ( dis.getChildren ().get ( 0 ), disSurroundings );
+
+          HashSet < DefaultStateView > disEndings = new HashSet < DefaultStateView > ();
+
+          disEndings.add ( end );
+          if ( this.endings.containsKey ( dis ) )
+          {
+            disEndings.addAll ( this.endings.get ( dis ) );
+          }
+
+          this.endings.put ( dis.getChildren ().get ( 0 ), disEndings );
+          this.endings.put ( dis.getChildren ().get ( 1 ), disEndings );
 
           this.modelConverted.createTransitionView ( new DefaultTransition (
               this.defaultRegex.getAlphabet (), this.defaultRegex
@@ -1546,7 +1553,6 @@ public class ConvertRegexToMachineDialog implements
                     "ConvertRegexToMachineDialog.StepConvertConcatenation", con.toPrettyString () ) ); //$NON-NLS-1$
         try
         {
-
           int regex1Width = this.jGTIGraphConverted.getGraphics ()
               .getFontMetrics ().stringWidth (
                   con.getChildren ().get ( 0 ).toPrettyString ().toString () );
@@ -1563,47 +1569,20 @@ public class ConvertRegexToMachineDialog implements
           }
           else
           {
-            start = this.modelConverted.createStateView ( 100, 100,
+            start = this.modelConverted.createStateView ( START_X, START_Y,
                 new DefaultBlackBoxState (), false );
             start.getState ().setStartState ( true );
 
-            end = this.modelConverted.createStateView ( 250, 100,
+            end = this.modelConverted.createStateView ( START_X, START_Y,
                 new DefaultBlackBoxState (), false );
             end.getState ().setFinalState ( true );
-            this.count++ ;
           }
           double startX = start.getPositionX () + start.getWidth ();
           double startY = start.getPositionY () + start.getHeight () / 2;
           DefaultStateView middle = this.modelConverted.createStateView (
               startX, startY, new DefaultBlackBoxState (), false );
 
-          middle.moveRelative ( 2 * JGTIBlackboxGraph.X_SPACE + regex1Width
-              + middle.getWidth (), 0 );
-          end.move ( middle.getPositionX (), end.getPositionY () );
-          end.moveRelative ( 4 * JGTIBlackboxGraph.X_SPACE + regex1Width
-              + middle.getWidth () + regex2Width, 0 );
-
           ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
-          views.add ( end );
-          if ( this.endings.containsKey ( con ) )
-          {
-            double width = regex1Width + regex2Width + 4
-                * JGTIBlackboxGraph.X_SPACE + middle.getWidth ();
-
-            for ( DefaultStateView view : this.endings.get ( con ) )
-            {
-              if ( !this.movedEndings.contains ( view ) )
-              {
-                view.moveRelative ( width, 0 );
-                this.movedEndings.add ( view );
-              }
-              else
-              {
-                this.movedEndings.remove ( view );
-              }
-            }
-          }
-          views = new ArrayList < DefaultStateView > ();
           views.add ( start );
           views.add ( middle );
           this.stateViewList.put ( con.getChildren ().get ( 0 ), views );
@@ -1612,9 +1591,50 @@ public class ConvertRegexToMachineDialog implements
           views.add ( end );
           this.stateViewList.put ( con.getChildren ().get ( 1 ), views );
 
-          this.endings.put ( con.getChildren ().get ( 1 ), views );
-          views.add ( middle );
-          this.endings.put ( con.getChildren ().get ( 0 ), views );
+          middle.moveRelative ( 2 * JGTIBlackboxGraph.X_SPACE + regex1Width
+              + middle.getWidth (), 0 );
+          end.move ( middle.getPositionX (), end.getPositionY () );
+          end.moveRelative ( 4 * JGTIBlackboxGraph.X_SPACE + regex1Width
+              + middle.getWidth () + regex2Width, 0 );
+
+          if ( this.endings.containsKey ( con ) )
+          {
+            for ( DefaultStateView v : this.endings.get ( con ) )
+            {
+              if ( this.movedEndings.contains ( v ) )
+              {
+                this.movedEndings.remove ( v );
+              }
+              else
+              {
+                this.movedEndings.add ( v );
+                this.movedEndings.add ( v );
+                v
+                    .moveRelative (
+                        end.getPositionX () - start.getPositionX (), 0 );
+              }
+            }
+          }
+          HashSet < DefaultStateView > conSurroundings = new HashSet < DefaultStateView > ();
+          conSurroundings.add ( start );
+          conSurroundings.add ( middle );
+          if ( this.surroundings.containsKey ( con ) )
+          {
+            conSurroundings.addAll ( this.surroundings.get ( con ) );
+          }
+          this.surroundings
+              .put ( con.getChildren ().get ( 0 ), conSurroundings );
+          conSurroundings.add ( end );
+          this.surroundings
+              .put ( con.getChildren ().get ( 1 ), conSurroundings );
+
+          HashSet < DefaultStateView > conEndings = new HashSet < DefaultStateView > ();
+          conEndings.add ( end );
+          if ( this.endings.containsKey ( con ) )
+          {
+            conEndings.addAll ( this.endings.get ( con ) );
+          }
+          this.endings.put ( con.getChildren ().get ( 0 ), conEndings );
 
           this.jGTIGraphConverted.addBlackBox ( new DefaultBlackboxView (
               start, middle, con.getChildren ().get ( 0 ) ) );
@@ -1649,15 +1669,13 @@ public class ConvertRegexToMachineDialog implements
           }
           else
           {
-            start = this.modelConverted.createStateView ( 100, 100,
+            start = this.modelConverted.createStateView ( START_X, START_Y,
                 new DefaultBlackBoxState (), false );
-
             start.getState ().setStartState ( true );
 
-            end = this.modelConverted.createStateView ( 250, 100,
-                new DefaultBlackBoxState (), false );
+            end = this.modelConverted.createStateView ( START_X + X_SPACE,
+                START_Y, new DefaultBlackBoxState (), false );
             end.getState ().setFinalState ( true );
-            this.count++ ;
           }
           pretty
               .add ( Messages
@@ -1679,32 +1697,8 @@ public class ConvertRegexToMachineDialog implements
 
           double width = regexWidth + 2 * JGTIBlackboxGraph.X_SPACE
               + startView.getWidth () + finView.getWidth ();
-          if ( this.endings.containsKey ( k ) )
-          {
 
-            for ( DefaultStateView view : this.endings.get ( k ) )
-            {
-              if ( !this.movedEndings.contains ( view ) )
-              {
-                view.moveRelative ( width, 0 );
-                this.movedEndings.add ( view );
-              }
-              else
-              {
-                this.movedEndings.remove ( view );
-              }
-            }
-          }
-
-          ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
-          views.add ( end );
-          if ( this.endings.containsKey ( k ) )
-          {
-            views.addAll ( this.endings.get ( k ) );
-          }
-          this.endings.put ( k.getChildren ().get ( 0 ), views );
-
-          end.moveRelative ( width, 0 );
+          end.moveRelative ( width + 2 * X_SPACE, 0 );
 
           // From start to begin of N(s)
           Transition t = new DefaultTransition ();
@@ -1734,7 +1728,7 @@ public class ConvertRegexToMachineDialog implements
           addedTransitions.add ( this.modelConverted.createTransitionView ( t,
               end, finView, true, false, true ) );
 
-          views = new ArrayList < DefaultStateView > ();
+          ArrayList < DefaultStateView > views = new ArrayList < DefaultStateView > ();
           views.add ( startView );
           views.add ( finView );
           this.stateViewList.put ( k.getChildren ().get ( 0 ), views );

@@ -150,9 +150,8 @@ public final class DefaultStateView extends DefaultGraphCell implements
     this.state.addStateChangedListener ( new StateChangedListener ()
     {
 
-      public void stateChanged (
-          @SuppressWarnings ( "unused" ) boolean nameChanged,
-          boolean startChanged, boolean loopTransitionChanged )
+      public void stateChanged ( @SuppressWarnings ( "unused" )
+      boolean nameChanged, boolean startChanged, boolean loopTransitionChanged )
       {
         if ( startChanged )
         {

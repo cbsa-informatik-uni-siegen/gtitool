@@ -712,7 +712,7 @@ public class ConvertRegexToMachineDialog implements
   /**
    * The x space between two states
    */
-  private static double X_SPACE = 150;
+  private static double X_SPACE = 180;
 
 
   /**
@@ -1030,6 +1030,7 @@ public class ConvertRegexToMachineDialog implements
     this.jGTIGraphConverted = ( JGTIBlackboxGraph ) this.modelConverted
         .getJGTIGraph ();
     this.jGTIGraphConverted.setEnabled ( false );
+    this.jGTIGraphConverted.setScale ( JGTIBlackboxGraph.SCALE_FACTOR );
     this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGTIGraphConverted );
 
     this.positionMap = new HashMap < String, Position > ();
@@ -1219,6 +1220,7 @@ public class ConvertRegexToMachineDialog implements
    */
   public void handleBeginStep ()
   {
+    logger.debug ( "handleBeginStep", "handle begin step" ); //$NON-NLS-1$ //$NON-NLS-2$
     while ( !this.stepItemList.isEmpty () )
     {
       handlePreviousStep ();
@@ -1231,6 +1233,7 @@ public class ConvertRegexToMachineDialog implements
    */
   public void handleCancel ()
   {
+    logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$ //$NON-NLS-2$
     if ( this.activeNode != null )
     {
       this.activeNode.setActive ( false );
@@ -1245,6 +1248,7 @@ public class ConvertRegexToMachineDialog implements
    */
   public void handleEndStep ()
   {
+    logger.debug ( "handleEndStep", "handle end step" ); //$NON-NLS-1$ //$NON-NLS-2$
     while ( !this.endReached )
     {
       handleNextStep ();
@@ -1257,6 +1261,7 @@ public class ConvertRegexToMachineDialog implements
    */
   public void handleNextStep ()
   {
+    logger.debug ( "handleNextStep", "handle next step" ); //$NON-NLS-1$ //$NON-NLS-2$
     performNextStep ( true );
     setStatus ();
   }

@@ -53,6 +53,11 @@ public class JGTIBlackboxGraph extends JGTIGraph
    * The y space
    */
   public static int Y_SPACE = 8;
+  
+  /**
+   * The scale factor
+   */
+  public static double SCALE_FACTOR = 0.8;
 
 
   /**
@@ -66,6 +71,7 @@ public class JGTIBlackboxGraph extends JGTIGraph
     super.paintComponent ( graphics );
 
     Graphics2D g = ( Graphics2D ) graphics;
+    g.scale ( SCALE_FACTOR, SCALE_FACTOR );
 
     for ( DefaultBlackboxView bview : this.defaultBlackboxViews )
     {

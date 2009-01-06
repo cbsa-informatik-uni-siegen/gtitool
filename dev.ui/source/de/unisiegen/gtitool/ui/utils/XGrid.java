@@ -4,7 +4,6 @@ package de.unisiegen.gtitool.ui.utils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.TreeSet;
 
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 
@@ -40,7 +39,7 @@ public class XGrid
   {
     Integer n = i;
     ArrayList < Integer > list = new ArrayList < Integer > ();
-    this.x_positions.remove ( v.getState ().getName () );
+    Integer was = this.x_positions.remove ( v.getState ().getName () );
     list.addAll ( this.x_positions.values () );
     Collections.sort ( list );
     int last = list.get ( list.size () - 1 ).intValue ();
@@ -48,37 +47,10 @@ public class XGrid
     {
       n = new Integer ( last + 1 );
     }
-    this.x_positions.put ( v.getState ().getName (), n );
-    controllStates ();
-  }
-
-
-  /**
-   * Controlles the grid for holes.
-   */
-  public void controllStates ()
-  {
-    for ( String s : this.x_positions.keySet () )
-    {
-      boolean foundNear = false;
-      TreeSet < String > set = new TreeSet < String > ();
-      set.addAll ( this.x_positions.keySet () );
-      set.remove ( s );
-      for ( String m : set )
-      {
-        int sInt = this.x_positions.get ( s ).intValue ();
-        int mInt = this.x_positions.get ( m ).intValue ();
-        if ( sInt - mInt < 2 )
-        {
-          foundNear = true;
-        }
-      }
-      if ( !foundNear )
-      {
-        this.x_positions.put ( s, new Integer ( this.x_positions.get ( s )
-            .intValue () - 1 ) );
-      }
+    if(!list.contains ( was )) {
+      n = was;
     }
+    this.x_positions.put ( v.getState ().getName (), n );
   }
 
 

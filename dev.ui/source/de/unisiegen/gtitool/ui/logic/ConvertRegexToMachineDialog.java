@@ -115,6 +115,82 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * A Representation of a BlackBox with {@link String}s for the states
+   */
+  private class BlackBox
+  {
+
+    /**
+     * The content
+     */
+    private RegexNode content;
+
+
+    /**
+     * The end state
+     */
+    private String end;
+
+
+    /**
+     * The start state
+     */
+    private String start;
+
+
+    /**
+     * Creates a new BlackBox
+     * 
+     * @param start The start state
+     * @param end The end state
+     * @param content The content
+     */
+    public BlackBox ( String start, String end, RegexNode content )
+    {
+      this.start = start;
+      this.end = end;
+      this.content = content;
+    }
+
+
+    /**
+     * Returns the content.
+     * 
+     * @return The content.
+     * @see #content
+     */
+    public RegexNode getContent ()
+    {
+      return this.content;
+    }
+
+
+    /**
+     * Returns the end.
+     * 
+     * @return The end.
+     * @see #end
+     */
+    public String getEnd ()
+    {
+      return this.end;
+    }
+
+
+    /**
+     * Returns the start.
+     * 
+     * @return The start.
+     * @see #start
+     */
+    public String getStart ()
+    {
+      return this.start;
+    }
+  }
+
+
+  /**
    * The {@link Position}.
    * 
    * @author Christian Fehler
@@ -180,82 +256,6 @@ public class ConvertRegexToMachineDialog implements
     public final String toString ()
     {
       return "x: " + this.x + ", y: " + this.y; //$NON-NLS-1$//$NON-NLS-2$
-    }
-  }
-
-
-  /**
-   * TODO
-   */
-  private class BlackBox
-  {
-
-    /**
-     * TODO
-     */
-    private String start;
-
-
-    /**
-     * TODO
-     */
-    private String end;
-
-
-    /**
-     * TODO
-     */
-    private RegexNode content;
-
-
-    /**
-     * TODO
-     * 
-     * @param start
-     * @param end
-     * @param content
-     */
-    public BlackBox ( String start, String end, RegexNode content )
-    {
-      this.start = start;
-      this.end = end;
-      this.content = content;
-    }
-
-
-    /**
-     * Returns the start.
-     * 
-     * @return The start.
-     * @see #start
-     */
-    public String getStart ()
-    {
-      return this.start;
-    }
-
-
-    /**
-     * Returns the content.
-     * 
-     * @return The content.
-     * @see #content
-     */
-    public RegexNode getContent ()
-    {
-      return this.content;
-    }
-
-
-    /**
-     * Returns the end.
-     * 
-     * @return The end.
-     * @see #end
-     */
-    public String getEnd ()
-    {
-      return this.end;
     }
   }
 
@@ -360,6 +360,12 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
+     * The added BlackBoxes
+     */
+    private ArrayList < DefaultBlackboxView > addedBlackboxes;
+
+
+    /**
      * The added states
      */
     private ArrayList < String > addedStates;
@@ -375,15 +381,6 @@ public class ConvertRegexToMachineDialog implements
      * The added {@link DefaultTransitionView}s
      */
     private ArrayList < DefaultTransitionView > addedTransitions;
-
-
-    private ArrayList < BlackBox > removedBlackboxes;
-
-
-    private ArrayList < DefaultBlackboxView > addedBlackboxes;
-
-
-    private HashMap < String, Position > positions;
 
 
     /**
@@ -405,9 +402,21 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
+     * The positions of the states
+     */
+    private HashMap < String, Position > positions;
+
+
+    /**
      * The {@link RedoUndoItem} for the concatenation
      */
     private RedoUndoItem redoUndoItem;
+
+
+    /**
+     * The removed black boxes
+     */
+    private ArrayList < BlackBox > removedBlackboxes;
 
 
     /**
@@ -422,7 +431,10 @@ public class ConvertRegexToMachineDialog implements
     private ArrayList < DefaultStateView > setStartFalse;
 
 
-    private XGrid xGrid;
+    /**
+     * The {@link XGrid}
+     */
+    private XGrid stepXGrid;
 
 
     /**
@@ -440,6 +452,10 @@ public class ConvertRegexToMachineDialog implements
      * @param markedPositionState The last marked position state
      * @param controlledSymbol The last controlled Symbol
      * @param addedSymbolsToTransition The added Symbols to Transitions
+     * @param removedBlackBoxes
+     * @param addedBlackBoxes
+     * @param positions
+     * @param xGrid
      */
     public StepItem (
         Step activeStep,
@@ -477,7 +493,7 @@ public class ConvertRegexToMachineDialog implements
       this.addedBlackboxes = addedBlackBoxes;
       this.removedBlackboxes = removedBlackBoxes;
       this.positions = positions;
-      this.xGrid = xGrid;
+      this.stepXGrid = xGrid;
     }
 
 
@@ -518,18 +534,6 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
-     * Returns the addedStates.
-     * 
-     * @return The addedStates.
-     * @see #addedStates
-     */
-    public ArrayList < String > getAddedStates ()
-    {
-      return this.addedStates;
-    }
-
-
-    /**
      * Returns the addedBlackboxes.
      * 
      * @return The addedBlackboxes.
@@ -542,38 +546,14 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
-     * Returns the xGrid.
+     * Returns the addedStates.
      * 
-     * @return The xGrid.
-     * @see #xGrid
+     * @return The addedStates.
+     * @see #addedStates
      */
-    public XGrid getXGrid ()
+    public ArrayList < String > getAddedStates ()
     {
-      return this.xGrid;
-    }
-
-
-    /**
-     * Returns the removedBlackboxes.
-     * 
-     * @return The removedBlackboxes.
-     * @see #removedBlackboxes
-     */
-    public ArrayList < BlackBox > getRemovedBlackboxes ()
-    {
-      return this.removedBlackboxes;
-    }
-
-
-    /**
-     * Returns the positions.
-     * 
-     * @return The positions.
-     * @see #positions
-     */
-    public HashMap < String, Position > getPositions ()
-    {
-      return this.positions;
+      return this.addedStates;
     }
 
 
@@ -626,6 +606,18 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
+     * Returns the positions.
+     * 
+     * @return The positions.
+     * @see #positions
+     */
+    public HashMap < String, Position > getPositions ()
+    {
+      return this.positions;
+    }
+
+
+    /**
      * Returns the redoUndoItem.
      * 
      * @return The redoUndoItem.
@@ -634,6 +626,18 @@ public class ConvertRegexToMachineDialog implements
     public RedoUndoItem getRedoUndoItem ()
     {
       return this.redoUndoItem;
+    }
+
+
+    /**
+     * Returns the removedBlackboxes.
+     * 
+     * @return The removedBlackboxes.
+     * @see #removedBlackboxes
+     */
+    public ArrayList < BlackBox > getRemovedBlackboxes ()
+    {
+      return this.removedBlackboxes;
     }
 
 
@@ -662,6 +666,18 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
+     * Returns the stepXGrid.
+     * 
+     * @return The stepXGrid.
+     * @see #stepXGrid
+     */
+    public XGrid getXGrid ()
+    {
+      return this.stepXGrid;
+    }
+
+
+    /**
      * Returns the errorCreated.
      * 
      * @return The errorCreated.
@@ -679,6 +695,36 @@ public class ConvertRegexToMachineDialog implements
    */
   private static final Logger logger = Logger
       .getLogger ( ConvertRegexToMachineDialog.class );
+
+
+  /**
+   * The start x coordinate
+   */
+  private static double START_X = 50;
+
+
+  /**
+   * The start y coordinate
+   */
+  private static double START_Y = 100;
+
+
+  /**
+   * The x space between two states
+   */
+  private static double X_SPACE = 150;
+
+
+  /**
+   * The y space between two states
+   */
+  private static double Y_SPACE = 50;
+
+
+  /**
+   * /**{@link HashMap} for moving states that are above the black box
+   */
+  private HashMap < RegexNode, HashSet < DefaultStateView > > above = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
 
 
   /**
@@ -728,6 +774,12 @@ public class ConvertRegexToMachineDialog implements
    * Flag indicates if the empty state is already created
    */
   private boolean emptyStateCreated = false;
+
+
+  /**
+   * {@link HashMap} for moving states that are after the black box
+   */
+  private HashMap < RegexNode, HashSet < DefaultStateView > > endings = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
 
 
   /**
@@ -810,6 +862,13 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * /**{@link HashMap} for moving states that are at the same y coordinate the
+   * black box
+   */
+  private HashMap < RegexNode, HashSet < DefaultStateView > > sameY = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
+
+
+  /**
    * The state view list containing the start and final {@link DefaultStateView}
    * for a {@link RegexNode}
    */
@@ -829,6 +888,18 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * /**{@link HashMap} for moving states that are under the black box
+   */
+  private HashMap < RegexNode, HashSet < DefaultStateView > > under = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
+
+
+  /**
+   * The {@link XGrid}
+   */
+  private XGrid xGrid = new XGrid ();
+
+
+  /**
    * Creates new from {@link ConvertRegexToMachineDialog}
    * 
    * @param parent The parent {@link JFrame}
@@ -838,77 +909,6 @@ public class ConvertRegexToMachineDialog implements
   {
     this.parent = parent;
     this.panel = panel;
-  }
-
-
-  /**
-   * Updates the RegexInfo panel
-   */
-  protected void updateRegexInfo ()
-  {
-    if ( this.jGTIGraphOriginal.getSelectionCell () instanceof DefaultNodeView )
-    {
-      RegexNode node = ( ( DefaultNodeView ) this.jGTIGraphOriginal
-          .getSelectionCell () ).getNode ();
-      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( "" //$NON-NLS-1$
-          + node.nullable () );
-      String firstpos = "{"; //$NON-NLS-1$
-      for ( LeafNode n : node.firstPos () )
-      {
-        firstpos += n.getPosition ();
-        if ( node.firstPos ().indexOf ( n ) != node.firstPos ().size () - 1 )
-        {
-          firstpos += "; "; //$NON-NLS-1$
-        }
-      }
-      firstpos += "}"; //$NON-NLS-1$
-      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setText ( firstpos );
-      String lastpos = "{"; //$NON-NLS-1$
-      for ( LeafNode n : node.lastPos () )
-      {
-        lastpos += n.getPosition ();
-        if ( node.lastPos ().indexOf ( n ) != node.lastPos ().size () - 1 )
-        {
-          lastpos += "; "; //$NON-NLS-1$
-        }
-      }
-      lastpos += "}"; //$NON-NLS-1$
-      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( lastpos );
-      String followpos = "{"; //$NON-NLS-1$
-      if ( node instanceof LeafNode )
-      {
-        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( true );
-        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( true );
-        LeafNode leaf = ( LeafNode ) node;
-        boolean first = true;
-        for ( Integer n : this.modelOriginal.getRegex ().followPos (
-            leaf.getPosition () ) )
-        {
-          if ( !first )
-          {
-            followpos += "; "; //$NON-NLS-1$
-          }
-          followpos += n;
-          first = false;
-        }
-        followpos += "}"; //$NON-NLS-1$
-        this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( followpos );
-      }
-      else
-      {
-        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
-        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
-      }
-    }
-    else
-    {
-      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( "" ); //$NON-NLS-1$
-      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setText ( "" ); //$NON-NLS-1$
-      this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( "" ); //$NON-NLS-1$
-      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( "" ); //$NON-NLS-1$
-      this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
-      this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
-    }
   }
 
 
@@ -1073,6 +1073,18 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * Returns the entityType.
+   * 
+   * @return The entityType.
+   * @see #entityType
+   */
+  public EntityType getEntityType ()
+  {
+    return this.entityType;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see LogicClass#getGUI()
@@ -1219,6 +1231,7 @@ public class ConvertRegexToMachineDialog implements
    */
   public void handleCancel ()
   {
+    this.activeNode.setActive ( false );
     this.regexNode.unmarkAll ();
     this.gui.dispose ();
   }
@@ -1284,6 +1297,7 @@ public class ConvertRegexToMachineDialog implements
     this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
         false );
 
+    this.activeNode.setActive ( false );
     this.regexNode.unmarkAll ();
     this.gui.dispose ();
   }
@@ -1323,77 +1337,11 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * Returns the entityType.
-   * 
-   * @return The entityType.
-   * @see #entityType
-   */
-  public EntityType getEntityType ()
-  {
-    return this.entityType;
-  }
-
-
-  /**
-   * TODO
-   */
-  private static double X_SPACE = 150;
-
-
-  /**
-   * TODO
-   */
-  private static double Y_SPACE = 50;
-
-
-  /**
-   * TODO
-   */
-  private static double START_X = 50;
-
-
-  /**
-   * TODO
-   */
-  private static double START_Y = 100;
-
-
-  /**
-   * TODO
-   */
-  private HashMap < RegexNode, HashSet < DefaultStateView > > endings = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
-
-
-  /**
-   * TODO
-   */
-  private HashMap < RegexNode, HashSet < DefaultStateView > > above = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
-
-
-  /**
-   * TODO
-   */
-  private HashMap < RegexNode, HashSet < DefaultStateView > > under = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
-
-
-  /**
-   * TODO
-   */
-  private HashMap < RegexNode, HashSet < DefaultStateView > > sameY = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
-
-
-  /**
-   * TODO
-   */
-  private XGrid xGrid = new XGrid ();
-
-
-  /**
    * Performs the next step.
    * 
    * @param manual Indicates if step was made manually
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings ( "unchecked" )
   private final void performNextStep ( boolean manual )
   {
     if ( this.activeNode != null )
@@ -1947,7 +1895,8 @@ public class ConvertRegexToMachineDialog implements
           }
 
           this.above.put ( con.getChildren ().get ( 0 ), childsAbove );
-          this.above.put ( con.getChildren ().get ( 1 ), ( HashSet < DefaultStateView > ) childsAbove.clone () );
+          this.above.put ( con.getChildren ().get ( 1 ),
+              ( HashSet < DefaultStateView > ) childsAbove.clone () );
 
           HashSet < DefaultStateView > childsUnder = new HashSet < DefaultStateView > ();
 
@@ -1957,7 +1906,8 @@ public class ConvertRegexToMachineDialog implements
           }
 
           this.under.put ( con.getChildren ().get ( 0 ), childsUnder );
-          this.under.put ( con.getChildren ().get ( 1 ), ( HashSet < DefaultStateView > ) childsUnder.clone () );
+          this.under.put ( con.getChildren ().get ( 1 ),
+              ( HashSet < DefaultStateView > ) childsUnder.clone () );
 
           HashSet < DefaultStateView > childOneSameY = new HashSet < DefaultStateView > ();
           if ( this.sameY.containsKey ( con ) )
@@ -1996,7 +1946,8 @@ public class ConvertRegexToMachineDialog implements
             conEndings.addAll ( this.endings.get ( con ) );
           }
           this.endings.put ( con.getChildren ().get ( 0 ), conEndings );
-          this.endings.put ( con.getChildren ().get ( 1 ), ( HashSet < DefaultStateView > ) conEndings.clone () );
+          this.endings.put ( con.getChildren ().get ( 1 ),
+              ( HashSet < DefaultStateView > ) conEndings.clone () );
 
           DefaultBlackboxView b1 = new DefaultBlackboxView ( start, middle, con
               .getChildren ().get ( 0 ) );
@@ -2104,7 +2055,7 @@ public class ConvertRegexToMachineDialog implements
               }
             }
           }
-          
+
           HashSet < DefaultStateView > kEndings = new HashSet < DefaultStateView > ();
           kEndings.add ( end );
           if ( this.endings.containsKey ( k ) )
@@ -2112,7 +2063,6 @@ public class ConvertRegexToMachineDialog implements
             kEndings.addAll ( this.endings.get ( k ) );
           }
           this.endings.put ( k.getChildren ().get ( 0 ), kEndings );
-          
 
           HashSet < DefaultStateView > childsAbove = new HashSet < DefaultStateView > ();
 
@@ -2122,7 +2072,7 @@ public class ConvertRegexToMachineDialog implements
           }
 
           this.above.put ( k.getChildren ().get ( 0 ), childsAbove );
-          
+
           HashSet < DefaultStateView > childsUnder = new HashSet < DefaultStateView > ();
 
           if ( this.under.containsKey ( k ) )
@@ -2131,7 +2081,7 @@ public class ConvertRegexToMachineDialog implements
           }
 
           this.under.put ( k.getChildren ().get ( 0 ), childsUnder );
-          
+
           HashSet < DefaultStateView > childOneSameY = new HashSet < DefaultStateView > ();
           if ( this.sameY.containsKey ( k ) )
           {
@@ -2141,7 +2091,6 @@ public class ConvertRegexToMachineDialog implements
           childOneSameY.add ( end );
           this.sameY.put ( k.getChildren ().get ( 0 ), childOneSameY );
 
-          
           startView.moveRelative ( 50, 0 );
           finView.moveRelative ( 50 + 2 * JGTIBlackboxGraph.X_SPACE
               + startView.getWidth () + regexWidth, 0 );
@@ -2679,5 +2628,76 @@ public class ConvertRegexToMachineDialog implements
         DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
     this.modelConverted.getGraphModel ().cellsChanged (
         DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
+  }
+
+
+  /**
+   * Updates the RegexInfo panel
+   */
+  protected void updateRegexInfo ()
+  {
+    if ( this.jGTIGraphOriginal.getSelectionCell () instanceof DefaultNodeView )
+    {
+      RegexNode node = ( ( DefaultNodeView ) this.jGTIGraphOriginal
+          .getSelectionCell () ).getNode ();
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( "" //$NON-NLS-1$
+          + node.nullable () );
+      String firstpos = "{"; //$NON-NLS-1$
+      for ( LeafNode n : node.firstPos () )
+      {
+        firstpos += n.getPosition ();
+        if ( node.firstPos ().indexOf ( n ) != node.firstPos ().size () - 1 )
+        {
+          firstpos += "; "; //$NON-NLS-1$
+        }
+      }
+      firstpos += "}"; //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setText ( firstpos );
+      String lastpos = "{"; //$NON-NLS-1$
+      for ( LeafNode n : node.lastPos () )
+      {
+        lastpos += n.getPosition ();
+        if ( node.lastPos ().indexOf ( n ) != node.lastPos ().size () - 1 )
+        {
+          lastpos += "; "; //$NON-NLS-1$
+        }
+      }
+      lastpos += "}"; //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( lastpos );
+      String followpos = "{"; //$NON-NLS-1$
+      if ( node instanceof LeafNode )
+      {
+        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( true );
+        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( true );
+        LeafNode leaf = ( LeafNode ) node;
+        boolean first = true;
+        for ( Integer n : this.modelOriginal.getRegex ().followPos (
+            leaf.getPosition () ) )
+        {
+          if ( !first )
+          {
+            followpos += "; "; //$NON-NLS-1$
+          }
+          followpos += n;
+          first = false;
+        }
+        followpos += "}"; //$NON-NLS-1$
+        this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( followpos );
+      }
+      else
+      {
+        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
+        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
+      }
+    }
+    else
+    {
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
+      this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
+    }
   }
 }

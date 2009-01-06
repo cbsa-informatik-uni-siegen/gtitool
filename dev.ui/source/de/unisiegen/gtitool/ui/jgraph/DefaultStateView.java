@@ -66,12 +66,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * The overwritten {@link Color} of this {@link StateView}.
-   */
-  private Color overwrittenColor;
-
-
-  /**
    * Flag signals that nex state move should be ignored.
    */
   private boolean ignoreStateMove = false;
@@ -93,6 +87,18 @@ public final class DefaultStateView extends DefaultGraphCell implements
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
+
+
+  /**
+   * The {@link DefaultMachineModel}
+   */
+  private DefaultMachineModel machineModel;
+
+
+  /**
+   * The overwritten {@link Color} of this {@link StateView}.
+   */
+  private Color overwrittenColor;
 
 
   /**
@@ -123,12 +129,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
    * The actual y value.
    */
   private double yValue = POSITION_NOT_DEFINED;
-
-
-  /**
-   * The {@link DefaultMachineModel}
-   */
-  private DefaultMachineModel machineModel;
 
 
   /**
@@ -229,6 +229,17 @@ public final class DefaultStateView extends DefaultGraphCell implements
       StatePositionChangedListener listener )
   {
     this.listenerList.add ( StatePositionChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo ( DefaultStateView o )
+  {
+    return ( int ) ( getPositionX () - o.getPositionX () );
   }
 
 
@@ -511,18 +522,5 @@ public final class DefaultStateView extends DefaultGraphCell implements
   public final void setOverwrittenColor ( Color overwrittenColor )
   {
     this.overwrittenColor = overwrittenColor;
-  }
-
-
-  /**
-   * TODO
-   *
-   * @param o
-   * @return
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
-  public int compareTo ( DefaultStateView o )
-  {
-    return ( int ) ( getPositionX () - o.getPositionX () );
   }
 }

@@ -4,24 +4,25 @@ package de.unisiegen.gtitool.ui.utils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 
 
 /**
- * TODO
+ * A Grid for the x coordinate of the States in the Convert Regex -> ENFA
  */
 public class XGrid
 {
 
   /**
-   * TODO
+   * The x positions of the states
    */
   private HashMap < String, Integer > x_positions = new HashMap < String, Integer > ();
 
 
   /**
-   * TODO
+   * Creates new XGrid
    */
   public XGrid ()
   {
@@ -30,16 +31,16 @@ public class XGrid
 
 
   /**
-   * TODO
+   * Moves a state, so that it does not go too far away
    * 
-   * @param v
-   * @param i
+   * @param v The state
+   * @param i The new position
    */
   public void moveState ( DefaultStateView v, Integer i )
   {
     Integer n = i;
     ArrayList < Integer > list = new ArrayList < Integer > ();
-    this.x_positions.remove ( v.getState ().getName() );
+    this.x_positions.remove ( v.getState ().getName () );
     list.addAll ( this.x_positions.values () );
     Collections.sort ( list );
     int last = list.get ( list.size () - 1 ).intValue ();
@@ -48,7 +49,36 @@ public class XGrid
       n = new Integer ( last + 1 );
     }
     this.x_positions.put ( v.getState ().getName (), n );
+    controllStates ();
+  }
 
+
+  /**
+   * Controlles the grid for holes.
+   */
+  public void controllStates ()
+  {
+    for ( String s : this.x_positions.keySet () )
+    {
+      boolean foundNear = false;
+      TreeSet < String > set = new TreeSet < String > ();
+      set.addAll ( this.x_positions.keySet () );
+      set.remove ( s );
+      for ( String m : set )
+      {
+        int sInt = this.x_positions.get ( s ).intValue ();
+        int mInt = this.x_positions.get ( m ).intValue ();
+        if ( sInt - mInt < 2 )
+        {
+          foundNear = true;
+        }
+      }
+      if ( !foundNear )
+      {
+        this.x_positions.put ( s, new Integer ( this.x_positions.get ( s )
+            .intValue () - 1 ) );
+      }
+    }
   }
 
 

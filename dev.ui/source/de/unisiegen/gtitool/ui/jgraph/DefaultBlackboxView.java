@@ -59,6 +59,24 @@ public class DefaultBlackboxView
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals ( Object obj )
+  {
+    if ( obj instanceof DefaultBlackboxView )
+    {
+      DefaultBlackboxView other = ( DefaultBlackboxView ) obj;
+      return this.startState.equals ( other.startState )
+          && this.finalState.equals ( other.finalState );
+    }
+    return false;
+  }
+
+
+  /**
    * Returns the content.
    * 
    * @return The content.
@@ -95,29 +113,8 @@ public class DefaultBlackboxView
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param obj
-   * @return
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public boolean equals ( Object obj )
-  {
-    if ( obj instanceof DefaultBlackboxView )
-    {
-      DefaultBlackboxView other = ( DefaultBlackboxView ) obj;
-      return this.startState.equals ( other.startState )
-          && this.finalState.equals ( other.finalState );
-    }
-    return false;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
    * @see java.lang.Object#hashCode()
    */
   @Override

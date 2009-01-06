@@ -9,6 +9,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.regex.CharacterClassNode;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
@@ -292,7 +293,7 @@ public class DefaultRegex implements Regex
           return this.alphabet.equals ( dr.alphabet );
         }
       }
-      else if (this.regexString.equals ( dr.getRegexString () )
+      else if ( this.regexString.equals ( dr.getRegexString () )
           && this.regexNode.equals ( dr.getRegexNode () ) )
       {
         return this.alphabet.equals ( dr.alphabet );
@@ -413,6 +414,10 @@ public class DefaultRegex implements Regex
       if ( l instanceof TokenNode )
       {
         set.add ( new DefaultSymbol ( ( ( TokenNode ) l ).getName () ) );
+        }
+      else if (l instanceof CharacterClassNode) {
+        CharacterClassNode c = ( CharacterClassNode ) l;
+        set.addAll ( c.getCharacters () );
       }
     }
     return set;

@@ -25,7 +25,7 @@ public class DefaultRegexAlphabet extends DefaultAlphabet
    */
   public static final Symbol [] RESERVED_SYMBOLS =
   {
-      new DefaultSymbol ( "!" ), new DefaultSymbol ( "?" ), new DefaultSymbol ( "*" ), new DefaultSymbol ( "+" ), new DefaultSymbol ( "·" ), new DefaultSymbol ( "#" ) }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+      new DefaultSymbol ( "!" ), new DefaultSymbol ( "?" ), new DefaultSymbol ( "*" ), new DefaultSymbol ( "+" ), new DefaultSymbol ( "·" ), new DefaultSymbol ( "#" ), new DefaultSymbol ( "(" ), new DefaultSymbol ( ")" ) }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 
 
   /**

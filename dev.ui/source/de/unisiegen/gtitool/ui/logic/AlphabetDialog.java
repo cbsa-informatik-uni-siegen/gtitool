@@ -157,7 +157,7 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
 
     this.gui = new AlphabetDialogForm ( this, this.parent );
     this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
-        .setText ( this.regex.getAlphabet () );
+        .setText ( this.regex.getAlphabet ().toClassPrettyString () );
     this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
         .setNotRemoveableSymbols ( this.regex
             .getNotRemoveableSymbolsFromAlphabet () );

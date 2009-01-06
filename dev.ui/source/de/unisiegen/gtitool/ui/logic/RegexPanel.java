@@ -773,15 +773,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
   }
 
+
   /**
    * Validates the Panel
-   *
+   * 
    * @throws RegexValidationException When validation goes wrong
    */
-  public void validate() throws RegexValidationException {
-    ArrayList < RegexException > list = new ArrayList < RegexException >();
-    if(this.gui.styledRegexParserPanel.parse () == null) {
-      list.add ( new RegexParseException() );
+  public void validate () throws RegexValidationException
+  {
+    ArrayList < RegexException > list = new ArrayList < RegexException > ();
+    if ( this.gui.styledRegexParserPanel.parse () == null )
+    {
+      list.add ( new RegexParseException () );
     }
     try
     {
@@ -791,8 +794,12 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     {
       list.addAll ( exc.getRegexException () );
     }
-    throw new RegexValidationException(list);
+    if ( !list.isEmpty () )
+    {
+      throw new RegexValidationException ( list );
+    }
   }
+
 
   /**
    * Initializes the Alphabet

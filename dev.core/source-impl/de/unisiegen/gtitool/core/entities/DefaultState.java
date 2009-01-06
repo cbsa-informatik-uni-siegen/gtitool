@@ -1018,7 +1018,7 @@ public class DefaultState implements State
     {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
     }
-    if (!(this instanceof DefaultBlackBoxState) && name.equals ( "" ) ) //$NON-NLS-1$
+    if (name.equals ( "" ) ) //$NON-NLS-1$
     {
       throw new StateEmptyNameException ();
     }
@@ -1107,7 +1107,7 @@ public class DefaultState implements State
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ()
+  public PrettyString toPrettyString ()
   {
     if ( ( this.cachedPrettyString == null )
         || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )

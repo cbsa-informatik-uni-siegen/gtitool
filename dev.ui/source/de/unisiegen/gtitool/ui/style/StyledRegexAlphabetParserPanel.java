@@ -59,7 +59,7 @@ public class StyledRegexAlphabetParserPanel extends
         {
           exceptionList.add ( new ParserException ( current.getParserOffset ()
               .getStart (), current.getParserOffset ().getEnd (), Messages
-              .getPrettyString ( "AlphabetDialog.SymbolUsed", //$NON-NLS-1$
+              .getPrettyString ( "AlphabetDialog.SymbolUsedRegex", //$NON-NLS-1$
                   current.toPrettyString () ).toHTMLString () ) );
         }
       }

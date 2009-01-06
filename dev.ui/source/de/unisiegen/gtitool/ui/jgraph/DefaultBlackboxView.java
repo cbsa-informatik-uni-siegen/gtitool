@@ -44,6 +44,14 @@ public class DefaultBlackboxView
   public DefaultBlackboxView ( DefaultStateView startState,
       DefaultStateView finalState, RegexNode content )
   {
+    if ( startState == null )
+    {
+      throw new IllegalArgumentException ( "startState is null" ); //$NON-NLS-1$
+    }
+    if ( finalState == null )
+    {
+      throw new IllegalArgumentException ( "finalState is null" ); //$NON-NLS-1$
+    }
     this.startState = startState;
     this.finalState = finalState;
     this.content = content;
@@ -83,6 +91,40 @@ public class DefaultBlackboxView
   public DefaultStateView getStartState ()
   {
     return this.startState;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param obj
+   * @return
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals ( Object obj )
+  {
+    if ( obj instanceof DefaultBlackboxView )
+    {
+      DefaultBlackboxView other = ( DefaultBlackboxView ) obj;
+      return this.startState.equals ( other.startState )
+          && this.finalState.equals ( other.finalState );
+    }
+    return false;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode ()
+  {
+    return this.startState.hashCode () + this.finalState.hashCode ()
+        + this.content.hashCode ();
   }
 
 }

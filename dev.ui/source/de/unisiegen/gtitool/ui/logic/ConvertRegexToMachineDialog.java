@@ -1231,7 +1231,10 @@ public class ConvertRegexToMachineDialog implements
    */
   public void handleCancel ()
   {
-    this.activeNode.setActive ( false );
+    if ( this.activeNode != null )
+    {
+      this.activeNode.setActive ( false );
+    }
     this.regexNode.unmarkAll ();
     this.gui.dispose ();
   }
@@ -1297,7 +1300,10 @@ public class ConvertRegexToMachineDialog implements
     this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
         false );
 
-    this.activeNode.setActive ( false );
+    if ( this.activeNode != null )
+    {
+      this.activeNode.setActive ( false );
+    }
     this.regexNode.unmarkAll ();
     this.gui.dispose ();
   }

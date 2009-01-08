@@ -1369,6 +1369,7 @@ public class ConvertRegexToMachineDialog implements
     DefaultPositionState markedPositionState = null;
     Symbol controlledSymbol = null;
     RegexNode node = null;
+    RegexNode lastActive = this.activeNode;
     ArrayList < ObjectPair < DefaultTransitionView, Symbol > > addedSymbolsToTransition = new ArrayList < ObjectPair < DefaultTransitionView, Symbol > > ();
     ArrayList < DefaultBlackboxView > addedBlackBoxes = new ArrayList < DefaultBlackboxView > ();
     ArrayList < BlackBox > removedBlackBoxes = new ArrayList < BlackBox > ();
@@ -2434,7 +2435,7 @@ public class ConvertRegexToMachineDialog implements
     addOutlineComment ( pretty );
     this.stepItemList.add ( new StepItem ( this.actualStep, addedStates,
         redoUndoItem, addedTransitions, setStartFalse, setFinalFalse,
-        this.count, node, errorCreated, markedPositionState, controlledSymbol,
+        this.count, lastActive, errorCreated, markedPositionState, controlledSymbol,
         addedSymbolsToTransition, removedBlackBoxes, addedBlackBoxes,
         positions, xGridClone ) );
     this.count = c;
@@ -2451,6 +2452,10 @@ public class ConvertRegexToMachineDialog implements
     this.endReached = false;
     StepItem stepItem = this.stepItemList
         .remove ( this.stepItemList.size () - 1 );
+    
+    if(this.activeNode != null) {
+      this.activeNode.setActive ( false );
+    }
 
     for ( String name : stepItem.getAddedStates () )
     {
@@ -2505,12 +2510,16 @@ public class ConvertRegexToMachineDialog implements
 
     this.actualStep = stepItem.getActiveStep ();
 
+    if(this.activeNode != null) {
+      this.activeNode.unmark ();
+      this.activeNode.setActive ( false );
+    }
     RegexNode actNode = stepItem.getActNode ();
     if ( actNode != null )
     {
-      actNode.unmark ();
-      actNode.setActive ( false );
+      actNode.setActive ( true );
     }
+    this.activeNode = actNode;
     for ( DefaultStateView v : this.modelConverted.getStateViewList () )
     {
       if ( stepItem.getPositions ().containsKey ( v.getState ().getName () ) )

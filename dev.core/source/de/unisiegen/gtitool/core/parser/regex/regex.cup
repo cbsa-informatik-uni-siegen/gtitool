@@ -108,7 +108,7 @@ simple_regex					::= simple_regex:reg STAR:star
 									:}
 								|	SLBRACE:slb SYMBOL:i1 MINUS:m SYMBOL:i2 SRBRACE:srb
 									{:
-										if(i1.compareTo(i2) < 1){
+										if(i1.compareTo(i2) < 0){
 											RESULT = new CharacterClassNode(i1.charAt(0), i2.charAt(0));
 									   		RESULT.setParserOffset(new ParserOffset(slbleft,srbright));
 										} else {
@@ -116,9 +116,12 @@ simple_regex					::= simple_regex:reg STAR:star
 												i1.charAt(0), i2.charAt(0), slbleft, srbright);
 										} 
 									:}
-								|	SLBRACE:slb char_list:l SRBRACE:srb
+								|	SLBRACE:slb char_list:l SYMBOL:i SRBRACE:srb
 									{:
-										RESULT = new CharacterClassNode(l);
+										char[] chara = new char[l.length + 1];
+									   	System.arraycopy(l, 0, chara, 0, l.length);
+									   	chara[l.length] = i.charAt(0);
+										RESULT = new CharacterClassNode(chara);
 									   	RESULT.setParserOffset(new ParserOffset(slbleft,srbright));
 									:}
 								|	SYMBOL:i

@@ -336,7 +336,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
         if ( i == 0 )
         {
           // Left Node
-          x -= ( this.X_SPACE / 2 );
+          x -= ( this.X_SPACE / 2);
           if ( childNode instanceof ConcatenationNode )
           {
             ConcatenationNode con = ( ConcatenationNode ) childNode;
@@ -442,8 +442,10 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     if ( node instanceof LeafNode )
     {
       maxY = this.metrics.getHeight () * 2 + 4;
-      maxX = Math.max ( 25, ( this.metrics.stringWidth ( String
+      maxX = Math.max ( 25, Math.max ( this.metrics.stringWidth ( node
+          .getNodeString ().toString () ), this.metrics.stringWidth ( String
           .valueOf ( ( ( LeafNode ) node ).getPosition () ) ) ) );
+      //System.err.println ("Node: " + node.getNodeString () + " maxX: " + maxX);
     }
     // Set bounds
     GraphConstants.setBounds ( nodeView.getAttributes (),

@@ -183,10 +183,11 @@ public class NodeView extends VertexView
           FontMetrics metrics = g.getFontMetrics ();
           String position = String.valueOf ( ( ( LeafNode ) node )
               .getPosition () );
+          g.drawString ( node.getNodeString ().toString (), dx, metrics.getHeight ());
+          
           dx = ( d.width / 2 )
           - ( metrics.stringWidth ( position ) / 2 );
 
-          g.drawString ( node.getNodeString ().toString (), dx, metrics.getHeight ());
           g.drawString ( position, dx, 2* metrics.getHeight () );
         } else {
           g.drawString ( node.getNodeString ().toString (), dx, dy );

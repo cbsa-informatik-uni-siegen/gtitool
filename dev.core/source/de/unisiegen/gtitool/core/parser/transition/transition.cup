@@ -1,0 +1,248 @@
+/**
+ * The cup file of the transition parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id: transition.cup 1087 2008-07-03 22:10:41Z fehler $
+ */
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.exceptions.ErrorHandling;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String				SYMBOL;
+terminal					COMMA;
+terminal					LCBRACE;
+terminal					RCBRACE;
+terminal					EPSILON;
+terminal					ARROWUP;
+terminal					ARROWDOWN;
+terminal					LSBRACE;
+terminal					RSBRACE;
+terminal					MINUS;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal Transition		transition;
+non terminal Symbol			symbol;
+non terminal Symbol[]		symbol_list;
+non terminal Symbol[]		symbol_list_comma;
+non terminal Symbol[]		class;
+non terminal Word			word;
+non terminal Word			word_read;
+non terminal Word			word_write;
+
+
+/*********
+ * Error *
+ *********/
+
+non terminal 				epsilon;
+non terminal				symbol_list_error;
+non terminal				symbol_list_comma_error;
+
+
+/**************
+ * Transition *
+ **************/
+
+transition						::= EPSILON:e
+									{:
+									   RESULT = new DefaultTransition();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								|	EPSILON:e word_read:r word_write:w
+									{:
+									   RESULT = new DefaultTransition(r, w);
+									   RESULT.setParserOffset(new ParserOffset(eleft,wright));
+									:}
+								|	LCBRACE:l symbol_list_comma:slc RCBRACE:r
+									{:
+									   try
+									   {
+									     RESULT = new DefaultTransition(new DefaultWord(), new DefaultWord(), slc);
+									   }
+									   catch (TransitionException ecx)
+									   {
+									     ParserMultiException.throwTransitionException(ecx.getSymbol());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(lleft,rright));
+									:}
+								|	LCBRACE:l symbol_list_comma:slc RCBRACE word_read:r word_write:w
+									{:
+									   try
+									   {
+									     RESULT = new DefaultTransition(r, w, slc);
+									   }
+									   catch (TransitionException ecx)
+									   {
+									     ParserMultiException.throwTransitionException(ecx.getSymbol());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(lleft,wright));
+									:}
+								|	symbol_list_comma:slc
+									{:
+									   try
+									   {
+									     RESULT = new DefaultTransition(new DefaultWord(), new DefaultWord(), slc);
+									   }
+									   catch (TransitionException ecx)
+									   {
+									     ParserMultiException.throwTransitionException(ecx.getSymbol());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(slcleft,slcright));
+									:}
+								|	symbol_list_comma:slc word_read:r word_write:w
+									{:
+									   try
+									   {
+									     RESULT = new DefaultTransition(r, w, slc);
+									   }
+									   catch (TransitionException ecx)
+									   {
+									     ParserMultiException.throwTransitionException(ecx.getSymbol());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(slcleft,wright));
+									:}
+								;
+
+word_read						::= word:w ARROWUP
+									{:
+									   RESULT = w;
+									:}
+								|	EPSILON:e ARROWUP
+									{:
+									   RESULT = new DefaultWord();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								;
+
+word_write						::= word:w ARROWDOWN
+									{:
+									   RESULT = w;
+									:}
+								|	EPSILON:e ARROWDOWN
+									{:
+									   RESULT = new DefaultWord();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								;
+
+symbol							::= SYMBOL:s
+									{:
+									   RESULT = new DefaultSymbol(s);
+									   RESULT.setParserOffset(new ParserOffset(sleft,sright));
+									:}
+								|	EPSILON:e
+									{:
+									   RESULT = new DefaultSymbol();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								;
+
+symbol_list						::= symbol_list:sl symbol:s
+								    {:
+								       RESULT = new Symbol[sl.length + 1];
+									   System.arraycopy(sl, 0, RESULT, 0, sl.length);
+									   RESULT[sl.length] = s;
+								    :}
+								|	symbol_list:slc COMMA:c class:cl
+								    {:
+								       RESULT = new Symbol[slc.length + cl.length];
+								       System.arraycopy(slc, 0, RESULT, 0, slc.length);
+        							   System.arraycopy(cl, 0, RESULT, slc.length, cl.length);
+								    :}
+								|	class:c
+									{:
+										RESULT = c;
+									:}
+								|	symbol:s
+									{:
+									   RESULT = new Symbol[] { s };
+									:}
+								;
+
+word							::= symbol_list:sl
+									{:
+									   RESULT = new DefaultWord(sl);
+									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
+									:}
+								|	epsilon:e
+									{:
+									   RESULT = new DefaultWord();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								;
+
+symbol_list_comma				::= symbol_list_comma:slc COMMA:c symbol:s
+								    {:
+								       RESULT = new Symbol[slc.length + 1];
+									   System.arraycopy(slc, 0, RESULT, 0, slc.length);
+									   RESULT[slc.length] = s;
+								    :}
+								|	symbol_list_comma:slc COMMA:c class:cl
+								    {:
+								       RESULT = new Symbol[slc.length + cl.length];
+								       System.arraycopy(slc, 0, RESULT, 0, slc.length);
+        							   System.arraycopy(cl, 0, RESULT, slc.length, cl.length);
+								    :}
+								|	symbol:s
+									{:
+									   RESULT = new Symbol[] { s };
+									:}
+								|	class:c
+									{:
+										RESULT = c;
+									:}
+								|	symbol_list_comma_error
+									{: :}
+								;
+								
+class							::= LSBRACE:l symbol:s1 MINUS symbol:s2 RSBRACE:r
+									{:
+									    char c1 = s1.getName ().charAt ( 0 );
+    									char c2 = s2.getName ().charAt ( 0 );
+    									if(c1 > c2){
+											ParserException.throwCharacterClassException(
+												c1, c2, lleft, rright);
+    									}
+    									int c = c2 - c1 + 1;
+    									RESULT = new Symbol[c];
+    									 
+    									int i = 0;
+									    while ( c1 <= c2 )
+    									{
+      										RESULT[i++] = new DefaultSymbol ( Character.toString ( c1++ ) );
+    									}
+									:}								
+								;
+
+symbol_list_comma_error			::= symbol_list_comma:slc COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "Alphabet", " s", slcleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
+									:}
+								/* one missing token - comma */
+								|	symbol_list_comma:slc SYMBOL:s
+									{:
+									   ErrorHandling.expect ( "Alphabet", ", ", slcleft, slcright, "," );
+									:}
+								;
+
+epsilon							::= /* epsilon */
+									{: :}
+								;

@@ -712,16 +712,40 @@ public class DefaultAlphabet implements Alphabet
     {
       this.cachedPrettyString = new PrettyString ();
       this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-      Iterator < Symbol > iterator = this.symbolSet.iterator ();
       boolean first = true;
-      while ( iterator.hasNext () )
+
+      ArrayList < Symbol > t = new ArrayList < Symbol > ();
+      t.addAll ( this.symbolSet );
+      while ( !t.isEmpty () )
       {
+        ArrayList < Symbol > a = DefaultRegexAlphabet.checkForClass ( t );
+
         if ( !first )
         {
           this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         first = false;
-        this.cachedPrettyString.add ( iterator.next () );
+
+        if ( a.size () == 1 )
+        {
+          this.cachedPrettyString.add ( a.get ( 0 ) );
+        }
+        else if ( a.size () == 2 )
+        {
+
+          this.cachedPrettyString.add ( a.get ( 0 ) );
+          this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( a.get ( 1 ) );
+        }
+        else
+        {
+          this.cachedPrettyString.add ( new PrettyToken ( "[", Style.SYMBOL ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( a.get ( 0 ) );
+          this.cachedPrettyString.add ( new PrettyToken ( "..", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( a.get ( a.size () - 1 ) );
+          this.cachedPrettyString.add ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
+        }
+        t.removeAll ( a );
       }
       this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
     }
@@ -740,16 +764,41 @@ public class DefaultAlphabet implements Alphabet
   {
     StringBuilder result = new StringBuilder ();
     result.append ( "{" ); //$NON-NLS-1$
-    Iterator < Symbol > iterator = this.symbolSet.iterator ();
     boolean first = true;
-    while ( iterator.hasNext () )
+
+
+    ArrayList < Symbol > t = new ArrayList < Symbol > ();
+    t.addAll ( this.symbolSet );
+    while ( !t.isEmpty () )
     {
+      ArrayList < Symbol > a = DefaultRegexAlphabet.checkForClass ( t );
+
       if ( !first )
       {
-        result.append ( ", " ); //$NON-NLS-1$
+        result.append ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
       }
       first = false;
-      result.append ( iterator.next () );
+
+      if ( a.size () == 1 )
+      {
+        result.append ( a.get ( 0 ) );
+      }
+      else if ( a.size () == 2 )
+      {
+
+        result.append ( a.get ( 0 ) );
+        result.append ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        result.append ( a.get ( 1 ) );
+      }
+      else
+      {
+        result.append ( new PrettyToken ( "[", Style.SYMBOL ) ); //$NON-NLS-1$
+        result.append ( a.get ( 0 ) );
+        result.append ( new PrettyToken ( "-", Style.NONE ) ); //$NON-NLS-1$
+        result.append ( a.get ( a.size () - 1 ) );
+        result.append ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
+      }
+      t.removeAll ( a );
     }
     result.append ( "}" ); //$NON-NLS-1$
     return result.toString ();

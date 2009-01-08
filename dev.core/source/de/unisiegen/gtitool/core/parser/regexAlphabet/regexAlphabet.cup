@@ -168,6 +168,7 @@ class							::= LSBRACE:l symbol:s1 MINUS symbol:s2 RSBRACE:r
     									}
 									:}								
 								;
+								
 symbol_list_comma_error			::= symbol_list_comma:slc COMMA:c epsilon
 									{:
 									   ErrorHandling.expect ( "Alphabet", " s", slcleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );

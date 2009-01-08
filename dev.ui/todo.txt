@@ -1,4 +1,3 @@
-SM		- Reguläre Ausdrücke in einen Automaten umwandeln können (Zwei Arten)
 SM		- LaTeX Export (Dynamische Umsetzung wie bei TPML)
 SM		- Bei einer Grammatik direkt das Wort eingeben können
 SM		- Automat in Regulären Ausdruck umwandeln

@@ -113,7 +113,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-regex,parser-regex-alphabet" description="Generate parsers and lexers" />
+	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-regex,parser-regex-alphabet,parser-transition" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -138,5 +138,11 @@
 	<target name="parser-regex-alphabet">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/regexAlphabet/regexAlphabet.flex" destdir="${sourcegenerateddir}" nobak="yes" />
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/regexAlphabet/regexAlphabet.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/regexAlphabet" package="de.unisiegen.gtitool.core.parser.regexAlphabet" parser="RegexAlphabetAbstractParser" symbols="RegexAlphabetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
+	<!-- parser transition -->
+	<target name="parser-transition">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/transition/transition.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/transition/transition.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/transition" package="de.unisiegen.gtitool.core.parser.transition" parser="TransitionAbstractParser" symbols="TransitionTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 </project>

@@ -3902,7 +3902,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         this.lastDividerLocation = regexPanel.getGUI ().jGTISplitPaneRegex
             .getDividerLocation ();
       }
-      regexPanel.getGUI ().regexNodeInfoPanel.setVisible ( b );
+      regexPanel.getGUI ().jGTIPanelInfo.setVisible ( b );
       if ( b )
       {
         regexPanel.getGUI ().jGTISplitPaneRegex

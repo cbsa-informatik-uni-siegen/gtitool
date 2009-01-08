@@ -116,11 +116,15 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    * Constructor for a new {@link DefaultRegexModel}
    * 
    * @param regex The {@link DefaultRegex} for this model
+   * @param startModified Set the new Model modified or not
    */
-  public DefaultRegexModel ( DefaultRegex regex )
+  public DefaultRegexModel ( DefaultRegex regex, boolean startModified )
   {
     this.regex = regex;
-    this.initialRegex = regex.clone ();
+    if ( !startModified )
+    {
+      this.initialRegex = regex.clone ();
+    }
   }
 
 

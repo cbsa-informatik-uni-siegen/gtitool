@@ -629,7 +629,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           .toCoreSyntax (), this.model.getRegex ().getRegexNode ()
           .toCoreSyntax ().toString () );
 
-      getMainWindow ().handleNew ( new DefaultRegexModel ( newRegex ) );
+      getMainWindow ().handleNew ( new DefaultRegexModel ( newRegex, true ) );
     }
   }
 

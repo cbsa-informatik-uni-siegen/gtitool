@@ -988,7 +988,7 @@ public class ConvertRegexToMachineDialog implements
     {
       throw new RuntimeException ( "unsupported convert to Type" ); //$NON-NLS-1$
     }
-    this.modelOriginal = new DefaultRegexModel ( this.defaultRegex );
+    this.modelOriginal = new DefaultRegexModel ( this.defaultRegex, false );
     this.modelOriginal.initializeGraph ();
     this.modelOriginal.createTree ();
 

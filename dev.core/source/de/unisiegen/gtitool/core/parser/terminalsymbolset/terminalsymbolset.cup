@@ -1,0 +1,175 @@
+/**
+ * The cup file of the terminal symbol set parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id: terminalsymbolset.cup 1087 2008-07-03 22:10:41Z fehler $
+ */
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.exceptions.ErrorHandling;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String						TERMINAL_SYMBOL;
+terminal							COMMA;
+terminal							LCBRACE;
+terminal							RCBRACE;
+terminal							LSBRACE;
+terminal							RSBRACE;
+terminal							MINUS;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal TerminalSymbolSet		terminal_symbol_set;
+non terminal TerminalSymbol			terminal_symbol;
+non terminal TerminalSymbol[]		terminal_symbol_list_comma;
+non terminal TerminalSymbol[]		class;
+
+
+/*********
+ * Error *
+ *********/
+
+non terminal 						epsilon;
+non terminal						terminal_symbol_set_error;
+non terminal						terminal_symbol_list_comma_error;
+
+
+/***********************
+ * Terminal Symbol Set *
+ ***********************/
+
+terminal_symbol_set				::= LCBRACE:l terminal_symbol_list_comma:tslc RCBRACE:r
+									{:
+									   try
+									   {
+									     RESULT = new DefaultTerminalSymbolSet(tslc);
+									   }
+									   catch (TerminalSymbolSetException ecx)
+									   {
+									     ParserMultiException.throwTerminalSymbolSetException(ecx.getTerminalSymbol());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(lleft,rright));
+									:}
+								|	terminal_symbol_list_comma:tslc
+									{:
+									   try
+									   {
+									     RESULT = new DefaultTerminalSymbolSet(tslc);
+									   }
+									   catch (TerminalSymbolSetException ecx)
+									   {
+									     ParserMultiException.throwTerminalSymbolSetException(ecx.getTerminalSymbol());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(tslcleft,tslcright));
+									:}
+								|	terminal_symbol_set_error
+									{: :}
+								;
+
+terminal_symbol_set_error		::= LCBRACE:l epsilon
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
+								|	LCBRACE:l terminal_symbol_list_comma:tslc epsilon
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", "}", lleft, tslcright, "}" );
+									:}
+								|	LCBRACE:l terminal_symbol_list_comma:tslc COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
+								/* one missing token - comma */
+								|	LCBRACE:l terminal_symbol_list_comma:tslc TERMINAL_SYMBOL:s
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", ", ", lleft, tslcright, "," );
+									:}
+								/* one missing token - symbol */
+								|	LCBRACE:l COMMA:c
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", "s", lleft, lright, "s" );
+									:}
+								/* one missing token - symbol */
+								|	LCBRACE:l RCBRACE:r
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", "s", lleft, lright, "s" );
+									:}
+								;
+
+terminal_symbol					::= TERMINAL_SYMBOL:t
+									{:
+									   RESULT = new DefaultTerminalSymbol(t);
+									   RESULT.setParserOffset(new ParserOffset(tleft,tright));
+									:}
+								;
+
+terminal_symbol_list_comma		::= terminal_symbol_list_comma:tslc COMMA:c terminal_symbol:t
+								    {:
+								       RESULT = new TerminalSymbol[tslc.length + 1];
+									   System.arraycopy(tslc, 0, RESULT, 0, tslc.length);
+									   RESULT[tslc.length] = t;
+								    :}
+								|	terminal_symbol_list_comma:tslc COMMA:c class:cl
+								    {:
+								       RESULT = new TerminalSymbol[tslc.length + cl.length];
+									   System.arraycopy(tslc, 0, RESULT, 0, tslc.length);
+        							   System.arraycopy(cl, 0, RESULT, tslc.length, cl.length);
+								    :}
+								|	terminal_symbol:t
+									{:
+									   RESULT = new TerminalSymbol[] { t };
+									:}
+								|	class:c
+									{:
+										RESULT = c;
+									:}
+								|	terminal_symbol_list_comma_error
+									{: :}
+								;
+
+terminal_symbol_list_comma_error	::= terminal_symbol_list_comma:tslc COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", " s", tslcleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
+									:}
+								/* one missing token */
+								|	terminal_symbol_list_comma:tslc TERMINAL_SYMBOL:s
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", ", ", tslcleft, tslcright, "," );
+									:}
+								;
+								
+class							::= LSBRACE:l terminal_symbol:s1 MINUS terminal_symbol:s2 RSBRACE:r
+									{:
+									    char c1 = s1.getName ().charAt ( 0 );
+    									char c2 = s2.getName ().charAt ( 0 );
+    									if(c1 > c2){
+											ParserException.throwCharacterClassException(
+												c1, c2, lleft, rright);
+    									}
+    									int c = c2 - c1 + 1;
+    									RESULT = new TerminalSymbol[c];
+    									 
+    									int i = 0;
+									    while ( c1 <= c2 )
+    									{
+      										RESULT[i++] = new DefaultTerminalSymbol ( Character.toString ( c1++ ) );
+    									}
+									:}								
+								;
+
+epsilon							::= /* epsilon */
+									{: :}
+								;

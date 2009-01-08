@@ -410,6 +410,8 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     JGraphpadParallelSplineRouter.getSharedInstance ().setEdgeSeparation ( 25 );
     GraphConstants.setRouting ( edgeView.getAttributes (),
         JGraphpadParallelSplineRouter.getSharedInstance () );
+    
+    GraphConstants.setSelectable ( edgeView.getAttributes (), false );
 
     this.jGTIGraph.getGraphLayoutCache ().insertEdge ( edgeView,
         parent.getChildAt ( 0 ), child.getChildAt ( 0 ) );

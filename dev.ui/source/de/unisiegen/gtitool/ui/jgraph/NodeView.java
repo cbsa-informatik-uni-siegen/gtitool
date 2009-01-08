@@ -127,10 +127,10 @@ public class NodeView extends VertexView
 
         FontMetrics metrics = g.getFontMetrics ();
 
-        dx = ( ( d.width      ) / 2 )
+        dx = ( d.width / 2 )
             - ( metrics.stringWidth ( node.getNodeString ().toString () ) / 2 )
             - 1;
-        dy = ( ( d.height      ) / 2 ) + ( metrics.getHeight () / 2 ) - 5;
+        dy = ( d.height / 2 ) + ( metrics.getHeight () / 2 );
 
         g.setFont ( getFont () );
 
@@ -178,12 +178,18 @@ public class NodeView extends VertexView
       }
       finally
       {
-        g.drawString ( node.getNodeString ().toString (), dx, dy );
         if ( node instanceof LeafNode )
         {
           FontMetrics metrics = g.getFontMetrics ();
-          g.drawString ( ( ( LeafNode ) node ).getPosition () + "", dx, dy //$NON-NLS-1$
-              + metrics.getHeight () );
+          String position = String.valueOf ( ( ( LeafNode ) node )
+              .getPosition () );
+          dx = ( d.width / 2 )
+          - ( metrics.stringWidth ( position ) / 2 );
+
+          g.drawString ( node.getNodeString ().toString (), dx, metrics.getHeight ());
+          g.drawString ( position, dx, 2* metrics.getHeight () );
+        } else {
+          g.drawString ( node.getNodeString ().toString (), dx, dy );
         }
       }
     }

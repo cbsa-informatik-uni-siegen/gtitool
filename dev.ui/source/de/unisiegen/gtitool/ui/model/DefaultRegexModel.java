@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.model;
 
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
+import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.OptionalNode;
 import de.unisiegen.gtitool.core.entities.regex.PlusNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
@@ -178,7 +180,8 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
       throw new StoreException ( de.unisiegen.gtitool.core.i18n.Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
-    DefaultRegexAlphabet da = new DefaultRegexAlphabet ( element.getElement ( 0 ) );
+    DefaultRegexAlphabet da = new DefaultRegexAlphabet ( element
+        .getElement ( 0 ) );
     this.regex = new DefaultRegex ( da );
     RegexParseable rp = new RegexParseable ();
     this.regex.setRegexNode ( ( RegexNode ) rp.newParser ( regexString )
@@ -223,12 +226,18 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
+   * The {@link FontMetrics}
+   */
+  private FontMetrics metrics = null;
+
+
+  /**
    * Initializes the {@link JGTIGraph}
    */
   public void initializeGraph ()
   {
     this.graphModel = new DefaultGraphModel ();
-    
+
     this.jGTIGraph = new JGTIGraph ( this.graphModel );
     this.jGTIGraph.setDoubleBuffered ( false );
     this.jGTIGraph.getGraphLayoutCache ()
@@ -242,6 +251,8 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     this.jGTIGraph.setEditable ( false );
     this.jGTIGraph.setHandleSize ( 0 );
     this.jGTIGraph.setXorEnabled ( false );
+
+    this.metrics = getJGTIGraph ().getFontMetrics ( this.jGTIGraph.getFont () );
 
     EdgeView.renderer = new EdgeRenderer ();
     EdgeView.renderer.setForeground ( Color.BLACK );
@@ -261,17 +272,19 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   {
     this.X_SPACE = 70;
     this.Y_SPACE = 50;
-    
+
     this.regexEdgeViewList.clear ();
     this.nodeViewList.clear ();
-   
-    if(this.regex.getRegexNode ().getWidth () > 18) {
+
+    if ( this.regex.getRegexNode ().getWidth () > 18 )
+    {
       this.X_SPACE -= 20;
     }
-    if(this.regex.getRegexNode ().getHeight () > 8) {
+    if ( this.regex.getRegexNode ().getHeight () > 8 )
+    {
       this.Y_SPACE -= 10;
     }
-    
+
     DefaultNodeView parent = createNodeView ( 0, 0, this.regex.getRegexNode () );
     addNodesToModel ( parent );
 
@@ -418,10 +431,20 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
     String viewClass = NodeView.class.getName ();
 
+    int maxY = this.metrics.getHeight () + 10;
+
+    int maxX = 15;
+
+    if ( node instanceof LeafNode )
+    {
+      maxY = this.metrics.getHeight () * 2 + 4;
+      maxX = Math.max ( 25, ( this.metrics.stringWidth ( String
+          .valueOf ( ( ( LeafNode ) node ).getPosition () ) ) ) );
+    }
     // Set bounds
     GraphConstants.setBounds ( nodeView.getAttributes (),
-        new Rectangle2D.Double ( x, y, 25, 35 ) );
-    
+        new Rectangle2D.Double ( x, y, maxX, maxY ) );
+
     // set the view class (indirection for the renderer and the editor)
     GPCellViewFactory.setViewClass ( nodeView.getAttributes (), viewClass );
 

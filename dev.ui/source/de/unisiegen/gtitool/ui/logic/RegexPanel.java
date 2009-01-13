@@ -273,11 +273,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       this.redoUndoHandler.addItem ( new RegexChangedItem ( this,
           this.gui.styledRegexParserPanel.getText (), oldText ) );
     }
-    if ( oldText == null || oldText.length () < 1 )
-    {
-      this.model.getRegex ().getRegexNode ().setShowPositions (
-          this.gui.jGTIPanelInfo.isVisible () );
-    }
+    this.model.getRegex ().getRegexNode ().setShowPositions (
+        this.gui.jGTIPanelInfo.isVisible () );
+
     initializeJGraph ();
     this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
     this.model.createTree ();

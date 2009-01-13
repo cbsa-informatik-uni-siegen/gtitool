@@ -958,9 +958,10 @@ public class ConvertRegexToMachineDialog implements
     if ( this.entityType.equals ( MachineType.ENFA ) )
     {
       this.defaultRegex.setRegexNode ( this.defaultRegex.getRegexNode ()
-          .toCoreSyntax (), this.defaultRegex.getRegexNode ().toCoreSyntax ()
-          .toString () );
+          .toCoreSyntax ().clone (), this.defaultRegex.getRegexNode ()
+          .toCoreSyntax ().toString () );
       this.regexNode = this.defaultRegex.getRegexNode ();
+      this.regexNode.setShowPositions ( false );
       this.modelConverted = new DefaultMachineModel ( new DefaultENFA ( a, a,
           false ) );
       this.gui
@@ -975,10 +976,11 @@ public class ConvertRegexToMachineDialog implements
       this.positionStates = new ArrayList < DefaultPositionState > ();
 
       this.defaultRegex.setRegexNode ( new ConcatenationNode (
-          this.defaultRegex.getRegexNode ().toCoreSyntax (), new TokenNode (
-              "#" ) ), //$NON-NLS-1$
+          this.defaultRegex.getRegexNode ().toCoreSyntax ().clone (),
+          new TokenNode ( "#" ) ), //$NON-NLS-1$
           this.defaultRegex.getRegexNode ().toCoreSyntax ().toString () );
       this.regexNode = this.defaultRegex.getRegexNode ();
+      this.regexNode.setShowPositions ( true );
       this.gui
           .setTitle ( Messages
               .getString (
@@ -1234,11 +1236,6 @@ public class ConvertRegexToMachineDialog implements
   public void handleCancel ()
   {
     logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$ //$NON-NLS-2$
-    if ( this.activeNode != null )
-    {
-      this.activeNode.setActive ( false );
-    }
-    this.regexNode.unmarkAll ();
     this.gui.dispose ();
   }
 
@@ -1304,12 +1301,6 @@ public class ConvertRegexToMachineDialog implements
     }
     this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
         false );
-
-    if ( this.activeNode != null )
-    {
-      this.activeNode.setActive ( false );
-    }
-    this.regexNode.unmarkAll ();
     this.gui.dispose ();
   }
 
@@ -2435,9 +2426,9 @@ public class ConvertRegexToMachineDialog implements
     addOutlineComment ( pretty );
     this.stepItemList.add ( new StepItem ( this.actualStep, addedStates,
         redoUndoItem, addedTransitions, setStartFalse, setFinalFalse,
-        this.count, lastActive, errorCreated, markedPositionState, controlledSymbol,
-        addedSymbolsToTransition, removedBlackBoxes, addedBlackBoxes,
-        positions, xGridClone ) );
+        this.count, lastActive, errorCreated, markedPositionState,
+        controlledSymbol, addedSymbolsToTransition, removedBlackBoxes,
+        addedBlackBoxes, positions, xGridClone ) );
     this.count = c;
   }
 
@@ -2452,8 +2443,9 @@ public class ConvertRegexToMachineDialog implements
     this.endReached = false;
     StepItem stepItem = this.stepItemList
         .remove ( this.stepItemList.size () - 1 );
-    
-    if(this.activeNode != null) {
+
+    if ( this.activeNode != null )
+    {
       this.activeNode.setActive ( false );
     }
 
@@ -2510,7 +2502,8 @@ public class ConvertRegexToMachineDialog implements
 
     this.actualStep = stepItem.getActiveStep ();
 
-    if(this.activeNode != null) {
+    if ( this.activeNode != null )
+    {
       this.activeNode.unmark ();
       this.activeNode.setActive ( false );
     }

@@ -140,11 +140,13 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.mainWindowForm = mainWindowForm;
     this.file = file;
     this.model = model;
-    initializeJGraph ();
     this.gui = new RegexPanelForm ( this );
     this.gui.styledRegexParserPanel.setText ( this.model.getRegex ()
         .getRegexString () );
+    getRegex ().getRegexNode ().setShowPositions (
+        this.gui.jGTIPanelInfo.isVisible () );
 
+    initializeJGraph ();
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
 
     setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
@@ -816,7 +818,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   /**
    * Initializes the JGraph
    */
-  private void initializeJGraph ()
+  public void initializeJGraph ()
   {
     this.model.initializeGraph ();
     this.jGTIGraph = this.model.getJGTIGraph ();
@@ -967,6 +969,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   protected void updateRegexNodeInfo ()
   {
+    System.err.println (this.jGTIGraph.getSelectionCell ());
     if ( this.jGTIGraph.getSelectionCell () instanceof DefaultNodeView )
     {
       RegexNode node = ( ( DefaultNodeView ) this.jGTIGraph.getSelectionCell () )

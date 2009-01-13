@@ -82,6 +82,18 @@ public class TokenNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#clone()
+   */
+  @Override
+  public RegexNode clone ()
+  {
+    return new TokenNode ( this.name );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Comparable#compareTo(java.lang.Object)
    */
   public int compareTo ( @SuppressWarnings ( "unused" )
@@ -224,20 +236,6 @@ public class TokenNode extends LeafNode
   public int getRightChildrenCount ()
   {
     return 0;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#getTokenNodes()
-   */
-  @Override
-  public ArrayList < LeafNode > getTokenNodes ()
-  {
-    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
-    nodes.add ( this );
-    return nodes;
   }
 
 

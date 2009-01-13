@@ -74,6 +74,18 @@ public class EpsilonNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#clone()
+   */
+  @Override
+  public RegexNode clone ()
+  {
+    return new EpsilonNode();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Comparable#compareTo(java.lang.Object)
    */
   public int compareTo ( @SuppressWarnings ( "unused" )
@@ -196,20 +208,6 @@ public class EpsilonNode extends LeafNode
   public int getRightChildrenCount ()
   {
     return 0;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#getTokenNodes()
-   */
-  @Override
-  public ArrayList < LeafNode > getTokenNodes ()
-  {
-    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
-    nodes.add ( this );
-    return nodes;
   }
 
 

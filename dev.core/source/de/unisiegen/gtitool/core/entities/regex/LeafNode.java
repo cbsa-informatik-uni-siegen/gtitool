@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.entities.regex;
 
 
+import java.util.ArrayList;
+
+
 /**
  * Representation of a LeafNode in the Regex
  */
@@ -17,6 +20,12 @@ public abstract class LeafNode extends RegexNode
    * Flag that indicates if Node is already used in NFA construction
    */
   private boolean marked = false;
+
+
+  /**
+   * Flag that indicates if the position should be shown.
+   */
+  private boolean positionShown = false;
 
 
   /**
@@ -50,6 +59,20 @@ public abstract class LeafNode extends RegexNode
    * @return The Position of the {@link LeafNode}
    */
   public abstract int getPosition ();
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getTokenNodes()
+   */
+  @Override
+  public ArrayList < LeafNode > getTokenNodes ()
+  {
+    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
+    nodes.add ( this );
+    return nodes;
+  }
 
 
   /**
@@ -101,11 +124,35 @@ public abstract class LeafNode extends RegexNode
 
 
   /**
+   * Returns the positionShown.
+   * 
+   * @return The positionShown.
+   * @see #positionShown
+   */
+  public boolean isPositionShown ()
+  {
+    return this.positionShown;
+  }
+
+
+  /**
    * Sets the Position of the {@link LeafNode}
    * 
    * @param p The Position of the {@link LeafNode}
    */
   public abstract void setPosition ( int p );
+
+
+  /**
+   * Sets the positionShown.
+   * 
+   * @param positionShown The positionShown to set.
+   * @see #positionShown
+   */
+  public void setPositionShown ( boolean positionShown )
+  {
+    this.positionShown = positionShown;
+  }
 
 
   /**

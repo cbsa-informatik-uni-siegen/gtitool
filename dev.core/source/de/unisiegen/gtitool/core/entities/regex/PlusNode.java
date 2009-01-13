@@ -70,6 +70,18 @@ public class PlusNode extends OneChildNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#clone()
+   */
+  @Override
+  public RegexNode clone ()
+  {
+    return new PlusNode ( this.regex.clone () );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Comparable#compareTo(java.lang.Object)
    */
   public int compareTo ( @SuppressWarnings ( "unused" )

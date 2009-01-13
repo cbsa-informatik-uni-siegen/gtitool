@@ -113,6 +113,22 @@ public class CharacterClassNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#clone()
+   */
+  @Override
+  public RegexNode clone ()
+  {
+    if ( this.array )
+    {
+      return new CharacterClassNode ( this.chars );
+    }
+    return new CharacterClassNode ( this.char1, this.char2 );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Comparable#compareTo(Object)
    */
   public int compareTo ( RegexNode arg0 )
@@ -290,18 +306,6 @@ public class CharacterClassNode extends LeafNode
   public int getRightChildrenCount ()
   {
     return 0;
-  }
-
-
-  /**
-   * {@inheritDoc} RegexNode#getTokenNodes()
-   */
-  @Override
-  public ArrayList < LeafNode > getTokenNodes ()
-  {
-    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
-    nodes.add ( this );
-    return nodes;
   }
 
 

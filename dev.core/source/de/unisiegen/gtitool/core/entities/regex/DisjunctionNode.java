@@ -71,6 +71,18 @@ public class DisjunctionNode extends TwoChildNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#clone()
+   */
+  @Override
+  public RegexNode clone ()
+  {
+    return new DisjunctionNode ( this.regex1.clone (), this.regex2.clone () );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Comparable#compareTo(java.lang.Object)
    */
   public int compareTo ( @SuppressWarnings ( "unused" )

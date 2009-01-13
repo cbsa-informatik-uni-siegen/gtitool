@@ -37,6 +37,15 @@ public abstract class RegexNode implements Entity < RegexNode >
   /**
    * {@inheritDoc}
    * 
+   * @see java.lang.Object#clone()
+   */
+  @Override
+  public abstract RegexNode clone ();
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
@@ -187,8 +196,7 @@ public abstract class RegexNode implements Entity < RegexNode >
   {
     this.active = active;
   }
-
-
+  
   /**
    * Sets flag that indicates if user used braces around the regex
    * 
@@ -198,6 +206,18 @@ public abstract class RegexNode implements Entity < RegexNode >
   {
     this.braces = braces;
   }
+  
+  /**
+   * Sets flag that indicates that positions are shown
+   *
+   * @param b True if positions should be shown
+   */
+  public void setShowPositions(boolean b) {
+    for(LeafNode n : getTokenNodes ()) {
+      n.setPositionShown ( b );
+    }
+  }
+  
 
 
   /**

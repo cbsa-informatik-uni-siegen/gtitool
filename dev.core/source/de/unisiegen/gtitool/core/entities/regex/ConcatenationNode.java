@@ -303,13 +303,14 @@ public class ConcatenationNode extends TwoChildNode
   /**
    * /** {@inheritDoc}
    * 
-   * @see RegexNode#toCoreSyntax()
+   * @see RegexNode#toCoreSyntax(boolean)
    */
   @Override
-  public RegexNode toCoreSyntax ()
+  public RegexNode toCoreSyntax ( boolean withCharacterClasses )
   {
-    ConcatenationNode con = new ConcatenationNode (
-        this.regex1.toCoreSyntax (), this.regex2.toCoreSyntax () );
+    ConcatenationNode con = new ConcatenationNode ( this.regex1
+        .toCoreSyntax ( withCharacterClasses ), this.regex2
+        .toCoreSyntax ( withCharacterClasses ) );
     con.setBraces ( this.braces );
     return con;
   }

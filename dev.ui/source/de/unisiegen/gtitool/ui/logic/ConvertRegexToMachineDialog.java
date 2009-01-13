@@ -28,6 +28,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
+import de.unisiegen.gtitool.core.entities.regex.CharacterClassNode;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
 import de.unisiegen.gtitool.core.entities.regex.EpsilonNode;
@@ -294,6 +295,11 @@ public class ConvertRegexToMachineDialog implements
     CONVERT_TOKEN,
 
     /**
+     * The convert Token step
+     */
+    CONVERT_CHARCLASS,
+
+    /**
      * The finish step.
      */
     FINISH,
@@ -323,6 +329,8 @@ public class ConvertRegexToMachineDialog implements
           return "convert kleene"; //$NON-NLS-1$
         case CONVERT_TOKEN :
           return "convert token"; //$NON-NLS-1$
+        case CONVERT_CHARCLASS :
+          return "convert class"; //$NON-NLS-1$
         case INITIAL :
           return "initial"; //$NON-NLS-1$
         case FINISH :
@@ -958,8 +966,8 @@ public class ConvertRegexToMachineDialog implements
     if ( this.entityType.equals ( MachineType.ENFA ) )
     {
       this.defaultRegex.setRegexNode ( this.defaultRegex.getRegexNode ()
-          .toCoreSyntax ().clone (), this.defaultRegex.getRegexNode ()
-          .toCoreSyntax ().toString () );
+          .toCoreSyntax ( false ).clone (), this.defaultRegex.getRegexNode ()
+          .toCoreSyntax ( false ).toString () );
       this.regexNode = this.defaultRegex.getRegexNode ();
       this.regexNode.setShowPositions ( false );
       this.modelConverted = new DefaultMachineModel ( new DefaultENFA ( a, a,
@@ -975,10 +983,21 @@ public class ConvertRegexToMachineDialog implements
           false ) );
       this.positionStates = new ArrayList < DefaultPositionState > ();
 
-      this.defaultRegex.setRegexNode ( new ConcatenationNode (
-          this.defaultRegex.getRegexNode ().toCoreSyntax ().clone (),
-          new TokenNode ( "#" ) ), //$NON-NLS-1$
-          this.defaultRegex.getRegexNode ().toCoreSyntax ().toString () );
+      if ( !this.defaultRegex.getRegexNode ().isInCoreSyntax () )
+      {
+        this.defaultRegex
+            .setRegexNode ( new ConcatenationNode ( this.defaultRegex
+                .getRegexNode ().toCoreSyntax ( true ).clone (), new TokenNode (
+                "#" ) ), //$NON-NLS-1$
+                this.defaultRegex.getRegexNode ().toCoreSyntax ( true )
+                    .toString () );
+      }
+      else
+      {
+        this.defaultRegex.setRegexNode (
+            new ConcatenationNode ( this.defaultRegex.getRegexNode ().clone (),
+                new TokenNode ( "#" ) ), this.defaultRegex.getRegexString () ); //$NON-NLS-1$
+      }
       this.regexNode = this.defaultRegex.getRegexNode ();
       this.regexNode.setShowPositions ( true );
       this.gui
@@ -1429,6 +1448,77 @@ public class ConvertRegexToMachineDialog implements
 
           ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
           symbols.add ( new DefaultSymbol ( token.getName () ) );
+          Transition t;
+          Alphabet a = this.modelOriginal.getRegex ().getAlphabet ();
+          t = new DefaultTransition ( a, a, new DefaultWord (),
+              new DefaultWord (), startView.getState (), finView.getState (),
+              symbols );
+
+          addedTransitions.add ( this.modelConverted.createTransitionView ( t,
+              startView, finView, true, false, true ) );
+        }
+        catch ( TransitionSymbolNotInAlphabetException exc )
+        {
+          exc.printStackTrace ();
+        }
+        catch ( TransitionSymbolOnlyOneTimeException exc )
+        {
+          exc.printStackTrace ();
+        }
+        catch ( StateException exc )
+        {
+          exc.printStackTrace ();
+        }
+      }
+      // CharacterClass
+      if ( node instanceof CharacterClassNode )
+      {
+        this.actualStep = Step.CONVERT_CHARCLASS;
+        CharacterClassNode charClass = ( CharacterClassNode ) node;
+
+        pretty
+            .add ( Messages
+                .getPrettyString (
+                    "ConvertRegexToMachineDialog.StepConvertClass", charClass.toPrettyString () ) ); //$NON-NLS-1$
+
+        try
+        {
+          DefaultStateView startView;
+          DefaultStateView finView;
+          if ( this.stateViewList.containsKey ( charClass ) )
+          {
+            ArrayList < DefaultStateView > views = this.stateViewList
+                .get ( charClass );
+
+            startView = views.get ( 0 );
+            finView = views.get ( 1 );
+            DefaultBlackboxView bb = this.jGTIGraphConverted
+                .getBlackboxViewForRegexNode ( charClass );
+            removedBlackBoxes.add ( new BlackBox ( bb.getStartState ()
+                .getState ().getName (), bb.getFinalState ().getState ()
+                .getName (), bb.getContent () ) );
+            this.jGTIGraphConverted.removeBlackBox ( charClass );
+          }
+          else
+          {
+            startView = this.modelConverted.createStateView ( START_X, START_Y,
+                new DefaultBlackBoxState ( String.valueOf ( c++ ) ), false );
+            startView.getState ().setStartState ( true );
+
+            finView = this.modelConverted.createStateView ( START_X, START_Y,
+                new DefaultBlackBoxState ( String.valueOf ( c++ ) ), false );
+            addedStates.add ( startView.getState ().getName () );
+            addedStates.add ( finView.getState ().getName () );
+            finView.getState ().setFinalState ( true );
+
+            this.xGrid.getX_positions ().put (
+                startView.getState ().getName (), new Integer ( 0 ) );
+            this.xGrid.getX_positions ().put ( finView.getState ().getName (),
+                new Integer ( 1 ) );
+          }
+
+          ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+          symbols.addAll ( charClass.getCharacters () );
           Transition t;
           Alphabet a = this.modelOriginal.getRegex ().getAlphabet ();
           t = new DefaultTransition ( a, a, new DefaultWord (),

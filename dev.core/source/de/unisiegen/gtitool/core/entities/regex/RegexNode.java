@@ -222,10 +222,11 @@ public abstract class RegexNode implements Entity < RegexNode >
 
   /**
    * Translate the RegexNode to Core Syntax
+   * @param withCharacterClasses Indicates if CharacterClasses should also be converted
    * 
    * @return the RegexNode in Core Syntax
    */
-  public abstract RegexNode toCoreSyntax ();
+  public abstract RegexNode toCoreSyntax (boolean withCharacterClasses);
 
 
   /**

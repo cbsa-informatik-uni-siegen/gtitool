@@ -3903,12 +3903,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .getDividerLocation ();
       }
       regexPanel.getGUI ().jGTIPanelInfo.setVisible ( b );
-      regexPanel.getRegex ().getRegexNode ().setShowPositions ( b );
-      regexPanel.initializeJGraph ();
+      if ( regexPanel.getRegex ().getRegexNode () != null )
+      {
+        regexPanel.getRegex ().getRegexNode ().setShowPositions ( b );
+        regexPanel.initializeJGraph ();
+        regexPanel.getGUI ().jGTIScrollPaneGraph.setViewportView ( regexPanel
+            .getJGTIGraph () );
+        ( ( DefaultRegexModel ) regexPanel.getModel () ).createTree ();
+      }
 
-      regexPanel.getGUI ().jGTIScrollPaneGraph.setViewportView ( regexPanel
-          .getJGTIGraph () );
-      ( ( DefaultRegexModel ) regexPanel.getModel () ).createTree ();
       if ( b )
       {
         regexPanel.getGUI ().jGTISplitPaneRegex

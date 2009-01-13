@@ -83,7 +83,7 @@ public class ParserTest
      * Regex
      */
     RegexParseable regexParseable = new RegexParseable ();
-    String regexText = "(a|b)*aa#";
+    String regexText = "[a-w]·l";
     try
     {
       RegexNode regex = ( RegexNode ) regexParseable.newParser ( regexText )
@@ -92,8 +92,8 @@ public class ParserTest
       DefaultRegex conv = new DefaultRegex ( new DefaultRegexAlphabet (
           new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),
           new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ) );
-      conv.setRegexNode ( regex, regexText );
-      System.out.println ( regex );
+      conv.setRegexNode ( regex.toCoreSyntax ( true ), regex.toCoreSyntax ( true ).toString () );
+      System.out.println ( conv.getRegexNode () );
       String firstpos = "";
       for ( RegexNode current : regex.firstPos () )
       {
@@ -120,8 +120,8 @@ public class ParserTest
       }
       System.out.println ( "LastPos: {" + lastpos + "}" );
 
-      RegexNode coreSyntax = regex.toCoreSyntax ();
-      System.out.println ( coreSyntax.toString () );
+      RegexNode coreSyntax = regex.toCoreSyntax (true);
+      System.out.println ("ToCoreSyntax:" + coreSyntax.toString () );
 
       String followPos = "";
       for ( Integer current : conv.followPos ( 1 ) )

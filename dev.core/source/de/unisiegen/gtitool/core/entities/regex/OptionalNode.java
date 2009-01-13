@@ -75,7 +75,7 @@ public class OptionalNode extends OneChildNode
   @Override
   public RegexNode clone ()
   {
-    return new OptionalNode(this.regex.clone ());
+    return new OptionalNode ( this.regex.clone () );
   }
 
 
@@ -273,13 +273,13 @@ public class OptionalNode extends OneChildNode
   /**
    * {@inheritDoc}
    * 
-   * @see RegexNode#toCoreSyntax()
+   * @see RegexNode#toCoreSyntax(boolean)
    */
   @Override
-  public RegexNode toCoreSyntax ()
+  public RegexNode toCoreSyntax ( boolean withCharacterClasses )
   {
-    DisjunctionNode dis = new DisjunctionNode ( this.regex.toCoreSyntax (),
-        new EpsilonNode () );
+    DisjunctionNode dis = new DisjunctionNode ( this.regex
+        .toCoreSyntax ( withCharacterClasses ), new EpsilonNode () );
     dis.setBraces ( true );
     return dis;
   }

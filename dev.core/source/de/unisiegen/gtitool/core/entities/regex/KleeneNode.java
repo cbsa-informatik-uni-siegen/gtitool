@@ -273,12 +273,13 @@ public class KleeneNode extends OneChildNode
   /**
    * {@inheritDoc}
    * 
-   * @see RegexNode#toCoreSyntax()
+   * @see RegexNode#toCoreSyntax(boolean)
    */
   @Override
-  public RegexNode toCoreSyntax ()
+  public RegexNode toCoreSyntax ( boolean withCharacterClasses )
   {
-    KleeneNode k = new KleeneNode ( this.regex.toCoreSyntax () );
+    KleeneNode k = new KleeneNode ( this.regex
+        .toCoreSyntax ( withCharacterClasses ) );
     k.setBraces ( this.braces );
     return k;
   }

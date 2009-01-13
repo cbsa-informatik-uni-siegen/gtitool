@@ -315,10 +315,11 @@ public class TokenNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
-   * @see RegexNode#toCoreSyntax()
+   * @see RegexNode#toCoreSyntax(boolean)
    */
   @Override
-  public RegexNode toCoreSyntax ()
+  public RegexNode toCoreSyntax (@SuppressWarnings("unused")
+  boolean withCharacterClasses)
   {
     return this;
   }

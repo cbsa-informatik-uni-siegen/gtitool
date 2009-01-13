@@ -143,9 +143,11 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.gui = new RegexPanelForm ( this );
     this.gui.styledRegexParserPanel.setText ( this.model.getRegex ()
         .getRegexString () );
-    getRegex ().getRegexNode ().setShowPositions (
-        this.gui.jGTIPanelInfo.isVisible () );
-
+    if ( getRegex ().getRegexNode () != null )
+    {
+      getRegex ().getRegexNode ().setShowPositions (
+          this.gui.jGTIPanelInfo.isVisible () );
+    }
     initializeJGraph ();
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
 
@@ -270,7 +272,11 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     {
       this.redoUndoHandler.addItem ( new RegexChangedItem ( this,
           this.gui.styledRegexParserPanel.getText (), oldText ) );
-
+    }
+    if ( oldText == null || oldText.length () < 1 )
+    {
+      this.model.getRegex ().getRegexNode ().setShowPositions (
+          this.gui.jGTIPanelInfo.isVisible () );
     }
     initializeJGraph ();
     this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
@@ -628,8 +634,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       DefaultRegex newRegex = new DefaultRegex ( this.model.getRegex ()
           .getAlphabet () );
       newRegex.setRegexNode ( this.model.getRegex ().getRegexNode ()
-          .toCoreSyntax (), this.model.getRegex ().getRegexNode ()
-          .toCoreSyntax ().toString () );
+          .toCoreSyntax ( true ), this.model.getRegex ().getRegexNode ()
+          .toCoreSyntax ( true ).toString () );
 
       getMainWindow ().handleNew ( new DefaultRegexModel ( newRegex, true ) );
     }
@@ -969,7 +975,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   protected void updateRegexNodeInfo ()
   {
-    System.err.println (this.jGTIGraph.getSelectionCell ());
     if ( this.jGTIGraph.getSelectionCell () instanceof DefaultNodeView )
     {
       RegexNode node = ( ( DefaultNodeView ) this.jGTIGraph.getSelectionCell () )

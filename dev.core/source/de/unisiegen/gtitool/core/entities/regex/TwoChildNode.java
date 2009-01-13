@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 
 /**
- * TODO
+ * Representation of a RegexNode with two children
  */
 public abstract class TwoChildNode extends RegexNode
 {
@@ -94,6 +94,30 @@ public abstract class TwoChildNode extends RegexNode
   public int getWidth ()
   {
     return 1 + this.regex1.getWidth () + this.regex2.getWidth ();
+  }
+
+
+  /**
+   * Returns the regex1.
+   * 
+   * @return The regex1.
+   * @see #regex1
+   */
+  public RegexNode getRegex1 ()
+  {
+    return this.regex1;
+  }
+
+
+  /**
+   * Returns the regex2.
+   * 
+   * @return The regex2.
+   * @see #regex2
+   */
+  public RegexNode getRegex2 ()
+  {
+    return this.regex2;
   }
 
 

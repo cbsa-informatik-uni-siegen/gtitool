@@ -273,13 +273,14 @@ public class PlusNode extends OneChildNode
   /**
    * {@inheritDoc}
    * 
-   * @see RegexNode#toCoreSyntax()
+   * @see RegexNode#toCoreSyntax(boolean)
    */
   @Override
-  public RegexNode toCoreSyntax ()
+  public RegexNode toCoreSyntax ( boolean withCharacterClasses )
   {
-    ConcatenationNode con = new ConcatenationNode ( this.regex.toCoreSyntax (),
-        new KleeneNode ( this.regex.toCoreSyntax () ) );
+    ConcatenationNode con = new ConcatenationNode ( this.regex
+        .toCoreSyntax ( withCharacterClasses ), new KleeneNode ( this.regex
+        .toCoreSyntax ( withCharacterClasses ) ) );
     con.setBraces ( true );
     return con;
   }

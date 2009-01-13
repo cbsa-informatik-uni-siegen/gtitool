@@ -298,13 +298,14 @@ public class DisjunctionNode extends TwoChildNode
   /**
    * {@inheritDoc}
    * 
-   * @see RegexNode#toCoreSyntax()
+   * @see RegexNode#toCoreSyntax(boolean)
    */
   @Override
-  public RegexNode toCoreSyntax ()
+  public RegexNode toCoreSyntax ( boolean withCharacterClasses )
   {
-    DisjunctionNode dis = new DisjunctionNode ( this.regex1.toCoreSyntax (),
-        this.regex2.toCoreSyntax () );
+    DisjunctionNode dis = new DisjunctionNode ( this.regex1
+        .toCoreSyntax ( withCharacterClasses ), this.regex2
+        .toCoreSyntax ( withCharacterClasses ) );
     dis.setBraces ( this.braces );
     return dis;
   }

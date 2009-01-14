@@ -30,6 +30,18 @@ public class ConcatenationNode extends TwoChildNode
 
 
   /**
+   * Cached {@link ArrayList} for firstPos
+   */
+  private transient ArrayList < LeafNode > firstPosCache = null;
+
+
+  /**
+   * Cached {@link ArrayList} for lastPos
+   */
+  private transient ArrayList < LeafNode > lastPosCache = null;
+
+
+  /**
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
@@ -141,14 +153,17 @@ public class ConcatenationNode extends TwoChildNode
   @Override
   public ArrayList < LeafNode > firstPos ()
   {
-    if ( !this.regex1.nullable () )
+    if ( this.firstPosCache == null )
     {
-      return this.regex1.firstPos ();
+      if ( !this.regex1.nullable () )
+      {
+        this.firstPosCache = this.regex1.firstPos ();
+      }
+      this.firstPosCache = new ArrayList < LeafNode > ();
+      this.firstPosCache.addAll ( this.regex1.firstPos () );
+      this.firstPosCache.addAll ( this.regex2.firstPos () );
     }
-    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
-    nodes.addAll ( this.regex1.firstPos () );
-    nodes.addAll ( this.regex2.firstPos () );
-    return nodes;
+    return this.firstPosCache;
   }
 
 
@@ -165,21 +180,6 @@ public class ConcatenationNode extends TwoChildNode
     nodes.add ( this.regex2 );
     nodes.addAll ( this.regex1.getAllChildren () );
     nodes.addAll ( this.regex2.getAllChildren () );
-    return nodes;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#getChildren()
-   */
-  @Override
-  public ArrayList < RegexNode > getChildren ()
-  {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    nodes.add ( this.regex1 );
-    nodes.add ( this.regex2 );
     return nodes;
   }
 
@@ -254,14 +254,17 @@ public class ConcatenationNode extends TwoChildNode
   @Override
   public ArrayList < LeafNode > lastPos ()
   {
-    if ( !this.regex2.nullable () )
+    if ( this.lastPosCache == null )
     {
-      return this.regex2.lastPos ();
+      if ( !this.regex2.nullable () )
+      {
+        this.lastPosCache = this.regex2.lastPos ();
+      }
+      this.lastPosCache = new ArrayList < LeafNode > ();
+      this.lastPosCache.addAll ( this.regex1.lastPos () );
+      this.lastPosCache.addAll ( this.regex2.lastPos () );
     }
-    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
-    nodes.addAll ( this.regex1.lastPos () );
-    nodes.addAll ( this.regex2.lastPos () );
-    return nodes;
+    return this.lastPosCache;
   }
 
 

@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.entities.regex;
 
 
+import java.util.ArrayList;
+
+
 /**
  * Representation of a RegexNode with two children
  */
@@ -11,6 +14,12 @@ public abstract class TwoChildNode extends RegexNode
    * The serial version uid.
    */
   private static final long serialVersionUID = 3752945655164551118L;
+
+
+  /**
+   * Cached {@link ArrayList} for the children
+   */
+  private transient ArrayList < RegexNode > childrenCache = null;
 
 
   /**
@@ -41,6 +50,24 @@ public abstract class TwoChildNode extends RegexNode
   {
     this.regex1 = regex1;
     this.regex2 = regex2;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getChildren()
+   */
+  @Override
+  public ArrayList < RegexNode > getChildren ()
+  {
+    if ( this.childrenCache == null )
+    {
+      this.childrenCache = new ArrayList < RegexNode > ();
+      this.childrenCache.add ( this.regex1 );
+      this.childrenCache.add ( this.regex2 );
+    }
+    return this.childrenCache;
   }
 
 
@@ -86,18 +113,6 @@ public abstract class TwoChildNode extends RegexNode
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#getWidth()
-   */
-  @Override
-  public int getWidth ()
-  {
-    return 1 + this.regex1.getWidth () + this.regex2.getWidth ();
-  }
-
-
-  /**
    * Returns the regex1.
    * 
    * @return The regex1.
@@ -118,6 +133,18 @@ public abstract class TwoChildNode extends RegexNode
   public RegexNode getRegex2 ()
   {
     return this.regex2;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getWidth()
+   */
+  @Override
+  public int getWidth ()
+  {
+    return 1 + this.regex1.getWidth () + this.regex2.getWidth ();
   }
 
 

@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.entities.regex;
 
 
+import java.util.ArrayList;
+
+
 /**
  * Node that has only one direct child
  */
@@ -11,6 +14,18 @@ public abstract class OneChildNode extends RegexNode
    * The serial version uid.
    */
   private static final long serialVersionUID = -3109784857649152942L;
+
+
+  /**
+   * Cached {@link ArrayList} for firstPos
+   */
+  private transient ArrayList < LeafNode > firstPosCache = null;
+
+
+  /**
+   * Cached {@link ArrayList} for lastPos
+   */
+  private transient ArrayList < LeafNode > lastPosCache = null;
 
 
   /**
@@ -33,6 +48,22 @@ public abstract class OneChildNode extends RegexNode
   public OneChildNode ( RegexNode regex )
   {
     this.regex = regex;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
+   */
+  @Override
+  public ArrayList < LeafNode > firstPos ()
+  {
+    if ( this.firstPosCache == null )
+    {
+      this.firstPosCache = this.regex.firstPos ();
+    }
+    return this.firstPosCache;
   }
 
 
@@ -110,6 +141,22 @@ public abstract class OneChildNode extends RegexNode
   public boolean isMarkedAll ()
   {
     return this.marked && this.regex.isMarkedAll ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
+   */
+  @Override
+  public ArrayList < LeafNode > lastPos ()
+  {
+    if ( this.lastPosCache == null )
+    {
+      this.lastPosCache = this.regex.lastPos ();
+    }
+    return this.lastPosCache;
   }
 
 

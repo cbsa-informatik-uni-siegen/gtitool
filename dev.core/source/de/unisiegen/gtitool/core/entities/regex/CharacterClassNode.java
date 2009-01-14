@@ -167,20 +167,6 @@ public class CharacterClassNode extends LeafNode
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#firstPos()
-   */
-  @Override
-  public ArrayList < LeafNode > firstPos ()
-  {
-    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
-    nodes.add ( this );
-    return nodes;
-  }
-
-
-  /**
    * {@inheritDoc} RegexNode#getAllChildren()
    */
   @Override
@@ -318,20 +304,6 @@ public class CharacterClassNode extends LeafNode
   public boolean isInCoreSyntax ()
   {
     return false;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#lastPos()
-   */
-  @Override
-  public ArrayList < LeafNode > lastPos ()
-  {
-    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
-    nodes.add ( this );
-    return nodes;
   }
 
 

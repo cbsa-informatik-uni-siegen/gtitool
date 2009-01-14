@@ -17,6 +17,18 @@ public abstract class LeafNode extends RegexNode
 
 
   /**
+   * Cached {@link ArrayList} for firstPos
+   */
+  private transient ArrayList < LeafNode > firstPosCache = null;
+
+
+  /**
+   * Cached {@link ArrayList} for lastPos
+   */
+  private transient ArrayList < LeafNode > lastPosCache = null;
+
+
+  /**
    * Flag that indicates if Node is already used in NFA construction
    */
   private boolean marked = false;
@@ -26,6 +38,26 @@ public abstract class LeafNode extends RegexNode
    * Flag that indicates if the position should be shown.
    */
   private boolean positionShown = false;
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#firstPos()
+   */
+  @Override
+  public ArrayList < LeafNode > firstPos ()
+  {
+    if ( this.firstPosCache == null )
+    {
+      this.firstPosCache = new ArrayList < LeafNode > ();
+      if ( ! ( this instanceof EpsilonNode ) )
+      {
+        this.firstPosCache.add ( this );
+      }
+    }
+    return this.firstPosCache;
+  }
 
 
   /**
@@ -132,6 +164,26 @@ public abstract class LeafNode extends RegexNode
   public boolean isPositionShown ()
   {
     return this.positionShown;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#lastPos()
+   */
+  @Override
+  public ArrayList < LeafNode > lastPos ()
+  {
+    if ( this.lastPosCache == null )
+    {
+      this.lastPosCache = new ArrayList < LeafNode > ();
+      if ( ! ( this instanceof EpsilonNode ) )
+      {
+        this.lastPosCache.add ( this );
+      }
+    }
+    return this.lastPosCache;
   }
 
 

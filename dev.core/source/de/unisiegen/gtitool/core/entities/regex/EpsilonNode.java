@@ -79,7 +79,7 @@ public class EpsilonNode extends LeafNode
   @Override
   public RegexNode clone ()
   {
-    return new EpsilonNode();
+    return new EpsilonNode ();
   }
 
 
@@ -113,18 +113,6 @@ public class EpsilonNode extends LeafNode
       return this.position == e.position;
     }
     return false;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#firstPos()
-   */
-  @Override
-  public ArrayList < LeafNode > firstPos ()
-  {
-    return new ArrayList < LeafNode > ();
   }
 
 
@@ -226,18 +214,6 @@ public class EpsilonNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
-   * @see RegexNode#lastPos()
-   */
-  @Override
-  public ArrayList < LeafNode > lastPos ()
-  {
-    return new ArrayList < LeafNode > ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see RegexNode#nullable()
    */
   @Override
@@ -288,8 +264,8 @@ public class EpsilonNode extends LeafNode
    * @see RegexNode#toCoreSyntax(boolean)
    */
   @Override
-  public RegexNode toCoreSyntax (@SuppressWarnings("unused")
-  boolean withCharacterClasses)
+  public RegexNode toCoreSyntax ( @SuppressWarnings ( "unused" )
+  boolean withCharacterClasses )
   {
     return this;
   }

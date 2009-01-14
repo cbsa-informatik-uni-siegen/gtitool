@@ -115,18 +115,6 @@ public class OptionalNode extends OneChildNode
   /**
    * {@inheritDoc}
    * 
-   * @see RegexNode#firstPos()
-   */
-  @Override
-  public ArrayList < LeafNode > firstPos ()
-  {
-    return this.regex.firstPos ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see RegexNode#getAllChildren()
    */
   @Override
@@ -220,18 +208,6 @@ public class OptionalNode extends OneChildNode
   public boolean isInCoreSyntax ()
   {
     return false;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#lastPos()
-   */
-  @Override
-  public ArrayList < LeafNode > lastPos ()
-  {
-    return this.regex.lastPos ();
   }
 
 

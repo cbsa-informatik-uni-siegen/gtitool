@@ -78,15 +78,15 @@ public class DefaultRegex implements Regex
 
 
   /**
-   * The root node of this regex
-   */
-  private RegexNode regexNode;
-
-
-  /**
    * The alphabet of this {@link Regex}
    */
   private DefaultRegexAlphabet alphabet;
+
+
+  /**
+   * The root node of this regex
+   */
+  private RegexNode regexNode;
 
 
   /**
@@ -107,75 +107,63 @@ public class DefaultRegex implements Regex
 
 
   /**
-   * Sets the {@link RegexNode} initial.
+   * {@inheritDoc}
    * 
-   * @param regexNode The {@link RegexNode} to set.
-   * @param regexString The new {@link String} for the regex
+   * @see Object#clone()
    */
-  public void setRegexNode ( RegexNode regexNode, String regexString )
+  @Override
+  public DefaultRegex clone ()
   {
-    this.regexNode = regexNode;
-    this.regexString = regexString;
-
-    int currentPosition = 1;
-    for ( LeafNode current : this.regexNode.getTokenNodes () )
+    DefaultRegexAlphabet a;
+    try
     {
-      current.setPosition ( currentPosition );
-      currentPosition++ ;
+      a = new DefaultRegexAlphabet ();
+      a.add ( this.alphabet.get () );
+      DefaultRegex r = new DefaultRegex ( a );
+      if ( this.regexNode != null && this.regexString != null )
+      {
+        r.setRegexNode ( getRegexNode (), getRegexString () );
+      }
+      return r;
     }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    return null;
   }
 
 
   /**
-   * Gets the Symbol at Position in the Regex
+   * {@inheritDoc}
    * 
-   * @param position The position
-   * @return The Symbol at Position in the Regex or null if position is empty
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  public String symbolAtPosition ( int position )
+  @Override
+  public boolean equals ( Object obj )
   {
-    String s = null;
-    for ( LeafNode current : this.regexNode.getTokenNodes () )
+    if ( obj == this )
     {
-      if ( current.getPosition () == position )
+      return true;
+    }
+    if ( obj instanceof DefaultRegex )
+    {
+      DefaultRegex dr = ( DefaultRegex ) obj;
+      if ( this.regexString == null )
       {
-        s = current.getNodeString ().toString ();
+        if ( dr.getRegexNode () != null )
+        {
+          return this.alphabet.equals ( dr.alphabet );
+        }
+      }
+      else if ( this.regexString.equals ( dr.getRegexString () )
+          && this.regexNode.equals ( dr.getRegexNode () ) )
+      {
+        return this.alphabet.equals ( dr.alphabet );
       }
     }
-    return s;
-  }
-
-
-  /**
-   * Gets all Nodes in this {@link Regex} recursivly
-   * 
-   * @param root The root of the Regex
-   * @return All Nodes in the regex
-   */
-  private HashSet < RegexNode > getAllNodes ( RegexNode root )
-  {
-    HashSet < RegexNode > nodeList = new HashSet < RegexNode > ();
-    nodeList.add ( root );
-    if ( ! ( root instanceof TokenNode ) )
-    {
-      for ( RegexNode node : root.getAllChildren () )
-      {
-        nodeList.addAll ( getAllNodes ( node ) );
-      }
-    }
-    return nodeList;
-  }
-
-
-  /**
-   * Returns the regexNode.
-   * 
-   * @return The regexNode.
-   * @see #regexNode
-   */
-  public RegexNode getRegexNode ()
-  {
-    return this.regexNode;
+    return false;
   }
 
 
@@ -193,6 +181,7 @@ public class DefaultRegex implements Regex
 
     for ( RegexNode node : nodeList )
     {
+      
       if ( node instanceof ConcatenationNode )
       {
         RegexNode n1 = node.getChildren ().get ( 0 );
@@ -248,6 +237,21 @@ public class DefaultRegex implements Regex
 
 
   /**
+   * Gets all Nodes in this {@link Regex} recursivly
+   * 
+   * @param root The root of the Regex
+   * @return All Nodes in the regex
+   */
+  private HashSet < RegexNode > getAllNodes ( RegexNode root )
+  {
+    HashSet < RegexNode > nodeList = new HashSet < RegexNode > ();
+    nodeList.add ( root );
+    nodeList.addAll(root.getAllChildren ());
+    return nodeList;
+  }
+
+
+  /**
    * Returns the alphabet.
    * 
    * @return The alphabet.
@@ -260,56 +264,38 @@ public class DefaultRegex implements Regex
 
 
   /**
-   * Sets the alphabet.
+   * Returns the Not removable symbols
    * 
-   * @param alphabet The alphabet to set.
-   * @see #alphabet
+   * @return The Not removable symbols
    */
-  public void setAlphabet ( DefaultRegexAlphabet alphabet )
+  public TreeSet < Symbol > getNotRemoveableSymbolsFromAlphabet ()
   {
-    this.alphabet = alphabet;
+    TreeSet < Symbol > set = new TreeSet < Symbol > ();
+    for ( LeafNode l : this.regexNode.getTokenNodes () )
+    {
+      if ( l instanceof TokenNode )
+      {
+        set.add ( new DefaultSymbol ( ( ( TokenNode ) l ).getName () ) );
+      }
+      else if ( l instanceof CharacterClassNode )
+      {
+        CharacterClassNode c = ( CharacterClassNode ) l;
+        set.addAll ( c.getCharacters () );
+      }
+    }
+    return set;
   }
 
 
   /**
-   * {@inheritDoc}
+   * Returns the regexNode.
    * 
-   * @see java.lang.Object#equals(java.lang.Object)
+   * @return The regexNode.
+   * @see #regexNode
    */
-  @Override
-  public boolean equals ( Object obj )
+  public RegexNode getRegexNode ()
   {
-    if ( obj == this )
-    {
-      return true;
-    }
-    if ( obj instanceof DefaultRegex )
-    {
-      DefaultRegex dr = ( DefaultRegex ) obj;
-      if ( this.regexString == null )
-      {
-        if ( dr.getRegexNode () != null )
-        {
-          return this.alphabet.equals ( dr.alphabet );
-        }
-      }
-      else if ( this.regexString.equals ( dr.getRegexString () )
-          && this.regexNode.equals ( dr.getRegexNode () ) )
-      {
-        return this.alphabet.equals ( dr.alphabet );
-      }
-    }
-    return false;
-  }
-
-
-  /**
-   * @see java.lang.Object#toString()
-   */
-  @Override
-  public String toString ()
-  {
-    return this.regexNode.toString ();
+    return this.regexNode;
   }
 
 
@@ -322,35 +308,6 @@ public class DefaultRegex implements Regex
   public String getRegexString ()
   {
     return this.regexString;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#clone()
-   */
-  @Override
-  public DefaultRegex clone ()
-  {
-    DefaultRegexAlphabet a;
-    try
-    {
-      a = new DefaultRegexAlphabet ();
-      a.add ( this.alphabet.get () );
-      DefaultRegex r = new DefaultRegex ( a );
-      if ( this.regexNode != null && this.regexString != null )
-      {
-        r.setRegexNode ( getRegexNode (), getRegexString () );
-      }
-      return r;
-    }
-    catch ( AlphabetException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-    return null;
   }
 
 
@@ -371,6 +328,68 @@ public class DefaultRegex implements Regex
       }
     }
     return symbols;
+  }
+
+
+  /**
+   * Sets the alphabet.
+   * 
+   * @param alphabet The alphabet to set.
+   * @see #alphabet
+   */
+  public void setAlphabet ( DefaultRegexAlphabet alphabet )
+  {
+    this.alphabet = alphabet;
+  }
+
+
+  /**
+   * Sets the {@link RegexNode} initial.
+   * 
+   * @param regexNode The {@link RegexNode} to set.
+   * @param regexString The new {@link String} for the regex
+   */
+  public void setRegexNode ( RegexNode regexNode, String regexString )
+  {
+    this.regexNode = regexNode;
+    this.regexString = regexString;
+
+    int currentPosition = 1;
+    for ( LeafNode current : this.regexNode.getTokenNodes () )
+    {
+      current.setPosition ( currentPosition );
+      currentPosition++ ;
+    }
+  }
+
+
+  /**
+   * Gets the Symbol at Position in the Regex
+   * 
+   * @param position The position
+   * @return The Symbol at Position in the Regex or null if position is empty
+   */
+  public String symbolAtPosition ( int position )
+  {
+    String s = null;
+    for ( LeafNode current : this.regexNode.getTokenNodes () )
+    {
+      if ( current.getPosition () == position )
+      {
+        s = current.getNodeString ().toString ();
+      }
+    }
+    return s;
+  }
+
+
+  /**
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString ()
+  {
+    return this.regexNode.toString ();
   }
 
 
@@ -398,28 +417,5 @@ public class DefaultRegex implements Regex
     {
       throw new RegexValidationException ( elist );
     }
-  }
-
-
-  /**
-   * Returns the Not removable symbols
-   * 
-   * @return The Not removable symbols
-   */
-  public TreeSet < Symbol > getNotRemoveableSymbolsFromAlphabet ()
-  {
-    TreeSet < Symbol > set = new TreeSet < Symbol > ();
-    for ( LeafNode l : this.regexNode.getTokenNodes () )
-    {
-      if ( l instanceof TokenNode )
-      {
-        set.add ( new DefaultSymbol ( ( ( TokenNode ) l ).getName () ) );
-        }
-      else if (l instanceof CharacterClassNode) {
-        CharacterClassNode c = ( CharacterClassNode ) l;
-        set.addAll ( c.getCharacters () );
-      }
-    }
-    return set;
   }
 }

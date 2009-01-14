@@ -196,7 +196,8 @@ public abstract class RegexNode implements Entity < RegexNode >
   {
     this.active = active;
   }
-  
+
+
   /**
    * Sets flag that indicates if user used braces around the regex
    * 
@@ -206,27 +207,30 @@ public abstract class RegexNode implements Entity < RegexNode >
   {
     this.braces = braces;
   }
-  
+
+
   /**
    * Sets flag that indicates that positions are shown
-   *
+   * 
    * @param b True if positions should be shown
    */
-  public void setShowPositions(boolean b) {
-    for(LeafNode n : getTokenNodes ()) {
+  public void setShowPositions ( boolean b )
+  {
+    for ( LeafNode n : getTokenNodes () )
+    {
       n.setPositionShown ( b );
     }
   }
-  
 
 
   /**
    * Translate the RegexNode to Core Syntax
-   * @param withCharacterClasses Indicates if CharacterClasses should also be converted
    * 
+   * @param withCharacterClasses Indicates if CharacterClasses should also be
+   *          converted
    * @return the RegexNode in Core Syntax
    */
-  public abstract RegexNode toCoreSyntax (boolean withCharacterClasses);
+  public abstract RegexNode toCoreSyntax ( boolean withCharacterClasses );
 
 
   /**

@@ -30,6 +30,18 @@ public class DisjunctionNode extends TwoChildNode
 
 
   /**
+   * Cached {@link ArrayList} for firstPos
+   */
+  private transient ArrayList < LeafNode > firstPosCache = null;
+
+
+  /**
+   * Cached {@link ArrayList} for lastPos
+   */
+  private transient ArrayList < LeafNode > lastPosCache = null;
+
+
+  /**
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
@@ -144,10 +156,13 @@ public class DisjunctionNode extends TwoChildNode
   @Override
   public ArrayList < LeafNode > firstPos ()
   {
-    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
-    nodes.addAll ( this.regex1.firstPos () );
-    nodes.addAll ( this.regex2.firstPos () );
-    return nodes;
+    if ( this.firstPosCache == null )
+    {
+      this.firstPosCache = new ArrayList < LeafNode > ();
+      this.firstPosCache.addAll ( this.regex1.firstPos () );
+      this.firstPosCache.addAll ( this.regex2.firstPos () );
+    }
+    return this.firstPosCache;
   }
 
 
@@ -164,21 +179,6 @@ public class DisjunctionNode extends TwoChildNode
     nodes.add ( this.regex2 );
     nodes.addAll ( this.regex1.getAllChildren () );
     nodes.addAll ( this.regex2.getAllChildren () );
-    return nodes;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#getChildren()
-   */
-  @Override
-  public ArrayList < RegexNode > getChildren ()
-  {
-    ArrayList < RegexNode > nodes = new ArrayList < RegexNode > ();
-    nodes.add ( this.regex1 );
-    nodes.add ( this.regex2 );
     return nodes;
   }
 
@@ -253,10 +253,13 @@ public class DisjunctionNode extends TwoChildNode
   @Override
   public ArrayList < LeafNode > lastPos ()
   {
-    ArrayList < LeafNode > nodes = new ArrayList < LeafNode > ();
-    nodes.addAll ( this.regex1.lastPos () );
-    nodes.addAll ( this.regex2.lastPos () );
-    return nodes;
+    if ( this.lastPosCache == null )
+    {
+      this.lastPosCache = new ArrayList < LeafNode > ();
+      this.lastPosCache.addAll ( this.regex1.lastPos () );
+      this.lastPosCache.addAll ( this.regex2.lastPos () );
+    }
+    return this.lastPosCache;
   }
 
 

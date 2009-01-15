@@ -33,49 +33,49 @@ public class RegexNodeInfoPanel extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        this.jGTILabelNullable = new de.unisiegen.gtitool.ui.swing.JGTILabel();
-        this.jScrollPaneNullable = new javax.swing.JScrollPane();
-        this.jGTITextAreaNullable = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
-        this.jScrollPaneFirstpos = new javax.swing.JScrollPane();
-        this.jGTITextAreaFirstpos = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
-        this.jGTILabelFirstpos = new de.unisiegen.gtitool.ui.swing.JGTILabel();
-        this.jGTILabelLastpos = new de.unisiegen.gtitool.ui.swing.JGTILabel();
-        this.jScrollPaneLastpos = new javax.swing.JScrollPane();
-        this.jGTITextAreaLastpos = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
-        this.jScrollPaneFollowpos = new javax.swing.JScrollPane();
-        this.jGTITextAreaFollowpos = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
-        this.jGTILabelFollowpos = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelNullable = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jScrollPaneNullable = new javax.swing.JScrollPane();
+        jGTITextAreaNullable = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
+        jScrollPaneFirstpos = new javax.swing.JScrollPane();
+        jGTITextAreaFirstpos = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
+        jGTILabelFirstpos = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelLastpos = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jScrollPaneLastpos = new javax.swing.JScrollPane();
+        jGTITextAreaLastpos = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
+        jScrollPaneFollowpos = new javax.swing.JScrollPane();
+        jGTITextAreaFollowpos = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
+        jGTILabelFollowpos = new de.unisiegen.gtitool.ui.swing.JGTILabel();
 
         setLayout(new java.awt.GridBagLayout());
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        this.jGTILabelNullable.setText(bundle.getString("RegexNodeInfo.Nullable")); // NOI18N
+        jGTILabelNullable.setText(bundle.getString("RegexNodeInfo.Nullable")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(20, 10, 0, 10);
-        add(this.jGTILabelNullable, gridBagConstraints);
+        add(jGTILabelNullable, gridBagConstraints);
 
-        this.jGTITextAreaNullable.setColumns(20);
-        this.jGTITextAreaNullable.setEditable(false);
-        this.jGTITextAreaNullable.setRows(1);
-        this.jScrollPaneNullable.setViewportView(this.jGTITextAreaNullable);
+        jGTITextAreaNullable.setColumns(20);
+        jGTITextAreaNullable.setEditable(false);
+        jGTITextAreaNullable.setRows(1);
+        jScrollPaneNullable.setViewportView(jGTITextAreaNullable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 20, 10);
-        add(this.jScrollPaneNullable, gridBagConstraints);
+        add(jScrollPaneNullable, gridBagConstraints);
 
-        this.jGTITextAreaFirstpos.setColumns(20);
-        this.jGTITextAreaFirstpos.setEditable(false);
-        this.jGTITextAreaFirstpos.setRows(2);
-        this.jScrollPaneFirstpos.setViewportView(this.jGTITextAreaFirstpos);
+        jGTITextAreaFirstpos.setColumns(20);
+        jGTITextAreaFirstpos.setEditable(false);
+        jGTITextAreaFirstpos.setRows(2);
+        jScrollPaneFirstpos.setViewportView(jGTITextAreaFirstpos);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -85,30 +85,30 @@ public class RegexNodeInfoPanel extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 20, 10);
-        add(this.jScrollPaneFirstpos, gridBagConstraints);
+        add(jScrollPaneFirstpos, gridBagConstraints);
 
-        this.jGTILabelFirstpos.setText(bundle.getString("RegexNodeInfo.Firstpos")); // NOI18N
+        jGTILabelFirstpos.setText(bundle.getString("RegexNodeInfo.Firstpos")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
-        add(this.jGTILabelFirstpos, gridBagConstraints);
+        add(jGTILabelFirstpos, gridBagConstraints);
 
-        this.jGTILabelLastpos.setText(bundle.getString("RegexNodeInfo.Lastpos")); // NOI18N
+        jGTILabelLastpos.setText(bundle.getString("RegexNodeInfo.Lastpos")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
-        add(this.jGTILabelLastpos, gridBagConstraints);
+        add(jGTILabelLastpos, gridBagConstraints);
 
-        this.jGTITextAreaLastpos.setColumns(20);
-        this.jGTITextAreaLastpos.setEditable(false);
-        this.jGTITextAreaLastpos.setRows(2);
-        this.jScrollPaneLastpos.setViewportView(this.jGTITextAreaLastpos);
+        jGTITextAreaLastpos.setColumns(20);
+        jGTITextAreaLastpos.setEditable(false);
+        jGTITextAreaLastpos.setRows(2);
+        jScrollPaneLastpos.setViewportView(jGTITextAreaLastpos);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -118,12 +118,12 @@ public class RegexNodeInfoPanel extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 20, 10);
-        add(this.jScrollPaneLastpos, gridBagConstraints);
+        add(jScrollPaneLastpos, gridBagConstraints);
 
-        this.jGTITextAreaFollowpos.setColumns(20);
-        this.jGTITextAreaFollowpos.setEditable(false);
-        this.jGTITextAreaFollowpos.setRows(2);
-        this.jScrollPaneFollowpos.setViewportView(this.jGTITextAreaFollowpos);
+        jGTITextAreaFollowpos.setColumns(20);
+        jGTITextAreaFollowpos.setEditable(false);
+        jGTITextAreaFollowpos.setRows(2);
+        jScrollPaneFollowpos.setViewportView(jGTITextAreaFollowpos);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -133,16 +133,16 @@ public class RegexNodeInfoPanel extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 20, 10);
-        add(this.jScrollPaneFollowpos, gridBagConstraints);
+        add(jScrollPaneFollowpos, gridBagConstraints);
 
-        this.jGTILabelFollowpos.setText(bundle.getString("RegexNodeInfo.Followpos")); // NOI18N
+        jGTILabelFollowpos.setText(bundle.getString("RegexNodeInfo.Followpos")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
-        add(this.jGTILabelFollowpos, gridBagConstraints);
+        add(jGTILabelFollowpos, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
 

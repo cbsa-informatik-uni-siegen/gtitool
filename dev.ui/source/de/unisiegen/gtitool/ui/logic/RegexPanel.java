@@ -975,10 +975,14 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   {
     if ( this.jGTIGraph.getSelectionCell () instanceof DefaultNodeView )
     {
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setEnabled ( true );
+      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setEnabled ( true );
+      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setEnabled ( true );
+
       RegexNode node = ( ( DefaultNodeView ) this.jGTIGraph.getSelectionCell () )
           .getNode ();
-      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( "" //$NON-NLS-1$
-          + node.nullable () );
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( String
+          .valueOf ( node.nullable () ) );
       String firstpos = "{"; //$NON-NLS-1$
       for ( LeafNode n : node.firstPos () )
       {
@@ -1033,6 +1037,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setText ( "" ); //$NON-NLS-1$
       this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( "" ); //$NON-NLS-1$
       this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( "" ); //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setEnabled ( false );
+      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setEnabled ( false );
+      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setEnabled ( false );
       this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
       this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
     }

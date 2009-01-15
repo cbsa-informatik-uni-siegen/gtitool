@@ -141,11 +141,11 @@ public class DefaultRegexAlphabet extends DefaultAlphabet
       }
       else
       {
-        string.add ( new PrettyToken ( "[", Style.SYMBOL ) ); //$NON-NLS-1$
+        string.add ( new PrettyToken ( "[", Style.NONE ) ); //$NON-NLS-1$
         string.add ( a.get ( 0 ) );
         string.add ( new PrettyToken ( "-", Style.NONE ) ); //$NON-NLS-1$
         string.add ( a.get ( a.size () - 1 ) );
-        string.add ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
+        string.add ( new PrettyToken ( "]", Style.NONE ) ); //$NON-NLS-1$
       }
       t.removeAll ( a );
     }

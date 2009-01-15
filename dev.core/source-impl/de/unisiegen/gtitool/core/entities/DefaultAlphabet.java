@@ -739,11 +739,9 @@ public class DefaultAlphabet implements Alphabet
         }
         else
         {
-          this.cachedPrettyString.add ( new PrettyToken ( "[", Style.SYMBOL ) ); //$NON-NLS-1$
           this.cachedPrettyString.add ( a.get ( 0 ) );
           this.cachedPrettyString.add ( new PrettyToken ( "..", Style.NONE ) ); //$NON-NLS-1$
           this.cachedPrettyString.add ( a.get ( a.size () - 1 ) );
-          this.cachedPrettyString.add ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
         }
         t.removeAll ( a );
       }

@@ -52,7 +52,7 @@ public class DefaultBlackBoxState extends DefaultState
   @Override
   public PrettyString toPrettyString ()
   {
-    if ( !this.ready )
+    if ( this.ready )
     {
       return super.toPrettyString ();
     }

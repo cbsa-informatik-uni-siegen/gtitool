@@ -3877,6 +3877,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
   }
 
+  /**
+   * TODO
+   *
+   */
+  public final void handleEliminateLeftRecursion() {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if( panel instanceof GrammarPanel) {
+      ((GrammarPanel)panel).handleEliminateLeftRecursion ();
+    }
+  }
 
   /**
    * Saves the last divider location

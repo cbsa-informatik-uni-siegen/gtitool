@@ -121,8 +121,12 @@ public class GrammarTest
         DefaultCFG cfg = new DefaultCFG ( nonTerminalSet, terminalSet, S );
         cfg.addProduction ( new DefaultProduction ( S,
             new DefaultProductionWord ( A, a ) ) );
+        cfg.addProduction ( new DefaultProduction ( S,
+            new DefaultProductionWord ( b ) ) );
         cfg.addProduction ( new DefaultProduction ( A,
             new DefaultProductionWord ( S, d ) ) );
+        cfg.addProduction ( new DefaultProduction ( A,
+            new DefaultProductionWord ( A, c ) ) );
         cfg.addProduction ( new DefaultProduction ( A,
             new DefaultProductionWord () ) );
         System.err.println ( "Nonterminals: " + cfg.getNonterminalSymbolSet () );

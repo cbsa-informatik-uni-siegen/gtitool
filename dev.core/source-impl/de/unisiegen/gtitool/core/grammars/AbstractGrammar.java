@@ -754,7 +754,6 @@ public abstract class AbstractGrammar implements Grammar
     // Do nothing
   }
 
-
   /**
    * Updates the start symbol flags.
    */

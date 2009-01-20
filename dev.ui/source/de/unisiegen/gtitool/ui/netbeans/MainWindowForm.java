@@ -1153,6 +1153,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuItemReachableStates = new javax.swing.JMenuItem();
         jMenuItemReorderStateNames = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -1904,6 +1905,14 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuExtras.add(jMenuItemReorderStateNames);
 
+        jMenuItem1.setText("Eliminate Left-Recursion");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenuExtras.add(jMenuItem1);
+
         jMenuBarMain.add(jMenuExtras);
 
         jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HelpMnemonic").charAt(0));
@@ -2193,6 +2202,10 @@ private void jMenuItemToCoreSyntaxActionPerformed(java.awt.event.ActionEvent evt
 private void jCheckBoxMenuItemRegexInfoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemRegexInfoItemStateChanged
     this.logic.handleRegexInfoChanged(this.jCheckBoxMenuItemRegexInfo.isSelected());
 }//GEN-LAST:event_jCheckBoxMenuItemRegexInfoItemStateChanged
+
+private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    this.logic.handleEliminateLeftRecursion();
+}//GEN-LAST:event_jMenuItem1ActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2234,6 +2247,7 @@ private void jCheckBoxMenuItemRegexInfoItemStateChanged(java.awt.event.ItemEvent
     private javax.swing.JMenu jMenuExtras;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuHelp;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemAutoLayout;
     private javax.swing.JMenuItem jMenuItemCFG;

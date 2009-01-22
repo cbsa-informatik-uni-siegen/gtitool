@@ -82,8 +82,9 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         jGTILabelNonterminalSymbolsConverted = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jScrollPaneNonterminalsConverted = new javax.swing.JScrollPane();
         jGTIListNonterminalsConverted = new de.unisiegen.gtitool.ui.swing.JGTIList();
-        jGTIButtonNonterminalUp = new de.unisiegen.gtitool.ui.swing.JGTIButton();
-        jGTIButtonNonterminalDown = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIPanelGrammarConverted1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIScrollPaneGrammarConverted1 = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTITableGrammarConverted1 = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonPrint = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -282,10 +283,9 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.85;
+        gridBagConstraints.weighty = 0.75;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         jGTIPanelConverted.add(jGTIPanelGrammarConverted, gridBagConstraints);
 
@@ -294,7 +294,6 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 16, 16);
@@ -304,7 +303,6 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         jGTIPanelConverted.add(jGTILabelTerminalSymbolsConverted, gridBagConstraints);
@@ -314,7 +312,6 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
@@ -324,7 +321,6 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         jGTIPanelConverted.add(jGTILabelStartSymbolConverted, gridBagConstraints);
@@ -333,11 +329,11 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         jGTIPanelConverted.add(jGTILabelNonterminalSymbolsConverted, gridBagConstraints);
 
+        jGTIListNonterminalsConverted.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jScrollPaneNonterminalsConverted.setViewportView(jGTIListNonterminalsConverted);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -346,35 +342,37 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.15;
+        gridBagConstraints.weighty = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         jGTIPanelConverted.add(jScrollPaneNonterminalsConverted, gridBagConstraints);
 
-        jGTIButtonNonterminalUp.setText("Up");
-        jGTIButtonNonterminalUp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIButtonNonterminalUpActionPerformed(evt);
+        jGTITableGrammarConverted1.setAutoCreateColumnsFromModel(false);
+        jGTITableGrammarConverted1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null}
+            },
+            new String [] {
+                "Title 1"
             }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(30, 0, 0, 40);
-        jGTIPanelConverted.add(jGTIButtonNonterminalUp, gridBagConstraints);
+        ));
+        jGTIScrollPaneGrammarConverted1.setViewportView(jGTITableGrammarConverted1);
 
-        jGTIButtonNonterminalDown.setText("Down");
-        jGTIButtonNonterminalDown.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIButtonNonterminalDownActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 40);
-        jGTIPanelConverted.add(jGTIButtonNonterminalDown, gridBagConstraints);
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jGTIPanelGrammarConverted1.add(jGTIScrollPaneGrammarConverted1, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.75;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        jGTIPanelConverted.add(jGTIPanelGrammarConverted1, gridBagConstraints);
 
         jGTISplitPaneGraph.setRightComponent(jGTIPanelConverted);
 
@@ -478,19 +476,9 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
 private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonPrintActionPerformed
     this.logic.handlePrint();
 }//GEN-LAST:event_jGTIButtonPrintActionPerformed
-
-private void jGTIButtonNonterminalUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonNonterminalUpActionPerformed
-    this.logic.handleNonterminalUp();
-}//GEN-LAST:event_jGTIButtonNonterminalUpActionPerformed
-
-private void jGTIButtonNonterminalDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonNonterminalDownActionPerformed
-    this.logic.handleNonterminalDown();
-}//GEN-LAST:event_jGTIButtonNonterminalDownActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
-    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonNonterminalDown;
-    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonNonterminalUp;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrint;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelNonterminalSymbolsConverted;
@@ -502,14 +490,17 @@ private void jGTIButtonNonterminalDownActionPerformed(java.awt.event.ActionEvent
     public de.unisiegen.gtitool.ui.swing.JGTIList jGTIListNonterminalsConverted;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelConverted;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelGrammarConverted;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelGrammarConverted1;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelGrammarOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneGrammarConverted;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneGrammarConverted1;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneGrammarOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableGrammarConverted;
+    public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableGrammarConverted1;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableGrammarOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableOutline;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonBeginStep;

@@ -1147,13 +1147,13 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemAutoLayout = new javax.swing.JMenuItem();
         jMenuItemMinimize = new javax.swing.JMenuItem();
         jMenuItemToCoreSyntax = new javax.swing.JMenuItem();
+        jMenuItemEliminateLeftRecursion = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
         jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuItemReachableStates = new javax.swing.JMenuItem();
         jMenuItemReorderStateNames = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -1863,6 +1863,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuExecute.add(jMenuItemToCoreSyntax);
 
+        jMenuItemEliminateLeftRecursion.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EliminateLeftRecursionMnemonic").charAt(0));
+        jMenuItemEliminateLeftRecursion.setText(bundle.getString("MainWindow.EliminateLeftRecursion")); // NOI18N
+        jMenuItemEliminateLeftRecursion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEliminateLeftRecursionActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemEliminateLeftRecursion);
+
         jMenuBarMain.add(jMenuExecute);
 
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
@@ -1904,14 +1913,6 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
             }
         });
         jMenuExtras.add(jMenuItemReorderStateNames);
-
-        jMenuItem1.setText("Eliminate Left-Recursion");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenuExtras.add(jMenuItem1);
 
         jMenuBarMain.add(jMenuExtras);
 
@@ -2203,9 +2204,9 @@ private void jCheckBoxMenuItemRegexInfoItemStateChanged(java.awt.event.ItemEvent
     this.logic.handleRegexInfoChanged(this.jCheckBoxMenuItemRegexInfo.isSelected());
 }//GEN-LAST:event_jCheckBoxMenuItemRegexInfoItemStateChanged
 
-private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+private void jMenuItemEliminateLeftRecursionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminateLeftRecursionActionPerformed
     this.logic.handleEliminateLeftRecursion();
-}//GEN-LAST:event_jMenuItem1ActionPerformed
+}//GEN-LAST:event_jMenuItemEliminateLeftRecursionActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2247,7 +2248,6 @@ private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JMenu jMenuExtras;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuHelp;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemAutoLayout;
     private javax.swing.JMenuItem jMenuItemCFG;
@@ -2264,6 +2264,7 @@ private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JMenuItem jMenuItemDFA;
     private javax.swing.JMenuItem jMenuItemENFA;
     private javax.swing.JMenuItem jMenuItemEditMachine;
+    private javax.swing.JMenuItem jMenuItemEliminateLeftRecursion;
     private javax.swing.JMenuItem jMenuItemEnterWord;
     private javax.swing.JMenuItem jMenuItemExchange;
     private javax.swing.JMenuItem jMenuItemExportLatex;

@@ -3,12 +3,14 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
 
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
@@ -32,6 +34,7 @@ import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
@@ -43,6 +46,9 @@ import de.unisiegen.gtitool.ui.netbeans.ConvertGrammarDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.swing.JGTIList;
+import de.unisiegen.gtitool.ui.swing.dnd.JGTIListModelRows;
+import de.unisiegen.gtitool.ui.swing.dnd.JGTIListTransferHandler;
 
 
 /**
@@ -328,6 +334,38 @@ public class ConvertGrammarDialog implements
     this.gui.jGTITableGrammarConverted.getTableHeader ().setReorderingAllowed (
         false );
 
+    this.gui.jGTIListNonterminalsConverted.setDndMode ( JGTIList.DROP_BETWEEN );
+    this.gui.jGTIListNonterminalsConverted
+        .setCellRenderer ( new PrettyStringListCellRenderer () );
+    this.gui.jGTIListNonterminalsConverted
+        .setTransferHandler ( new JGTIListTransferHandler (
+            TransferHandler.MOVE )
+        {
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = -6137236787378034581L;
+
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see de.unisiegen.gtitool.ui.swing.dnd.JGTIListTransferHandler#importListModelRows(de.unisiegen.gtitool.ui.swing.JGTIList,
+           *      de.unisiegen.gtitool.ui.swing.dnd.JGTIListModelRows, int)
+           */
+          @Override
+          protected boolean importListModelRows ( JGTIList list,
+              JGTIListModelRows rows, int targetIndex )
+          {
+            moveNonterminals ( list, rows, targetIndex );
+            return true;
+          }
+        } );
+    this.gui.jGTIListNonterminalsConverted.setDragEnabled ( true );
+    this.gui.jGTIListNonterminalsConverted
+        .addAllowedDndSource ( this.gui.jGTIListNonterminalsConverted );
+
     this.modelConverted
         .addModifyStatusChangedListener ( new ModifyStatusChangedListener ()
         {
@@ -349,6 +387,61 @@ public class ConvertGrammarDialog implements
     addOutlineComment ( new PrettyString ( new PrettyToken ( "Initial: i: "
         + this.i + " j:" + this.j, Style.COMMENT ) ) );
     show ();
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param list
+   * @param rows
+   * @param targetIndex
+   */
+  protected void moveNonterminals ( @SuppressWarnings ( "unused" )
+  JGTIList list, JGTIListModelRows rows, int targetIndex )
+  {
+    ArrayList < NonterminalSymbol > oldNonterminals = new ArrayList < NonterminalSymbol > ();
+    for ( int n = 0 ; n < this.nonterminals.getSize () ; n++ )
+    {
+      oldNonterminals.add ( ( NonterminalSymbol ) this.nonterminals.get ( n ) );
+    }
+
+    ArrayList < NonterminalSymbol > nonterminalList = new ArrayList < NonterminalSymbol > ();
+
+    int [] indeces = rows.getRowIndices ();
+
+    int newTargetIndex = targetIndex;
+
+    if ( ( indeces.length > 0 ) && ( indeces [ 0 ] < targetIndex ) )
+    {
+      newTargetIndex++ ;
+    }
+
+    for ( int index : indeces )
+    {
+      nonterminalList.add ( ( NonterminalSymbol ) this.nonterminals
+          .getElementAt ( index ) );
+
+      if ( index < targetIndex )
+      {
+        newTargetIndex-- ;
+      }
+    }
+
+    for ( int n = indeces.length - 1 ; n > -1 ; n-- )
+    {
+      this.nonterminals.remove ( indeces [ n ] );
+    }
+
+    newTargetIndex = Math.min ( newTargetIndex, this.nonterminals.getSize () );
+    Collections.reverse ( nonterminalList );
+    for ( NonterminalSymbol s : nonterminalList )
+    {
+      this.nonterminals.add ( newTargetIndex, s );
+    }
+    this.gui.jGTIListNonterminalsConverted.getSelectionModel ()
+        .setSelectionInterval ( newTargetIndex,
+            newTargetIndex + indeces.length - 1 );
   }
 
 
@@ -539,43 +632,6 @@ public class ConvertGrammarDialog implements
 
 
   /**
-   * Moves a nonterminal up, if possible
-   */
-  public void handleNonterminalUp ()
-  {
-    int index = this.gui.jGTIListNonterminalsConverted.getSelectedIndex ();
-    if ( this.gui.jGTIListNonterminalsConverted.isSelectionEmpty ()
-        || index == 0 )
-    {
-      return;
-    }
-    NonterminalSymbol n = ( NonterminalSymbol ) this.nonterminals
-        .remove ( index );
-    this.nonterminals.insertElementAt ( n, index - 1 );
-    this.gui.jGTIListNonterminalsConverted.setSelectedValue ( n, true );
-  }
-
-
-  /**
-   * Moves a nonterminal down, if possible
-   */
-  public void handleNonterminalDown ()
-  {
-    int index = this.gui.jGTIListNonterminalsConverted.getSelectedIndex ();
-    if ( this.gui.jGTIListNonterminalsConverted.isSelectionEmpty ()
-        || this.gui.jGTIListNonterminalsConverted.getSelectedIndex () == this.gui.jGTIListNonterminalsConverted
-            .getModel ().getSize () - 1 )
-    {
-      return;
-    }
-    NonterminalSymbol n = ( NonterminalSymbol ) this.nonterminals
-        .remove ( index );
-    this.nonterminals.insertElementAt ( n, index + 1 );
-    this.gui.jGTIListNonterminalsConverted.setSelectedValue ( n, true );
-  }
-
-
-  /**
    * Returns the convertMachineTableModel.
    * 
    * @return The convertMachineTableModel.
@@ -758,6 +814,7 @@ public class ConvertGrammarDialog implements
     this.gui.jGTIListNonterminalsConverted.setModel ( this.nonterminals );
     updateConverted ();
     this.convertMachineTableModel.removeLastRow ();
+    this.endReached = false;
     setStatus ();
   }
 
@@ -775,16 +832,13 @@ public class ConvertGrammarDialog implements
       this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( false );
       this.gui.jGTIToolBarButtonStop.setEnabled ( true );
       this.gui.jGTIToolBarButtonEndStep.setEnabled ( false );
-      this.gui.jGTIButtonNonterminalDown.setEnabled ( false );
-      this.gui.jGTIButtonNonterminalUp.setEnabled ( false );
     }
     else
     {
       boolean beginReached = this.stepItemList.isEmpty ();
+      this.gui.jGTIListNonterminalsConverted.setDragEnabled ( beginReached );
       this.gui.jGTIToolBarButtonBeginStep.setEnabled ( !beginReached );
       this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !beginReached );
-      this.gui.jGTIButtonNonterminalDown.setEnabled ( beginReached );
-      this.gui.jGTIButtonNonterminalUp.setEnabled ( beginReached );
       this.gui.jGTIToolBarButtonNextStep.setEnabled ( !this.endReached );
       this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( !this.endReached );
       this.gui.jGTIToolBarButtonStop.setEnabled ( false );

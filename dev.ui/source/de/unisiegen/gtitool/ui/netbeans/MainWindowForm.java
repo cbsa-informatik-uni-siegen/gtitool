@@ -341,6 +341,12 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
       return this.jGTIPanelLeftOuter;
     }
 
+    public JMenuItem getJMenuItemEliminateLeftRecursion() {
+        return jMenuItemEliminateLeftRecursion;
+    }
+    
+    
+
     /**
      * Returns the outer right {@link JGTIPanel}.
      *

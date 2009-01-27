@@ -649,11 +649,14 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   }
 
 
+  /**
+   * Opens {@link ConvertGrammarDialog} for elimination of LeftRecursion
+   */
   public final void handleEliminateLeftRecursion ()
   {
     ConvertGrammarDialog converter = new ConvertGrammarDialog (
         this.mainWindowForm, this );
-    converter.convert ( );
+    converter.eliminateLeftRecursion ();
   }
 
 

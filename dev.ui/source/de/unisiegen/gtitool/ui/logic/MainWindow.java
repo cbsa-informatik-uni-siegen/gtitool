@@ -337,6 +337,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_TO_CORE_SYNTAX,
 
     /**
+     * The eliminate left recursion button state
+     */
+    ENABLED_ELIMINATE_LEFT_RECURSION,
+
+    /**
      * The regex info button state
      */
     ENABLED_REGEX_INFO,
@@ -508,6 +513,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
     removeButtonState ( ButtonState.ENABLED_TO_LATEX );
     removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+    removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -1223,6 +1229,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_TO_CORE_SYNTAX );
       this.gui.getJMenuItemToCoreSyntax ().setEnabled ( true );
+    }
+    // eliminate left recursion
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+      this.gui.getJMenuItemEliminateLeftRecursion ().setEnabled ( true );
     }
     // regex info view
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
@@ -3519,6 +3534,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.VISIBLE_REGEX );
         removeButtonState ( ButtonState.ENABLED_TO_LATEX );
         removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
@@ -3682,10 +3698,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
+          removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
         {
+          addButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
         }
@@ -3792,6 +3810,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
         removeButtonState ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
         removeButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
 
         if ( regexPanel.isUndoAble () )
         {
@@ -3877,17 +3896,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
   }
 
+
   /**
-   * TODO
-   *
+   * Handles elimination of left recursion in cfg.
    */
-  public final void handleEliminateLeftRecursion() {
+  public final void handleEliminateLeftRecursion ()
+  {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if( panel instanceof GrammarPanel) {
-      ((GrammarPanel)panel).handleEliminateLeftRecursion ();
+    if ( panel instanceof GrammarPanel )
+    {
+      ( ( GrammarPanel ) panel ).handleEliminateLeftRecursion ();
     }
   }
+
 
   /**
    * Saves the last divider location
@@ -5144,6 +5166,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_TO_LATEX );
       this.gui.getJMenuItemExportLatex ().setEnabled ( false );
+    }
+    else if ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+      this.gui.getJMenuItemEliminateLeftRecursion ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_TO_CORE_SYNTAX ) )
     {

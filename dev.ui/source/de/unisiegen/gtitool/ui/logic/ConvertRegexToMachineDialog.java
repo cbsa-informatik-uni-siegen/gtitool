@@ -1617,11 +1617,10 @@ public class ConvertRegexToMachineDialog implements
       {
         this.actualStep = Step.CONVERT_DISJUNCTION;
         DisjunctionNode dis = ( DisjunctionNode ) node;
-
         pretty
             .add ( Messages
                 .getPrettyString (
-                    "ConvertRegexToMachineDialog.StepConvertDisjunction", dis.toPrettyString () ) ); //$NON-NLS-1$
+                    "ConvertRegexToMachineDialog.StepConvertDisjunction", dis.getChildren ().get ( 0 ).toPrettyString (), dis.getChildren ().get ( 1 ).toPrettyString () ) ); //$NON-NLS-1$
         try
         {
           DefaultStateView start;
@@ -1904,7 +1903,7 @@ public class ConvertRegexToMachineDialog implements
         pretty
             .add ( Messages
                 .getPrettyString (
-                    "ConvertRegexToMachineDialog.StepConvertConcatenation", con.toPrettyString () ) ); //$NON-NLS-1$
+                    "ConvertRegexToMachineDialog.StepConvertConcatenation", con.getChildren ().get ( 0 ).toPrettyString (), con.getChildren ().get ( 1 ).toPrettyString () ) ); //$NON-NLS-1$
         try
         {
           int regex1Width = this.jGTIGraphConverted.getGraphics ()

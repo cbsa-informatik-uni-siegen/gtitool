@@ -34,6 +34,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
+import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
@@ -302,11 +303,34 @@ public class ConvertGrammarDialog implements
 
 
   /**
-   * Eliminates the left recursion
+   * Flag indicates if leftRecursion should be eliminated
    */
-  public void eliminateLeftRecursion ()
+  private boolean leftRecursion;
+
+
+  /**
+   * Eliminates the left recursion
+   * 
+   * @param leftRec Indicates if leftRecursion should be eliminated
+   */
+  public void convert ( boolean leftRec )
   {
+    this.leftRecursion = leftRec;
     this.gui = new ConvertGrammarDialogForm ( this, this.parent );
+    if ( this.leftRecursion )
+    {
+      this.gui.setTitle ( Messages
+          .getString ( "ConvertGrammarDialog.TitleEliminate" ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      this.gui.setTitle ( Messages
+          .getString ( "ConvertGrammarDialog.TitleFactoring" ) ); //$NON-NLS-1$
+    }
+    this.gui.styledNonterminalSymbolSetParserPanelConverted
+        .setVisible ( !this.leftRecursion );
+    this.gui.jScrollPaneNonterminalsConverted.setVisible ( this.leftRecursion );
+    this.gui.jGTIPanelPreferences.setVisible ( this.leftRecursion );
 
     this.convertMachineTableModel = new ConvertMachineTableModel ();
     this.gui.jGTITableOutline.setModel ( this.convertMachineTableModel );
@@ -328,39 +352,41 @@ public class ConvertGrammarDialog implements
         .setColumnModel ( this.grammarColumnModelConverted );
     this.gui.jGTITableGrammarConverted.getTableHeader ().setReorderingAllowed (
         false );
-
-    this.gui.jGTIListNonterminalsConverted.setDndMode ( JGTIList.DROP_BETWEEN );
-    this.gui.jGTIListNonterminalsConverted
-        .setCellRenderer ( new PrettyStringListCellRenderer () );
-    this.gui.jGTIListNonterminalsConverted
-        .setTransferHandler ( new JGTIListTransferHandler (
-            TransferHandler.MOVE )
-        {
-
-          /**
-           * The serial version uid.
-           */
-          private static final long serialVersionUID = -6137236787378034581L;
-
-
-          /**
-           * {@inheritDoc}
-           * 
-           * @see de.unisiegen.gtitool.ui.swing.dnd.JGTIListTransferHandler#importListModelRows(de.unisiegen.gtitool.ui.swing.JGTIList,
-           *      de.unisiegen.gtitool.ui.swing.dnd.JGTIListModelRows, int)
-           */
-          @Override
-          protected boolean importListModelRows ( JGTIList list,
-              JGTIListModelRows rows, int targetIndex )
+    if ( this.leftRecursion )
+    {
+      this.gui.jGTIListNonterminalsConverted
+          .setDndMode ( JGTIList.DROP_BETWEEN );
+      this.gui.jGTIListNonterminalsConverted
+          .setCellRenderer ( new PrettyStringListCellRenderer () );
+      this.gui.jGTIListNonterminalsConverted
+          .setTransferHandler ( new JGTIListTransferHandler (
+              TransferHandler.MOVE )
           {
-            moveNonterminals ( list, rows, targetIndex );
-            return true;
-          }
-        } );
-    this.gui.jGTIListNonterminalsConverted.setDragEnabled ( true );
-    this.gui.jGTIListNonterminalsConverted
-        .addAllowedDndSource ( this.gui.jGTIListNonterminalsConverted );
 
+            /**
+             * The serial version uid.
+             */
+            private static final long serialVersionUID = -6137236787378034581L;
+
+
+            /**
+             * {@inheritDoc}
+             * 
+             * @see de.unisiegen.gtitool.ui.swing.dnd.JGTIListTransferHandler#importListModelRows(de.unisiegen.gtitool.ui.swing.JGTIList,
+             *      de.unisiegen.gtitool.ui.swing.dnd.JGTIListModelRows, int)
+             */
+            @Override
+            protected boolean importListModelRows ( JGTIList list,
+                JGTIListModelRows rows, int targetIndex )
+            {
+              moveNonterminals ( list, rows, targetIndex );
+              return true;
+            }
+          } );
+      this.gui.jGTIListNonterminalsConverted.setDragEnabled ( true );
+      this.gui.jGTIListNonterminalsConverted
+          .addAllowedDndSource ( this.gui.jGTIListNonterminalsConverted );
+    }
     this.modelConverted
         .addModifyStatusChangedListener ( new ModifyStatusChangedListener ()
         {
@@ -617,6 +643,12 @@ public class ConvertGrammarDialog implements
    */
   protected void updateConverted ()
   {
+    if ( !this.leftRecursion )
+    {
+      this.gui.styledNonterminalSymbolSetParserPanelConverted
+          .setText ( this.modelConverted.getGrammar ()
+              .getNonterminalSymbolSet () );
+    }
     this.gui.styledStartNonterminalSymbolParserPanelConverted
         .setText ( this.modelConverted.getGrammar ().getStartSymbol () );
     this.gui.styledTerminalSymbolSetParserPanelConverted
@@ -791,8 +823,6 @@ public class ConvertGrammarDialog implements
   private void performPreviousStep ()
   {
     StepItem item = this.stepItemList.remove ( this.stepItemList.size () - 1 );
-    this.i = item.getINow ();
-    this.j = item.getJNow ();
     CFG old = item.getOldCFG ();
     this.modelConverted = new DefaultGrammarModel ( old );
 
@@ -803,21 +833,25 @@ public class ConvertGrammarDialog implements
         .setColumnModel ( this.grammarColumnModelConverted );
     this.gui.jGTITableGrammarConverted.getTableHeader ().setReorderingAllowed (
         false );
-
-    if ( this.i == 1 && this.j == 1 )
+    if ( this.leftRecursion )
     {
-      if ( this.initialEliminateEntityProductionsDone )
+      this.i = item.getINow ();
+      this.j = item.getJNow ();
+      if ( this.i == 1 && this.j == 1 )
       {
-        this.initialEliminateEntityProductionsDone = false;
+        if ( this.initialEliminateEntityProductionsDone )
+        {
+          this.initialEliminateEntityProductionsDone = false;
+        }
+        if ( this.initialEliminateEpsilonProductionsDone )
+        {
+          this.initialEliminateEpsilonProductionsDone = false;
+        }
       }
-      if ( this.initialEliminateEpsilonProductionsDone )
-      {
-        this.initialEliminateEpsilonProductionsDone = false;
-      }
-    }
 
-    this.nonterminals = item.getOldNonterminalModel ();
-    this.gui.jGTIListNonterminalsConverted.setModel ( this.nonterminals );
+      this.nonterminals = item.getOldNonterminalModel ();
+      this.gui.jGTIListNonterminalsConverted.setModel ( this.nonterminals );
+    }
     updateConverted ();
     this.convertMachineTableModel.removeLastRow ();
     this.endReached = false;
@@ -928,133 +962,301 @@ public class ConvertGrammarDialog implements
   /**
    * Performs the next step.
    */
-  @SuppressWarnings ( "unchecked" )
   private final void performNextStep ()
   {
     CFG oldCFG = cloneConverted ();
-    DefaultListModel oldNonterminalModel = new DefaultListModel ();
-    for ( int n = 0 ; n < this.nonterminals.size () ; n++ )
+    if ( this.leftRecursion )
     {
-      oldNonterminalModel.addElement ( this.nonterminals.getElementAt ( n ) );
-    }
-    int iNow = this.i;
-    int jNow = this.j;
-
-    CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
-    ArrayList < Production > entitiyProductions = new ArrayList < Production > ();
-    if ( this.gui.jGTICheckBoxEntityProductions.isSelected () )
-    {
-      entitiyProductions = getEntityProductions ( cfg );
-    }
-    ArrayList < Production > epsilonProductions = new ArrayList < Production > ();
-    if ( this.gui.jGTICheckBoxEpsilonProductions.isSelected () )
-    {
-      epsilonProductions = getEpsilonProductions ( cfg );
-    }
-    if ( entitiyProductions.isEmpty () )
-    {
-      this.initialEliminateEntityProductionsDone = true;
-    }
-    if ( epsilonProductions.isEmpty () )
-    {
-      this.initialEliminateEpsilonProductionsDone = true;
-    }
-
-    PrettyString line = new PrettyString ();
-    if ( ( !this.initialEliminateEntityProductionsDone || !this.initialEliminateEpsilonProductionsDone ) )
-    {
-      if ( !entitiyProductions.isEmpty () )
+      DefaultListModel oldNonterminalModel = new DefaultListModel ();
+      for ( int n = 0 ; n < this.nonterminals.size () ; n++ )
       {
-        line
-            .add ( new PrettyToken (
-                Messages
-                    .getString ( "ConvertGrammarDialog.EliminatedEntityProductions" ), Style.COMMENT ) ); //$NON-NLS-1$
-        eliminateEntityProductions ( cfg );
+        oldNonterminalModel.addElement ( this.nonterminals.getElementAt ( n ) );
+      }
+      int iNow = this.i;
+      int jNow = this.j;
+
+      CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
+      ArrayList < Production > entitiyProductions = new ArrayList < Production > ();
+      if ( this.gui.jGTICheckBoxEntityProductions.isSelected () )
+      {
+        entitiyProductions = getEntityProductions ( cfg );
+      }
+      ArrayList < Production > epsilonProductions = new ArrayList < Production > ();
+      if ( this.gui.jGTICheckBoxEpsilonProductions.isSelected () )
+      {
+        epsilonProductions = getEpsilonProductions ( cfg );
+      }
+      if ( entitiyProductions.isEmpty () )
+      {
         this.initialEliminateEntityProductionsDone = true;
       }
-      else if ( !epsilonProductions.isEmpty () )
+      if ( epsilonProductions.isEmpty () )
       {
-        line
-            .add ( new PrettyToken (
-                Messages
-                    .getString ( "ConvertGrammarDialog.EliminatedEpsilonProductions" ), Style.COMMENT ) ); //$NON-NLS-1$
-        eliminateEpsilonProductions ( cfg );
         this.initialEliminateEpsilonProductionsDone = true;
       }
-    }
-    else
-    {
-      line.add ( new PrettyToken ( "i: ", Style.KEYWORD ) ); //$NON-NLS-1$
-      line.add ( new PrettyToken ( Integer.toString ( this.i ), Style.SYMBOL ) );
-      line.add ( new PrettyToken ( " j: ", Style.KEYWORD ) ); //$NON-NLS-1$
-      line.add ( new PrettyToken ( Integer.toString ( this.j ), Style.SYMBOL ) );
-      line.add ( new PrettyToken ( "; ", Style.KEYWORD ) ); //$NON-NLS-1$
-      // for ( int i = 1 ; i <= nonterminals.size () ; i++ )
 
-      if ( this.i <= this.initialNonterminalSize )
+      PrettyString line = new PrettyString ();
+      if ( ( !this.initialEliminateEntityProductionsDone || !this.initialEliminateEpsilonProductionsDone ) )
       {
-        NonterminalSymbol ai = ( NonterminalSymbol ) this.nonterminals
-            .getElementAt ( this.i - 1 );
-        // for ( int j = 0 ; j < this.i - 1 ; j++ )
-
-        line.add ( new PrettyToken ( "Ai: ", Style.KEYWORD ) ); //$NON-NLS-1$
-        line.add ( ai.toPrettyString () );
-        if ( this.j <= this.i - 1 )
+        if ( !entitiyProductions.isEmpty () )
         {
-          NonterminalSymbol aj = ( NonterminalSymbol ) this.nonterminals
-              .getElementAt ( this.j - 1 );
-
-          line.add ( new PrettyToken ( "; Aj: ", Style.KEYWORD ) ); //$NON-NLS-1$
-          line.add ( aj.toPrettyString () );
-          this.j++ ;
-          ArrayList < Production > productions = getProductionsForNonterminals (
-              ai, aj, cfg );
-          ArrayList < Production > productionsOfAj = cfg
-              .getProductionForNonTerminal ( aj );
-
-          for ( Production pi : productions )
-          {
-            cfg.getProduction ().remove ( pi );
-            pi.getProductionWord ().get ().remove ( 0 );
-            for ( Production pj : productionsOfAj )
-            {
-              ProductionWord word = new DefaultProductionWord ( pj
-                  .getProductionWord ().get () );
-              word.add ( pi.getProductionWord ().get () );
-              Production p = new DefaultProduction ( ai, word );
-              cfg.addProduction ( p );
-            }
-          }
+          line
+              .add ( new PrettyToken (
+                  Messages
+                      .getString ( "ConvertGrammarDialog.EliminatedEntityProductions" ), Style.COMMENT ) ); //$NON-NLS-1$
+          eliminateEntityProductions ( cfg );
+          this.initialEliminateEntityProductionsDone = true;
         }
-        else
+        else if ( !epsilonProductions.isEmpty () )
         {
-          try
-          {
-            eliminateDirectLeftRecursion ( ai, cfg );
-          }
-          catch ( NonterminalSymbolSetException exc )
-          {
-            exc.printStackTrace ();
-          }
-          this.j = 1;
-          this.i++ ;
-          if ( this.i > this.initialNonterminalSize )
-          {
-            this.endReached = true;
-          }
+          line
+              .add ( new PrettyToken (
+                  Messages
+                      .getString ( "ConvertGrammarDialog.EliminatedEpsilonProductions" ), Style.COMMENT ) ); //$NON-NLS-1$
+          eliminateEpsilonProductions ( cfg );
+          this.initialEliminateEpsilonProductionsDone = true;
         }
-
       }
       else
       {
-        this.endReached = true;
+        line.add ( new PrettyToken ( "i: ", Style.KEYWORD ) ); //$NON-NLS-1$
+        line
+            .add ( new PrettyToken ( Integer.toString ( this.i ), Style.SYMBOL ) );
+        line.add ( new PrettyToken ( " j: ", Style.KEYWORD ) ); //$NON-NLS-1$
+        line
+            .add ( new PrettyToken ( Integer.toString ( this.j ), Style.SYMBOL ) );
+        line.add ( new PrettyToken ( "; ", Style.KEYWORD ) ); //$NON-NLS-1$
+        // for ( int i = 1 ; i <= nonterminals.size () ; i++ )
+
+        if ( this.i <= this.initialNonterminalSize )
+        {
+          NonterminalSymbol ai = ( NonterminalSymbol ) this.nonterminals
+              .getElementAt ( this.i - 1 );
+          // for ( int j = 0 ; j < this.i - 1 ; j++ )
+
+          line.add ( new PrettyToken ( "Ai: ", Style.KEYWORD ) ); //$NON-NLS-1$
+          line.add ( ai.toPrettyString () );
+          if ( this.j <= this.i - 1 )
+          {
+            NonterminalSymbol aj = ( NonterminalSymbol ) this.nonterminals
+                .getElementAt ( this.j - 1 );
+
+            line.add ( new PrettyToken ( "; Aj: ", Style.KEYWORD ) ); //$NON-NLS-1$
+            line.add ( aj.toPrettyString () );
+            this.j++ ;
+            ArrayList < Production > productions = getProductionsForNonterminals (
+                ai, aj, cfg );
+            ArrayList < Production > productionsOfAj = cfg
+                .getProductionForNonTerminal ( aj );
+
+            for ( Production pi : productions )
+            {
+              cfg.getProduction ().remove ( pi );
+              pi.getProductionWord ().get ().remove ( 0 );
+              for ( Production pj : productionsOfAj )
+              {
+                ProductionWord word = new DefaultProductionWord ( pj
+                    .getProductionWord ().get () );
+                word.add ( pi.getProductionWord ().get () );
+                Production p = new DefaultProduction ( ai, word );
+                cfg.addProduction ( p );
+              }
+            }
+          }
+          else
+          {
+            try
+            {
+              eliminateDirectLeftRecursion ( ai, cfg );
+            }
+            catch ( NonterminalSymbolSetException exc )
+            {
+              exc.printStackTrace ();
+            }
+            this.j = 1;
+            this.i++ ;
+            if ( this.i > this.initialNonterminalSize )
+            {
+              this.endReached = true;
+            }
+          }
+
+        }
+        else
+        {
+          this.endReached = true;
+        }
       }
+
+      addOutlineComment ( line );
+      this.stepItemList.add ( new StepItem ( oldCFG, oldNonterminalModel, iNow,
+          jNow ) );
     }
-    addOutlineComment ( line );
-    this.stepItemList.add ( new StepItem ( oldCFG, oldNonterminalModel, iNow,
-        jNow ) );
+    else
+    {
+      CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
+      NonterminalSymbol a = null;
+      ProductionWord prefix = null;
+      for ( NonterminalSymbol s : cfg.getNonterminalSymbolSet () )
+      {
+        ObjectPair < ProductionWord, ArrayList < Production > > pair = getSamePrefixes (
+            s, cfg );
+        if ( pair.getFirst ().size () > 0 )
+        {
+          a = s;
+          prefix = pair.getFirst ();
+          break;
+        }
+      }
+      if ( a != null )
+      {
+        leftFactore ( a, cfg );
+      }
+      this.stepItemList.add ( new StepItem ( oldCFG, null, 0, 0 ) );
+      this.endReached = true;
+      for ( NonterminalSymbol s : cfg.getNonterminalSymbolSet () )
+      {
+        if ( getSamePrefixes ( s, cfg ).getFirst ().size () > 0 )
+        {
+          this.endReached = false;
+          break;
+        }
+      }
+      PrettyString line = new PrettyString ();
+      if ( a != null && prefix != null )
+      {
+        line.add ( Messages.getPrettyString (
+            "ConvertGrammarDialog.StepFactor", a.toPrettyString (), prefix //$NON-NLS-1$
+                .toPrettyString () ) );
+      }
+      else
+      {
+        line.add ( Messages
+            .getPrettyString ( "ConvertGrammarDialog.StepNothingToDo" ) ); //$NON-NLS-1$
+      }
+      addOutlineComment ( line );
+    }
     this.gui.repaint ();
     updateConverted ();
+    setStatus ();
+  }
+
+
+  /**
+   * Left factoring of a {@link NonterminalSymbol} in a {@link CFG}
+   * 
+   * @param a The {@link NonterminalSymbol}
+   * @param cfg The {@link CFG}
+   */
+  private void leftFactore ( NonterminalSymbol a, CFG cfg )
+  {
+    ObjectPair < ProductionWord, ArrayList < Production > > objectPair = getSamePrefixes (
+        a, cfg );
+    ProductionWord prefix = objectPair.getFirst ();
+    ArrayList < Production > productions = objectPair.getSecond ();
+
+    if ( ! ( prefix.get ().size () == 0 ) && !productions.isEmpty () )
+    {
+      NonterminalSymbol newSymbol = new DefaultNonterminalSymbol ( a.getName ()
+          + "'" ); //$NON-NLS-1$
+      try
+      {
+        cfg.getNonterminalSymbolSet ().add ( newSymbol );
+      }
+      catch ( NonterminalSymbolSetException exc )
+      {
+        exc.printStackTrace ();
+      }
+      ProductionWord newWord = new DefaultProductionWord ( prefix.get () );
+      newWord.add ( newSymbol );
+      cfg.addProduction ( new DefaultProduction ( a, newWord ) );
+      for ( int k = 0 ; k < productions.size () ; k++ )
+      {
+        Production p = productions.get ( k );
+        ProductionWord word = new DefaultProductionWord ();
+        for ( int l = prefix.get ().size () ; l < p.getProductionWord ()
+            .size () ; l++ )
+        {
+          word.add ( p.getProductionWord ().get ( l ) );
+        }
+        cfg.addProduction ( new DefaultProduction ( newSymbol, word ) );
+        cfg.getProduction ().remove ( p );
+      }
+    }
+  }
+
+
+  /**
+   * Gets the same prefixes of a {@link NonterminalSymbol} in a {@link CFG}
+   * 
+   * @param a The {@link NonterminalSymbol}
+   * @param cfg The {@link CFG}
+   * @return An {@link ObjectPair} with the prefix and the productions
+   */
+  private ObjectPair < ProductionWord, ArrayList < Production > > getSamePrefixes (
+      NonterminalSymbol a, CFG cfg )
+  {
+    ProductionWord prefix = new DefaultProductionWord ();
+    ArrayList < Production > productions = new ArrayList < Production > ();
+    for ( Production p : cfg.getProductionForNonTerminal ( a ) )
+    {
+      productions.add ( p );
+    }
+    while ( !productions.isEmpty () )
+    {
+      Production p = productions.remove ( 0 );
+      for ( ProductionWordMember m : p.getProductionWord () )
+      {
+        prefix.add ( m );
+      }
+
+      while ( !prefix.get ().isEmpty () )
+      {
+        ArrayList < Production > ps = getProductionsWithPrefix ( productions,
+            prefix );
+        if ( !ps.isEmpty () )
+        {
+          ps.add ( p );
+          return new ObjectPair < ProductionWord, ArrayList < Production > > (
+              prefix, ps );
+        }
+        prefix.get ().remove ( prefix.get ().size () - 1 );
+      }
+    }
+    return new ObjectPair < ProductionWord, ArrayList < Production > > (
+        new DefaultProductionWord (), new ArrayList < Production > () );
+  }
+
+
+  /**
+   * Gets the Productions with the prefix
+   * 
+   * @param productions The {@link Production}s
+   * @param prefix The prefix as {@link ProductionWord}
+   * @return The {@link Production}s with the prefix
+   */
+  private ArrayList < Production > getProductionsWithPrefix (
+      ArrayList < Production > productions, ProductionWord prefix )
+  {
+    ArrayList < Production > result = new ArrayList < Production > ();
+    for ( Production p : productions )
+    {
+      ProductionWord word = p.getProductionWord ();
+      boolean fit = true;
+      for ( int k = 0 ; k < prefix.get ().size () ; k++ )
+      {
+
+        if ( word.size () <= k || !prefix.get ( k ).equals ( word.get ( k ) ) )
+        {
+          fit = false;
+        }
+      }
+      if ( fit )
+      {
+        result.add ( p );
+      }
+    }
+    return result;
   }
 
 

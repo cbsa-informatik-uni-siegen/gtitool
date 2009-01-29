@@ -995,6 +995,12 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
       return this.jToolBarEdit;
     }
 
+    public JMenuItem getJMenuItemLeftfactoring() {
+        return jMenuItemLeftfactoring;
+    }
+    
+    
+
     
     /**
      * Returns the jToolBarFile.
@@ -1154,6 +1160,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemMinimize = new javax.swing.JMenuItem();
         jMenuItemToCoreSyntax = new javax.swing.JMenuItem();
         jMenuItemEliminateLeftRecursion = new javax.swing.JMenuItem();
+        jMenuItemLeftfactoring = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
@@ -1878,6 +1885,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuExecute.add(jMenuItemEliminateLeftRecursion);
 
+        jMenuItemLeftfactoring.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LeftFactoringMnemonic").charAt(0));
+        jMenuItemLeftfactoring.setText(bundle.getString("MainWindow.LeftFactoring")); // NOI18N
+        jMenuItemLeftfactoring.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLeftfactoringActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemLeftfactoring);
+
         jMenuBarMain.add(jMenuExecute);
 
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
@@ -2213,6 +2229,10 @@ private void jCheckBoxMenuItemRegexInfoItemStateChanged(java.awt.event.ItemEvent
 private void jMenuItemEliminateLeftRecursionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminateLeftRecursionActionPerformed
     this.logic.handleEliminateLeftRecursion();
 }//GEN-LAST:event_jMenuItemEliminateLeftRecursionActionPerformed
+
+private void jMenuItemLeftfactoringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLeftfactoringActionPerformed
+    this.logic.handleLeftFactoring();
+}//GEN-LAST:event_jMenuItemLeftfactoringActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2276,6 +2296,7 @@ private void jMenuItemEliminateLeftRecursionActionPerformed(java.awt.event.Actio
     private javax.swing.JMenuItem jMenuItemExportLatex;
     private javax.swing.JMenuItem jMenuItemExportPicture;
     private javax.swing.JMenuItem jMenuItemHistory;
+    private javax.swing.JMenuItem jMenuItemLeftfactoring;
     private javax.swing.JMenuItem jMenuItemMinimize;
     private javax.swing.JMenuItem jMenuItemNFA;
     private javax.swing.JMenuItem jMenuItemNew;

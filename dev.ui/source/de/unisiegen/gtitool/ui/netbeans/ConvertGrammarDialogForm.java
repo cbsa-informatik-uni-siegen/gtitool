@@ -87,13 +87,13 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         jGTICheckBoxEpsilonProductions = new de.unisiegen.gtitool.ui.swing.JGTICheckBox();
         jGTICheckBoxEntityProductions = new de.unisiegen.gtitool.ui.swing.JGTICheckBox();
         jGTILabelConverted = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        styledNonterminalSymbolSetParserPanelConverted = new de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonPrint = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        setTitle(bundle.getString("ConvertGrammarDialog.Title")); // NOI18N
+        setTitle("Eliminate left recursion");
         setModal(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -103,6 +103,7 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jGTIToolBarButtonBeginStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/begin.png"))); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTIToolBarButtonBeginStep.setToolTipText(bundle.getString("ConvertMachineDialog.BeginStep")); // NOI18N
         jGTIToolBarButtonBeginStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -262,7 +263,7 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         jGTIPanelOriginal.add(jGTILabelNonterminalSymbolsOriginal, gridBagConstraints);
 
         jGTILabelOriginal.setText(bundle.getString("ConvertGrammarDialog.Original")); // NOI18N
-        jGTILabelOriginal.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        jGTILabelOriginal.setFont(new java.awt.Font("Dialog", 1, 11));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -353,7 +354,7 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.25;
@@ -391,12 +392,22 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass <Conve
         jGTIPanelConverted.add(jGTIPanelPreferences, gridBagConstraints);
 
         jGTILabelConverted.setText(bundle.getString("ConvertGrammarDialog.Converted")); // NOI18N
-        jGTILabelConverted.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        jGTILabelConverted.setFont(new java.awt.Font("Dialog", 1, 11));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 0, 16);
         jGTIPanelConverted.add(jGTILabelConverted, gridBagConstraints);
+
+        styledNonterminalSymbolSetParserPanelConverted.setCopyable(true);
+        styledNonterminalSymbolSetParserPanelConverted.setEditable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
+        jGTIPanelConverted.add(styledNonterminalSymbolSetParserPanelConverted, gridBagConstraints);
 
         jGTISplitPaneGraph.setRightComponent(jGTIPanelConverted);
 
@@ -537,6 +548,7 @@ private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//G
     public de.unisiegen.gtitool.ui.swing.JGTIToolBar jGTIToolBarMain;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
     public javax.swing.JScrollPane jScrollPaneNonterminalsConverted;
+    public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanelConverted;
     public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanelOriginal;
     public de.unisiegen.gtitool.ui.style.StyledStartNonterminalSymbolParserPanel styledStartNonterminalSymbolParserPanelConverted;
     public de.unisiegen.gtitool.ui.style.StyledStartNonterminalSymbolParserPanel styledStartNonterminalSymbolParserPanelOriginal;

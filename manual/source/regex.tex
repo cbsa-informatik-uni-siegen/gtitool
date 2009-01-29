@@ -2,7 +2,7 @@
 
 Wir wollen uns dies anhand des folgenden Beispiels anschauen: \Symbol{(ab)*abb}
 
-\section{Neue Regex Datei anlegen}
+\section{Neue regex Datei anlegen}
 
 Zu Beginn müssen wir dazu, wie auch beim Automat und bei Grammatiken, den "`Neu\ldots"' Dialog öffnen. Zu finden ist dieser in der Toolbar oder im Menüeintrag "`Datei"'. Dort wählen wir "`Regulärer Ausdruck"' an und klicken auf "`Weiter"'.\vspace{10pt}
 
@@ -14,6 +14,38 @@ In unserem Beispiel würde also ein Alphabet bestehend aus \Symbol{a} und \Symbo
 
 Nun ist folgender Bildschirm zu sehen:\vspace{10pt}
 
-Oben rechts ist das Eingabefeld für den Reglulären Ausdruck darunter findet man nochmal zur Orientierung das Alphabet, dass wir gerade eingegeben haben, verändert werden kann es aber nur über den Button "`Dokument editieren"'. Im Eingabefeld tragen wir nun unseren Beispielausdruck \Symbol{(ab)*abb} ein.\vspace{10pt}
+Oben rechts ist das Eingabefeld für den reglulären Ausdruck darunter findet man nochmal zur Orientierung das Alphabet, dass wir gerade eingegeben haben, verändert werden kann es aber nur über den Button "`Dokument editieren"'. Im Eingabefeld tragen wir nun unseren Beispielausdruck \Symbol{(ab)*abb} ein.\vspace{10pt}
 
 Direkt bei der Eingabe wird im Graph-Fenster in der Mitte der Reguläre Ausdruck als Baum dargestellt.
+
+\section{Das Informationsfenster}
+
+Im Menü findet sich unter "`Ansicht"' der Eintrag "`Regulärer Ausdruck Info"'. Wenn dieser Punkt aktiviert wird, erscheint auf der rechten Seite, neben dem Graph-Fenster ein Informationsfenster.
+
+Dieses Informationsfenster beinhaltet die Informationen zum aktuell ausgewählten Knoten im Graph-Fenster. Diese Informationen bestehen aus den in der Vorlesung Compilerbau I definierten Funktionen nullable, firstpos, lastpos und followpos. Außerdem werden jetzt auch unter den Blattknoten die jeweilige Position angegeben.
+
+Da die Funktion followpos nur auf Positionen definiert ist, wird sie auch nur angezeigt, wenn der ausgewählte Knoten eine Position hat, also ein Blattknoten ist. In unserem Beispiel die Knoten mit \Symbol{a} oder \Symbol{b}.
+
+\section{Was kann man mit einem regulären Ausdruck machen?}
+
+Einen regulären Ausdruck kann man in einen Automaten umwandeln. Dazu gibt es zwei verschiedene Algorithmen. Zum einen der "`Thompson-Algorithmus"', der aus dem regulären Ausdruck einen $\epsilon$-NDEA konstruiert und den Algorithmus, der aus dem regulären Ausdruck direkt einen DEA konstruiert.
+
+\subsection{Regulären Ausdruck in $\epsilon$-NDEA umwandeln}
+
+Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`$\epsilon$-NDEA"'. Es öffnet sich ein Fenster, in welchem in der oberen Ansicht der reguläre Ausdruck als Graph dargestellt ist. Links befindet sich die Outline, in der die Informationen über den aktuellen Schritt zu finden sind und unten ist ein noch leerer Automat zu finden. Dort wird im weiteren Verlauf der $\epsilon$-NDEA erstellt.
+
+Oben findet sich die Navigationsleiste, mit der durch den Algorithmus navigiert werden kann.
+
+Der Algorithmus geht im Prinzip den Graph von oben nach unten durch und legt dabei jeweils eine Blackbox an für alle nicht Blattknoten. 
+
+Wenn wir nun den Algorithmus für unser Beispiel durchgehen kommen wir zu folgender Reihenfolge:
+\begin{enumerate}
+  \item Zunächst wird der Automat für die Konkatenation \Symbol{(ab)*ab·b} erstellt. Dieser besteht aus zwei Blackboxen, eine für den regulären Ausdruck \Symbol{(ab)*ab} und eine für das Symbol \Symbol{b}. Es werden dabei auch der Start- und der Endzustand des Automaten erstellt. Diese ändern sich auch während des Algorithmus nicht mehr.
+  \item Aus der Blackbox für \Symbol{(ab)*ab} werden zwei Blackboxen: Eine für \Symbol{(ab)*a} und eine für \Symbol{b}.
+  \item Aus der Blackbox für \Symbol{(ab)*a} werden zwei Blackboxen: Eine für \Symbol{(ab)*} und eine für \Symbol{a}.
+  \item Aus der Blackbox für \Symbol{(ab)*} wird der Automat für einen Kleene-Abschluss konstruiert und dadurch eine Blackbox für den Ausdruch \Symbol{ab} erstellt.
+  \item Aus der Blackbox für \Symbol{ab} werden zwei Blackboxen für die Symbole \Symbol{a} und \Symbol{b} erstellt.
+  \item Nun werden nacheinander von links nach rechts (in der Baumansicht des regulären Ausdruck) die Blackboxen für die einzelnen Symbole durch einen Übergang mit dem jeweiligen Symbol gebildet.
+\end{enumerate}
+
+Bemerkung: Vor der Umwandlung wird der reguläre Ausdruck in Kernsyntax umgewandelt, außer Charakterklassen, diese bleiben erhalten und werden im Algorithmus wie ein Symbol behandelt.

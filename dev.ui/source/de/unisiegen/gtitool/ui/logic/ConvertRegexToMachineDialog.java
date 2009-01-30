@@ -2355,8 +2355,17 @@ public class ConvertRegexToMachineDialog implements
               }
             }
             String name = ""; //$NON-NLS-1$
+            boolean first = true;
             for ( Integer i : u )
             {
+              if ( !first )
+              {
+                name += ","; //$NON-NLS-1$
+              }
+              else
+              {
+                first = false;
+              }
               name += i;
             }
             DefaultPositionState uState;

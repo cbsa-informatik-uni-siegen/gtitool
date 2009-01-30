@@ -2283,9 +2283,18 @@ public class ConvertRegexToMachineDialog implements
         String name = ""; //$NON-NLS-1$
         ArrayList < LeafNode > firstPos = this.defaultRegex.getRegexNode ()
             .firstPos ();
+        boolean first = true;
         for ( LeafNode tmpNode : firstPos )
         {
           pos.add ( new Integer ( tmpNode.getPosition () ) );
+          if ( !first )
+          {
+            name += ","; //$NON-NLS-1$
+          }
+          else
+          {
+            first = false;
+          }
           name += tmpNode.getPosition ();
         }
         DefaultPositionState state;

@@ -158,6 +158,7 @@ public class ConcatenationNode extends TwoChildNode
       if ( !this.regex1.nullable () )
       {
         this.firstPosCache = this.regex1.firstPos ();
+        return this.firstPosCache;
       }
       this.firstPosCache = new ArrayList < LeafNode > ();
       this.firstPosCache.addAll ( this.regex1.firstPos () );
@@ -259,6 +260,7 @@ public class ConcatenationNode extends TwoChildNode
       if ( !this.regex2.nullable () )
       {
         this.lastPosCache = this.regex2.lastPos ();
+        return this.lastPosCache;
       }
       this.lastPosCache = new ArrayList < LeafNode > ();
       this.lastPosCache.addAll ( this.regex1.lastPos () );

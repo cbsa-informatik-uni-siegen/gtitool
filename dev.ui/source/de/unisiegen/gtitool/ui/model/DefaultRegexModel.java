@@ -587,7 +587,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   {
     String s = ""; //$NON-NLS-1$
     RegexNode node = this.regex.getRegexNode ();
-
+    if(node == null) {
+      return s;
+    }
     int w = node.getWidth ();
     s += " %" + Messages.getString ( "LatexComment.CreateTabular" ) + "\n"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     s += " \\begin{tabular}{"; //$NON-NLS-1$

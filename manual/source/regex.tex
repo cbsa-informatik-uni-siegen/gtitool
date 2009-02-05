@@ -92,4 +92,50 @@ Wenn wir den Algorithmus an unserem Beispiel durchgehen, erhalten wir folgenden 
 
 \subsection{Exportieren nach \LaTeX}
 
-Man kann einen regulären Ausdruck auch nach \LaTeX  exportieren.
+Man kann einen regulären Ausdruck auch nach \LaTeX \ exportieren.
+
+Dazu gibt es im Menü den Eintrag "`Datei"' $\leftarrow$ "`Exportieren nach LaTeX"'. Nach einem Klick auf den Eintrag, erscheint ein Dialog, in welchem man den Ort und den Dateinamen, der zu erstellenden \LaTeX-Datei angibt.
+
+Dann wird die Datei erstellt. Dies würde in unserem Beispiel zu folgendem Code führen:
+
+\begin{verbatim}
+\documentclass[a4paper,11pt]{article}
+\usepackage{german}
+\usepackage[utf8]{inputenc}
+\usepackage{tree-dvips}
+\begin{document}
+ %Erstellen des Tabulars fuer den Baum
+ \begin{tabular}{ccccccccc}
+  %Erstellen der Knoten fuer den Baum
+   &  &  &  &  &  &  & \node{r0}{·}\\[4ex]
+   &  &  &  &  & \node{r1}{·}   &  &  & \node{r2}{b}\\[4ex]
+   &  &  & \node{r3}{·}   &  &  & \node{r4}{b}\\[4ex]
+   & \node{r5}{*}   &  &  & \node{r6}{a}\\[4ex]
+   & \node{r7}{$|$}\\[4ex]
+  \node{r8}{a}   &  & \node{r9}{b}
+ \end{tabular}
+ %Verbinden der Knoten
+ \nodeconnect{r0}{r1}
+ \nodeconnect{r1}{r3}
+ \nodeconnect{r3}{r5}
+ \nodeconnect{r5}{r7}
+ \nodeconnect{r7}{r8}
+ \nodeconnect{r7}{r9}
+ \nodeconnect{r3}{r6}
+ \nodeconnect{r1}{r4}
+ \nodeconnect{r0}{r2}
+
+\end{document}
+\end{verbatim}
+
+Dies ist ein komplettes \LaTeX-Dokument, dass heißt diese Datei kann so alleine genutzt werden. Man kann aber auch nur den Inhalt von "`document"' in eine andere \LaTeX-Datei einfügen.
+
+\paragraph*{Achtung 1:} Es wird das Package "`tree-dvips"' für \LaTeX\ genutzt.
+
+\paragraph*{Achtung 2:} Wenn man den Inhalt in anderen \LaTeX-Dokumenten nutzen will muss unbedingt die Zeile
+\begin{verbatim}
+\usepackage{tree-dvips}
+\end{verbatim}
+zur Präambel des Dokuments hinzugefügt werden.
+
+\paragraph*{Achtung 3:} Wenn die erstellte \LaTeX-Datei mit pdflatex ausgeführt wird, werden die Kanten nicht mit gezeichnet! Daher sollte man zunächst "`latex datei.tex"' ausführen und danach "`dvipdf datei.dvi"' oder ähnliches nutzen.

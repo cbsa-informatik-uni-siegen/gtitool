@@ -140,3 +140,58 @@ unter "`Umwandeln in\ldots"'.\vspace{10pt}
 Es ist zu beachten, dass beim Umwandeln einer Grammatik keine
 Validierungsfehler vorhanden sein dürfen. Bei der Funktion "`Vorlage
 für\ldots"' spielen Fehler allerdings keine Rolle.
+
+\subsection{Links-Rekursion eliminieren}
+
+Hierzu nutzen wir eine Beispielgrammatik aus der Compilerbau 1-Vorlesung:
+
+\begin{tabular}{lcr}
+G = ($\Sigma, N, S, P )\ mit $\\
+$\Sigma = \{\TerminalSymbol{a}, \TerminalSymbol{b}, \TerminalSymbol{c},
+\TerminalSymbol{d}\}$\\ $N =
+\{\NonterminalSymbol{A}, \StartSymbol{S}\}$\\ $S=\StartSymbol{S}$\\
+$P = \{\StartSymbol{S} \to \NonterminalSymbol{A}\TerminalSymbol{a},\ \StartSymbol{S} \to \TerminalSymbol{b},\
+\NonterminalSymbol{A}	\to \NonterminalSymbol{A}\TerminalSymbol{c},\ \NonterminalSymbol{A} \to \StartSymbol{S}\TerminalSymbol{d},\
+\NonterminalSymbol{A} \to \epsilon\}$\\
+\end{tabular}
+
+Nun findet man im Menü unter "`Ausführen"' den Punkt "`Links-Rekursion eliminieren"'. Es erscheint das folgende Fenster.
+
+TODO: FENSTERBILD EINFÜGEN!
+
+Ganz links befindet sich die ursprüngliche Grammatik. Rechts daneben findet man die neue Grammatik. Diese ist am Anfang gleich der ursprünglichen und wird erst im Verlauf des Algorithmus verändert.
+
+Oben im Fenster der konvertierten Grammatik kann man einstellen, ob zunächst die Epsilon- bzw. Einheitsproduktionen entfernt werden sollen. Diese Möglichkeit wurde gegeben, da der Algorithmus eigentlich eine Grammatik ohne Epsilon- bzw. Einheitsproduktionen verlangt. Aber in dem Beispiel aus der Vorlesung wurde die Epsilonproduktion in der Grammatik belassen mit dem Hinweis, dass dies nichts ausmacht. Da aber das Ergebnis dann nicht exakt das selbe wäre, ist hier die Möglichkeit gegeben, die Produktionen drin zu lassen. Für andere Beispiele sollte man aber diese beiden Optionen an lassen, da sonst der Algorithmus falsche Ergebnisse liefern kann.
+
+In unserem Beispiel schalten wir die Option Epsilonproduktionen entfernen aus.
+
+Als nächstes kann man die Reihenfolge der Nichtterminalzeichen eingestellt werden, da auch diese sich auf die Ergebnisse des Algorithmus auswirken. Die Reihenfolge kann natürlich genau wie die beiden Optionen zum Entfernen von Produktionen nur am Anfang verändert werden.
+
+In der Vorlesung wurde die Reihenfolge $\StartSymbol{S}, \NonterminalSymbol{A}$ gewählt, daher schieben wir das $\NonterminalSymbol{A}$ einfach nach oben.
+
+Nun kann der Algorithmus ablaufen:
+\begin{itemize}
+  \item Im Initialen Schritt passiert nichts mit der Grammatik, da $i = j$ ist und für $\StartSymbol{S}$ keine direkte Linksrekursion existiert.
+  \item Nun kommen durch den Durchlauf im Algorithmus zwei Produktionen ($\NonterminalSymbol{A} \to \NonterminalSymbol{A}\TerminalSymbol{b}\TerminalSymbol{d},\NonterminalSymbol{A} \to \TerminalSymbol{b}\TerminalSymbol{d}$) hinzu und die Produktion $\NonterminalSymbol{A} \to \StartSymbol{S}\TerminalSymbol{d}$ wird entfernt.
+  \item Im letzten Schritt dieses Beispiels ist $i = j$ und es wird daher nur noch die direkte Linksrekursion von $\NonterminalSymbol{A}$ entfernt.
+\end{itemize}
+
+\subsection{Links-Faktorisierung}
+
+Hierzu nutzen wir eine Beispielgrammatik aus der Compilerbau 1-Vorlesung:
+
+\begin{tabular}{lcr}
+G = ($\Sigma, N, S, P )\ mit $\\
+$\Sigma = \{\TerminalSymbol{a}, \TerminalSymbol{b}, \TerminalSymbol{e},
+\TerminalSymbol{i},\TerminalSymbol{t}\}$\\ $N =
+\{\NonterminalSymbol{E}, \StartSymbol{S}\}$\\ $S=\StartSymbol{S}$\\
+$P = \{\StartSymbol{S} \to \TerminalSymbol{i}\NonterminalSymbol{E}\TerminalSymbol{t}\StartSymbol{S}\TerminalSymbol{e}\StartSymbol{S},\StartSymbol{S} \to \TerminalSymbol{i}\NonterminalSymbol{E}\TerminalSymbol{t}\StartSymbol{S}, \StartSymbol{S} \to \TerminalSymbol{a}, \NonterminalSymbol{E} \to \TerminalSymbol{b}$\\
+\end{tabular}
+
+Nun findet man im Menü unter "`Ausführen"' den Punkt "`Links-Faktorisierung"'. Es erscheint das folgende Fenster.
+
+TODO: FENSTERBILD EINFÜGEN
+
+Ganz links befindet sich die ursprüngliche Grammatik. Rechts daneben findet man die konvertierte Grammatik.
+
+Wenn man den Algorithmus dann ablaufen lässt ist der Algorithmus bereits nach einem Schritt fertig. Der Algorithmus findet als längstes gemeinsames Präfix $\TerminalSymbol{i}\NonterminalSymbol{E}\TerminalSymbol{t}\StartSymbol{S}$ und erzeugt ein neues Nichtterminalzeichen $\NonterminalSymbol{S'}$. Als Produktionen kommen hinzu: $\StartSymbol{S} \to \TerminalSymbol{i}\NonterminalSymbol{E}\TerminalSymbol{t}\StartSymbol{S}\NonterminalSymbol{S'}, \NonterminalSymbol{S'} \to \epsilon, \NonterminalSymbol{S'} \to \TerminalSymbol{e}\StartSymbol{S}$, entfernt wurde die Produktion $\StartSymbol{S} \to \TerminalSymbol{i}\NonterminalSymbol{E}\TerminalSymbol{t}\StartSymbol{S}\TerminalSymbol{e}\StartSymbol{S}$.

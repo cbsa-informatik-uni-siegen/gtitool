@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RegexModel regexVersion="1" regexString="(a|b)*abb">
+  <Alphabet>
+    <Symbol name="a" epsilon="false"/>
+    <Symbol name="b" epsilon="false"/>
+  </Alphabet>
+</RegexModel>

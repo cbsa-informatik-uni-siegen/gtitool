@@ -14,6 +14,12 @@ In unserem Beispiel würde also ein Alphabet bestehend aus \Symbol{a} und \Symbo
 
 Nun ist folgender Bildschirm zu sehen:\vspace{10pt}
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{../images/regex_example.png}
+\end{center}
+\end{figure}
+
 Oben rechts ist das Eingabefeld für den reglulären Ausdruck darunter findet man nochmal zur Orientierung das Alphabet, dass wir gerade eingegeben haben, verändert werden kann es aber nur über den Button "`Dokument editieren"'. Im Eingabefeld tragen wir nun unseren Beispielausdruck \Symbol{(a$|$b)*abb} ein.\vspace{10pt}
 
 Direkt bei der Eingabe wird im Graph-Fenster in der Mitte der Reguläre Ausdruck als Baum dargestellt.
@@ -53,6 +59,12 @@ Einen regulären Ausdruck kann man in einen Automaten umwandeln. Dazu gibt es zw
 
 Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`$\epsilon$-NDEA"'. Es öffnet sich ein Fenster, in welchem in der oberen Ansicht der reguläre Ausdruck als Graph dargestellt ist. Links befindet sich die Outline, in der die Informationen über den aktuellen Schritt zu finden sind und unten ist ein noch leerer Automat zu finden. Dort wird im weiteren Verlauf der $\epsilon$-NDEA erstellt.
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{../images/regex_to_enfa.png}
+\end{center}
+\end{figure}
+
 Oben findet sich die Navigationsleiste, mit der durch den Algorithmus navigiert werden kann.
 
 Der Algorithmus geht im Prinzip den Graph von oben nach unten durch und legt dabei jeweils eine Blackbox an für alle nicht Blattknoten. 
@@ -73,6 +85,12 @@ Wenn wir nun den Algorithmus für unser Beispiel durchgehen kommen wir zu folgen
 \subsubsection{Regulären Ausdruck in DEA umwandeln}
 
 Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`DEA"'. Es öffnet sich ein Fenster, dass sehr ähnlich dem Fenster der Umwandlung in einen Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in einen $\epsilon$-NDEA ist. Zusätzlich ist hier aber neben dem Graph-Fenster auch noch das Informationsfenster für die Knoten im Graphen eingeblendent. Außerdem wurde der Ausdruck um ein Endzeichen "`\#"' erweitert.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{../images/regex_to_dfa.png}
+\end{center}
+\end{figure}
 
 Wenn wir den Algorithmus an unserem Beispiel durchgehen, erhalten wir folgenden Ablauf:
 
@@ -130,7 +148,7 @@ Dann wird die Datei erstellt. Dies würde in unserem Beispiel zu folgendem Code 
 
 Dies ist ein komplettes \LaTeX-Dokument, dass heißt diese Datei kann so alleine genutzt werden. Man kann aber auch nur den Inhalt von "`document"' in eine andere \LaTeX-Datei einfügen.
 
-\paragraph*{Achtung 1:} Es wird das Package "`tree-dvips"' für \LaTeX\ genutzt.
+\paragraph*{Achtung 1:} Es wird das Package "`tree-dvips"' für \LaTeX\ genutzt. Das Package muss daher auf dem Rechner vorhanden sein, um die Datei nutzen zu können.
 
 \paragraph*{Achtung 2:} Wenn man den Inhalt in anderen \LaTeX-Dokumenten nutzen will muss unbedingt die Zeile
 \begin{verbatim}

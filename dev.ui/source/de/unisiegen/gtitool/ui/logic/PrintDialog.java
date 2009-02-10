@@ -149,6 +149,12 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
+   * The {@link ConvertGrammarDialog}.
+   */
+  private ConvertGrammarDialog convertGrammarDialog;
+
+
+  /**
    * The {@link GrammarPanel}.
    */
   private GrammarPanel grammarPanel;
@@ -307,6 +313,26 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     this.parent = parent;
     this.gui = new PrintDialogForm ( this, parent );
     this.convertRegexToMachineDialog = convertRegexToMachineDialog;
+
+    hideChooseComponents ();
+    this.gui.jGTIPanelConvertMachine.setVisible ( true );
+
+    initialize ();
+  }
+
+
+  /**
+   * Allocates a new {@link PrintDialog}.
+   * 
+   * @param parent The parent {@link JFrame}.
+   * @param convertGrammarDialog The {@link ConvertGrammarDialog}.
+   */
+  public PrintDialog ( JFrame parent, ConvertGrammarDialog convertGrammarDialog )
+  {
+    logger.debug ( "PrintDialog", "allocate a new print dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.parent = parent;
+    this.gui = new PrintDialogForm ( this, parent );
+    this.convertGrammarDialog = convertGrammarDialog;
 
     hideChooseComponents ();
     this.gui.jGTIPanelConvertMachine.setVisible ( true );
@@ -782,6 +808,10 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     {
       printConvertRegexToMachineDialog ();
     }
+    else if ( this.convertGrammarDialog != null )
+    {
+      printConvertGrammarDialog ();
+    }
     else if ( this.regexPanel != null )
     {
       printRegexPanel ();
@@ -857,9 +887,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * 
    * @see Printable#print(Graphics, PageFormat, int)
    */
-  public final int print ( Graphics g,
-      @SuppressWarnings ( "unused" ) PageFormat pageFormat, int pageIndex )
-      throws PrinterException
+  public final int print ( Graphics g, @SuppressWarnings ( "unused" )
+  PageFormat pageFormat, int pageIndex ) throws PrinterException
   {
     if ( ( pageIndex < 0 ) || ( pageIndex >= this.pageCount ) )
     {
@@ -1000,6 +1029,63 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table.setColumnModel ( this.tableColumnModel );
 
         printTableModel ( this.convertRegexToMachineDialog.getRegexPanel ()
+            .getName ()
+            + " " //$NON-NLS-1$
+            + Messages.getString ( "PrintDialog.ConvertRegex" ) ); //$NON-NLS-1$
+      }
+
+    }
+    catch ( PrinterException exc )
+    {
+      InfoDialog dialog = new InfoDialog ( this.parent, Messages
+          .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrint" ) ); //$NON-NLS-1$
+      dialog.show ();
+    }
+  }
+
+
+  /**
+   * Handles print {@link ConvertRegexToMachineDialog}.
+   */
+  private final void printConvertGrammarDialog ()
+  {
+
+    try
+    {
+      if ( this.gui.jGTIRadioButtonConvertMachineOriginalGraph.isSelected () )
+      {
+        this.tableModel = this.convertGrammarDialog.getJGTITableOriginal ().getModel ();
+        this.tableColumnModel = this.convertGrammarDialog.getJGTITableOriginal ().getColumnModel ();
+        this.table = new JGTITable ();
+        this.table.setModel ( this.tableModel );
+        this.table.setColumnModel ( this.tableColumnModel );
+
+        printTableModel ( this.convertGrammarDialog.getPanel ().getName () );
+      }
+      else if ( this.gui.jGTIRadioButtonConvertMachineConvertedGraph
+          .isSelected () )
+      {
+        this.tableModel = this.convertGrammarDialog.getJGTITableConverted ().getModel ();
+        this.tableColumnModel = this.convertGrammarDialog.getJGTITableConverted ().getColumnModel ();
+        this.table = new JGTITable ();
+        this.table.setModel ( this.tableModel );
+        this.table.setColumnModel ( this.tableColumnModel );
+
+        printTableModel ( this.convertGrammarDialog.getPanel ().getName () );
+      }
+
+      else if ( this.gui.jGTIRadioButtonConvertMachineTable.isSelected () )
+      {
+        this.tableModel = this.convertGrammarDialog
+            .getConvertMachineTableModel ();
+        this.tableColumnModel = this.convertGrammarDialog
+            .getTableColumnModel ();
+        this.table = new JGTITable ();
+        this.table.setModel ( this.tableModel );
+        this.table.setColumnModel ( this.tableColumnModel );
+
+        printTableModel ( this.convertGrammarDialog.getPanel ()
             .getName ()
             + " " //$NON-NLS-1$
             + Messages.getString ( "PrintDialog.ConvertRegex" ) ); //$NON-NLS-1$
@@ -1303,7 +1389,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
     logger.debug ( "handlePrint", "printing" ); //$NON-NLS-1$ //$NON-NLS-2$
     job.print ();
-    logger.debug ( "handlePrint", "printed" ); //$NON-NLS-1$ //$NON-NLS-2$ 
+    logger.debug ( "handlePrint", "printed" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
 
 

@@ -47,6 +47,7 @@ import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.swing.JGTIList;
+import de.unisiegen.gtitool.ui.swing.JGTITable;
 import de.unisiegen.gtitool.ui.swing.dnd.JGTIListModelRows;
 import de.unisiegen.gtitool.ui.swing.dnd.JGTIListTransferHandler;
 
@@ -147,18 +148,6 @@ public class ConvertGrammarDialog implements
 
 
     /**
-     * Returns the oldNonterminalModel.
-     * 
-     * @return The oldNonterminalModel.
-     * @see #oldNonterminalModel
-     */
-    public DefaultListModel getOldNonterminalModel ()
-    {
-      return this.oldNonterminalModel;
-    }
-
-
-    /**
      * Returns the iNow.
      * 
      * @return The iNow.
@@ -192,6 +181,18 @@ public class ConvertGrammarDialog implements
     {
       return this.oldCFG;
     }
+
+
+    /**
+     * Returns the oldNonterminalModel.
+     * 
+     * @return The oldNonterminalModel.
+     * @see #oldNonterminalModel
+     */
+    public DefaultListModel getOldNonterminalModel ()
+    {
+      return this.oldNonterminalModel;
+    }
   }
 
 
@@ -221,9 +222,81 @@ public class ConvertGrammarDialog implements
 
 
   /**
+   * The {@link GrammarColumnModel}.
+   */
+  private GrammarColumnModel grammarColumnModelConverted = new GrammarColumnModel ();
+
+
+  /**
+   * The {@link GrammarColumnModel}.
+   */
+  private GrammarColumnModel grammarColumnModelOriginal = new GrammarColumnModel ();
+
+
+  /**
    * The {@link ConvertRegexToMachineDialogForm}
    */
   private ConvertGrammarDialogForm gui;
+
+
+  /**
+   * The variable i in the algorithm
+   */
+  private int i = 1;
+
+
+  /**
+   * Flag indicates if entity productions are eliminated
+   */
+  private boolean initialEliminateEntityProductionsDone = false;
+
+
+  /**
+   * Flag indicates if epsilon productions are eliminated
+   */
+  private boolean initialEliminateEpsilonProductionsDone = false;
+
+
+  /**
+   * The initial nonterminal size
+   */
+  private int initialNonterminalSize;
+
+
+  /**
+   * The variable j in the algorithm
+   */
+  private int j = 1;
+
+
+  /**
+   * Flag indicates if leftRecursion should be eliminated
+   */
+  private boolean leftRecursion;
+
+
+  /**
+   * The {@link DefaultGrammarModel} for the converted {@link CFG}
+   */
+  private DefaultGrammarModel modelConverted;
+
+
+  /**
+   * The {@link DefaultGrammarModel} for the original {@link CFG}
+   */
+  private DefaultGrammarModel modelOriginal;
+
+
+  /**
+   * The {@link NonterminalSymbol}s of the converted {@link CFG} as List
+   */
+  private DefaultListModel nonterminals = new DefaultListModel ();
+
+
+  /**
+   * The {@link GrammarPanel}
+   */
+  private GrammarPanel panel;
 
 
   /**
@@ -242,12 +315,6 @@ public class ConvertGrammarDialog implements
    * The {@link ConvertMachineTableColumnModel}.
    */
   private ConvertMachineTableColumnModel tableColumnModel = new ConvertMachineTableColumnModel ();
-
-
-  /**
-   * The {@link GrammarPanel}
-   */
-  private GrammarPanel panel;
 
 
   /**
@@ -291,21 +358,77 @@ public class ConvertGrammarDialog implements
 
 
   /**
-   * The {@link GrammarColumnModel}.
+   * Clones the converted {@link CFG}
+   * 
+   * @return The cloned converted {@link CFG}
    */
-  private GrammarColumnModel grammarColumnModelOriginal = new GrammarColumnModel ();
-
-
-  /**
-   * The {@link GrammarColumnModel}.
-   */
-  private GrammarColumnModel grammarColumnModelConverted = new GrammarColumnModel ();
-
-
-  /**
-   * Flag indicates if leftRecursion should be eliminated
-   */
-  private boolean leftRecursion;
+  private CFG cloneConverted ()
+  {
+    NonterminalSymbol start = null;
+    NonterminalSymbolSet nonterminalSet = new DefaultNonterminalSymbolSet ();
+    for ( NonterminalSymbol s : this.modelConverted.getGrammar ()
+        .getNonterminalSymbolSet () )
+    {
+      NonterminalSymbol c = new DefaultNonterminalSymbol ( s.getName () );
+      try
+      {
+        nonterminalSet.add ( c );
+      }
+      catch ( NonterminalSymbolSetException exc )
+      {
+        exc.printStackTrace ();
+      }
+      if ( s.equals ( this.modelConverted.getGrammar ().getStartSymbol () ) )
+      {
+        start = c;
+      }
+    }
+    TerminalSymbolSet terminals = new DefaultTerminalSymbolSet ();
+    for ( TerminalSymbol s : this.modelConverted.getGrammar ()
+        .getTerminalSymbolSet () )
+    {
+      try
+      {
+        terminals.add ( new DefaultTerminalSymbol ( s.getName () ) );
+      }
+      catch ( TerminalSymbolSetException exc )
+      {
+        exc.printStackTrace ();
+      }
+    }
+    CFG newCFG = new DefaultCFG ( nonterminalSet, terminals, start );
+    for ( Production p : this.modelConverted.getGrammar ().getProduction () )
+    {
+      NonterminalSymbol nonterminal = null;
+      for ( NonterminalSymbol s : nonterminalSet )
+      {
+        if ( p.getNonterminalSymbol ().getName ().equals ( s.getName () ) )
+        {
+          nonterminal = s;
+        }
+      }
+      ProductionWord word = new DefaultProductionWord ();
+      for ( ProductionWordMember m : p.getProductionWord () )
+      {
+        for ( NonterminalSymbol n : nonterminalSet )
+        {
+          if ( m.getName ().equals ( n.getName () ) )
+          {
+            word.add ( n );
+          }
+        }
+        for ( TerminalSymbol t : terminals )
+        {
+          if ( m.getName ().equals ( t.getName () ) )
+          {
+            word.add ( t );
+          }
+        }
+      }
+      newCFG.addProduction ( new DefaultProduction ( nonterminal, word ) );
+    }
+    return newCFG;
+  }
 
 
   /**
@@ -409,61 +532,6 @@ public class ConvertGrammarDialog implements
 
 
   /**
-   * Moves {@link NonterminalSymbol}s in the {@link JGTIList}
-   * 
-   * @param list The List
-   * @param rows The rows to move
-   * @param targetIndex The new index
-   */
-  protected void moveNonterminals ( @SuppressWarnings ( "unused" )
-  JGTIList list, JGTIListModelRows rows, int targetIndex )
-  {
-    ArrayList < NonterminalSymbol > oldNonterminals = new ArrayList < NonterminalSymbol > ();
-    for ( int n = 0 ; n < this.nonterminals.getSize () ; n++ )
-    {
-      oldNonterminals.add ( ( NonterminalSymbol ) this.nonterminals.get ( n ) );
-    }
-
-    ArrayList < NonterminalSymbol > nonterminalList = new ArrayList < NonterminalSymbol > ();
-
-    int [] indeces = rows.getRowIndices ();
-
-    int newTargetIndex = targetIndex;
-
-    if ( ( indeces.length > 0 ) && ( indeces [ 0 ] < targetIndex ) )
-    {
-      newTargetIndex++ ;
-    }
-
-    for ( int index : indeces )
-    {
-      nonterminalList.add ( ( NonterminalSymbol ) this.nonterminals
-          .getElementAt ( index ) );
-
-      if ( index < targetIndex )
-      {
-        newTargetIndex-- ;
-      }
-    }
-
-    for ( int n = indeces.length - 1 ; n > -1 ; n-- )
-    {
-      this.nonterminals.remove ( indeces [ n ] );
-    }
-
-    newTargetIndex = Math.min ( newTargetIndex, this.nonterminals.getSize () );
-    Collections.reverse ( nonterminalList );
-    for ( NonterminalSymbol s : nonterminalList )
-    {
-      this.nonterminals.add ( newTargetIndex, s );
-    }
-    this.gui.jGTIListNonterminalsConverted.getSelectionModel ()
-        .setSelectionInterval ( newTargetIndex,
-            newTargetIndex + indeces.length - 1 );
-  }
-
-
-  /**
    * Creates the converted {@link CFG} initial
    */
   private void createConverted ()
@@ -545,114 +613,102 @@ public class ConvertGrammarDialog implements
 
 
   /**
-   * Clones the converted {@link CFG}
+   * Eliminates the DirectLeftRecursion for a {@link NonterminalSymbol} in a
+   * {@link CFG}
    * 
-   * @return The cloned converted {@link CFG}
+   * @param s The {@link NonterminalSymbol}
+   * @param cfg The {@link CFG}
+   * @throws NonterminalSymbolSetException When new {@link NonterminalSymbol}
+   *           could not be created
    */
-  private CFG cloneConverted ()
+  private void eliminateDirectLeftRecursion ( NonterminalSymbol s, CFG cfg )
+      throws NonterminalSymbolSetException
   {
-    NonterminalSymbol start = null;
-    NonterminalSymbolSet nonterminalSet = new DefaultNonterminalSymbolSet ();
-    for ( NonterminalSymbol s : this.modelConverted.getGrammar ()
-        .getNonterminalSymbolSet () )
+    ArrayList < Production > leftRecursions = getDirectLeftRecursion ( s, cfg );
+
+    if ( !leftRecursions.isEmpty () )
     {
-      NonterminalSymbol c = new DefaultNonterminalSymbol ( s.getName () );
-      try
+      DefaultNonterminalSymbol otherS = new DefaultNonterminalSymbol ( s
+          .getName ()
+          + "'" ); //$NON-NLS-1$
+      cfg.getNonterminalSymbolSet ().add ( otherS );
+      this.nonterminals.addElement ( otherS );
+      ArrayList < Production > otherProductions = new ArrayList < Production > ();
+      otherProductions.addAll ( cfg.getProductionForNonTerminal ( s ) );
+      otherProductions.removeAll ( leftRecursions );
+      for ( Production p : otherProductions )
       {
-        nonterminalSet.add ( c );
+        p.getProductionWord ().add ( otherS );
       }
-      catch ( NonterminalSymbolSetException exc )
+      for ( Production p : leftRecursions )
       {
-        exc.printStackTrace ();
+        p.setNonterminalSymbol ( otherS );
+        p.getProductionWord ().get ().remove ( 0 );
+        p.getProductionWord ().add ( otherS );
       }
-      if ( s.equals ( this.modelConverted.getGrammar ().getStartSymbol () ) )
-      {
-        start = c;
-      }
+      cfg.addProduction ( new DefaultProduction ( otherS,
+          new DefaultProductionWord () ) );
     }
-    TerminalSymbolSet terminals = new DefaultTerminalSymbolSet ();
-    for ( TerminalSymbol s : this.modelConverted.getGrammar ()
-        .getTerminalSymbolSet () )
-    {
-      try
-      {
-        terminals.add ( new DefaultTerminalSymbol ( s.getName () ) );
-      }
-      catch ( TerminalSymbolSetException exc )
-      {
-        exc.printStackTrace ();
-      }
-    }
-    CFG newCFG = new DefaultCFG ( nonterminalSet, terminals, start );
-    for ( Production p : this.modelConverted.getGrammar ().getProduction () )
-    {
-      NonterminalSymbol nonterminal = null;
-      for ( NonterminalSymbol s : nonterminalSet )
-      {
-        if ( p.getNonterminalSymbol ().getName ().equals ( s.getName () ) )
-        {
-          nonterminal = s;
-        }
-      }
-      ProductionWord word = new DefaultProductionWord ();
-      for ( ProductionWordMember m : p.getProductionWord () )
-      {
-        for ( NonterminalSymbol n : nonterminalSet )
-        {
-          if ( m.getName ().equals ( n.getName () ) )
-          {
-            word.add ( n );
-          }
-        }
-        for ( TerminalSymbol t : terminals )
-        {
-          if ( m.getName ().equals ( t.getName () ) )
-          {
-            word.add ( t );
-          }
-        }
-      }
-      newCFG.addProduction ( new DefaultProduction ( nonterminal, word ) );
-    }
-    return newCFG;
   }
 
 
   /**
-   * The {@link NonterminalSymbol}s of the converted {@link CFG} as List
+   * Eliminates entity productions from a {@link CFG}
+   * 
+   * @param cfg The {@link CFG}
    */
-  private DefaultListModel nonterminals = new DefaultListModel ();
-
-
-  /**
-   * Updates the original {@link CFG}
-   */
-  private void updateOriginal ()
+  private void eliminateEntityProductions ( CFG cfg )
   {
-    this.gui.styledNonterminalSymbolSetParserPanelOriginal
-        .setText ( this.modelOriginal.getGrammar ().getNonterminalSymbolSet () );
-    this.gui.styledStartNonterminalSymbolParserPanelOriginal
-        .setText ( this.modelOriginal.getGrammar ().getStartSymbol () );
-    this.gui.styledTerminalSymbolSetParserPanelOriginal
-        .setText ( this.modelOriginal.getGrammar ().getTerminalSymbolSet () );
+    ArrayList < Production > entityProductions = getEntityProductions ( cfg );
+    for ( Production p : entityProductions )
+    {
+      NonterminalSymbol a = p.getNonterminalSymbol ();
+      NonterminalSymbol b = ( NonterminalSymbol ) p.getProductionWord ().get (
+          0 );
+      for ( Production p2 : cfg.getProductionForNonTerminal ( b ) )
+      {
+        cfg
+            .addProduction ( new DefaultProduction ( a, p2.getProductionWord () ) );
+      }
+      cfg.getProduction ().remove ( p );
+    }
+    if ( !getEntityProductions ( cfg ).isEmpty () )
+    {
+      eliminateEntityProductions ( cfg );
+    }
   }
 
 
   /**
-   * Updates the converted {@link CFG}
+   * Eliminates the EpsilonProductions from a {@link CFG}
+   * 
+   * @param cfg The {@link CFG}
    */
-  protected void updateConverted ()
+  private void eliminateEpsilonProductions ( CFG cfg )
   {
-    if ( !this.leftRecursion )
+    ArrayList < NonterminalSymbol > symbolsToEpsilon = new ArrayList < NonterminalSymbol > ();
+    for ( Production p : getEpsilonProductions ( cfg ) )
     {
-      this.gui.styledNonterminalSymbolSetParserPanelConverted
-          .setText ( this.modelConverted.getGrammar ()
-              .getNonterminalSymbolSet () );
+      symbolsToEpsilon.add ( p.getNonterminalSymbol () );
+      cfg.getProduction ().remove ( p );
     }
-    this.gui.styledStartNonterminalSymbolParserPanelConverted
-        .setText ( this.modelConverted.getGrammar ().getStartSymbol () );
-    this.gui.styledTerminalSymbolSetParserPanelConverted
-        .setText ( this.modelConverted.getGrammar ().getTerminalSymbolSet () );
+    for ( NonterminalSymbol s : symbolsToEpsilon )
+    {
+      for ( Production p : getProductionsForNonterminal ( s, cfg ) )
+      {
+        DefaultProductionWord w = new DefaultProductionWord ();
+        for ( ProductionWordMember m : p.getProductionWord ().get () )
+        {
+          if ( !m.equals ( s ) )
+          {
+            w.add ( m );
+          }
+        }
+        cfg.addProduction ( new DefaultProduction ( p.getNonterminalSymbol (),
+            w ) );
+      }
+    }
+
   }
 
 
@@ -669,6 +725,72 @@ public class ConvertGrammarDialog implements
 
 
   /**
+   * Gets the direct left recursions of a {@link NonterminalSymbol} in a
+   * {@link CFG}
+   * 
+   * @param s The {@link NonterminalSymbol}
+   * @param cfg The {@link CFG}
+   * @return The direct left recursions of a {@link NonterminalSymbol} in a
+   *         {@link CFG}
+   */
+  private ArrayList < Production > getDirectLeftRecursion (
+      NonterminalSymbol s, CFG cfg )
+  {
+    ArrayList < Production > productions = new ArrayList < Production > ();
+    for ( Production p : cfg.getProductionForNonTerminal ( s ) )
+    {
+      if ( p.getProductionWord ().size () > 0
+          && p.getProductionWord ().get ( 0 ).getName ().equals ( s.getName () ) )
+      {
+        productions.add ( p );
+      }
+    }
+    return productions;
+  }
+
+
+  /**
+   * Gets the EntitiyProductions for a {@link CFG}
+   * 
+   * @param cfg The {@link CFG}
+   * @return The EntityProductions
+   */
+  private ArrayList < Production > getEntityProductions ( CFG cfg )
+  {
+    ArrayList < Production > productions = new ArrayList < Production > ();
+    for ( Production p : cfg.getProduction () )
+    {
+      if ( p.getProductionWord ().size () == 1
+          && p.getProductionWord ().get ( 0 ) instanceof NonterminalSymbol )
+      {
+        productions.add ( p );
+      }
+    }
+    return productions;
+  }
+
+
+  /**
+   * Gets the EpsilonProductions of a {@link CFG}
+   * 
+   * @param cfg The {@link CFG}
+   * @return EpsilonProductions
+   */
+  private ArrayList < Production > getEpsilonProductions ( CFG cfg )
+  {
+    ArrayList < Production > symbols = new ArrayList < Production > ();
+    for ( Production p : cfg.getProduction () )
+    {
+      if ( p.getProductionWord ().equals ( new DefaultProductionWord () ) )
+      {
+        symbols.add ( p );
+      }
+    }
+    return symbols;
+  }
+
+
+  /**
    * Get the gui class
    * 
    * @see de.unisiegen.gtitool.ui.logic.interfaces.LogicClass#getGUI()
@@ -676,6 +798,187 @@ public class ConvertGrammarDialog implements
   public ConvertGrammarDialogForm getGUI ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the {@link JGTITable} converted
+   * 
+   * @return The {@link JGTITable} converted
+   */
+  public JGTITable getJGTITableConverted ()
+  {
+    return this.gui.jGTITableGrammarConverted;
+  }
+
+
+  /**
+   * Returns the {@link JGTITable} original
+   * 
+   * @return The {@link JGTITable} original
+   */
+  public JGTITable getJGTITableOriginal ()
+  {
+    return this.gui.jGTITableGrammarOriginal;
+  }
+
+
+  /**
+   * Returns the modelConverted.
+   * 
+   * @return The modelConverted.
+   * @see #modelConverted
+   */
+  public DefaultGrammarModel getModelConverted ()
+  {
+    return this.modelConverted;
+  }
+
+
+  /**
+   * Returns the modelOriginal.
+   * 
+   * @return The modelOriginal.
+   * @see #modelOriginal
+   */
+  public DefaultGrammarModel getModelOriginal ()
+  {
+    return this.modelOriginal;
+  }
+
+
+  /**
+   * Returns the panel.
+   * 
+   * @return The panel.
+   * @see #panel
+   */
+  public GrammarPanel getPanel ()
+  {
+    return this.panel;
+  }
+
+
+  /**
+   * Gets Productions where the {@link NonterminalSymbol} is in the
+   * {@link ProductionWord}
+   * 
+   * @param s The {@link NonterminalSymbol}
+   * @param cfg The {@link CFG}
+   * @return Productions where the {@link NonterminalSymbol} is in the
+   *         {@link ProductionWord}
+   */
+  private ArrayList < Production > getProductionsForNonterminal (
+      NonterminalSymbol s, CFG cfg )
+  {
+    ArrayList < Production > result = new ArrayList < Production > ();
+    for ( Production p : cfg.getProduction () )
+    {
+      if ( p.getProductionWord ().get ().contains ( s ) )
+      {
+        result.add ( p );
+      }
+    }
+    return result;
+  }
+
+
+  /**
+   * Gets the productions for 2 {@link NonterminalSymbol}s
+   * 
+   * @param a The first {@link NonterminalSymbol}
+   * @param b The second {@link NonterminalSymbol}
+   * @param cfg The {@link CFG}
+   * @return Productions for 2 {@link NonterminalSymbol}s
+   */
+  private ArrayList < Production > getProductionsForNonterminals (
+      NonterminalSymbol a, NonterminalSymbol b, CFG cfg )
+  {
+    ArrayList < Production > productions = new ArrayList < Production > ();
+    for ( Production p : cfg.getProduction () )
+    {
+      if ( p.getNonterminalSymbol ().getName ().equals ( a.getName () )
+          && p.getProductionWord ().size () > 0
+          && p.getProductionWord ().get ( 0 ).getName ().equals ( b.getName () ) )
+      {
+        productions.add ( p );
+      }
+    }
+    return productions;
+  }
+
+
+  /**
+   * Gets the Productions with the prefix
+   * 
+   * @param productions The {@link Production}s
+   * @param prefix The prefix as {@link ProductionWord}
+   * @return The {@link Production}s with the prefix
+   */
+  private ArrayList < Production > getProductionsWithPrefix (
+      ArrayList < Production > productions, ProductionWord prefix )
+  {
+    ArrayList < Production > result = new ArrayList < Production > ();
+    for ( Production p : productions )
+    {
+      ProductionWord word = p.getProductionWord ();
+      boolean fit = true;
+      for ( int k = 0 ; k < prefix.get ().size () ; k++ )
+      {
+
+        if ( word.size () <= k || !prefix.get ( k ).equals ( word.get ( k ) ) )
+        {
+          fit = false;
+        }
+      }
+      if ( fit )
+      {
+        result.add ( p );
+      }
+    }
+    return result;
+  }
+
+
+  /**
+   * Gets the same prefixes of a {@link NonterminalSymbol} in a {@link CFG}
+   * 
+   * @param a The {@link NonterminalSymbol}
+   * @param cfg The {@link CFG}
+   * @return An {@link ObjectPair} with the prefix and the productions
+   */
+  private ObjectPair < ProductionWord, ArrayList < Production > > getSamePrefixes (
+      NonterminalSymbol a, CFG cfg )
+  {
+    ProductionWord prefix = new DefaultProductionWord ();
+    ArrayList < Production > productions = new ArrayList < Production > ();
+    for ( Production p : cfg.getProductionForNonTerminal ( a ) )
+    {
+      productions.add ( p );
+    }
+    while ( !productions.isEmpty () )
+    {
+      Production p = productions.remove ( 0 );
+      for ( ProductionWordMember m : p.getProductionWord () )
+      {
+        prefix.add ( m );
+      }
+
+      while ( !prefix.get ().isEmpty () )
+      {
+        ArrayList < Production > ps = getProductionsWithPrefix ( productions,
+            prefix );
+        if ( !ps.isEmpty () )
+        {
+          ps.add ( p );
+          return new ObjectPair < ProductionWord, ArrayList < Production > > (
+              prefix, ps );
+        }
+        prefix.get ().remove ( prefix.get ().size () - 1 );
+      }
+    }
+    return new ObjectPair < ProductionWord, ArrayList < Production > > (
+        new DefaultProductionWord (), new ArrayList < Production > () );
   }
 
 
@@ -752,18 +1055,6 @@ public class ConvertGrammarDialog implements
 
 
   /**
-   * The {@link DefaultGrammarModel} for the original {@link CFG}
-   */
-  private DefaultGrammarModel modelOriginal;
-
-
-  /**
-   * The {@link DefaultGrammarModel} for the converted {@link CFG}
-   */
-  private DefaultGrammarModel modelConverted;
-
-
-  /**
    * Handles the action on the ok button.
    */
   public void handleOk ()
@@ -798,8 +1089,8 @@ public class ConvertGrammarDialog implements
    */
   public void handlePrint ()
   {
-    // PrintDialog dialog = new PrintDialog ( this.parent, this );
-    // dialog.show ();
+    PrintDialog dialog = new PrintDialog ( this.parent, this );
+    dialog.show ();
   }
 
 
@@ -818,145 +1109,102 @@ public class ConvertGrammarDialog implements
 
 
   /**
-   * Performs previous step
+   * Left factoring of a {@link NonterminalSymbol} in a {@link CFG}
+   * 
+   * @param a The {@link NonterminalSymbol}
+   * @param cfg The {@link CFG}
    */
-  private void performPreviousStep ()
+  private void leftFactore ( NonterminalSymbol a, CFG cfg )
   {
-    StepItem item = this.stepItemList.remove ( this.stepItemList.size () - 1 );
-    CFG old = item.getOldCFG ();
-    this.modelConverted = new DefaultGrammarModel ( old );
+    ObjectPair < ProductionWord, ArrayList < Production > > objectPair = getSamePrefixes (
+        a, cfg );
+    ProductionWord prefix = objectPair.getFirst ();
+    ArrayList < Production > productions = objectPair.getSecond ();
 
-    this.gui.jGTITableGrammarConverted.setModel ( this.modelConverted
-        .getGrammar () );
-
-    this.gui.jGTITableGrammarConverted
-        .setColumnModel ( this.grammarColumnModelConverted );
-    this.gui.jGTITableGrammarConverted.getTableHeader ().setReorderingAllowed (
-        false );
-    if ( this.leftRecursion )
+    if ( ! ( prefix.get ().size () == 0 ) && !productions.isEmpty () )
     {
-      this.i = item.getINow ();
-      this.j = item.getJNow ();
-      if ( this.i == 1 && this.j == 1 )
+      NonterminalSymbol newSymbol = new DefaultNonterminalSymbol ( a.getName ()
+          + "'" ); //$NON-NLS-1$
+      try
       {
-        if ( this.initialEliminateEntityProductionsDone )
-        {
-          this.initialEliminateEntityProductionsDone = false;
-        }
-        if ( this.initialEliminateEpsilonProductionsDone )
-        {
-          this.initialEliminateEpsilonProductionsDone = false;
-        }
+        cfg.getNonterminalSymbolSet ().add ( newSymbol );
       }
-
-      this.nonterminals = item.getOldNonterminalModel ();
-      this.gui.jGTIListNonterminalsConverted.setModel ( this.nonterminals );
+      catch ( NonterminalSymbolSetException exc )
+      {
+        exc.printStackTrace ();
+      }
+      ProductionWord newWord = new DefaultProductionWord ( prefix.get () );
+      newWord.add ( newSymbol );
+      cfg.addProduction ( new DefaultProduction ( a, newWord ) );
+      for ( int k = 0 ; k < productions.size () ; k++ )
+      {
+        Production p = productions.get ( k );
+        ProductionWord word = new DefaultProductionWord ();
+        for ( int l = prefix.get ().size () ; l < p.getProductionWord ()
+            .size () ; l++ )
+        {
+          word.add ( p.getProductionWord ().get ( l ) );
+        }
+        cfg.addProduction ( new DefaultProduction ( newSymbol, word ) );
+        cfg.getProduction ().remove ( p );
+      }
     }
-    updateConverted ();
-    this.convertMachineTableModel.removeLastRow ();
-    this.endReached = false;
-    setStatus ();
   }
 
 
   /**
-   * Sets the button status.
+   * Moves {@link NonterminalSymbol}s in the {@link JGTIList}
+   * 
+   * @param list The List
+   * @param rows The rows to move
+   * @param targetIndex The new index
    */
-  private final void setStatus ()
+  protected void moveNonterminals ( @SuppressWarnings ( "unused" )
+  JGTIList list, JGTIListModelRows rows, int targetIndex )
   {
-    if ( this.gui.jGTIToolBarToggleButtonAutoStep.isSelected () )
+    ArrayList < NonterminalSymbol > oldNonterminals = new ArrayList < NonterminalSymbol > ();
+    for ( int n = 0 ; n < this.nonterminals.getSize () ; n++ )
     {
-      this.gui.jGTIToolBarButtonBeginStep.setEnabled ( false );
-      this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( false );
-      this.gui.jGTIToolBarButtonNextStep.setEnabled ( false );
-      this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( false );
-      this.gui.jGTIToolBarButtonStop.setEnabled ( true );
-      this.gui.jGTIToolBarButtonEndStep.setEnabled ( false );
-      this.gui.jGTIListNonterminalsConverted.setDragEnabled ( false );
-      this.gui.jGTICheckBoxEntityProductions.setEnabled ( false );
-      this.gui.jGTICheckBoxEpsilonProductions.setEnabled ( false );
+      oldNonterminals.add ( ( NonterminalSymbol ) this.nonterminals.get ( n ) );
     }
-    else
+
+    ArrayList < NonterminalSymbol > nonterminalList = new ArrayList < NonterminalSymbol > ();
+
+    int [] indeces = rows.getRowIndices ();
+
+    int newTargetIndex = targetIndex;
+
+    if ( ( indeces.length > 0 ) && ( indeces [ 0 ] < targetIndex ) )
     {
-      boolean beginReached = this.stepItemList.isEmpty ();
-      this.gui.jGTIListNonterminalsConverted.setDragEnabled ( beginReached );
-      this.gui.jGTICheckBoxEntityProductions.setEnabled ( beginReached );
-      this.gui.jGTICheckBoxEpsilonProductions.setEnabled ( beginReached );
-      this.gui.jGTIToolBarButtonBeginStep.setEnabled ( !beginReached );
-      this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !beginReached );
-      this.gui.jGTIToolBarButtonNextStep.setEnabled ( !this.endReached );
-      this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( !this.endReached );
-      this.gui.jGTIToolBarButtonStop.setEnabled ( false );
-      this.gui.jGTIToolBarButtonEndStep.setEnabled ( !this.endReached );
+      newTargetIndex++ ;
     }
-  }
 
-
-  /**
-   * Shows the {@link ConvertMachineDialogForm}.
-   */
-  public final void show ()
-  {
-    logger.debug ( "show", "show the convert machine dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-    Rectangle rect = PreferenceManager.getInstance ()
-        .getConvertMachineDialogBounds ();
-    if ( ( rect.x == PreferenceManager.DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_X )
-        || ( rect.y == PreferenceManager.DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_Y ) )
+    for ( int index : indeces )
     {
-      rect.x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-          - ( this.gui.getWidth () / 2 );
-      rect.y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-          - ( this.gui.getHeight () / 2 );
+      nonterminalList.add ( ( NonterminalSymbol ) this.nonterminals
+          .getElementAt ( index ) );
+
+      if ( index < targetIndex )
+      {
+        newTargetIndex-- ;
+      }
     }
-    this.gui.setBounds ( rect );
-    this.gui.setVisible ( true );
+
+    for ( int n = indeces.length - 1 ; n > -1 ; n-- )
+    {
+      this.nonterminals.remove ( indeces [ n ] );
+    }
+
+    newTargetIndex = Math.min ( newTargetIndex, this.nonterminals.getSize () );
+    Collections.reverse ( nonterminalList );
+    for ( NonterminalSymbol s : nonterminalList )
+    {
+      this.nonterminals.add ( newTargetIndex, s );
+    }
+    this.gui.jGTIListNonterminalsConverted.getSelectionModel ()
+        .setSelectionInterval ( newTargetIndex,
+            newTargetIndex + indeces.length - 1 );
   }
-
-
-  /**
-   * Starts the auto step timer.
-   */
-  @SuppressWarnings ( "synthetic-access" )
-  private final void startAutoStepTimer ()
-  {
-    cancelAutoStepTimer ();
-
-    this.autoStepTimer = new Timer ();
-    int time = PreferenceManager.getInstance ().getAutoStepItem ()
-        .getAutoStepInterval ();
-    this.autoStepTimer.schedule ( new AutoStepTimerTask (), time, time );
-  }
-
-
-  /**
-   * The variable i in the algorithm
-   */
-  private int i = 1;
-
-
-  /**
-   * The variable j in the algorithm
-   */
-  private int j = 1;
-
-
-  /**
-   * The initial nonterminal size
-   */
-  private int initialNonterminalSize;
-
-
-  /**
-   * Flag indicates if entity productions are eliminated
-   */
-  private boolean initialEliminateEntityProductionsDone = false;
-
-
-  /**
-   * Flag indicates if epsilon productions are eliminated
-   */
-  private boolean initialEliminateEpsilonProductionsDone = false;
 
 
   /**
@@ -1143,335 +1391,146 @@ public class ConvertGrammarDialog implements
 
 
   /**
-   * Left factoring of a {@link NonterminalSymbol} in a {@link CFG}
-   * 
-   * @param a The {@link NonterminalSymbol}
-   * @param cfg The {@link CFG}
+   * Performs previous step
    */
-  private void leftFactore ( NonterminalSymbol a, CFG cfg )
+  private void performPreviousStep ()
   {
-    ObjectPair < ProductionWord, ArrayList < Production > > objectPair = getSamePrefixes (
-        a, cfg );
-    ProductionWord prefix = objectPair.getFirst ();
-    ArrayList < Production > productions = objectPair.getSecond ();
+    StepItem item = this.stepItemList.remove ( this.stepItemList.size () - 1 );
+    CFG old = item.getOldCFG ();
+    this.modelConverted = new DefaultGrammarModel ( old );
 
-    if ( ! ( prefix.get ().size () == 0 ) && !productions.isEmpty () )
+    this.gui.jGTITableGrammarConverted.setModel ( this.modelConverted
+        .getGrammar () );
+
+    this.gui.jGTITableGrammarConverted
+        .setColumnModel ( this.grammarColumnModelConverted );
+    this.gui.jGTITableGrammarConverted.getTableHeader ().setReorderingAllowed (
+        false );
+    if ( this.leftRecursion )
     {
-      NonterminalSymbol newSymbol = new DefaultNonterminalSymbol ( a.getName ()
-          + "'" ); //$NON-NLS-1$
-      try
+      this.i = item.getINow ();
+      this.j = item.getJNow ();
+      if ( this.i == 1 && this.j == 1 )
       {
-        cfg.getNonterminalSymbolSet ().add ( newSymbol );
-      }
-      catch ( NonterminalSymbolSetException exc )
-      {
-        exc.printStackTrace ();
-      }
-      ProductionWord newWord = new DefaultProductionWord ( prefix.get () );
-      newWord.add ( newSymbol );
-      cfg.addProduction ( new DefaultProduction ( a, newWord ) );
-      for ( int k = 0 ; k < productions.size () ; k++ )
-      {
-        Production p = productions.get ( k );
-        ProductionWord word = new DefaultProductionWord ();
-        for ( int l = prefix.get ().size () ; l < p.getProductionWord ()
-            .size () ; l++ )
+        if ( this.initialEliminateEntityProductionsDone )
         {
-          word.add ( p.getProductionWord ().get ( l ) );
+          this.initialEliminateEntityProductionsDone = false;
         }
-        cfg.addProduction ( new DefaultProduction ( newSymbol, word ) );
-        cfg.getProduction ().remove ( p );
-      }
-    }
-  }
-
-
-  /**
-   * Gets the same prefixes of a {@link NonterminalSymbol} in a {@link CFG}
-   * 
-   * @param a The {@link NonterminalSymbol}
-   * @param cfg The {@link CFG}
-   * @return An {@link ObjectPair} with the prefix and the productions
-   */
-  private ObjectPair < ProductionWord, ArrayList < Production > > getSamePrefixes (
-      NonterminalSymbol a, CFG cfg )
-  {
-    ProductionWord prefix = new DefaultProductionWord ();
-    ArrayList < Production > productions = new ArrayList < Production > ();
-    for ( Production p : cfg.getProductionForNonTerminal ( a ) )
-    {
-      productions.add ( p );
-    }
-    while ( !productions.isEmpty () )
-    {
-      Production p = productions.remove ( 0 );
-      for ( ProductionWordMember m : p.getProductionWord () )
-      {
-        prefix.add ( m );
-      }
-
-      while ( !prefix.get ().isEmpty () )
-      {
-        ArrayList < Production > ps = getProductionsWithPrefix ( productions,
-            prefix );
-        if ( !ps.isEmpty () )
+        if ( this.initialEliminateEpsilonProductionsDone )
         {
-          ps.add ( p );
-          return new ObjectPair < ProductionWord, ArrayList < Production > > (
-              prefix, ps );
-        }
-        prefix.get ().remove ( prefix.get ().size () - 1 );
-      }
-    }
-    return new ObjectPair < ProductionWord, ArrayList < Production > > (
-        new DefaultProductionWord (), new ArrayList < Production > () );
-  }
-
-
-  /**
-   * Gets the Productions with the prefix
-   * 
-   * @param productions The {@link Production}s
-   * @param prefix The prefix as {@link ProductionWord}
-   * @return The {@link Production}s with the prefix
-   */
-  private ArrayList < Production > getProductionsWithPrefix (
-      ArrayList < Production > productions, ProductionWord prefix )
-  {
-    ArrayList < Production > result = new ArrayList < Production > ();
-    for ( Production p : productions )
-    {
-      ProductionWord word = p.getProductionWord ();
-      boolean fit = true;
-      for ( int k = 0 ; k < prefix.get ().size () ; k++ )
-      {
-
-        if ( word.size () <= k || !prefix.get ( k ).equals ( word.get ( k ) ) )
-        {
-          fit = false;
+          this.initialEliminateEpsilonProductionsDone = false;
         }
       }
-      if ( fit )
-      {
-        result.add ( p );
-      }
+
+      this.nonterminals = item.getOldNonterminalModel ();
+      this.gui.jGTIListNonterminalsConverted.setModel ( this.nonterminals );
     }
-    return result;
+    updateConverted ();
+    this.convertMachineTableModel.removeLastRow ();
+    this.endReached = false;
+    setStatus ();
   }
 
 
   /**
-   * Gets the productions for 2 {@link NonterminalSymbol}s
-   * 
-   * @param a The first {@link NonterminalSymbol}
-   * @param b The second {@link NonterminalSymbol}
-   * @param cfg The {@link CFG}
-   * @return Productions for 2 {@link NonterminalSymbol}s
+   * Sets the button status.
    */
-  private ArrayList < Production > getProductionsForNonterminals (
-      NonterminalSymbol a, NonterminalSymbol b, CFG cfg )
+  private final void setStatus ()
   {
-    ArrayList < Production > productions = new ArrayList < Production > ();
-    for ( Production p : cfg.getProduction () )
+    if ( this.gui.jGTIToolBarToggleButtonAutoStep.isSelected () )
     {
-      if ( p.getNonterminalSymbol ().getName ().equals ( a.getName () )
-          && p.getProductionWord ().size () > 0
-          && p.getProductionWord ().get ( 0 ).getName ().equals ( b.getName () ) )
-      {
-        productions.add ( p );
-      }
+      this.gui.jGTIToolBarButtonBeginStep.setEnabled ( false );
+      this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( false );
+      this.gui.jGTIToolBarButtonNextStep.setEnabled ( false );
+      this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( false );
+      this.gui.jGTIToolBarButtonStop.setEnabled ( true );
+      this.gui.jGTIToolBarButtonEndStep.setEnabled ( false );
+      this.gui.jGTIListNonterminalsConverted.setDragEnabled ( false );
+      this.gui.jGTICheckBoxEntityProductions.setEnabled ( false );
+      this.gui.jGTICheckBoxEpsilonProductions.setEnabled ( false );
     }
-    return productions;
-  }
-
-
-  /**
-   * Eliminates entity productions from a {@link CFG}
-   * 
-   * @param cfg The {@link CFG}
-   */
-  private void eliminateEntityProductions ( CFG cfg )
-  {
-    ArrayList < Production > entityProductions = getEntityProductions ( cfg );
-    for ( Production p : entityProductions )
+    else
     {
-      NonterminalSymbol a = p.getNonterminalSymbol ();
-      NonterminalSymbol b = ( NonterminalSymbol ) p.getProductionWord ().get (
-          0 );
-      for ( Production p2 : cfg.getProductionForNonTerminal ( b ) )
-      {
-        cfg
-            .addProduction ( new DefaultProduction ( a, p2.getProductionWord () ) );
-      }
-      cfg.getProduction ().remove ( p );
-    }
-    if ( !getEntityProductions ( cfg ).isEmpty () )
-    {
-      eliminateEntityProductions ( cfg );
+      boolean beginReached = this.stepItemList.isEmpty ();
+      this.gui.jGTIListNonterminalsConverted.setDragEnabled ( beginReached );
+      this.gui.jGTICheckBoxEntityProductions.setEnabled ( beginReached );
+      this.gui.jGTICheckBoxEpsilonProductions.setEnabled ( beginReached );
+      this.gui.jGTIToolBarButtonBeginStep.setEnabled ( !beginReached );
+      this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !beginReached );
+      this.gui.jGTIToolBarButtonNextStep.setEnabled ( !this.endReached );
+      this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( !this.endReached );
+      this.gui.jGTIToolBarButtonStop.setEnabled ( false );
+      this.gui.jGTIToolBarButtonEndStep.setEnabled ( !this.endReached );
     }
   }
 
 
   /**
-   * Gets the EntitiyProductions for a {@link CFG}
-   * 
-   * @param cfg The {@link CFG}
-   * @return The EntityProductions
+   * Shows the {@link ConvertMachineDialogForm}.
    */
-  private ArrayList < Production > getEntityProductions ( CFG cfg )
+  public final void show ()
   {
-    ArrayList < Production > productions = new ArrayList < Production > ();
-    for ( Production p : cfg.getProduction () )
+    logger.debug ( "show", "show the convert machine dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    Rectangle rect = PreferenceManager.getInstance ()
+        .getConvertMachineDialogBounds ();
+    if ( ( rect.x == PreferenceManager.DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_X )
+        || ( rect.y == PreferenceManager.DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_Y ) )
     {
-      if ( p.getProductionWord ().size () == 1
-          && p.getProductionWord ().get ( 0 ) instanceof NonterminalSymbol )
-      {
-        productions.add ( p );
-      }
+      rect.x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+          - ( this.gui.getWidth () / 2 );
+      rect.y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+          - ( this.gui.getHeight () / 2 );
     }
-    return productions;
+    this.gui.setBounds ( rect );
+    this.gui.setVisible ( true );
   }
 
 
   /**
-   * Eliminates the EpsilonProductions from a {@link CFG}
-   * 
-   * @param cfg The {@link CFG}
+   * Starts the auto step timer.
    */
-  private void eliminateEpsilonProductions ( CFG cfg )
+  @SuppressWarnings ( "synthetic-access" )
+  private final void startAutoStepTimer ()
   {
-    ArrayList < NonterminalSymbol > symbolsToEpsilon = new ArrayList < NonterminalSymbol > ();
-    for ( Production p : getEpsilonProductions ( cfg ) )
-    {
-      symbolsToEpsilon.add ( p.getNonterminalSymbol () );
-      cfg.getProduction ().remove ( p );
-    }
-    for ( NonterminalSymbol s : symbolsToEpsilon )
-    {
-      for ( Production p : getProductionsForNonterminal ( s, cfg ) )
-      {
-        DefaultProductionWord w = new DefaultProductionWord ();
-        for ( ProductionWordMember m : p.getProductionWord ().get () )
-        {
-          if ( !m.equals ( s ) )
-          {
-            w.add ( m );
-          }
-        }
-        cfg.addProduction ( new DefaultProduction ( p.getNonterminalSymbol (),
-            w ) );
-      }
-    }
+    cancelAutoStepTimer ();
 
+    this.autoStepTimer = new Timer ();
+    int time = PreferenceManager.getInstance ().getAutoStepItem ()
+        .getAutoStepInterval ();
+    this.autoStepTimer.schedule ( new AutoStepTimerTask (), time, time );
   }
 
 
   /**
-   * Gets Productions where the {@link NonterminalSymbol} is in the
-   * {@link ProductionWord}
-   * 
-   * @param s The {@link NonterminalSymbol}
-   * @param cfg The {@link CFG}
-   * @return Productions where the {@link NonterminalSymbol} is in the
-   *         {@link ProductionWord}
+   * Updates the converted {@link CFG}
    */
-  private ArrayList < Production > getProductionsForNonterminal (
-      NonterminalSymbol s, CFG cfg )
+  protected void updateConverted ()
   {
-    ArrayList < Production > result = new ArrayList < Production > ();
-    for ( Production p : cfg.getProduction () )
+    if ( !this.leftRecursion )
     {
-      if ( p.getProductionWord ().get ().contains ( s ) )
-      {
-        result.add ( p );
-      }
+      this.gui.styledNonterminalSymbolSetParserPanelConverted
+          .setText ( this.modelConverted.getGrammar ()
+              .getNonterminalSymbolSet () );
     }
-    return result;
+    this.gui.styledStartNonterminalSymbolParserPanelConverted
+        .setText ( this.modelConverted.getGrammar ().getStartSymbol () );
+    this.gui.styledTerminalSymbolSetParserPanelConverted
+        .setText ( this.modelConverted.getGrammar ().getTerminalSymbolSet () );
   }
 
 
   /**
-   * Gets the EpsilonProductions of a {@link CFG}
-   * 
-   * @param cfg The {@link CFG}
-   * @return EpsilonProductions
+   * Updates the original {@link CFG}
    */
-  private ArrayList < Production > getEpsilonProductions ( CFG cfg )
+  private void updateOriginal ()
   {
-    ArrayList < Production > symbols = new ArrayList < Production > ();
-    for ( Production p : cfg.getProduction () )
-    {
-      if ( p.getProductionWord ().equals ( new DefaultProductionWord () ) )
-      {
-        symbols.add ( p );
-      }
-    }
-    return symbols;
-  }
-
-
-  /**
-   * Gets the direct left recursions of a {@link NonterminalSymbol} in a
-   * {@link CFG}
-   * 
-   * @param s The {@link NonterminalSymbol}
-   * @param cfg The {@link CFG}
-   * @return The direct left recursions of a {@link NonterminalSymbol} in a
-   *         {@link CFG}
-   */
-  private ArrayList < Production > getDirectLeftRecursion (
-      NonterminalSymbol s, CFG cfg )
-  {
-    ArrayList < Production > productions = new ArrayList < Production > ();
-    for ( Production p : cfg.getProductionForNonTerminal ( s ) )
-    {
-      if ( p.getProductionWord ().size () > 0
-          && p.getProductionWord ().get ( 0 ).getName ().equals ( s.getName () ) )
-      {
-        productions.add ( p );
-      }
-    }
-    return productions;
-  }
-
-
-  /**
-   * Eliminates the DirectLeftRecursion for a {@link NonterminalSymbol} in a
-   * {@link CFG}
-   * 
-   * @param s The {@link NonterminalSymbol}
-   * @param cfg The {@link CFG}
-   * @throws NonterminalSymbolSetException When new {@link NonterminalSymbol}
-   *           could not be created
-   */
-  private void eliminateDirectLeftRecursion ( NonterminalSymbol s, CFG cfg )
-      throws NonterminalSymbolSetException
-  {
-    ArrayList < Production > leftRecursions = getDirectLeftRecursion ( s, cfg );
-
-    if ( !leftRecursions.isEmpty () )
-    {
-      DefaultNonterminalSymbol otherS = new DefaultNonterminalSymbol ( s
-          .getName ()
-          + "'" ); //$NON-NLS-1$
-      cfg.getNonterminalSymbolSet ().add ( otherS );
-      this.nonterminals.addElement ( otherS );
-      ArrayList < Production > otherProductions = new ArrayList < Production > ();
-      otherProductions.addAll ( cfg.getProductionForNonTerminal ( s ) );
-      otherProductions.removeAll ( leftRecursions );
-      for ( Production p : otherProductions )
-      {
-        p.getProductionWord ().add ( otherS );
-      }
-      for ( Production p : leftRecursions )
-      {
-        p.setNonterminalSymbol ( otherS );
-        p.getProductionWord ().get ().remove ( 0 );
-        p.getProductionWord ().add ( otherS );
-      }
-      cfg.addProduction ( new DefaultProduction ( otherS,
-          new DefaultProductionWord () ) );
-    }
+    this.gui.styledNonterminalSymbolSetParserPanelOriginal
+        .setText ( this.modelOriginal.getGrammar ().getNonterminalSymbolSet () );
+    this.gui.styledStartNonterminalSymbolParserPanelOriginal
+        .setText ( this.modelOriginal.getGrammar ().getStartSymbol () );
+    this.gui.styledTerminalSymbolSetParserPanelOriginal
+        .setText ( this.modelOriginal.getGrammar ().getTerminalSymbolSet () );
   }
 
 }

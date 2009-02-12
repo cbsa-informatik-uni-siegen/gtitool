@@ -29,12 +29,6 @@ public abstract class RegexNode implements Entity < RegexNode >
 
 
   /**
-   * Flag that indicates if user has used braces around the node
-   */
-  protected boolean braces = false;
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see java.lang.Object#clone()
@@ -107,6 +101,14 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return The {@link PrettyString} for the Node in the JGTIGraph
    */
   public abstract PrettyString getNodeString ();
+
+
+  /**
+   * Returns the priority of the Node
+   * 
+   * @return The priority of the Node
+   */
+  public abstract int getPriority ();
 
 
   /**
@@ -195,17 +197,6 @@ public abstract class RegexNode implements Entity < RegexNode >
   public void setActive ( boolean active )
   {
     this.active = active;
-  }
-
-
-  /**
-   * Sets flag that indicates if user used braces around the regex
-   * 
-   * @param braces True if braces are used
-   */
-  public void setBraces ( boolean braces )
-  {
-    this.braces = braces;
   }
 
 

@@ -305,16 +305,9 @@ public class TokenNode extends LeafNode
   public PrettyString toPrettyString ()
   {
     PrettyString string = new PrettyString ();
-    if ( this.braces )
-    {
-      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
-    }
+
     string.add ( ( new PrettyToken ( this.name, Style.TOKEN ) ) );
 
-    if ( this.braces )
-    {
-      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
-    }
     return string;
   }
 

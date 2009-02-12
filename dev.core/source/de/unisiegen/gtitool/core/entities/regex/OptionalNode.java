@@ -256,7 +256,6 @@ public class OptionalNode extends OneChildNode
   {
     DisjunctionNode dis = new DisjunctionNode ( this.regex
         .toCoreSyntax ( withCharacterClasses ), new EpsilonNode () );
-    dis.setBraces ( true );
     return dis;
   }
 
@@ -269,18 +268,19 @@ public class OptionalNode extends OneChildNode
   public PrettyString toPrettyString ()
   {
     PrettyString string = new PrettyString ();
-    if ( this.braces )
+
+    if ( this.regex.getPriority () != 5 )
     {
       string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     string.add ( this.regex.toPrettyString () );
-    string
-        .add ( new PrettyString ( new PrettyToken ( "?", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
-
-    if ( this.braces )
+    if ( this.regex.getPriority () != 5 )
     {
       string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
+    string
+        .add ( new PrettyString ( new PrettyToken ( "?", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
+
     return string;
   }
 

@@ -96,6 +96,18 @@ public abstract class LeafNode extends RegexNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getPriority()
+   */
+  @Override
+  public int getPriority ()
+  {
+    return 5;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#getTokenNodes()
    */
   @Override

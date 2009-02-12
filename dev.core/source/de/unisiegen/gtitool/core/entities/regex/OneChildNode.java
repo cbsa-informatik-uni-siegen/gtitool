@@ -99,6 +99,18 @@ public abstract class OneChildNode extends RegexNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getPriority()
+   */
+  @Override
+  public int getPriority ()
+  {
+    return 3;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#getWidth()
    */
   @Override

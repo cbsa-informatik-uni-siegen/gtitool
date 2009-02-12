@@ -1,0 +1,1 @@
+- SM  Kommentare in Regexn fehlen.

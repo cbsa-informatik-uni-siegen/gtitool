@@ -35,7 +35,7 @@ public class RegexTester
       regex2 = ( RegexNode ) regexParseable.newParser ( regexText2 ).parse ();
       DefaultRegex conv2 = new DefaultRegex ( new DefaultRegexAlphabet (
           new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),//$NON-NLS-1$ //$NON-NLS-2$
-          new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ));//$NON-NLS-1$ //$NON-NLS-2$
+          new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ) );//$NON-NLS-1$ //$NON-NLS-2$
       conv2.setRegexNode ( regex2, regexText2 );
       System.err.println ( conv1.equals ( conv2 ) );
       while ( !regex1.isMarked () )
@@ -47,7 +47,17 @@ public class RegexTester
     {
       exc.printStackTrace ();
     }
-    
+
+    try
+    {
+      RegexNode regex = ( RegexNode ) regexParseable.newParser (
+          "[abcde]" ).parse (); //$NON-NLS-1$
+      System.err.println ( regex.toPrettyString ().toString () );
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ();
+    }
   }
 
 }

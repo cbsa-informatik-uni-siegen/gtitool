@@ -102,7 +102,6 @@ simple_regex					::= simple_regex:reg STAR:star
 									:}
 								|	LBRACE:l regex:reg RBRACE:r
 									{:
-										reg.setBraces(true);
 										RESULT = reg;
 									   	RESULT.setParserOffset(new ParserOffset(lleft,rright));
 									:}

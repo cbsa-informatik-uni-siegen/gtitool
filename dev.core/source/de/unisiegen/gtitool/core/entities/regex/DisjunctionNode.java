@@ -221,6 +221,18 @@ public class DisjunctionNode extends TwoChildNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getPriority()
+   */
+  @Override
+  public int getPriority ()
+  {
+    return 1;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#getRightChildrenCount()
    */
   @Override
@@ -309,7 +321,6 @@ public class DisjunctionNode extends TwoChildNode
     DisjunctionNode dis = new DisjunctionNode ( this.regex1
         .toCoreSyntax ( withCharacterClasses ), this.regex2
         .toCoreSyntax ( withCharacterClasses ) );
-    dis.setBraces ( this.braces );
     return dis;
   }
 
@@ -323,16 +334,27 @@ public class DisjunctionNode extends TwoChildNode
   {
     PrettyString string = new PrettyString ();
 
-    if ( this.braces )
+    if ( this.regex1.getPriority () < getPriority () )
     {
       string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
+
     string.add ( this.regex1.toPrettyString () );
+
+    if ( this.regex1.getPriority () < getPriority () )
+    {
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
+    }
     string
         .add ( new PrettyString ( new PrettyToken ( "|", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
+
+    if ( this.regex2.getPriority () < getPriority () )
+    {
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
+    }
     string.add ( this.regex2.toPrettyString () );
 
-    if ( this.braces )
+    if ( this.regex2.getPriority () < getPriority () )
     {
       string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }

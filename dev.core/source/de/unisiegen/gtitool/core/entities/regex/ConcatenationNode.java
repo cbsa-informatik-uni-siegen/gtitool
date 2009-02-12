@@ -223,6 +223,18 @@ public class ConcatenationNode extends TwoChildNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getPriority()
+   */
+  @Override
+  public int getPriority ()
+  {
+    return 2;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#getRightChildrenCount()
    */
   @Override
@@ -316,7 +328,6 @@ public class ConcatenationNode extends TwoChildNode
     ConcatenationNode con = new ConcatenationNode ( this.regex1
         .toCoreSyntax ( withCharacterClasses ), this.regex2
         .toCoreSyntax ( withCharacterClasses ) );
-    con.setBraces ( this.braces );
     return con;
   }
 
@@ -329,16 +340,27 @@ public class ConcatenationNode extends TwoChildNode
   public PrettyString toPrettyString ()
   {
     PrettyString string = new PrettyString ();
-    if ( this.braces )
+
+    if ( this.regex1.getPriority () < getPriority () )
     {
       string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }
     string.add ( this.regex1.toPrettyString () );
-    string
-        .add ( new PrettyString ( new PrettyToken ( "·", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
+    if ( this.regex1.getPriority () < getPriority () )
+    {
+      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
+    }
+    // string
+    // .add ( new PrettyString ( new PrettyToken ( "·", Style.REGEX_SYMBOL ) )
+    // ); //$NON-NLS-1$
+
+    if ( this.regex2.getPriority () < getPriority () )
+    {
+      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
+    }
     string.add ( this.regex2.toPrettyString () );
 
-    if ( this.braces )
+    if ( this.regex2.getPriority () < getPriority () )
     {
       string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
     }

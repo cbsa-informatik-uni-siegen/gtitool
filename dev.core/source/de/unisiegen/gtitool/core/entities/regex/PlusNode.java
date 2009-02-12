@@ -257,7 +257,6 @@ public class PlusNode extends OneChildNode
     ConcatenationNode con = new ConcatenationNode ( this.regex
         .toCoreSyntax ( withCharacterClasses ), new KleeneNode ( this.regex
         .toCoreSyntax ( withCharacterClasses ) ) );
-    con.setBraces ( true );
     return con;
   }
 
@@ -271,18 +270,10 @@ public class PlusNode extends OneChildNode
   {
     PrettyString string = new PrettyString ();
 
-    if ( this.braces )
-    {
-      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
-    }
     string.add ( this.regex.toPrettyString () );
     string
         .add ( new PrettyString ( new PrettyToken ( "+", Style.REGEX_SYMBOL ) ) ); //$NON-NLS-1$
 
-    if ( this.braces )
-    {
-      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
-    }
     return string;
   }
 

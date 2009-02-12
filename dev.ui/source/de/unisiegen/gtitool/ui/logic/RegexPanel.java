@@ -633,7 +633,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           .getAlphabet () );
       newRegex.setRegexNode ( this.model.getRegex ().getRegexNode ()
           .toCoreSyntax ( true ), this.model.getRegex ().getRegexNode ()
-          .toCoreSyntax ( true ).toString () );
+          .toCoreSyntax ( true ).toPrettyString ().toString () );
 
       getMainWindow ().handleNew ( new DefaultRegexModel ( newRegex, true ) );
     }

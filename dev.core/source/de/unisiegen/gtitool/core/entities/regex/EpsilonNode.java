@@ -279,16 +279,9 @@ public class EpsilonNode extends LeafNode
   public PrettyString toPrettyString ()
   {
     PrettyString string = new PrettyString ();
-    if ( this.braces )
-    {
-      string.add ( new PrettyToken ( "(", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
-    }
+
     string.add ( ( new PrettyToken ( "\u03B5", Style.TOKEN ) ) ); //$NON-NLS-1$
 
-    if ( this.braces )
-    {
-      string.add ( new PrettyToken ( ")", Style.REGEX_SYMBOL ) ); //$NON-NLS-1$
-    }
     return string;
   }
 

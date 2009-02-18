@@ -3,9 +3,7 @@ package de.unisiegen.gtitool.ui.netbeans;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog;
-import de.unisiegen.gtitool.ui.logic.ConvertRegexToMachineDialog;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 
@@ -16,18 +14,18 @@ import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
  * @version $Id: ConvertMachineDialogForm.java 1220 2008-08-01 09:22:03Z fehler $
  */
 @SuppressWarnings({ "all" })
-public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass <ConvertRegexToMachineDialog>
+public class ConvertMachineDialogForm extends JDialog implements GUIClass <ConvertMachineDialog>
 {
     
     /**
      * The serial version uid.
      */
-    private static final long serialVersionUID = 826473225784921404L;
+    private static final long serialVersionUID = 8264731535784921404L;
     
     /**
      * The {@link ConvertMachineDialog}.
      */
-    private ConvertRegexToMachineDialog logic ;
+    private ConvertMachineDialog logic ;
     
     /**
      * Allocates a new {@link ConvertMachineDialogForm}.
@@ -35,11 +33,20 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
      * @param logic The {@link ConvertMachineDialog}.
      * @param parent The parent {@link JFrame}.
      */
-    public ConvertRegexToMachineDialogForm(ConvertRegexToMachineDialog logic, JFrame parent) {
+    public ConvertMachineDialogForm(ConvertMachineDialog logic, JFrame parent) {
         super(parent, true);
-        this.logic = logic;
+        this.logic = logic ;
         initComponents();
-        this.regexNodeInfoPanel.setVisible(logic.getEntityType().equals(MachineType.DFA));
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final ConvertMachineDialog getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to
@@ -59,17 +66,15 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIToolBarButtonEndStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTISplitPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTISplitPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTIScrollPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTIScrollPaneConverted = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIScrollPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableOutline = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        jGTISplitPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        jGTISplitPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        jGTIScrollPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        regexNodeInfoPanel = new de.unisiegen.gtitool.ui.netbeans.RegexNodeInfoPanel();
-        jGTIScrollPaneConverted = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonPrint = new de.unisiegen.gtitool.ui.swing.JGTIButton();
-        jCheckBoxAlgorithm = new de.unisiegen.gtitool.ui.swing.JGTICheckBox();
+        jCheckBoxAlgorithm = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
@@ -148,29 +153,23 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         jGTISplitPaneOutline.setDividerLocation(600);
         jGTISplitPaneOutline.setResizeWeight(1.0);
 
+        jGTISplitPaneGraph.setDividerLocation(250);
+        jGTISplitPaneGraph.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jGTISplitPaneGraph.setResizeWeight(0.5);
+
+        jGTIScrollPaneOriginal.setBorder(null);
+        jGTISplitPaneGraph.setTopComponent(jGTIScrollPaneOriginal);
+
+        jGTIScrollPaneConverted.setBorder(null);
+        jGTISplitPaneGraph.setBottomComponent(jGTIScrollPaneConverted);
+
+        jGTISplitPaneOutline.setLeftComponent(jGTISplitPaneGraph);
+
         jGTIScrollPaneOutline.setBorder(null);
         jGTIScrollPaneOutline.setMinimumSize(new java.awt.Dimension(200, 200));
         jGTIScrollPaneOutline.setViewportView(jGTITableOutline);
 
         jGTISplitPaneOutline.setRightComponent(jGTIScrollPaneOutline);
-
-        jGTISplitPaneGraph.setDividerLocation(300);
-        jGTISplitPaneGraph.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jGTISplitPaneGraph.setResizeWeight(0.5);
-
-        jGTISplitPaneOriginal.setDividerLocation(300);
-        jGTISplitPaneOriginal.setResizeWeight(0.7);
-
-        jGTIScrollPaneOriginal.setBorder(null);
-        jGTISplitPaneOriginal.setLeftComponent(jGTIScrollPaneOriginal);
-        jGTISplitPaneOriginal.setRightComponent(regexNodeInfoPanel);
-
-        jGTISplitPaneGraph.setTopComponent(jGTISplitPaneOriginal);
-
-        jGTIScrollPaneConverted.setBorder(null);
-        jGTISplitPaneGraph.setRightComponent(jGTIScrollPaneConverted);
-
-        jGTISplitPaneOutline.setLeftComponent(jGTISplitPaneGraph);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -229,6 +228,11 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         getContentPane().add(jGTIButtonPrint, gridBagConstraints);
 
         jCheckBoxAlgorithm.setText(bundle.getString("AlgorithmWindow.ShowAlgorithm")); // NOI18N
+        jCheckBoxAlgorithm.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCheckBoxAlgorithmStateChanged(evt);
+            }
+        });
         jCheckBoxAlgorithm.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCheckBoxAlgorithmItemStateChanged(evt);
@@ -237,7 +241,6 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
@@ -286,12 +289,16 @@ private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//G
     this.logic.handlePrint();
 }//GEN-LAST:event_jGTIButtonPrintActionPerformed
 
+private void jCheckBoxAlgorithmStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxAlgorithmStateChanged
+    
+}//GEN-LAST:event_jCheckBoxAlgorithmStateChanged
+
 private void jCheckBoxAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxAlgorithmItemStateChanged
     this.logic.handleAlgorithmWindowChanged(this.jCheckBoxAlgorithm.isSelected());
 }//GEN-LAST:event_jCheckBoxAlgorithmItemStateChanged
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public de.unisiegen.gtitool.ui.swing.JGTICheckBox jCheckBoxAlgorithm;
+    public javax.swing.JCheckBox jCheckBoxAlgorithm;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrint;
@@ -299,7 +306,6 @@ private void jCheckBoxAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {/
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
-    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableOutline;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonBeginStep;
@@ -309,18 +315,6 @@ private void jCheckBoxAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {/
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStop;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBar jGTIToolBarMain;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
-    public de.unisiegen.gtitool.ui.netbeans.RegexNodeInfoPanel regexNodeInfoPanel;
     // End of variables declaration//GEN-END:variables
-
-    /**
-     * TODO
-     *
-     * @return
-     * @see de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass#getLogic()
-     */
-    public ConvertRegexToMachineDialog getLogic ()
-    {
-      return this.logic;
-    }
     
 }

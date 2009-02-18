@@ -2,6 +2,10 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.awt.Rectangle;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,6 +66,7 @@ import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
+import de.unisiegen.gtitool.ui.netbeans.AlgorithmWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -730,7 +735,7 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * /**{@link HashMap} for moving states that are above the black box
+   * / {@link HashMap} for moving states that are above the black box
    */
   private HashMap < RegexNode, HashSet < DefaultStateView > > above = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
 
@@ -870,7 +875,7 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * /**{@link HashMap} for moving states that are at the same y coordinate the
+   * / {@link HashMap} for moving states that are at the same y coordinate the
    * black box
    */
   private HashMap < RegexNode, HashSet < DefaultStateView > > sameY = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
@@ -896,7 +901,7 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * /**{@link HashMap} for moving states that are under the black box
+   * / {@link HashMap} for moving states that are under the black box
    */
   private HashMap < RegexNode, HashSet < DefaultStateView > > under = new HashMap < RegexNode, HashSet < DefaultStateView > > ();
 
@@ -953,10 +958,9 @@ public class ConvertRegexToMachineDialog implements
    * @see Converter#convert(de.unisiegen.gtitool.core.entities.InputEntity.EntityType,
    *      de.unisiegen.gtitool.core.entities.InputEntity.EntityType, boolean)
    */
-  public void convert ( @SuppressWarnings ( "unused" )
-  EntityType fromEntityType, EntityType toEntityType,
-      @SuppressWarnings ( "unused" )
-      boolean complete )
+  public void convert (
+      @SuppressWarnings ( "unused" ) EntityType fromEntityType,
+      EntityType toEntityType, @SuppressWarnings ( "unused" ) boolean complete )
   {
     this.entityType = toEntityType;
     this.gui = new ConvertRegexToMachineDialogForm ( this, this.parent );
@@ -979,6 +983,32 @@ public class ConvertRegexToMachineDialog implements
     }
     else if ( this.entityType.equals ( MachineType.DFA ) )
     {
+      try
+      {
+        BufferedReader reader = new BufferedReader ( new InputStreamReader (
+            getClass ().getResourceAsStream (
+                "/de/unisiegen/gtitool/ui/algorithms/regex_to_dfa" ), "UTF8" ) );  //$NON-NLS-1$//$NON-NLS-2$
+        this.algorithm = ""; //$NON-NLS-1$
+        String input;
+        boolean first = true;
+        while ( ( input = reader.readLine () ) != null )
+        {
+          if(!first) {
+            this.algorithm += "\n";//$NON-NLS-1$
+          }
+          first = false;
+          this.algorithm += input;
+        }
+      }
+      catch ( UnsupportedEncodingException exc )
+      {
+        exc.printStackTrace ();
+      }
+      catch ( IOException exc )
+      {
+        exc.printStackTrace();
+      }
+
       this.modelConverted = new DefaultMachineModel ( new DefaultDFA ( a, a,
           false ) );
       this.positionStates = new ArrayList < DefaultPositionState > ();
@@ -1035,8 +1065,8 @@ public class ConvertRegexToMachineDialog implements
              * 
              * @see GraphSelectionListener#valueChanged(org.jgraph.event.GraphSelectionEvent)
              */
-            public void valueChanged ( @SuppressWarnings ( "unused" )
-            GraphSelectionEvent e )
+            public void valueChanged (
+                @SuppressWarnings ( "unused" ) GraphSelectionEvent e )
             {
               updateRegexInfo ();
             }
@@ -1269,6 +1299,35 @@ public class ConvertRegexToMachineDialog implements
     {
       handleNextStep ();
     }
+  }
+
+
+  /**
+   * The algorithm window
+   */
+  private AlgorithmWindowForm algorithmWindow;
+
+
+  /**
+   * The algorithm
+   */
+  private String algorithm = ""; //$NON-NLS-1$
+
+
+  /**
+   * Shows or dispose the Algorithm window
+   * 
+   * @param show Show or dispose
+   */
+  public final void handleAlgorithmWindowChanged ( boolean show )
+  {
+    if ( this.algorithmWindow == null )
+    {
+      this.algorithmWindow = new AlgorithmWindowForm ( this.parent, false,
+          this.algorithm, this.gui.jCheckBoxAlgorithm );
+    }
+    this.gui.setModal ( false );
+    this.algorithmWindow.setVisible ( show );
   }
 
 

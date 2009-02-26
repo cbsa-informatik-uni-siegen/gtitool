@@ -969,6 +969,33 @@ public class ConvertRegexToMachineDialog implements
     this.defaultRegex = this.panel.getRegex ().clone ();
     if ( this.entityType.equals ( MachineType.ENFA ) )
     {
+      try
+      {
+        BufferedReader reader = new BufferedReader ( new InputStreamReader ( getClass ()
+            .getResourceAsStream (
+                "/de/unisiegen/gtitool/ui/algorithms/regex_to_nfa" ), "UTF8" ) );//$NON-NLS-1$//$NON-NLS-2$
+
+        this.algorithm = ""; //$NON-NLS-1$
+        String input;
+        boolean first = true;
+        while ( ( input = reader.readLine () ) != null )
+        {
+          if ( !first )
+          {
+            this.algorithm += "\n";//$NON-NLS-1$
+          }
+          first = false;
+          this.algorithm += input;
+        }
+      }
+      catch ( UnsupportedEncodingException exc )
+      {
+        exc.printStackTrace ();
+      }
+      catch ( IOException exc )
+      {
+        exc.printStackTrace ();
+      }
       this.defaultRegex.setRegexNode ( this.defaultRegex.getRegexNode ()
           .toCoreSyntax ( false ).clone (), this.defaultRegex.getRegexNode ()
           .toCoreSyntax ( false ).toString () );
@@ -985,9 +1012,10 @@ public class ConvertRegexToMachineDialog implements
     {
       try
       {
-        BufferedReader reader = new BufferedReader ( new InputStreamReader (
-            getClass ().getResourceAsStream (
-                "/de/unisiegen/gtitool/ui/algorithms/regex_to_dfa" ), "UTF8" ) ); //$NON-NLS-1$//$NON-NLS-2$
+        BufferedReader reader = new BufferedReader ( new InputStreamReader ( getClass ()
+            .getResourceAsStream (
+                "/de/unisiegen/gtitool/ui/algorithms/regex_to_dfa" ), "UTF8" ) );//$NON-NLS-1$//$NON-NLS-2$
+
         this.algorithm = ""; //$NON-NLS-1$
         String input;
         boolean first = true;

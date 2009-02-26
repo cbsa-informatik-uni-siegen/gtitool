@@ -8,6 +8,8 @@ package de.unisiegen.gtitool.ui.netbeans;
 
 import javax.swing.JCheckBox;
 
+import de.unisiegen.gtitool.ui.utils.AlgorithmDocument;
+
 /**
  *
  * @author  simon
@@ -21,7 +23,10 @@ public class AlgorithmWindowForm extends javax.swing.JDialog {
     public AlgorithmWindowForm(java.awt.Frame parent, boolean modal, String algorithm, JCheckBox checkBox) {
         super(parent, modal);
         initComponents();
-        this.jGTITextAreaAlgorithm.setText(algorithm);
+
+        this.jGTITextPaneAlgorithm.setDocument ( new AlgorithmDocument() );
+        this.jGTITextPaneAlgorithm.setText(algorithm);
+        this.jGTITextPaneAlgorithm.setHighlighter (null);
         this.checkBox = checkBox;
     }
 
@@ -36,50 +41,31 @@ public class AlgorithmWindowForm extends javax.swing.JDialog {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jScrollPaneAlgorithm = new javax.swing.JScrollPane();
-        jGTITextAreaAlgorithm = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
+        jGTITextPaneAlgorithm = new de.unisiegen.gtitool.ui.swing.JGTITextPane();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("AlgorithmWindow.Title")); // NOI18N
         setAlwaysOnTop(true);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
-            }
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jGTITextAreaAlgorithm.setColumns(20);
-        jGTITextAreaAlgorithm.setEditable(false);
-        jGTITextAreaAlgorithm.setRows(5);
-        jScrollPaneAlgorithm.setViewportView(jGTITextAreaAlgorithm);
+        jGTITextPaneAlgorithm.setEditable(false);
+        jScrollPaneAlgorithm.setViewportView(jGTITextPaneAlgorithm);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(jScrollPaneAlgorithm, gridBagConstraints);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-410)/2, (screenSize.height-330)/2, 410, 330);
+        setBounds((screenSize.width-533)/2, (screenSize.height-330)/2, 533, 330);
     }// </editor-fold>//GEN-END:initComponents
-
-private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-
-}//GEN-LAST:event_formWindowClosing
-
-private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-    this.checkBox.setSelected(false);
-    setVisible(false);
-}//GEN-LAST:event_formWindowClosed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private de.unisiegen.gtitool.ui.swing.JGTITextArea jGTITextAreaAlgorithm;
+    private de.unisiegen.gtitool.ui.swing.JGTITextPane jGTITextPaneAlgorithm;
     private javax.swing.JScrollPane jScrollPaneAlgorithm;
     // End of variables declaration//GEN-END:variables
 

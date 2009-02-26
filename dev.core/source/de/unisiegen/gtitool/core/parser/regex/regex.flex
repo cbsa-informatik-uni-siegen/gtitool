@@ -90,22 +90,22 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 
 <YYINITIAL>
 {
-	"*"					{ return symbol(STAR); }
-	"+"					{ return symbol(PLUS); }
-	"|"					{ return symbol(OR); }
-	"·"					{ return symbol(CONCAT); }
-	"Epsilon"			{ return symbol(EPSILON); }
-	"?"					{ return symbol(QUESTION); }
-	"("					{ return symbol(LBRACE); }
-	")"					{ return symbol(RBRACE); }
-	"["					{ return symbol(SLBRACE); }
-	"]"					{ return symbol(SRBRACE); }
-	"-"					{ return symbol(MINUS); }
-	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }
-	"#"					{ yycommentChar = yychar; yybegin(YYCOMMENTSINGLE); }
-	{WhiteSpace}		{ }
-	.'*					{ return symbol(SYMBOL, yytext()); }
-	\".+\"				{ return symbol(SYMBOL, yytext()); }
+	"*"							{ return symbol(STAR); }
+	"+"							{ return symbol(PLUS); }
+	"|"							{ return symbol(OR); }
+	"·"							{ return symbol(CONCAT); }
+	"Epsilon"|"\u03B5"			{ return symbol(EPSILON); }
+	"?"							{ return symbol(QUESTION); }
+	"("							{ return symbol(LBRACE); }
+	")"							{ return symbol(RBRACE); }
+	"["							{ return symbol(SLBRACE); }
+	"]"							{ return symbol(SRBRACE); }
+	"-"							{ return symbol(MINUS); }
+	"(*"						{ yycommentChar = yychar; yybegin(YYCOMMENT); }
+	"#"							{ yycommentChar = yychar; yybegin(YYCOMMENTSINGLE); }
+	{WhiteSpace}				{ }
+	.'*							{ return symbol(SYMBOL, yytext()); }
+	\".+\"						{ return symbol(SYMBOL, yytext()); }
 }
 
 <YYCOMMENT> 

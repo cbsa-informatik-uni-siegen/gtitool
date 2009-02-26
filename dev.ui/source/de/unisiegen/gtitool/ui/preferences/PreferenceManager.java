@@ -21,11 +21,13 @@ import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog;
+import de.unisiegen.gtitool.ui.logic.ConvertRegexToMachineDialog;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.MinimizeMachineDialog;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 import de.unisiegen.gtitool.ui.logic.ReachableStatesDialog;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
+import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.MinimizeMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ReachableStatesDialogForm;
@@ -144,6 +146,30 @@ public final class PreferenceManager extends
    * The default y position of the {@link ConvertMachineDialog}.
    */
   public static final int DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_Y = Integer.MAX_VALUE;
+
+
+  /**
+   * The default width of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_REGEX_DIALOG_WIDTH = 960;
+
+
+  /**
+   * The default hight of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_REGEX_DIALOG_HEIGHT = 600;
+
+
+  /**
+   * The default x position of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_REGEX_DIALOG_POSITION_X = Integer.MAX_VALUE;
+
+
+  /**
+   * The default y position of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_REGEX_DIALOG_POSITION_Y = Integer.MAX_VALUE;
 
 
   /**
@@ -413,6 +439,25 @@ public final class PreferenceManager extends
         DEFAULT_CONVERT_MACHINE_DIALOG_WIDTH );
     int height = this.preferences.getInt ( "ConvertMachineDialog.Height",//$NON-NLS-1$
         DEFAULT_CONVERT_MACHINE_DIALOG_HEIGHT );
+    return new Rectangle ( x, y, width, height );
+  }
+
+
+  /**
+   * Returns the {@link ConvertRegexToMachineDialog} bounds.
+   * 
+   * @return The {@link ConvertRegexToMachineDialog} bounds.
+   */
+  public final Rectangle getConvertRegexDialogBounds ()
+  {
+    int x = this.preferences.getInt ( "ConvertRegexDialog.XPosition", //$NON-NLS-1$
+        DEFAULT_CONVERT_REGEX_DIALOG_POSITION_X );
+    int y = this.preferences.getInt ( "ConvertRegexDialog.YPosition", //$NON-NLS-1$
+        DEFAULT_CONVERT_REGEX_DIALOG_POSITION_Y );
+    int width = this.preferences.getInt ( "ConvertRegexDialog.Width",//$NON-NLS-1$
+        DEFAULT_CONVERT_REGEX_DIALOG_WIDTH );
+    int height = this.preferences.getInt ( "ConvertRegexDialog.Height",//$NON-NLS-1$
+        DEFAULT_CONVERT_REGEX_DIALOG_HEIGHT );
     return new Rectangle ( x, y, width, height );
   }
 
@@ -849,6 +894,26 @@ public final class PreferenceManager extends
     this.preferences.putInt ( "ConvertMachineDialog.YPosition", bounds.y ); //$NON-NLS-1$
     this.preferences.putInt ( "ConvertMachineDialog.Width", bounds.width ); //$NON-NLS-1$
     this.preferences.putInt ( "ConvertMachineDialog.Height", bounds.height ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the {@link ConvertRegexToMachineDialog} preferences.
+   * 
+   * @param dialog The {@link JDialog} of the {@link ConvertRegexToMachineDialogForm}.
+   */
+  public final void setConvertRegexDialogPreferences (
+      ConvertRegexToMachineDialogForm dialog )
+  {
+    Rectangle bounds = dialog.getBounds ();
+    logger.debug ( "setConvertRegexDialogPreferences",//$NON-NLS-1$
+        "set convert regex dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.x + ", y=" + bounds.y + ", width="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.width + ", height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "ConvertRegexDialog.XPosition", bounds.x ); //$NON-NLS-1$
+    this.preferences.putInt ( "ConvertRegexDialog.YPosition", bounds.y ); //$NON-NLS-1$
+    this.preferences.putInt ( "ConvertRegexDialog.Width", bounds.width ); //$NON-NLS-1$
+    this.preferences.putInt ( "ConvertRegexDialog.Height", bounds.height ); //$NON-NLS-1$
   }
 
 

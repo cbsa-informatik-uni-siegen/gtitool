@@ -1420,7 +1420,10 @@ public final class ConvertMachineDialog implements
 
     PreferenceManager.getInstance ().setConvertMachineDialogPreferences (
         this.gui );
-    this.algorithmWindow.dispose ();
+    if ( this.algorithmWindow != null )
+    {
+      this.algorithmWindow.dispose ();
+    }
     this.gui.dispose ();
   }
 
@@ -1493,7 +1496,10 @@ public final class ConvertMachineDialog implements
 
     PreferenceManager.getInstance ().setConvertMachineDialogPreferences (
         this.gui );
-    this.algorithmWindow.dispose ();
+    if ( this.algorithmWindow != null )
+    {
+      this.algorithmWindow.dispose ();
+    }
     this.gui.dispose ();
   }
 

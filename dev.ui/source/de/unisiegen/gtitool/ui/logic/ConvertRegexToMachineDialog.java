@@ -987,13 +987,14 @@ public class ConvertRegexToMachineDialog implements
       {
         BufferedReader reader = new BufferedReader ( new InputStreamReader (
             getClass ().getResourceAsStream (
-                "/de/unisiegen/gtitool/ui/algorithms/regex_to_dfa" ), "UTF8" ) );  //$NON-NLS-1$//$NON-NLS-2$
+                "/de/unisiegen/gtitool/ui/algorithms/regex_to_dfa" ), "UTF8" ) ); //$NON-NLS-1$//$NON-NLS-2$
         this.algorithm = ""; //$NON-NLS-1$
         String input;
         boolean first = true;
         while ( ( input = reader.readLine () ) != null )
         {
-          if(!first) {
+          if ( !first )
+          {
             this.algorithm += "\n";//$NON-NLS-1$
           }
           first = false;
@@ -1006,7 +1007,7 @@ public class ConvertRegexToMachineDialog implements
       }
       catch ( IOException exc )
       {
-        exc.printStackTrace();
+        exc.printStackTrace ();
       }
 
       this.modelConverted = new DefaultMachineModel ( new DefaultDFA ( a, a,
@@ -1285,6 +1286,10 @@ public class ConvertRegexToMachineDialog implements
   public void handleCancel ()
   {
     logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    PreferenceManager.getInstance ().setConvertRegexDialogPreferences (
+        this.gui );
+
     this.gui.dispose ();
   }
 
@@ -1350,6 +1355,9 @@ public class ConvertRegexToMachineDialog implements
     logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     cancelAutoStepTimer ();
+
+    PreferenceManager.getInstance ().setConvertRegexDialogPreferences (
+        this.gui );
 
     this.gui.setVisible ( false );
 
@@ -2766,12 +2774,12 @@ public class ConvertRegexToMachineDialog implements
    */
   public final void show ()
   {
-    logger.debug ( "show", "show the convert machine dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "show", "show the convert regex dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     Rectangle rect = PreferenceManager.getInstance ()
-        .getConvertMachineDialogBounds ();
-    if ( ( rect.x == PreferenceManager.DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_X )
-        || ( rect.y == PreferenceManager.DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_Y ) )
+        .getConvertRegexDialogBounds ();
+    if ( ( rect.x == PreferenceManager.DEFAULT_CONVERT_REGEX_DIALOG_POSITION_X )
+        || ( rect.y == PreferenceManager.DEFAULT_CONVERT_REGEX_DIALOG_POSITION_Y ) )
     {
       rect.x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
           - ( this.gui.getWidth () / 2 );

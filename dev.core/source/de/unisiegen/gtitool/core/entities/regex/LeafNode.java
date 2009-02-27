@@ -15,6 +15,18 @@ public abstract class LeafNode extends RegexNode
    */
   private static final long serialVersionUID = -7062093234164837073L;
 
+  /**
+   * TODO
+   *
+   * @param node
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getParentNodeForNode(de.unisiegen.gtitool.core.entities.regex.RegexNode)
+   */
+  @Override
+  public RegexNode getParentNodeForNode ( RegexNode node )
+  {
+    return null;
+  }
 
   /**
    * Cached {@link ArrayList} for firstPos

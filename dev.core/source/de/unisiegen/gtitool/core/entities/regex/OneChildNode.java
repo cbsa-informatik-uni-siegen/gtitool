@@ -15,6 +15,33 @@ public abstract class OneChildNode extends RegexNode
    */
   private static final long serialVersionUID = -3109784857649152942L;
 
+  /**
+   * TODO
+   *
+   * @param node
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getParentNodeForNode(de.unisiegen.gtitool.core.entities.regex.RegexNode)
+   */
+  @Override
+  public RegexNode getParentNodeForNode ( RegexNode node )
+  {
+    if(this.regex.equals ( node )) {
+      return this;
+    }
+    return this.regex.getParentNodeForNode ( node );
+  }
+  
+  
+  /**
+   * Sets the regex.
+   *
+   * @param regex The regex to set.
+   * @see #regex
+   */
+  public void setRegex ( RegexNode regex )
+  {
+    this.regex = regex;
+  }
 
   /**
    * Cached {@link ArrayList} for firstPos
@@ -64,6 +91,19 @@ public abstract class OneChildNode extends RegexNode
       this.firstPosCache = this.regex.firstPos ();
     }
     return this.firstPosCache;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextUnfinishedNode()
+   */
+  @Override
+  public UnfinishedNode getNextUnfinishedNode ()
+  {
+    return this.regex.getNextUnfinishedNode ();
   }
 
 

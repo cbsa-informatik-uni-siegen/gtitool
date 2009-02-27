@@ -322,4 +322,17 @@ public class TokenNode extends LeafNode
   {
     return this.name;
   }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextUnfinishedNode()
+   */
+  @Override
+  public UnfinishedNode getNextUnfinishedNode ()
+  {
+    return null;
+  }
 }

@@ -157,9 +157,11 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    * Constructor for a saved {@link DefaultRegexModel}
    * 
    * @param element The saved {@link DefaultRegex}
+   * @param startModified The Model starts modified
    * @throws Exception
    */
-  public DefaultRegexModel ( Element element ) throws Exception
+  public DefaultRegexModel ( Element element, boolean startModified )
+      throws Exception
   {
     boolean foundVersion = false;
     String regexString = new String ();
@@ -190,8 +192,11 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     RegexParseable rp = new RegexParseable ();
     this.regex.setRegexNode ( ( RegexNode ) rp.newParser ( regexString )
         .parse (), regexString );
-    this.initialRegex = this.regex.clone ();
-
+    if ( !startModified )
+    {
+      this.initialRegex = this.regex.clone ();
+    }
+    fireModifyStatusChanged ( false );
     if ( !foundVersion )
     {
       throw new StoreException ( de.unisiegen.gtitool.core.i18n.Messages
@@ -587,7 +592,8 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   {
     String s = ""; //$NON-NLS-1$
     RegexNode node = this.regex.getRegexNode ();
-    if(node == null) {
+    if ( node == null )
+    {
       return s;
     }
     int w = node.getWidth ();

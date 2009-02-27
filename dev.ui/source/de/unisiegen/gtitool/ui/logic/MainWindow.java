@@ -2334,6 +2334,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         defaultModel = new DefaultGrammarModel ( element, null );
       }
+      else if ( element.getName ().equals ( "RegexModel" ) ) //$NON-NLS-1$
+      {
+        defaultModel = new DefaultRegexModel ( element,true );
+      }
       else
       {
         throw new IllegalArgumentException ( "unsupported model" ); //$NON-NLS-1$
@@ -2380,6 +2384,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       exc.printStackTrace ();
       System.exit ( 1 );
       return;
+    }
+    catch ( Exception exc )
+    {
+      exc.printStackTrace();
     }
 
     handleNew ( defaultModel );

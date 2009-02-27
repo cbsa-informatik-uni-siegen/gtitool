@@ -296,4 +296,17 @@ public class EpsilonNode extends LeafNode
   {
     return "\u03B5"; //$NON-NLS-1$
   }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextUnfinishedNode()
+   */
+  @Override
+  public UnfinishedNode getNextUnfinishedNode ()
+  {
+    return null;
+  }
 }

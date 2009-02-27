@@ -17,6 +17,55 @@ public abstract class TwoChildNode extends RegexNode
 
 
   /**
+   * TODO
+   * 
+   * @param node
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getParentNodeForNode(de.unisiegen.gtitool.core.entities.regex.RegexNode)
+   */
+  @Override
+  public RegexNode getParentNodeForNode ( RegexNode node )
+  {
+    if ( this.regex1.equals ( node ) || this.regex2.equals ( node ) )
+    {
+      return this;
+    }
+    RegexNode newNode = this.regex1.getParentNodeForNode ( node );
+    if ( newNode == null )
+    {
+      newNode = this.regex2.getParentNodeForNode ( node );
+    }
+    return newNode;
+  }
+
+
+  /**
+   * Sets the regex1.
+   * 
+   * @param regex1 The regex1 to set.
+   * @see #regex1
+   */
+  public void setRegex1 ( RegexNode regex1 )
+  {
+    this.childrenCache = null;
+    this.regex1 = regex1;
+  }
+
+
+  /**
+   * Sets the regex2.
+   * 
+   * @param regex2 The regex2 to set.
+   * @see #regex2
+   */
+  public void setRegex2 ( RegexNode regex2 )
+  {
+    this.childrenCache = null;
+    this.regex2 = regex2;
+  }
+
+
+  /**
    * Cached {@link ArrayList} for the children
    */
   private transient ArrayList < RegexNode > childrenCache = null;
@@ -38,6 +87,24 @@ public abstract class TwoChildNode extends RegexNode
    * The second {@link RegexNode}
    */
   protected RegexNode regex2;
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextUnfinishedNode()
+   */
+  @Override
+  public UnfinishedNode getNextUnfinishedNode ()
+  {
+    UnfinishedNode node = this.regex1.getNextUnfinishedNode ();
+    if ( node == null )
+    {
+      node = this.regex2.getNextUnfinishedNode ();
+    }
+    return node;
+  }
 
 
   /**

@@ -447,4 +447,17 @@ public class CharacterClassNode extends LeafNode
     return s;
   }
 
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextUnfinishedNode()
+   */
+  @Override
+  public UnfinishedNode getNextUnfinishedNode ()
+  {
+    return null;
+  }
+
 }

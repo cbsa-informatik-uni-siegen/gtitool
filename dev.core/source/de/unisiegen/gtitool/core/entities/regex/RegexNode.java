@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
  * Abstract class for a Node in a Regex
  * 
  * @author Simon Meurer
- * @version
+ * @version $id$
  */
 public abstract class RegexNode implements Entity < RegexNode >
 {
@@ -69,6 +69,12 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return The dircet children of this Node
    */
   public abstract ArrayList < RegexNode > getChildren ();
+
+
+  public abstract UnfinishedNode getNextUnfinishedNode ();
+
+
+  public abstract RegexNode getParentNodeForNode ( RegexNode node );
 
 
   /**

@@ -49,10 +49,13 @@ public class MachineToRegexTester
     DefaultDFA dfa = new DefaultDFA ( alphabet, alphabet, false );
     DefaultState s0 = new DefaultState ( "s0" );
     DefaultState s1 = new DefaultState ( "s1" );
+    DefaultState s2 = new DefaultState ( "s2" );
     dfa.addState ( s0 );
     dfa.addState ( s1 );
+    dfa.addState ( s2 );
     s0.setStartState ( true );
     s1.setFinalState ( true );
+    s2.setFinalState ( true );
     dfa.addTransition ( new DefaultTransition ( alphabet, alphabet,
         new DefaultWord (), new DefaultWord (), s0, s1, one ) );
     dfa.addTransition ( new DefaultTransition ( alphabet, alphabet,
@@ -60,7 +63,11 @@ public class MachineToRegexTester
     dfa.addTransition ( new DefaultTransition ( alphabet, alphabet,
         new DefaultWord (), new DefaultWord (), s1, s0, nul ) );
     dfa.addTransition ( new DefaultTransition ( alphabet, alphabet,
-        new DefaultWord (), new DefaultWord (), s1, s1, one ) );
+        new DefaultWord (), new DefaultWord (), s1, s2, one ) );
+    dfa.addTransition ( new DefaultTransition ( alphabet, alphabet,
+        new DefaultWord (), new DefaultWord (), s2, s2, one ) );
+    dfa.addTransition ( new DefaultTransition ( alphabet, alphabet,
+        new DefaultWord (), new DefaultWord (), s2, s0, nul ) );
 
     System.err.println ( toRegex ( dfa ) );
   }

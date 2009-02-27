@@ -12,6 +12,7 @@ import javax.swing.JToolBar;
 
 import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
+import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 import de.unisiegen.gtitool.ui.swing.JGTIPanel;
@@ -39,7 +40,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
     /**
      * The {@link MainWindow}.
-     */ 
+     */
     private MainWindow logic;
     
 
@@ -105,7 +106,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
      * @see #jMenuItemExportLatex
      */
     public JMenuItem getJMenuItemExportLatex() {
-        return jMenuItemExportLatex;
+        return this.jMenuItemExportLatex;
     }
     
     /**
@@ -228,7 +229,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
      * @return The jMenuItemToCoreSyntax.
      */
     public JMenuItem getJMenuItemToCoreSyntax() {
-        return jMenuItemToCoreSyntax;
+        return this.jMenuItemToCoreSyntax;
     }
 
     /**
@@ -342,7 +343,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }
 
     public JMenuItem getJMenuItemEliminateLeftRecursion() {
-        return jMenuItemEliminateLeftRecursion;
+        return this.jMenuItemEliminateLeftRecursion;
     }
     
     
@@ -996,7 +997,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }
 
     public JMenuItem getJMenuItemLeftfactoring() {
-        return jMenuItemLeftfactoring;
+        return this.jMenuItemLeftfactoring;
     }
     
     
@@ -1068,107 +1069,108 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        modeSettingsGroup = new javax.swing.ButtonGroup();
-        toolbarButton = new javax.swing.ButtonGroup();
-        jToolBarMain = new javax.swing.JToolBar();
-        jToolBarFile = new javax.swing.JToolBar();
-        jGTIToolBarButtonNew = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonOpen = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonSave = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonSaveAs = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jSeparatorFileEdit = new javax.swing.JSeparator();
-        jToolBarEdit = new javax.swing.JToolBar();
-        jGTIToolBarButtonUndo = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonRedo = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jSeparatorEditNavigation = new javax.swing.JSeparator();
-        jToolBarNavigation = new javax.swing.JToolBar();
-        jGTIToolBarButtonEditDocument = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarToggleButtonMouse = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
-        jGTIToolBarToggleButtonAddState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
-        jGTIToolBarToggleButtonAddTransition = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
-        jGTIToolBarToggleButtonStartState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
-        jGTIToolBarToggleButtonFinalState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
-        jGTIToolBarToggleButtonEnterWord = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
-        jGTIToolBarButtonAddProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jSeparatorNavigation = new javax.swing.JSeparator();
-        jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonPreviousStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
-        jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIMainSplitPane = new de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane();
-        jGTIPanelLeftOuter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIPanelLeftInner = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIEditorPanelTabbedPaneLeft = new de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane();
-        jGTIPanelRightOuter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIPanelRightInner = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIEditorPanelTabbedPaneRight = new de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane();
-        jMenuBarMain = new javax.swing.JMenuBar();
-        jMenuFile = new javax.swing.JMenu();
-        jMenuItemNew = new javax.swing.JMenuItem();
-        jMenuItemOpen = new javax.swing.JMenuItem();
-        jMenuItemClose = new javax.swing.JMenuItem();
-        jMenuItemCloseAll = new javax.swing.JMenuItem();
-        jSeparatorFile1 = new javax.swing.JSeparator();
-        jMenuItemPrint = new javax.swing.JMenuItem();
-        jSeparatorFile2 = new javax.swing.JSeparator();
-        jMenuItemSave = new javax.swing.JMenuItem();
-        jMenuItemSaveAs = new javax.swing.JMenuItem();
-        jMenuItemSaveAll = new javax.swing.JMenuItem();
-        jSeparatorFile3 = new javax.swing.JSeparator();
-        jMenuItemExportPicture = new javax.swing.JMenuItem();
-        jMenuItemExportLatex = new javax.swing.JMenuItem();
-        jSeparatorFile4 = new javax.swing.JSeparator();
-        jMenuRecentlyUsed = new javax.swing.JMenu();
-        jSeparatorFile5 = new javax.swing.JSeparator();
-        jMenuItemQuit = new javax.swing.JMenuItem();
-        jMenuEdit = new javax.swing.JMenu();
-        jMenuItemUndo = new javax.swing.JMenuItem();
-        jMenuItemRedo = new javax.swing.JMenuItem();
-        jSeparatorEdit = new javax.swing.JSeparator();
-        jMenuItemPreferences = new javax.swing.JMenuItem();
-        jMenuView = new javax.swing.JMenu();
-        jCheckBoxMenuItemConsole = new javax.swing.JCheckBoxMenuItem();
-        jCheckBoxMenuItemTable = new javax.swing.JCheckBoxMenuItem();
-        jCheckBoxMenuItemRegexInfo = new javax.swing.JCheckBoxMenuItem();
-        jSeparatorView = new javax.swing.JSeparator();
-        jCheckBoxMenuItemSecondView = new javax.swing.JCheckBoxMenuItem();
-        jMenuExecute = new javax.swing.JMenu();
-        jMenuItemEnterWord = new javax.swing.JMenuItem();
-        jMenuItemEditMachine = new javax.swing.JMenuItem();
-        jSeparatorExecute0 = new javax.swing.JSeparator();
-        jMenuItemValidate = new javax.swing.JMenuItem();
-        jMenuConvertTo = new javax.swing.JMenu();
-        jMenuItemConvertToDFA = new javax.swing.JMenuItem();
-        jMenuItemConvertToNFA = new javax.swing.JMenuItem();
-        jMenuItemConvertToENFA = new javax.swing.JMenuItem();
-        jMenuItemConvertToPDA = new javax.swing.JMenuItem();
-        jMenuConvertToComplete = new javax.swing.JMenu();
-        jMenuItemConvertToCompleteDFA = new javax.swing.JMenuItem();
-        jMenuItemConvertToCompleteNFA = new javax.swing.JMenuItem();
-        jMenuItemConvertToCompleteENFA = new javax.swing.JMenuItem();
-        jMenuItemConvertToCompletePDA = new javax.swing.JMenuItem();
-        jMenuDraft = new javax.swing.JMenu();
-        jMenuItemDFA = new javax.swing.JMenuItem();
-        jMenuItemNFA = new javax.swing.JMenuItem();
-        jMenuItemENFA = new javax.swing.JMenuItem();
-        jMenuItemPDA = new javax.swing.JMenuItem();
-        jMenuItemRG = new javax.swing.JMenuItem();
-        jMenuItemCFG = new javax.swing.JMenuItem();
-        jSeparatorExecute1 = new javax.swing.JSeparator();
-        jMenuItemAutoLayout = new javax.swing.JMenuItem();
-        jMenuItemMinimize = new javax.swing.JMenuItem();
-        jMenuItemToCoreSyntax = new javax.swing.JMenuItem();
-        jMenuItemEliminateLeftRecursion = new javax.swing.JMenuItem();
-        jMenuItemLeftfactoring = new javax.swing.JMenuItem();
-        jMenuExtras = new javax.swing.JMenu();
-        jMenuItemExchange = new javax.swing.JMenuItem();
-        jSeparatorExtras = new javax.swing.JSeparator();
-        jMenuItemHistory = new javax.swing.JMenuItem();
-        jMenuItemReachableStates = new javax.swing.JMenuItem();
-        jMenuItemReorderStateNames = new javax.swing.JMenuItem();
-        jMenuHelp = new javax.swing.JMenu();
-        jMenuItemAbout = new javax.swing.JMenuItem();
+        this.modeSettingsGroup = new javax.swing.ButtonGroup();
+        this.toolbarButton = new javax.swing.ButtonGroup();
+        this.jToolBarMain = new javax.swing.JToolBar();
+        this.jToolBarFile = new javax.swing.JToolBar();
+        this.jGTIToolBarButtonNew = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIToolBarButtonOpen = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIToolBarButtonSave = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIToolBarButtonSaveAs = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jSeparatorFileEdit = new javax.swing.JSeparator();
+        this.jToolBarEdit = new javax.swing.JToolBar();
+        this.jGTIToolBarButtonUndo = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIToolBarButtonRedo = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jSeparatorEditNavigation = new javax.swing.JSeparator();
+        this.jToolBarNavigation = new javax.swing.JToolBar();
+        this.jGTIToolBarButtonEditDocument = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIToolBarToggleButtonMouse = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        this.jGTIToolBarToggleButtonAddState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        this.jGTIToolBarToggleButtonAddTransition = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        this.jGTIToolBarToggleButtonStartState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        this.jGTIToolBarToggleButtonFinalState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        this.jGTIToolBarToggleButtonEnterWord = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        this.jGTIToolBarButtonAddProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jSeparatorNavigation = new javax.swing.JSeparator();
+        this.jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIToolBarButtonPreviousStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        this.jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIMainSplitPane = new de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane();
+        this.jGTIPanelLeftOuter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        this.jGTIPanelLeftInner = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        this.jGTIEditorPanelTabbedPaneLeft = new de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane();
+        this.jGTIPanelRightOuter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        this.jGTIPanelRightInner = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        this.jGTIEditorPanelTabbedPaneRight = new de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane();
+        this.jMenuBarMain = new javax.swing.JMenuBar();
+        this.jMenuFile = new javax.swing.JMenu();
+        this.jMenuItemNew = new javax.swing.JMenuItem();
+        this.jMenuItemOpen = new javax.swing.JMenuItem();
+        this.jMenuItemClose = new javax.swing.JMenuItem();
+        this.jMenuItemCloseAll = new javax.swing.JMenuItem();
+        this.jSeparatorFile1 = new javax.swing.JSeparator();
+        this.jMenuItemPrint = new javax.swing.JMenuItem();
+        this.jSeparatorFile2 = new javax.swing.JSeparator();
+        this.jMenuItemSave = new javax.swing.JMenuItem();
+        this.jMenuItemSaveAs = new javax.swing.JMenuItem();
+        this.jMenuItemSaveAll = new javax.swing.JMenuItem();
+        this.jSeparatorFile3 = new javax.swing.JSeparator();
+        this.jMenuItemExportPicture = new javax.swing.JMenuItem();
+        this.jMenuItemExportLatex = new javax.swing.JMenuItem();
+        this.jSeparatorFile4 = new javax.swing.JSeparator();
+        this.jMenuRecentlyUsed = new javax.swing.JMenu();
+        this.jSeparatorFile5 = new javax.swing.JSeparator();
+        this.jMenuItemQuit = new javax.swing.JMenuItem();
+        this.jMenuEdit = new javax.swing.JMenu();
+        this.jMenuItemUndo = new javax.swing.JMenuItem();
+        this.jMenuItemRedo = new javax.swing.JMenuItem();
+        this.jSeparatorEdit = new javax.swing.JSeparator();
+        this.jMenuItemPreferences = new javax.swing.JMenuItem();
+        this.jMenuView = new javax.swing.JMenu();
+        this.jCheckBoxMenuItemConsole = new javax.swing.JCheckBoxMenuItem();
+        this.jCheckBoxMenuItemTable = new javax.swing.JCheckBoxMenuItem();
+        this.jCheckBoxMenuItemRegexInfo = new javax.swing.JCheckBoxMenuItem();
+        this.jSeparatorView = new javax.swing.JSeparator();
+        this.jCheckBoxMenuItemSecondView = new javax.swing.JCheckBoxMenuItem();
+        this.jMenuExecute = new javax.swing.JMenu();
+        this.jMenuItemEnterWord = new javax.swing.JMenuItem();
+        this.jMenuItemEditMachine = new javax.swing.JMenuItem();
+        this.jSeparatorExecute0 = new javax.swing.JSeparator();
+        this.jMenuItemValidate = new javax.swing.JMenuItem();
+        this.jMenuConvertTo = new javax.swing.JMenu();
+        this.jMenuItemConvertToDFA = new javax.swing.JMenuItem();
+        this.jMenuItemConvertToNFA = new javax.swing.JMenuItem();
+        this.jMenuItemConvertToENFA = new javax.swing.JMenuItem();
+        this.jMenuItemConvertToPDA = new javax.swing.JMenuItem();
+        this.jMenuItemConvertToRegex = new javax.swing.JMenuItem();
+        this.jMenuConvertToComplete = new javax.swing.JMenu();
+        this.jMenuItemConvertToCompleteDFA = new javax.swing.JMenuItem();
+        this.jMenuItemConvertToCompleteNFA = new javax.swing.JMenuItem();
+        this.jMenuItemConvertToCompleteENFA = new javax.swing.JMenuItem();
+        this.jMenuItemConvertToCompletePDA = new javax.swing.JMenuItem();
+        this.jMenuDraft = new javax.swing.JMenu();
+        this.jMenuItemDFA = new javax.swing.JMenuItem();
+        this.jMenuItemNFA = new javax.swing.JMenuItem();
+        this.jMenuItemENFA = new javax.swing.JMenuItem();
+        this.jMenuItemPDA = new javax.swing.JMenuItem();
+        this.jMenuItemRG = new javax.swing.JMenuItem();
+        this.jMenuItemCFG = new javax.swing.JMenuItem();
+        this.jSeparatorExecute1 = new javax.swing.JSeparator();
+        this.jMenuItemAutoLayout = new javax.swing.JMenuItem();
+        this.jMenuItemMinimize = new javax.swing.JMenuItem();
+        this.jMenuItemToCoreSyntax = new javax.swing.JMenuItem();
+        this.jMenuItemEliminateLeftRecursion = new javax.swing.JMenuItem();
+        this.jMenuItemLeftfactoring = new javax.swing.JMenuItem();
+        this.jMenuExtras = new javax.swing.JMenu();
+        this.jMenuItemExchange = new javax.swing.JMenuItem();
+        this.jSeparatorExtras = new javax.swing.JSeparator();
+        this.jMenuItemHistory = new javax.swing.JMenuItem();
+        this.jMenuItemReachableStates = new javax.swing.JMenuItem();
+        this.jMenuItemReorderStateNames = new javax.swing.JMenuItem();
+        this.jMenuHelp = new javax.swing.JMenu();
+        this.jMenuItemAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -1178,239 +1180,239 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jToolBarMain.setBorder(null);
-        jToolBarMain.setFloatable(false);
-        jToolBarMain.setBorderPainted(false);
+        this.jToolBarMain.setBorder(null);
+        this.jToolBarMain.setFloatable(false);
+        this.jToolBarMain.setBorderPainted(false);
 
-        jToolBarFile.setBorder(null);
-        jToolBarFile.setFloatable(false);
-        jToolBarFile.setBorderPainted(false);
-        jToolBarFile.setOpaque(false);
+        this.jToolBarFile.setBorder(null);
+        this.jToolBarFile.setFloatable(false);
+        this.jToolBarFile.setBorderPainted(false);
+        this.jToolBarFile.setOpaque(false);
 
-        jGTIToolBarButtonNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/new.png"))); // NOI18N
+        this.jGTIToolBarButtonNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/new.png"))); // NOI18N
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        jGTIToolBarButtonNew.setToolTipText(bundle.getString("MainWindow.NewToolTip")); // NOI18N
-        jGTIToolBarButtonNew.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonNew.setToolTipText(bundle.getString("MainWindow.NewToolTip")); // NOI18N
+        this.jGTIToolBarButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonNewActionPerformed(evt);
             }
         });
-        jToolBarFile.add(jGTIToolBarButtonNew);
+        this.jToolBarFile.add(this.jGTIToolBarButtonNew);
 
-        jGTIToolBarButtonOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/open.png"))); // NOI18N
-        jGTIToolBarButtonOpen.setToolTipText(bundle.getString("MainWindow.OpenToolTip")); // NOI18N
-        jGTIToolBarButtonOpen.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/open.png"))); // NOI18N
+        this.jGTIToolBarButtonOpen.setToolTipText(bundle.getString("MainWindow.OpenToolTip")); // NOI18N
+        this.jGTIToolBarButtonOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonOpenActionPerformed(evt);
             }
         });
-        jToolBarFile.add(jGTIToolBarButtonOpen);
+        this.jToolBarFile.add(this.jGTIToolBarButtonOpen);
 
-        jGTIToolBarButtonSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/save.png"))); // NOI18N
-        jGTIToolBarButtonSave.setToolTipText(bundle.getString("MainWindow.SaveToolTip")); // NOI18N
-        jGTIToolBarButtonSave.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/save.png"))); // NOI18N
+        this.jGTIToolBarButtonSave.setToolTipText(bundle.getString("MainWindow.SaveToolTip")); // NOI18N
+        this.jGTIToolBarButtonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonSaveActionPerformed(evt);
             }
         });
-        jToolBarFile.add(jGTIToolBarButtonSave);
+        this.jToolBarFile.add(this.jGTIToolBarButtonSave);
 
-        jGTIToolBarButtonSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/saveAs.png"))); // NOI18N
-        jGTIToolBarButtonSaveAs.setToolTipText(bundle.getString("MainWindow.SaveAsToolTip")); // NOI18N
-        jGTIToolBarButtonSaveAs.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/saveAs.png"))); // NOI18N
+        this.jGTIToolBarButtonSaveAs.setToolTipText(bundle.getString("MainWindow.SaveAsToolTip")); // NOI18N
+        this.jGTIToolBarButtonSaveAs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonSaveAsActionPerformed(evt);
             }
         });
-        jToolBarFile.add(jGTIToolBarButtonSaveAs);
+        this.jToolBarFile.add(this.jGTIToolBarButtonSaveAs);
 
-        jToolBarMain.add(jToolBarFile);
+        this.jToolBarMain.add(this.jToolBarFile);
 
-        jSeparatorFileEdit.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jSeparatorFileEdit.setMaximumSize(new java.awt.Dimension(5, 32));
-        jToolBarMain.add(jSeparatorFileEdit);
+        this.jSeparatorFileEdit.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        this.jSeparatorFileEdit.setMaximumSize(new java.awt.Dimension(5, 32));
+        this.jToolBarMain.add(this.jSeparatorFileEdit);
 
-        jToolBarEdit.setBorder(null);
-        jToolBarEdit.setFloatable(false);
-        jToolBarEdit.setBorderPainted(false);
-        jToolBarEdit.setOpaque(false);
+        this.jToolBarEdit.setBorder(null);
+        this.jToolBarEdit.setFloatable(false);
+        this.jToolBarEdit.setBorderPainted(false);
+        this.jToolBarEdit.setOpaque(false);
 
-        jGTIToolBarButtonUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/undo.png"))); // NOI18N
-        jGTIToolBarButtonUndo.setToolTipText(bundle.getString("MainWindow.UndoToolTip")); // NOI18N
-        jGTIToolBarButtonUndo.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/undo.png"))); // NOI18N
+        this.jGTIToolBarButtonUndo.setToolTipText(bundle.getString("MainWindow.UndoToolTip")); // NOI18N
+        this.jGTIToolBarButtonUndo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonUndoActionPerformed(evt);
             }
         });
-        jToolBarEdit.add(jGTIToolBarButtonUndo);
+        this.jToolBarEdit.add(this.jGTIToolBarButtonUndo);
 
-        jGTIToolBarButtonRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/redo.png"))); // NOI18N
-        jGTIToolBarButtonRedo.setToolTipText(bundle.getString("MainWindow.RedoToolTip")); // NOI18N
-        jGTIToolBarButtonRedo.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/redo.png"))); // NOI18N
+        this.jGTIToolBarButtonRedo.setToolTipText(bundle.getString("MainWindow.RedoToolTip")); // NOI18N
+        this.jGTIToolBarButtonRedo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonRedoActionPerformed(evt);
             }
         });
-        jToolBarEdit.add(jGTIToolBarButtonRedo);
+        this.jToolBarEdit.add(this.jGTIToolBarButtonRedo);
 
-        jToolBarMain.add(jToolBarEdit);
+        this.jToolBarMain.add(this.jToolBarEdit);
 
-        jSeparatorEditNavigation.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jSeparatorEditNavigation.setMaximumSize(new java.awt.Dimension(5, 32));
-        jToolBarMain.add(jSeparatorEditNavigation);
+        this.jSeparatorEditNavigation.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        this.jSeparatorEditNavigation.setMaximumSize(new java.awt.Dimension(5, 32));
+        this.jToolBarMain.add(this.jSeparatorEditNavigation);
 
-        jToolBarNavigation.setBorder(null);
-        jToolBarNavigation.setFloatable(false);
-        jToolBarNavigation.setBorderPainted(false);
-        jToolBarNavigation.setOpaque(false);
+        this.jToolBarNavigation.setBorder(null);
+        this.jToolBarNavigation.setFloatable(false);
+        this.jToolBarNavigation.setBorderPainted(false);
+        this.jToolBarNavigation.setOpaque(false);
 
-        jGTIToolBarButtonEditDocument.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/document.png"))); // NOI18N
-        jGTIToolBarButtonEditDocument.setToolTipText(bundle.getString("MachinePanel.EditDocument")); // NOI18N
-        jGTIToolBarButtonEditDocument.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonEditDocument.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/large/document.png"))); // NOI18N
+        this.jGTIToolBarButtonEditDocument.setToolTipText(bundle.getString("MachinePanel.EditDocument")); // NOI18N
+        this.jGTIToolBarButtonEditDocument.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonEditDocumentActionPerformed(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarButtonEditDocument);
+        this.jToolBarNavigation.add(this.jGTIToolBarButtonEditDocument);
 
-        toolbarButton.add(jGTIToolBarToggleButtonMouse);
-        jGTIToolBarToggleButtonMouse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/mouse.png"))); // NOI18N
-        jGTIToolBarToggleButtonMouse.setSelected(true);
-        jGTIToolBarToggleButtonMouse.setToolTipText(bundle.getString("MachinePanel.Mouse")); // NOI18N
-        jGTIToolBarToggleButtonMouse.addItemListener(new java.awt.event.ItemListener() {
+        this.toolbarButton.add(this.jGTIToolBarToggleButtonMouse);
+        this.jGTIToolBarToggleButtonMouse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/mouse.png"))); // NOI18N
+        this.jGTIToolBarToggleButtonMouse.setSelected(true);
+        this.jGTIToolBarToggleButtonMouse.setToolTipText(bundle.getString("MachinePanel.Mouse")); // NOI18N
+        this.jGTIToolBarToggleButtonMouse.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToolBarToggleButtonMouseItemStateChanged(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarToggleButtonMouse);
+        this.jToolBarNavigation.add(this.jGTIToolBarToggleButtonMouse);
 
-        toolbarButton.add(jGTIToolBarToggleButtonAddState);
-        jGTIToolBarToggleButtonAddState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/state.png"))); // NOI18N
-        jGTIToolBarToggleButtonAddState.setToolTipText(bundle.getString("MachinePanel.AddState")); // NOI18N
-        jGTIToolBarToggleButtonAddState.addItemListener(new java.awt.event.ItemListener() {
+        this.toolbarButton.add(this.jGTIToolBarToggleButtonAddState);
+        this.jGTIToolBarToggleButtonAddState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/state.png"))); // NOI18N
+        this.jGTIToolBarToggleButtonAddState.setToolTipText(bundle.getString("MachinePanel.AddState")); // NOI18N
+        this.jGTIToolBarToggleButtonAddState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToolBarToggleButtonAddStateItemStateChanged(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarToggleButtonAddState);
+        this.jToolBarNavigation.add(this.jGTIToolBarToggleButtonAddState);
 
-        toolbarButton.add(jGTIToolBarToggleButtonAddTransition);
-        jGTIToolBarToggleButtonAddTransition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/transition.png"))); // NOI18N
-        jGTIToolBarToggleButtonAddTransition.setToolTipText(bundle.getString("MachinePanel.AddTransition")); // NOI18N
-        jGTIToolBarToggleButtonAddTransition.addItemListener(new java.awt.event.ItemListener() {
+        this.toolbarButton.add(this.jGTIToolBarToggleButtonAddTransition);
+        this.jGTIToolBarToggleButtonAddTransition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/transition.png"))); // NOI18N
+        this.jGTIToolBarToggleButtonAddTransition.setToolTipText(bundle.getString("MachinePanel.AddTransition")); // NOI18N
+        this.jGTIToolBarToggleButtonAddTransition.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToolBarToggleButtonAddTransitionItemStateChanged(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarToggleButtonAddTransition);
+        this.jToolBarNavigation.add(this.jGTIToolBarToggleButtonAddTransition);
 
-        toolbarButton.add(jGTIToolBarToggleButtonStartState);
-        jGTIToolBarToggleButtonStartState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/start.png"))); // NOI18N
-        jGTIToolBarToggleButtonStartState.setToolTipText(bundle.getString("MachinePanel.AddStartState")); // NOI18N
-        jGTIToolBarToggleButtonStartState.addItemListener(new java.awt.event.ItemListener() {
+        this.toolbarButton.add(this.jGTIToolBarToggleButtonStartState);
+        this.jGTIToolBarToggleButtonStartState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/start.png"))); // NOI18N
+        this.jGTIToolBarToggleButtonStartState.setToolTipText(bundle.getString("MachinePanel.AddStartState")); // NOI18N
+        this.jGTIToolBarToggleButtonStartState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToolBarToggleButtonStartStateItemStateChanged(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarToggleButtonStartState);
+        this.jToolBarNavigation.add(this.jGTIToolBarToggleButtonStartState);
 
-        toolbarButton.add(jGTIToolBarToggleButtonFinalState);
-        jGTIToolBarToggleButtonFinalState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/final.png"))); // NOI18N
-        jGTIToolBarToggleButtonFinalState.setToolTipText(bundle.getString("MachinePanel.AddFinalState")); // NOI18N
-        jGTIToolBarToggleButtonFinalState.addItemListener(new java.awt.event.ItemListener() {
+        this.toolbarButton.add(this.jGTIToolBarToggleButtonFinalState);
+        this.jGTIToolBarToggleButtonFinalState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/final.png"))); // NOI18N
+        this.jGTIToolBarToggleButtonFinalState.setToolTipText(bundle.getString("MachinePanel.AddFinalState")); // NOI18N
+        this.jGTIToolBarToggleButtonFinalState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToolBarToggleButtonFinalStateItemStateChanged(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarToggleButtonFinalState);
+        this.jToolBarNavigation.add(this.jGTIToolBarToggleButtonFinalState);
 
-        jGTIToolBarToggleButtonEnterWord.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/word.png"))); // NOI18N
-        jGTIToolBarToggleButtonEnterWord.setToolTipText(bundle.getString("MainWindow.EnterWord")); // NOI18N
-        jGTIToolBarToggleButtonEnterWord.addItemListener(new java.awt.event.ItemListener() {
+        this.jGTIToolBarToggleButtonEnterWord.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/machine/word.png"))); // NOI18N
+        this.jGTIToolBarToggleButtonEnterWord.setToolTipText(bundle.getString("MainWindow.EnterWord")); // NOI18N
+        this.jGTIToolBarToggleButtonEnterWord.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToolBarToggleButtonEnterWordItemStateChanged(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarToggleButtonEnterWord);
+        this.jToolBarNavigation.add(this.jGTIToolBarToggleButtonEnterWord);
 
-        jGTIToolBarButtonAddProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/grammar/large/add.png"))); // NOI18N
-        jGTIToolBarButtonAddProduction.setToolTipText(bundle.getString("GrammarPanel.AddProduction")); // NOI18N
-        jGTIToolBarButtonAddProduction.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonAddProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/grammar/large/add.png"))); // NOI18N
+        this.jGTIToolBarButtonAddProduction.setToolTipText(bundle.getString("GrammarPanel.AddProduction")); // NOI18N
+        this.jGTIToolBarButtonAddProduction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonAddProductionActionPerformed(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarButtonAddProduction);
+        this.jToolBarNavigation.add(this.jGTIToolBarButtonAddProduction);
 
-        jSeparatorNavigation.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jSeparatorNavigation.setMaximumSize(new java.awt.Dimension(5, 32));
-        jToolBarNavigation.add(jSeparatorNavigation);
+        this.jSeparatorNavigation.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        this.jSeparatorNavigation.setMaximumSize(new java.awt.Dimension(5, 32));
+        this.jToolBarNavigation.add(this.jSeparatorNavigation);
 
-        jGTIToolBarButtonStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/start.png"))); // NOI18N
-        jGTIToolBarButtonStart.setToolTipText(bundle.getString("MachinePanel.WordModeStart")); // NOI18N
-        jGTIToolBarButtonStart.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/start.png"))); // NOI18N
+        this.jGTIToolBarButtonStart.setToolTipText(bundle.getString("MachinePanel.WordModeStart")); // NOI18N
+        this.jGTIToolBarButtonStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonStartActionPerformed(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarButtonStart);
+        this.jToolBarNavigation.add(this.jGTIToolBarButtonStart);
 
-        jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"))); // NOI18N
-        jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("MachinePanel.WordModePreviousStep")); // NOI18N
-        jGTIToolBarButtonPreviousStep.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"))); // NOI18N
+        this.jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("MachinePanel.WordModePreviousStep")); // NOI18N
+        this.jGTIToolBarButtonPreviousStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonPreviousStepActionPerformed(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarButtonPreviousStep);
+        this.jToolBarNavigation.add(this.jGTIToolBarButtonPreviousStep);
 
-        jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/forward.png"))); // NOI18N
-        jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("MachinePanel.WordModeNextStep")); // NOI18N
-        jGTIToolBarButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/forward.png"))); // NOI18N
+        this.jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("MachinePanel.WordModeNextStep")); // NOI18N
+        this.jGTIToolBarButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonNextStepActionPerformed(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarButtonNextStep);
+        this.jToolBarNavigation.add(this.jGTIToolBarButtonNextStep);
 
-        jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/autostep.png"))); // NOI18N
-        jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("MachinePanel.WordModeAutoStep")); // NOI18N
-        jGTIToolBarToggleButtonAutoStep.addItemListener(new java.awt.event.ItemListener() {
+        this.jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/autostep.png"))); // NOI18N
+        this.jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("MachinePanel.WordModeAutoStep")); // NOI18N
+        this.jGTIToolBarToggleButtonAutoStep.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToolBarToggleButtonAutoStepItemStateChanged(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarToggleButtonAutoStep);
+        this.jToolBarNavigation.add(this.jGTIToolBarToggleButtonAutoStep);
 
-        jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/stop.png"))); // NOI18N
-        jGTIToolBarButtonStop.setToolTipText(bundle.getString("MachinePanel.WordModeStop")); // NOI18N
-        jGTIToolBarButtonStop.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/stop.png"))); // NOI18N
+        this.jGTIToolBarButtonStop.setToolTipText(bundle.getString("MachinePanel.WordModeStop")); // NOI18N
+        this.jGTIToolBarButtonStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonStopActionPerformed(evt);
             }
         });
-        jToolBarNavigation.add(jGTIToolBarButtonStop);
+        this.jToolBarNavigation.add(this.jGTIToolBarButtonStop);
 
-        jToolBarMain.add(jToolBarNavigation);
+        this.jToolBarMain.add(this.jToolBarNavigation);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        getContentPane().add(jToolBarMain, gridBagConstraints);
+        getContentPane().add(this.jToolBarMain, gridBagConstraints);
 
-        jGTIMainSplitPane.setDividerLocation(380);
-        jGTIMainSplitPane.setResizeWeight(0.5);
+        this.jGTIMainSplitPane.setDividerLocation(380);
+        this.jGTIMainSplitPane.setResizeWeight(0.5);
 
-        jGTIPanelLeftInner.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(50, 150, 250), 3, true));
+        this.jGTIPanelLeftInner.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(50, 150, 250), 3, true));
 
-        jGTIEditorPanelTabbedPaneLeft.addMouseListener(new java.awt.event.MouseAdapter() {
+        this.jGTIEditorPanelTabbedPaneLeft.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jGTIEditorPanelTabbedPaneLeftMouseReleased(evt);
             }
         });
-        jGTIEditorPanelTabbedPaneLeft.addChangeListener(new javax.swing.event.ChangeListener() {
+        this.jGTIEditorPanelTabbedPaneLeft.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jGTIEditorPanelTabbedPaneLeftStateChanged(evt);
             }
@@ -1422,7 +1424,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
-        jGTIPanelLeftInner.add(jGTIEditorPanelTabbedPaneLeft, gridBagConstraints);
+        this.jGTIPanelLeftInner.add(this.jGTIEditorPanelTabbedPaneLeft, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1431,18 +1433,18 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jGTIPanelLeftOuter.add(jGTIPanelLeftInner, gridBagConstraints);
+        this.jGTIPanelLeftOuter.add(this.jGTIPanelLeftInner, gridBagConstraints);
 
-        jGTIMainSplitPane.setLeftComponent(jGTIPanelLeftOuter);
+        this.jGTIMainSplitPane.setLeftComponent(this.jGTIPanelLeftOuter);
 
-        jGTIPanelRightInner.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(100, 200, 250), 3, true));
+        this.jGTIPanelRightInner.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(100, 200, 250), 3, true));
 
-        jGTIEditorPanelTabbedPaneRight.addMouseListener(new java.awt.event.MouseAdapter() {
+        this.jGTIEditorPanelTabbedPaneRight.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jGTIEditorPanelTabbedPaneRightMouseReleased(evt);
             }
         });
-        jGTIEditorPanelTabbedPaneRight.addChangeListener(new javax.swing.event.ChangeListener() {
+        this.jGTIEditorPanelTabbedPaneRight.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jGTIEditorPanelTabbedPaneRightStateChanged(evt);
             }
@@ -1454,7 +1456,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
-        jGTIPanelRightInner.add(jGTIEditorPanelTabbedPaneRight, gridBagConstraints);
+        this.jGTIPanelRightInner.add(this.jGTIEditorPanelTabbedPaneRight, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1463,9 +1465,9 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        jGTIPanelRightOuter.add(jGTIPanelRightInner, gridBagConstraints);
+        this.jGTIPanelRightOuter.add(this.jGTIPanelRightInner, gridBagConstraints);
 
-        jGTIMainSplitPane.setRightComponent(jGTIPanelRightOuter);
+        this.jGTIMainSplitPane.setRightComponent(this.jGTIPanelRightOuter);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1473,487 +1475,495 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jGTIMainSplitPane, gridBagConstraints);
+        getContentPane().add(this.jGTIMainSplitPane, gridBagConstraints);
 
-        jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.FileMnemonic").charAt(0));
-        jMenuFile.setText(bundle.getString("MainWindow.File")); // NOI18N
+        this.jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.FileMnemonic").charAt(0));
+        this.jMenuFile.setText(bundle.getString("MainWindow.File")); // NOI18N
 
-        jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/new.png"))); // NOI18N
-        jMenuItemNew.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.NewMnemonic").charAt(0));
-        jMenuItemNew.setText(bundle.getString("MainWindow.New")); // NOI18N
-        jMenuItemNew.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        this.jMenuItemNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/new.png"))); // NOI18N
+        this.jMenuItemNew.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.NewMnemonic").charAt(0));
+        this.jMenuItemNew.setText(bundle.getString("MainWindow.New")); // NOI18N
+        this.jMenuItemNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleNew(evt);
             }
         });
-        jMenuFile.add(jMenuItemNew);
+        this.jMenuFile.add(this.jMenuItemNew);
 
-        jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/open.png"))); // NOI18N
-        jMenuItemOpen.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.OpenMnemonic").charAt(0));
-        jMenuItemOpen.setText(bundle.getString("MainWindow.Open")); // NOI18N
-        jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        this.jMenuItemOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/open.png"))); // NOI18N
+        this.jMenuItemOpen.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.OpenMnemonic").charAt(0));
+        this.jMenuItemOpen.setText(bundle.getString("MainWindow.Open")); // NOI18N
+        this.jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleOpen(evt);
             }
         });
-        jMenuFile.add(jMenuItemOpen);
+        this.jMenuFile.add(this.jMenuItemOpen);
 
-        jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
-        jMenuItemClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CloseMnemonic").charAt(0));
-        jMenuItemClose.setText(bundle.getString("MainWindow.Close")); // NOI18N
-        jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        this.jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
+        this.jMenuItemClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CloseMnemonic").charAt(0));
+        this.jMenuItemClose.setText(bundle.getString("MainWindow.Close")); // NOI18N
+        this.jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleClose(evt);
             }
         });
-        jMenuFile.add(jMenuItemClose);
+        this.jMenuFile.add(this.jMenuItemClose);
 
-        jMenuItemCloseAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemCloseAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
-        jMenuItemCloseAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CloseAllMnemonic").charAt(0));
-        jMenuItemCloseAll.setText(bundle.getString("MainWindow.CloseAll")); // NOI18N
-        jMenuItemCloseAll.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemCloseAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        this.jMenuItemCloseAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
+        this.jMenuItemCloseAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CloseAllMnemonic").charAt(0));
+        this.jMenuItemCloseAll.setText(bundle.getString("MainWindow.CloseAll")); // NOI18N
+        this.jMenuItemCloseAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleCloseAll(evt);
             }
         });
-        jMenuFile.add(jMenuItemCloseAll);
-        jMenuFile.add(jSeparatorFile1);
+        this.jMenuFile.add(this.jMenuItemCloseAll);
+        this.jMenuFile.add(this.jSeparatorFile1);
 
-        jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/print.png"))); // NOI18N
-        jMenuItemPrint.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.PrintMnemonic").charAt(0));
-        jMenuItemPrint.setText(bundle.getString("MainWindow.Print")); // NOI18N
-        jMenuItemPrint.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        this.jMenuItemPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/print.png"))); // NOI18N
+        this.jMenuItemPrint.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.PrintMnemonic").charAt(0));
+        this.jMenuItemPrint.setText(bundle.getString("MainWindow.Print")); // NOI18N
+        this.jMenuItemPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemPrinthandleClose(evt);
             }
         });
-        jMenuFile.add(jMenuItemPrint);
-        jMenuFile.add(jSeparatorFile2);
+        this.jMenuFile.add(this.jMenuItemPrint);
+        this.jMenuFile.add(this.jSeparatorFile2);
 
-        jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/save.png"))); // NOI18N
-        jMenuItemSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveMnemonic").charAt(0));
-        jMenuItemSave.setText(bundle.getString("MainWindow.Save")); // NOI18N
-        jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        this.jMenuItemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/save.png"))); // NOI18N
+        this.jMenuItemSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveMnemonic").charAt(0));
+        this.jMenuItemSave.setText(bundle.getString("MainWindow.Save")); // NOI18N
+        this.jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleSave(evt);
             }
         });
-        jMenuFile.add(jMenuItemSave);
+        this.jMenuFile.add(this.jMenuItemSave);
 
-        jMenuItemSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/saveAs.png"))); // NOI18N
-        jMenuItemSaveAs.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveAsMnemonic").charAt(0));
-        jMenuItemSaveAs.setText(bundle.getString("MainWindow.SaveAs")); // NOI18N
-        jMenuItemSaveAs.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/saveAs.png"))); // NOI18N
+        this.jMenuItemSaveAs.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveAsMnemonic").charAt(0));
+        this.jMenuItemSaveAs.setText(bundle.getString("MainWindow.SaveAs")); // NOI18N
+        this.jMenuItemSaveAs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleSaveAs(evt);
             }
         });
-        jMenuFile.add(jMenuItemSaveAs);
+        this.jMenuFile.add(this.jMenuItemSaveAs);
 
-        jMenuItemSaveAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemSaveAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/saveAll.png"))); // NOI18N
-        jMenuItemSaveAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveAllMnemonic").charAt(0));
-        jMenuItemSaveAll.setText(bundle.getString("MainWindow.SaveAll")); // NOI18N
-        jMenuItemSaveAll.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemSaveAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        this.jMenuItemSaveAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/saveAll.png"))); // NOI18N
+        this.jMenuItemSaveAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveAllMnemonic").charAt(0));
+        this.jMenuItemSaveAll.setText(bundle.getString("MainWindow.SaveAll")); // NOI18N
+        this.jMenuItemSaveAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleSaveAll(evt);
             }
         });
-        jMenuFile.add(jMenuItemSaveAll);
-        jMenuFile.add(jSeparatorFile3);
+        this.jMenuFile.add(this.jMenuItemSaveAll);
+        this.jMenuFile.add(this.jSeparatorFile3);
 
-        jMenuItemExportPicture.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExportPictureMnemonic").charAt(0));
-        jMenuItemExportPicture.setText(bundle.getString("MainWindow.ExportPicture")); // NOI18N
-        jMenuItemExportPicture.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemExportPicture.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExportPictureMnemonic").charAt(0));
+        this.jMenuItemExportPicture.setText(bundle.getString("MainWindow.ExportPicture")); // NOI18N
+        this.jMenuItemExportPicture.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemExportPictureActionPerformed(evt);
             }
         });
-        jMenuFile.add(jMenuItemExportPicture);
+        this.jMenuFile.add(this.jMenuItemExportPicture);
 
-        jMenuItemExportLatex.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemExportLatex.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LatexExportMnemonic").charAt(0));
-        jMenuItemExportLatex.setText(bundle.getString("MainWindow.LatexExport")); // NOI18N
-        jMenuItemExportLatex.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemExportLatex.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        this.jMenuItemExportLatex.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LatexExportMnemonic").charAt(0));
+        this.jMenuItemExportLatex.setText(bundle.getString("MainWindow.LatexExport")); // NOI18N
+        this.jMenuItemExportLatex.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemExportLatexActionPerformed(evt);
             }
         });
-        jMenuFile.add(jMenuItemExportLatex);
-        jMenuFile.add(jSeparatorFile4);
+        this.jMenuFile.add(this.jMenuItemExportLatex);
+        this.jMenuFile.add(this.jSeparatorFile4);
 
-        jMenuRecentlyUsed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
-        jMenuRecentlyUsed.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RecentlyUsedMnemonic").charAt(0));
-        jMenuRecentlyUsed.setText(bundle.getString("MainWindow.RecentlyUsed")); // NOI18N
-        jMenuFile.add(jMenuRecentlyUsed);
-        jMenuFile.add(jSeparatorFile5);
+        this.jMenuRecentlyUsed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
+        this.jMenuRecentlyUsed.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RecentlyUsedMnemonic").charAt(0));
+        this.jMenuRecentlyUsed.setText(bundle.getString("MainWindow.RecentlyUsed")); // NOI18N
+        this.jMenuFile.add(this.jMenuRecentlyUsed);
+        this.jMenuFile.add(this.jSeparatorFile5);
 
-        jMenuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemQuit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
-        jMenuItemQuit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.QuitMnemonic").charAt(0));
-        jMenuItemQuit.setText(bundle.getString("MainWindow.Quit")); // NOI18N
-        jMenuItemQuit.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        this.jMenuItemQuit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
+        this.jMenuItemQuit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.QuitMnemonic").charAt(0));
+        this.jMenuItemQuit.setText(bundle.getString("MainWindow.Quit")); // NOI18N
+        this.jMenuItemQuit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleQuit(evt);
             }
         });
-        jMenuFile.add(jMenuItemQuit);
+        this.jMenuFile.add(this.jMenuItemQuit);
 
-        jMenuBarMain.add(jMenuFile);
+        this.jMenuBarMain.add(this.jMenuFile);
 
-        jMenuEdit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EditMnemonic").charAt(0));
-        jMenuEdit.setText(bundle.getString("MainWindow.Edit")); // NOI18N
+        this.jMenuEdit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EditMnemonic").charAt(0));
+        this.jMenuEdit.setText(bundle.getString("MainWindow.Edit")); // NOI18N
 
-        jMenuItemUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/undo.png"))); // NOI18N
-        jMenuItemUndo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.UndoMnemonic").charAt(0));
-        jMenuItemUndo.setText(bundle.getString("MainWindow.Undo")); // NOI18N
-        jMenuItemUndo.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        this.jMenuItemUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/undo.png"))); // NOI18N
+        this.jMenuItemUndo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.UndoMnemonic").charAt(0));
+        this.jMenuItemUndo.setText(bundle.getString("MainWindow.Undo")); // NOI18N
+        this.jMenuItemUndo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleUndo(evt);
             }
         });
-        jMenuEdit.add(jMenuItemUndo);
+        this.jMenuEdit.add(this.jMenuItemUndo);
 
-        jMenuItemRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/redo.png"))); // NOI18N
-        jMenuItemRedo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RedoMnemonic").charAt(0));
-        jMenuItemRedo.setText(bundle.getString("MainWindow.Redo")); // NOI18N
-        jMenuItemRedo.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
+        this.jMenuItemRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/redo.png"))); // NOI18N
+        this.jMenuItemRedo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RedoMnemonic").charAt(0));
+        this.jMenuItemRedo.setText(bundle.getString("MainWindow.Redo")); // NOI18N
+        this.jMenuItemRedo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleRedo(evt);
             }
         });
-        jMenuEdit.add(jMenuItemRedo);
-        jMenuEdit.add(jSeparatorEdit);
+        this.jMenuEdit.add(this.jMenuItemRedo);
+        this.jMenuEdit.add(this.jSeparatorEdit);
 
-        jMenuItemPreferences.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/preferences.png"))); // NOI18N
-        jMenuItemPreferences.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.PreferencesMnemonic").charAt(0));
-        jMenuItemPreferences.setText(bundle.getString("MainWindow.Preferences")); // NOI18N
-        jMenuItemPreferences.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemPreferences.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/preferences.png"))); // NOI18N
+        this.jMenuItemPreferences.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.PreferencesMnemonic").charAt(0));
+        this.jMenuItemPreferences.setText(bundle.getString("MainWindow.Preferences")); // NOI18N
+        this.jMenuItemPreferences.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemPreferencesActionPerformed(evt);
             }
         });
-        jMenuEdit.add(jMenuItemPreferences);
+        this.jMenuEdit.add(this.jMenuItemPreferences);
 
-        jMenuBarMain.add(jMenuEdit);
+        this.jMenuBarMain.add(this.jMenuEdit);
 
-        jMenuView.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ViewMnemonic").charAt(0));
-        jMenuView.setText(bundle.getString("MainWindow.View")); // NOI18N
+        this.jMenuView.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ViewMnemonic").charAt(0));
+        this.jMenuView.setText(bundle.getString("MainWindow.View")); // NOI18N
 
-        jCheckBoxMenuItemConsole.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConsoleMnemonic").charAt(0));
-        jCheckBoxMenuItemConsole.setSelected(true);
-        jCheckBoxMenuItemConsole.setText(bundle.getString("MainWindow.Console")); // NOI18N
-        jCheckBoxMenuItemConsole.addItemListener(new java.awt.event.ItemListener() {
+        this.jCheckBoxMenuItemConsole.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConsoleMnemonic").charAt(0));
+        this.jCheckBoxMenuItemConsole.setSelected(true);
+        this.jCheckBoxMenuItemConsole.setText(bundle.getString("MainWindow.Console")); // NOI18N
+        this.jCheckBoxMenuItemConsole.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCheckBoxMenuItemConsoleItemStateChanged(evt);
             }
         });
-        jMenuView.add(jCheckBoxMenuItemConsole);
+        this.jMenuView.add(this.jCheckBoxMenuItemConsole);
 
-        jCheckBoxMenuItemTable.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.TableMnemonic").charAt(0));
-        jCheckBoxMenuItemTable.setSelected(true);
-        jCheckBoxMenuItemTable.setText(bundle.getString("MainWindow.Table")); // NOI18N
-        jCheckBoxMenuItemTable.addItemListener(new java.awt.event.ItemListener() {
+        this.jCheckBoxMenuItemTable.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.TableMnemonic").charAt(0));
+        this.jCheckBoxMenuItemTable.setSelected(true);
+        this.jCheckBoxMenuItemTable.setText(bundle.getString("MainWindow.Table")); // NOI18N
+        this.jCheckBoxMenuItemTable.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCheckBoxMenuItemTableItemStateChanged(evt);
             }
         });
-        jMenuView.add(jCheckBoxMenuItemTable);
+        this.jMenuView.add(this.jCheckBoxMenuItemTable);
 
-        jCheckBoxMenuItemRegexInfo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RegexInfoMnemonic").charAt(0));
-        jCheckBoxMenuItemRegexInfo.setSelected(true);
-        jCheckBoxMenuItemRegexInfo.setText(bundle.getString("MainWindow.RegexInfo")); // NOI18N
-        jCheckBoxMenuItemRegexInfo.addItemListener(new java.awt.event.ItemListener() {
+        this.jCheckBoxMenuItemRegexInfo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RegexInfoMnemonic").charAt(0));
+        this.jCheckBoxMenuItemRegexInfo.setSelected(true);
+        this.jCheckBoxMenuItemRegexInfo.setText(bundle.getString("MainWindow.RegexInfo")); // NOI18N
+        this.jCheckBoxMenuItemRegexInfo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCheckBoxMenuItemRegexInfoItemStateChanged(evt);
             }
         });
-        jMenuView.add(jCheckBoxMenuItemRegexInfo);
-        jMenuView.add(jSeparatorView);
+        this.jMenuView.add(this.jCheckBoxMenuItemRegexInfo);
+        this.jMenuView.add(this.jSeparatorView);
 
-        jCheckBoxMenuItemSecondView.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SecondViewMnemonic").charAt(0));
-        jCheckBoxMenuItemSecondView.setText(bundle.getString("MainWindow.SecondView")); // NOI18N
-        jCheckBoxMenuItemSecondView.addItemListener(new java.awt.event.ItemListener() {
+        this.jCheckBoxMenuItemSecondView.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SecondViewMnemonic").charAt(0));
+        this.jCheckBoxMenuItemSecondView.setText(bundle.getString("MainWindow.SecondView")); // NOI18N
+        this.jCheckBoxMenuItemSecondView.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCheckBoxMenuItemSecondViewItemStateChanged(evt);
             }
         });
-        jMenuView.add(jCheckBoxMenuItemSecondView);
+        this.jMenuView.add(this.jCheckBoxMenuItemSecondView);
 
-        jMenuBarMain.add(jMenuView);
+        this.jMenuBarMain.add(this.jMenuView);
 
-        jMenuExecute.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExecuteMnemonic").charAt(0));
-        jMenuExecute.setText(bundle.getString("MainWindow.Execute")); // NOI18N
+        this.jMenuExecute.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExecuteMnemonic").charAt(0));
+        this.jMenuExecute.setText(bundle.getString("MainWindow.Execute")); // NOI18N
 
-        jMenuItemEnterWord.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EnterWordMnemonic").charAt(0));
-        jMenuItemEnterWord.setText(bundle.getString("MainWindow.EnterWord")); // NOI18N
-        jMenuItemEnterWord.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemEnterWord.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EnterWordMnemonic").charAt(0));
+        this.jMenuItemEnterWord.setText(bundle.getString("MainWindow.EnterWord")); // NOI18N
+        this.jMenuItemEnterWord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemEnterWordActionPerformed(evt);
             }
         });
-        jMenuExecute.add(jMenuItemEnterWord);
+        this.jMenuExecute.add(this.jMenuItemEnterWord);
 
-        jMenuItemEditMachine.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EditMachineMnemonic").charAt(0));
-        jMenuItemEditMachine.setText(bundle.getString("MainWindow.EditMachine")); // NOI18N
-        jMenuItemEditMachine.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemEditMachine.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EditMachineMnemonic").charAt(0));
+        this.jMenuItemEditMachine.setText(bundle.getString("MainWindow.EditMachine")); // NOI18N
+        this.jMenuItemEditMachine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemEditMachineActionPerformed(evt);
             }
         });
-        jMenuExecute.add(jMenuItemEditMachine);
-        jMenuExecute.add(jSeparatorExecute0);
+        this.jMenuExecute.add(this.jMenuItemEditMachine);
+        this.jMenuExecute.add(this.jSeparatorExecute0);
 
-        jMenuItemValidate.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ValidateMnemonic").charAt(0));
-        jMenuItemValidate.setText(bundle.getString("MainWindow.Validate")); // NOI18N
-        jMenuItemValidate.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemValidate.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ValidateMnemonic").charAt(0));
+        this.jMenuItemValidate.setText(bundle.getString("MainWindow.Validate")); // NOI18N
+        this.jMenuItemValidate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemValidateActionPerformed(evt);
             }
         });
-        jMenuExecute.add(jMenuItemValidate);
+        this.jMenuExecute.add(this.jMenuItemValidate);
 
-        jMenuConvertTo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConvertToMnemonic").charAt(0));
-        jMenuConvertTo.setText(bundle.getString("MainWindow.ConvertTo")); // NOI18N
+        this.jMenuConvertTo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConvertToMnemonic").charAt(0));
+        this.jMenuConvertTo.setText(bundle.getString("MainWindow.ConvertTo")); // NOI18N
 
-        jMenuItemConvertToDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
-        jMenuItemConvertToDFA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemConvertToDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
+        this.jMenuItemConvertToDFA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConvertToDFAActionPerformed(evt);
             }
         });
-        jMenuConvertTo.add(jMenuItemConvertToDFA);
+        this.jMenuConvertTo.add(this.jMenuItemConvertToDFA);
 
-        jMenuItemConvertToNFA.setText(bundle.getString("MainWindow.NFA")); // NOI18N
-        jMenuItemConvertToNFA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemConvertToNFA.setText(bundle.getString("MainWindow.NFA")); // NOI18N
+        this.jMenuItemConvertToNFA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConvertToNFActionPerformed(evt);
             }
         });
-        jMenuConvertTo.add(jMenuItemConvertToNFA);
+        this.jMenuConvertTo.add(this.jMenuItemConvertToNFA);
 
-        jMenuItemConvertToENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
-        jMenuItemConvertToENFA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemConvertToENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
+        this.jMenuItemConvertToENFA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConvertToENFAActionPerformed(evt);
             }
         });
-        jMenuConvertTo.add(jMenuItemConvertToENFA);
+        this.jMenuConvertTo.add(this.jMenuItemConvertToENFA);
 
-        jMenuItemConvertToPDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
-        jMenuItemConvertToPDA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemConvertToPDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
+        this.jMenuItemConvertToPDA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConvertToPDAActionPerformed(evt);
             }
         });
-        jMenuConvertTo.add(jMenuItemConvertToPDA);
+        this.jMenuConvertTo.add(this.jMenuItemConvertToPDA);
 
-        jMenuExecute.add(jMenuConvertTo);
+        this.jMenuItemConvertToRegex.setText("Regex");
+        this.jMenuItemConvertToRegex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToRegexActionPerformed(evt);
+            }
+        });
+        this.jMenuConvertTo.add(this.jMenuItemConvertToRegex);
 
-        jMenuConvertToComplete.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConvertToCompleteMnemonic").charAt(0));
-        jMenuConvertToComplete.setText(bundle.getString("MainWindow.ConvertToComplete")); // NOI18N
+        this.jMenuExecute.add(this.jMenuConvertTo);
 
-        jMenuItemConvertToCompleteDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
-        jMenuItemConvertToCompleteDFA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuConvertToComplete.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConvertToCompleteMnemonic").charAt(0));
+        this.jMenuConvertToComplete.setText(bundle.getString("MainWindow.ConvertToComplete")); // NOI18N
+
+        this.jMenuItemConvertToCompleteDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
+        this.jMenuItemConvertToCompleteDFA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConvertToCompleteDFAActionPerformed(evt);
             }
         });
-        jMenuConvertToComplete.add(jMenuItemConvertToCompleteDFA);
+        this.jMenuConvertToComplete.add(this.jMenuItemConvertToCompleteDFA);
 
-        jMenuItemConvertToCompleteNFA.setText(bundle.getString("MainWindow.NFA")); // NOI18N
-        jMenuItemConvertToCompleteNFA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemConvertToCompleteNFA.setText(bundle.getString("MainWindow.NFA")); // NOI18N
+        this.jMenuItemConvertToCompleteNFA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConvertToCompleteNFActionPerformed(evt);
             }
         });
-        jMenuConvertToComplete.add(jMenuItemConvertToCompleteNFA);
+        this.jMenuConvertToComplete.add(this.jMenuItemConvertToCompleteNFA);
 
-        jMenuItemConvertToCompleteENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
-        jMenuItemConvertToCompleteENFA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemConvertToCompleteENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
+        this.jMenuItemConvertToCompleteENFA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConvertToCompleteENFAActionPerformed(evt);
             }
         });
-        jMenuConvertToComplete.add(jMenuItemConvertToCompleteENFA);
+        this.jMenuConvertToComplete.add(this.jMenuItemConvertToCompleteENFA);
 
-        jMenuItemConvertToCompletePDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
-        jMenuItemConvertToCompletePDA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemConvertToCompletePDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
+        this.jMenuItemConvertToCompletePDA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConvertToCompletePDAActionPerformed(evt);
             }
         });
-        jMenuConvertToComplete.add(jMenuItemConvertToCompletePDA);
+        this.jMenuConvertToComplete.add(this.jMenuItemConvertToCompletePDA);
 
-        jMenuExecute.add(jMenuConvertToComplete);
+        this.jMenuExecute.add(this.jMenuConvertToComplete);
 
-        jMenuDraft.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.DraftForMnemonic").charAt(0));
-        jMenuDraft.setText(bundle.getString("MainWindow.DraftFor")); // NOI18N
+        this.jMenuDraft.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.DraftForMnemonic").charAt(0));
+        this.jMenuDraft.setText(bundle.getString("MainWindow.DraftFor")); // NOI18N
 
-        jMenuItemDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
-        jMenuItemDFA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
+        this.jMenuItemDFA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemDFAhandleDraftFor(evt);
             }
         });
-        jMenuDraft.add(jMenuItemDFA);
+        this.jMenuDraft.add(this.jMenuItemDFA);
 
-        jMenuItemNFA.setText(bundle.getString("MainWindow.NFA")); // NOI18N
-        jMenuItemNFA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemNFA.setText(bundle.getString("MainWindow.NFA")); // NOI18N
+        this.jMenuItemNFA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemNFAhandleDraftFor(evt);
             }
         });
-        jMenuDraft.add(jMenuItemNFA);
+        this.jMenuDraft.add(this.jMenuItemNFA);
 
-        jMenuItemENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
-        jMenuItemENFA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
+        this.jMenuItemENFA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemENFAhandleDraftFor(evt);
             }
         });
-        jMenuDraft.add(jMenuItemENFA);
+        this.jMenuDraft.add(this.jMenuItemENFA);
 
-        jMenuItemPDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
-        jMenuItemPDA.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemPDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
+        this.jMenuItemPDA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemPDAhandleDraftFor(evt);
             }
         });
-        jMenuDraft.add(jMenuItemPDA);
+        this.jMenuDraft.add(this.jMenuItemPDA);
 
-        jMenuItemRG.setText(bundle.getString("MainWindow.RG")); // NOI18N
-        jMenuItemRG.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemRG.setText(bundle.getString("MainWindow.RG")); // NOI18N
+        this.jMenuItemRG.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemRGhandleDraftFor(evt);
             }
         });
-        jMenuDraft.add(jMenuItemRG);
+        this.jMenuDraft.add(this.jMenuItemRG);
 
-        jMenuItemCFG.setText(bundle.getString("MainWindow.CFG")); // NOI18N
-        jMenuItemCFG.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemCFG.setText(bundle.getString("MainWindow.CFG")); // NOI18N
+        this.jMenuItemCFG.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemCFGhandleDraftFor(evt);
             }
         });
-        jMenuDraft.add(jMenuItemCFG);
+        this.jMenuDraft.add(this.jMenuItemCFG);
 
-        jMenuExecute.add(jMenuDraft);
-        jMenuExecute.add(jSeparatorExecute1);
+        this.jMenuExecute.add(this.jMenuDraft);
+        this.jMenuExecute.add(this.jSeparatorExecute1);
 
-        jMenuItemAutoLayout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.AutoLayoutMnemonic").charAt(0));
-        jMenuItemAutoLayout.setText(bundle.getString("MainWindow.AutoLayout")); // NOI18N
-        jMenuItemAutoLayout.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemAutoLayout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.AutoLayoutMnemonic").charAt(0));
+        this.jMenuItemAutoLayout.setText(bundle.getString("MainWindow.AutoLayout")); // NOI18N
+        this.jMenuItemAutoLayout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemAutoLayoutActionPerformed(evt);
             }
         });
-        jMenuExecute.add(jMenuItemAutoLayout);
+        this.jMenuExecute.add(this.jMenuItemAutoLayout);
 
-        jMenuItemMinimize.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.MinimizeMnemonic").charAt(0));
-        jMenuItemMinimize.setText(bundle.getString("MainWindow.Minimize")); // NOI18N
-        jMenuItemMinimize.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemMinimize.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.MinimizeMnemonic").charAt(0));
+        this.jMenuItemMinimize.setText(bundle.getString("MainWindow.Minimize")); // NOI18N
+        this.jMenuItemMinimize.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemMinimizeActionPerformed(evt);
             }
         });
-        jMenuExecute.add(jMenuItemMinimize);
+        this.jMenuExecute.add(this.jMenuItemMinimize);
 
-        jMenuItemToCoreSyntax.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ToCoreSyntaxMnemonic").charAt(0));
-        jMenuItemToCoreSyntax.setText(bundle.getString("MainWindow.ToCoreSyntax")); // NOI18N
-        jMenuItemToCoreSyntax.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemToCoreSyntax.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ToCoreSyntaxMnemonic").charAt(0));
+        this.jMenuItemToCoreSyntax.setText(bundle.getString("MainWindow.ToCoreSyntax")); // NOI18N
+        this.jMenuItemToCoreSyntax.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemToCoreSyntaxActionPerformed(evt);
             }
         });
-        jMenuExecute.add(jMenuItemToCoreSyntax);
+        this.jMenuExecute.add(this.jMenuItemToCoreSyntax);
 
-        jMenuItemEliminateLeftRecursion.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EliminateLeftRecursionMnemonic").charAt(0));
-        jMenuItemEliminateLeftRecursion.setText(bundle.getString("MainWindow.EliminateLeftRecursion")); // NOI18N
-        jMenuItemEliminateLeftRecursion.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemEliminateLeftRecursion.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EliminateLeftRecursionMnemonic").charAt(0));
+        this.jMenuItemEliminateLeftRecursion.setText(bundle.getString("MainWindow.EliminateLeftRecursion")); // NOI18N
+        this.jMenuItemEliminateLeftRecursion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemEliminateLeftRecursionActionPerformed(evt);
             }
         });
-        jMenuExecute.add(jMenuItemEliminateLeftRecursion);
+        this.jMenuExecute.add(this.jMenuItemEliminateLeftRecursion);
 
-        jMenuItemLeftfactoring.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LeftFactoringMnemonic").charAt(0));
-        jMenuItemLeftfactoring.setText(bundle.getString("MainWindow.LeftFactoring")); // NOI18N
-        jMenuItemLeftfactoring.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemLeftfactoring.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LeftFactoringMnemonic").charAt(0));
+        this.jMenuItemLeftfactoring.setText(bundle.getString("MainWindow.LeftFactoring")); // NOI18N
+        this.jMenuItemLeftfactoring.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemLeftfactoringActionPerformed(evt);
             }
         });
-        jMenuExecute.add(jMenuItemLeftfactoring);
+        this.jMenuExecute.add(this.jMenuItemLeftfactoring);
 
-        jMenuBarMain.add(jMenuExecute);
+        this.jMenuBarMain.add(this.jMenuExecute);
 
-        jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
-        jMenuExtras.setText(bundle.getString("MainWindow.Extras")); // NOI18N
+        this.jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
+        this.jMenuExtras.setText(bundle.getString("MainWindow.Extras")); // NOI18N
 
-        jMenuItemExchange.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.Exchange").charAt(0));
-        jMenuItemExchange.setText(bundle.getString("MainWindow.Exchange")); // NOI18N
-        jMenuItemExchange.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemExchange.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.Exchange").charAt(0));
+        this.jMenuItemExchange.setText(bundle.getString("MainWindow.Exchange")); // NOI18N
+        this.jMenuItemExchange.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemExchangeActionPerformed(evt);
             }
         });
-        jMenuExtras.add(jMenuItemExchange);
-        jMenuExtras.add(jSeparatorExtras);
+        this.jMenuExtras.add(this.jMenuItemExchange);
+        this.jMenuExtras.add(this.jSeparatorExtras);
 
-        jMenuItemHistory.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HistoryMnemonic").charAt(0));
-        jMenuItemHistory.setText(bundle.getString("MainWindow.History")); // NOI18N
-        jMenuItemHistory.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemHistory.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HistoryMnemonic").charAt(0));
+        this.jMenuItemHistory.setText(bundle.getString("MainWindow.History")); // NOI18N
+        this.jMenuItemHistory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemHistoryActionPerformed(evt);
             }
         });
-        jMenuExtras.add(jMenuItemHistory);
+        this.jMenuExtras.add(this.jMenuItemHistory);
 
-        jMenuItemReachableStates.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ReachableStatesMnemonic").charAt(0));
-        jMenuItemReachableStates.setText(bundle.getString("MainWindow.ReachableStates")); // NOI18N
-        jMenuItemReachableStates.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemReachableStates.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ReachableStatesMnemonic").charAt(0));
+        this.jMenuItemReachableStates.setText(bundle.getString("MainWindow.ReachableStates")); // NOI18N
+        this.jMenuItemReachableStates.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemReachableStatesActionPerformed(evt);
             }
         });
-        jMenuExtras.add(jMenuItemReachableStates);
+        this.jMenuExtras.add(this.jMenuItemReachableStates);
 
-        jMenuItemReorderStateNames.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ReorderStateNamesMnemonic").charAt(0));
-        jMenuItemReorderStateNames.setText(bundle.getString("MainWindow.ReorderStateNames")); // NOI18N
-        jMenuItemReorderStateNames.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemReorderStateNames.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ReorderStateNamesMnemonic").charAt(0));
+        this.jMenuItemReorderStateNames.setText(bundle.getString("MainWindow.ReorderStateNames")); // NOI18N
+        this.jMenuItemReorderStateNames.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemReorderStateNamesActionPerformed(evt);
             }
         });
-        jMenuExtras.add(jMenuItemReorderStateNames);
+        this.jMenuExtras.add(this.jMenuItemReorderStateNames);
 
-        jMenuBarMain.add(jMenuExtras);
+        this.jMenuBarMain.add(this.jMenuExtras);
 
-        jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HelpMnemonic").charAt(0));
-        jMenuHelp.setText(bundle.getString("MainWindow.Help")); // NOI18N
+        this.jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HelpMnemonic").charAt(0));
+        this.jMenuHelp.setText(bundle.getString("MainWindow.Help")); // NOI18N
 
-        jMenuItemAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        jMenuItemAbout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.AboutMnemonic").charAt(0));
-        jMenuItemAbout.setText(bundle.getString("MainWindow.About")); // NOI18N
-        jMenuItemAbout.addActionListener(new java.awt.event.ActionListener() {
+        this.jMenuItemAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        this.jMenuItemAbout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.AboutMnemonic").charAt(0));
+        this.jMenuItemAbout.setText(bundle.getString("MainWindow.About")); // NOI18N
+        this.jMenuItemAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemAboutActionPerformed(evt);
             }
         });
-        jMenuHelp.add(jMenuItemAbout);
+        this.jMenuHelp.add(this.jMenuItemAbout);
 
-        jMenuBarMain.add(jMenuHelp);
+        this.jMenuBarMain.add(this.jMenuHelp);
 
-        setJMenuBar(jMenuBarMain);
+        setJMenuBar(this.jMenuBarMain);
 
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
@@ -2191,7 +2201,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_formWindowClosing
 
     private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
-        this.logic.handleAbout(); 
+        this.logic.handleAbout();
     }//GEN-LAST:event_jMenuItemAboutActionPerformed
 
     private void jMenuItemPreferencesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPreferencesActionPerformed
@@ -2203,7 +2213,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_handleQuit
 
     private void handleOpen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleOpen
-        this.logic.handleOpen(); 
+        this.logic.handleOpen();
     }//GEN-LAST:event_handleOpen
 
 private void jMenuItemPrinthandleClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPrinthandleClose
@@ -2233,6 +2243,10 @@ private void jMenuItemEliminateLeftRecursionActionPerformed(java.awt.event.Actio
 private void jMenuItemLeftfactoringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLeftfactoringActionPerformed
     this.logic.handleLeftFactoring();
 }//GEN-LAST:event_jMenuItemLeftfactoringActionPerformed
+
+private void jMenuItemConvertToRegexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToRegexActionPerformed
+    this.logic.handleConvertTo ( RegexType.REGEX );
+}//GEN-LAST:event_jMenuItemConvertToRegexActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2287,6 +2301,7 @@ private void jMenuItemLeftfactoringActionPerformed(java.awt.event.ActionEvent ev
     private javax.swing.JMenuItem jMenuItemConvertToENFA;
     private javax.swing.JMenuItem jMenuItemConvertToNFA;
     private javax.swing.JMenuItem jMenuItemConvertToPDA;
+    private javax.swing.JMenuItem jMenuItemConvertToRegex;
     private javax.swing.JMenuItem jMenuItemDFA;
     private javax.swing.JMenuItem jMenuItemENFA;
     private javax.swing.JMenuItem jMenuItemEditMachine;

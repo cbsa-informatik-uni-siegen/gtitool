@@ -16,11 +16,9 @@ public abstract class OneChildNode extends RegexNode
   private static final long serialVersionUID = -3109784857649152942L;
 
   /**
-   * TODO
-   *
-   * @param node
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getParentNodeForNode(de.unisiegen.gtitool.core.entities.regex.RegexNode)
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getParentNodeForNode(RegexNode)
    */
   @Override
   public RegexNode getParentNodeForNode ( RegexNode node )
@@ -95,10 +93,9 @@ public abstract class OneChildNode extends RegexNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextUnfinishedNode()
+   * @see RegexNode#getNextUnfinishedNode()
    */
   @Override
   public UnfinishedNode getNextUnfinishedNode ()

@@ -411,7 +411,7 @@ public class DefaultAlphabet implements Alphabet
    * 
    * @see Alphabet#contains(Symbol)
    */
-  public final boolean contains ( Symbol symbol )
+  public boolean contains ( Symbol symbol )
   {
     return this.symbolSet.contains ( symbol );
   }

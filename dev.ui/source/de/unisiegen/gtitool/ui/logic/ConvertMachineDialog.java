@@ -126,6 +126,11 @@ public final class ConvertMachineDialog implements
   public enum ConvertMachineType
   {
     /**
+     * The {@link DFA} to {@link Regex} conversion type.
+     */
+    DFA_TO_REGEX,
+
+    /**
      * The {@link ENFA} to {@link DFA} conversion type.
      */
     ENFA_TO_DFA,
@@ -153,12 +158,7 @@ public final class ConvertMachineDialog implements
     /**
      * The {@link NFA} to {@link DFA} complete conversion type.
      */
-    NFA_TO_DFA_COMPLETE,
-
-    /**
-     * The {@link DFA} to {@link Regex} conversion type.
-     */
-    DFA_TO_REGEX;
+    NFA_TO_DFA_COMPLETE;
   }
 
 
@@ -285,14 +285,14 @@ public final class ConvertMachineDialog implements
     ADD_STATE_AND_TRANSITION,
 
     /**
-     * The finish step.
-     */
-    FINISH,
-
-    /**
      * The calculate new language step
      */
-    CALCULATE_NEW_LANGUAGE;
+    CALCULATE_NEW_LANGUAGE,
+
+    /**
+     * The finish step.
+     */
+    FINISH;
 
     /**
      * {@inheritDoc}
@@ -429,6 +429,18 @@ public final class ConvertMachineDialog implements
 
 
     /**
+     * The actual {@link RegexNode}
+     */
+    private RegexNode actualRegex = null;
+
+
+    /**
+     * The last finals index
+     */
+    private int lastFinalsIndex = 0;
+
+
+    /**
      * The added {@link Symbol}.
      */
     private ObjectPair < Transition, Symbol > addedSymbol = null;
@@ -452,6 +464,8 @@ public final class ConvertMachineDialog implements
      *          {@link JGTIGraph}.
      * @param activeSymbolsConverted The active {@link Symbol}s of the converted
      *          {@link JGTIGraph}.
+     * @param actualRegex The actual {@link RegexNode}
+     * @param finalsIndex The last finals index
      */
     public StepItem ( Step activeStep, Symbol currentActiveSymbol,
         State currentActiveState, ArrayList < State > activeStatesOriginal,
@@ -459,7 +473,8 @@ public final class ConvertMachineDialog implements
         ArrayList < Transition > activeTransitionsOriginal,
         ArrayList < Transition > activeTransitionsConverted,
         ArrayList < Symbol > activeSymbolsOriginal,
-        ArrayList < Symbol > activeSymbolsConverted )
+        ArrayList < Symbol > activeSymbolsConverted, RegexNode actualRegex,
+        int finalsIndex )
     {
       /**
        * if ( activeStep == null ) { throw new IllegalArgumentException (
@@ -477,6 +492,8 @@ public final class ConvertMachineDialog implements
       this.activeTransitionsConverted = activeTransitionsConverted;
       this.activeSymbolsOriginal = activeSymbolsOriginal;
       this.activeSymbolsConverted = activeSymbolsConverted;
+      this.actualRegex = actualRegex;
+      this.lastFinalsIndex = finalsIndex;
     }
 
 
@@ -489,6 +506,18 @@ public final class ConvertMachineDialog implements
     public final State getActiveState ()
     {
       return this.activeState;
+    }
+
+
+    /**
+     * Returns the lastFinalsIndex.
+     * 
+     * @return The lastFinalsIndex.
+     * @see #lastFinalsIndex
+     */
+    public int getFinalsIndex ()
+    {
+      return this.lastFinalsIndex;
     }
 
 
@@ -613,6 +642,18 @@ public final class ConvertMachineDialog implements
 
 
     /**
+     * Returns the actualRegex.
+     * 
+     * @return The actualRegex.
+     * @see #actualRegex
+     */
+    public RegexNode getActualRegex ()
+    {
+      return this.actualRegex;
+    }
+
+
+    /**
      * Returns the addedSymbol.
      * 
      * @return The addedSymbol.
@@ -678,6 +719,18 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * The algorithm
+   */
+  private String algorithm = ""; //$NON-NLS-1$
+
+
+  /**
+   * The algorithm window
+   */
+  private AlgorithmWindowForm algorithmWindow;
+
+
+  /**
    * The auto step {@link Timer}.
    */
   private Timer autoStepTimer = null;
@@ -720,6 +773,18 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * The final states
+   */
+  private ArrayList < State > finals = new ArrayList < State > ();
+
+
+  /**
+   * The index for the {@link ArrayList} of final states
+   */
+  private int finalsIndex = 0;
+
+
+  /**
    * The {@link ConvertMachineDialogForm}.
    */
   private ConvertMachineDialogForm gui;
@@ -735,6 +800,12 @@ public final class ConvertMachineDialog implements
    * The original {@link JGTIGraph} containing the diagramm.
    */
   private JGTIGraph jGTIGraphOriginal;
+
+
+  /**
+   * Varialbe used for {@link DFA} -> {@link Regex}
+   */
+  private int k;
 
 
   /**
@@ -762,21 +833,15 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The converted {@link DefaultRegexModel}.
-   */
-  private DefaultRegexModel modelRegexConverted;
-
-
-  /**
-   * Varialbe used for {@link DFA} -> {@link Regex}
-   */
-  private int k;
-
-
-  /**
    * The original {@link DefaultMachineModel}.
    */
   private DefaultMachineModel modelOriginal;
+
+
+  /**
+   * The converted {@link DefaultRegexModel}.
+   */
+  private DefaultRegexModel modelRegexConverted;
 
 
   /**
@@ -789,6 +854,12 @@ public final class ConvertMachineDialog implements
    * The {@link Position} map.
    */
   private HashMap < String, Position > positionMap;
+
+
+  /**
+   * The start {@link State} of the original machine
+   */
+  private State start = null;
 
 
   /**
@@ -1013,10 +1084,20 @@ public final class ConvertMachineDialog implements
         }
       }
     }
-    this.stepItemList.add ( new StepItem ( this.step, this.currentActiveSymbol,
-        this.currentActiveState, activeStatesOriginal, activeStatesConverted,
-        activeTransitionsOriginal, activeTransitionsConverted,
-        activeSymbolsOriginal, activeSymbolsConverted ) );
+    RegexNode node = null;
+    if ( this.modelRegexConverted != null )
+    {
+      if ( this.modelRegexConverted.getRegex ().getRegexNode () != null )
+      {
+        node = this.modelRegexConverted.getRegex ().getRegexNode ().clone ();
+      }
+    }
+    this.stepItemList
+        .add ( new StepItem ( this.step, this.currentActiveSymbol,
+            this.currentActiveState, activeStatesOriginal,
+            activeStatesConverted, activeTransitionsOriginal,
+            activeTransitionsConverted, activeSymbolsOriginal,
+            activeSymbolsConverted, node, this.finalsIndex ) );
   }
 
 
@@ -1386,6 +1467,157 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * Creates a {@link DisjunctionNode} of the symbols
+   * 
+   * @param symbols The symbols for the {@link DisjunctionNode}
+   * @return {@link DisjunctionNode} of the symbols
+   */
+  private RegexNode createDisjunction ( ArrayList < Symbol > symbols )
+  {
+    if ( symbols.size () < 1 )
+    {
+      return null;
+    }
+    Symbol s = symbols.remove ( 0 );
+    RegexNode r;
+    if ( s.equals ( new DefaultSymbol () ) )
+    {
+      r = new EpsilonNode ();
+    }
+    else
+    {
+      r = new TokenNode ( s.getName () );
+    }
+    if ( symbols.size () == 0 )
+    {
+      return r;
+    }
+    return new DisjunctionNode ( createDisjunction ( symbols ), r );
+  }
+
+
+  /**
+   * Eliminates a {@link RegexNode} from a {@link RegexNode}
+   * 
+   * @param node The {@link RegexNode} to delete
+   * @param regex The {@link RegexNode}
+   */
+  private void eliminateNodeFromRegex ( RegexNode node, RegexNode regex )
+  {
+    RegexNode parentRegex = regex.getParentNodeForNode ( node );
+
+    if ( parentRegex instanceof OneChildNode )
+    {
+      eliminateNodeFromRegex ( parentRegex, regex );
+    }
+    if ( parentRegex instanceof ConcatenationNode )
+    {
+      eliminateNodeFromRegex ( parentRegex, regex );
+    }
+    if ( parentRegex instanceof DisjunctionNode )
+    {
+      RegexNode r;
+      if ( ( ( TwoChildNode ) parentRegex ).getRegex1 ().equals ( node ) )
+      {
+        r = ( ( TwoChildNode ) parentRegex ).getRegex2 ();
+      }
+      else
+      {
+        r = ( ( TwoChildNode ) parentRegex ).getRegex1 ();
+      }
+      RegexNode parentParent = regex.getParentNodeForNode ( parentRegex );
+      if ( parentParent instanceof TwoChildNode )
+      {
+        TwoChildNode p = ( TwoChildNode ) parentParent;
+        if ( p.getRegex1 ().equals ( parentRegex ) )
+        {
+          p.setRegex1 ( r );
+        }
+        else
+        {
+          p.setRegex2 ( r );
+        }
+      }
+      else
+      {
+        OneChildNode one = ( OneChildNode ) parentParent;
+        one.setRegex ( r );
+      }
+    }
+  }
+
+
+  /**
+   * Returns the RegexNode for the Languages
+   * 
+   * @param LKK The {@link RegexNode} for LKK
+   * @param LKJ The {@link RegexNode} for LKJ
+   * @return The RegexNode for the Languages
+   */
+  private RegexNode generateRegex ( RegexNode LKK, RegexNode LKJ )
+  {
+    RegexNode regex = LKJ;
+    if ( LKK == null )
+    {
+      return null;
+    }
+    if ( regex == null )
+    {
+      return null;
+    }
+    return new ConcatenationNode ( new KleeneNode ( LKK ), LKJ );
+  }
+
+
+  /**
+   * Returns the RegexNode for the Languages
+   * 
+   * @param LIK The {@link RegexNode} for LIK
+   * @param LKK The {@link RegexNode} for LKK
+   * @param LKJ The {@link RegexNode} for LKJ
+   * @return The RegexNode for the Languages
+   */
+  private RegexNode generateRegex ( RegexNode LIK, RegexNode LKK, RegexNode LKJ )
+  {
+    RegexNode regex = generateRegex ( LKK, LKJ );
+    if ( LIK == null )
+    {
+      return null;
+    }
+    if ( regex == null )
+    {
+      return null;
+    }
+    return new ConcatenationNode ( LIK, regex );
+  }
+
+
+  /**
+   * Returns the RegexNode for the Languages
+   * 
+   * @param LIJ The {@link RegexNode} for LIJ
+   * @param LIK The {@link RegexNode} for LIK
+   * @param LKK The {@link RegexNode} for LKK
+   * @param LKJ The {@link RegexNode} for LKJ
+   * @return The RegexNode for the Languages
+   */
+  private RegexNode generateRegex ( RegexNode LIJ, RegexNode LIK,
+      RegexNode LKK, RegexNode LKJ )
+  {
+    RegexNode regex = generateRegex ( LIK, LKK, LKJ );
+    if ( LIJ == null )
+    {
+      return regex;
+    }
+    if ( regex == null )
+    {
+      return LIJ;
+    }
+    return new DisjunctionNode ( LIJ, regex );
+  }
+
+
+  /**
    * Returns the convertMachineTableModel.
    * 
    * @return The convertMachineTableModel.
@@ -1405,6 +1637,60 @@ public final class ConvertMachineDialog implements
   public final ConvertMachineDialogForm getGUI ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the L1 for s0 to s1
+   * 
+   * @param s0 {@link State} s0
+   * @param s1 {@link State} s1
+   * @return The L1 for s0 to s1
+   */
+  private RegexNode getL1 ( State s0, State s1 )
+  {
+    ArrayList < Symbol > l1 = new ArrayList < Symbol > ();
+    if ( s0.equals ( s1 ) )
+    {
+      l1.add ( new DefaultSymbol () );
+    }
+    for ( Transition t : this.machineOriginal.getTransition () )
+    {
+      if ( t.getStateBegin ().equals ( s0 ) && t.getStateEnd ().equals ( s1 ) )
+      {
+        l1.addAll ( t.getSymbol () );
+      }
+    }
+    return createDisjunction ( l1 );
+  }
+
+
+  /**
+   * Returns Lk for s0 to s1
+   * 
+   * @param s0 {@link State} s0
+   * @param s1 {@link State} s1
+   * @param tmpK The k
+   * @return Lk for s0 to s1
+   */
+  private RegexNode getLK ( State s0, State s1, int tmpK )
+  {
+    int i = tmpK;
+    if ( i-- != 1 )
+    {
+      State s = this.machineOriginal.getState ( i - 1 );
+
+      RegexNode LIJ = new UnfinishedNode ( s0, s1, i );
+      RegexNode LIK = new UnfinishedNode ( s0, s, i );
+      RegexNode LKK = new UnfinishedNode ( s, s, i );
+      RegexNode LKJ = new UnfinishedNode ( s, s1, i );
+
+      RegexNode result = generateRegex ( LIJ, LIK, LKK, LKJ );
+      return result;
+
+    }
+    RegexNode result = getL1 ( s0, s1 );
+    return result;
   }
 
 
@@ -1471,6 +1757,23 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * Shows or dispose the Algorithm window
+   * 
+   * @param show Show or dispose
+   */
+  public final void handleAlgorithmWindowChanged ( boolean show )
+  {
+    if ( this.algorithmWindow == null )
+    {
+      this.algorithmWindow = new AlgorithmWindowForm ( this.parent, false,
+          this.algorithm, this.gui.jCheckBoxAlgorithm );
+    }
+    this.gui.setModal ( false );
+    this.algorithmWindow.setVisible ( show );
+  }
+
+
+  /**
    * Handles the action on the auto step button.
    */
   public final void handleAutoStep ()
@@ -1521,35 +1824,6 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The algorithm window
-   */
-  private AlgorithmWindowForm algorithmWindow;
-
-
-  /**
-   * The algorithm
-   */
-  private String algorithm = ""; //$NON-NLS-1$
-
-
-  /**
-   * Shows or dispose the Algorithm window
-   * 
-   * @param show Show or dispose
-   */
-  public final void handleAlgorithmWindowChanged ( boolean show )
-  {
-    if ( this.algorithmWindow == null )
-    {
-      this.algorithmWindow = new AlgorithmWindowForm ( this.parent, false,
-          this.algorithm, this.gui.jCheckBoxAlgorithm );
-    }
-    this.gui.setModal ( false );
-    this.algorithmWindow.setVisible ( show );
-  }
-
-
-  /**
    * Handles the action on the next step button.
    */
   public final void handleNextStep ()
@@ -1583,10 +1857,6 @@ public final class ConvertMachineDialog implements
     {
       this.machinePanel.getMainWindow ().handleNew (
           this.modelRegexConverted.getElement (), true );
-    }
-    for ( UnfinishedNode n : this.languageMap.keySet () )
-    {
-      System.err.println ( n + " = " + this.languageMap.get ( n ) );
     }
     PreferenceManager.getInstance ().setConvertMachineDialogPreferences (
         this.gui );
@@ -2808,8 +3078,9 @@ public final class ConvertMachineDialog implements
     else if ( this.step.equals ( Step.CALCULATE_NEW_LANGUAGE ) )
     {
       RegexNode node = this.modelRegexConverted.getRegex ().getRegexNode ();
-      if ( this.modelRegexConverted.getRegex ().getRegexNode () == null )
+      if ( node == null )
       {
+        this.finals.clear ();
         for ( State s : this.modelOriginal.getMachine ().getState () )
         {
           if ( s.isStartState () )
@@ -2821,10 +3092,14 @@ public final class ConvertMachineDialog implements
             this.finals.add ( s );
           }
         }
-        RegexNode newNode = getLK ( ( DFA ) this.modelOriginal.getMachine (),
-            this.start, this.finals.get ( this.finalsIndex ), this.k );
+        RegexNode newNode = getLK ( this.start, this.finals
+            .get ( this.finalsIndex ), this.k );
         this.modelRegexConverted.getRegex ().setRegexNode ( newNode,
             newNode.toString () );
+        PrettyString string = new PrettyString ();
+        string.add ( new PrettyToken ( "Created language: ", Style.KEYWORD ) );
+        string.add ( newNode.toPrettyString () );
+        addOutlineComment ( string );
       }
       else
       {
@@ -2834,47 +3109,26 @@ public final class ConvertMachineDialog implements
           RegexNode parentNode = node.getParentNodeForNode ( uNode );
           if ( parentNode instanceof OneChildNode )
           {
-            if ( this.languageMap.containsKey ( uNode ) )
+            RegexNode tmp = getLK ( uNode.getS0 (), uNode.getS1 (), uNode
+                .getK () );
+
+            if ( tmp != null )
             {
-              ( ( OneChildNode ) parentNode ).setRegex ( this.languageMap
-                  .get ( uNode ) );
+              ( ( OneChildNode ) parentNode ).setRegex ( tmp );
             }
             else
             {
-              RegexNode tmp = getLK ( ( DFA ) this.machineOriginal, uNode
-                  .getS0 (), uNode.getS1 (), uNode.getK () );
-
-              if ( tmp != null )
-              {
-                this.languageMap.put ( uNode, tmp );
-                ( ( OneChildNode ) parentNode ).setRegex ( tmp );
-              }
-              else
-              {
-                eliminateNodeFromRegex ( uNode, node );
-              }
+              eliminateNodeFromRegex ( uNode, node );
             }
+
           }
           if ( parentNode instanceof TwoChildNode )
           {
             TwoChildNode two = ( TwoChildNode ) parentNode;
 
-            if ( this.languageMap.containsKey ( uNode ) )
-            {
-              if ( two.getRegex1 ().equals ( uNode ) )
-              {
-                two.setRegex1 ( this.languageMap.get ( uNode ) );
-              }
-              else
-              {
-                two.setRegex2 ( this.languageMap.get ( uNode ) );
-              }
-            }
-            RegexNode r = getLK ( ( DFA ) this.machineOriginal, uNode.getS0 (),
-                uNode.getS1 (), uNode.getK () );
+            RegexNode r = getLK ( uNode.getS0 (), uNode.getS1 (), uNode.getK () );
             if ( r != null )
             {
-              this.languageMap.put ( uNode, r );
               if ( two.getRegex1 ().equals ( uNode ) )
               {
                 two.setRegex1 ( r );
@@ -2891,31 +3145,46 @@ public final class ConvertMachineDialog implements
           }
           this.modelRegexConverted.getRegex ().setRegexNode ( node,
               node.toString () );
+
+          PrettyString string = new PrettyString ();
+          string.add ( new PrettyToken ( "Created language: ", Style.KEYWORD ) );
+          string.add ( uNode.toPrettyString () );
+          addOutlineComment ( string );
         }
         else
         {
           this.finalsIndex++ ;
-          if ( this.finalsIndex >= this.finals.size () )
+          RegexNode n = getLK ( this.start,
+              this.finals.get ( this.finalsIndex ), this.k );
+          RegexNode newNode;
+          if ( n == null )
           {
-            this.endReached = true;
+            newNode = node;
           }
           else
           {
-            RegexNode n = getLK ( ( DFA ) this.machineOriginal, this.start,
-                this.finals.get ( this.finalsIndex ), this.k );
-            RegexNode newNode;
-            if ( n == null )
-            {
-              newNode = this.modelRegexConverted.getRegex ().getRegexNode ();
-            }
-            else
-            {
-              newNode = new DisjunctionNode ( this.modelRegexConverted
-                  .getRegex ().getRegexNode (), n );
-            }
-            this.modelRegexConverted.getRegex ().setRegexNode ( newNode,
-                newNode.toString () );
+            newNode = new DisjunctionNode ( node, n );
           }
+          this.modelRegexConverted.getRegex ().setRegexNode ( newNode,
+              newNode.toString () );
+
+          PrettyString string = new PrettyString ();
+          string.add ( new PrettyToken ( "Created language: ", Style.KEYWORD ) );
+          string.add ( n.toPrettyString () );
+          addOutlineComment ( string );
+
+        }
+      }
+
+      if ( this.modelRegexConverted.getRegex ().getRegexNode () != null )
+      {
+
+        RegexNode nextUnfishedNode = this.modelRegexConverted.getRegex ()
+            .getRegexNode ().getNextUnfinishedNode ();
+        if ( this.finalsIndex + 1 >= this.finals.size ()
+            && nextUnfishedNode == null )
+        {
+          this.endReached = true;
         }
       }
     }
@@ -2929,184 +3198,6 @@ public final class ConvertMachineDialog implements
       setStatus ();
       updateGraph ();
     }
-  }
-
-
-  private HashMap < UnfinishedNode, RegexNode > languageMap = new HashMap < UnfinishedNode, RegexNode > ();
-
-
-  private State start = null;
-
-
-  private ArrayList < State > finals = new ArrayList < State > ();
-
-
-  private int finalsIndex = 0;
-
-
-  private void eliminateNodeFromRegex ( RegexNode node, RegexNode regex )
-  {
-    RegexNode parent = regex.getParentNodeForNode ( node );
-
-    if ( parent instanceof OneChildNode )
-    {
-      eliminateNodeFromRegex ( parent, regex );
-    }
-    if ( parent instanceof ConcatenationNode )
-    {
-      eliminateNodeFromRegex ( parent, regex );
-    }
-    if ( parent instanceof DisjunctionNode )
-    {
-      RegexNode r;
-      if ( ( ( TwoChildNode ) parent ).getRegex1 ().equals ( node ) )
-      {
-        r = ( ( TwoChildNode ) parent ).getRegex2 ();
-      }
-      else
-      {
-        r = ( ( TwoChildNode ) parent ).getRegex1 ();
-      }
-      RegexNode parentParent = regex.getParentNodeForNode ( parent );
-      if ( parentParent instanceof TwoChildNode )
-      {
-        TwoChildNode p = ( TwoChildNode ) parentParent;
-        if ( p.getRegex1 ().equals ( parent ) )
-        {
-          p.setRegex1 ( r );
-        }
-        else
-        {
-          p.setRegex2 ( r );
-        }
-      }
-      else
-      {
-        OneChildNode one = ( OneChildNode ) parentParent;
-        one.setRegex ( r );
-      }
-    }
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param symbols
-   * @return
-   */
-  private RegexNode createDisjunction ( ArrayList < Symbol > symbols )
-  {
-    if ( symbols.size () < 1 )
-    {
-      return null;
-    }
-    Symbol s = symbols.remove ( 0 );
-    RegexNode r;
-    if ( s.equals ( new DefaultSymbol () ) )
-    {
-      r = new EpsilonNode ();
-    }
-    else
-    {
-      r = new TokenNode ( s.getName () );
-    }
-    if ( symbols.size () == 0 )
-    {
-      return r;
-    }
-    return new DisjunctionNode ( createDisjunction ( symbols ), r );
-  }
-
-
-  private RegexNode getL1 ( DFA dfa, State s0, State s1 )
-  {
-    ArrayList < Symbol > l1 = new ArrayList < Symbol > ();
-    if ( s0.equals ( s1 ) )
-    {
-      l1.add ( new DefaultSymbol () );
-    }
-    for ( Transition t : dfa.getTransition () )
-    {
-      if ( t.getStateBegin ().equals ( s0 ) && t.getStateEnd ().equals ( s1 ) )
-      {
-        l1.addAll ( t.getSymbol () );
-      }
-    }
-    return createDisjunction ( l1 );
-  }
-
-
-  private RegexNode getLK ( DFA dfa, State s0, State s1, int k )
-  {
-    int i = k;
-    if ( i-- != 1 )
-    {
-      State s = dfa.getState ( i - 1 );
-
-      RegexNode LIJ = new UnfinishedNode ( s0, s1, i );
-      RegexNode LIK = new UnfinishedNode ( s0, s, i );
-      RegexNode LKK = new UnfinishedNode ( s, s, i );
-      RegexNode LKJ = new UnfinishedNode ( s, s1, i );
-
-      RegexNode result = generateRegex ( LIJ, LIK, LKK, LKJ );
-      return result;
-
-    }
-    RegexNode result = getL1 ( dfa, s0, s1 );
-    return result;
-  }
-
-
-  private RegexNode generateRegex ( RegexNode LIJ, RegexNode LIK,
-      RegexNode LKK, RegexNode LKJ )
-  {
-    RegexNode regex = generateRegex ( LIK, LKK, LKJ );
-    if ( LIJ == null )
-    {
-      return regex;
-    }
-    if ( regex == null )
-    {
-      return LIJ;
-    }
-    return new DisjunctionNode ( LIJ, regex );
-  }
-
-
-  private RegexNode generateRegex ( RegexNode LIK, RegexNode LKK, RegexNode LKJ )
-  {
-    RegexNode regex = generateRegex ( LKK, LKJ );
-    if ( LIK == null )
-    {
-      return null;
-    }
-    if ( regex == null )
-    {
-      return null;
-    }
-    return new ConcatenationNode ( LIK, regex );
-  }
-
-
-  private RegexNode generateRegex ( RegexNode LKK, RegexNode LKJ )
-  {
-    RegexNode regex = generateRegex ( LKJ );
-    if ( LKK == null )
-    {
-      return null;
-    }
-    if ( regex == null )
-    {
-      return null;
-    }
-    return new ConcatenationNode ( new KleeneNode ( LKK ), LKJ );
-  }
-
-
-  private RegexNode generateRegex ( RegexNode LKJ )
-  {
-    return LKJ;
   }
 
 
@@ -3127,11 +3218,14 @@ public final class ConvertMachineDialog implements
     StepItem stepItem = this.stepItemList
         .remove ( this.stepItemList.size () - 1 );
     clearStateHighlightOriginal ();
-    clearStateHighlightConverted ();
+    if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
+    {
+      clearStateHighlightConverted ();
+      clearTransitionHighlightConverted ();
+      clearSymbolHighlightConverted ();
+    }
     clearTransitionHighlightOriginal ();
-    clearTransitionHighlightConverted ();
     clearSymbolHighlightOriginal ();
-    clearSymbolHighlightConverted ();
 
     for ( State current : stepItem.getActiveStatesOriginal () )
     {
@@ -3176,6 +3270,33 @@ public final class ConvertMachineDialog implements
       Transition transition = stepItem.getAddedSymbol ().getFirst ();
       Symbol symbol = stepItem.getAddedSymbol ().getSecond ();
       transition.remove ( symbol );
+    }
+    if ( this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
+    {
+      this.finalsIndex = stepItem.getFinalsIndex ();
+      if ( stepItem.getActualRegex () != null )
+      {
+        RegexNode node = stepItem.getActualRegex ();
+        this.modelRegexConverted.changeRegexNode ( node, node.toString () );
+      }
+      else
+      {
+        this.k = this.modelOriginal.getMachine ().getState ().size () + 1;
+        try
+        {
+          this.modelRegexConverted = new DefaultRegexModel ( new DefaultRegex (
+              new DefaultRegexAlphabet ( this.machineOriginal.getAlphabet ()
+                  .get () ) ), false );
+          this.modelRegexConverted.initializeGraph ();
+          this.jGTIGraphConverted = this.modelRegexConverted.getJGTIGraph ();
+        }
+        catch ( Exception e )
+        {
+          e.printStackTrace ();
+          System.exit ( 1 );
+        }
+
+      }
     }
 
     // outline
@@ -3299,7 +3420,16 @@ public final class ConvertMachineDialog implements
       this.jGTIGraphConverted = this.modelRegexConverted.getJGTIGraph ();
       this.gui.jGTIScrollPaneConverted
           .setViewportView ( this.jGTIGraphConverted );
-      this.modelRegexConverted.createTree ();
+      if ( this.modelRegexConverted.getRegex ().getRegexNode () != null )
+      {
+        this.modelRegexConverted.createTree ();
+        this.gui.styledRegexParserPanel1.setText ( this.modelRegexConverted.getRegex ()
+            .getRegexNode ().toPrettyString ().toString () );
+      }
+      else
+      {
+        this.gui.styledRegexParserPanel1.setText ( "" ); //$NON-NLS-1$
+      }
     }
   }
 }

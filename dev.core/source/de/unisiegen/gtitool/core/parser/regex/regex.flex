@@ -66,6 +66,7 @@ import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 		  return Style.TOKEN;
 		case COMMENT:
 		  return Style.COMMENT;
+		case LANGUAGE:
 		default:
 		  return Style.NONE;
 	  }
@@ -101,6 +102,7 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	"["							{ return symbol(SLBRACE); }
 	"]"							{ return symbol(SRBRACE); }
 	"-"							{ return symbol(MINUS); }
+	"'"							{ return symbol(LANGUAGE, "");}
 	"(*"						{ yycommentChar = yychar; yybegin(YYCOMMENT); }
 	"#"							{ yycommentChar = yychar; yybegin(YYCOMMENTSINGLE); }
 	{WhiteSpace}				{ }

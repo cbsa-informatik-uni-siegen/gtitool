@@ -17,11 +17,9 @@ public abstract class TwoChildNode extends RegexNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param node
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getParentNodeForNode(de.unisiegen.gtitool.core.entities.regex.RegexNode)
+   * @see RegexNode#getParentNodeForNode(RegexNode)
    */
   @Override
   public RegexNode getParentNodeForNode ( RegexNode node )
@@ -90,10 +88,9 @@ public abstract class TwoChildNode extends RegexNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextUnfinishedNode()
+   * @see RegexNode#getNextUnfinishedNode()
    */
   @Override
   public UnfinishedNode getNextUnfinishedNode ()

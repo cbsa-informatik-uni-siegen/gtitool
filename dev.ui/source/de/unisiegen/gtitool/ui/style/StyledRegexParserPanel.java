@@ -42,7 +42,8 @@ public final class StyledRegexParserPanel extends
 
 
   /**
-   * Every {@link Symbol} in the {@link Word} has to be in this {@link Alphabet} .
+   * Every {@link Symbol} in the {@link Word} has to be in this {@link Alphabet}
+   * .
    */
   private DefaultRegexAlphabet alphabet = null;
 
@@ -63,15 +64,19 @@ public final class StyledRegexParserPanel extends
       {
         if ( current instanceof TokenNode )
         {
+
           if ( !this.alphabet.contains ( new DefaultSymbol (
               ( ( TokenNode ) current ).getName () ) ) )
           {
+            System.err.println ( new DefaultSymbol ( ( ( TokenNode ) current )
+                .getName () ) );
             exceptionList.add ( new ParserException ( current
                 .getParserOffset ().getStart (), current.getParserOffset ()
-                .getEnd (), Messages.getPrettyString (
-                "StyledWordParserPanel.SymbolNotInAlphabet", //$NON-NLS-1$
-                current.toPrettyString (), this.alphabet.toClassPrettyString () )
-                .toHTMLString () ) );
+                .getEnd (), Messages
+                .getPrettyString (
+                    "StyledWordParserPanel.SymbolNotInAlphabet", //$NON-NLS-1$
+                    current.toPrettyString (),
+                    this.alphabet.toClassPrettyString () ).toHTMLString () ) );
           }
         }
         if ( current instanceof CharacterClassNode )
@@ -80,12 +85,14 @@ public final class StyledRegexParserPanel extends
           {
             if ( !this.alphabet.contains ( s ) )
             {
-              exceptionList.add ( new ParserException ( s
-                  .getParserOffset ().getStart (), s.getParserOffset ()
-                  .getEnd (), Messages.getPrettyString (
-                  "StyledWordParserPanel.SymbolNotInAlphabet", //$NON-NLS-1$
-                  s.toPrettyString (), this.alphabet.toClassPrettyString () )
-                  .toHTMLString () ) );
+              exceptionList.add ( new ParserException ( s.getParserOffset ()
+                  .getStart (), s.getParserOffset ().getEnd (),
+                  Messages
+                      .getPrettyString (
+                          "StyledWordParserPanel.SymbolNotInAlphabet", //$NON-NLS-1$
+                          s.toPrettyString (),
+                          this.alphabet.toClassPrettyString () )
+                      .toHTMLString () ) );
             }
           }
         }

@@ -279,6 +279,10 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public void createTree ()
   {
+    if ( this.regex.getRegexNode ().toString ().length () == 0 )
+    {
+      return;
+    }
     this.X_SPACE = 70;
     this.Y_SPACE = 50;
 

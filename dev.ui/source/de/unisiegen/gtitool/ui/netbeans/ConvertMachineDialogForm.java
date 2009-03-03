@@ -68,7 +68,9 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTISplitPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTISplitPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTIScrollPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTISplitPaneConverted = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTIScrollPaneConverted = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        styledRegexParserPanel1 = new de.unisiegen.gtitool.ui.style.StyledRegexParserPanel();
         jGTIScrollPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableOutline = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -160,8 +162,15 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTIScrollPaneOriginal.setBorder(null);
         jGTISplitPaneGraph.setTopComponent(jGTIScrollPaneOriginal);
 
+        jGTISplitPaneConverted.setDividerLocation(200);
+        jGTISplitPaneConverted.setDividerSize(1);
+        jGTISplitPaneConverted.setResizeWeight(0.6);
+
         jGTIScrollPaneConverted.setBorder(null);
-        jGTISplitPaneGraph.setBottomComponent(jGTIScrollPaneConverted);
+        jGTISplitPaneConverted.setRightComponent(jGTIScrollPaneConverted);
+        jGTISplitPaneConverted.setLeftComponent(styledRegexParserPanel1);
+
+        jGTISplitPaneGraph.setRightComponent(jGTISplitPaneConverted);
 
         jGTISplitPaneOutline.setLeftComponent(jGTISplitPaneGraph);
 
@@ -305,6 +314,7 @@ private void jCheckBoxAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {/
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneConverted;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOutline;
+    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneConverted;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableOutline;
@@ -315,6 +325,7 @@ private void jCheckBoxAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {/
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStop;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBar jGTIToolBarMain;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
+    public de.unisiegen.gtitool.ui.style.StyledRegexParserPanel styledRegexParserPanel1;
     // End of variables declaration//GEN-END:variables
     
 }

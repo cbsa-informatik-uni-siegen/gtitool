@@ -15,7 +15,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 
 
 /**
- * TODO
+ * A representation of an unfinished node, that stands for a Language from a
+ * State s0 to a state s1 in the Convert DFA -> Regex algorithm
  */
 public class UnfinishedNode extends LeafNode
 {
@@ -26,6 +27,9 @@ public class UnfinishedNode extends LeafNode
   private static final long serialVersionUID = 7119354254164008482L;
 
 
+  /**
+   * The position
+   */
   private int position;
 
 
@@ -36,10 +40,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.LeafNode#getPosition()
+   * @see LeafNode#getPosition()
    */
   @Override
   public int getPosition ()
@@ -49,10 +52,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param p
-   * @see de.unisiegen.gtitool.core.entities.regex.LeafNode#setPosition(int)
+   * @see LeafNode#setPosition(int)
    */
   @Override
   public void setPosition ( int p )
@@ -62,10 +64,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#clone()
+   * @see RegexNode#clone()
    */
   @Override
   public RegexNode clone ()
@@ -74,45 +75,61 @@ public class UnfinishedNode extends LeafNode
   }
 
 
+  /**
+   * The name
+   */
   private String name;
 
 
+  /**
+   * 
+   */
   private State s0;
 
 
+  /**
+   * The {@link State} s1
+   */
   private State s1;
 
 
+  /**
+   * The k
+   */
   private int k;
 
 
   /**
-   * TODO
+   * Creates a new {@link UnfinishedNode}
+   * 
+   * @param s0 The {@link State} s0
+   * @param s1 The {@link State} s1
+   * @param k The k
    */
   public UnfinishedNode ( State s0, State s1, int k )
   {
     this.s0 = s0;
     this.s1 = s1;
     this.k = k;
-    this.name = "L" + s0.getName () + s1.getName () + k;
+    this.name = "L" + s0.getName () + s1.getName () + k; //$NON-NLS-1$
   }
 
+
   /**
-   * TODO
-   *
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNextUnfinishedNode()
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getNextUnfinishedNode()
    */
   @Override
   public UnfinishedNode getNextUnfinishedNode ()
   {
     return this;
   }
-  
-  
+
+
   /**
    * Returns the s0.
-   *
+   * 
    * @return The s0.
    * @see #s0
    */
@@ -120,10 +137,11 @@ public class UnfinishedNode extends LeafNode
   {
     return this.s0;
   }
-  
+
+
   /**
    * Returns the s1.
-   *
+   * 
    * @return The s1.
    * @see #s1
    */
@@ -131,10 +149,11 @@ public class UnfinishedNode extends LeafNode
   {
     return this.s1;
   }
-  
+
+
   /**
    * Returns the k.
-   *
+   * 
    * @return The k.
    * @see #k
    */
@@ -143,12 +162,11 @@ public class UnfinishedNode extends LeafNode
     return this.k;
   }
 
+
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param o
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#equals(java.lang.Object)
+   * @see RegexNode#equals(java.lang.Object)
    */
   @Override
   public boolean equals ( Object o )
@@ -178,10 +196,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getAllChildren()
+   * @see RegexNode#getAllChildren()
    */
   @Override
   public ArrayList < RegexNode > getAllChildren ()
@@ -191,10 +208,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getChildren()
+   * @see RegexNode#getChildren()
    */
   @Override
   public ArrayList < RegexNode > getChildren ()
@@ -204,10 +220,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getLeftChildrenCount()
+   * @see RegexNode#getLeftChildrenCount()
    */
   @Override
   public int getLeftChildrenCount ()
@@ -217,10 +232,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getNodeString()
+   * @see RegexNode#getNodeString()
    */
   @Override
   public PrettyString getNodeString ()
@@ -232,10 +246,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#getRightChildrenCount()
+   * @see RegexNode#getRightChildrenCount()
    */
   @Override
   public int getRightChildrenCount ()
@@ -245,10 +258,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#isInCoreSyntax()
+   * @see RegexNode#isInCoreSyntax()
    */
   @Override
   public boolean isInCoreSyntax ()
@@ -258,10 +270,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#nullable()
+   * @see RegexNode#nullable()
    */
   @Override
   public boolean nullable ()
@@ -271,11 +282,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param withCharacterClasses
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#toCoreSyntax(boolean)
+   * @see RegexNode#toCoreSyntax(boolean)
    */
   @Override
   public RegexNode toCoreSyntax (
@@ -286,9 +295,8 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
    */
   public ParserOffset getParserOffset ()
@@ -298,7 +306,7 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * The offset of this {@link TokenNode} in the source code.
+   * The offset of this {@link UnfinishedNode} in the source code.
    * 
    * @see #getParserOffset()
    * @see #setParserOffset(ParserOffset)
@@ -307,9 +315,8 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param parserOffset
    * @see de.unisiegen.gtitool.core.entities.Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
    */
   public void setParserOffset ( ParserOffset parserOffset )
@@ -343,10 +350,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
+   * @see RegexNode#toPrettyString()
    */
   public PrettyString toPrettyString ()
   {
@@ -354,28 +360,26 @@ public class UnfinishedNode extends LeafNode
     s.add ( new PrettyToken ( this.name, Style.REGEX_SYMBOL ) );
     return s;
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @return
+   * {@inheritDoc}
+   * 
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString ()
   {
-    return this.name;
+    return "'" + this.name; //$NON-NLS-1$
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param o
-   * @return
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
-  public int compareTo ( RegexNode o )
+  public int compareTo ( @SuppressWarnings ( "unused" ) RegexNode o )
   {
     return 0;
   }

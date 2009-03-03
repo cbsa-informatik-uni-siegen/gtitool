@@ -71,9 +71,19 @@ public abstract class RegexNode implements Entity < RegexNode >
   public abstract ArrayList < RegexNode > getChildren ();
 
 
+  /**
+   * Returns the next unfinished node in the {@link RegexNode}
+   * 
+   * @return The next unfinished node in the {@link RegexNode}
+   */
   public abstract UnfinishedNode getNextUnfinishedNode ();
 
-
+  /**
+   * Returns the ParentNode for the {@link RegexNode} if exists
+   * 
+   * @param node The {@link RegexNode}
+   * @return The ParentNode for the {@link RegexNode} if exists
+   */
   public abstract RegexNode getParentNodeForNode ( RegexNode node );
 
 

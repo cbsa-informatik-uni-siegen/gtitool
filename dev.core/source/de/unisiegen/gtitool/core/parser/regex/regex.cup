@@ -9,11 +9,13 @@ import de.unisiegen.gtitool.core.entities.regex.EpsilonNode;
 import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
 import de.unisiegen.gtitool.core.entities.regex.CharacterClassNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
+import de.unisiegen.gtitool.core.entities.regex.UnfinishedNode;
 import de.unisiegen.gtitool.core.entities.regex.OptionalNode;
 import de.unisiegen.gtitool.core.entities.regex.PlusNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.exceptions.ErrorHandling;
@@ -38,6 +40,7 @@ terminal 					SRBRACE;
 terminal 					MINUS;
 terminal					COMMENT;
 terminal String				SYMBOL;
+terminal					LANGUAGE;
 
 /****************
  * Non Terminal *
@@ -48,6 +51,7 @@ non terminal RegexNode		concatenation;
 non terminal RegexNode[]	simple_regex_list;
 non terminal RegexNode		simple_regex;
 non terminal char[]			char_list;
+non terminal				empty;
 
 /****************
  * Precedence *
@@ -83,6 +87,24 @@ regex							::= regex:reg1 OR:or regex:reg2
 									{:
 										RESULT = c;
 									   	RESULT.setParserOffset(new ParserOffset(cleft,cright));
+									:}
+								|	LANGUAGE:l SYMBOL:s1 SYMBOL:s1z SYMBOL:s2 SYMBOL:s2z SYMBOL:k
+									{:
+										try{
+											DefaultState state1 = new DefaultState(s1 + s1z);
+											DefaultState state2 = new DefaultState(s2 + s2z);
+											int newK = Integer.valueOf(k).intValue();
+											RESULT = new UnfinishedNode(state1, state2, newK);
+									   		RESULT.setParserOffset(new ParserOffset(lleft, kright));
+									   	} catch(NumberFormatException e){
+									   		RESULT = new ConcatenationNode(new TokenNode(l.toString()), new ConcatenationNode(new TokenNode(s1), new ConcatenationNode(new TokenNode(s1z), new ConcatenationNode(new TokenNode(s2), new ConcatenationNode(new TokenNode(s2z),new TokenNode(k))))));
+									   		RESULT.setParserOffset(new ParserOffset(lleft, kright));
+									   	}
+									:}
+								| empty:e
+									{:
+										RESULT = new TokenNode("");
+										RESULT.setParserOffset(new ParserOffset(eleft,eright));
 									:}
 								;
 simple_regex					::= simple_regex:reg STAR:star
@@ -181,3 +203,4 @@ char_list						::= char_list:cl SYMBOL:i
 										RESULT = new char[] {i.charAt(0)};
 									:}
 								;
+empty							::= {: :};

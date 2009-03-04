@@ -424,7 +424,7 @@ public class Minimizer
     this.previousSteps.push ( this.activeMinimizeItem );
 
     minimize ();
-
+    
     // Add a final step to show the new machine.
     this.previousSteps.push ( new MinimizeItem ( getGroups (), Messages
         .getPrettyString ( "MinimizeMachineDialog.FinalPrettyString" ), //$NON-NLS-1$
@@ -483,7 +483,6 @@ public class Minimizer
         }
       }
     }
-
     if ( this.newGroupStates.size () > 0 )
     {
       this.activeGroups.add ( this.newGroupStates );
@@ -551,6 +550,48 @@ public class Minimizer
     this.begin = this.previousSteps.isEmpty ();
     this.finished = false;
   }
+  
+  /**
+   * Returns the group for a given {@link State}.
+   *
+   * @param state The {@link State}
+   * 
+   * @return The group containing the {@link State}
+   */
+  private ArrayList < DefaultStateView > getGroupForState(State state)
+  {
+    for ( ArrayList < DefaultStateView > currentGroup : this.activeGroups )
+    {
+      for ( DefaultStateView current : currentGroup )
+      {
+        if (current.getState ().equals ( state ))
+        {
+          return currentGroup;
+        }
+      }
+    }
+    return null;
+  }
+  
+  /**
+   * Returns true if given {@link State} is in this group
+   *
+   * @param group The group of {@link DefaultStateView}s
+   * @param state The {@link State}
+   * 
+   * @return true if given {@link State} is in this group, else false
+   */
+  private boolean isInGroup(ArrayList < DefaultStateView > group, State state)
+  {
+    for ( DefaultStateView current : group )
+    {
+      if (current.getState ().equals ( state ))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
 
 
   /**
@@ -560,25 +601,32 @@ public class Minimizer
    */
   private void tryToSplitGroup ( ArrayList < DefaultStateView > group )
   {
+    ArrayList < DefaultStateView > targetGroup = null;
     this.transitions.clear ();
     for ( Symbol symbol : this.model.getMachine ().getAlphabet () )
     {
-      for ( DefaultStateView defaultStateView : group )
+      loop: for ( DefaultStateView defaultStateView : group )
       {
         for ( Transition transition : defaultStateView.getState ()
             .getTransitionBegin () )
         {
           if ( transition.getSymbol ().contains ( symbol ) )
           {
-            if ( !group.contains ( this.model.getStateViewForState ( transition
-                .getStateEnd () ) ) )
+            if (targetGroup == null)
             {
+              targetGroup = getGroupForState ( transition.getStateEnd () );
+              continue loop;
+            }
+            if (!isInGroup ( targetGroup, transition.getStateEnd ()))
+            {
+              this.newGroupStates.remove ( defaultStateView );
               this.newGroupStates.add ( defaultStateView );
               this.transitions.add ( transition );
             }
           }
         }
       }
+    targetGroup = null;
     }
     if ( this.newGroupStates.size () == group.size () )
     {

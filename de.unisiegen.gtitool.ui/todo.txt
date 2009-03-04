@@ -6,10 +6,6 @@ CF		- Die SVNVersion Klasse wird zur Laufzeit nicht benötigt
 CF		- About Dialog anpassen
 CF		- AbstractGrammer
 
-BM		- Die Methode Minimizer.minimize() kann in eine Endlosschleife
-		  laufen, wobei die als Abbruchkriterien benutzte Liste ihre
-		  Größe bei jedem Durchlauf verdoppelt.
-
 
 *** FEATURE ***
 

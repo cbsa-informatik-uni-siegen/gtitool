@@ -307,6 +307,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_MINIMIZE,
 
     /**
+     * The convert dfa to regex button state.
+     */
+    ENABLED_CONVERT_DFA_TO_REGEX,
+
+    /**
      * The reachable states enabled button state.
      */
     ENABLED_REACHABLE_STATES,
@@ -507,6 +512,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
     removeButtonState ( ButtonState.ENABLED_RECENTLY_USED );
     removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
     removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
     removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
     removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
@@ -1176,6 +1182,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_MINIMIZE );
       this.gui.getJMenuItemMinimize ().setEnabled ( true );
     }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
+      this.gui.getJMenuItemConvertToRegex ().setEnabled ( true );
+    }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REACHABLE_STATES ) )
         && ( !this.buttonStateList
             .contains ( ButtonState.ENABLED_REACHABLE_STATES ) ) )
@@ -1246,8 +1259,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJMenuItemEliminateLeftRecursion ().setEnabled ( true );
     }
     // left factoring
-    else if ( ( buttonState
-        .equals ( ButtonState.ENABLED_LEFT_FACTORING ) )
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_LEFT_FACTORING ) )
         && ( !this.buttonStateList
             .contains ( ButtonState.ENABLED_LEFT_FACTORING ) ) )
     {
@@ -1944,6 +1956,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( machinePanel.getMachine ().getMachineType ().equals ( MachineType.DFA ) )
     {
       addButtonState ( ButtonState.ENABLED_MINIMIZE );
+      addButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
     }
 
     removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
@@ -2336,7 +2349,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
       else if ( element.getName ().equals ( "RegexModel" ) ) //$NON-NLS-1$
       {
-        defaultModel = new DefaultRegexModel ( element,true );
+        defaultModel = new DefaultRegexModel ( element, true );
       }
       else
       {
@@ -2387,7 +2400,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
     catch ( Exception exc )
     {
-      exc.printStackTrace();
+      exc.printStackTrace ();
     }
 
     handleNew ( defaultModel );
@@ -3570,10 +3583,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               .equals ( MachineMode.EDIT_MACHINE ) )
           {
             addButtonState ( ButtonState.ENABLED_MINIMIZE );
+            addButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
           }
           else
           {
             removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+            removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
           }
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
@@ -3582,6 +3597,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
@@ -3589,6 +3605,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
@@ -3596,6 +3613,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         }
         else
         {
@@ -3762,6 +3780,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_HISTORY );
         removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
         removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
         removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
         removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
@@ -3829,6 +3848,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_HISTORY );
         removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
         removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
         removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
         removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
@@ -5215,11 +5235,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
       this.gui.getJMenuItemEliminateLeftRecursion ().setEnabled ( false );
     }
-    else if ( buttonState
-        .equals ( ButtonState.ENABLED_LEFT_FACTORING ) )
+    else if ( buttonState.equals ( ButtonState.ENABLED_LEFT_FACTORING ) )
     {
-      this.buttonStateList
-          .remove ( ButtonState.ENABLED_LEFT_FACTORING );
+      this.buttonStateList.remove ( ButtonState.ENABLED_LEFT_FACTORING );
       this.gui.getJMenuItemLeftfactoring ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_TO_CORE_SYNTAX ) )
@@ -5292,6 +5310,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_MINIMIZE );
       this.gui.getJMenuItemMinimize ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
+      this.gui.getJMenuItemConvertToRegex ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_REACHABLE_STATES ) )
     {

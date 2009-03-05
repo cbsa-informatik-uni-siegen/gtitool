@@ -60,35 +60,7 @@ public class RegexTester
       e.printStackTrace ();
     }
     
-    DisjunctionNode r = new DisjunctionNode(new TokenNode("a"), new TokenNode("b"));
-    ConcatenationNode c = new ConcatenationNode(r, new TokenNode("d"));
-    ConcatenationNode c1 = new ConcatenationNode(c, new TokenNode("f"));
-    eliminateNodeFromRegex(r,c1);
-    System.err.println (c1);
   }
   
-  private static void eliminateNodeFromRegex(RegexNode node, RegexNode regex) {
-    RegexNode parent = regex.getParentNodeForNode ( node );
-    
-    if(parent instanceof OneChildNode) {
-      eliminateNodeFromRegex ( parent, regex );
-    }
-    if(parent instanceof TwoChildNode) {
-      RegexNode r;
-      if(((TwoChildNode)parent).getRegex1 ().equals ( node )) {
-        r = ((TwoChildNode)parent).getRegex2 ();
-      } else {
-        r = ((TwoChildNode)parent).getRegex1 ();
-      }
-      RegexNode parentParent = regex.getParentNodeForNode ( parent );
-      if(parentParent instanceof TwoChildNode) {
-        TwoChildNode p = (TwoChildNode)parentParent;
-        if(p.getRegex1 ().equals ( parent )) {
-          p.setRegex1 ( r );
-        } else {
-          p.setRegex2 ( r );
-        }
-      }
-    }
-  }
+  
 }

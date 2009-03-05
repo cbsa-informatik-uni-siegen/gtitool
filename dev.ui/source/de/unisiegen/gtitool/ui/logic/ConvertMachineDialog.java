@@ -1411,7 +1411,7 @@ public final class ConvertMachineDialog implements
         }
 
         this.gui.setTitle ( Messages.getString (
-            "ConvertMachineDialog.CompleteTitle", Messages//$NON-NLS-1$
+            "ConvertMachineDialog.Title", Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.DFA" ), Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.REGEX" ) ) );//$NON-NLS-1$
         break;
@@ -3097,8 +3097,12 @@ public final class ConvertMachineDialog implements
         this.modelRegexConverted.getRegex ().setRegexNode ( newNode,
             newNode.toString () );
         PrettyString string = new PrettyString ();
-        string.add ( new PrettyToken ( "Created language: ", Style.KEYWORD ) );
-        string.add ( newNode.toPrettyString () );
+        PrettyString kString = new PrettyString ( new PrettyToken ( String
+            .valueOf ( this.k ), Style.REGEX_SYMBOL ) );
+        string.add ( Messages.getPrettyString (
+            "ConvertMachineDialog.CreateLanguage", this.start.toPrettyString () //$NON-NLS-1$
+            , this.finals.get ( this.finalsIndex ).toPrettyString (), kString,
+            newNode.toPrettyString () ) );
         addOutlineComment ( string );
       }
       else
@@ -3106,12 +3110,13 @@ public final class ConvertMachineDialog implements
         UnfinishedNode uNode = node.getNextUnfinishedNode ();
         if ( uNode != null )
         {
+          RegexNode newNode = null;
           RegexNode parentNode = node.getParentNodeForNode ( uNode );
           if ( parentNode instanceof OneChildNode )
           {
             RegexNode tmp = getLK ( uNode.getS0 (), uNode.getS1 (), uNode
                 .getK () );
-
+            newNode = tmp;
             if ( tmp != null )
             {
               ( ( OneChildNode ) parentNode ).setRegex ( tmp );
@@ -3127,6 +3132,7 @@ public final class ConvertMachineDialog implements
             TwoChildNode two = ( TwoChildNode ) parentNode;
 
             RegexNode r = getLK ( uNode.getS0 (), uNode.getS1 (), uNode.getK () );
+            newNode = r;
             if ( r != null )
             {
               if ( two.getRegex1 ().equals ( uNode ) )
@@ -3147,8 +3153,27 @@ public final class ConvertMachineDialog implements
               node.toString () );
 
           PrettyString string = new PrettyString ();
-          string.add ( new PrettyToken ( "Created language: ", Style.KEYWORD ) );
-          string.add ( uNode.toPrettyString () );
+          PrettyString kString = new PrettyString ( new PrettyToken ( String
+              .valueOf ( uNode.getK () ), Style.REGEX_SYMBOL ) );
+          if ( newNode != null )
+          {
+            string
+                .add ( Messages
+                    .getPrettyString (
+                        "ConvertMachineDialog.CreateLanguage", uNode.getS0 ().toPrettyString () //$NON-NLS-1$
+                        , uNode.getS1 ().toPrettyString (), kString, newNode
+                            .toPrettyString () ) );
+          }
+          else
+          {
+            string
+                .add ( Messages
+                    .getPrettyString (
+                        "ConvertMachineDialog.CreateLanguage", uNode.getS0 ().toPrettyString () //$NON-NLS-1$
+                        , uNode.getS1 ().toPrettyString (), kString,
+                        new PrettyString ( new PrettyToken (
+                            "\u2205", Style.KEYWORD ) ) ) ); //$NON-NLS-1$
+          }
           addOutlineComment ( string );
         }
         else
@@ -3169,8 +3194,13 @@ public final class ConvertMachineDialog implements
               newNode.toString () );
 
           PrettyString string = new PrettyString ();
-          string.add ( new PrettyToken ( "Created language: ", Style.KEYWORD ) );
-          string.add ( n.toPrettyString () );
+          if ( n != null )
+          {
+            string.add ( Messages.getPrettyString (
+                "ConvertMachineDialog.CreateDisjunction", this.finals.get ( //$NON-NLS-1$
+                    this.finalsIndex ).toPrettyString (), node
+                    .toPrettyString (), n.toPrettyString () ) );
+          }
           addOutlineComment ( string );
 
         }
@@ -3423,8 +3453,8 @@ public final class ConvertMachineDialog implements
       if ( this.modelRegexConverted.getRegex ().getRegexNode () != null )
       {
         this.modelRegexConverted.createTree ();
-        this.gui.styledRegexParserPanel1.setText ( this.modelRegexConverted.getRegex ()
-            .getRegexNode ().toPrettyString ().toString () );
+        this.gui.styledRegexParserPanel1.setText ( this.modelRegexConverted
+            .getRegex ().getRegexNode ().toPrettyString ().toString () );
       }
       else
       {

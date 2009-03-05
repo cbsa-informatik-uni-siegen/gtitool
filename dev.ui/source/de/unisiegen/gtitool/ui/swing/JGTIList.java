@@ -460,6 +460,9 @@ public final class JGTIList extends JList implements DropTargetListener
   @Override
   public int locationToIndex ( Point p )
   {
+    if(getModel ().getSize () == 0) {
+      return super.locationToIndex ( p );
+    }
     Rectangle r = getCellBounds ( 0, getModel ().getSize () - 1 );
     if ( r.contains ( p ) )
     {

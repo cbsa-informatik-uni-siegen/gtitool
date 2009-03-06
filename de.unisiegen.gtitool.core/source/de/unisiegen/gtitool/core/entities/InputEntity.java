@@ -1,8 +1,8 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import com.sun.org.apache.xerces.internal.xni.grammars.Grammar;
 
+import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.Machine;
 
 

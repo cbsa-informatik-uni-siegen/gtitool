@@ -58,7 +58,7 @@ public class RegexNodeInfoPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(20, 10, 0, 10);
         add(jGTILabelNullable, gridBagConstraints);
 
-        jGTITextAreaNullable.setColumns(20);
+        jGTITextAreaNullable.setColumns(15);
         jGTITextAreaNullable.setEditable(false);
         jGTITextAreaNullable.setRows(1);
         jScrollPaneNullable.setViewportView(jGTITextAreaNullable);
@@ -72,7 +72,7 @@ public class RegexNodeInfoPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 20, 10);
         add(jScrollPaneNullable, gridBagConstraints);
 
-        jGTITextAreaFirstpos.setColumns(20);
+        jGTITextAreaFirstpos.setColumns(15);
         jGTITextAreaFirstpos.setEditable(false);
         jGTITextAreaFirstpos.setRows(2);
         jScrollPaneFirstpos.setViewportView(jGTITextAreaFirstpos);
@@ -105,7 +105,7 @@ public class RegexNodeInfoPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         add(jGTILabelLastpos, gridBagConstraints);
 
-        jGTITextAreaLastpos.setColumns(20);
+        jGTITextAreaLastpos.setColumns(15);
         jGTITextAreaLastpos.setEditable(false);
         jGTITextAreaLastpos.setRows(2);
         jScrollPaneLastpos.setViewportView(jGTITextAreaLastpos);
@@ -120,7 +120,7 @@ public class RegexNodeInfoPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 20, 10);
         add(jScrollPaneLastpos, gridBagConstraints);
 
-        jGTITextAreaFollowpos.setColumns(20);
+        jGTITextAreaFollowpos.setColumns(15);
         jGTITextAreaFollowpos.setEditable(false);
         jGTITextAreaFollowpos.setRows(2);
         jScrollPaneFollowpos.setViewportView(jGTITextAreaFollowpos);

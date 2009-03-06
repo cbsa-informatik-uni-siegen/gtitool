@@ -1,7 +1,11 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,6 +16,7 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import org.jgraph.graph.DefaultGraphModel;
 
@@ -66,9 +71,11 @@ import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
-import de.unisiegen.gtitool.ui.netbeans.AlgorithmWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.swing.JGTIScrollPane;
+import de.unisiegen.gtitool.ui.swing.JGTITextPane;
+import de.unisiegen.gtitool.ui.utils.AlgorithmDocument;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 import de.unisiegen.gtitool.ui.utils.PowerSet;
 
@@ -727,7 +734,7 @@ public final class ConvertMachineDialog implements
   /**
    * The algorithm window
    */
-  private AlgorithmWindowForm algorithmWindow;
+  private JFrame algorithmWindow;
 
 
   /**
@@ -1420,7 +1427,8 @@ public final class ConvertMachineDialog implements
 
     if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
     {
-
+      this.gui.styledRegexParserPanel.setVisible ( false );
+      this.gui.jGTISplitPaneConverted.setDividerSize ( 0 );
       this.jGTIGraphConverted = this.modelConverted.getJGTIGraph ();
       this.machineConverted = this.modelConverted.getMachine ();
       this.jGTIGraphConverted.setEnabled ( false );
@@ -1765,8 +1773,35 @@ public final class ConvertMachineDialog implements
   {
     if ( this.algorithmWindow == null )
     {
-      this.algorithmWindow = new AlgorithmWindowForm ( this.parent, false,
-          this.algorithm, this.gui.jCheckBoxAlgorithm );
+      this.algorithmWindow = new JFrame (  );
+      java.awt.GridBagConstraints gridBagConstraints;
+
+      JGTIScrollPane jScrollPaneAlgorithm = new JGTIScrollPane();
+      JGTITextPane jGTITextPaneAlgorithm = new JGTITextPane();
+
+      this.algorithmWindow.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
+      this.algorithmWindow.setTitle(Messages.getString ( "AlgorithmWindow.Title")); //$NON-NLS-1$
+      this.algorithmWindow.setAlwaysOnTop(true);
+      this.algorithmWindow.getContentPane().setLayout(new GridBagLayout());
+
+      jGTITextPaneAlgorithm.setEditable(false);
+
+      jGTITextPaneAlgorithm.setDocument ( new AlgorithmDocument () );
+      jGTITextPaneAlgorithm.setText ( this.algorithm );
+      jGTITextPaneAlgorithm.setHighlighter ( null );
+      jScrollPaneAlgorithm.setViewportView(jGTITextPaneAlgorithm);
+
+      gridBagConstraints = new GridBagConstraints();
+      gridBagConstraints.gridx = 0;
+      gridBagConstraints.gridy = 0;
+      gridBagConstraints.fill = GridBagConstraints.BOTH;
+      gridBagConstraints.weightx = 1.0;
+      gridBagConstraints.weighty = 1.0;
+      gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+      this.algorithmWindow.getContentPane().add(jScrollPaneAlgorithm, gridBagConstraints);
+
+      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+      this.algorithmWindow.setBounds((screenSize.width-533)/2, (screenSize.height-330)/2, 533, 330);
     }
     this.gui.setModal ( false );
     this.algorithmWindow.setVisible ( show );
@@ -3453,12 +3488,12 @@ public final class ConvertMachineDialog implements
       if ( this.modelRegexConverted.getRegex ().getRegexNode () != null )
       {
         this.modelRegexConverted.createTree ();
-        this.gui.styledRegexParserPanel1.setText ( this.modelRegexConverted
+        this.gui.styledRegexParserPanel.setText ( this.modelRegexConverted
             .getRegex ().getRegexNode ().toPrettyString ().toString () );
       }
       else
       {
-        this.gui.styledRegexParserPanel1.setText ( "" ); //$NON-NLS-1$
+        this.gui.styledRegexParserPanel.setText ( "" ); //$NON-NLS-1$
       }
     }
   }

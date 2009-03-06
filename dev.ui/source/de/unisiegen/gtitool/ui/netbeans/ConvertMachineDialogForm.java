@@ -70,13 +70,14 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTIScrollPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTISplitPaneConverted = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTIScrollPaneConverted = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        styledRegexParserPanel1 = new de.unisiegen.gtitool.ui.style.StyledRegexParserPanel();
+        styledRegexParserPanel = new de.unisiegen.gtitool.ui.style.StyledRegexParserPanel();
         jGTIScrollPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableOutline = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIPanelPrintAndAlgorithm = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIToggleButtonAlgorithm = new de.unisiegen.gtitool.ui.swing.JGTIToggleButton();
         jGTIButtonPrint = new de.unisiegen.gtitool.ui.swing.JGTIButton();
-        jCheckBoxAlgorithm = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
@@ -168,7 +169,10 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
 
         jGTIScrollPaneConverted.setBorder(null);
         jGTISplitPaneConverted.setRightComponent(jGTIScrollPaneConverted);
-        jGTISplitPaneConverted.setLeftComponent(styledRegexParserPanel1);
+
+        styledRegexParserPanel.setAlphabet(null);
+        styledRegexParserPanel.setEditable(false);
+        jGTISplitPaneConverted.setLeftComponent(styledRegexParserPanel);
 
         jGTISplitPaneGraph.setRightComponent(jGTISplitPaneConverted);
 
@@ -221,6 +225,19 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
+        jGTIToggleButtonAlgorithm.setText(bundle.getString("AlgorithmWindow.ShowAlgorithm")); // NOI18N
+        jGTIToggleButtonAlgorithm.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jGTIToggleButtonAlgorithmItemStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        jGTIPanelPrintAndAlgorithm.add(jGTIToggleButtonAlgorithm, gridBagConstraints);
+
         jGTIButtonPrint.setText(bundle.getString("PrintDialog.Print")); // NOI18N
         jGTIButtonPrint.setToolTipText(bundle.getString("PrintDialog.PrintToolTip")); // NOI18N
         jGTIButtonPrint.addActionListener(new java.awt.event.ActionListener() {
@@ -230,30 +247,17 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
-        getContentPane().add(jGTIButtonPrint, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        jGTIPanelPrintAndAlgorithm.add(jGTIButtonPrint, gridBagConstraints);
 
-        jCheckBoxAlgorithm.setText(bundle.getString("AlgorithmWindow.ShowAlgorithm")); // NOI18N
-        jCheckBoxAlgorithm.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jCheckBoxAlgorithmStateChanged(evt);
-            }
-        });
-        jCheckBoxAlgorithm.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jCheckBoxAlgorithmItemStateChanged(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
-        getContentPane().add(jCheckBoxAlgorithm, gridBagConstraints);
+        getContentPane().add(jGTIPanelPrintAndAlgorithm, gridBagConstraints);
 
         setSize(new java.awt.Dimension(960, 600));
     }// </editor-fold>//GEN-END:initComponents
@@ -298,19 +302,15 @@ private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//G
     this.logic.handlePrint();
 }//GEN-LAST:event_jGTIButtonPrintActionPerformed
 
-private void jCheckBoxAlgorithmStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxAlgorithmStateChanged
-    
-}//GEN-LAST:event_jCheckBoxAlgorithmStateChanged
-
-private void jCheckBoxAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxAlgorithmItemStateChanged
-    this.logic.handleAlgorithmWindowChanged(this.jCheckBoxAlgorithm.isSelected());
-}//GEN-LAST:event_jCheckBoxAlgorithmItemStateChanged
+private void jGTIToggleButtonAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToggleButtonAlgorithmItemStateChanged
+    this.logic.handleAlgorithmWindowChanged(this.jGTIToggleButtonAlgorithm.isSelected());
+}//GEN-LAST:event_jGTIToggleButtonAlgorithmItemStateChanged
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JCheckBox jCheckBoxAlgorithm;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrint;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPrintAndAlgorithm;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneConverted;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOutline;
@@ -318,6 +318,7 @@ private void jCheckBoxAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {/
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableOutline;
+    public de.unisiegen.gtitool.ui.swing.JGTIToggleButton jGTIToggleButtonAlgorithm;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonBeginStep;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonEndStep;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonNextStep;
@@ -325,7 +326,7 @@ private void jCheckBoxAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {/
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStop;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBar jGTIToolBarMain;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
-    public de.unisiegen.gtitool.ui.style.StyledRegexParserPanel styledRegexParserPanel1;
+    public de.unisiegen.gtitool.ui.style.StyledRegexParserPanel styledRegexParserPanel;
     // End of variables declaration//GEN-END:variables
     
 }

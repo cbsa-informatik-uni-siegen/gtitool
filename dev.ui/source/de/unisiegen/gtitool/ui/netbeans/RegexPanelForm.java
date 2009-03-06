@@ -67,8 +67,9 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         jGTIScrollPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTILabelGraph = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIPanelInfo = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        regexNodeInfoPanel = new de.unisiegen.gtitool.ui.netbeans.RegexNodeInfoPanel();
         jGTILabelInfo = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTIScrollPaneNodeInfo = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        regexNodeInfoPanel = new de.unisiegen.gtitool.ui.netbeans.RegexNodeInfoPanel();
         jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
         jGTIScrollPaneErrors = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
@@ -144,14 +145,6 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
 
         jGTISplitPaneRegex.setLeftComponent(jGTIPanelGraph);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jGTIPanelInfo.add(regexNodeInfoPanel, gridBagConstraints);
-
         jGTILabelInfo.setText(bundle.getString("RegexPanel.InformationTitle")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -160,6 +153,18 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         jGTIPanelInfo.add(jGTILabelInfo, gridBagConstraints);
+
+        jGTIScrollPaneNodeInfo.setBorder(null);
+        jGTIScrollPaneNodeInfo.setViewportView(regexNodeInfoPanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
+        jGTIPanelInfo.add(jGTIScrollPaneNodeInfo, gridBagConstraints);
 
         jGTISplitPaneRegex.setRightComponent(jGTIPanelInfo);
 
@@ -257,6 +262,7 @@ private void jGTITableWarnings1FocusLost(java.awt.event.FocusEvent evt) {//GEN-F
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelRegexControl;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneErrors;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneGraph;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneNodeInfo;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneWarnings;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneConsole;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneRegex;

@@ -1,7 +1,11 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,6 +20,7 @@ import java.util.TreeSet;
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
@@ -66,11 +71,13 @@ import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
-import de.unisiegen.gtitool.ui.netbeans.AlgorithmWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
+import de.unisiegen.gtitool.ui.swing.JGTIScrollPane;
+import de.unisiegen.gtitool.ui.swing.JGTITextPane;
+import de.unisiegen.gtitool.ui.utils.AlgorithmDocument;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 import de.unisiegen.gtitool.ui.utils.XGrid;
 
@@ -971,8 +978,8 @@ public class ConvertRegexToMachineDialog implements
     {
       try
       {
-        BufferedReader reader = new BufferedReader ( new InputStreamReader ( getClass ()
-            .getResourceAsStream (
+        BufferedReader reader = new BufferedReader ( new InputStreamReader (
+            getClass ().getResourceAsStream (
                 "/de/unisiegen/gtitool/ui/algorithms/regex_to_nfa" ), "UTF8" ) );//$NON-NLS-1$//$NON-NLS-2$
 
         this.algorithm = ""; //$NON-NLS-1$
@@ -1012,8 +1019,8 @@ public class ConvertRegexToMachineDialog implements
     {
       try
       {
-        BufferedReader reader = new BufferedReader ( new InputStreamReader ( getClass ()
-            .getResourceAsStream (
+        BufferedReader reader = new BufferedReader ( new InputStreamReader (
+            getClass ().getResourceAsStream (
                 "/de/unisiegen/gtitool/ui/algorithms/regex_to_dfa" ), "UTF8" ) );//$NON-NLS-1$//$NON-NLS-2$
 
         this.algorithm = ""; //$NON-NLS-1$
@@ -1338,7 +1345,7 @@ public class ConvertRegexToMachineDialog implements
   /**
    * The algorithm window
    */
-  private AlgorithmWindowForm algorithmWindow;
+  private JFrame algorithmWindow;
 
 
   /**
@@ -1356,8 +1363,39 @@ public class ConvertRegexToMachineDialog implements
   {
     if ( this.algorithmWindow == null )
     {
-      this.algorithmWindow = new AlgorithmWindowForm ( this.parent, false,
-          this.algorithm, this.gui.jCheckBoxAlgorithm );
+      this.algorithmWindow = new JFrame ();
+      java.awt.GridBagConstraints gridBagConstraints;
+
+      JGTIScrollPane jScrollPaneAlgorithm = new JGTIScrollPane ();
+      JGTITextPane jGTITextPaneAlgorithm = new JGTITextPane ();
+
+      this.algorithmWindow
+          .setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
+      this.algorithmWindow.setTitle ( Messages
+          .getString ( "AlgorithmWindow.Title" ) ); //$NON-NLS-1$
+      this.algorithmWindow.setAlwaysOnTop ( true );
+      this.algorithmWindow.getContentPane ().setLayout ( new GridBagLayout () );
+
+      jGTITextPaneAlgorithm.setEditable ( false );
+
+      jGTITextPaneAlgorithm.setDocument ( new AlgorithmDocument () );
+      jGTITextPaneAlgorithm.setText ( this.algorithm );
+      jGTITextPaneAlgorithm.setHighlighter ( null );
+      jScrollPaneAlgorithm.setViewportView ( jGTITextPaneAlgorithm );
+
+      gridBagConstraints = new GridBagConstraints ();
+      gridBagConstraints.gridx = 0;
+      gridBagConstraints.gridy = 0;
+      gridBagConstraints.fill = GridBagConstraints.BOTH;
+      gridBagConstraints.weightx = 1.0;
+      gridBagConstraints.weighty = 1.0;
+      gridBagConstraints.insets = new java.awt.Insets ( 5, 5, 5, 5 );
+      this.algorithmWindow.getContentPane ().add ( jScrollPaneAlgorithm,
+          gridBagConstraints );
+
+      Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize ();
+      this.algorithmWindow.setBounds ( ( screenSize.width - 533 ) / 2,
+          ( screenSize.height - 330 ) / 2, 533, 330 );
     }
     this.gui.setModal ( false );
     this.algorithmWindow.setVisible ( show );

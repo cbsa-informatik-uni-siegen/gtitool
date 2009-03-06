@@ -6,28 +6,29 @@
 
 package de.unisiegen.gtitool.ui.netbeans;
 
-import javax.swing.JCheckBox;
+import de.unisiegen.gtitool.ui.swing.JGTIToggleButton;
 
 import de.unisiegen.gtitool.ui.utils.AlgorithmDocument;
+import javax.swing.JFrame;
 
 /**
  *
  * @author  simon
  */
 @SuppressWarnings("all")
-public class AlgorithmWindowForm extends javax.swing.JDialog {
+public class AlgorithmWindowForm extends JFrame {
 
-    private JCheckBox checkBox;
+    private JGTIToggleButton toggleButton;
     
     /** Creates new form AlgorithmWindowForm */
-    public AlgorithmWindowForm(java.awt.Frame parent, boolean modal, String algorithm, JCheckBox checkBox) {
-        super(parent, modal);
+    public AlgorithmWindowForm(java.awt.Frame parent, boolean modal, String algorithm, JGTIToggleButton toggleButton) {
+        super();
         initComponents();
 
         this.jGTITextPaneAlgorithm.setDocument ( new AlgorithmDocument() );
         this.jGTITextPaneAlgorithm.setText(algorithm);
         this.jGTITextPaneAlgorithm.setHighlighter (null);
-        this.checkBox = checkBox;
+        this.toggleButton = toggleButton;
     }
 
     /** This method is called from within the constructor to
@@ -43,6 +44,7 @@ public class AlgorithmWindowForm extends javax.swing.JDialog {
         jScrollPaneAlgorithm = new javax.swing.JScrollPane();
         jGTITextPaneAlgorithm = new de.unisiegen.gtitool.ui.swing.JGTITextPane();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("AlgorithmWindow.Title")); // NOI18N
         setAlwaysOnTop(true);
@@ -57,6 +59,7 @@ public class AlgorithmWindowForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(jScrollPaneAlgorithm, gridBagConstraints);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();

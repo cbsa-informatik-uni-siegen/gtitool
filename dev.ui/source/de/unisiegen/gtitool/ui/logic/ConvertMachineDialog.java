@@ -1037,16 +1037,34 @@ public final class ConvertMachineDialog implements
     ArrayList < Symbol > activeSymbolsOriginal = new ArrayList < Symbol > ();
     ArrayList < Symbol > activeSymbolsConverted = new ArrayList < Symbol > ();
 
-    if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
+    for ( State current : this.machineOriginal.getState () )
     {
-      for ( State current : this.machineOriginal.getState () )
+      if ( current.isActive () )
       {
-        if ( current.isActive () )
+        activeStatesOriginal.add ( current );
+      }
+    }
+    for ( Transition current : this.machineOriginal.getTransition () )
+    {
+      if ( current.isActive () )
+      {
+        activeTransitionsOriginal.add ( current );
+      }
+    }
+    for ( Transition currentTransition : this.machineOriginal
+        .getTransition () )
+    {
+      for ( Symbol currentSymbol : currentTransition )
+      {
+        if ( currentSymbol.isActive () )
         {
-          activeStatesOriginal.add ( current );
+          activeSymbolsOriginal.add ( currentSymbol );
         }
       }
+    }
 
+    if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
+    {
       for ( State current : this.machineConverted.getState () )
       {
         if ( current.isActive () )
@@ -1054,29 +1072,11 @@ public final class ConvertMachineDialog implements
           activeStatesConverted.add ( current );
         }
       }
-      for ( Transition current : this.machineOriginal.getTransition () )
-      {
-        if ( current.isActive () )
-        {
-          activeTransitionsOriginal.add ( current );
-        }
-      }
       for ( Transition current : this.machineConverted.getTransition () )
       {
         if ( current.isActive () )
         {
           activeTransitionsConverted.add ( current );
-        }
-      }
-      for ( Transition currentTransition : this.machineOriginal
-          .getTransition () )
-      {
-        for ( Symbol currentSymbol : currentTransition )
-        {
-          if ( currentSymbol.isActive () )
-          {
-            activeSymbolsOriginal.add ( currentSymbol );
-          }
         }
       }
       for ( Transition currentTransition : this.machineConverted
@@ -1667,6 +1667,9 @@ public final class ConvertMachineDialog implements
       if ( t.getStateBegin ().equals ( s0 ) && t.getStateEnd ().equals ( s1 ) )
       {
         l1.addAll ( t.getSymbol () );
+        for(Symbol s: t.getSymbol ()) {
+          s.setActive ( true );
+        }
       }
     }
     return createDisjunction ( l1 );
@@ -1773,35 +1776,39 @@ public final class ConvertMachineDialog implements
   {
     if ( this.algorithmWindow == null )
     {
-      this.algorithmWindow = new JFrame (  );
+      this.algorithmWindow = new JFrame ();
       java.awt.GridBagConstraints gridBagConstraints;
 
-      JGTIScrollPane jScrollPaneAlgorithm = new JGTIScrollPane();
-      JGTITextPane jGTITextPaneAlgorithm = new JGTITextPane();
+      JGTIScrollPane jScrollPaneAlgorithm = new JGTIScrollPane ();
+      JGTITextPane jGTITextPaneAlgorithm = new JGTITextPane ();
 
-      this.algorithmWindow.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
-      this.algorithmWindow.setTitle(Messages.getString ( "AlgorithmWindow.Title")); //$NON-NLS-1$
-      this.algorithmWindow.setAlwaysOnTop(true);
-      this.algorithmWindow.getContentPane().setLayout(new GridBagLayout());
+      this.algorithmWindow
+          .setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
+      this.algorithmWindow.setTitle ( Messages
+          .getString ( "AlgorithmWindow.Title" ) ); //$NON-NLS-1$
+      this.algorithmWindow.setAlwaysOnTop ( true );
+      this.algorithmWindow.getContentPane ().setLayout ( new GridBagLayout () );
 
-      jGTITextPaneAlgorithm.setEditable(false);
+      jGTITextPaneAlgorithm.setEditable ( false );
 
       jGTITextPaneAlgorithm.setDocument ( new AlgorithmDocument () );
       jGTITextPaneAlgorithm.setText ( this.algorithm );
       jGTITextPaneAlgorithm.setHighlighter ( null );
-      jScrollPaneAlgorithm.setViewportView(jGTITextPaneAlgorithm);
+      jScrollPaneAlgorithm.setViewportView ( jGTITextPaneAlgorithm );
 
-      gridBagConstraints = new GridBagConstraints();
+      gridBagConstraints = new GridBagConstraints ();
       gridBagConstraints.gridx = 0;
       gridBagConstraints.gridy = 0;
       gridBagConstraints.fill = GridBagConstraints.BOTH;
       gridBagConstraints.weightx = 1.0;
       gridBagConstraints.weighty = 1.0;
-      gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-      this.algorithmWindow.getContentPane().add(jScrollPaneAlgorithm, gridBagConstraints);
+      gridBagConstraints.insets = new java.awt.Insets ( 5, 5, 5, 5 );
+      this.algorithmWindow.getContentPane ().add ( jScrollPaneAlgorithm,
+          gridBagConstraints );
 
-      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-      this.algorithmWindow.setBounds((screenSize.width-533)/2, (screenSize.height-330)/2, 533, 330);
+      Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize ();
+      this.algorithmWindow.setBounds ( ( screenSize.width - 533 ) / 2,
+          ( screenSize.height - 330 ) / 2, 533, 330 );
     }
     this.gui.setModal ( false );
     this.algorithmWindow.setVisible ( show );
@@ -3112,6 +3119,10 @@ public final class ConvertMachineDialog implements
     }
     else if ( this.step.equals ( Step.CALCULATE_NEW_LANGUAGE ) )
     {
+      clearStateHighlightOriginal ();
+      clearTransitionHighlightOriginal ();
+      clearSymbolHighlightOriginal ();
+
       RegexNode node = this.modelRegexConverted.getRegex ().getRegexNode ();
       if ( node == null )
       {
@@ -3127,8 +3138,11 @@ public final class ConvertMachineDialog implements
             this.finals.add ( s );
           }
         }
-        RegexNode newNode = getLK ( this.start, this.finals
-            .get ( this.finalsIndex ), this.k );
+        State finState = this.finals.get ( this.finalsIndex );
+        RegexNode newNode = getLK ( this.start, finState, this.k );
+        this.start.setActive ( true );
+        finState.setActive ( true );
+        
         this.modelRegexConverted.getRegex ().setRegexNode ( newNode,
             newNode.toString () );
         PrettyString string = new PrettyString ();
@@ -3136,8 +3150,7 @@ public final class ConvertMachineDialog implements
             .valueOf ( this.k ), Style.REGEX_SYMBOL ) );
         string.add ( Messages.getPrettyString (
             "ConvertMachineDialog.CreateLanguage", this.start.toPrettyString () //$NON-NLS-1$
-            , this.finals.get ( this.finalsIndex ).toPrettyString (), kString,
-            newNode.toPrettyString () ) );
+            , finState.toPrettyString (), kString, newNode.toPrettyString () ) );
         addOutlineComment ( string );
       }
       else
@@ -3187,6 +3200,17 @@ public final class ConvertMachineDialog implements
           this.modelRegexConverted.getRegex ().setRegexNode ( node,
               node.toString () );
 
+          uNode.getS0 ().setActive ( true );
+          uNode.getS1 ().setActive ( true );
+          for ( Transition t : this.machineOriginal.getTransition () )
+          {
+            if ( t.getStateBegin ().equals ( uNode.getS0 () )
+                && t.getStateEnd ().equals ( uNode.getS1 () ) )
+            {
+              t.setActive ( true );
+            }
+          }
+
           PrettyString string = new PrettyString ();
           PrettyString kString = new PrettyString ( new PrettyToken ( String
               .valueOf ( uNode.getK () ), Style.REGEX_SYMBOL ) );
@@ -3231,6 +3255,8 @@ public final class ConvertMachineDialog implements
           PrettyString string = new PrettyString ();
           if ( n != null )
           {
+            this.start.setActive ( true );
+            this.finals.get ( this.finalsIndex ).setActive ( true );
             string.add ( Messages.getPrettyString (
                 "ConvertMachineDialog.CreateDisjunction", this.finals.get ( //$NON-NLS-1$
                     this.finalsIndex ).toPrettyString (), node
@@ -3475,8 +3501,6 @@ public final class ConvertMachineDialog implements
    */
   private final void updateGraph ()
   {
-    this.modelOriginal.getGraphModel ().cellsChanged (
-        DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
     this.modelConverted.getGraphModel ().cellsChanged (
         DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
     if ( this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
@@ -3496,5 +3520,7 @@ public final class ConvertMachineDialog implements
         this.gui.styledRegexParserPanel.setText ( "" ); //$NON-NLS-1$
       }
     }
+    this.modelOriginal.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
   }
 }

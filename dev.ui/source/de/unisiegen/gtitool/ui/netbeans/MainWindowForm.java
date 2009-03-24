@@ -1175,6 +1175,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemToCoreSyntax = new javax.swing.JMenuItem();
         jMenuItemEliminateLeftRecursion = new javax.swing.JMenuItem();
         jMenuItemLeftfactoring = new javax.swing.JMenuItem();
+        jMenuItemCreateRDP = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
@@ -1916,6 +1917,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuExecute.add(jMenuItemLeftfactoring);
 
+        jMenuItemCreateRDP.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CreateRDPMnemonic").charAt(0));
+        jMenuItemCreateRDP.setText(bundle.getString("MainWindow.CreateRDP")); // NOI18N
+        jMenuItemCreateRDP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCreateRDPActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemCreateRDP);
+
         jMenuBarMain.add(jMenuExecute);
 
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
@@ -2259,6 +2269,10 @@ private void jMenuItemLeftfactoringActionPerformed(java.awt.event.ActionEvent ev
 private void jMenuItemConvertToRegexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToRegexActionPerformed
     this.logic.handleConvertTo ( RegexType.REGEX );
 }//GEN-LAST:event_jMenuItemConvertToRegexActionPerformed
+
+private void jMenuItemCreateRDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCreateRDPActionPerformed
+    this.logic.handleCreateRDP();
+}//GEN-LAST:event_jMenuItemCreateRDPActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2314,6 +2328,7 @@ private void jMenuItemConvertToRegexActionPerformed(java.awt.event.ActionEvent e
     private javax.swing.JMenuItem jMenuItemConvertToNFA;
     private javax.swing.JMenuItem jMenuItemConvertToPDA;
     private javax.swing.JMenuItem jMenuItemConvertToRegex;
+    private javax.swing.JMenuItem jMenuItemCreateRDP;
     private javax.swing.JMenuItem jMenuItemDFA;
     private javax.swing.JMenuItem jMenuItemENFA;
     private javax.swing.JMenuItem jMenuItemEditMachine;

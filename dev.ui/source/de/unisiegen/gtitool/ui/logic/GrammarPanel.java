@@ -510,8 +510,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * 
    * @param event The {@link FocusEvent}.
    */
-  public final void handleConsoleTableFocusLost ( @SuppressWarnings ( "unused" )
-  FocusEvent event )
+  public final void handleConsoleTableFocusLost (
+      @SuppressWarnings ( "unused" ) FocusEvent event )
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
@@ -525,8 +525,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * @param event The {@link MouseEvent}.
    */
   public final void handleConsoleTableMouseExited (
-      @SuppressWarnings ( "unused" )
-      MouseEvent event )
+      @SuppressWarnings ( "unused" ) MouseEvent event )
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
@@ -656,7 +655,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   {
     ConvertGrammarDialog converter = new ConvertGrammarDialog (
         this.mainWindowForm, this );
-    converter.convert (true);
+    converter.convert ( true );
   }
 
 
@@ -667,7 +666,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   {
     ConvertGrammarDialog converter = new ConvertGrammarDialog (
         this.mainWindowForm, this );
-    converter.convert (false);
+    converter.convert ( false );
   }
 
 
@@ -693,6 +692,66 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     {
       handleDeleteProduction ();
     }
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param g
+   * @return The string of the RDP
+   */
+  private String createRDP ( Grammar g )
+  {
+    StringBuilder result = new StringBuilder ();
+    boolean first = true;
+    for ( NonterminalSymbol A : g.getNonterminalSymbolSet () )
+    {
+      if ( !first )
+      {
+        result.append ( "\n\n" ); //$NON-NLS-1$
+      }
+      else
+      {
+        first = false;
+      }
+      result.append ( "void " ); //$NON-NLS-1$
+      result.append ( A );
+      result.append ( "() {\n" ); //$NON-NLS-1$
+      for ( Production p : g.getProductionForNonTerminal ( A ) )
+      {
+        result.append ( "   case:{\n" ); //$NON-NLS-1$
+        for ( ProductionWordMember m : p.getProductionWord () )
+        {
+          if ( m instanceof NonterminalSymbol )
+          {
+            result.append ( "      " ); //$NON-NLS-1$
+            result.append ( m );
+            result.append ( "();\n" ); //$NON-NLS-1$
+          }
+          else if ( m instanceof TerminalSymbol )
+          {
+            result.append ( "      match(\"" ); //$NON-NLS-1$
+            result.append ( m );
+            result.append ( "\");\n" ); //$NON-NLS-1$
+          }
+        }
+        result.append ( "   }\n" ); //$NON-NLS-1$
+      }
+      result.append ( "}" ); //$NON-NLS-1$
+    }
+    return result.toString ();
+  }
+
+
+  /**
+   * TODO
+   */
+  public final void handleCreateRDP ()
+  {
+    TextWindow w = new TextWindow ( this.mainWindowForm,
+        createRDP ( this.grammar ), false );
+    w.show ();
   }
 
 
@@ -1177,8 +1236,9 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * @param rows The {@link JGTITableModelRows}.
    * @param targetIndex The target index.
    */
-  protected final void moveRows ( @SuppressWarnings ( "unused" )
-  JGTITable jGTITable, JGTITableModelRows rows, int targetIndex )
+  protected final void moveRows (
+      @SuppressWarnings ( "unused" ) JGTITable jGTITable,
+      JGTITableModelRows rows, int targetIndex )
   {
     ArrayList < Production > oldProductions = new ArrayList < Production > ();
     oldProductions.addAll ( this.grammar.getProduction () );

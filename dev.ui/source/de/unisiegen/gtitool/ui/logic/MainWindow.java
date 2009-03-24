@@ -1753,6 +1753,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
+   * Handle the create RDP button clicked
+   */
+  public final void handleCreateRDP ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      gp.handleCreateRDP ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
    * Uses the active {@link EditorPanel} as draft for a new file.
    * 
    * @param grammarType The type of the new file.

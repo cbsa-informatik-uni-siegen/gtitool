@@ -29,7 +29,7 @@ public class AlgorithmDocument extends DefaultStyledDocument
    * The keywords that should be highlighted
    */
   private String [] keyWords = new String []
-  { "if", "else", "end", "for", "do", "begin", "while", "then" }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+  { "if", "else", "end", "for", "do", "begin", "while", "then", "case", "void", "match" }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
 
 
   /**

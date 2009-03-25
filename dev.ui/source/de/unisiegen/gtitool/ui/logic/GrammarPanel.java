@@ -43,6 +43,7 @@ import de.unisiegen.gtitool.ui.convert.ConvertRegularGrammar;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.i18n.Messages;
+import de.unisiegen.gtitool.ui.logic.ConvertGrammarDialog.ConvertGrammarType;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
@@ -655,7 +656,23 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   {
     ConvertGrammarDialog converter = new ConvertGrammarDialog (
         this.mainWindowForm, this );
-    converter.convert ( true );
+    converter.convert ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION );
+  }
+  
+  /**
+   * Opens {@link ConvertGrammarDialog} for elimination of entity productions
+   */
+  public final void handleEliminateEntityProductions () {
+    //TODO
+  }
+  
+  /**
+   * Opens {@link ConvertGrammarDialog} for elimination of epsilon productions
+   * TODO
+   *
+   */
+  public final void handleEliminateEpsilonProductions() {
+    //TODO
   }
 
 
@@ -666,7 +683,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   {
     ConvertGrammarDialog converter = new ConvertGrammarDialog (
         this.mainWindowForm, this );
-    converter.convert ( false );
+    converter.convert ( ConvertGrammarType.LEFT_FACTORING );
   }
 
 
@@ -750,7 +767,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   public final void handleCreateRDP ()
   {
     TextWindow w = new TextWindow ( this.mainWindowForm,
-        createRDP ( this.grammar ), false );
+        createRDP ( this.grammar ), false, null );
     w.show ();
   }
 

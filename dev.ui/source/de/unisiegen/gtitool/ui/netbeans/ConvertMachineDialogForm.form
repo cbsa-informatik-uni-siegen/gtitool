@@ -288,7 +288,7 @@
         <Component class="de.unisiegen.gtitool.ui.swing.JGTIToggleButton" name="jGTIToggleButtonAlgorithm">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AlgorithmWindow.ShowAlgorithm" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="TextWindow.ShowAlgorithm" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
           <Events>

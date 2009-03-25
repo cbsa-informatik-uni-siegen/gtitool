@@ -6,6 +6,9 @@
 
 package de.unisiegen.gtitool.ui.netbeans;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+
 import de.unisiegen.gtitool.ui.logic.TextWindow;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 import de.unisiegen.gtitool.ui.utils.AlgorithmDocument;
@@ -20,14 +23,24 @@ public class TextForm extends javax.swing.JDialog implements GUIClass < TextWind
     private TextWindow logic;
     
     /** Creates new form TextForm */
-    public TextForm(TextWindow logic, boolean modal, String title) {
-        super(logic.getMainWindowForm(),title, modal);
+    public TextForm(JDialog parent, TextWindow logic, boolean modal, String title) {
+        super(parent,title, modal);
         this.logic = logic;
         initComponents();
         this.jGTITextPaneAlgorithm.setDocument(new AlgorithmDocument());
         this.jGTITextPaneAlgorithm.setText(this.logic.getText());
         pack();
     }
+    
+    /** Creates new form TextForm */
+    public TextForm(JFrame parent, TextWindow logic, boolean modal, String title) {
+      super(parent,title, modal);
+      this.logic = logic;
+      initComponents();
+      this.jGTITextPaneAlgorithm.setDocument(new AlgorithmDocument());
+      this.jGTITextPaneAlgorithm.setText(this.logic.getText());
+      pack();
+  }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -45,6 +58,11 @@ public class TextForm extends javax.swing.JDialog implements GUIClass < TextWind
         jGTIButtonPrint = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jGTITextPaneAlgorithm.setEditable(false);
@@ -97,6 +115,10 @@ private void jGTIButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GE
 private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonPrintActionPerformed
     this.logic.handlePrint();
 }//GEN-LAST:event_jGTIButtonPrintActionPerformed
+
+private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+    this.logic.handleGUIClosed();
+}//GEN-LAST:event_formWindowClosed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

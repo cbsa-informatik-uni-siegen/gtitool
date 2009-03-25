@@ -214,7 +214,7 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
-        jGTIToggleButtonAlgorithm.setText(bundle.getString("AlgorithmWindow.ShowAlgorithm")); // NOI18N
+        jGTIToggleButtonAlgorithm.setText(bundle.getString("TextWindow.ShowAlgorithm")); // NOI18N
         jGTIToggleButtonAlgorithm.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToggleButtonAlgorithmItemStateChanged(evt);

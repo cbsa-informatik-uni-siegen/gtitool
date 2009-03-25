@@ -1,11 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,7 +12,6 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
 import org.jgraph.graph.DefaultGraphModel;
 
@@ -73,11 +68,9 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
-import de.unisiegen.gtitool.ui.swing.JGTIScrollPane;
-import de.unisiegen.gtitool.ui.swing.JGTITextPane;
-import de.unisiegen.gtitool.ui.utils.AlgorithmDocument;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 import de.unisiegen.gtitool.ui.utils.PowerSet;
+import de.unisiegen.gtitool.ui.utils.TextLoader;
 
 
 /**
@@ -728,13 +721,13 @@ public final class ConvertMachineDialog implements
   /**
    * The algorithm
    */
-  private String algorithm = ""; //$NON-NLS-1$
+  private String algorithm;
 
 
   /**
    * The algorithm window
    */
-  private JFrame algorithmWindow;
+  private TextWindow algorithmWindow;
 
 
   /**
@@ -1051,8 +1044,7 @@ public final class ConvertMachineDialog implements
         activeTransitionsOriginal.add ( current );
       }
     }
-    for ( Transition currentTransition : this.machineOriginal
-        .getTransition () )
+    for ( Transition currentTransition : this.machineOriginal.getTransition () )
     {
       for ( Symbol currentSymbol : currentTransition )
       {
@@ -1667,7 +1659,8 @@ public final class ConvertMachineDialog implements
       if ( t.getStateBegin ().equals ( s0 ) && t.getStateEnd ().equals ( s1 ) )
       {
         l1.addAll ( t.getSymbol () );
-        for(Symbol s: t.getSymbol ()) {
+        for ( Symbol s : t.getSymbol () )
+        {
           s.setActive ( true );
         }
       }
@@ -1774,44 +1767,25 @@ public final class ConvertMachineDialog implements
    */
   public final void handleAlgorithmWindowChanged ( boolean show )
   {
+    if ( this.algorithm == null || this.algorithm.length () == 0 )
+    {
+      TextLoader loader = new TextLoader();
+      this.algorithm = loader.loadAlgorithm ( this.convertMachineType );
+    }
+
     if ( this.algorithmWindow == null )
     {
-      this.algorithmWindow = new JFrame ();
-      java.awt.GridBagConstraints gridBagConstraints;
-
-      JGTIScrollPane jScrollPaneAlgorithm = new JGTIScrollPane ();
-      JGTITextPane jGTITextPaneAlgorithm = new JGTITextPane ();
-
-      this.algorithmWindow
-          .setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
-      this.algorithmWindow.setTitle ( Messages
-          .getString ( "AlgorithmWindow.Title" ) ); //$NON-NLS-1$
-      this.algorithmWindow.setAlwaysOnTop ( true );
-      this.algorithmWindow.getContentPane ().setLayout ( new GridBagLayout () );
-
-      jGTITextPaneAlgorithm.setEditable ( false );
-
-      jGTITextPaneAlgorithm.setDocument ( new AlgorithmDocument () );
-      jGTITextPaneAlgorithm.setText ( this.algorithm );
-      jGTITextPaneAlgorithm.setHighlighter ( null );
-      jScrollPaneAlgorithm.setViewportView ( jGTITextPaneAlgorithm );
-
-      gridBagConstraints = new GridBagConstraints ();
-      gridBagConstraints.gridx = 0;
-      gridBagConstraints.gridy = 0;
-      gridBagConstraints.fill = GridBagConstraints.BOTH;
-      gridBagConstraints.weightx = 1.0;
-      gridBagConstraints.weighty = 1.0;
-      gridBagConstraints.insets = new java.awt.Insets ( 5, 5, 5, 5 );
-      this.algorithmWindow.getContentPane ().add ( jScrollPaneAlgorithm,
-          gridBagConstraints );
-
-      Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize ();
-      this.algorithmWindow.setBounds ( ( screenSize.width - 533 ) / 2,
-          ( screenSize.height - 330 ) / 2, 533, 330 );
+      this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
+          this.gui.jGTIToggleButtonAlgorithm );
     }
-    this.gui.setModal ( false );
-    this.algorithmWindow.setVisible ( show );
+    if ( show )
+    {
+      this.algorithmWindow.show ();
+    }
+    else
+    {
+      this.algorithmWindow.dispose ();
+    }
   }
 
 
@@ -3142,7 +3116,7 @@ public final class ConvertMachineDialog implements
         RegexNode newNode = getLK ( this.start, finState, this.k );
         this.start.setActive ( true );
         finState.setActive ( true );
-        
+
         this.modelRegexConverted.getRegex ().setRegexNode ( newNode,
             newNode.toString () );
         PrettyString string = new PrettyString ();

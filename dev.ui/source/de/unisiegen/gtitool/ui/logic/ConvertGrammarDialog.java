@@ -28,6 +28,7 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -50,6 +51,7 @@ import de.unisiegen.gtitool.ui.swing.JGTIList;
 import de.unisiegen.gtitool.ui.swing.JGTITable;
 import de.unisiegen.gtitool.ui.swing.dnd.JGTIListModelRows;
 import de.unisiegen.gtitool.ui.swing.dnd.JGTIListTransferHandler;
+import de.unisiegen.gtitool.ui.utils.TextLoader;
 
 
 /**
@@ -197,6 +199,33 @@ public class ConvertGrammarDialog implements
 
 
   /**
+   * The Type of the conversion of the {@link Grammar}
+   */
+  public enum ConvertGrammarType
+  {
+    /**
+     * The eliminate left recursion type
+     */
+    ELIMINATE_LEFT_RECURSION,
+
+    /**
+     * The left factoring type
+     */
+    LEFT_FACTORING,
+
+    /**
+     * The eliminate entity productions type
+     */
+    ELIMINATE_ENTITY_PRODUCTIONS,
+
+    /**
+     * The eliminate epsilon productions type
+     */
+    ELIMINATE_EPSILON_PRODUCTIONS;
+  }
+
+
+  /**
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger
@@ -267,12 +296,6 @@ public class ConvertGrammarDialog implements
    * The variable j in the algorithm
    */
   private int j = 1;
-
-
-  /**
-   * Flag indicates if leftRecursion should be eliminated
-   */
-  private boolean leftRecursion;
 
 
   /**
@@ -432,28 +455,37 @@ public class ConvertGrammarDialog implements
 
 
   /**
-   * Eliminates the left recursion
-   * 
-   * @param leftRec Indicates if leftRecursion should be eliminated
+   * The {@link ConvertGrammarType}
    */
-  public void convert ( boolean leftRec )
+  private ConvertGrammarType convertType;
+
+
+  /**
+   * Opens the convert dialog
+   * 
+   * @param convertGrammarType The {@link ConvertGrammarType}
+   */
+  public void convert ( ConvertGrammarType convertGrammarType )
   {
-    this.leftRecursion = leftRec;
+    this.convertType = convertGrammarType;
     this.gui = new ConvertGrammarDialogForm ( this, this.parent );
-    if ( this.leftRecursion )
+    if ( this.convertType.equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
     {
       this.gui.setTitle ( Messages
           .getString ( "ConvertGrammarDialog.TitleEliminate" ) ); //$NON-NLS-1$
     }
-    else
+    else if ( this.convertType.equals ( ConvertGrammarType.LEFT_FACTORING ) )
     {
       this.gui.setTitle ( Messages
           .getString ( "ConvertGrammarDialog.TitleFactoring" ) ); //$NON-NLS-1$
     }
     this.gui.styledNonterminalSymbolSetParserPanelConverted
-        .setVisible ( !this.leftRecursion );
-    this.gui.jScrollPaneNonterminalsConverted.setVisible ( this.leftRecursion );
-    this.gui.jGTIPanelPreferences.setVisible ( this.leftRecursion );
+        .setVisible ( !this.convertType
+            .equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) );
+    this.gui.jScrollPaneNonterminalsConverted.setVisible ( this.convertType
+        .equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) );
+    this.gui.jGTIPanelPreferences.setVisible ( this.convertType
+        .equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) );
 
     this.convertMachineTableModel = new ConvertMachineTableModel ();
     this.gui.jGTITableOutline.setModel ( this.convertMachineTableModel );
@@ -475,7 +507,7 @@ public class ConvertGrammarDialog implements
         .setColumnModel ( this.grammarColumnModelConverted );
     this.gui.jGTITableGrammarConverted.getTableHeader ().setReorderingAllowed (
         false );
-    if ( this.leftRecursion )
+    if ( this.convertType.equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
     {
       this.gui.jGTIListNonterminalsConverted
           .setDndMode ( JGTIList.DROP_BETWEEN );
@@ -519,8 +551,8 @@ public class ConvertGrammarDialog implements
            * 
            * @see de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener#modifyStatusChanged(boolean)
            */
-          public void modifyStatusChanged ( @SuppressWarnings ( "unused" )
-          boolean modified )
+          public void modifyStatusChanged (
+              @SuppressWarnings ( "unused" ) boolean modified )
           {
             updateConverted ();
           }
@@ -1055,6 +1087,47 @@ public class ConvertGrammarDialog implements
 
 
   /**
+   * The algorithm window
+   */
+  private TextWindow algorithmWindow;
+
+
+  /**
+   * The algorithm
+   */
+  private String algorithm;
+
+
+  /**
+   * Shows or dispose the Algorithm window
+   * 
+   * @param show Show or dispose
+   */
+  public void handleAlgorithmWindowChanged ( boolean show )
+  {
+    if ( this.algorithm == null || this.algorithm.length () == 0 )
+    {
+      TextLoader loader = new TextLoader ();
+      this.algorithm = loader.loadAlgorithm ( this.convertType );
+    }
+
+    if ( this.algorithmWindow == null )
+    {
+      this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
+          this.gui.jGTIToggleButtonAlgorithm );
+    }
+    if ( show )
+    {
+      this.algorithmWindow.show ();
+    }
+    else
+    {
+      this.algorithmWindow.dispose ();
+    }
+  }
+
+
+  /**
    * Handles the action on the ok button.
    */
   public void handleOk ()
@@ -1159,8 +1232,9 @@ public class ConvertGrammarDialog implements
    * @param rows The rows to move
    * @param targetIndex The new index
    */
-  protected void moveNonterminals ( @SuppressWarnings ( "unused" )
-  JGTIList list, JGTIListModelRows rows, int targetIndex )
+  protected void moveNonterminals (
+      @SuppressWarnings ( "unused" ) JGTIList list, JGTIListModelRows rows,
+      int targetIndex )
   {
     ArrayList < NonterminalSymbol > oldNonterminals = new ArrayList < NonterminalSymbol > ();
     for ( int n = 0 ; n < this.nonterminals.getSize () ; n++ )
@@ -1213,7 +1287,7 @@ public class ConvertGrammarDialog implements
   private final void performNextStep ()
   {
     CFG oldCFG = cloneConverted ();
-    if ( this.leftRecursion )
+    if ( this.convertType.equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
     {
       DefaultListModel oldNonterminalModel = new DefaultListModel ();
       for ( int n = 0 ; n < this.nonterminals.size () ; n++ )
@@ -1406,7 +1480,7 @@ public class ConvertGrammarDialog implements
         .setColumnModel ( this.grammarColumnModelConverted );
     this.gui.jGTITableGrammarConverted.getTableHeader ().setReorderingAllowed (
         false );
-    if ( this.leftRecursion )
+    if ( this.convertType.equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
     {
       this.i = item.getINow ();
       this.j = item.getJNow ();
@@ -1507,7 +1581,8 @@ public class ConvertGrammarDialog implements
    */
   protected void updateConverted ()
   {
-    if ( !this.leftRecursion )
+    if ( !this.convertType
+        .equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
     {
       this.gui.styledNonterminalSymbolSetParserPanelConverted
           .setText ( this.modelConverted.getGrammar ()

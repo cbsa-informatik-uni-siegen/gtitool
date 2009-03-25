@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Window;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -15,6 +18,7 @@ import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.TextForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.swing.JGTIToggleButton;
 
 
 /**
@@ -36,29 +40,48 @@ public class TextWindow implements LogicClass < TextForm >
 
 
   /**
-   * The {@link MainWindowForm}
+   * The parent {@link Window}
    */
-  private MainWindowForm mainWindowForm;
+  private Window parent;
+
+
+  /**
+   * The {@link JGTIToggleButton}
+   */
+  private JGTIToggleButton toggleButton;
 
 
   /**
    * Creates a new TextWindow
    * 
-   * @param mainWindowForm The {@link MainWindowForm}
+   * @param parent The paren {@link Window}
    * @param text The text to display
    * @param algorithm True if an algorithm should be shown
+   * @param toggleButton The toggle button
    */
-  public TextWindow ( MainWindowForm mainWindowForm, String text,
-      boolean algorithm )
+  public TextWindow ( Window parent, String text, boolean algorithm,
+      JGTIToggleButton toggleButton )
   {
-    this.mainWindowForm = mainWindowForm;
+    this.parent = parent;
     this.text = text;
+    this.toggleButton = toggleButton;
     String title = Messages.getString ( "TextWindow.TitleAlgorithm" ); //$NON-NLS-1$
     if ( !algorithm )
     {
       title = Messages.getString ( "TextWindow.TitleRDP" ); //$NON-NLS-1$
     }
-    this.gui = new TextForm ( this, true, title );
+    if ( this.parent instanceof JDialog )
+    {
+      this.gui = new TextForm ( ( JDialog ) parent, this, !algorithm, title );
+    }
+    else if ( this.parent instanceof JFrame )
+    {
+      this.gui = new TextForm ( ( JFrame ) parent, this, !algorithm, title );
+    }
+    else
+    {
+      throw new IllegalArgumentException ( "unsupported window" ); //$NON-NLS-1$
+    }
   }
 
 
@@ -67,7 +90,7 @@ public class TextWindow implements LogicClass < TextForm >
    */
   public void show ()
   {
-    this.gui.setLocationRelativeTo ( this.mainWindowForm );
+    this.gui.setLocationRelativeTo ( this.parent );
     this.gui.setVisible ( true );
   }
 
@@ -80,6 +103,27 @@ public class TextWindow implements LogicClass < TextForm >
   public TextForm getGUI ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Dispose the {@link MainWindowForm}
+   */
+  public void dispose ()
+  {
+    this.gui.dispose ();
+  }
+
+
+  /**
+   * Handles the GUI closed event
+   */
+  public void handleGUIClosed ()
+  {
+    if ( this.toggleButton != null )
+    {
+      this.toggleButton.setSelected ( false );
+    }
   }
 
 
@@ -109,7 +153,7 @@ public class TextWindow implements LogicClass < TextForm >
       @Override
       public String getDescription ()
       {
-        return Messages.getString ( "TextWindow.FileDescription"); //$NON-NLS-1$
+        return Messages.getString ( "TextWindow.FileDescription" ); //$NON-NLS-1$
       }
     };
 
@@ -125,10 +169,9 @@ public class TextWindow implements LogicClass < TextForm >
 
     if ( saveDialog.getSelectedFile ().exists () )
     {
-      ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
-          Messages.getString (
-              "MachinePanel.FileExists", saveDialog.getSelectedFile () //$NON-NLS-1$
-                  .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
+      ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui, Messages
+          .getString ( "MachinePanel.FileExists", saveDialog.getSelectedFile () //$NON-NLS-1$
+              .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
           true, false, true, false, false );
       confirmDialog.show ();
       if ( confirmDialog.isNotConfirmed () )
@@ -180,19 +223,7 @@ public class TextWindow implements LogicClass < TextForm >
    */
   public void handlePrint ()
   {
-    //TODO
-  }
-
-
-  /**
-   * Returns the mainWindowForm.
-   * 
-   * @return The mainWindowForm.
-   * @see #mainWindowForm
-   */
-  public MainWindowForm getMainWindowForm ()
-  {
-    return this.mainWindowForm;
+    // TODO
   }
 
 

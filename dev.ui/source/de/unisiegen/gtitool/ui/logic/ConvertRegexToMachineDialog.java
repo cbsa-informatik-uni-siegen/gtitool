@@ -1,15 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +12,6 @@ import java.util.TreeSet;
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
@@ -43,6 +34,7 @@ import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
 import de.unisiegen.gtitool.core.entities.regex.EpsilonNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
+import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
@@ -75,10 +67,8 @@ import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
-import de.unisiegen.gtitool.ui.swing.JGTIScrollPane;
-import de.unisiegen.gtitool.ui.swing.JGTITextPane;
-import de.unisiegen.gtitool.ui.utils.AlgorithmDocument;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
+import de.unisiegen.gtitool.ui.utils.TextLoader;
 import de.unisiegen.gtitool.ui.utils.XGrid;
 
 
@@ -711,6 +701,23 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * The type of the conversation of the {@link Regex}
+   */
+  public enum ConvertRegexType
+  {
+    /**
+     * The regex to dfa type
+     */
+    REGEX_TO_DFA,
+
+    /**
+     * The regex to nfa type
+     */
+    REGEX_TO_ENFA;
+  }
+
+
+  /**
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger
@@ -958,6 +965,10 @@ public class ConvertRegexToMachineDialog implements
     }
   }
 
+  /**
+   * The {@link ConvertRegexType}
+   */
+  private ConvertRegexType convertType;
 
   /**
    * {@inheritDoc}
@@ -976,33 +987,7 @@ public class ConvertRegexToMachineDialog implements
     this.defaultRegex = this.panel.getRegex ().clone ();
     if ( this.entityType.equals ( MachineType.ENFA ) )
     {
-      try
-      {
-        BufferedReader reader = new BufferedReader ( new InputStreamReader (
-            getClass ().getResourceAsStream (
-                "/de/unisiegen/gtitool/ui/algorithms/regex_to_nfa" ), "UTF8" ) );//$NON-NLS-1$//$NON-NLS-2$
-
-        this.algorithm = ""; //$NON-NLS-1$
-        String input;
-        boolean first = true;
-        while ( ( input = reader.readLine () ) != null )
-        {
-          if ( !first )
-          {
-            this.algorithm += "\n";//$NON-NLS-1$
-          }
-          first = false;
-          this.algorithm += input;
-        }
-      }
-      catch ( UnsupportedEncodingException exc )
-      {
-        exc.printStackTrace ();
-      }
-      catch ( IOException exc )
-      {
-        exc.printStackTrace ();
-      }
+      this.convertType = ConvertRegexType.REGEX_TO_ENFA;
       this.defaultRegex.setRegexNode ( this.defaultRegex.getRegexNode ()
           .toCoreSyntax ( false ).clone (), this.defaultRegex.getRegexNode ()
           .toCoreSyntax ( false ).toString () );
@@ -1017,34 +1002,7 @@ public class ConvertRegexToMachineDialog implements
     }
     else if ( this.entityType.equals ( MachineType.DFA ) )
     {
-      try
-      {
-        BufferedReader reader = new BufferedReader ( new InputStreamReader (
-            getClass ().getResourceAsStream (
-                "/de/unisiegen/gtitool/ui/algorithms/regex_to_dfa" ), "UTF8" ) );//$NON-NLS-1$//$NON-NLS-2$
-
-        this.algorithm = ""; //$NON-NLS-1$
-        String input;
-        boolean first = true;
-        while ( ( input = reader.readLine () ) != null )
-        {
-          if ( !first )
-          {
-            this.algorithm += "\n";//$NON-NLS-1$
-          }
-          first = false;
-          this.algorithm += input;
-        }
-      }
-      catch ( UnsupportedEncodingException exc )
-      {
-        exc.printStackTrace ();
-      }
-      catch ( IOException exc )
-      {
-        exc.printStackTrace ();
-      }
-
+      this.convertType = ConvertRegexType.REGEX_TO_DFA;
       this.modelConverted = new DefaultMachineModel ( new DefaultDFA ( a, a,
           false ) );
       this.positionStates = new ArrayList < DefaultPositionState > ();
@@ -1075,6 +1033,7 @@ public class ConvertRegexToMachineDialog implements
     {
       throw new RuntimeException ( "unsupported convert to Type" ); //$NON-NLS-1$
     }
+
     this.modelOriginal = new DefaultRegexModel ( this.defaultRegex, false );
     this.modelOriginal.initializeGraph ();
     this.modelOriginal.createTree ();
@@ -1345,13 +1304,13 @@ public class ConvertRegexToMachineDialog implements
   /**
    * The algorithm window
    */
-  private JFrame algorithmWindow;
+  private TextWindow algorithmWindow;
 
 
   /**
    * The algorithm
    */
-  private String algorithm = ""; //$NON-NLS-1$
+  private String algorithm;
 
 
   /**
@@ -1361,44 +1320,25 @@ public class ConvertRegexToMachineDialog implements
    */
   public final void handleAlgorithmWindowChanged ( boolean show )
   {
+    if(this.algorithm == null || this.algorithm.length () == 0) {
+      TextLoader loader = new TextLoader();
+      this.algorithm = loader.loadAlgorithm ( this.convertType );
+    }
+    
     if ( this.algorithmWindow == null )
     {
-      this.algorithmWindow = new JFrame ();
-      java.awt.GridBagConstraints gridBagConstraints;
-
-      JGTIScrollPane jScrollPaneAlgorithm = new JGTIScrollPane ();
-      JGTITextPane jGTITextPaneAlgorithm = new JGTITextPane ();
-
-      this.algorithmWindow
-          .setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
-      this.algorithmWindow.setTitle ( Messages
-          .getString ( "AlgorithmWindow.Title" ) ); //$NON-NLS-1$
-      this.algorithmWindow.setAlwaysOnTop ( true );
-      this.algorithmWindow.getContentPane ().setLayout ( new GridBagLayout () );
-
-      jGTITextPaneAlgorithm.setEditable ( false );
-
-      jGTITextPaneAlgorithm.setDocument ( new AlgorithmDocument () );
-      jGTITextPaneAlgorithm.setText ( this.algorithm );
-      jGTITextPaneAlgorithm.setHighlighter ( null );
-      jScrollPaneAlgorithm.setViewportView ( jGTITextPaneAlgorithm );
-
-      gridBagConstraints = new GridBagConstraints ();
-      gridBagConstraints.gridx = 0;
-      gridBagConstraints.gridy = 0;
-      gridBagConstraints.fill = GridBagConstraints.BOTH;
-      gridBagConstraints.weightx = 1.0;
-      gridBagConstraints.weighty = 1.0;
-      gridBagConstraints.insets = new java.awt.Insets ( 5, 5, 5, 5 );
-      this.algorithmWindow.getContentPane ().add ( jScrollPaneAlgorithm,
-          gridBagConstraints );
-
-      Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize ();
-      this.algorithmWindow.setBounds ( ( screenSize.width - 533 ) / 2,
-          ( screenSize.height - 330 ) / 2, 533, 330 );
+      this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
+          this.gui.jGTIToggleButtonAlgorithm );
     }
-    this.gui.setModal ( false );
-    this.algorithmWindow.setVisible ( show );
+
+    if ( show )
+    {
+      this.algorithmWindow.show ();
+    }
+    else
+    {
+      this.algorithmWindow.dispose ();
+    }
   }
 
 

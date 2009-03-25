@@ -337,6 +337,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_TO_LATEX,
 
     /**
+     * The createRDP button state
+     */
+    ENABLED_CREATE_RDP,
+
+    /**
      * The toCoreSyntax button state.
      */
     ENABLED_TO_CORE_SYNTAX,
@@ -526,6 +531,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
     removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
     removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+    removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -1265,6 +1271,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_LEFT_FACTORING );
       this.gui.getJMenuItemLeftfactoring ().setEnabled ( true );
+    }
+    // left factoring
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CREATE_RDP ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CREATE_RDP ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CREATE_RDP );
+      this.gui.getJMenuItemCreateRDP ().setEnabled ( true );
     }
     // regex info view
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
@@ -3591,6 +3604,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
         removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+        removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
@@ -3761,12 +3775,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
           removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
           removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+          removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
         {
           addButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
           addButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+          addButtonState ( ButtonState.ENABLED_CREATE_RDP );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
         }
@@ -3877,6 +3893,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
         removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+        removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
 
         if ( regexPanel.isUndoAble () )
         {
@@ -5258,6 +5275,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_LEFT_FACTORING );
       this.gui.getJMenuItemLeftfactoring ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CREATE_RDP ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CREATE_RDP );
+      this.gui.getJMenuItemCreateRDP ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_TO_CORE_SYNTAX ) )
     {

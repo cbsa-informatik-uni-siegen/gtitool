@@ -1072,6 +1072,20 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
       return this.jMenuItemConvertToRegex;
     }
 
+    
+    
+    /**
+     * Returns the jMenuItemCreateRDP.
+     *
+     * @return The jMenuItemCreateRDP.
+     * @see #jMenuItemCreateRDP
+     */
+    public JMenuItem getJMenuItemCreateRDP() {
+        return jMenuItemCreateRDP;
+    }
+    
+    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

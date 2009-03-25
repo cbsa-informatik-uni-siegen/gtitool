@@ -352,6 +352,16 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_ELIMINATE_LEFT_RECURSION,
 
     /**
+     * The eliminate entity productions button state
+     */
+    ENABLED_ELIMINATE_ENTITY_PRODUCTIONS,
+
+    /**
+     * The eliminate epsilon productions button state
+     */
+    ENABLED_ELIMINATE_EPSILON_PRODUCTIONS,
+
+    /**
      * The left factoring button state
      */
     ENABLED_LEFT_FACTORING,
@@ -530,6 +540,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_TO_LATEX );
     removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
     removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+    removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+    removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
     removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
     removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
 
@@ -1264,6 +1276,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
       this.gui.getJMenuItemEliminateLeftRecursion ().setEnabled ( true );
     }
+    // eliminate entity productions
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS ) ) )
+    {
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+      this.gui.getJMenuItemEliminateEntityProductions ().setEnabled ( true );
+    }
+    // eliminate epsilon productions
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS ) ) )
+    {
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+      this.gui.getJMenuItemEliminateEpsilonProductions ().setEnabled ( true );
+    }
     // left factoring
     else if ( ( buttonState.equals ( ButtonState.ENABLED_LEFT_FACTORING ) )
         && ( !this.buttonStateList
@@ -1272,7 +1304,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_LEFT_FACTORING );
       this.gui.getJMenuItemLeftfactoring ().setEnabled ( true );
     }
-    // left factoring
+    // create rdp
     else if ( ( buttonState.equals ( ButtonState.ENABLED_CREATE_RDP ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CREATE_RDP ) ) )
     {
@@ -3603,6 +3635,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_TO_LATEX );
         removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
         removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
@@ -3774,6 +3808,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
           removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+          removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+          removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
           removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
           removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         }
@@ -3781,6 +3817,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             GrammarType.CFG ) )
         {
           addButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+          addButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+          addButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
           addButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
           addButtonState ( ButtonState.ENABLED_CREATE_RDP );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
@@ -3892,6 +3930,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
         removeButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
         removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
 
@@ -4004,6 +4044,34 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( panel instanceof GrammarPanel )
     {
       ( ( GrammarPanel ) panel ).handleLeftFactoring ();
+    }
+  }
+
+
+  /**
+   * Handles elimination of left recursion in cfg.
+   */
+  public final void handleEliminateEntityProductions ()
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      ( ( GrammarPanel ) panel ).handleEliminateEntityProductions ();
+    }
+  }
+
+
+  /**
+   * Handles elimination of left recursion in cfg.
+   */
+  public final void handleEliminateEpsilonProductions ()
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      ( ( GrammarPanel ) panel ).handleEliminateEpsilonProductions ();
     }
   }
 
@@ -5270,6 +5338,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList
           .remove ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
       this.gui.getJMenuItemEliminateLeftRecursion ().setEnabled ( false );
+    }
+    else if ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+      this.gui.getJMenuItemEliminateEntityProductions ().setEnabled ( false );
+    }
+    else if ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+      this.gui.getJMenuItemEliminateEpsilonProductions ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_LEFT_FACTORING ) )
     {

@@ -5,3 +5,4 @@ SM		- Algorithmen anzeigen können
 SM		- Drucken: Mehrere Komponenten pro Seite mit Auto-Verkleinerung, also
 		  nur mit einem Print-Job
 SM		- Recursive descent parser bauen können
+SM		- Position der Textfenster merken

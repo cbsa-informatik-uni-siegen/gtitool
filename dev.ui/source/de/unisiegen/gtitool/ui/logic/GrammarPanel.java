@@ -658,21 +658,27 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         this.mainWindowForm, this );
     converter.convert ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION );
   }
-  
+
+
   /**
    * Opens {@link ConvertGrammarDialog} for elimination of entity productions
    */
-  public final void handleEliminateEntityProductions () {
-    //TODO
+  public final void handleEliminateEntityProductions ()
+  {
+    ConvertGrammarDialog converter = new ConvertGrammarDialog (
+        this.mainWindowForm, this );
+    converter.convert ( ConvertGrammarType.ELIMINATE_ENTITY_PRODUCTIONS );
   }
-  
+
+
   /**
    * Opens {@link ConvertGrammarDialog} for elimination of epsilon productions
-   * TODO
-   *
    */
-  public final void handleEliminateEpsilonProductions() {
-    //TODO
+  public final void handleEliminateEpsilonProductions ()
+  {
+    ConvertGrammarDialog converter = new ConvertGrammarDialog (
+        this.mainWindowForm, this );
+    converter.convert ( ConvertGrammarType.ELIMINATE_EPSILON_PRODUCTIONS );
   }
 
 

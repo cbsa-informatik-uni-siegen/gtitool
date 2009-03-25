@@ -1083,7 +1083,26 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     public JMenuItem getJMenuItemCreateRDP() {
         return jMenuItemCreateRDP;
     }
-    
+
+    /**
+     * Returns the jMenuItemEliminateEntityProductions.
+     *
+     * @return The jMenuItemEliminateEntityProductions.
+     * @see #jMenuItemEliminateEntityProductions
+     */
+    public JMenuItem getJMenuItemEliminateEntityProductions() {
+        return jMenuItemEliminateEntityProductions;
+    }
+
+    /**
+     * Returns the jMenuItemEliminateEpsilonProductions.
+     *
+     * @return The jMenuItemEliminateEpsilonProductions.
+     * @see #jMenuItemEliminateEpsilonProductions
+     */
+    public JMenuItem getJMenuItemEliminateEpsilonProductions() {
+        return jMenuItemEliminateEpsilonProductions;
+    }
     
 
     /** This method is called from within the constructor to
@@ -1188,6 +1207,8 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemMinimize = new javax.swing.JMenuItem();
         jMenuItemToCoreSyntax = new javax.swing.JMenuItem();
         jMenuItemEliminateLeftRecursion = new javax.swing.JMenuItem();
+        jMenuItemEliminateEntityProductions = new javax.swing.JMenuItem();
+        jMenuItemEliminateEpsilonProductions = new javax.swing.JMenuItem();
         jMenuItemLeftfactoring = new javax.swing.JMenuItem();
         jMenuItemCreateRDP = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
@@ -1922,6 +1943,24 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuExecute.add(jMenuItemEliminateLeftRecursion);
 
+        jMenuItemEliminateEntityProductions.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EliminateEntityProductionsMnemonic").charAt(0));
+        jMenuItemEliminateEntityProductions.setText(bundle.getString("MainWindow.EliminateEntityProductions")); // NOI18N
+        jMenuItemEliminateEntityProductions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEliminateEntityProductionsActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemEliminateEntityProductions);
+
+        jMenuItemEliminateEpsilonProductions.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EliminateEpsilonProductionsMnemonic").charAt(0));
+        jMenuItemEliminateEpsilonProductions.setText(bundle.getString("MainWindow.EliminateEpsilonProductions")); // NOI18N
+        jMenuItemEliminateEpsilonProductions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEliminateEpsilonProductionsActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemEliminateEpsilonProductions);
+
         jMenuItemLeftfactoring.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LeftFactoringMnemonic").charAt(0));
         jMenuItemLeftfactoring.setText(bundle.getString("MainWindow.LeftFactoring")); // NOI18N
         jMenuItemLeftfactoring.addActionListener(new java.awt.event.ActionListener() {
@@ -2287,6 +2326,14 @@ private void jMenuItemConvertToRegexActionPerformed(java.awt.event.ActionEvent e
 private void jMenuItemCreateRDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCreateRDPActionPerformed
     this.logic.handleCreateRDP();
 }//GEN-LAST:event_jMenuItemCreateRDPActionPerformed
+
+private void jMenuItemEliminateEntityProductionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminateEntityProductionsActionPerformed
+    this.logic.handleEliminateEntityProductions();
+}//GEN-LAST:event_jMenuItemEliminateEntityProductionsActionPerformed
+
+private void jMenuItemEliminateEpsilonProductionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminateEpsilonProductionsActionPerformed
+    this.logic.handleEliminateEpsilonProductions();
+}//GEN-LAST:event_jMenuItemEliminateEpsilonProductionsActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2346,6 +2393,8 @@ private void jMenuItemCreateRDPActionPerformed(java.awt.event.ActionEvent evt) {
     private javax.swing.JMenuItem jMenuItemDFA;
     private javax.swing.JMenuItem jMenuItemENFA;
     private javax.swing.JMenuItem jMenuItemEditMachine;
+    private javax.swing.JMenuItem jMenuItemEliminateEntityProductions;
+    private javax.swing.JMenuItem jMenuItemEliminateEpsilonProductions;
     private javax.swing.JMenuItem jMenuItemEliminateLeftRecursion;
     private javax.swing.JMenuItem jMenuItemEnterWord;
     private javax.swing.JMenuItem jMenuItemExchange;

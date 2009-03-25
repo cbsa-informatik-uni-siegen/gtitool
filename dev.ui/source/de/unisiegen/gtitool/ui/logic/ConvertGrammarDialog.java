@@ -131,6 +131,9 @@ public class ConvertGrammarDialog implements
     private DefaultListModel oldNonterminalModel;
 
 
+    private Production addedEpsilonProduction;
+
+
     /**
      * Allocates a new {@link StepItem}.
      * 
@@ -138,14 +141,28 @@ public class ConvertGrammarDialog implements
      * @param oldNonterminalModel The current nonterminals
      * @param i The current i
      * @param j The current j
+     * @param addedEpsilonProduction The added epsilon {@link Production}
      */
     public StepItem ( CFG oldCFG, DefaultListModel oldNonterminalModel, int i,
-        int j )
+        int j, Production addedEpsilonProduction )
     {
       this.oldCFG = oldCFG;
       this.oldNonterminalModel = oldNonterminalModel;
       this.iNow = i;
       this.jNow = j;
+      this.addedEpsilonProduction = addedEpsilonProduction;
+    }
+
+
+    /**
+     * Returns the addedEpsilonProduction.
+     * 
+     * @return The addedEpsilonProduction.
+     * @see #addedEpsilonProduction
+     */
+    public Production getAddedEpsilonProduction ()
+    {
+      return this.addedEpsilonProduction;
     }
 
 
@@ -472,12 +489,31 @@ public class ConvertGrammarDialog implements
     if ( this.convertType.equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
     {
       this.gui.setTitle ( Messages
-          .getString ( "ConvertGrammarDialog.TitleEliminate" ) ); //$NON-NLS-1$
+          .getString ( "ConvertGrammarDialog.TitleEliminateLeftRecursion" ) ); //$NON-NLS-1$
     }
     else if ( this.convertType.equals ( ConvertGrammarType.LEFT_FACTORING ) )
     {
       this.gui.setTitle ( Messages
           .getString ( "ConvertGrammarDialog.TitleFactoring" ) ); //$NON-NLS-1$
+    }
+    else if ( this.convertType
+        .equals ( ConvertGrammarType.ELIMINATE_ENTITY_PRODUCTIONS ) )
+    {
+      this.gui
+          .setTitle ( Messages
+              .getString ( "ConvertGrammarDialog.TitleEliminateEntityProductions" ) ); //$NON-NLS-1$
+    }
+    else if ( this.convertType
+        .equals ( ConvertGrammarType.ELIMINATE_EPSILON_PRODUCTIONS ) )
+    {
+      this.gui
+          .setTitle ( Messages
+              .getString ( "ConvertGrammarDialog.TitleEliminateEpsilonProductions" ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      throw new IllegalArgumentException ( "illegal convert grammar type: " //$NON-NLS-1$
+          + convertGrammarType );
     }
     this.gui.styledNonterminalSymbolSetParserPanelConverted
         .setVisible ( !this.convertType
@@ -1303,16 +1339,16 @@ public class ConvertGrammarDialog implements
       {
         entitiyProductions = getEntityProductions ( cfg );
       }
-      ArrayList < Production > epsilonProductions = new ArrayList < Production > ();
+      ArrayList < Production > eProductions = new ArrayList < Production > ();
       if ( this.gui.jGTICheckBoxEpsilonProductions.isSelected () )
       {
-        epsilonProductions = getEpsilonProductions ( cfg );
+        eProductions = getEpsilonProductions ( cfg );
       }
       if ( entitiyProductions.isEmpty () )
       {
         this.initialEliminateEntityProductionsDone = true;
       }
-      if ( epsilonProductions.isEmpty () )
+      if ( eProductions.isEmpty () )
       {
         this.initialEliminateEpsilonProductionsDone = true;
       }
@@ -1329,7 +1365,7 @@ public class ConvertGrammarDialog implements
           eliminateEntityProductions ( cfg );
           this.initialEliminateEntityProductionsDone = true;
         }
-        else if ( !epsilonProductions.isEmpty () )
+        else if ( !eProductions.isEmpty () )
         {
           line
               .add ( new PrettyToken (
@@ -1412,9 +1448,9 @@ public class ConvertGrammarDialog implements
 
       addOutlineComment ( line );
       this.stepItemList.add ( new StepItem ( oldCFG, oldNonterminalModel, iNow,
-          jNow ) );
+          jNow, null ) );
     }
-    else
+    else if ( this.convertType.equals ( ConvertGrammarType.LEFT_FACTORING ) )
     {
       CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
       NonterminalSymbol a = null;
@@ -1434,7 +1470,7 @@ public class ConvertGrammarDialog implements
       {
         leftFactore ( a, cfg );
       }
-      this.stepItemList.add ( new StepItem ( oldCFG, null, 0, 0 ) );
+      this.stepItemList.add ( new StepItem ( oldCFG, null, 0, 0, null ) );
       this.endReached = true;
       for ( NonterminalSymbol s : cfg.getNonterminalSymbolSet () )
       {
@@ -1458,10 +1494,125 @@ public class ConvertGrammarDialog implements
       }
       addOutlineComment ( line );
     }
+    else if ( this.convertType
+        .equals ( ConvertGrammarType.ELIMINATE_ENTITY_PRODUCTIONS ) )
+    {
+      CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
+      ArrayList < Production > entityProductions = getEntityProductions ( cfg );
+      if ( !entityProductions.isEmpty () )
+      {
+        Production p = entityProductions.get ( 0 );
+
+      }
+    }
+    else if ( this.convertType
+        .equals ( ConvertGrammarType.ELIMINATE_EPSILON_PRODUCTIONS ) )
+    {
+
+      PrettyString line = new PrettyString ();
+      CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
+
+      if ( this.epsilonProductions == null )
+      {
+        this.epsilonProductions = getEpsilonProductions ( cfg );
+        this.workingProductions = new ArrayList < Production > ();
+        this.i = 0;
+        this.j = 0;
+
+      }
+
+      int iNow = this.i;
+      int jNow = this.j;
+      Production addedEpsilonProduction = null;
+
+      if ( !this.epsilonProductions.isEmpty () )
+      {
+        if ( this.i < this.epsilonProductions.size () )
+        {
+          NonterminalSymbol s = this.epsilonProductions.get ( this.i )
+              .getNonterminalSymbol ();
+          if ( this.workingProductions.isEmpty () )
+          {
+            // New epsilon production found
+            this.workingProductions.addAll ( getProductionsForNonterminal ( s,
+                cfg ) );
+            this.j = 0;
+            line.add ( Messages.getPrettyString (
+                "ConvertGrammarDialog.StepEpsilonProductionFound", s //$NON-NLS-1$
+                    .toPrettyString () ) );
+          }
+          else
+          {
+            // Eliminate nonterminal in production word
+            DefaultProductionWord w = new DefaultProductionWord ();
+            Production p = this.workingProductions.get ( this.j++ );
+            for ( ProductionWordMember m : p.getProductionWord ().get () )
+            {
+              if ( !m.equals ( s ) )
+              {
+                w.add ( m );
+              }
+            }
+            Production newProduction = new DefaultProduction ( p
+                .getNonterminalSymbol (), w );
+            if ( w.get ().isEmpty () )
+            {
+              // If created an epsilon production add it to the arraylist
+              if ( !this.epsilonProductions.contains ( newProduction ) )
+              {
+                this.epsilonProductions.add ( newProduction );
+                addedEpsilonProduction = newProduction;
+              }
+            }
+
+            line.add ( Messages.getPrettyString (
+                "ConvertGrammarDialog.StepCreatedProduction", newProduction //$NON-NLS-1$
+                    .toPrettyString () ) );
+            cfg.addProduction ( newProduction );
+          }
+          if ( this.j >= this.workingProductions.size () )
+          {
+            this.workingProductions.clear ();
+            this.i++ ;
+          }
+        }
+        else
+        {
+          line
+              .add ( Messages
+                  .getPrettyString ( "ConvertGrammarDialog.EliminatedEpsilonProductions" ) ); //$NON-NLS-1$
+          cfg.getProduction ().removeAll ( this.epsilonProductions );
+          this.endReached = true;
+        }
+      }
+      else
+      {
+        line
+            .add ( Messages
+                .getPrettyString ( "ConvertGrammarDialog.StepNoEpsilonProductions" ) ); //$NON-NLS-1$
+        this.endReached = true;
+      }
+
+      this.stepItemList.add ( new StepItem ( oldCFG, null, iNow, jNow,
+          addedEpsilonProduction ) );
+      addOutlineComment ( line );
+    }
     this.gui.repaint ();
     updateConverted ();
     setStatus ();
   }
+
+
+  /**
+   * The epsilon productions
+   */
+  private ArrayList < Production > epsilonProductions;
+
+
+  /**
+   * The working productions
+   */
+  private ArrayList < Production > workingProductions;
 
 
   /**
@@ -1498,6 +1649,17 @@ public class ConvertGrammarDialog implements
 
       this.nonterminals = item.getOldNonterminalModel ();
       this.gui.jGTIListNonterminalsConverted.setModel ( this.nonterminals );
+    }
+    if ( this.convertType
+        .equals ( ConvertGrammarType.ELIMINATE_EPSILON_PRODUCTIONS ) )
+    {
+      this.i = item.getINow ();
+      this.j = item.getJNow ();
+      Production p = item.getAddedEpsilonProduction ();
+      if ( p != null )
+      {
+        this.modelConverted.getGrammar ().getProduction ().remove ( p );
+      }
     }
     updateConverted ();
     this.convertMachineTableModel.removeLastRow ();

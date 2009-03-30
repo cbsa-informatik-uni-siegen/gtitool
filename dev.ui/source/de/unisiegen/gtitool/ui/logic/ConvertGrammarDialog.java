@@ -1528,6 +1528,7 @@ public class ConvertGrammarDialog implements
         this.i = 0;
         this.j = 0;
       }
+      Production addedProduction = null;
 
       int iNow = this.i;
       int jNow = this.j;
@@ -1570,10 +1571,21 @@ public class ConvertGrammarDialog implements
               Production newProd = new DefaultProduction ( a, p
                   .getProductionWord () );
               cfg.addProduction ( newProd );
-
-              line.add ( Messages.getPrettyString (
-                  "ConvertGrammarDialog.StepCreatedProduction", newProd //$NON-NLS-1$
-                      .toPrettyString () ) );
+              if ( newProd.getProductionWord ().size () == 1
+                  && newProd.getProductionWord ().get ( 0 ).equals (
+                      newProd.getNonterminalSymbol () ) )
+              {
+                this.cannotEliminateEntityProduction = true;
+                line.add ( Messages.getPrettyString (
+                    "ConvertGrammarDialog.CannotEliminateEntityProductions", //$NON-NLS-1$
+                    newProd.toPrettyString () ) );
+              }
+              else
+              {
+                line.add ( Messages.getPrettyString (
+                    "ConvertGrammarDialog.StepCreatedProduction", newProd //$NON-NLS-1$
+                        .toPrettyString () ) );
+              }
             }
           }
           if ( this.j >= this.workingProductions.size () )
@@ -1599,7 +1611,8 @@ public class ConvertGrammarDialog implements
         this.endReached = true;
       }
 
-      this.stepItemList.add ( new StepItem ( oldCFG, null, iNow, jNow, null ) );
+      this.stepItemList.add ( new StepItem ( oldCFG, null, iNow, jNow,
+          addedProduction ) );
       addOutlineComment ( line );
     }
     else if ( this.convertType
@@ -1700,14 +1713,20 @@ public class ConvertGrammarDialog implements
   }
 
 
+  /**
+   * Flag that indicates if elimination of entity productions is not possible
+   */
   private boolean cannotEliminateEntityProduction = false;
 
 
+  /**
+   * The entity {@link Production}s
+   */
   private ArrayList < Production > entityProductions;
 
 
   /**
-   * The epsilon productions
+   * The epsilon {@link Production}s
    */
   private ArrayList < Production > epsilonProductions;
 

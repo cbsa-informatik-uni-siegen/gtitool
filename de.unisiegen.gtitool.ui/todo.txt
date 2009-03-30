@@ -1,27 +1,11 @@
-*** TODO ***
-
 CF		- Fehler beim Konvertieren, wenn PowerSet-Zustände verwendet werden
-CF		- Die Dev-Projekte in die Homepage integrieren
 CF		- Die SVNVersion Klasse wird zur Laufzeit nicht benötigt
-CF		- About Dialog anpassen
 CF		- AbstractGrammer
-
-
-*** FEATURE ***
-
 CF		- Erkannte Wörter ausgeben
 CF		- Doppeltes Handling aus den Popupmenüs entfernen
-CF		- PDA Machinen Tabelle editierbar machen
 CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
 CF		- Popupmenü auf der Machine Tabelle
-CF		- Tastaturbefehle einbauen
-CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen
-CF		- SplitView: Horizontale/Vertikale Teilung
-CF		- Eine Überprüfung einbauen, ob auf dem Server eine neue Version verfügbar ist
 CF		- Auswahl der Transition so gestalten, dass auch sehr viele gut aussehen
-CF		- Parser muss Code formatieren können (PrettyPrinter)
-CF		- Logik des Reachable States Dialogs neu schreiben
-CF		- Benutzerinteraktionen einbauen
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout

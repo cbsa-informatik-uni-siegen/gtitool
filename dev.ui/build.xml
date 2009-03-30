@@ -159,70 +159,7 @@
 	</target>
 
 	<!-- version -->
-	<target name="version" depends="svn-version" description="Generate the version interface">
-		<delete includeemptydirs="true">
-			<fileset dir="${sourcegenerateddir}" includes="**/*" />
-		</delete>
-		<mkdir dir="${sourcegenerateddir}/de/unisiegen/gtitool/ui" />
-		<echo file="${sourcegenerateddir}/de/unisiegen/gtitool/ui/Version.java" append="false">package de.unisiegen.gtitool.ui;
-
-
-/**
- * Automatically generated interface for the project versions.
- * 
- * @author Christian Fehler
- */
-public interface Version
-{
-
-  /**
-   * The major version of the project.
-   */
-  public static final int MAJOR = ${gtitool.version.major};
-
-
-  /**
-   * The minor version of the project.
-   */
-  public static final int MINOR = ${gtitool.version.minor};
-
-
-  /**
-   * The micro version of the project.
-   */
-  public static final int MICRO = ${gtitool.version.micro};
-
-
-  /**
-   * The bugfix version of the project.
-   */
-  public static final int BUGFIX = ${gtitool.version.bugfix};
-
-
-  /**
-   * The build version of the project.
-   */
-  public static final int BUILD = ${gtitool.version.build};
-
-
-  /**
-   * The version of the project.
-   */
-  public static final String VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
-      + "." + BUGFIX; //$NON-NLS-1$
-
-
-  /**
-   * The full version of the project.
-   */
-  public static final String FULL_VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
-      + "." + BUGFIX + "_" + BUILD; //$NON-NLS-1$//$NON-NLS-2$
-}
-</echo>
-	</target>
-
-	<!-- version dev -->
-	<target name="version-dev" depends="svn-version" description="Generate the version dev interface">
+	<target name="version" depends="svn-version" description="Generate the version dev interface">
 		<delete includeemptydirs="true">
 			<fileset dir="${sourcegenerateddir}" includes="**/*" />
 		</delete>

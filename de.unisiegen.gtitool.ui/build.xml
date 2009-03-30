@@ -2,7 +2,7 @@
 <!--
 	$Id$
 	
-	Copyright (c) 2007-2008 Christian Fehler
+	Copyright (c) 2007-2009 Christian Fehler
 -->
 <project name="de.unisiegen.gtitool.ui" default="dist" basedir=".">
 
@@ -17,13 +17,7 @@
 	<property name="core.sourceimpldir" value="${core.basedir}/source-impl" />
 	<property name="core.sourcegenerateddir" value="${core.basedir}/source-generated" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
-	<property name="jflex.basedir" value="${basedir}/../gtitool.jflex" />
-	<property name="jflex.distdir" value="${jflex.basedir}/dist" />
-	<property name="javacup.basedir" value="${basedir}/../gtitool.javacup" />
-	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
-	<property name="logger.basedir" value="${basedir}/../gtitool.logger" />
-	<property name="logger.distdir" value="${logger.basedir}/dist" />
 	<property name="loggerfile" value="gtitool.logger-${gtitool.version}.jar" />
 	<property name="jgraph.basedir" value="${basedir}/../gtitool.jgraph" />
 	<property name="jgraph.distdir" value="${jgraph.basedir}/dist" />
@@ -41,12 +35,6 @@
 
 	<!-- dist -->
 	<target name="dist" depends="dist-core,dist-jgraph,dist-tinylaf,version,dist-preclean,dist-compile,dist-jar,dist-clean,dist-internal" description="Build distribution">
-		<!-- message -->
-		<echo message="Distribution ready in ${distdir}" />
-	</target>
-
-	<!-- dist dev -->
-	<target name="dist-dev" depends="dist-core,dist-jgraph,dist-tinylaf,version-dev,dist-preclean,dist-compile,dist-jar,dist-clean,dist-internal" description="Build distribution">
 		<!-- message -->
 		<echo message="Distribution ready in ${distdir}" />
 	</target>
@@ -214,69 +202,6 @@ public interface Version
    */
   public static final String FULL_VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
       + "." + BUGFIX + "_" + BUILD; //$NON-NLS-1$//$NON-NLS-2$
-}
-</echo>
-	</target>
-
-	<!-- version dev -->
-	<target name="version-dev" depends="svn-version" description="Generate the version dev interface">
-		<delete includeemptydirs="true">
-			<fileset dir="${sourcegenerateddir}" includes="**/*" />
-		</delete>
-		<mkdir dir="${sourcegenerateddir}/de/unisiegen/gtitool/ui" />
-		<echo file="${sourcegenerateddir}/de/unisiegen/gtitool/ui/Version.java" append="false">package de.unisiegen.gtitool.ui;
-
-
-/**
- * Automatically generated interface for the project versions.
- * 
- * @author Christian Fehler
- */
-public interface Version
-{
-
-  /**
-   * The major version of the project.
-   */
-  public static final int MAJOR = ${gtitool.version.major};
-
-
-  /**
-   * The minor version of the project.
-   */
-  public static final int MINOR = ${gtitool.version.minor};
-
-
-  /**
-   * The micro version of the project.
-   */
-  public static final int MICRO = ${gtitool.version.micro} + 1;
-
-
-  /**
-   * The bugfix version of the project.
-   */
-  public static final int BUGFIX = ${gtitool.version.bugfix};
-
-
-  /**
-   * The build version of the project.
-   */
-  public static final int BUILD = ${gtitool.version.build};
-
-
-  /**
-   * The version of the project.
-   */
-  public static final String VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
-      + "." + BUGFIX + " Beta"; //$NON-NLS-1$//$NON-NLS-2$
-
-
-  /**
-   * The full version of the project.
-   */
-  public static final String FULL_VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
-      + "." + BUGFIX + "_" + BUILD + " Beta"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 }
 </echo>
 	</target>

@@ -9,34 +9,19 @@
 	<!-- property -->
 	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
 	<property file="${buildfilesdir}/build.properties" />
-	<property name="core.basedir" value="${basedir}/../gtitool.dev.core" />
-	<property name="realui.basedir" value="${basedir}/../de.unisiegen.gtitool.ui" />
-	<property name="realui.distdir" value="${realui.basedir}/dist" />
-	<property name="core.distdir" value="${core.basedir}/dist" />
-	<property name="core.libdir" value="${core.basedir}/lib" />
-	<property name="core.docdir" value="${core.basedir}/doc" />
-	<property name="core.sourcedir" value="${core.basedir}/source" />
-	<property name="core.sourceimpldir" value="${core.basedir}/source-impl" />
-	<property name="core.sourcegenerateddir" value="${core.basedir}/source-generated" />
+	<property name="dev.core.basedir" value="${basedir}/../gtitool.dev.core" />
+	<property name="ui.basedir" value="${basedir}/../de.unisiegen.gtitool.ui" />
+	<property name="ui.distdir" value="${ui.basedir}/dist" />
+	<property name="dev.core.distdir" value="${dev.core.basedir}/dist" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
-	<property name="jflex.basedir" value="${basedir}/../gtitool.jflex" />
-	<property name="jflex.distdir" value="${jflex.basedir}/dist" />
-	<property name="javacup.basedir" value="${basedir}/../gtitool.javacup" />
-	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
-	<property name="logger.basedir" value="${basedir}/../gtitool.logger" />
-	<property name="logger.distdir" value="${logger.basedir}/dist" />
 	<property name="loggerfile" value="gtitool.logger-${gtitool.version}.jar" />
-	<property name="jgraph.basedir" value="${basedir}/../gtitool.jgraph" />
-	<property name="jgraph.distdir" value="${jgraph.basedir}/dist" />
 	<property name="jgraphfile" value="gtitool.jgraph-${gtitool.version}.jar" />
-	<property name="tinylaf.basedir" value="${basedir}/../gtitool.tinylaf" />
-	<property name="tinylaf.distdir" value="${tinylaf.basedir}/dist" />
 	<property name="tinylaffile" value="gtitool.tinylaf-${gtitool.version}.jar" />
 	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
+	<property name="uifile" value="gtitool.ui-${gtitool.version}.jar" />
 	<property name="devcorefile" value="gtitool.dev.core-${gtitool.version}.jar" />
 	<property name="devuifile" value="gtitool.dev.ui-${gtitool.version}.jar" />
-	<property name="uifile" value="gtitool.ui-${gtitool.version}.jar" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />
@@ -46,7 +31,7 @@
 	<property name="storepass" value="ao93iw2l" />
 
 	<!-- dist -->
-	<target name="dist" depends="dist-core,dist-ui,version,dist-preclean,dist-compile,dist-jar,dist-clean,dist-internal" description="Build distribution">
+	<target name="dist" depends="dist-dev-core,dist-ui,version,dist-preclean,dist-compile,dist-jar,dist-clean,dist-internal" description="Build distribution">
 		<!-- message -->
 		<echo message="Distribution ready in ${distdir}" />
 	</target>
@@ -64,10 +49,8 @@
 		<mkdir dir="${gtitooldir}" />
 		<!-- copy files -->
 		<copy todir="${gtitooldir}">
-			<fileset dir="${core.distdir}" includes="*.jar" />
-			<fileset dir="${realui.distdir}" includes="*.jar" />
-			<fileset dir="${jgraph.distdir}" includes="*.jar" />
-			<fileset dir="${tinylaf.distdir}" includes="*.jar" />
+			<fileset dir="${dev.core.distdir}" includes="*.jar" />
+			<fileset dir="${ui.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
 		</copy>
 		<!-- sign jar files -->
@@ -82,14 +65,14 @@
 		<delete dir="${gtitooldir}" includeemptydirs="true" />
 	</target>
 
-	<!-- dist core -->
-	<target name="dist-core">
-		<ant dir="${core.basedir}" target="dist" inheritall="false" />
+	<!-- dist dev core -->
+	<target name="dist-dev-core">
+		<ant dir="${dev.core.basedir}" target="dist" inheritall="false" />
 	</target>
 
-	<!-- dist jgraph -->
+	<!-- dist ui -->
 	<target name="dist-ui">
-		<ant dir="${realui.basedir}" target="dist" inheritall="false" />
+		<ant dir="${ui.basedir}" target="dist" inheritall="false" />
 	</target>
 
 	<!-- dist compile -->
@@ -101,13 +84,13 @@
 			<src path="${sourcedir}" />
 			<src path="${sourcegenerateddir}" />
 			<classpath>
-				<pathelement location="${core.distdir}/${devcorefile}" />
-				<pathelement location="${core.distdir}/${corefile}" />
-				<pathelement location="${realui.distdir}/${uifile}" />
-				<pathelement location="${core.distdir}/${javacupfile}" />
-				<pathelement location="${core.distdir}/${loggerfile}" />
-				<pathelement location="${jgraph.distdir}/${jgraphfile}" />
-				<pathelement location="${tinylaf.distdir}/${tinylaffile}" />
+				<pathelement location="${dev.core.distdir}/${devcorefile}" />
+				<pathelement location="${dev.core.distdir}/${corefile}" />
+				<pathelement location="${ui.distdir}/${uifile}" />
+				<pathelement location="${dev.core.distdir}/${javacupfile}" />
+				<pathelement location="${dev.core.distdir}/${loggerfile}" />
+				<pathelement location="${ui.distdir}/${jgraphfile}" />
+				<pathelement location="${ui.distdir}/${tinylaffile}" />
 			</classpath>
 		</javac>
 	</target>

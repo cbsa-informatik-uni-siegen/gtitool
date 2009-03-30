@@ -46,7 +46,7 @@
 	<property name="storepass" value="ao93iw2l" />
 
 	<!-- dist -->
-	<target name="dist" depends="dist-core,dist-ui,version,dist-preclean,dist-compile,dist-internal,dist-jar,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-core,dist-ui,version,dist-preclean,dist-compile,dist-jar,dist-clean,dist-internal" description="Build distribution">
 		<!-- message -->
 		<echo message="Distribution ready in ${distdir}" />
 	</target>

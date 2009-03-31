@@ -58,8 +58,10 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.style.editor.StyledParserEditor;
 import de.unisiegen.gtitool.ui.swing.JGTITabbedPane;
 import de.unisiegen.gtitool.ui.swing.JGTITable;
+import de.unisiegen.gtitool.ui.swing.JGTITextArea;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton;
@@ -3005,6 +3007,44 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           return;
         }
       }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( regexPanel.getJTabbedPaneConsole () == event.getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( regexPanel.getJTabbedPaneConsole () == event.getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
     }
     else if ( event.getSource () instanceof JGTIGraph )
     {
@@ -3034,6 +3074,44 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
 
         if ( machinePanel.getJGTIGraph () == event.getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( regexPanel.getJGTIGraph () == event.getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( regexPanel.getJGTIGraph () == event.getSource () )
         {
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
@@ -3137,6 +3215,47 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           return;
         }
       }
+      //
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTITableErrors == event.getSource () )
+            || ( regexPanel.getGUI ().jGTITableWarnings == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTITableErrors == event.getSource () )
+            || ( regexPanel.getGUI ().jGTITableWarnings == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
     }
     else if ( event.getSource () instanceof JScrollBar )
     {
@@ -3170,6 +3289,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3208,6 +3329,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3263,6 +3386,106 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( grammarPanel.getGUI ().jGTIScrollPaneWarnings
                 .getHorizontalScrollBar () == event.getSource () )
             || ( grammarPanel.getGUI ().jGTIScrollPaneWarnings
+                .getVerticalScrollBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTIScrollPaneErrors
+            .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneErrors
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneGraph
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneGraph
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneWarnings
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneWarnings
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneNodeInfo
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneNodeInfo
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFirstpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFirstpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFollowpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFollowpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneLastpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneLastpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneNullable
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneNullable
+                .getVerticalScrollBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTIScrollPaneErrors
+            .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneErrors
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneGraph
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneGraph
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneWarnings
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneWarnings
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneNodeInfo
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneNodeInfo
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFirstpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFirstpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFollowpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFollowpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneLastpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneLastpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneNullable
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneNullable
                 .getVerticalScrollBar () == event.getSource () ) )
         {
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
@@ -3366,6 +3589,153 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( grammarPanel.getGUI ().jGTITableErrors.getTableHeader () == event
                 .getSource () )
             || ( grammarPanel.getGUI ().jGTITableWarnings.getTableHeader () == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTITableErrors.getTableHeader () == event
+            .getSource () )
+            || ( regexPanel.getGUI ().jGTITableWarnings.getTableHeader () == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTITableErrors.getTableHeader () == event
+            .getSource () )
+            || ( regexPanel.getGUI ().jGTITableWarnings.getTableHeader () == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+
+    }
+    else if ( event.getSource () instanceof StyledParserEditor )
+    {
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().styledRegexAlphabetParserPanel.getEditor () == event
+            .getSource () )
+            || ( regexPanel.getGUI ().styledRegexParserPanel.getEditor () == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().styledRegexAlphabetParserPanel.getEditor () == event
+            .getSource () )
+            || ( regexPanel.getGUI ().styledRegexParserPanel.getEditor () == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+    }
+    else if ( event.getSource () instanceof JGTITextArea )
+    {
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaFirstpos == event
+            .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaFollowpos == event
+                .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaLastpos == event
+                .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaNullable == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaFirstpos == event
+            .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaFollowpos == event
+                .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaLastpos == event
+                .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaNullable == event
                 .getSource () ) )
         {
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
@@ -3585,7 +3955,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-
+    
     // no panel
     if ( panel == null )
     {

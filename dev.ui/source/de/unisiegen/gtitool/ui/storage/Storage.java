@@ -56,7 +56,7 @@ public final class Storage
   /**
    * The debug flag.
    */
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = true;
 
 
   /**

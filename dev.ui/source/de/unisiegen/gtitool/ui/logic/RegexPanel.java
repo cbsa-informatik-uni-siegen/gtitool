@@ -3,6 +3,11 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -197,8 +202,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
            * @see ColorChangedListener#colorChangedRegexNode(java.awt.Color)
            */
           @Override
-          public void colorChangedRegexNode ( @SuppressWarnings ( "unused" )
-          Color newColor )
+          public void colorChangedRegexNode (
+              @SuppressWarnings ( "unused" ) Color newColor )
           {
             getJGTIGraph ().repaint ();
           }
@@ -211,8 +216,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
            */
           @Override
           public void colorChangedRegexSelectedNode (
-              @SuppressWarnings ( "unused" )
-              Color newColor )
+              @SuppressWarnings ( "unused" ) Color newColor )
           {
             getJGTIGraph ().repaint ();
           }
@@ -645,8 +649,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param evt Unused
    */
-  public void handleToDFAButton ( @SuppressWarnings ( "unused" )
-  ActionEvent evt )
+  public void handleToDFAButton ( @SuppressWarnings ( "unused" ) ActionEvent evt )
   {
     if ( this.errorTableModel.getRowCount () == 0 )
     {
@@ -712,8 +715,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @param evt
    */
-  public void handleToNFAButton ( @SuppressWarnings ( "unused" )
-  ActionEvent evt )
+  public void handleToNFAButton ( @SuppressWarnings ( "unused" ) ActionEvent evt )
   {
     if ( this.errorTableModel.getRowCount () == 0 )
     {
@@ -760,18 +762,19 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
     this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
     this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTITableWarnings1.setModel ( this.errorTableModel );
-    this.gui.jGTITableWarnings1.setColumnModel ( new ConsoleColumnModel () );
-    this.gui.jGTITableWarnings1.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableErrors.setModel ( this.errorTableModel );
+    this.gui.jGTITableErrors.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jGTITableErrors.getTableHeader ().setReorderingAllowed ( false );
     initializeAlphabet ();
+    initializeSecondView ();
     this.gui.jGTITableWarnings
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (
         new ListSelectionListener ()
         {
 
-          public void valueChanged ( @SuppressWarnings ( "unused" )
-          ListSelectionEvent event )
+          public void valueChanged (
+              @SuppressWarnings ( "unused" ) ListSelectionEvent event )
           {
             // Nothing to do here
           }
@@ -820,6 +823,96 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
+   * Initializes the second view .
+   */
+  private final void initializeSecondView ()
+  {
+    MouseListener mouseListener = new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent event )
+      {
+        RegexPanel.this.mainWindowForm.getLogic ()
+            .handleSecondViewMouseReleased ( event );
+      }
+    };
+
+    MouseMotionListener mouseMotionListener = new MouseMotionAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseDragged ( MouseEvent event )
+      {
+        RegexPanel.this.mainWindowForm.getLogic ()
+            .handleSecondViewMouseReleased ( event );
+      }
+    };
+
+    this.jGTIGraph.addMouseListener ( mouseListener );
+    this.jGTIGraph.addMouseMotionListener ( mouseMotionListener );
+    this.gui.jGTIScrollPaneGraph.getHorizontalScrollBar ().addMouseListener (
+        mouseListener );
+    this.gui.jGTIScrollPaneGraph.getVerticalScrollBar ().addMouseListener (
+        mouseListener );
+
+    this.gui.styledRegexAlphabetParserPanel.addMouseListener ( mouseListener );
+    this.gui.styledRegexParserPanel.addMouseListener ( mouseListener );
+
+    this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos
+        .addMouseListener ( mouseListener );
+    this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos
+        .addMouseListener ( mouseListener );
+    this.gui.regexNodeInfoPanel.jGTITextAreaLastpos
+        .addMouseListener ( mouseListener );
+    this.gui.regexNodeInfoPanel.jGTITextAreaNullable
+        .addMouseListener ( mouseListener );
+
+    this.gui.regexNodeInfoPanel.jScrollPaneFirstpos.getHorizontalScrollBar ()
+        .addMouseListener ( mouseListener );
+    this.gui.regexNodeInfoPanel.jScrollPaneFirstpos.getVerticalScrollBar ()
+        .addMouseListener ( mouseListener );
+    this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.getHorizontalScrollBar ()
+        .addMouseListener ( mouseListener );
+    this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.getVerticalScrollBar ()
+        .addMouseListener ( mouseListener );
+    this.gui.regexNodeInfoPanel.jScrollPaneLastpos.getHorizontalScrollBar ()
+        .addMouseListener ( mouseListener );
+    this.gui.regexNodeInfoPanel.jScrollPaneLastpos.getVerticalScrollBar ()
+        .addMouseListener ( mouseListener );
+    this.gui.regexNodeInfoPanel.jScrollPaneNullable.getHorizontalScrollBar ()
+        .addMouseListener ( mouseListener );
+    this.gui.regexNodeInfoPanel.jScrollPaneNullable.getVerticalScrollBar ()
+        .addMouseListener ( mouseListener );
+
+    this.gui.jGTIScrollPaneNodeInfo.getHorizontalScrollBar ().addMouseListener (
+        mouseListener );
+    this.gui.jGTIScrollPaneNodeInfo.getVerticalScrollBar ().addMouseListener (
+        mouseListener );
+
+    this.gui.jGTITabbedPaneConsole.addMouseListener ( mouseListener );
+
+    this.gui.jGTITableErrors.addMouseListener ( mouseListener );
+    this.gui.jGTITableErrors.getTableHeader ()
+        .addMouseListener ( mouseListener );
+    this.gui.jGTIScrollPaneErrors.getHorizontalScrollBar ().addMouseListener (
+        mouseListener );
+    this.gui.jGTIScrollPaneErrors.getVerticalScrollBar ().addMouseListener (
+        mouseListener );
+
+    this.gui.jGTITableWarnings.addMouseListener ( mouseListener );
+    this.gui.jGTITableWarnings.getTableHeader ().addMouseListener (
+        mouseListener );
+    this.gui.jGTIScrollPaneWarnings.getHorizontalScrollBar ().addMouseListener (
+        mouseListener );
+    this.gui.jGTIScrollPaneWarnings.getVerticalScrollBar ().addMouseListener (
+        mouseListener );
+  }
+
+
+  /**
    * Initializes the JGraph
    */
   public void initializeJGraph ()
@@ -835,8 +928,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       /**
        * @see org.jgraph.event.GraphSelectionListener#valueChanged(org.jgraph.event.GraphSelectionEvent)
        */
-      public void valueChanged ( @SuppressWarnings ( "unused" )
-      GraphSelectionEvent e )
+      public void valueChanged (
+          @SuppressWarnings ( "unused" ) GraphSelectionEvent e )
       {
         updateRegexNodeInfo ();
       }
@@ -851,7 +944,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public boolean isModified ()
   {
-    return this.model.isModified ();
+    return this.model.isModified () || this.file == null;
   }
 
 

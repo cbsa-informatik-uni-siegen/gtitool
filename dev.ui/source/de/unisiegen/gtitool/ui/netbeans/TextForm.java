@@ -58,6 +58,7 @@ public class TextForm extends javax.swing.JDialog implements GUIClass < TextWind
         jGTIButtonPrint = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(220, 200));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);

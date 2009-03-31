@@ -179,9 +179,13 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
       if ( attr.getName ().equals ( "regexString" ) ) //$NON-NLS-1$
       {
         regexString = attr.getValue ();
+        if ( regexString != null && regexString.equals ( " " ) ) //$NON-NLS-1$
+        {
+          regexString = new String ();
+        }
       }
     }
-    if ( regexString == null || regexString.length () == 0 )
+    if ( regexString == null )
     {
       throw new StoreException ( de.unisiegen.gtitool.core.i18n.Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
@@ -228,8 +232,16 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     newElement.addAttribute ( new Attribute ( "regexVersion", //$NON-NLS-1$
         REGEX_VERSION ) );
     newElement.addElement ( this.regex.getAlphabet () );
-    newElement.addAttribute ( new Attribute ( "regexString", //$NON-NLS-1$
-        this.regex.getRegexString () ) );
+    if ( this.regex.getRegexString ().length () == 0 )
+    {
+      newElement.addAttribute ( new Attribute ( "regexString", //$NON-NLS-1$
+          " " ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      newElement.addAttribute ( new Attribute ( "regexString", //$NON-NLS-1$
+          this.regex.getRegexString () ) );
+    }
     return newElement;
   }
 

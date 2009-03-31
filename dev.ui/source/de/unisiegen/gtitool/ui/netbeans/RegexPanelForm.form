@@ -243,10 +243,10 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="de.unisiegen.gtitool.ui.swing.JGTITable" name="jGTITableWarnings1">
+                    <Component class="de.unisiegen.gtitool.ui.swing.JGTITable" name="jGTITableErrors">
                       <Events>
-                        <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableWarnings1MouseExited"/>
-                        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableWarnings1FocusLost"/>
+                        <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableErrorsMouseExited"/>
+                        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableErrorsFocusLost"/>
                       </Events>
                     </Component>
                   </SubComponents>

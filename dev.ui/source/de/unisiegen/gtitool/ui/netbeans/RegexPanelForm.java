@@ -73,7 +73,7 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
         jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
         jGTIScrollPaneErrors = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        jGTITableWarnings1 = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        jGTITableErrors = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIScrollPaneWarnings = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableWarnings = new de.unisiegen.gtitool.ui.swing.JGTITable();
 
@@ -184,17 +184,17 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
 
         jGTIScrollPaneErrors.setBorder(null);
 
-        jGTITableWarnings1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jGTITableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jGTITableWarnings1MouseExited(evt);
+                jGTITableErrorsMouseExited(evt);
             }
         });
-        jGTITableWarnings1.addFocusListener(new java.awt.event.FocusAdapter() {
+        jGTITableErrors.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                jGTITableWarnings1FocusLost(evt);
+                jGTITableErrorsFocusLost(evt);
             }
         });
-        jGTIScrollPaneErrors.setViewportView(jGTITableWarnings1);
+        jGTIScrollPaneErrors.setViewportView(jGTITableErrors);
 
         jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/error.png")), jGTIScrollPaneErrors); // NOI18N
 
@@ -241,13 +241,13 @@ public class RegexPanelForm extends JPanel implements GUIClass <RegexPanel>
       
     }//GEN-LAST:event_jGTITableWarningsFocusLost
 
-private void jGTITableWarnings1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableWarnings1MouseExited
+private void jGTITableErrorsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableErrorsMouseExited
 // TODO add your handling code here:
-}//GEN-LAST:event_jGTITableWarnings1MouseExited
+}//GEN-LAST:event_jGTITableErrorsMouseExited
 
-private void jGTITableWarnings1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTITableWarnings1FocusLost
+private void jGTITableErrorsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTITableErrorsFocusLost
 // TODO add your handling code here:
-}//GEN-LAST:event_jGTITableWarnings1FocusLost
+}//GEN-LAST:event_jGTITableErrorsFocusLost
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -268,8 +268,8 @@ private void jGTITableWarnings1FocusLost(java.awt.event.FocusEvent evt) {//GEN-F
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneRegex;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneTable;
     public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPaneConsole;
+    public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableErrors;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableWarnings;
-    public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableWarnings1;
     public de.unisiegen.gtitool.ui.netbeans.RegexNodeInfoPanel regexNodeInfoPanel;
     public de.unisiegen.gtitool.ui.style.StyledRegexAlphabetParserPanel styledRegexAlphabetParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledRegexParserPanel styledRegexParserPanel;

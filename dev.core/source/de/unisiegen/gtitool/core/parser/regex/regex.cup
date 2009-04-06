@@ -47,6 +47,7 @@ terminal					LANGUAGE;
  ****************/
  
 non terminal RegexNode		regex;
+non terminal RegexNode		complexRegex;
 non terminal RegexNode		concatenation;
 non terminal RegexNode[]	simple_regex_list;
 non terminal RegexNode		simple_regex;
@@ -73,7 +74,7 @@ precedence right 	MINUS;
  * Regex *
  ************/
 
-regex							::= regex:reg1 OR:or regex:reg2
+regex							::= complexRegex:reg1 OR:or complexRegex:reg2
 									{:
 										RESULT = new DisjunctionNode(reg1, reg2);
 									   	RESULT.setParserOffset(new ParserOffset(reg1left, reg2right));
@@ -105,6 +106,35 @@ regex							::= regex:reg1 OR:or regex:reg2
 									{:
 										RESULT = new TokenNode("");
 										RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								;
+complexRegex					::= complexRegex:reg1 OR:or complexRegex:reg2
+									{:
+										RESULT = new DisjunctionNode(reg1, reg2);
+									   	RESULT.setParserOffset(new ParserOffset(reg1left, reg2right));
+									:}
+								|	simple_regex:regex
+									{:
+										RESULT = regex;
+									   	RESULT.setParserOffset(new ParserOffset(regexleft,regexright));
+									:}
+								|	concatenation:c
+									{:
+										RESULT = c;
+									   	RESULT.setParserOffset(new ParserOffset(cleft,cright));
+									:}
+								|	LANGUAGE:l SYMBOL:s1 SYMBOL:s1z SYMBOL:s2 SYMBOL:s2z SYMBOL:k
+									{:
+										try{
+											DefaultState state1 = new DefaultState(s1 + s1z);
+											DefaultState state2 = new DefaultState(s2 + s2z);
+											int newK = Integer.valueOf(k).intValue();
+											RESULT = new UnfinishedNode(state1, state2, newK);
+									   		RESULT.setParserOffset(new ParserOffset(lleft, kright));
+									   	} catch(NumberFormatException e){
+									   		RESULT = new ConcatenationNode(new TokenNode(l.toString()), new ConcatenationNode(new TokenNode(s1), new ConcatenationNode(new TokenNode(s1z), new ConcatenationNode(new TokenNode(s2), new ConcatenationNode(new TokenNode(s2z),new TokenNode(k))))));
+									   		RESULT.setParserOffset(new ParserOffset(lleft, kright));
+									   	}
 									:}
 								;
 simple_regex					::= simple_regex:reg STAR:star

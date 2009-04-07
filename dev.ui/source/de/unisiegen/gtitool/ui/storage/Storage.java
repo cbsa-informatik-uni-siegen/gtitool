@@ -151,7 +151,7 @@ public final class Storage
       }
       if ( element.getName ().equals ( "RegexModel" ) ) //$NON-NLS-1$
       {
-        return new DefaultRegexModel ( element );
+        return new DefaultRegexModel ( element, false );
       }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }

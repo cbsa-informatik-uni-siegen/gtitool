@@ -2416,7 +2416,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
       else if ( element.getName ().equals ( "RegexModel" ) ) //$NON-NLS-1$
       {
-        defaultModel = new DefaultRegexModel ( element );
+        defaultModel = new DefaultRegexModel ( element, true );
       }
       else
       {

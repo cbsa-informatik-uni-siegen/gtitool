@@ -120,7 +120,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   public DefaultRegexModel ( DefaultRegex regex )
   {
     this.regex = regex;
-    this.initialRegexString = this.regex.getRegexString ();
+    this.initialRegexString = null;
   }
 
 
@@ -155,7 +155,8 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    * @param element The saved {@link DefaultRegex}
    * @throws Exception
    */
-  public DefaultRegexModel ( Element element ) throws Exception
+  public DefaultRegexModel ( Element element, boolean newFile )
+      throws Exception
   {
     boolean foundVersion = false;
     String regexString = new String ();
@@ -184,7 +185,14 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
       throw new StoreException ( de.unisiegen.gtitool.core.i18n.Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
-    this.initialRegexString = regexString;
+    if ( newFile )
+    {
+      this.initialRegexString = null;
+    }
+    else
+    {
+      this.initialRegexString = regexString;
+    }
     DefaultRegexAlphabet da = new DefaultRegexAlphabet ( element
         .getElement ( 0 ) );
     this.regex = new DefaultRegex ( da );
@@ -570,6 +578,11 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public boolean isModified ()
   {
+    System.err.println ( "Initial: " + this.initialRegexString );
+    if ( this.initialRegexString == null )
+    {
+      return true;
+    }
     return !this.initialRegexString.equals ( this.regex.getRegexString () );
   }
 

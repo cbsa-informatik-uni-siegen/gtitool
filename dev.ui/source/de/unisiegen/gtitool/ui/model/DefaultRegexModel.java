@@ -153,6 +153,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    * Constructor for a saved {@link DefaultRegexModel}
    * 
    * @param element The saved {@link DefaultRegex}
+   * @param newFile True if a new file is created
    * @throws Exception
    */
   public DefaultRegexModel ( Element element, boolean newFile )
@@ -578,7 +579,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public boolean isModified ()
   {
-    System.err.println ( "Initial: " + this.initialRegexString );
     if ( this.initialRegexString == null )
     {
       return true;

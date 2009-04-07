@@ -685,12 +685,12 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   {
     this.editor.addKeyListener ( listener );
   }
-  
+
+
   /**
-   * TODO
-   *
-   * @param l
-   * @see java.awt.Component#addMouseListener(java.awt.event.MouseListener)
+   * {@inheritDoc}
+   * 
+   * @see Component#addMouseListener(java.awt.event.MouseListener)
    */
   @Override
   public synchronized void addMouseListener ( MouseListener l )
@@ -698,11 +698,11 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.editor.addMouseListener ( l );
     super.addMouseListener ( l );
   }
-  
-  
+
+
   /**
    * Returns the editor.
-   *
+   * 
    * @return The editor.
    * @see #editor
    */
@@ -734,6 +734,18 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   {
     this.listenerList.add ( ParseableChangedListener.class, listener );
   }
+  
+  
+  /**
+   * Returns the document.
+   *
+   * @return The document.
+   * @see #document
+   */
+  public StyledParserDocument < E > getDocument ()
+  {
+    return this.document;
+  }
 
 
   /**
@@ -763,7 +775,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
    * @param newObject The new {@link Object}.
    */
   @SuppressWarnings ( "unchecked" )
-  protected final void fireParseableChanged ( E newObject )
+  public final void fireParseableChanged ( E newObject )
   {
     E checkedObject = checkParsedObject ( newObject );
     setErrorIndicator ( checkedObject == null );

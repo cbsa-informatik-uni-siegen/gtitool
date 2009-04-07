@@ -68,8 +68,6 @@ public final class StyledRegexParserPanel extends
           if ( !this.alphabet.contains ( new DefaultSymbol (
               ( ( TokenNode ) current ).getName () ) ) )
           {
-            System.err.println ( new DefaultSymbol ( ( ( TokenNode ) current )
-                .getName () ) );
             exceptionList.add ( new ParserException ( current
                 .getParserOffset ().getStart (), current.getParserOffset ()
                 .getEnd (), Messages

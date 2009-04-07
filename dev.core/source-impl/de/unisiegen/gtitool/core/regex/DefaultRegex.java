@@ -103,6 +103,7 @@ public class DefaultRegex implements Regex
   public DefaultRegex ( DefaultRegexAlphabet a )
   {
     this.alphabet = a;
+    this.regexString = new String();
   }
 
 

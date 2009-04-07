@@ -17,7 +17,7 @@ import de.unisiegen.gtitool.ui.netbeans.AlphabetDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.redoundo.MachineAlphabetChangedItem;
-import de.unisiegen.gtitool.ui.redoundo.RegexAlphabetChangedItem;
+import de.unisiegen.gtitool.ui.redoundo.RegexAlphabetRedoUndoItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -242,10 +242,11 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
     }
     else
     {
-      this.regexPanel.getRedoUndoHandler ().addItem (
-          new RegexAlphabetChangedItem ( this.regex, this.regexPanel,
+      this.regexPanel.getUndo ().addEdit (
+          new RegexAlphabetRedoUndoItem ( this.regex, this.regexPanel,
               this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
                   .getParsedObject () ) );
+      this.regexPanel.updateRedoUndoButtons ();
       performAlphabetChange ( this.regex.getAlphabet (),
           this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
               .getParsedObject () );

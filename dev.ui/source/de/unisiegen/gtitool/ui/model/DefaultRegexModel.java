@@ -71,12 +71,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * The initial {@link DefaultRegex}
-   */
-  private DefaultRegex initialRegex;
-
-
-  /**
    * The {@link JGTIGraph}
    */
   private JGTIGraph jGTIGraph;
@@ -113,18 +107,20 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
+   * The initial regex string
+   */
+  private String initialRegexString;
+
+
+  /**
    * Constructor for a new {@link DefaultRegexModel}
    * 
    * @param regex The {@link DefaultRegex} for this model
-   * @param startModified Set the new Model modified or not
    */
-  public DefaultRegexModel ( DefaultRegex regex, boolean startModified )
+  public DefaultRegexModel ( DefaultRegex regex )
   {
     this.regex = regex;
-    if ( !startModified )
-    {
-      this.initialRegex = regex.clone ();
-    }
+    this.initialRegexString = this.regex.getRegexString ();
   }
 
 
@@ -157,11 +153,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    * Constructor for a saved {@link DefaultRegexModel}
    * 
    * @param element The saved {@link DefaultRegex}
-   * @param startModified The Model starts modified
    * @throws Exception
    */
-  public DefaultRegexModel ( Element element, boolean startModified )
-      throws Exception
+  public DefaultRegexModel ( Element element ) throws Exception
   {
     boolean foundVersion = false;
     String regexString = new String ();
@@ -190,16 +184,13 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
       throw new StoreException ( de.unisiegen.gtitool.core.i18n.Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
+    this.initialRegexString = regexString;
     DefaultRegexAlphabet da = new DefaultRegexAlphabet ( element
         .getElement ( 0 ) );
     this.regex = new DefaultRegex ( da );
     RegexParseable rp = new RegexParseable ();
     this.regex.setRegexNode ( ( RegexNode ) rp.newParser ( regexString )
         .parse (), regexString );
-    if ( !startModified )
-    {
-      this.initialRegex = this.regex.clone ();
-    }
     fireModifyStatusChanged ( false );
     if ( !foundVersion )
     {
@@ -579,11 +570,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public boolean isModified ()
   {
-    if ( this.regex != null )
-    {
-      return !this.regex.equals ( this.initialRegex );
-    }
-    return this.initialRegex != null;
+    return !this.initialRegexString.equals ( this.regex.getRegexString () );
   }
 
 
@@ -677,7 +664,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public void resetModify ()
   {
-    this.initialRegex = this.regex.clone ();
+    this.initialRegexString = this.regex.getRegexString ();
   }
 
 }

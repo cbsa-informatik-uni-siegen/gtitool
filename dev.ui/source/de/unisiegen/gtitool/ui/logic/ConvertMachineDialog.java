@@ -1400,7 +1400,7 @@ public final class ConvertMachineDialog implements
         {
           this.modelRegexConverted = new DefaultRegexModel ( new DefaultRegex (
               new DefaultRegexAlphabet ( this.machineOriginal.getAlphabet ()
-                  .get () ) ), false );
+                  .get () ) ) );
           this.modelRegexConverted.initializeGraph ();
           this.jGTIGraphConverted = this.modelRegexConverted.getJGTIGraph ();
         }
@@ -3351,7 +3351,7 @@ public final class ConvertMachineDialog implements
         {
           this.modelRegexConverted = new DefaultRegexModel ( new DefaultRegex (
               new DefaultRegexAlphabet ( this.machineOriginal.getAlphabet ()
-                  .get () ) ), false );
+                  .get () ) ) );
           this.modelRegexConverted.initializeGraph ();
           this.jGTIGraphConverted = this.modelRegexConverted.getJGTIGraph ();
         }

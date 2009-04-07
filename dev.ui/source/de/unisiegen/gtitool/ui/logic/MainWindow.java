@@ -59,6 +59,7 @@ import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.style.editor.StyledParserEditor;
+import de.unisiegen.gtitool.ui.style.sidebar.SideBar;
 import de.unisiegen.gtitool.ui.swing.JGTITabbedPane;
 import de.unisiegen.gtitool.ui.swing.JGTITable;
 import de.unisiegen.gtitool.ui.swing.JGTITextArea;
@@ -2912,10 +2913,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
             ActiveEditor.LEFT_EDITOR ) )
         {
+          JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+          tabbedPane.requestFocus ();
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
           logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
               "handle second view mouse released" );//$NON-NLS-1$
           handleTabbedPaneStateChanged ();
+        }
+        else
+        {
+          JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+          tabbedPane.requestFocus ();
         }
         return;
       }
@@ -2924,10 +2932,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
             ActiveEditor.RIGHT_EDITOR ) )
         {
+          JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+          tabbedPane.requestFocus ();
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
           logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
               "handle second view mouse released" );//$NON-NLS-1$
           handleTabbedPaneStateChanged ();
+        }
+        else
+        {
+          JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+          tabbedPane.requestFocus ();
         }
         return;
       }
@@ -2942,6 +2957,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2961,6 +2978,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2980,6 +2999,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2999,6 +3020,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3018,6 +3041,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3037,6 +3062,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3142,6 +3169,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3165,6 +3194,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3186,6 +3217,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3207,6 +3240,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3215,7 +3250,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           return;
         }
       }
-      //
       if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
           .getSelectedEditorPanel () instanceof RegexPanel )
       {
@@ -3228,6 +3262,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3248,6 +3284,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3361,6 +3399,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3391,6 +3432,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3441,6 +3484,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3491,6 +3536,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3520,6 +3567,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3546,6 +3595,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3570,6 +3621,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3594,6 +3647,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3616,6 +3671,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3638,6 +3695,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3682,6 +3741,54 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .getSource () )
             || ( regexPanel.getGUI ().styledRegexParserPanel.getEditor () == event
                 .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+            .getEditor () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledStartNonterminalSymbolParserPanel
+                .getEditor () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledTerminalSymbolSetParserPanel
+                .getEditor () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+            .getEditor () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledStartNonterminalSymbolParserPanel
+                .getEditor () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledTerminalSymbolSetParserPanel
+                .getEditor () == event.getSource () ) )
         {
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
@@ -3741,6 +3848,136 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+    }
+    else if ( event.getSource () instanceof SideBar )
+    {
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().styledRegexAlphabetParserPanel
+            .getSideBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            regexPanel.getGUI ().styledRegexAlphabetParserPanel.getEditor ()
+                .requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+        else if ( regexPanel.getGUI ().styledRegexParserPanel.getSideBar () == event
+            .getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            regexPanel.getGUI ().styledRegexParserPanel.getEditor ()
+                .requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().styledRegexAlphabetParserPanel
+            .getSideBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            regexPanel.getGUI ().styledRegexAlphabetParserPanel.getEditor ()
+                .requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+
+        if ( regexPanel.getGUI ().styledRegexParserPanel.getSideBar () == event
+            .getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            regexPanel.getGUI ().styledRegexParserPanel.getEditor ()
+                .requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+            .getSideBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledStartNonterminalSymbolParserPanel
+                .getSideBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledTerminalSymbolSetParserPanel
+                .getSideBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+                .getEditor ().requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+            .getSideBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledStartNonterminalSymbolParserPanel
+                .getSideBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledTerminalSymbolSetParserPanel
+                .getSideBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+                .getEditor ().requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3955,7 +4192,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    
+
     // no panel
     if ( panel == null )
     {

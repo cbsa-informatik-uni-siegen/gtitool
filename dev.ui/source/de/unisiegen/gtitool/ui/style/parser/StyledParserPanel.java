@@ -696,7 +696,20 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   public synchronized void addMouseListener ( MouseListener l )
   {
     this.editor.addMouseListener ( l );
+    this.sideBar.addMouseListener ( l );
     super.addMouseListener ( l );
+  }
+
+
+  /**
+   * Returns the sideBar.
+   * 
+   * @return The sideBar.
+   * @see #sideBar
+   */
+  public SideBar < E > getSideBar ()
+  {
+    return this.sideBar;
   }
 
 
@@ -734,11 +747,11 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   {
     this.listenerList.add ( ParseableChangedListener.class, listener );
   }
-  
-  
+
+
   /**
    * Returns the document.
-   *
+   * 
    * @return The document.
    * @see #document
    */

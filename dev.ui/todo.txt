@@ -6,4 +6,3 @@ SM		- Drucken: Mehrere Komponenten pro Seite mit Auto-Verkleinerung, also
 		  nur mit einem Print-Job
 SM		- Recursive descent parser bauen können
 SM		- Position der Textfenster merken
-SM		- SecondView bei Regexn (Der ersten Komponente den Focus geben!)

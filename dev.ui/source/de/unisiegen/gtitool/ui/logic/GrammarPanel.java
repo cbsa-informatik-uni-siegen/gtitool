@@ -1196,6 +1196,13 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         mouseListener );
     this.gui.jGTIScrollPaneWarnings.getVerticalScrollBar ().addMouseListener (
         mouseListener );
+
+    this.gui.styledNonterminalSymbolSetParserPanel
+        .addMouseListener ( mouseListener );
+    this.gui.styledStartNonterminalSymbolParserPanel
+        .addMouseListener ( mouseListener );
+    this.gui.styledTerminalSymbolSetParserPanel
+        .addMouseListener ( mouseListener );
   }
 
 

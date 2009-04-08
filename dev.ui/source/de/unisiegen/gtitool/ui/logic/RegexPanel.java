@@ -144,8 +144,16 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.file = file;
     this.model = model;
     this.gui = new RegexPanelForm ( this );
-    this.gui.styledRegexParserPanel.setText ( this.model.getRegex ()
-        .getRegexString () );
+    if ( this.model.getRegex ().getRegexNode () != null )
+    {
+      this.gui.styledRegexParserPanel.setText ( this.model.getRegex ()
+          .getRegexString () );
+    }
+    else
+    {
+      this.gui.styledRegexParserPanel.setText ( this.model
+          .getInitialRegexString () );
+    }
     if ( getRegex ().getRegexNode () != null )
     {
       getRegex ().getRegexNode ().setShowPositions (
@@ -227,6 +235,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         } );
 
     initialize ();
+    if ( model.getRegex ().getRegexNode () != null )
+    {
+      changeRegex ( model.getRegex ().getRegexNode () );
+    }
   }
 
 
@@ -249,7 +261,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
-    this.model.addModifyStatusChangedListener ( listener );
+    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -281,20 +293,24 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       }
       else
       {
-        getMainWindow ().removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+        getMainWindow ()
+            .removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
       }
     }
     else
     {
       getMainWindow ().removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
     }
-    this.model.getRegex ().getRegexNode ().setShowPositions (
-        this.gui.jGTIPanelInfo.isVisible () );
-
+    if ( this.model.getRegex ().getRegexNode () != null )
+    {
+      this.model.getRegex ().getRegexNode ().setShowPositions (
+          this.gui.jGTIPanelInfo.isVisible () );
+    }
     initializeJGraph ();
     this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
     this.model.createTree ();
     updateRegexNodeInfo ();
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -547,6 +563,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     }
     try
     {
+      this.model.setActualRegexString ( this.gui.styledRegexParserPanel
+          .getText () );
       Storage.getInstance ().store ( this.model, this.file );
     }
     catch ( StoreException e )
@@ -557,6 +575,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     }
     resetModify ();
     fireModifyStatusChanged ( false );
+    this.model.setInitialRegexString ( this.gui.styledRegexParserPanel
+        .getText () );
     return this.file;
   }
 
@@ -629,6 +649,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           .toString ()
           + "." + RegexType.REGEX.getFileEnding (); //$NON-NLS-1$
 
+      this.model.setActualRegexString ( this.gui.styledRegexParserPanel
+          .getText () );
       Storage.getInstance ().store ( this.model, new File ( filename ) );
 
       PreferenceManager.getInstance ().setWorkingPath (
@@ -643,6 +665,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     }
     resetModify ();
     fireModifyStatusChanged ( false );
+    this.model.setInitialRegexString ( this.gui.styledRegexParserPanel
+        .getText () );
     return this.file;
   }
 
@@ -841,7 +865,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public void initializeAlphabet ()
   {
     this.gui.styledRegexParserPanel.parse ();
-    this.model.fireModifyStatusChanged ( false );
     this.gui.styledRegexAlphabetParserPanel.setText ( this.model.getRegex ()
         .getAlphabet ().toClassPrettyString () );
   }
@@ -969,7 +992,13 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public boolean isModified ()
   {
-    return this.model.isModified () || this.file == null;
+    if ( this.model.getInitialRegexString () == null )
+    {
+      return true;
+    }
+    return !this.model.getInitialRegexString ().equals (
+        this.gui.styledRegexParserPanel.getText () )
+        || this.file == null;
   }
 
 
@@ -1025,7 +1054,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
-    this.model.removeModifyStatusChangedListener ( listener );
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -1036,7 +1065,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void resetModify ()
   {
-    this.model.resetModify ();
+    this.model.setInitialRegexString ( this.gui.styledRegexParserPanel
+        .getText () );
   }
 
 

@@ -7,14 +7,11 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import javax.swing.event.EventListenerList;
-
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
-import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
 import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
@@ -23,11 +20,11 @@ import de.unisiegen.gtitool.core.entities.regex.OptionalNode;
 import de.unisiegen.gtitool.core.entities.regex.PlusNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
-import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -43,7 +40,7 @@ import de.unisiegen.gtitool.ui.jgraph.NodeView;
 /**
  * The Default model for a Regex
  */
-public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
+public class DefaultRegexModel implements DefaultModel, Storable
 {
 
   /**
@@ -74,12 +71,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    * The {@link JGTIGraph}
    */
   private JGTIGraph jGTIGraph;
-
-
-  /**
-   * The {@link EventListenerList}.
-   */
-  private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -145,7 +136,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
   public void changeRegexNode ( RegexNode node, String regexString )
   {
     this.regex.setRegexNode ( node, regexString );
-    fireModifyStatusChanged ( false );
   }
 
 
@@ -154,10 +144,11 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    * 
    * @param element The saved {@link DefaultRegex}
    * @param newFile True if a new file is created
-   * @throws Exception
+   * @throws StoreException
+   * @throws AlphabetException
    */
   public DefaultRegexModel ( Element element, boolean newFile )
-      throws Exception
+      throws StoreException, AlphabetException
   {
     boolean foundVersion = false;
     String regexString = new String ();
@@ -198,9 +189,17 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
         .getElement ( 0 ) );
     this.regex = new DefaultRegex ( da );
     RegexParseable rp = new RegexParseable ();
-    this.regex.setRegexNode ( ( RegexNode ) rp.newParser ( regexString )
-        .parse (), regexString );
-    fireModifyStatusChanged ( false );
+
+    try
+    {
+      this.regex.setRegexNode ( ( RegexNode ) rp.newParser ( regexString )
+          .parse (), regexString );
+    }
+    catch ( Exception exc )
+    {
+      //Nothing to do here. Regex was not legal as it has been saved.
+    }
+
     if ( !foundVersion )
     {
       throw new StoreException ( de.unisiegen.gtitool.core.i18n.Messages
@@ -222,6 +221,24 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
+   * The actualt RegexString. Used for saving
+   */
+  private String actualRegexString;
+
+
+  /**
+   * Sets the actualRegexString.
+   * 
+   * @param actualRegexString The actualRegexString to set.
+   * @see #actualRegexString
+   */
+  public void setActualRegexString ( String actualRegexString )
+  {
+    this.actualRegexString = actualRegexString;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see DefaultModel#getElement()
@@ -232,7 +249,9 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     newElement.addAttribute ( new Attribute ( "regexVersion", //$NON-NLS-1$
         REGEX_VERSION ) );
     newElement.addElement ( this.regex.getAlphabet () );
-    if ( this.regex.getRegexString ().length () == 0 )
+
+    if ( this.actualRegexString == null
+        || this.actualRegexString.length () == 0 )
     {
       newElement.addAttribute ( new Attribute ( "regexString", //$NON-NLS-1$
           " " ) ); //$NON-NLS-1$
@@ -240,7 +259,7 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
     else
     {
       newElement.addAttribute ( new Attribute ( "regexString", //$NON-NLS-1$
-          this.regex.getRegexString () ) );
+          this.actualRegexString ) );
     }
     return newElement;
   }
@@ -291,7 +310,8 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
    */
   public void createTree ()
   {
-    if ( this.regex.getRegexNode ().toString ().length () == 0 )
+    if ( this.regex == null || this.regex.getRegexNode () == null
+        || this.regex.getRegexNode ().toString ().length () == 0 )
     {
       return;
     }
@@ -534,68 +554,26 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * {@inheritDoc}
+   * Returns the initialRegexString.
    * 
-   * @see Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
+   * @return The initialRegexString.
+   * @see #initialRegexString
    */
-  public void addModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
+  public String getInitialRegexString ()
   {
-    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+    return this.initialRegexString;
   }
 
 
   /**
-   * Fired if the Regex was modified
+   * Sets the initialRegexString.
    * 
-   * @param forceModify Flag indicates that modify was forced
+   * @param initialRegexString The initialRegexString to set.
+   * @see #initialRegexString
    */
-  public void fireModifyStatusChanged ( final boolean forceModify )
+  public void setInitialRegexString ( String initialRegexString )
   {
-    ModifyStatusChangedListener [] listeners = this.listenerList
-        .getListeners ( ModifyStatusChangedListener.class );
-    if ( forceModify )
-    {
-      for ( ModifyStatusChangedListener current : listeners )
-      {
-        current.modifyStatusChanged ( true );
-      }
-    }
-    else
-    {
-      boolean newModifyStatus = isModified ();
-      for ( ModifyStatusChangedListener current : listeners )
-      {
-        current.modifyStatusChanged ( newModifyStatus );
-      }
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#isModified()
-   */
-  public boolean isModified ()
-  {
-    if ( this.initialRegexString == null )
-    {
-      return true;
-    }
-    return !this.initialRegexString.equals ( this.regex.getRegexString () );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
-   */
-  public void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+    this.initialRegexString = initialRegexString;
   }
 
 
@@ -667,17 +645,6 @@ public class DefaultRegexModel implements DefaultModel, Storable, Modifyable
       s += " \\nodeconnect{r" + parentId + "}{r" + childId + "}\n"; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
     }
     return s;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#resetModify()
-   */
-  public void resetModify ()
-  {
-    this.initialRegexString = this.regex.getRegexString ();
   }
 
 }

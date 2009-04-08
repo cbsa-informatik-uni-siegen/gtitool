@@ -1769,7 +1769,7 @@ public final class ConvertMachineDialog implements
   {
     if ( this.algorithm == null || this.algorithm.length () == 0 )
     {
-      TextLoader loader = new TextLoader();
+      TextLoader loader = new TextLoader ();
       this.algorithm = loader.loadAlgorithm ( this.convertMachineType );
     }
 
@@ -1872,7 +1872,7 @@ public final class ConvertMachineDialog implements
     else
     {
       this.machinePanel.getMainWindow ().handleNew (
-          this.modelRegexConverted.getElement (), true );
+          new DefaultRegexModel ( this.modelRegexConverted.getRegex () ) );
     }
     PreferenceManager.getInstance ().setConvertMachineDialogPreferences (
         this.gui );

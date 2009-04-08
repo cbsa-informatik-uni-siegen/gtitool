@@ -275,6 +275,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     {
       this.model.changeRegexNode ( newRegexNode,
           this.gui.styledRegexParserPanel.getText () );
+      if ( !newRegexNode.isInCoreSyntax () )
+      {
+        getMainWindow ().addButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+      }
+      else
+      {
+        getMainWindow ().removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+      }
+    }
+    else
+    {
+      getMainWindow ().removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
     }
     this.model.getRegex ().getRegexNode ().setShowPositions (
         this.gui.jGTIPanelInfo.isVisible () );

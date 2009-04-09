@@ -752,7 +752,6 @@ public class ConvertGrammarDialog implements
     }
   }
 
-
   /**
    * Eliminates the EpsilonProductions from a {@link CFG}
    * 
@@ -764,7 +763,10 @@ public class ConvertGrammarDialog implements
     for ( Production p : getEpsilonProductions ( cfg ) )
     {
       symbolsToEpsilon.add ( p.getNonterminalSymbol () );
-      cfg.getProduction ().remove ( p );
+      if ( !p.getNonterminalSymbol ().equals ( cfg.getStartSymbol () ) )
+      {
+        cfg.getProduction ().remove ( p );
+      }
     }
     for ( NonterminalSymbol s : symbolsToEpsilon )
     {
@@ -1603,7 +1605,6 @@ public class ConvertGrammarDialog implements
         this.workingProductions = new ArrayList < Production > ();
         this.i = 0;
         this.j = 0;
-
       }
 
       int iNow = this.i;
@@ -1669,7 +1670,13 @@ public class ConvertGrammarDialog implements
           line
               .add ( Messages
                   .getPrettyString ( "ConvertGrammarDialog.EliminatedEpsilonProductions" ) ); //$NON-NLS-1$
-          cfg.getProduction ().removeAll ( this.epsilonProductions );
+          for ( Production p : this.epsilonProductions )
+          {
+            if ( !p.getNonterminalSymbol ().equals ( cfg.getStartSymbol () ) )
+            {
+              cfg.getProduction ().remove ( p );
+            }
+          }
           this.endReached = true;
         }
       }

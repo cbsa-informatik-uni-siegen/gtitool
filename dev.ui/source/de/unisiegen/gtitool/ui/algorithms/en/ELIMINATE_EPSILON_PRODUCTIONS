@@ -1,0 +1,6 @@
+Go through the productions:
+If two productions like B -> βAˠ and A -> ε exist,
+add the production B -> βˠ to the grammar.
+
+Now remove all ε-production except S -> ε.
+(Where S is start symbol)

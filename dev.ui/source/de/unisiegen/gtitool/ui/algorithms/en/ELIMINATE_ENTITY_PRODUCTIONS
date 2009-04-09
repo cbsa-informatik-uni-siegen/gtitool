@@ -1,0 +1,6 @@
+Go through the productions:
+If two productions like A -> B and B -> β exist,
+add the production A -> β to the grammar.
+Repeat this, until no new productions are created.
+
+Now remove all unit productions.

@@ -1,0 +1,6 @@
+Alle Produktionen durchgehen:
+Wenn zwei Produktionen der From B -> βAˠ und A -> ε vorhanden sind,
+dann wird die Produktion B -> βˠ aufgenommen.
+
+Danach alle ε-Produktionen bis auf S -> ε entfernen.
+(Wobei S Startsymbol ist)

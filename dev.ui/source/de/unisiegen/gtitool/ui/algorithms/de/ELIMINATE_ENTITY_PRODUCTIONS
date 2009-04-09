@@ -1,0 +1,7 @@
+Alle Produktionen durchgehen:
+Wenn zwei Produktionen der From A -> B und B -> β vorhanden sind,
+dann wird die Produktion A -> β aufgenommen.
+Dies wird solange durchgeführt, bis keine neuen Produktionen mehr
+entstehen.
+
+Danach alle Einheitsproduktionen entfernen.

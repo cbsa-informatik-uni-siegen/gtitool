@@ -63,7 +63,6 @@ public class AlgorithmDocument extends DefaultStyledDocument
       throws BadLocationException
   {
     String content = getText ( 0, getLength () );
-    content = content.toLowerCase ();
     for ( String s : this.words )
     {
       int offset = startOffset;

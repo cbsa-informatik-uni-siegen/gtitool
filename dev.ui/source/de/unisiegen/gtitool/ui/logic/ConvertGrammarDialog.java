@@ -736,17 +736,13 @@ public class ConvertGrammarDialog implements
       NonterminalSymbol a = p.getNonterminalSymbol ();
       NonterminalSymbol b = ( NonterminalSymbol ) p.getProductionWord ().get (
           0 );
-      if ( a.equals ( b ) )
-      {
-        this.cannotEliminateEntityProduction = true;
-        this.entityProductions = new ArrayList < Production > ();
-        this.entityProductions.add ( p );
-        return;
-      }
       for ( Production p2 : cfg.getProductionForNonTerminal ( b ) )
       {
-        cfg
-            .addProduction ( new DefaultProduction ( a, p2.getProductionWord () ) );
+        Production newProd = new DefaultProduction ( a, p2.getProductionWord () );
+        if ( !cfg.getProduction ().contains ( newProd ) )
+        {
+          cfg.addProduction ( newProd );
+        }
       }
       cfg.getProduction ().remove ( p );
     }
@@ -1185,14 +1181,11 @@ public class ConvertGrammarDialog implements
     {
       performNextStep ();
     }
-    if ( !this.cannotEliminateEntityProduction )
-    {
-      this.gui.setVisible ( false );
+    this.gui.setVisible ( false );
 
-      this.panel.getMainWindow ().handleNew (
-          this.modelConverted.getElement (), false );
-      this.gui.dispose ();
-    }
+    this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
+        false );
+    this.gui.dispose ();
   }
 
 
@@ -1372,20 +1365,12 @@ public class ConvertGrammarDialog implements
         if ( !entitiyProductions.isEmpty () )
         {
           eliminateEntityProductions ( cfg );
-          if ( this.cannotEliminateEntityProduction )
-          {
-            line.add ( Messages.getPrettyString (
-                "ConvertGrammarDialog.CannotEliminateEntityProductions", //$NON-NLS-1$
-                this.entityProductions.get ( 0 ).toPrettyString () ) );
-          }
-          else
-          {
-            line
-                .add ( new PrettyToken (
-                    Messages
-                        .getString ( "ConvertGrammarDialog.EliminatedEntityProductions" ), Style.COMMENT ) ); //$NON-NLS-1$
-            this.initialEliminateEntityProductionsDone = true;
-          }
+          line
+              .add ( new PrettyToken (
+                  Messages
+                      .getString ( "ConvertGrammarDialog.EliminatedEntityProductions" ), Style.COMMENT ) ); //$NON-NLS-1$
+          this.initialEliminateEntityProductionsDone = true;
+
         }
         else if ( !eProductions.isEmpty () )
         {
@@ -1516,6 +1501,7 @@ public class ConvertGrammarDialog implements
       }
       addOutlineComment ( line );
     }
+    // Eliminate Entity Productions
     else if ( this.convertType
         .equals ( ConvertGrammarType.ELIMINATE_ENTITY_PRODUCTIONS ) )
     {
@@ -1544,50 +1530,38 @@ public class ConvertGrammarDialog implements
           NonterminalSymbol b = ( NonterminalSymbol ) this.entityProductions
               .get ( this.i ).getProductionWord ().get ( 0 );
 
-          if ( a.equals ( b ) )
+          if ( this.workingProductions.isEmpty () )
           {
-            this.cannotEliminateEntityProduction = true;
+            // Found new entity production
+            this.workingProductions.addAll ( cfg
+                .getProductionForNonTerminal ( b ) );
+            this.j = 0;
+
             line.add ( Messages.getPrettyString (
-                "ConvertGrammarDialog.CannotEliminateEntityProductions", //$NON-NLS-1$
+                "ConvertGrammarDialog.StepEntityProductionFound",//$NON-NLS-1$
                 this.entityProductions.get ( this.i ).toPrettyString () ) );
           }
           else
           {
-            if ( this.workingProductions.isEmpty () )
+            // Eliminate entity production
+            Production p = this.workingProductions.get ( this.j++ );
+            Production newProd = new DefaultProduction ( a, p
+                .getProductionWord () );
+            if ( !cfg.getProduction ().contains ( newProd ) )
             {
-              // Found new entity production
-              this.workingProductions.addAll ( cfg
-                  .getProductionForNonTerminal ( b ) );
-              this.j = 0;
-
-              line.add ( Messages.getPrettyString (
-                  "ConvertGrammarDialog.StepEntityProductionFound", a //$NON-NLS-1$
-                      .toPrettyString () ) );
-            }
-            else
-            {
-              // Eliminate entity production
-              Production p = this.workingProductions.get ( this.j++ );
-              Production newProd = new DefaultProduction ( a, p
-                  .getProductionWord () );
               cfg.addProduction ( newProd );
               if ( newProd.getProductionWord ().size () == 1
-                  && newProd.getProductionWord ().get ( 0 ).equals (
-                      newProd.getNonterminalSymbol () ) )
+                  && newProd.getProductionWord ().get ( 0 ) instanceof NonterminalSymbol )
               {
-                this.cannotEliminateEntityProduction = true;
-                line.add ( Messages.getPrettyString (
-                    "ConvertGrammarDialog.CannotEliminateEntityProductions", //$NON-NLS-1$
-                    newProd.toPrettyString () ) );
-              }
-              else
-              {
-                line.add ( Messages.getPrettyString (
-                    "ConvertGrammarDialog.StepCreatedProduction", newProd //$NON-NLS-1$
-                        .toPrettyString () ) );
+                this.entityProductions.add ( newProd );
               }
             }
+            line.add ( Messages.getPrettyString (
+                "ConvertGrammarDialog.StepCreatedProduction", newProd //$NON-NLS-1$
+                    .toPrettyString () ) );
+
           }
+
           if ( this.j >= this.workingProductions.size () )
           {
             this.workingProductions.clear ();
@@ -1615,6 +1589,7 @@ public class ConvertGrammarDialog implements
           addedProduction ) );
       addOutlineComment ( line );
     }
+    // Eliminate Epsilon Productions
     else if ( this.convertType
         .equals ( ConvertGrammarType.ELIMINATE_EPSILON_PRODUCTIONS ) )
     {
@@ -1678,7 +1653,10 @@ public class ConvertGrammarDialog implements
             line.add ( Messages.getPrettyString (
                 "ConvertGrammarDialog.StepCreatedProduction", newProduction //$NON-NLS-1$
                     .toPrettyString () ) );
-            cfg.addProduction ( newProduction );
+            if ( !cfg.getProduction ().contains ( newProduction ) )
+            {
+              cfg.addProduction ( newProduction );
+            }
           }
           if ( this.j >= this.workingProductions.size () )
           {
@@ -1711,12 +1689,6 @@ public class ConvertGrammarDialog implements
     updateConverted ();
     setStatus ();
   }
-
-
-  /**
-   * Flag that indicates if elimination of entity productions is not possible
-   */
-  private boolean cannotEliminateEntityProduction = false;
 
 
   /**
@@ -1788,7 +1760,6 @@ public class ConvertGrammarDialog implements
     updateConverted ();
     this.convertMachineTableModel.removeLastRow ();
     this.endReached = false;
-    this.cannotEliminateEntityProduction = false;
     setStatus ();
   }
 
@@ -1798,17 +1769,6 @@ public class ConvertGrammarDialog implements
    */
   private final void setStatus ()
   {
-    // Error in eliminating entity productions
-    if ( this.cannotEliminateEntityProduction )
-    {
-      this.endReached = true;
-      this.gui.jGTIButtonOk.setEnabled ( false );
-    }
-    else
-    {
-      this.gui.jGTIButtonOk.setEnabled ( true );
-    }
-
     if ( this.gui.jGTIToolBarToggleButtonAutoStep.isSelected () )
     {
       this.gui.jGTIToolBarButtonBeginStep.setEnabled ( false );

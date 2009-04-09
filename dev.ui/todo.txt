@@ -4,5 +4,4 @@ SM		- Automat in Regulären Ausdruck umwandeln
 SM		- Drucken: Mehrere Komponenten pro Seite mit Auto-Verkleinerung, also
 		  nur mit einem Print-Job
 SM		- Position der Textfenster merken
-SM		- Undo bei erstellten Regexn reparieren.
 SM		- Algorithmen eintragen.

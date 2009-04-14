@@ -1,0 +1,7 @@
+for i = 1 to n do {
+  for j = 1 to i − 1 do {
+    Replace every Production like Ai -> Aj ˠ with
+    Productions Ai -> β1 ˠ | ... | βk ˠ, where Aj -> β1|...|βk are all Productions of Aj
+  }
+  eliminate the current left recursion of Ai
+}

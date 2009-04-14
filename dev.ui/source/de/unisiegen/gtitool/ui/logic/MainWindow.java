@@ -5384,6 +5384,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.ExportPicture" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemExportPicture ().setMnemonic (
         Messages.getString ( "MainWindow.ExportPictureMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // ExportLatex
+    MainWindow.this.gui.getJMenuItemExportLatex ().setText (
+        Messages.getString ( "MainWindow.LatexExport" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemExportLatex ().setMnemonic (
+        Messages.getString ( "MainWindow.LatexExportMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // RecentlyUsed
     MainWindow.this.gui.getJMenuRecentlyUsed ().setText (
         Messages.getString ( "MainWindow.RecentlyUsed" ) ); //$NON-NLS-1$
@@ -5407,11 +5412,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.Undo" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemUndo ().setMnemonic (
         Messages.getString ( "MainWindow.UndoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonUndo ().setToolTipText (
+        Messages.getString ( "MainWindow.UndoToolTip" ) ); //$NON-NLS-1$
     // Redo
     MainWindow.this.gui.getJMenuItemRedo ().setText (
         Messages.getString ( "MainWindow.Redo" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemRedo ().setMnemonic (
         Messages.getString ( "MainWindow.RedoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonRedo ().setToolTipText (
+        Messages.getString ( "MainWindow.RedoToolTip" ) ); //$NON-NLS-1$
     // Preferences
     MainWindow.this.gui.getJMenuItemPreferences ().setText (
         Messages.getString ( "MainWindow.Preferences" ) ); //$NON-NLS-1$
@@ -5440,6 +5449,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.SecondView" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJCheckBoxMenuItemSecondView ().setMnemonic (
         Messages.getString ( "MainWindow.SecondViewMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Regex info
+    MainWindow.this.gui.getJCheckBoxMenuItemRegexInfo ().setText (
+        Messages.getString ( "MainWindow.RegexInfo" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJCheckBoxMenuItemRegexInfo ().setMnemonic (
+        Messages.getString ( "MainWindow.RegexInfoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
 
     /*
      * Execute
@@ -5476,6 +5490,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.ENFA" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemConvertToPDA ().setText (
         Messages.getString ( "MainWindow.PDA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemConvertToRegex ().setText (
+        Messages.getString ( "MainWindow.REGEX" ) ); //$NON-NLS-1$
     // ConvertToComplete
     MainWindow.this.gui.getJMenuConvertToComplete ().setText (
         Messages.getString ( "MainWindow.ConvertToComplete" ) ); //$NON-NLS-1$
@@ -5503,6 +5519,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.ENFA" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemPDA ().setText (
         Messages.getString ( "MainWindow.PDA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemCFG ().setText (
+        Messages.getString ( "MainWindow.CFG" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemRG ().setText (
+        Messages.getString ( "MainWindow.RG" ) ); //$NON-NLS-1$
     // AutoLayout
     MainWindow.this.gui.getJMenuItemAutoLayout ().setText (
         Messages.getString ( "MainWindow.AutoLayout" ) ); //$NON-NLS-1$
@@ -5513,7 +5533,44 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.Minimize" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemMinimize ().setMnemonic (
         Messages.getString ( "MainWindow.MinimizeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-
+    // To Core Syntax
+    MainWindow.this.gui.getJMenuItemToCoreSyntax ().setText (
+        Messages.getString ( "MainWindow.ToCoreSyntax" ) );//$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemToCoreSyntax ().setMnemonic (
+        Messages.getString ( "MainWindow.ToCoreSyntaxMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Eliminate left recursion
+    MainWindow.this.gui.getJMenuItemEliminateLeftRecursion ().setText (
+        Messages.getString ( "MainWindow.EliminateLeftRecursion" ) );//$NON-NLS-1$
+    MainWindow.this.gui
+        .getJMenuItemEliminateLeftRecursion ()
+        .setMnemonic (
+            Messages
+                .getString ( "MainWindow.EliminateLeftRecursionMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Eliminate entity productions
+    MainWindow.this.gui.getJMenuItemEliminateEntityProductions ().setText (
+        Messages.getString ( "MainWindow.EliminateEntityProductions" ) );//$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemEliminateEntityProductions ()
+        .setMnemonic (
+            Messages.getString (
+                "MainWindow.EliminateEntityProductionsMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Eliminate epsilon productions
+    MainWindow.this.gui.getJMenuItemEliminateEpsilonProductions ().setText (
+        Messages.getString ( "MainWindow.EliminateEpsilonProductions" ) );//$NON-NLS-1$
+    MainWindow.this.gui
+        .getJMenuItemEliminateEpsilonProductions ()
+        .setMnemonic (
+            Messages.getString (
+                "MainWindow.EliminateEpsilonProductionsMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // left factoring
+    MainWindow.this.gui.getJMenuItemLeftfactoring ().setText (
+        Messages.getString ( "MainWindow.LeftFactoring" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemLeftfactoring ().setMnemonic (
+        Messages.getString ( "MainWindow.LeftFactoringMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // create rdp
+    MainWindow.this.gui.getJMenuItemCreateRDP ().setText (
+        Messages.getString ( "MainWindow.CreateRDP" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemCreateRDP ().setMnemonic (
+        Messages.getString ( "MainWindow.CreateRDPMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     /*
      * Extras
      */

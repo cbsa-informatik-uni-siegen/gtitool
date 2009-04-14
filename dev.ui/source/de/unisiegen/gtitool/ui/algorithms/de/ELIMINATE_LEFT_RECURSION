@@ -1,0 +1,7 @@
+for i = 1 to n do {
+  for j = 1 to i − 1 do {
+    ersetze jede Produktion der Form Ai -> Aj ˠ durch die
+    Produktion Ai -> β1 ˠ | ... | βk ˠ, wobei Aj -> β1|...|βk alle derzeitigen Produktionen für Aj sind
+  }
+  elemeniere die unmittelbare Linksrekursion für Ai
+}

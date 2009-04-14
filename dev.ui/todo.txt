@@ -5,3 +5,4 @@ SM		- Drucken: Mehrere Komponenten pro Seite mit Auto-Verkleinerung, also
 		  nur mit einem Print-Job
 SM		- Position der Textfenster merken
 SM		- Algorithmen eintragen.
+SM		- Algorithmen drucken.

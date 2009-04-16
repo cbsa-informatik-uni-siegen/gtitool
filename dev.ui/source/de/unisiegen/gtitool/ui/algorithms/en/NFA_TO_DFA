@@ -1,12 +1,7 @@
-Am Anfang ist firstpos(root) der einzige unmarkierte Zustand in Dstates.
-while(es exisitiert ein unmarkierter Zustand T) do begin
-  markiere T;
-  for(jedes Eingabezeichen a) do begin
-    Sei U die Menge der Positionen, die für eine
-    Position p von T in followpos(p) enthalten sind,
-    wobei a das Symbol an Position p ist;
-    if(U ist nicht leer und nicht in Dstates) then
-      füge U als unmarkierten Zustand zu Dstates hinzu.
-    Dtran[T,a]:=U
-  end
-end
+For the NFA A = (Σ,Q,s,F,Δ) the Potenzautomat(TODO) is A' = (Σ,Q',s',F',δ), where
+- Q' = p(Q), power set of Q
+- s' = {s}
+- F' = {P ∈ p(Q) | P ∩ F ≠ ∅}
+     = {P ⊆ Q | P contains at least one state of F}
+- δ: p(Q) x Σ -> p(Q)
+  δ(P,a) = {q ∈ Q | there is a p ∈ P with (p,a,q) ∈ Δ}

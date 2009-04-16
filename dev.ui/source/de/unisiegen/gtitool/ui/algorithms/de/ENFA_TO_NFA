@@ -10,3 +10,6 @@ while(es exisitiert ein unmarkierter Zustand T) do begin
     Dtran[T,a]:=U
   end
 end
+
+
+∈ ∪ ∅ ∩ ≠ ⊆

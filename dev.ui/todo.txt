@@ -1,8 +1,12 @@
 SM		- LaTeX Export (Dynamische Umsetzung wie bei TPML)
 SM		- Bei einer Grammatik direkt das Wort eingeben können
-SM		- Automat in Regulären Ausdruck umwandeln
 SM		- Drucken: Mehrere Komponenten pro Seite mit Auto-Verkleinerung, also
 		  nur mit einem Print-Job
 SM		- Position der Textfenster merken
 SM		- Algorithmen eintragen.
 SM		- Algorithmen drucken.
+SM		- Letzte Aktion bei Grammatik algorithmen highlighten
+SM		- Regex -> NDEA
+SM		- Blackboxen sollten wachsen.
+SM		- Handbuch erweitern.
+SM		- Vortrag machen.

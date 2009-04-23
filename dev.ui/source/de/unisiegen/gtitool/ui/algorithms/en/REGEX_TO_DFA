@@ -1,12 +1,12 @@
-Am Anfang ist firstpos(root) der einzige unmarkierte Zustand in Dstates.
-while(es exisitiert ein unmarkierter Zustand T) do begin
-  markiere T;
-  for(jedes Eingabezeichen a) do begin
-    Sei U die Menge der Positionen, die für eine
-    Position p von T in followpos(p) enthalten sind,
-    wobei a das Symbol an Position p ist;
-    if(U ist nicht leer und nicht in Dstates) then
-      füge U als unmarkierten Zustand zu Dstates hinzu.
+First firstpos(root) is the only unmarked state in Dstates.
+while(There is an unmarked state T) do begin
+  mark T;
+  for(every Character a) do begin
+    Let U be the set of positions, contain a
+    Position p of T in followpos(p), where
+    a is the Symbol at position p;
+    if(U is not empty and not in Dstates) then
+      add U as unmarked state to Dstates.
     Dtran[T,a]:=U
   end
 end

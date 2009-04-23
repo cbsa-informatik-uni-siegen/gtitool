@@ -1320,6 +1320,7 @@ public class ConvertRegexToMachineDialog implements
    */
   public final void handleAlgorithmWindowChanged ( boolean show )
   {
+    //this.algorithm = Messages.getString("ConvertGrammarDialog.CannotEliminateEntityProductions");
     if(this.algorithm == null || this.algorithm.length () == 0) {
       TextLoader loader = new TextLoader();
       this.algorithm = loader.loadAlgorithm ( this.convertType );

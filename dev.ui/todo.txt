@@ -5,7 +5,6 @@ SM		- Drucken: Mehrere Komponenten pro Seite mit Auto-Verkleinerung, also
 SM		- Position der Textfenster merken
 SM		- Algorithmen eintragen.
 SM		- Algorithmen drucken.
-SM		- Letzte Aktion bei Grammatik algorithmen highlighten
 SM		- Regex -> NDEA
 SM		- Handbuch erweitern.
 SM		- Vortrag machen.

@@ -44,6 +44,15 @@ public interface ColorChangedListener extends EventListener
 
 
   /**
+   * Invoked when the color of the highlighted {@link NonterminalSymbol}
+   * changed.
+   * 
+   * @param newColor The new color of the highlighted {@link NonterminalSymbol}.
+   */
+  public void colorChangedNonterminalSymbolHighlight ( Color newColor );
+
+
+  /**
    * Invoked when the color of the parser error changed.
    * 
    * @param newColor The new color of the error warning.
@@ -81,6 +90,14 @@ public interface ColorChangedListener extends EventListener
    * @param newColor The new color of the error {@link Production}.
    */
   public void colorChangedProductionError ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the highlight {@link Production} changed.
+   * 
+   * @param newColor The new color of the highlight {@link Production}.
+   */
+  public void colorChangedProductionHighlight ( Color newColor );
 
 
   /**

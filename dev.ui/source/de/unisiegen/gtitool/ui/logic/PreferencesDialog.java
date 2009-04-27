@@ -105,8 +105,7 @@ public final class PreferencesDialog implements
     @Override
     public final Component getTreeCellRendererComponent ( JTree tree,
         Object value, boolean sel, boolean expanded, boolean leaf, int row,
-        @SuppressWarnings ( "unused" )
-        boolean focus )
+        @SuppressWarnings ( "unused" ) boolean focus )
     {
       super.getTreeCellRendererComponent ( tree, value, sel, expanded, leaf,
           row, sel );
@@ -157,8 +156,7 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" )
-    Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -220,8 +218,7 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" )
-    Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -284,8 +281,7 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" )
-    Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -336,8 +332,7 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" )
-    Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -399,8 +394,7 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" )
-    Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -462,8 +456,7 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" )
-    Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -567,6 +560,12 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The {@link ColorItem} of the highlight {@link NonterminalSymbol}.
+   */
+  private ColorItem colorItemNonterminalSymbolHighlight;
+
+
+  /**
    * The {@link ColorItem} of the parser error.
    */
   private ColorItem colorItemParserError;
@@ -594,6 +593,12 @@ public final class PreferencesDialog implements
    * The {@link ColorItem} of the error {@link Production}.
    */
   private ColorItem colorItemProductionError;
+
+
+  /**
+   * The {@link ColorItem} of the highlight {@link Production}.
+   */
+  private ColorItem colorItemProductionHighlight;
 
 
   /**
@@ -789,6 +794,12 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The initial {@link ColorItem} of the error {@link NonterminalSymbol}.
+   */
+  private ColorItem initialColorItemNonterminalSymbolHighlight;
+
+
+  /**
    * The initial {@link ColorItem} of the parser error.
    */
   private ColorItem initialColorItemParserError;
@@ -816,6 +827,12 @@ public final class PreferencesDialog implements
    * The initial {@link ColorItem} of the error {@link Production}.
    */
   private ColorItem initialColorItemProductionError;
+
+
+  /**
+   * The initial {@link ColorItem} of the highlight {@link Production}.
+   */
+  private ColorItem initialColorItemProductionHighlight;
 
 
   /**
@@ -867,7 +884,8 @@ public final class PreferencesDialog implements
 
 
   /**
-   * The initial {@link ColorItem} of the parser start {@link NonterminalSymbol} .
+   * The initial {@link ColorItem} of the parser start {@link NonterminalSymbol}
+   * .
    */
   private ColorItem initialColorItemStartNonterminalSymbol;
 
@@ -1396,9 +1414,11 @@ public final class PreferencesDialog implements
     this.colorItemSymbolError.restore ();
 
     this.colorItemProductionError.restore ();
+    this.colorItemProductionHighlight.restore ();
 
     this.colorItemNonterminalSymbol.restore ();
     this.colorItemNonterminalSymbolError.restore ();
+    this.colorItemNonterminalSymbolHighlight.restore ();
     this.colorItemStartNonterminalSymbol.restore ();
 
     this.colorItemTerminalSymbol.restore ();
@@ -1515,8 +1535,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.alphabetItem.restore ();
         PreferencesDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
@@ -1598,8 +1618,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTISliderAutoStep
             .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM
@@ -1748,6 +1768,10 @@ public final class PreferencesDialog implements
         .getColorItemProductionError ();
     this.initialColorItemProductionError = this.colorItemProductionError
         .clone ();
+    this.colorItemProductionHighlight = PreferenceManager.getInstance ()
+        .getColorItemProductionHighlight ();
+    this.initialColorItemProductionHighlight = this.colorItemProductionHighlight
+        .clone ();
 
     // NonterminalSymbol
     this.colorItemNonterminalSymbol = PreferenceManager.getInstance ()
@@ -1757,6 +1781,10 @@ public final class PreferencesDialog implements
     this.colorItemNonterminalSymbolError = PreferenceManager.getInstance ()
         .getColorItemNonterminalSymbolError ();
     this.initialColorItemNonterminalSymbolError = this.colorItemNonterminalSymbolError
+        .clone ();
+    this.colorItemNonterminalSymbolHighlight = PreferenceManager.getInstance ()
+        .getColorItemNonterminalSymbolHighlight ();
+    this.initialColorItemNonterminalSymbolHighlight = this.colorItemNonterminalSymbolHighlight
         .clone ();
     this.colorItemStartNonterminalSymbol = PreferenceManager.getInstance ()
         .getColorItemStartNonterminalSymbol ();
@@ -1802,8 +1830,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         TreePath selectedPath = PreferencesDialog.this.gui.jGTITreeColors
             .getSelectionModel ().getSelectionPath ();
@@ -1920,11 +1948,13 @@ public final class PreferencesDialog implements
         .getColorItemProductionGroup ();
 
     this.productionNode.add ( this.colorItemProductionError );
+    this.productionNode.add ( this.colorItemProductionHighlight );
 
     this.nonterminalSymbolNode = PreferenceManager.getInstance ()
         .getColorItemNonterminalSymbolGroup ();
     this.nonterminalSymbolNode.add ( this.colorItemNonterminalSymbol );
     this.nonterminalSymbolNode.add ( this.colorItemNonterminalSymbolError );
+    this.nonterminalSymbolNode.add ( this.colorItemNonterminalSymbolHighlight );
     this.nonterminalSymbolNode.add ( this.colorItemStartNonterminalSymbol );
 
     this.terminalSymbolNode = PreferenceManager.getInstance ()
@@ -2031,8 +2061,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxLanguage
             .setSelectedItem ( new LanguageItem (
@@ -2135,8 +2165,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxLookAndFeel
             .setSelectedItem ( new LookAndFeelItem (
@@ -2216,8 +2246,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxMouseSelection
             .setSelectedIndex ( PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM
@@ -2294,8 +2324,8 @@ public final class PreferencesDialog implements
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void actionPerformed ( @SuppressWarnings ( "unused" )
-          ActionEvent event )
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent event )
           {
             PreferencesDialog.this.nonterminalSymbolSetItem.restore ();
             PreferencesDialog.this.gui.terminalPanelForm
@@ -2366,8 +2396,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxPDAMode
             .setSelectedIndex ( PreferenceManager.DEFAULT_PDA_MODE_ITEM
@@ -2445,8 +2475,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.pushDownAlphabetItem.restore ();
         PreferencesDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
@@ -2501,8 +2531,8 @@ public final class PreferencesDialog implements
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void actionPerformed ( @SuppressWarnings ( "unused" )
-          ActionEvent event )
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent event )
           {
             PreferencesDialog.this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
                 .setSelected ( de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
@@ -2565,8 +2595,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.startSymbolItem.restore ();
         PreferencesDialog.this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
@@ -2635,8 +2665,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.terminalSymbolSetItem.restore ();
         PreferencesDialog.this.gui.terminalPanelForm
@@ -2705,8 +2735,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxTransition
             .setSelectedIndex ( PreferenceManager.DEFAULT_TRANSITION_ITEM
@@ -2781,8 +2811,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxWordMode
             .setSelectedIndex ( PreferenceManager.DEFAULT_WORD_MODE_ITEM
@@ -2852,8 +2882,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTISliderZoom
             .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM.getFactor () );
@@ -3128,6 +3158,10 @@ public final class PreferencesDialog implements
         .getString ( "Preferences.ColorProductionErrorCaption" ) ); //$NON-NLS-1$
     this.colorItemProductionError.setDescription ( Messages
         .getString ( "Preferences.ColorProductionErrorDescription" ) ); //$NON-NLS-1$
+    this.colorItemProductionHighlight.setCaption ( Messages
+        .getString ( "Preferences.ColorProductionHighlightCaption" ) ); //$NON-NLS-1$
+    this.colorItemProductionHighlight.setDescription ( Messages
+        .getString ( "Preferences.ColorProductionHighlightDescription" ) ); //$NON-NLS-1$
 
     // NonterminalSymbol
     this.colorItemNonterminalSymbol.setCaption ( Messages
@@ -3138,6 +3172,11 @@ public final class PreferencesDialog implements
         .getString ( "Preferences.ColorNonterminalSymbolErrorCaption" ) ); //$NON-NLS-1$
     this.colorItemNonterminalSymbolError.setDescription ( Messages
         .getString ( "Preferences.ColorNonterminalSymbolErrorDescription" ) ); //$NON-NLS-1$
+    this.colorItemNonterminalSymbolHighlight.setCaption ( Messages
+        .getString ( "Preferences.ColorNonterminalSymbolHighlightCaption" ) ); //$NON-NLS-1$
+    this.colorItemNonterminalSymbolHighlight
+        .setDescription ( Messages
+            .getString ( "Preferences.ColorNonterminalSymbolHighlightDescription" ) ); //$NON-NLS-1$
     this.colorItemStartNonterminalSymbol.setCaption ( Messages
         .getString ( "Preferences.ColorStartNonterminalSymbolCaption" ) ); //$NON-NLS-1$
     this.colorItemStartNonterminalSymbol.setDescription ( Messages
@@ -3572,6 +3611,17 @@ public final class PreferencesDialog implements
       PreferenceManager.getInstance ().fireColorChangedProductionError (
           this.colorItemProductionError.getColor () );
     }
+    // Production highlight
+    if ( !this.initialColorItemProductionHighlight.getColor ().equals (
+        this.colorItemProductionHighlight.getColor () ) )
+    {
+      this.initialColorItemProductionHighlight = this.colorItemProductionHighlight
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemProductionHighlight (
+          this.colorItemProductionHighlight );
+      PreferenceManager.getInstance ().fireColorChangedProductionHighlight (
+          this.colorItemProductionHighlight.getColor () );
+    }
 
     // NonterminalSymbol
     if ( this.gui.jGTITreeColors.isExpanded ( new TreePath (
@@ -3605,6 +3655,18 @@ public final class PreferencesDialog implements
           this.colorItemNonterminalSymbolError );
       PreferenceManager.getInstance ().fireColorChangedNonterminalSymbolError (
           this.colorItemNonterminalSymbolError.getColor () );
+    }
+    // NonterminalSymbol highlight
+    if ( !this.initialColorItemNonterminalSymbolHighlight.getColor ().equals (
+        this.colorItemNonterminalSymbolHighlight.getColor () ) )
+    {
+      this.initialColorItemNonterminalSymbolHighlight = this.colorItemNonterminalSymbolHighlight
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemNonterminalSymbolHighlight (
+          this.colorItemNonterminalSymbolHighlight );
+      PreferenceManager.getInstance ()
+          .fireColorChangedNonterminalSymbolHighlight (
+              this.colorItemNonterminalSymbolHighlight.getColor () );
     }
     // NonterminalSymbol start
     if ( !this.initialColorItemStartNonterminalSymbol.getColor ().equals (

@@ -33,6 +33,16 @@ public interface NonterminalSymbol extends Entity < NonterminalSymbol >,
 
 
   /**
+   * Returns true if this {@link NonterminalSymbol} is a highlighted
+   * {@link NonterminalSymbol}, otherwise false.
+   * 
+   * @return True if this {@link NonterminalSymbol} is a highlighted
+   *         {@link NonterminalSymbol}, otherwise false.
+   */
+  public boolean isHighlighted ();
+
+
+  /**
    * Returns true if this {@link NonterminalSymbol} is a start
    * {@link NonterminalSymbol}, otherwise false.
    * 
@@ -56,4 +66,12 @@ public interface NonterminalSymbol extends Entity < NonterminalSymbol >,
    * @param start The start value to set.
    */
   public void setStart ( boolean start );
+
+
+  /**
+   * Sets the highlighted value.
+   * 
+   * @param highlighted The highlighted value to set.
+   */
+  public void setHighlighted ( boolean highlighted );
 }

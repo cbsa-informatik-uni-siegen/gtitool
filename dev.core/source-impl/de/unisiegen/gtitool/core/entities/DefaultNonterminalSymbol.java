@@ -46,6 +46,12 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
+   * This {@link NonterminalSymbol} is a highlighted {@link NonterminalSymbol}.
+   */
+  private boolean highlighted = false;
+
+
+  /**
    * This {@link NonterminalSymbol} is a start {@link NonterminalSymbol}.
    */
   private boolean start = false;
@@ -246,6 +252,17 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   /**
    * {@inheritDoc}
    * 
+   * @see NonterminalSymbol#isHighlighted()
+   */
+  public boolean isHighlighted ()
+  {
+    return this.highlighted;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see NonterminalSymbol#isStart()
    */
   public final boolean isStart ()
@@ -276,6 +293,21 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
     if ( this.error != error )
     {
       this.error = error;
+      firePrettyStringChanged ();
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.NonterminalSymbol#setHighlighted(boolean)
+   */
+  public void setHighlighted ( boolean highlighted )
+  {
+    if ( this.highlighted != highlighted )
+    {
+      this.highlighted = highlighted;
       firePrettyStringChanged ();
     }
   }
@@ -348,6 +380,11 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
       {
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.START_NONTERMINAL_SYMBOL ) );
+      }
+      else if ( this.highlighted )
+      {
+        this.cachedPrettyString.add ( new PrettyToken ( this.name,
+            Style.NONTERMINAL_SYMBOL_HIGHLIGHT ) );
       }
       else
       {

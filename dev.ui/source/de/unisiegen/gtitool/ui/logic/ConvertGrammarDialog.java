@@ -415,6 +415,7 @@ public class ConvertGrammarDialog implements
       NonterminalSymbol c = new DefaultNonterminalSymbol ( s.getName () );
       try
       {
+        c.setHighlighted ( s.isHighlighted () );
         nonterminalSet.add ( c );
       }
       catch ( NonterminalSymbolSetException exc )
@@ -468,7 +469,9 @@ public class ConvertGrammarDialog implements
           }
         }
       }
-      newCFG.addProduction ( new DefaultProduction ( nonterminal, word ) );
+      Production newProd = new DefaultProduction ( nonterminal, word );
+      newProd.setHighlighted ( p.isHighlighted () );
+      newCFG.addProduction ( newProd );
     }
     return newCFG;
   }
@@ -702,6 +705,7 @@ public class ConvertGrammarDialog implements
       DefaultNonterminalSymbol otherS = new DefaultNonterminalSymbol ( s
           .getName ()
           + "'" ); //$NON-NLS-1$
+      otherS.setHighlighted ( true );
       cfg.getNonterminalSymbolSet ().add ( otherS );
       this.nonterminals.addElement ( otherS );
       ArrayList < Production > otherProductions = new ArrayList < Production > ();
@@ -717,8 +721,10 @@ public class ConvertGrammarDialog implements
         p.getProductionWord ().get ().remove ( 0 );
         p.getProductionWord ().add ( otherS );
       }
-      cfg.addProduction ( new DefaultProduction ( otherS,
-          new DefaultProductionWord () ) );
+      Production p = new DefaultProduction ( otherS,
+          new DefaultProductionWord () );
+      p.setHighlighted ( true );
+      cfg.addProduction ( p );
     }
   }
 
@@ -739,6 +745,7 @@ public class ConvertGrammarDialog implements
       for ( Production p2 : cfg.getProductionForNonTerminal ( b ) )
       {
         Production newProd = new DefaultProduction ( a, p2.getProductionWord () );
+        newProd.setHighlighted ( true );
         if ( !cfg.getProduction ().contains ( newProd ) )
         {
           cfg.addProduction ( newProd );
@@ -751,6 +758,7 @@ public class ConvertGrammarDialog implements
       eliminateEntityProductions ( cfg );
     }
   }
+
 
   /**
    * Eliminates the EpsilonProductions from a {@link CFG}
@@ -780,8 +788,10 @@ public class ConvertGrammarDialog implements
             w.add ( m );
           }
         }
-        cfg.addProduction ( new DefaultProduction ( p.getNonterminalSymbol (),
-            w ) );
+        Production newProd = new DefaultProduction ( p.getNonterminalSymbol (),
+            w );
+        newProd.setHighlighted ( true );
+        cfg.addProduction ( newProd );
       }
     }
 
@@ -1242,6 +1252,7 @@ public class ConvertGrammarDialog implements
     {
       NonterminalSymbol newSymbol = new DefaultNonterminalSymbol ( a.getName ()
           + "'" ); //$NON-NLS-1$
+      newSymbol.setHighlighted ( true );
       try
       {
         cfg.getNonterminalSymbolSet ().add ( newSymbol );
@@ -1252,7 +1263,9 @@ public class ConvertGrammarDialog implements
       }
       ProductionWord newWord = new DefaultProductionWord ( prefix.get () );
       newWord.add ( newSymbol );
-      cfg.addProduction ( new DefaultProduction ( a, newWord ) );
+      Production prod = new DefaultProduction ( a, newWord );
+      prod.setHighlighted ( true );
+      cfg.addProduction ( prod );
       for ( int k = 0 ; k < productions.size () ; k++ )
       {
         Production p = productions.get ( k );
@@ -1262,7 +1275,9 @@ public class ConvertGrammarDialog implements
         {
           word.add ( p.getProductionWord ().get ( l ) );
         }
-        cfg.addProduction ( new DefaultProduction ( newSymbol, word ) );
+        Production pr = new DefaultProduction ( newSymbol, word );
+        pr.setHighlighted ( true );
+        cfg.addProduction ( pr );
         cfg.getProduction ().remove ( p );
       }
     }
@@ -1331,6 +1346,17 @@ public class ConvertGrammarDialog implements
   private final void performNextStep ()
   {
     CFG oldCFG = cloneConverted ();
+    CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
+
+    for ( Production p : cfg.getProduction () )
+    {
+      p.setHighlighted ( false );
+    }
+    for ( NonterminalSymbol s : cfg.getNonterminalSymbolSet () )
+    {
+      s.setHighlighted ( false );
+    }
+
     if ( this.convertType.equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
     {
       DefaultListModel oldNonterminalModel = new DefaultListModel ();
@@ -1341,7 +1367,6 @@ public class ConvertGrammarDialog implements
       int iNow = this.i;
       int jNow = this.j;
 
-      CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
       ArrayList < Production > entitiyProductions = new ArrayList < Production > ();
       if ( this.gui.jGTICheckBoxEntityProductions.isSelected () )
       {
@@ -1426,6 +1451,7 @@ public class ConvertGrammarDialog implements
                     .getProductionWord ().get () );
                 word.add ( pi.getProductionWord ().get () );
                 Production p = new DefaultProduction ( ai, word );
+                p.setHighlighted ( true );
                 cfg.addProduction ( p );
               }
             }
@@ -1461,7 +1487,6 @@ public class ConvertGrammarDialog implements
     }
     else if ( this.convertType.equals ( ConvertGrammarType.LEFT_FACTORING ) )
     {
-      CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
       NonterminalSymbol a = null;
       ProductionWord prefix = null;
       for ( NonterminalSymbol s : cfg.getNonterminalSymbolSet () )
@@ -1507,7 +1532,6 @@ public class ConvertGrammarDialog implements
     else if ( this.convertType
         .equals ( ConvertGrammarType.ELIMINATE_ENTITY_PRODUCTIONS ) )
     {
-      CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
       PrettyString line = new PrettyString ();
       if ( this.entityProductions == null )
       {
@@ -1549,6 +1573,7 @@ public class ConvertGrammarDialog implements
             Production p = this.workingProductions.get ( this.j++ );
             Production newProd = new DefaultProduction ( a, p
                 .getProductionWord () );
+            newProd.setHighlighted ( true );
             if ( !cfg.getProduction ().contains ( newProd ) )
             {
               cfg.addProduction ( newProd );
@@ -1597,7 +1622,6 @@ public class ConvertGrammarDialog implements
     {
 
       PrettyString line = new PrettyString ();
-      CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
 
       if ( this.epsilonProductions == null )
       {
@@ -1641,6 +1665,7 @@ public class ConvertGrammarDialog implements
             }
             Production newProduction = new DefaultProduction ( p
                 .getNonterminalSymbol (), w );
+            newProduction.setHighlighted ( true );
             if ( w.get ().isEmpty () )
             {
               // If created an epsilon production add it to the arraylist

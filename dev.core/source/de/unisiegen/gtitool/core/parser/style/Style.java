@@ -41,9 +41,19 @@ public enum Style
   NONTERMINAL_SYMBOL_ERROR ( true, false ),
 
   /**
+   * Style of error {@link NonterminalSymbol}s.
+   */
+  NONTERMINAL_SYMBOL_HIGHLIGHT ( true, false ),
+
+  /**
    * Style of error {@link Production}s.
    */
   PRODUCTION_ERROR ( true, false ),
+
+  /**
+   * Style of error {@link Production}s.
+   */
+  PRODUCTION_HIGHLIGHT ( true, false ),
 
   /**
    * Style of a RegexPosition
@@ -198,6 +208,11 @@ public enum Style
         return PreferenceManager.getInstance ().getColorItemProductionError ()
             .getColor ();
       }
+      case PRODUCTION_HIGHLIGHT :
+      {
+        return PreferenceManager.getInstance ()
+            .getColorItemProductionHighlight ().getColor ();
+      }
       case NONTERMINAL_SYMBOL :
       {
         return PreferenceManager.getInstance ()
@@ -208,6 +223,9 @@ public enum Style
         return PreferenceManager.getInstance ()
             .getColorItemNonterminalSymbolError ().getColor ();
       }
+      case NONTERMINAL_SYMBOL_HIGHLIGHT :
+        return PreferenceManager.getInstance ()
+            .getColorItemNonterminalSymbolHighlight ().getColor ();
       case START_NONTERMINAL_SYMBOL :
       {
         return PreferenceManager.getInstance ()
@@ -237,9 +255,9 @@ public enum Style
       case REGEX_POSITION :
         return PreferenceManager.getInstance ().getColorItemRegexPosition ()
             .getColor ();
-      case COMMENT:
+      case COMMENT :
         return PreferenceManager.getInstance ().getColorItemRegexComment ()
-        .getColor ();
+            .getColor ();
       case REGEX_TOOL_TIP_TEXT :
         return PreferenceManager.getInstance ().getColorItemRegexToolTipText ()
             .getColor ();

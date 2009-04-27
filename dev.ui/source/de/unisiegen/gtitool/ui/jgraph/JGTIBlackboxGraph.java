@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.jgraph;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import org.jgraph.graph.DefaultGraphModel;
@@ -53,7 +54,8 @@ public class JGTIBlackboxGraph extends JGTIGraph
    * The y space
    */
   public static int Y_SPACE = 8;
-  
+
+
   /**
    * The scale factor
    */
@@ -89,9 +91,27 @@ public class JGTIBlackboxGraph extends JGTIGraph
           + bview.getStartState ().getWidth () + 2 * JGTIBlackboxGraph.X_SPACE );
       int yString = ( int ) ( bview.getStartState ().getPositionY () + bview
           .getStartState ().getHeight () / 2 );
-      g.drawString ( bview.getContent ().toPrettyString ().toString (),
-          xString, yString );
+      g.drawString ( bview.getContentString (), xString, yString );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.jgraph.JGTIGraph#getToolTipText(java.awt.event.MouseEvent)
+   */
+  @Override
+  public String getToolTipText ( MouseEvent event )
+  {
+    for ( DefaultBlackboxView bview : this.defaultBlackboxViews )
+    {
+      if ( bview.containsPoint ( event.getPoint () ) && bview.needsToolTip () )
+      {
+        return bview.getContent ().toString ();
+      }
+    }
+    return super.getToolTipText ( event );
   }
 
 

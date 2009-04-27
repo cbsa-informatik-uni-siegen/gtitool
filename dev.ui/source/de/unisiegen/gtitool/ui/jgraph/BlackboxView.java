@@ -112,8 +112,8 @@ public class BlackboxView extends VertexView
 
       width += metrics.stringWidth ( bview.getContent ().toPrettyString ()
           .toString () );
-      
-      g.drawRoundRect ( 0, 0, width, height, 4, 4 ) ;
+
+      g.drawRoundRect ( 0, 0, width, height, 4, 4 );
     }
 
   }

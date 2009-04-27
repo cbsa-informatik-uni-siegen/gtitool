@@ -7,6 +7,5 @@ SM		- Algorithmen eintragen.
 SM		- Algorithmen drucken.
 SM		- Letzte Aktion bei Grammatik algorithmen highlighten
 SM		- Regex -> NDEA
-SM		- Blackboxen sollten wachsen.
 SM		- Handbuch erweitern.
 SM		- Vortrag machen.

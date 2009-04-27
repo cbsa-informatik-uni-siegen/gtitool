@@ -176,7 +176,7 @@ public class JGTIGraph extends JGraph implements Printable
    * @see JGraph#getToolTipText(MouseEvent)
    */
   @Override
-  public final String getToolTipText ( MouseEvent event )
+  public String getToolTipText ( MouseEvent event )
   {
     Object cell = getFirstCellForLocation ( event.getX (), event.getY () );
 

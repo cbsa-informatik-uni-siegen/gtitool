@@ -1,0 +1,9 @@
+Let A = (Σ,Q,s,F,δ) the DFA to be minimized.
+We can be sure A only contains reachable states.
+We define A' = (Σ,Q',s',F',δ') with
+Q' = {[q]A | q ∈ Q}
+s' = [s]A
+F' = {[q]A | q ∈ F}  (= {[q]A | [q]A ⊆ F})
+δ' : Q' × Σ -> Q'
+δ'([q]A, a) = [δ(q, a)]A
+to be the minimized dfa to A.

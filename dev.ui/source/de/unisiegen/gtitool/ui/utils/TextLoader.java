@@ -34,6 +34,21 @@ public class TextLoader
 
 
   /**
+   * Loads the algorithm for minimize machine
+   * 
+   * @return The algorithm
+   */
+  public String loadMinimizeAlgorithm ()
+  {
+    String filename = "/de/unisiegen/gtitool/ui/algorithms/"; //$NON-NLS-1$
+    filename += PreferenceManager.getInstance ().getLanguageItem ()
+        .getLocale ().toString ()
+        + "/MINIMIZE_MACHINE"; //$NON-NLS-1$
+    return loadTextFromFile ( filename );
+  }
+
+
+  /**
    * Loads the algorithm for a given {@link ConvertMachineType}
    * 
    * @param type The {@link ConvertMachineType}

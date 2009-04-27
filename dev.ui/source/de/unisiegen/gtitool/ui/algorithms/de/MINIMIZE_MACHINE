@@ -1,0 +1,9 @@
+Sei A = (Σ,Q,s,F,δ) der zu minimalisierende DEA.
+Wir dürfen annehmen, dass A nur erreichbare Zustände besitzt.
+Wir definieren A' = (Σ,Q',s',F',δ') durch
+Q' = {[q]A | q ∈ Q}
+s' = [s]A
+F' = {[q]A | q ∈ F}  (= {[q]A | [q]A ⊆ F})
+δ' : Q' × Σ -> Q'
+δ'([q]A, a) = [δ(q, a)]A,
+als den minimalen DEA zu A.

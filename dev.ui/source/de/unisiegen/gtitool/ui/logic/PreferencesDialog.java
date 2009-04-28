@@ -3549,6 +3549,8 @@ public final class PreferencesDialog implements
     {
       PreferenceManager.getInstance ().setColorItemRegexSymbol (
           this.colorItemRegexSymbol );
+      PreferenceManager.getInstance ().fireColorChangedRegexSymbol (
+          this.colorItemRegexSymbol.getColor () );
     }
 
     // Symbol

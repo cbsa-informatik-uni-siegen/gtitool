@@ -634,6 +634,23 @@ public class PreferenceManager
 
 
   /**
+   * Let the listeners know that the color of Regex position has changed.
+   * 
+   * @param newColor The new color of the Regex positionF.
+   */
+  public final void fireColorChangedRegexSymbol ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedRegexSymbol ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
    * Let the listeners know that the color of Regex token has changed.
    * 
    * @param newColor The new color of the Regex token.

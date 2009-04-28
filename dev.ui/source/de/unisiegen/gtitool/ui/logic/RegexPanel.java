@@ -197,6 +197,19 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           {
             getJGTIGraph ().repaint ();
           }
+
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedAdapter#colorChangedRegexSymbol(java.awt.Color)
+           */
+          @Override
+          public void colorChangedRegexSymbol (
+              @SuppressWarnings ( "unused" ) Color newColor )
+          {
+            getGUI ().styledRegexParserPanel.repaint ();
+          }
         } );
 
     Document doc = this.gui.styledRegexParserPanel.getDocument ();
@@ -1088,7 +1101,19 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void setVisibleConsole ( boolean visible )
   {
-    this.gui.jGTIPanelConsole.setVisible ( visible );
+    if ( visible )
+    {
+      this.gui.jGTISplitPaneConsole
+          .setRightComponent ( this.gui.jGTITabbedPaneConsole );
+      this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
+      this.gui.jGTISplitPaneConsole.setDividerLocation ( this.mainWindowForm
+          .getHeight () - 322 );
+    }
+    else
+    {
+      this.gui.jGTISplitPaneConsole.setRightComponent ( null );
+      this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
+    }
   }
 
 

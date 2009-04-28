@@ -159,21 +159,6 @@ public class NodeView extends VertexView
           }
 
           g.setFont ( font );
-          if ( !node.isActive () )
-          {
-            g.setColor ( PreferenceManager.getInstance ()
-                .getColorItemRegexNode ().getColor () );
-          }
-          else
-          {
-            g.setColor ( PreferenceManager.getInstance ()
-                .getColorItemRegexMarkedNode ().getColor () );
-          }
-          if ( this.selected )
-          {
-            g.setColor ( PreferenceManager.getInstance ()
-                .getColorItemRegexSelectedNode ().getColor () );
-          }
         }
       }
       finally
@@ -182,6 +167,21 @@ public class NodeView extends VertexView
         {
           LeafNode leaf = ( LeafNode ) node;
           FontMetrics metrics = g.getFontMetrics ();
+          if ( this.selected )
+          {
+            g.setColor ( PreferenceManager.getInstance ()
+                .getColorItemRegexSelectedNode ().getColor () );
+          }
+          else if (leaf.isActive ())
+          {
+            g.setColor ( PreferenceManager.getInstance ()
+                .getColorItemRegexMarkedNode ().getColor () );
+          }
+          else
+          {
+            g.setColor ( PreferenceManager.getInstance ()
+                .getColorItemRegexToken ().getColor () );
+          }
           g.drawString ( node.getNodeString ().toString (), dx, metrics
               .getHeight () );
 
@@ -190,11 +190,41 @@ public class NodeView extends VertexView
             String position = String.valueOf ( leaf.getPosition () );
             dx = ( d.width / 2 ) - ( metrics.stringWidth ( position ) / 2 );
 
+            if ( this.selected )
+            {
+              g.setColor ( PreferenceManager.getInstance ()
+                  .getColorItemRegexSelectedNode ().getColor () );
+            }
+            else if(leaf.isActive ())
+            {
+              g.setColor ( PreferenceManager.getInstance ()
+                  .getColorItemRegexMarkedNode ().getColor () );
+            }
+            else
+            {
+              g.setColor ( PreferenceManager.getInstance ()
+                  .getColorItemRegexPosition ().getColor () );
+            }
             g.drawString ( position, dx, 2 * metrics.getHeight () );
           }
         }
         else
         {
+          if ( this.selected )
+          {
+            g.setColor ( PreferenceManager.getInstance ()
+                .getColorItemRegexSelectedNode ().getColor () );
+          }
+          else if(node.isActive ())
+          {
+            g.setColor ( PreferenceManager.getInstance ()
+                .getColorItemRegexMarkedNode ().getColor () );
+          }
+          else
+          {
+            g.setColor ( PreferenceManager.getInstance ()
+                .getColorItemRegexSymbol ().getColor () );
+          }
           g.drawString ( node.getNodeString ().toString (), dx, dy );
         }
       }

@@ -16,12 +16,7 @@ SM		- Beim Umwandeln eines Regex in einen Automaten alle Zeichen welche nicht
 		  zusammenfassen.
 
 *** BUGFIX ***
-SM		- Beim Validieren wird die Error/Warning Ausgabe zwar als eingeblendet gesetzt,
-		  allerdings ist die Ausgabe nicht sichtbar. Die Größe muss erst manuell geändert 
-		  werden.
 SM		- Der Parser macht keine Vorschläge, siehe "{0, }" beim Alphabet
-SM		- Beim Apply des Preferences Dialog ändert sich die Farbe des Regex Symbols nicht
-SM		- Im Regex Graph werden die Farben nicht benutzt
 SM		- Der Austausch der Regex geht nicht
 SM		- Bei der Behandlung von Redo/Undo kann es zu einer Exception kommen:
 Exception in thread "AWT-EventQueue-0" javax.swing.text.StateInvariantError: GlyphView: Stale view: javax.swing.text.BadLocationException: Length must be positive

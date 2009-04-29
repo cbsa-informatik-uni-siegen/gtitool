@@ -17,7 +17,7 @@ import de.unisiegen.gtitool.ui.netbeans.AlphabetDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.redoundo.MachineAlphabetChangedItem;
-import de.unisiegen.gtitool.ui.redoundo.RegexAlphabetRedoUndoItem;
+import de.unisiegen.gtitool.ui.redoundo.RegexUndoItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -91,8 +91,8 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
         .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          Alphabet newAlphabet )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
           {
             setButtonStatus ();
           }
@@ -107,8 +107,8 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
         .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          Alphabet newAlphabet )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
           {
             setButtonStatus ();
           }
@@ -165,8 +165,8 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
         .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          Alphabet newAlphabet )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
           {
             setButtonStatus ();
           }
@@ -242,10 +242,15 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
     }
     else
     {
-      this.regexPanel.getUndo ().addEdit (
-          new RegexAlphabetRedoUndoItem ( this.regex, this.regexPanel,
-              this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
-                  .getParsedObject () ) );
+      try
+      {
+        this.regexPanel.addUndoItem ( new RegexUndoItem (
+            new DefaultRegexAlphabet ( this.regex.getAlphabet ().get () ) ) );
+      }
+      catch ( AlphabetException exc )
+      {
+        exc.printStackTrace();
+      }
       this.regexPanel.updateRedoUndoButtons ();
       performAlphabetChange ( this.regex.getAlphabet (),
           this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput

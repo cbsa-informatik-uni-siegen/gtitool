@@ -10,35 +10,38 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Stack;
+import java.util.TreeSet;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
-import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.text.AbstractDocument.DefaultDocumentEvent;
-import javax.swing.undo.UndoManager;
 
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.GraphSelectionModel;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.RegexException;
 import de.unisiegen.gtitool.core.exceptions.RegexParseException;
 import de.unisiegen.gtitool.core.exceptions.RegexValidationException;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
-import de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
@@ -59,6 +62,7 @@ import de.unisiegen.gtitool.ui.model.RegexConsoleTableModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.RegexPanelForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.redoundo.RegexUndoItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
@@ -69,6 +73,107 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 public final class RegexPanel implements LogicClass < RegexPanelForm >,
     EditorPanel
 {
+
+  /**
+   * A {@link DocumentListener} for RegexTexts.
+   */
+  public class TextDocumentListener implements DocumentListener
+  {
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DocumentListener#changedUpdate(DocumentEvent)
+     */
+    public void changedUpdate ( @SuppressWarnings ( "unused" ) DocumentEvent e )
+    {
+      // Nothing to do here.
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DocumentListener#insertUpdate(DocumentEvent)
+     */
+    public void insertUpdate ( DocumentEvent arg0 )
+    {
+      try
+      {
+        getUndohistory ().push ( new RegexUndoItem ( getCurrentContent () ) );
+        getRedohistory ().clear ();
+        setCurrentContent ( arg0.getDocument ().getText ( 0,
+            arg0.getDocument ().getLength () ) );
+      }
+      catch ( BadLocationException e )
+      {
+        e.printStackTrace ();
+        System.exit ( 1 );
+      }
+      updateRedoUndoButtons ();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DocumentListener#removeUpdate(DocumentEvent)
+     */
+    public void removeUpdate ( DocumentEvent arg0 )
+    {
+      try
+      {
+        getUndohistory ().push ( new RegexUndoItem ( getCurrentContent () ) );
+        getRedohistory ().clear ();
+        setCurrentContent ( arg0.getDocument ().getText ( 0,
+            arg0.getDocument ().getLength () ) );
+      }
+      catch ( BadLocationException e )
+      {
+        e.printStackTrace ();
+        System.exit ( 1 );
+      }
+      updateRedoUndoButtons ();
+    }
+
+  }
+
+
+  /**
+   * The current Regex String.
+   */
+  private String currentContent = ""; //$NON-NLS-1$
+
+
+  /**
+   * Returns the currentContent.
+   * 
+   * @return The currentContent.
+   * @see #currentContent
+   */
+  public String getCurrentContent ()
+  {
+    return this.currentContent;
+  }
+
+
+  /**
+   * Sets the currentContent.
+   * 
+   * @param currentContent The currentContent to set.
+   * @see #currentContent
+   */
+  public void setCurrentContent ( String currentContent )
+  {
+    this.currentContent = currentContent;
+  }
+
+
+  /**
+   * The {@link TextDocumentListener}
+   */
+  private TextDocumentListener docListener = new TextDocumentListener ();
+
 
   /**
    * The {@link RegexConsoleTableModel} for the error table.
@@ -119,15 +224,45 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * The {@link RegexConsoleTableModel} for the warning table.
+   * The redo history implemented as a {@link Stack}
    */
-  private RegexConsoleTableModel warningTableModel;
+  private Stack < RegexUndoItem > redohistory = new Stack < RegexUndoItem > ();
 
 
   /**
-   * The {@link UndoManager}
+   * The undo history implemented as a {@link Stack}
    */
-  private UndoManager undo = new UndoManager ();
+  private Stack < RegexUndoItem > undohistory = new Stack < RegexUndoItem > ();
+
+
+  /**
+   * Returns the undohistory.
+   * 
+   * @return The undohistory.
+   * @see #undohistory
+   */
+  public Stack < RegexUndoItem > getUndohistory ()
+  {
+    return this.undohistory;
+  }
+
+
+  /**
+   * Returns the redohistory.
+   * 
+   * @return The redohistory.
+   * @see #redohistory
+   */
+  public Stack < RegexUndoItem > getRedohistory ()
+  {
+    return this.redohistory;
+  }
+
+
+  /**
+   * The {@link RegexConsoleTableModel} for the warning table.
+   */
+  private RegexConsoleTableModel warningTableModel;
 
 
   /**
@@ -176,13 +311,13 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           /**
            * {@inheritDoc}
            * 
-           * @see ColorChangedListener#colorChangedRegexNode(java.awt.Color)
+           * @see ColorChangedAdapter#colorChangedRegexComment(java.awt.Color)
            */
           @Override
-          public void colorChangedRegexNode (
+          public void colorChangedRegexComment (
               @SuppressWarnings ( "unused" ) Color newColor )
           {
-            getJGTIGraph ().repaint ();
+            getGUI ().styledRegexParserPanel.repaint ();
           }
 
 
@@ -208,29 +343,22 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           public void colorChangedRegexSymbol (
               @SuppressWarnings ( "unused" ) Color newColor )
           {
-            getGUI ().styledRegexParserPanel.repaint ();
+            getGUI ().repaint ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedAdapter#colorChangedRegexToken(java.awt.Color)
+           */
+          @Override
+          public void colorChangedRegexToken (
+              @SuppressWarnings ( "unused" ) Color newColor )
+          {
+            getGUI ().repaint ();
           }
         } );
-
-    Document doc = this.gui.styledRegexParserPanel.getDocument ();
-
-    UndoableEditListener listener = new UndoableEditListener ()
-    {
-
-      public void undoableEditHappened ( UndoableEditEvent evt )
-      {
-        if ( evt.getEdit () instanceof DefaultDocumentEvent )
-        {
-          DefaultDocumentEvent event = ( DefaultDocumentEvent ) evt.getEdit ();
-          if ( !event.getType ().equals ( EventType.CHANGE ) )
-          {
-            getUndo ().addEdit ( event );
-            updateRedoUndoButtons ();
-          }
-        }
-      }
-    };
-    doc.addUndoableEditListener ( listener );
 
     this.gui.styledRegexParserPanel
         .addParseableChangedListener ( new ParseableChangedListener < RegexNode > ()
@@ -250,8 +378,11 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     initialize ();
     if ( model.getRegex ().getRegexNode () != null )
     {
+      this.currentContent = model.getRegex ().getRegexString ();
       changeRegex ( model.getRegex ().getRegexNode () );
     }
+    this.gui.styledRegexParserPanel.getDocument ().addDocumentListener (
+        this.docListener );
   }
 
 
@@ -275,6 +406,17 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * Adds a {@link RegexUndoItem}
+   * 
+   * @param item The {@link RegexUndoItem}
+   */
+  public void addUndoItem ( RegexUndoItem item )
+  {
+    this.undohistory.add ( item );
   }
 
 
@@ -494,36 +636,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * Updates the Redo and Undo button
-   */
-  public void updateRedoUndoButtons ()
-  {
-    this.gui.styledRegexParserPanel
-        .fireParseableChanged ( this.gui.styledRegexParserPanel.parse () );
-    if ( this.undo.canUndo () )
-    {
-      this.mainWindowForm.getLogic ()
-          .addButtonState ( ButtonState.ENABLED_UNDO );
-    }
-    else
-    {
-      this.mainWindowForm.getLogic ().removeButtonState (
-          ButtonState.ENABLED_UNDO );
-    }
-    if ( this.undo.canRedo () )
-    {
-      this.mainWindowForm.getLogic ()
-          .addButtonState ( ButtonState.ENABLED_REDO );
-    }
-    else
-    {
-      this.mainWindowForm.getLogic ().removeButtonState (
-          ButtonState.ENABLED_REDO );
-    }
-  }
-
-
-  /**
    * Returns the regex.
    * 
    * @return The regex.
@@ -554,9 +666,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void handleRedo ()
   {
-    if ( this.undo.canRedo () )
+    if ( isRedoAble () )
     {
-      this.undo.redo ();
+      performRedo ();
       this.gui.repaint ();
       updateRedoUndoButtons ();
     }
@@ -805,9 +917,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void handleUndo ()
   {
-    if ( this.undo.canUndo () )
+    if ( isUndoAble () )
     {
-      this.undo.undo ();
+      performUndo ();
       this.gui.repaint ();
       updateRedoUndoButtons ();
     }
@@ -846,33 +958,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * Validates the Panel
-   * 
-   * @throws RegexValidationException When validation goes wrong
-   */
-  public void validate () throws RegexValidationException
-  {
-    ArrayList < RegexException > list = new ArrayList < RegexException > ();
-    if ( this.gui.styledRegexParserPanel.parse () == null )
-    {
-      list.add ( new RegexParseException () );
-    }
-    try
-    {
-      getRegex ().validate ();
-    }
-    catch ( RegexValidationException exc )
-    {
-      list.addAll ( exc.getRegexException () );
-    }
-    if ( !list.isEmpty () )
-    {
-      throw new RegexValidationException ( list );
-    }
-  }
-
-
-  /**
    * Initializes the Alphabet
    */
   public void initializeAlphabet ()
@@ -880,6 +965,31 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.gui.styledRegexParserPanel.parse ();
     this.gui.styledRegexAlphabetParserPanel.setText ( this.model.getRegex ()
         .getAlphabet ().toClassPrettyString () );
+  }
+
+
+  /**
+   * Initializes the JGraph
+   */
+  public void initializeJGraph ()
+  {
+    this.model.initializeGraph ();
+    this.jGTIGraph = this.model.getJGTIGraph ();
+    this.jGTIGraph.setMoveable ( false );
+    this.jGTIGraph.getSelectionModel ().setSelectionMode (
+        GraphSelectionModel.SINGLE_GRAPH_SELECTION );
+    this.jGTIGraph.addGraphSelectionListener ( new GraphSelectionListener ()
+    {
+
+      /**
+       * @see org.jgraph.event.GraphSelectionListener#valueChanged(org.jgraph.event.GraphSelectionEvent)
+       */
+      public void valueChanged (
+          @SuppressWarnings ( "unused" ) GraphSelectionEvent e )
+      {
+        updateRegexNodeInfo ();
+      }
+    } );
   }
 
 
@@ -974,31 +1084,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * Initializes the JGraph
-   */
-  public void initializeJGraph ()
-  {
-    this.model.initializeGraph ();
-    this.jGTIGraph = this.model.getJGTIGraph ();
-    this.jGTIGraph.setMoveable ( false );
-    this.jGTIGraph.getSelectionModel ().setSelectionMode (
-        GraphSelectionModel.SINGLE_GRAPH_SELECTION );
-    this.jGTIGraph.addGraphSelectionListener ( new GraphSelectionListener ()
-    {
-
-      /**
-       * @see org.jgraph.event.GraphSelectionListener#valueChanged(org.jgraph.event.GraphSelectionEvent)
-       */
-      public void valueChanged (
-          @SuppressWarnings ( "unused" ) GraphSelectionEvent e )
-      {
-        updateRegexNodeInfo ();
-      }
-    } );
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#isModified()
@@ -1022,7 +1107,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public boolean isRedoAble ()
   {
-    return this.undo.canRedo ();
+    return !this.redohistory.isEmpty ();
   }
 
 
@@ -1033,7 +1118,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public boolean isUndoAble ()
   {
-    return this.undo.canUndo ();
+    return !this.undohistory.isEmpty ();
   }
 
 
@@ -1056,6 +1141,130 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         .getString ( "RegexPanel.InformationTitle" ) ); //$NON-NLS-1$
     this.gui.jGTILabelRegex.setText ( Messages
         .getString ( "RegexPanel.RegexTitle" ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Preforms the redo step
+   */
+  private void performRedo ()
+  {
+    try
+    {
+      Document document = this.gui.styledRegexParserPanel.getDocument ();
+      document.removeDocumentListener ( this.docListener );
+      RegexUndoItem item = this.redohistory.peek ();
+      if ( item.getRegexString () != null )
+      {
+        this.undohistory.push ( new RegexUndoItem ( document.getText ( 0,
+            document.getLength () ) ) );
+        document.remove ( 0, document.getLength () );
+        document.insertString ( 0, this.redohistory.pop ().getRegexString (),
+            null );
+      }
+      else
+      {
+        this.undohistory
+            .push ( new RegexUndoItem ( new DefaultRegexAlphabet (
+                this.gui.styledRegexAlphabetParserPanel.getParsedObject ()
+                    .get () ) ) );
+        DefaultRegexAlphabet a = this.redohistory.pop ().getLastAlphabet ();
+        performAlphabetChange ( getRegex ().getAlphabet (), a );
+        this.gui.styledRegexAlphabetParserPanel.setText ( a );
+      }
+      document.addDocumentListener ( this.docListener );
+
+    }
+    catch ( BadLocationException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+    }
+  }
+
+
+  /**
+   * Performs the undo step
+   */
+  private void performUndo ()
+  {
+    try
+    {
+      Document document = this.gui.styledRegexParserPanel.getDocument ();
+      document.removeDocumentListener ( this.docListener );
+      String doctext = document.getText ( 0, document.getLength () );
+      RegexUndoItem item = this.undohistory.peek ();
+      if ( item.getRegexString () != null )
+      {
+        String historytext = this.undohistory.pop ().getRegexString ();
+        document.remove ( 0, document.getLength () );
+        document.insertString ( 0, historytext, null );
+        this.redohistory.add ( new RegexUndoItem ( doctext ) );
+        this.currentContent = historytext;
+      }
+      else
+      {
+        DefaultRegexAlphabet a = this.undohistory.pop ().getLastAlphabet ();
+        this.redohistory
+            .add ( new RegexUndoItem ( new DefaultRegexAlphabet (
+                this.gui.styledRegexAlphabetParserPanel.getParsedObject ()
+                    .get () ) ) );
+        performAlphabetChange ( getRegex ().getAlphabet (), a );
+        this.gui.styledRegexAlphabetParserPanel.setText ( a );
+      }
+      document.addDocumentListener ( this.docListener );
+    }
+    catch ( BadLocationException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+    }
+  }
+
+
+  /**
+   * Preforms the {@link Alphabet} change.
+   * 
+   * @param oldAlphabet The old {@link Alphabet}.
+   * @param newAlphabet The new {@link Alphabet}.
+   */
+  private final void performAlphabetChange ( Alphabet oldAlphabet,
+      Alphabet newAlphabet )
+  {
+    TreeSet < Symbol > symbolsToAdd = new TreeSet < Symbol > ();
+    TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
+    for ( Symbol current : newAlphabet )
+    {
+      if ( !oldAlphabet.contains ( current ) )
+      {
+        symbolsToAdd.add ( current );
+      }
+    }
+    for ( Symbol current : oldAlphabet )
+    {
+      if ( !newAlphabet.contains ( current ) )
+      {
+        symbolsToRemove.add ( current );
+      }
+    }
+    try
+    {
+      oldAlphabet.add ( symbolsToAdd );
+      oldAlphabet.remove ( symbolsToRemove );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 
 
@@ -1113,6 +1322,34 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     {
       this.gui.jGTISplitPaneConsole.setRightComponent ( null );
       this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
+    }
+  }
+
+
+  /**
+   * Updates the Redo and Undo button
+   */
+  public void updateRedoUndoButtons ()
+  {
+    if ( isUndoAble () )
+    {
+      this.mainWindowForm.getLogic ()
+          .addButtonState ( ButtonState.ENABLED_UNDO );
+    }
+    else
+    {
+      this.mainWindowForm.getLogic ().removeButtonState (
+          ButtonState.ENABLED_UNDO );
+    }
+    if ( isRedoAble () )
+    {
+      this.mainWindowForm.getLogic ()
+          .addButtonState ( ButtonState.ENABLED_REDO );
+    }
+    else
+    {
+      this.mainWindowForm.getLogic ().removeButtonState (
+          ButtonState.ENABLED_REDO );
     }
   }
 
@@ -1196,14 +1433,29 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * Returns the undo.
+   * Validates the Panel
    * 
-   * @return The undo.
-   * @see #undo
+   * @throws RegexValidationException When validation goes wrong
    */
-  public UndoManager getUndo ()
+  public void validate () throws RegexValidationException
   {
-    return this.undo;
+    ArrayList < RegexException > list = new ArrayList < RegexException > ();
+    if ( this.gui.styledRegexParserPanel.parse () == null )
+    {
+      list.add ( new RegexParseException () );
+    }
+    try
+    {
+      getRegex ().validate ();
+    }
+    catch ( RegexValidationException exc )
+    {
+      list.addAll ( exc.getRegexException () );
+    }
+    if ( !list.isEmpty () )
+    {
+      throw new RegexValidationException ( list );
+    }
   }
 
 }

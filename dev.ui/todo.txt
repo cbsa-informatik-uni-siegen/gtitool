@@ -1,7 +1,3 @@
-SM		- LaTeX Export (Dynamische Umsetzung wie bei TPML)
-SM		- Bei einer Grammatik direkt das Wort eingeben können
-SM		- Drucken: Mehrere Komponenten pro Seite mit Auto-Verkleinerung, also
-		  nur mit einem Print-Job
 SM		- Position der Textfenster merken
 SM		- Algorithmen eintragen.
 SM		- Algorithmen drucken.
@@ -18,35 +14,3 @@ SM		- Beim Umwandeln eines Regex in einen Automaten alle Zeichen welche nicht
 *** BUGFIX ***
 SM		- Der Parser macht keine Vorschläge, siehe "{0, }" beim Alphabet
 SM		- Der Austausch der Regex geht nicht
-SM		- Bei der Behandlung von Redo/Undo kann es zu einer Exception kommen:
-Exception in thread "AWT-EventQueue-0" javax.swing.text.StateInvariantError: GlyphView: Stale view: javax.swing.text.BadLocationException: Length must be positive
-	at javax.swing.text.GlyphView.getText(GlyphView.java:117)
-	at javax.swing.text.GlyphPainter1.getSpan(GlyphPainter1.java:43)
-	at javax.swing.text.GlyphView.getPreferredSpan(GlyphView.java:537)
-	at javax.swing.text.FlowView$LogicalView.getPreferredSpan(FlowView.java:689)
-	at javax.swing.text.FlowView.calculateMinorAxisRequirements(FlowView.java:216)
-	at javax.swing.text.BoxView.checkRequests(BoxView.java:911)
-	at javax.swing.text.BoxView.getMinimumSpan(BoxView.java:542)
-	at javax.swing.text.BoxView.calculateMinorAxisRequirements(BoxView.java:879)
-	at javax.swing.text.BoxView.checkRequests(BoxView.java:911)
-	at javax.swing.text.BoxView.setSpanOnAxis(BoxView.java:325)
-	at javax.swing.text.BoxView.layout(BoxView.java:682)
-	at javax.swing.text.BoxView.setSize(BoxView.java:379)
-	at javax.swing.plaf.basic.BasicTextUI$RootView.setSize(BasicTextUI.java:1618)
-	at javax.swing.plaf.basic.BasicTextUI.getPreferredSize(BasicTextUI.java:812)
-	at javax.swing.JComponent.getPreferredSize(JComponent.java:1624)
-	at javax.swing.JEditorPane.getPreferredSize(JEditorPane.java:1227)
-	at javax.swing.ScrollPaneLayout.layoutContainer(ScrollPaneLayout.java:769)
-	at java.awt.Container.layout(Container.java:1401)
-	at java.awt.Container.doLayout(Container.java:1390)
-	at java.awt.Container.validateTree(Container.java:1473)
-	at java.awt.Container.validate(Container.java:1448)
-	at javax.swing.RepaintManager.validateInvalidComponents(RepaintManager.java:379)
-	at javax.swing.SystemEventQueueUtilities$ComponentWorkRequest.run(SystemEventQueueUtilities.java:113)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:461)
-	at java.awt.EventDispatchThread.pumpOneEventForHierarchy(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:163)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:157)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:149)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:110)

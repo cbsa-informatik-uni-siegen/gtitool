@@ -249,10 +249,10 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
       }
       catch ( AlphabetException exc )
       {
-        exc.printStackTrace();
+        exc.printStackTrace ();
       }
       this.regexPanel.updateRedoUndoButtons ();
-      performAlphabetChange ( this.regex.getAlphabet (),
+      this.regexPanel.performAlphabetChange ( this.regex.getAlphabet (),
           this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
               .getParsedObject () );
     }

@@ -903,6 +903,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void handleToolbarEditDocument ()
   {
+
     AlphabetDialog alphabetDialog = new AlphabetDialog ( this.mainWindowForm,
         this, getRegex () );
     alphabetDialog.show ();
@@ -1096,6 +1097,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     }
     return !this.model.getInitialRegexString ().equals (
         this.gui.styledRegexParserPanel.getText () )
+        || this.model.getRegex ().getAlphabet ().isModified ()
         || this.file == null;
   }
 
@@ -1236,7 +1238,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * @param oldAlphabet The old {@link Alphabet}.
    * @param newAlphabet The new {@link Alphabet}.
    */
-  private final void performAlphabetChange ( Alphabet oldAlphabet,
+  public final void performAlphabetChange ( Alphabet oldAlphabet,
       Alphabet newAlphabet )
   {
     TreeSet < Symbol > symbolsToAdd = new TreeSet < Symbol > ();
@@ -1265,6 +1267,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -1289,6 +1292,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   {
     this.model.setInitialRegexString ( this.gui.styledRegexParserPanel
         .getText () );
+    this.model.getRegex ().getAlphabet ().resetModify ();
   }
 
 

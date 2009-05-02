@@ -39,7 +39,7 @@ public class ConvertRegexToMachineDialogForm extends JDialog implements GUIClass
         super(parent, true);
         this.logic = logic;
         initComponents();
-        this.regexNodeInfoPanel.setVisible(logic.getEntityType().equals(MachineType.DFA));
+        this.regexNodeInfoPanel.setVisible(!logic.getEntityType().equals(MachineType.ENFA));
     }
     
     /** This method is called from within the constructor to

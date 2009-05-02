@@ -59,6 +59,23 @@ public class DefaultPositionState extends DefaultState
 
 
   /**
+   * Returns the first position (used for Regex -> NFA where only one position
+   * is in a state)
+   * 
+   * @return The first position
+   * @see #positions
+   */
+  public Integer getPosition ()
+  {
+    for ( Integer i : this.positions )
+    {
+      return i;
+    }
+    return new Integer ( -1 );
+  }
+
+
+  /**
    * Returns the mark.
    * 
    * @return The mark.

@@ -1,7 +1,6 @@
 SM		- Position der Textfenster merken
 SM		- Algorithmen eintragen.
 SM		- Algorithmen drucken.
-SM		- Regex -> NDEA
 SM		- Handbuch erweitern.
 SM		- Vortrag machen.
 

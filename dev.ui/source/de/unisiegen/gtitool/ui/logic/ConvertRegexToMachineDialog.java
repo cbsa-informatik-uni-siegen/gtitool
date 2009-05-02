@@ -43,6 +43,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
+import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -448,6 +449,12 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
+     * The follow pos
+     */
+    private ArrayList < Integer > actFollowPos;
+
+
+    /**
      * Allocates a new {@link StepItem}.
      * 
      * @param activeStep The active {@link Step}
@@ -462,10 +469,11 @@ public class ConvertRegexToMachineDialog implements
      * @param markedPositionState The last marked position state
      * @param controlledSymbol The last controlled Symbol
      * @param addedSymbolsToTransition The added Symbols to Transitions
-     * @param removedBlackBoxes
-     * @param addedBlackBoxes
-     * @param positions
-     * @param xGrid
+     * @param removedBlackBoxes The removed black boxes
+     * @param addedBlackBoxes The added black boxes
+     * @param positions The positions
+     * @param xGrid The {@link XGrid}
+     * @param actFollowPos The follow pos
      */
     public StepItem (
         Step activeStep,
@@ -482,7 +490,8 @@ public class ConvertRegexToMachineDialog implements
         ArrayList < ObjectPair < DefaultTransitionView, Symbol > > addedSymbolsToTransition,
         ArrayList < BlackBox > removedBlackBoxes,
         ArrayList < DefaultBlackboxView > addedBlackBoxes,
-        HashMap < String, Position > positions, XGrid xGrid )
+        HashMap < String, Position > positions, XGrid xGrid,
+        ArrayList < Integer > actFollowPos )
     {
       if ( activeStep == null )
       {
@@ -504,6 +513,19 @@ public class ConvertRegexToMachineDialog implements
       this.removedBlackboxes = removedBlackBoxes;
       this.positions = positions;
       this.stepXGrid = xGrid;
+      this.actFollowPos = actFollowPos;
+    }
+
+
+    /**
+     * Returns the actFollowPos.
+     * 
+     * @return The actFollowPos.
+     * @see #actFollowPos
+     */
+    public ArrayList < Integer > getFollowPos ()
+    {
+      return this.actFollowPos;
     }
 
 
@@ -711,10 +733,21 @@ public class ConvertRegexToMachineDialog implements
     REGEX_TO_DFA,
 
     /**
+     * The regex to enfa type
+     */
+    REGEX_TO_ENFA,
+
+    /**
      * The regex to nfa type
      */
-    REGEX_TO_ENFA;
+    REGEX_TO_NFA;
   }
+
+
+  /**
+   * The actual follow pos
+   */
+  private ArrayList < Integer > followPos;
 
 
   /**
@@ -965,10 +998,12 @@ public class ConvertRegexToMachineDialog implements
     }
   }
 
+
   /**
    * The {@link ConvertRegexType}
    */
   private ConvertRegexType convertType;
+
 
   /**
    * {@inheritDoc}
@@ -1000,11 +1035,21 @@ public class ConvertRegexToMachineDialog implements
               .getString (
                   "ConvertRegexToMachineDialog.Title", Messages.getString ( "ConvertRegexToMachineDialog.ENFA" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
-    else if ( this.entityType.equals ( MachineType.DFA ) )
+    else if ( this.entityType.equals ( MachineType.DFA )
+        || this.entityType.equals ( MachineType.NFA ) )
     {
-      this.convertType = ConvertRegexType.REGEX_TO_DFA;
-      this.modelConverted = new DefaultMachineModel ( new DefaultDFA ( a, a,
-          false ) );
+      if ( this.entityType.equals ( MachineType.DFA ) )
+      {
+        this.convertType = ConvertRegexType.REGEX_TO_DFA;
+        this.modelConverted = new DefaultMachineModel ( new DefaultDFA ( a, a,
+            false ) );
+      }
+      else
+      {
+        this.convertType = ConvertRegexType.REGEX_TO_NFA;
+        this.modelConverted = new DefaultMachineModel ( new DefaultNFA ( a, a,
+            false ) );
+      }
       this.positionStates = new ArrayList < DefaultPositionState > ();
 
       if ( !this.defaultRegex.getRegexNode ().isInCoreSyntax () )
@@ -1046,7 +1091,8 @@ public class ConvertRegexToMachineDialog implements
         ListSelectionModel.SINGLE_SELECTION );
 
     this.jGTIGraphOriginal = this.modelOriginal.getJGTIGraph ();
-    if ( this.entityType.equals ( MachineType.DFA ) )
+    if ( this.entityType.equals ( MachineType.DFA )
+        || this.entityType.equals ( MachineType.NFA ) )
     {
       this.jGTIGraphOriginal.setMoveable ( false );
       this.jGTIGraphOriginal.getSelectionModel ().setSelectionMode (
@@ -1081,7 +1127,8 @@ public class ConvertRegexToMachineDialog implements
 
     this.positionMap = new HashMap < String, Position > ();
 
-    if ( toEntityType.equals ( MachineType.DFA ) )
+    if ( toEntityType.equals ( MachineType.DFA )
+        || toEntityType.equals ( MachineType.NFA ) )
     {
       while ( !this.endReached )
       {
@@ -1320,12 +1367,14 @@ public class ConvertRegexToMachineDialog implements
    */
   public final void handleAlgorithmWindowChanged ( boolean show )
   {
-    //this.algorithm = Messages.getString("ConvertGrammarDialog.CannotEliminateEntityProductions");
-    if(this.algorithm == null || this.algorithm.length () == 0) {
-      TextLoader loader = new TextLoader();
+    // this.algorithm =
+    // Messages.getString("ConvertGrammarDialog.CannotEliminateEntityProductions");
+    if ( this.algorithm == null || this.algorithm.length () == 0 )
+    {
+      TextLoader loader = new TextLoader ();
       this.algorithm = loader.loadAlgorithm ( this.convertType );
     }
-    
+
     if ( this.algorithmWindow == null )
     {
       this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
@@ -1461,6 +1510,16 @@ public class ConvertRegexToMachineDialog implements
     XGrid xGridClone = new XGrid ();
     xGridClone.setX_positions ( ( HashMap < String, Integer > ) this.xGrid
         .getX_positions ().clone () );
+    ArrayList < Integer > lastFollowPos;
+    if ( this.followPos != null )
+    {
+      lastFollowPos = new ArrayList < Integer > ();
+      lastFollowPos.addAll ( this.followPos );
+    }
+    else
+    {
+      lastFollowPos = null;
+    }
 
     PrettyString pretty = new PrettyString ();
     if ( this.entityType.equals ( MachineType.ENFA ) )
@@ -2604,12 +2663,189 @@ public class ConvertRegexToMachineDialog implements
         updateGraph ();
       }
     }
+
+    // NFA
+    else if ( this.entityType.equals ( MachineType.NFA ) )
+    {
+      this.actualStep = Step.INITIAL;
+      // Initial Step
+      if ( this.positionStates.isEmpty () )
+      {
+        ArrayList < LeafNode > firstPos = this.defaultRegex.getRegexNode ()
+            .firstPos ();
+        for ( LeafNode tmpNode : firstPos )
+        {
+          HashSet < Integer > pos = new HashSet < Integer > ();
+          String name = ""; //$NON-NLS-1$
+
+          pos.add ( new Integer ( tmpNode.getPosition () ) );
+          name += tmpNode.getPosition ();
+          DefaultPositionState state;
+          try
+          {
+            state = new DefaultPositionState ( name, pos );
+          }
+          catch ( StateException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+            return;
+          }
+          this.positionStates.add ( state );
+          state.setStartState ( true );
+          DefaultStateView view = this.modelConverted.createStateView ( 0, 0,
+              state, false );
+          this.positionStateViewList.put ( state, view );
+          addedStates.add ( state.getName () );
+          Position p = getPosition ( state );
+          if ( p != null )
+          {
+            view.move ( p.getX (), p.getY () );
+          }
+        }
+        if ( firstPos.size () == 1 )
+        {
+          pretty.add ( Messages.getPrettyString (
+              "ConvertRegexToMachineDialog.StepCreateStartState", //$NON-NLS-1$
+              this.regexNode.toPrettyString (), new PrettyString (
+                  new PrettyToken ( String.valueOf ( firstPos.get ( 0 )
+                      .getPosition () ), Style.REGEX_POSITION ) ) ) );
+        }
+        else
+        {
+          PrettyString s = new PrettyString ();
+          boolean first = true;
+          for ( LeafNode n : firstPos )
+          {
+            if ( !first )
+            {
+              s.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+            }
+            s.add ( new PrettyToken ( String.valueOf ( n.getPosition () ),
+                Style.REGEX_POSITION ) );
+            first = false;
+          }
+          pretty
+              .add ( Messages
+                  .getPrettyString (
+                      "ConvertRegexToMachineDialog.StepCreateStartStates", this.regexNode.toPrettyString (), s ) ); //$NON-NLS-1$
+        }
+      }
+      else
+      {
+        DefaultPositionState positionState = getNextUnmarkedState ();
+        if ( positionState != null )
+        {
+          Integer actualPosition = positionState.getPosition ();
+          if ( this.followPos == null )
+          {
+            this.followPos = new ArrayList < Integer > ();
+            this.followPos.addAll ( this.defaultRegex
+                .followPos ( actualPosition.intValue () ) );
+          }
+          if ( !this.followPos.isEmpty () )
+          {
+            Integer i = this.followPos.remove ( 0 );
+            HashSet < Integer > uPos = new HashSet < Integer > ();
+            uPos.add ( i );
+            DefaultPositionState uState = null;
+            try
+            {
+              uState = new DefaultPositionState ( i.toString (), uPos );
+
+              if ( !this.positionStates.contains ( uState ) )
+              {
+                this.positionStates.add ( uState );
+                DefaultStateView view = this.modelConverted.createStateView (
+                    0, 0, uState, false );
+                this.positionStateViewList.put ( uState, view );
+                addedStates.add ( uState.getName () );
+                Position p = getPosition ( uState );
+                if ( p != null )
+                {
+                  view.move ( p.getX (), p.getY () );
+                }
+              }
+              Symbol s = new DefaultSymbol ( this.defaultRegex
+                  .symbolAtPosition ( actualPosition.intValue () ) );
+              addedTransitions
+                  .add ( this.modelConverted
+                      .createTransitionView (
+                          new DefaultTransition ( this.defaultRegex
+                              .getAlphabet (),
+                              this.defaultRegex.getAlphabet (),
+                              new DefaultWord (), new DefaultWord (),
+                              this.positionStateViewList.get ( positionState )
+                                  .getState (), this.positionStateViewList.get (
+                                  uState ).getState (), s ),
+                          this.positionStateViewList.get ( positionState ),
+                          this.positionStateViewList.get ( uState ), true,
+                          false, true ) );
+              pretty
+                  .add ( Messages
+                      .getPrettyString (
+                          "ConvertRegexToMachineDialog.StepTransitionFromS0toS1forSymbol", //$NON-NLS-1$
+                          positionState.toPrettyString (), uState
+                              .toPrettyString (), s.toPrettyString () ) );
+
+            }
+            catch ( StateException exc )
+            {
+              exc.printStackTrace ();
+            }
+            catch ( TransitionSymbolNotInAlphabetException exc )
+            {
+              exc.printStackTrace ();
+            }
+            catch ( TransitionSymbolOnlyOneTimeException exc )
+            {
+              exc.printStackTrace ();
+            }
+          }
+          else
+          {
+            this.followPos = null;
+            markedPositionState = positionState;
+            positionState.mark ();
+            pretty.add ( Messages.getPrettyString (
+                "ConvertRegexToMachineDialog.StepMarkState", positionState //$NON-NLS-1$
+                    .toPrettyString () ) );
+          }
+        }
+        else
+        {
+          LeafNode end = this.regexNode.lastPos ().get ( 0 );
+          for ( DefaultPositionState uState : this.positionStates )
+          {
+            if ( uState.getPositions ().contains (
+                new Integer ( end.getPosition () ) ) )
+            {
+              uState.setFinalState ( true );
+              setFinalFalse.add ( this.modelConverted
+                  .getStateViewForState ( uState ) );
+            }
+          }
+          this.followPos = null;
+          this.endReached = true;
+          pretty.add ( Messages.getPrettyString (
+              "ConvertRegexToMachineDialog.StepMarkFinalState", //$NON-NLS-1$
+              new PrettyString ( new PrettyToken ( String.valueOf ( end
+                  .getPosition () ), Style.REGEX_POSITION ) ) ) );
+        }
+      }
+
+      if ( manual )
+      {
+        setStatus ();
+        updateGraph ();
+      }
+    }
     addOutlineComment ( pretty );
     this.stepItemList.add ( new StepItem ( this.actualStep, addedStates,
         redoUndoItem, addedTransitions, setStartFalse, setFinalFalse,
         this.count, lastActive, errorCreated, markedPositionState,
         controlledSymbol, addedSymbolsToTransition, removedBlackBoxes,
-        addedBlackBoxes, positions, xGridClone ) );
+        addedBlackBoxes, positions, xGridClone, lastFollowPos ) );
     this.count = c;
   }
 
@@ -2637,7 +2873,8 @@ public class ConvertRegexToMachineDialog implements
         if ( this.modelConverted.getStateViewList ().get ( i ).getState ()
             .getName ().equals ( name ) )
         {
-          if ( this.entityType.equals ( MachineType.DFA ) )
+          if ( this.entityType.equals ( MachineType.DFA )
+              || this.entityType.equals ( MachineType.NFA ) )
           {
             this.positionStates.remove ( this.modelConverted
                 .getStateViewList ().get ( i ).getState () );
@@ -2741,6 +2978,7 @@ public class ConvertRegexToMachineDialog implements
     {
       this.count = 0;
     }
+    this.followPos = stepItem.getFollowPos ();
     if ( manual )
     {
       setStatus ();

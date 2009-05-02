@@ -1,4 +1,3 @@
-SM		- Position der Textfenster merken
 SM		- Algorithmen eintragen.
 SM		- Algorithmen drucken.
 SM		- Handbuch erweitern.

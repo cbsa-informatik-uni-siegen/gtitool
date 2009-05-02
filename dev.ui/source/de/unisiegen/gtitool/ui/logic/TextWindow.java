@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Rectangle;
 import java.awt.Window;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -52,6 +53,12 @@ public class TextWindow implements LogicClass < TextForm >
 
 
   /**
+   * True if an algorithm should be shown
+   */
+  private boolean algorithm;
+
+
+  /**
    * Creates a new TextWindow
    * 
    * @param parent The paren {@link Window}
@@ -64,6 +71,7 @@ public class TextWindow implements LogicClass < TextForm >
   {
     this.parent = parent;
     this.text = text;
+    this.algorithm = algorithm;
     this.toggleButton = toggleButton;
     String title = Messages.getString ( "TextWindow.TitleAlgorithm" ); //$NON-NLS-1$
     if ( !algorithm )
@@ -90,7 +98,32 @@ public class TextWindow implements LogicClass < TextForm >
    */
   public void show ()
   {
-    this.gui.setLocationRelativeTo ( this.parent );
+    Rectangle rect;
+    if ( this.algorithm )
+    {
+      rect = PreferenceManager.getInstance ().getAlgorithmDialogBounds ();
+      if ( ( rect.x == PreferenceManager.DEFAULT_ALGORITHM_DIALOG_POSITION_X )
+          || ( rect.y == PreferenceManager.DEFAULT_ALGORITHM_DIALOG_POSITION_Y ) )
+      {
+        rect.x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+            - ( this.gui.getWidth () / 2 );
+        rect.y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+            - ( this.gui.getHeight () / 2 );
+      }
+    }
+    else
+    {
+      rect = PreferenceManager.getInstance ().getRDPDialogBounds ();
+      if ( ( rect.x == PreferenceManager.DEFAULT_RDP_DIALOG_POSITION_X )
+          || ( rect.y == PreferenceManager.DEFAULT_RDP_DIALOG_POSITION_Y ) )
+      {
+        rect.x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+            - ( this.gui.getWidth () / 2 );
+        rect.y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+            - ( this.gui.getHeight () / 2 );
+      }
+    }
+    this.gui.setBounds ( rect );
     this.gui.setVisible ( true );
   }
 
@@ -111,6 +144,15 @@ public class TextWindow implements LogicClass < TextForm >
    */
   public void dispose ()
   {
+    if ( this.algorithm )
+    {
+      PreferenceManager.getInstance ()
+          .setAlgorithmDialogPreferences ( this.gui );
+    }
+    else
+    {
+      PreferenceManager.getInstance ().setRDPDialogPreferences ( this.gui );
+    }
     this.gui.dispose ();
   }
 
@@ -120,6 +162,16 @@ public class TextWindow implements LogicClass < TextForm >
    */
   public void handleGUIClosed ()
   {
+    if ( this.algorithm )
+    {
+      PreferenceManager.getInstance ()
+          .setAlgorithmDialogPreferences ( this.gui );
+    }
+    else
+    {
+      PreferenceManager.getInstance ().setRDPDialogPreferences ( this.gui );
+    }
+
     if ( this.toggleButton != null )
     {
       this.toggleButton.setSelected ( false );

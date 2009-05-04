@@ -1776,7 +1776,7 @@ public final class ConvertMachineDialog implements
     if ( this.algorithmWindow == null )
     {
       this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
-          this.gui.jGTIToggleButtonAlgorithm );
+          this.gui.jGTIToggleButtonAlgorithm,this.convertMachineType.toString () );
     }
     if ( show )
     {

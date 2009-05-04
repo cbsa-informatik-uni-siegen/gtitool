@@ -1168,7 +1168,7 @@ public class ConvertGrammarDialog implements
     if ( this.algorithmWindow == null )
     {
       this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
-          this.gui.jGTIToggleButtonAlgorithm );
+          this.gui.jGTIToggleButtonAlgorithm, this.convertType.toString () );
     }
     if ( show )
     {

@@ -773,7 +773,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   public final void handleCreateRDP ()
   {
     TextWindow w = new TextWindow ( this.mainWindowForm,
-        createRDP ( this.grammar ), false, null );
+        createRDP ( this.grammar ), false, null, getName () + "_RDP" ); //$NON-NLS-1$
     w.show ();
   }
 

@@ -125,7 +125,7 @@ private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrint;
     private de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonSave;
-    private de.unisiegen.gtitool.ui.swing.JGTITextPane jGTITextPaneAlgorithm;
+    public de.unisiegen.gtitool.ui.swing.JGTITextPane jGTITextPaneAlgorithm;
     private javax.swing.JScrollPane jScrollPaneAlgorithm;
     // End of variables declaration//GEN-END:variables
 

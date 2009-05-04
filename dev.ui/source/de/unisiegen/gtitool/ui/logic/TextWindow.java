@@ -59,20 +59,28 @@ public class TextWindow implements LogicClass < TextForm >
 
 
   /**
+   * The jobname for this text window
+   */
+  private String jobName;
+
+
+  /**
    * Creates a new TextWindow
    * 
    * @param parent The paren {@link Window}
    * @param text The text to display
    * @param algorithm True if an algorithm should be shown
    * @param toggleButton The toggle button
+   * @param jobName The job name
    */
   public TextWindow ( Window parent, String text, boolean algorithm,
-      JGTIToggleButton toggleButton )
+      JGTIToggleButton toggleButton, String jobName )
   {
     this.parent = parent;
     this.text = text;
     this.algorithm = algorithm;
     this.toggleButton = toggleButton;
+    this.jobName = jobName;
     String title = Messages.getString ( "TextWindow.TitleAlgorithm" ); //$NON-NLS-1$
     if ( !algorithm )
     {
@@ -275,7 +283,20 @@ public class TextWindow implements LogicClass < TextForm >
    */
   public void handlePrint ()
   {
-    // TODO
+    PrintDialog dialog = new PrintDialog ( this.parent, this );
+    dialog.show ();
+  }
+
+
+  /**
+   * Returns the jobName.
+   * 
+   * @return The jobName.
+   * @see #jobName
+   */
+  public String getJobName ()
+  {
+    return this.jobName;
   }
 
 
@@ -288,6 +309,18 @@ public class TextWindow implements LogicClass < TextForm >
   public String getText ()
   {
     return this.text;
+  }
+
+
+  /**
+   * Returns the algorithm.
+   * 
+   * @return The algorithm.
+   * @see #algorithm
+   */
+  public boolean isAlgorithm ()
+  {
+    return this.algorithm;
   }
 
 }

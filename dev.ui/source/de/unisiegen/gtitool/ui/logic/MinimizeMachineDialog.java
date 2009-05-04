@@ -792,7 +792,7 @@ public final class MinimizeMachineDialog implements
     if ( this.algorithmWindow == null )
     {
       this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
-          this.gui.jGTIToggleButtonAlgorithm );
+          this.gui.jGTIToggleButtonAlgorithm, "MINIMIZE" ); //$NON-NLS-1$
     }
 
     if ( show )

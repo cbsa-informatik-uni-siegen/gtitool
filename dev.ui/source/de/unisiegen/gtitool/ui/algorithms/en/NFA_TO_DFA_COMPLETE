@@ -1,4 +1,4 @@
-For the NFA A = (Σ,Q,s,F,Δ) the power set automaton is A' = (Σ,Q',s',F',δ), where
+For the NFA A = (Σ,Q,s,F,Δ) the Potenzautomat(TODO) is A' = (Σ,Q',s',F',δ), where
 - Q' = p(Q), power set of Q
 - s' = {s}
 - F' = {P ∈ p(Q) | P ∩ F ≠ ∅}

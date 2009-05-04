@@ -1,2 +1,9 @@
-  
-εβˠ
+Sei A = (Σ,Q,s,F,δ) der DEA.
+L(A) = {w ∈ Σ* | es existiert ein qj ∈ F mit (q1,w) ⊢* (qj, ε)}
+	 = U(qj ∈ F) L1j
+	 
+Lij1 = {w ∈ Σ* | (qi,w) ⊢* (qj, ε) ohne Zwischenzustände}
+	 = {a ∈ Σ | δ(qi, a) = qj} falls i ≠ j
+	   {a ∈ Σ | δ(qi, a) = qj} U {ε} sonst
+	   
+Lij(k+1) = Lkij | Lkik · (Lkkk)* · Lkkj

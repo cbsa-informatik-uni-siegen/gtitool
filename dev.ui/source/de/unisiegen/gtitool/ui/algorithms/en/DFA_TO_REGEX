@@ -1,0 +1,9 @@
+Let A = (Σ,Q,s,F,δ) be the DFA.
+L(A) = {w ∈ Σ* | there is a qj ∈ F with (q1,w) ⊢* (qj, ε)}
+	 = U(qj ∈ F) L1j
+	 
+Lij1 = {w ∈ Σ* | (qi,w) ⊢* (qj, ε) without states between}
+	 = {a ∈ Σ | δ(qi, a) = qj} if i ≠ j
+	   {a ∈ Σ | δ(qi, a) = qj} U {ε} else
+	   
+Lij(k+1) = Lkij | Lkik · (Lkkk)* · Lkkj

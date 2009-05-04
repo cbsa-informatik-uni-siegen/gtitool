@@ -1,0 +1,8 @@
+Let A = (Σ,Q,s,F,Δ) be a ε-NFA.
+
+First generate the ε-Closure E(p) to each state p ∈ Q:
+E(p) = {q ∈ Q | (p,ε) ⊢* (q,ε)}
+
+A' = (Σ,Q,s,F',Δ') is the equivalent NFA to A, with:
+- Δ' = {(p,a,q) Q × Σ × Q | there is p' ∈ E(p) with (p',a,q) ∈ Δ}
+- F' = {p ∈ Q | E(p) ∩ F ≠ ∅}.

@@ -1,0 +1,11 @@
+Let A = (Σ,Q,s,F,Δ) be the ε-NFA.
+
+First generate the ε-Closure E(p) to each state p ∈ Q:
+E(p) = {q ∈ Q | (p,ε) ⊢* (q,ε)}
+
+The power set automaton is A' = (Σ,Q',s',F',δ), with
+- Q' = p(Q), the power set of Q
+- s' = {s}
+- F' = {P ∈ p(Q) | E(P) ∩ F ≠ ∅}
+- δ: p(Q) x Σ -> p(Q)
+  δ(P,a) = {q ∈ Q | there is a p ∈ E(P) with (p,a,q) ∈ Δ}

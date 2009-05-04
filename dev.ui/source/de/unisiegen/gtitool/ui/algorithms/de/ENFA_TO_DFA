@@ -1,0 +1,11 @@
+Sei A = (Σ,Q,s,F,Δ) der ε-NDEA.
+
+Zunächst den ε-Abschluss E(p) eines Zustand p ∈ Q bilden:
+E(p) = {q ∈ Q | (p,ε) ⊢* (q,ε)}
+
+Der Potenzautomat zu A ist A' = (Σ,Q',s',F',δ), wobei
+- Q' = p(Q), die Potenzmenge von Q
+- s' = {s}
+- F' = {P ∈ p(Q) | E(P) ∩ F ≠ ∅}
+- δ: p(Q) x Σ -> p(Q)
+  δ(P,a) = {q ∈ Q | es existiert ein p ∈ E(P) mit (p,a,q) ∈ Δ}

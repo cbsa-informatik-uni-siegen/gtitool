@@ -653,6 +653,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void handleExchange ()
   {
+    this.model.setActualRegexString ( this.gui.styledRegexParserPanel
+        .getText () );
     ExchangeDialog exchangeDialog = new ExchangeDialog ( this.mainWindowForm
         .getLogic (), this.model.getElement (), this.file );
     exchangeDialog.show ();

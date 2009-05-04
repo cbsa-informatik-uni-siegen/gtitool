@@ -16,6 +16,7 @@ import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.entities.regex.TokenNode;
+import de.unisiegen.gtitool.core.exceptions.RegexEmptyException;
 import de.unisiegen.gtitool.core.exceptions.RegexException;
 import de.unisiegen.gtitool.core.exceptions.RegexSymbolNotUsedException;
 import de.unisiegen.gtitool.core.exceptions.RegexValidationException;
@@ -103,7 +104,7 @@ public class DefaultRegex implements Regex
   public DefaultRegex ( DefaultRegexAlphabet a )
   {
     this.alphabet = a;
-    this.regexString = new String();
+    this.regexString = new String ();
   }
 
 
@@ -182,7 +183,7 @@ public class DefaultRegex implements Regex
 
     for ( RegexNode node : nodeList )
     {
-      
+
       if ( node instanceof ConcatenationNode )
       {
         RegexNode n1 = node.getChildren ().get ( 0 );
@@ -247,7 +248,7 @@ public class DefaultRegex implements Regex
   {
     HashSet < RegexNode > nodeList = new HashSet < RegexNode > ();
     nodeList.add ( root );
-    nodeList.addAll(root.getAllChildren ());
+    nodeList.addAll ( root.getAllChildren () );
     return nodeList;
   }
 
@@ -401,6 +402,14 @@ public class DefaultRegex implements Regex
    */
   public void validate () throws RegexValidationException
   {
+    if ( this.regexNode == null
+        || ( this.regexNode instanceof TokenNode && ( ( TokenNode ) this.regexNode )
+            .getName ().equals ( "" ) ) ) //$NON-NLS-1$
+    {
+      ArrayList < RegexException > elist = new ArrayList < RegexException > ();
+      elist.add ( new RegexEmptyException () );
+      throw new RegexValidationException ( elist );
+    }
     HashSet < Symbol > usedSymbols = getUsedSymbols ();
     HashSet < Symbol > unusedSymbols = new HashSet < Symbol > ();
     unusedSymbols.addAll ( this.alphabet.get () );

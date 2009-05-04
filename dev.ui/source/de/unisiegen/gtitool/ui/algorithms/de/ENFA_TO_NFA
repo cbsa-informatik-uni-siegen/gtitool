@@ -6,3 +6,5 @@ E(p) = {q ∈ Q | (p,ε) ⊢* (q,ε)}
 Dann ist A' = (Σ,Q,s,F',Δ') der zu A gehörige NDEA, mit:
 - Δ' = {(p,a,q) Q × Σ × Q | es ex. ein p' ∈ E(p) mit (p',a,q) ∈ Δ}
 - F' = {p ∈ Q | E(p) ∩ F ≠ ∅}.
+  
+Es wird nur der erreichbare Teil des Automaten angezeigt.

@@ -5,3 +5,5 @@ Der zum NDEA A = (Σ,Q,s,F,Δ) Potenzautomat ist A' = (Σ,Q',s',F',δ), wobei
      = {P ⊆ Q | P enthält mindestens einen Zustand aus F}
 - δ: p(Q) x Σ -> p(Q)
   δ(P,a) = {q ∈ Q | es existiert ein p ∈ P mit (p,a,q) ∈ Δ}
+  
+Es wird nur der erreichbare Teil des Automaten angezeigt.

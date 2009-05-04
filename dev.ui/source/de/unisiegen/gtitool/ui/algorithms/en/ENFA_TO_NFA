@@ -6,3 +6,5 @@ E(p) = {q ∈ Q | (p,ε) ⊢* (q,ε)}
 A' = (Σ,Q,s,F',Δ') is the equivalent NFA to A, with:
 - Δ' = {(p,a,q) Q × Σ × Q | there is p' ∈ E(p) with (p',a,q) ∈ Δ}
 - F' = {p ∈ Q | E(p) ∩ F ≠ ∅}.
+  
+Only the reachable states are shown.

@@ -9,3 +9,5 @@ The power set automaton is A' = (Σ,Q',s',F',δ), with
 - F' = {P ∈ p(Q) | E(P) ∩ F ≠ ∅}
 - δ: p(Q) x Σ -> p(Q)
   δ(P,a) = {q ∈ Q | there is a p ∈ E(P) with (p,a,q) ∈ Δ}
+  
+Only the reachable states are shown.

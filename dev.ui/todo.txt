@@ -1,4 +1,3 @@
-SM		- Algorithmen eintragen.
 SM		- Algorithmen drucken.
 SM		- Druckdialoge prüfen.
 SM		- Handbuch erweitern.

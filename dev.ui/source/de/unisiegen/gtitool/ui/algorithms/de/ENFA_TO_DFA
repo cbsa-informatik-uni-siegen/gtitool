@@ -9,3 +9,5 @@ Der Potenzautomat zu A ist A' = (Σ,Q',s',F',δ), wobei
 - F' = {P ∈ p(Q) | E(P) ∩ F ≠ ∅}
 - δ: p(Q) x Σ -> p(Q)
   δ(P,a) = {q ∈ Q | es existiert ein p ∈ E(P) mit (p,a,q) ∈ Δ}
+  
+Es wird nur der erreichbare Teil des Automaten angezeigt.

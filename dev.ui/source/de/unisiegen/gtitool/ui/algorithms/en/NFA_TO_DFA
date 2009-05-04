@@ -5,3 +5,5 @@ For the NFA A = (Σ,Q,s,F,Δ) the power set automaton is A' = (Σ,Q',s',F',δ), 
      = {P ⊆ Q | P contains at least one state of F}
 - δ: p(Q) x Σ -> p(Q)
   δ(P,a) = {q ∈ Q | there is a p ∈ P with (p,a,q) ∈ Δ}
+  
+Only the reachable states are shown.

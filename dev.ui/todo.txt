@@ -1,12 +1,7 @@
 SM		- Druckdialoge prüfen.
-SM		- Handbuch erweitern.
+SM		- Handbuch erweitern.(Epsilon-Produktionen entfernen, 
+		  Einheitsproduktionen entfernen, DFA -> Regex, Regex -> NFA)
 SM		- Vortrag machen.
-
-*** Vorschlag ***
-
-SM		- Beim Umwandeln eines Regex in einen Automaten alle Zeichen welche nicht
-		  verwendet werden (Übergang in ungültigen Zustand) als einen Schritt
-		  zusammenfassen.
 
 *** Features ***
 - Der Parser macht keine Vorschläge, siehe "{0, }" beim Alphabet

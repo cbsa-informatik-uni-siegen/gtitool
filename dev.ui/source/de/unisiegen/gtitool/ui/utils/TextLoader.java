@@ -28,7 +28,7 @@ public class TextLoader
     String filename = "/de/unisiegen/gtitool/ui/algorithms/"; //$NON-NLS-1$
     filename += PreferenceManager.getInstance ().getLanguageItem ()
         .getLocale ().toString ()
-        + "/" + type.toString (); //$NON-NLS-1$
+        + "/" + type.toString () + ".txt"; //$NON-NLS-1$ //$NON-NLS-2$
     return loadTextFromFile ( filename );
   }
 
@@ -43,7 +43,7 @@ public class TextLoader
     String filename = "/de/unisiegen/gtitool/ui/algorithms/"; //$NON-NLS-1$
     filename += PreferenceManager.getInstance ().getLanguageItem ()
         .getLocale ().toString ()
-        + "/MINIMIZE_MACHINE"; //$NON-NLS-1$
+        + "/MINIMIZE_MACHINE.txt"; //$NON-NLS-1$
     return loadTextFromFile ( filename );
   }
 
@@ -59,7 +59,7 @@ public class TextLoader
     String filename = "/de/unisiegen/gtitool/ui/algorithms/"; //$NON-NLS-1$
     filename += PreferenceManager.getInstance ().getLanguageItem ()
         .getLocale ().toString ()
-        + "/" + type.toString (); //$NON-NLS-1$
+        + "/" + type.toString () + ".txt"; //$NON-NLS-1$ //$NON-NLS-2$
     return loadTextFromFile ( filename );
   }
 
@@ -75,7 +75,7 @@ public class TextLoader
     String filename = "/de/unisiegen/gtitool/ui/algorithms/"; //$NON-NLS-1$
     filename += PreferenceManager.getInstance ().getLanguageItem ()
         .getLocale ().toString ()
-        + "/" + type.toString (); //$NON-NLS-1$
+        + "/" + type.toString () + ".txt"; //$NON-NLS-1$ //$NON-NLS-2$
     return loadTextFromFile ( filename );
   }
 

@@ -514,6 +514,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       this.parentDialog = (JDialog)parent;
       this.gui = new PrintDialogForm ( this, ( JDialog ) parent );
     }
+    hideChooseComponents ();
     this.textWindow = textWindow;
 
     initialize ();
@@ -897,8 +898,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
       job.setPrintService ( ( PrintService ) this.gui.jGTIComboBoxPrinter
           .getSelectedItem () );
-      job.setPrintable ( this.textWindow.getGUI ().jGTITextPaneAlgorithm
-          .getPrintable ( null, null ), pageFormat );
+      job.setPrintable ( this.textWindow.getGUI ().jGTITextPaneAlgorithm );
       job.setJobName ( this.textWindow.getJobName () );
       job.print ();
     }
@@ -1176,7 +1176,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
         printTableModel ( this.convertGrammarDialog.getPanel ().getName ()
             + " " //$NON-NLS-1$
-            + Messages.getString ( "PrintDialog.ConvertRegex" ) ); //$NON-NLS-1$
+            + this.convertGrammarDialog.getGUI ().getTitle ());
       }
 
     }

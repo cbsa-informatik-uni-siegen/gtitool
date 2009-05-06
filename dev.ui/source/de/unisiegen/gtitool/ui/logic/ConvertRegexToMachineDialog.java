@@ -2458,7 +2458,7 @@ public class ConvertRegexToMachineDialog implements
         DefaultPositionState state;
         try
         {
-          state = new DefaultPositionState ( name, pos );
+          state = new DefaultPositionState ( name, pos, true );
         }
         catch ( StateException exc )
         {
@@ -2535,7 +2535,7 @@ public class ConvertRegexToMachineDialog implements
               }
               try
               {
-                uState = new DefaultPositionState ( name, u );
+                uState = new DefaultPositionState ( name, u, true );
               }
               catch ( StateException exc )
               {
@@ -2567,7 +2567,7 @@ public class ConvertRegexToMachineDialog implements
               try
               {
                 uState = new DefaultPositionState ( "\u2205", //$NON-NLS-1$
-                    new HashSet < Integer > () );
+                    new HashSet < Integer > (), false );
               }
               catch ( StateException exc )
               {
@@ -2761,7 +2761,7 @@ public class ConvertRegexToMachineDialog implements
           DefaultPositionState state;
           try
           {
-            state = new DefaultPositionState ( name, pos );
+            state = new DefaultPositionState ( name, pos, false );
           }
           catch ( StateException exc )
           {
@@ -2829,7 +2829,7 @@ public class ConvertRegexToMachineDialog implements
             DefaultPositionState uState = null;
             try
             {
-              uState = new DefaultPositionState ( i.toString (), uPos );
+              uState = new DefaultPositionState ( i.toString (), uPos, false );
 
               if ( !this.positionStates.contains ( uState ) )
               {
@@ -2846,19 +2846,17 @@ public class ConvertRegexToMachineDialog implements
               }
               Symbol s = new DefaultSymbol ( this.defaultRegex
                   .symbolAtPosition ( actualPosition.intValue () ) );
+              Transition t = new DefaultTransition ( this.defaultRegex
+                  .getAlphabet (), this.defaultRegex.getAlphabet (),
+                  new DefaultWord (), new DefaultWord (),
+                  this.positionStateViewList.get ( positionState ).getState (),
+                  this.positionStateViewList.get ( uState ).getState (), s );
+              t.setActive ( true );
               addedTransitions
-                  .add ( this.modelConverted
-                      .createTransitionView (
-                          new DefaultTransition ( this.defaultRegex
-                              .getAlphabet (),
-                              this.defaultRegex.getAlphabet (),
-                              new DefaultWord (), new DefaultWord (),
-                              this.positionStateViewList.get ( positionState )
-                                  .getState (), this.positionStateViewList.get (
-                                  uState ).getState (), s ),
-                          this.positionStateViewList.get ( positionState ),
-                          this.positionStateViewList.get ( uState ), true,
-                          false, true ) );
+                  .add ( this.modelConverted.createTransitionView ( t,
+                      this.positionStateViewList.get ( positionState ),
+                      this.positionStateViewList.get ( uState ), true, false,
+                      true ) );
               pretty
                   .add ( Messages
                       .getPrettyString (

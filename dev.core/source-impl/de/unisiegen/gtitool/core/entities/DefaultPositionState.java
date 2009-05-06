@@ -35,12 +35,13 @@ public class DefaultPositionState extends DefaultState
    * 
    * @param name The name of the State
    * @param positions The positions
+   * @param set True if it is a set of positions
    * @throws StateException is thrown when state cannot be created
    */
-  public DefaultPositionState ( String name, HashSet < Integer > positions )
-      throws StateException
+  public DefaultPositionState ( String name, HashSet < Integer > positions,
+      boolean set ) throws StateException
   {
-    super ( "{" + name + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
+    super ( ( set ? "{" : "" ) + name + ( set ? "}" : "" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     this.positions = positions;
     this.mark = false;
   }

@@ -1,8 +1,9 @@
 %%
 %% $Id$
 %%
-%% Copyright (c) 2007-2008 Christian Fehler
-%% Copyright (c) 2007-2008 Benjamin Mies
+%% Copyright (c) 2007-2009 Christian Fehler
+%% Copyright (c) 2007-2009 Benjamin Mies
+%% Copyright (c) 2007-2009 Simon Meurer
 %%
 
 
@@ -463,6 +464,38 @@ erreichen ist und nur einen Übergang mit allen Symbolen zu dem Zustand
 \State{$\emptyset$} hat. Wie solche Zustände im Anschluss entfernt werden können,
 kann im Abschnitt \ref{ReachableStates} nachgelesen werden.
 
+
+\subsection{Umwandeln in Regulären Ausdruck}
+
+Es besteht die Möglichkeit einen DFA in einen Regulären Ausdruck umzuwandeln.
+Dazu betrachten wir den Beispielautomat aus der Vorlesung:
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{../images/dfa_for_regex.png}
+\end{center}
+\end{figure}
+
+Für diesen Beispielautomat liefe der Algorithmus wie folgt ab:
+
+\begin{itemize}
+
+   \item Zunächst wird ein Ausdruck für den gesamten Automaten angelegt. In unserem Fall wurde $L_{z_0 z_1}^3 = L_{z_0 z_1}^2 | L_{z_0 z_1}^2 · (L_{z_1 z_1}^2)* · L_{z_1 z_1}^2$ angelegt.
+   \item Nun werden die einzelnen Sprachen konkretisiert. In unserem Beispiel zunächst $L_{z_0 z_1}^2$. Dies wird in $L_{z_0 z_1}^1 | L_{z_0 z_0}^1 · (L_{z_0 z_0}^1)* · L_{z_0 z_1}^1$ umgewandelt.
+   \item Im nächsten Schritt wird dann $L_{z_0 z_1}^1$ in \Symbol{1} umgewandelt.
+   \item Dies wird solange fortgesetzt bis alle Sprachen zu Regulären Ausdrücken umgewandelt sind.
+   \item In unserem Fall ist das Ergebnis $((1|(0|\epsilon)(0|\epsilon)*1)|(1|(0|\epsilon)(0|\epsilon)*1)((1|\epsilon)|0(0|\epsilon)*1)*((1|\epsilon)|0(0|\epsilon)*1))$
+
+\end{itemize}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=12cm]{../images/dfa_to_regex.png}
+\caption{Automat - Umwandeln in Regulären Ausdruck}
+\end{center}
+\end{figure}
+
+\paragraph{Achtung:} Wie im Beispiel zu sehen, wird der Reguläre Ausdruck selbst bei einem kleinen Automaten schon relativ groß. Daher ist bei größeren Automaten mit erheblichem Rechenaufwand zu rechnen.
 
 \subsection{Erreichbare Zustände}\label{ReachableStates}
 

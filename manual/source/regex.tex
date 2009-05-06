@@ -17,6 +17,7 @@ Nun ist folgender Bildschirm zu sehen:\vspace{10pt}
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=12cm]{../images/regex_example.png}
+\caption{Regul"arer Ausdruck - Eingabefenster}
 \end{center}
 \end{figure}
 
@@ -47,7 +48,7 @@ Ein regulärer Ausdruck kann im \gtitool folgende Erweiterungen enthalten:
 
 Also wäre zum Beispiel auch \Symbol{[a-z]} ein regulärer Ausdruck, wenn das Alphabet die Zeichen von \Symbol{a} bis \Symbol{z} umfasst.
 
-Wenn man nun einen Ausdruck mit diesen Erweiterungen erstellt hat, kann man diesen "`in Kernsyntax übersetzen"'. Dies funktioniert über den Menüpunkt "`Ausführen"' -> "`Übersetzen in Kernsyntax"'.
+Wenn man nun einen Ausdruck mit diesen Erweiterungen erstellt hat, kann man diesen "`in Kernsyntax übersetzen"'. Dies funktioniert über den Menüpunkt "`Ausführen"' $\rightarrow$ "`Übersetzen in Kernsyntax"'.
 
 Dann wird eine neue Datei erstellt, die den Ausdruck in Kernsyntax beinhaltet. Dabei wird das Alphabet einfach übernommen.
 
@@ -62,6 +63,7 @@ Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rig
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=12cm]{../images/regex_to_enfa.png}
+\caption{Regul"arer Ausdruck - Umwandeln in $\epsilon$-NDEA}
 \end{center}
 \end{figure}
 
@@ -81,14 +83,14 @@ Wenn wir nun den Algorithmus für unser Beispiel durchgehen kommen wir zu folgen
 
 \paragraph*{Achtung!} Vor der Umwandlung wird der reguläre Ausdruck in Kernsyntax umgewandelt, außer Charakterklassen, diese bleiben erhalten und werden im Algorithmus wie ein Symbol behandelt.
 
-
 \subsubsection{Regulären Ausdruck in DEA umwandeln}
 
-Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`DEA"'. Es öffnet sich ein Fenster, dass sehr ähnlich dem Fenster der Umwandlung in einen Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in einen $\epsilon$-NDEA ist. Zusätzlich ist hier aber neben dem Graph-Fenster auch noch das Informationsfenster für die Knoten im Graphen eingeblendent. Außerdem wurde der Ausdruck um ein Endzeichen "`\#"' erweitert.
+Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`DEA"'. Es öffnet sich ein Fenster, dass sehr ähnlich dem Fenster der Umwandlung in einen $\epsilon$-NDEA. Zusätzlich ist hier aber neben dem Graph-Fenster auch noch das Informationsfenster für die Knoten im Graphen eingeblendent. Außerdem wurde der Ausdruck um ein Endzeichen "`\#"' erweitert.
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=12cm]{../images/regex_to_dfa.png}
+\caption{Regul"arer Ausdruck - Umwandeln in DEA}
 \end{center}
 \end{figure}
 
@@ -107,6 +109,32 @@ Wenn wir den Algorithmus an unserem Beispiel durchgehen, erhalten wir folgenden 
 \paragraph*{Achtung 1:} Auch hier wird, wie bei der Umwandlung in einen $\epsilon$-NDEA der Ausdruck erst in Kernsyntax übersetzt, nur dass er hier komplett übersetzt wird.
 
 \paragraph*{Achtung 2:} Wenn das Alphabet viele Symbole umfasst, kann es zu langen Berechnungszeiten kommen, daher empfiehlt es sich, dass Alphabet nicht zu groß zu wählen.
+
+\subsubsection{Regulären Ausdruck in NDEA umwandeln}
+
+Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`NDEA"'. Es öffnet sich ein Fenster, dass sehr ähnlich dem Fenster der Umwandlung in einen DEA ist. Außerdem wurde auch hier der Ausdruck um ein Endzeichen "`\#"' erweitert.
+
+Der Algorithmus läuft im Prinzip genau so wie der Algorithmus zum Erstellen eines DEA, nur das hier nicht Positionsmengen als Zustände dienen, sondern einzelne Positionen.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{../images/regex_to_nfa.png}
+\caption{Regul"arer Ausdruck - Umwandeln in NDEA}
+\end{center}
+\end{figure}
+
+Wenn wir den Algorithmus an unserem Beispiel durchgehen erhalten wir folgenden Ablauf:
+
+\begin{itemize}
+
+   \item Zunächst wird für jede Position aus Firstpos des gesamten Ausdrucks ein Startzustand angelegt.
+   \item Danach läuft der Algorithmus ab. Es wird für jeden Zustand (also für die Position) die Funktion Followpos generiert. Für jede Position in Followpos wird dann ein Zustand angelegt und ein Übergang mit dem Symbol an der Position des ausgehenden Zustandes. In unserem Beispiel würde zunächst ein Übergang vom Zustand \State{1} zu sich selbst mit Symbol \Symbol{a} angelegt.
+   \item Danach wird von \State{1} zu \State{2} sowie \State{3} jeweils ein Übergang mit \Symbol{a} gemacht.
+   \item Dann wird der Zustand \State{1} markiert.
+   \item Dies wiederholt sich für die anderen Zustände.
+   \item Zum Schluss wird der Zustand mit der Position des Endmarkers zum Endzustand. In unserem Beispiel ist das der Zustand \State{6}.
+
+\end{itemize}
 
 \subsection{Exportieren nach \LaTeX}
 

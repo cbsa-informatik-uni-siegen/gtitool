@@ -195,6 +195,28 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * The type of the conversation of the {@link Regex}
+   */
+  public enum ConvertRegexType
+  {
+    /**
+     * The regex to dfa type
+     */
+    REGEX_TO_DFA,
+
+    /**
+     * The regex to enfa type
+     */
+    REGEX_TO_ENFA,
+
+    /**
+     * The regex to nfa type
+     */
+    REGEX_TO_NFA;
+  }
+
+
+  /**
    * The {@link Position}.
    * 
    * @author Christian Fehler
@@ -273,6 +295,11 @@ public class ConvertRegexToMachineDialog implements
   {
 
     /**
+     * The convert Token step
+     */
+    CONVERT_CHARCLASS,
+
+    /**
      * The convert concat step
      */
     CONVERT_CONCAT,
@@ -296,11 +323,6 @@ public class ConvertRegexToMachineDialog implements
      * The convert Token step
      */
     CONVERT_TOKEN,
-
-    /**
-     * The convert Token step
-     */
-    CONVERT_CHARCLASS,
 
     /**
      * The finish step.
@@ -356,6 +378,12 @@ public class ConvertRegexToMachineDialog implements
      * The act count
      */
     private int actCount = 0;
+
+
+    /**
+     * The follow pos
+     */
+    private ArrayList < Integer > actFollowPos;
 
 
     /**
@@ -449,12 +477,6 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
-     * The follow pos
-     */
-    private ArrayList < Integer > actFollowPos;
-
-
-    /**
      * Allocates a new {@link StepItem}.
      * 
      * @param activeStep The active {@link Step}
@@ -514,18 +536,6 @@ public class ConvertRegexToMachineDialog implements
       this.positions = positions;
       this.stepXGrid = xGrid;
       this.actFollowPos = actFollowPos;
-    }
-
-
-    /**
-     * Returns the actFollowPos.
-     * 
-     * @return The actFollowPos.
-     * @see #actFollowPos
-     */
-    public ArrayList < Integer > getFollowPos ()
-    {
-      return this.actFollowPos;
     }
 
 
@@ -622,6 +632,18 @@ public class ConvertRegexToMachineDialog implements
     public ArrayList < Symbol > getControlledSymbol ()
     {
       return this.controlledSymbol;
+    }
+
+
+    /**
+     * Returns the actFollowPos.
+     * 
+     * @return The actFollowPos.
+     * @see #actFollowPos
+     */
+    public ArrayList < Integer > getFollowPos ()
+    {
+      return this.actFollowPos;
     }
 
 
@@ -723,34 +745,6 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * The type of the conversation of the {@link Regex}
-   */
-  public enum ConvertRegexType
-  {
-    /**
-     * The regex to dfa type
-     */
-    REGEX_TO_DFA,
-
-    /**
-     * The regex to enfa type
-     */
-    REGEX_TO_ENFA,
-
-    /**
-     * The regex to nfa type
-     */
-    REGEX_TO_NFA;
-  }
-
-
-  /**
-   * The actual follow pos
-   */
-  private ArrayList < Integer > followPos;
-
-
-  /**
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger
@@ -800,6 +794,18 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * The algorithm
+   */
+  private String algorithm;
+
+
+  /**
+   * The algorithm window
+   */
+  private TextWindow algorithmWindow;
+
+
+  /**
    * The auto step {@link Timer}.
    */
   private Timer autoStepTimer = null;
@@ -816,6 +822,12 @@ public class ConvertRegexToMachineDialog implements
    * The {@link ConvertMachineTableModel}.
    */
   private ConvertMachineTableModel convertMachineTableModel;
+
+
+  /**
+   * The {@link ConvertRegexType}
+   */
+  private ConvertRegexType convertType;
 
 
   /**
@@ -852,6 +864,12 @@ public class ConvertRegexToMachineDialog implements
    * The {@link EntityType} that should be converted to.
    */
   private EntityType entityType;
+
+
+  /**
+   * The actual follow pos
+   */
+  private ArrayList < Integer > followPos;
 
 
   /**
@@ -997,12 +1015,6 @@ public class ConvertRegexToMachineDialog implements
       this.autoStepTimer = null;
     }
   }
-
-
-  /**
-   * The {@link ConvertRegexType}
-   */
-  private ConvertRegexType convertType;
 
 
   /**
@@ -1230,31 +1242,21 @@ public class ConvertRegexToMachineDialog implements
     rest.removeAll ( c );
     rest.remove ( new DefaultSymbol ( "#" ) ); //$NON-NLS-1$
 
-    try
+    ArrayList < Symbol > result = new ArrayList < Symbol > ();
+    for ( Symbol a : rest )
     {
-      Symbol a = rest.get ( 0 );
-      ArrayList < Symbol > result = new ArrayList < Symbol > ();
       for ( Integer p : state.getPositions () )
       {
         if ( a.getName ().equals (
             this.defaultRegex.symbolAtPosition ( p.intValue () ) ) )
         {
-          if ( !result.contains ( a ) )
-          {
-            result.add ( a );
-          }
+          result.add ( a );
+          return result;
         }
       }
-      if ( result.isEmpty () )
-      {
-        return rest;
-      }
-      return result;
     }
-    catch ( IndexOutOfBoundsException e )
-    {
-      return null;
-    }
+    return rest;
+
   }
 
 
@@ -1315,6 +1317,38 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * Shows or dispose the Algorithm window
+   * 
+   * @param show Show or dispose
+   */
+  public final void handleAlgorithmWindowChanged ( boolean show )
+  {
+    // this.algorithm =
+    // Messages.getString("ConvertGrammarDialog.CannotEliminateEntityProductions");
+    if ( this.algorithm == null || this.algorithm.length () == 0 )
+    {
+      TextLoader loader = new TextLoader ();
+      this.algorithm = loader.loadAlgorithm ( this.convertType );
+    }
+
+    if ( this.algorithmWindow == null )
+    {
+      this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
+          this.gui.jGTIToggleButtonAlgorithm, this.convertType.toString () );
+    }
+
+    if ( show )
+    {
+      this.algorithmWindow.show ();
+    }
+    else
+    {
+      this.algorithmWindow.dispose ();
+    }
+  }
+
+
+  /**
    * Handles the action on the auto step button.
    */
   public void handleAutoStep ()
@@ -1363,50 +1397,6 @@ public class ConvertRegexToMachineDialog implements
     while ( !this.endReached )
     {
       handleNextStep ();
-    }
-  }
-
-
-  /**
-   * The algorithm window
-   */
-  private TextWindow algorithmWindow;
-
-
-  /**
-   * The algorithm
-   */
-  private String algorithm;
-
-
-  /**
-   * Shows or dispose the Algorithm window
-   * 
-   * @param show Show or dispose
-   */
-  public final void handleAlgorithmWindowChanged ( boolean show )
-  {
-    // this.algorithm =
-    // Messages.getString("ConvertGrammarDialog.CannotEliminateEntityProductions");
-    if ( this.algorithm == null || this.algorithm.length () == 0 )
-    {
-      TextLoader loader = new TextLoader ();
-      this.algorithm = loader.loadAlgorithm ( this.convertType );
-    }
-
-    if ( this.algorithmWindow == null )
-    {
-      this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
-          this.gui.jGTIToggleButtonAlgorithm, this.convertType.toString () );
-    }
-
-    if ( show )
-    {
-      this.algorithmWindow.show ();
-    }
-    else
-    {
-      this.algorithmWindow.dispose ();
     }
   }
 
@@ -2499,7 +2489,7 @@ public class ConvertRegexToMachineDialog implements
 
           controlledSymbol = a;
 
-          if ( a != null )
+          if ( a != null && !a.isEmpty () )
           {
             this.controlledSymbols.get ( positionState ).addAll ( a );
             DefaultPositionState uState;

@@ -100,12 +100,51 @@ public class ConvertGrammarDialog implements
 
 
   /**
+   * The Type of the conversion of the {@link Grammar}
+   */
+  public enum ConvertGrammarType
+  {
+    /**
+     * The eliminate entity productions type
+     */
+    ELIMINATE_ENTITY_PRODUCTIONS,
+
+    /**
+     * The eliminate epsilon productions type
+     */
+    ELIMINATE_EPSILON_PRODUCTIONS,
+
+    /**
+     * The eliminate left recursion type
+     */
+    ELIMINATE_LEFT_RECURSION,
+
+    /**
+     * The left factoring type
+     */
+    LEFT_FACTORING;
+  }
+
+
+  /**
    * The {@link StepItem}.
    * 
    * @author Simon Meurer
    */
   private class StepItem
   {
+
+    /**
+     * The added epsilon {@link Production}
+     */
+    private Production addedEpsilonProduction;
+
+
+    /**
+     * True if a {@link Production} was found
+     */
+    private boolean foundProduction;
+
 
     /**
      * The current i
@@ -132,9 +171,9 @@ public class ConvertGrammarDialog implements
 
 
     /**
-     * The added epsilon {@link Production}
+     * The old oldWorkingProductions
      */
-    private Production addedEpsilonProduction;
+    private ArrayList < Production > oldWorkingProductions;
 
 
     /**
@@ -145,15 +184,20 @@ public class ConvertGrammarDialog implements
      * @param i The current i
      * @param j The current j
      * @param addedEpsilonProduction The added epsilon {@link Production}
+     * @param foundProduction True if new Production was found
+     * @param oldWorkingProductions The old working productions
      */
     public StepItem ( CFG oldCFG, DefaultListModel oldNonterminalModel, int i,
-        int j, Production addedEpsilonProduction )
+        int j, Production addedEpsilonProduction, boolean foundProduction,
+        ArrayList < Production > oldWorkingProductions )
     {
       this.oldCFG = oldCFG;
       this.oldNonterminalModel = oldNonterminalModel;
       this.iNow = i;
       this.jNow = j;
       this.addedEpsilonProduction = addedEpsilonProduction;
+      this.foundProduction = foundProduction;
+      this.oldWorkingProductions = oldWorkingProductions;
     }
 
 
@@ -215,33 +259,30 @@ public class ConvertGrammarDialog implements
     {
       return this.oldNonterminalModel;
     }
-  }
 
-
-  /**
-   * The Type of the conversion of the {@link Grammar}
-   */
-  public enum ConvertGrammarType
-  {
-    /**
-     * The eliminate left recursion type
-     */
-    ELIMINATE_LEFT_RECURSION,
 
     /**
-     * The left factoring type
+     * Returns the oldWorkingProductions.
+     * 
+     * @return The oldWorkingProductions.
+     * @see #oldWorkingProductions
      */
-    LEFT_FACTORING,
+    public ArrayList < Production > getWorkingProductions ()
+    {
+      return this.oldWorkingProductions;
+    }
+
 
     /**
-     * The eliminate entity productions type
+     * Returns the foundProduction.
+     * 
+     * @return The foundProduction.
+     * @see #foundProduction
      */
-    ELIMINATE_ENTITY_PRODUCTIONS,
-
-    /**
-     * The eliminate epsilon productions type
-     */
-    ELIMINATE_EPSILON_PRODUCTIONS;
+    public boolean isFoundProduction ()
+    {
+      return this.foundProduction;
+    }
   }
 
 
@@ -250,6 +291,18 @@ public class ConvertGrammarDialog implements
    */
   private static final Logger logger = Logger
       .getLogger ( ConvertGrammarDialog.class );
+
+
+  /**
+   * The algorithm
+   */
+  private String algorithm;
+
+
+  /**
+   * The algorithm window
+   */
+  private TextWindow algorithmWindow;
 
 
   /**
@@ -265,9 +318,27 @@ public class ConvertGrammarDialog implements
 
 
   /**
+   * The {@link ConvertGrammarType}
+   */
+  private ConvertGrammarType convertType;
+
+
+  /**
    * Flag that indicates if the end is reached.
    */
   private boolean endReached = false;
+
+
+  /**
+   * The entity {@link Production}s
+   */
+  private ArrayList < Production > entityProductions;
+
+
+  /**
+   * The epsilon {@link Production}s
+   */
+  private ArrayList < Production > epsilonProductions;
 
 
   /**
@@ -358,6 +429,12 @@ public class ConvertGrammarDialog implements
    * The {@link ConvertMachineTableColumnModel}.
    */
   private ConvertMachineTableColumnModel tableColumnModel = new ConvertMachineTableColumnModel ();
+
+
+  /**
+   * The working productions
+   */
+  private ArrayList < Production > workingProductions;
 
 
   /**
@@ -475,12 +552,6 @@ public class ConvertGrammarDialog implements
     }
     return newCFG;
   }
-
-
-  /**
-   * The {@link ConvertGrammarType}
-   */
-  private ConvertGrammarType convertType;
 
 
   /**
@@ -1081,6 +1152,35 @@ public class ConvertGrammarDialog implements
 
 
   /**
+   * Shows or dispose the Algorithm window
+   * 
+   * @param show Show or dispose
+   */
+  public void handleAlgorithmWindowChanged ( boolean show )
+  {
+    if ( this.algorithm == null || this.algorithm.length () == 0 )
+    {
+      TextLoader loader = new TextLoader ();
+      this.algorithm = loader.loadAlgorithm ( this.convertType );
+    }
+
+    if ( this.algorithmWindow == null )
+    {
+      this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
+          this.gui.jGTIToggleButtonAlgorithm, this.convertType.toString () );
+    }
+    if ( show )
+    {
+      this.algorithmWindow.show ();
+    }
+    else
+    {
+      this.algorithmWindow.dispose ();
+    }
+  }
+
+
+  /**
    * Handles the action on the auto step button.
    */
   public void handleAutoStep ()
@@ -1137,47 +1237,6 @@ public class ConvertGrammarDialog implements
     logger.debug ( "handleNextStep", "handle next step" ); //$NON-NLS-1$ //$NON-NLS-2$
     performNextStep ();
     setStatus ();
-  }
-
-
-  /**
-   * The algorithm window
-   */
-  private TextWindow algorithmWindow;
-
-
-  /**
-   * The algorithm
-   */
-  private String algorithm;
-
-
-  /**
-   * Shows or dispose the Algorithm window
-   * 
-   * @param show Show or dispose
-   */
-  public void handleAlgorithmWindowChanged ( boolean show )
-  {
-    if ( this.algorithm == null || this.algorithm.length () == 0 )
-    {
-      TextLoader loader = new TextLoader ();
-      this.algorithm = loader.loadAlgorithm ( this.convertType );
-    }
-
-    if ( this.algorithmWindow == null )
-    {
-      this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
-          this.gui.jGTIToggleButtonAlgorithm, this.convertType.toString () );
-    }
-    if ( show )
-    {
-      this.algorithmWindow.show ();
-    }
-    else
-    {
-      this.algorithmWindow.dispose ();
-    }
   }
 
 
@@ -1347,6 +1406,12 @@ public class ConvertGrammarDialog implements
   {
     CFG oldCFG = cloneConverted ();
     CFG cfg = ( CFG ) this.modelConverted.getGrammar ();
+    boolean foundProduction = false;
+    ArrayList < Production > oldWorkingProductions = new ArrayList < Production > ();
+    if ( this.workingProductions != null )
+    {
+      oldWorkingProductions.addAll ( this.workingProductions );
+    }
 
     for ( Production p : cfg.getProduction () )
     {
@@ -1483,7 +1548,7 @@ public class ConvertGrammarDialog implements
 
       addOutlineComment ( line );
       this.stepItemList.add ( new StepItem ( oldCFG, oldNonterminalModel, iNow,
-          jNow, null ) );
+          jNow, null, foundProduction, oldWorkingProductions ) );
     }
     else if ( this.convertType.equals ( ConvertGrammarType.LEFT_FACTORING ) )
     {
@@ -1504,7 +1569,8 @@ public class ConvertGrammarDialog implements
       {
         leftFactore ( a, cfg );
       }
-      this.stepItemList.add ( new StepItem ( oldCFG, null, 0, 0, null ) );
+      this.stepItemList.add ( new StepItem ( oldCFG, null, 0, 0, null,
+          foundProduction, oldWorkingProductions ) );
       this.endReached = true;
       for ( NonterminalSymbol s : cfg.getNonterminalSymbolSet () )
       {
@@ -1562,7 +1628,7 @@ public class ConvertGrammarDialog implements
             this.workingProductions.addAll ( cfg
                 .getProductionForNonTerminal ( b ) );
             this.j = 0;
-
+            foundProduction = true;
             line.add ( Messages.getPrettyString (
                 "ConvertGrammarDialog.StepEntityProductionFound",//$NON-NLS-1$
                 this.entityProductions.get ( this.i ).toPrettyString () ) );
@@ -1613,7 +1679,7 @@ public class ConvertGrammarDialog implements
       }
 
       this.stepItemList.add ( new StepItem ( oldCFG, null, iNow, jNow,
-          addedProduction ) );
+          addedProduction, foundProduction, oldWorkingProductions ) );
       addOutlineComment ( line );
     }
     // Eliminate Epsilon Productions
@@ -1647,6 +1713,7 @@ public class ConvertGrammarDialog implements
             this.workingProductions.addAll ( getProductionsForNonterminal ( s,
                 cfg ) );
             this.j = 0;
+            foundProduction = true;
             line.add ( Messages.getPrettyString (
                 "ConvertGrammarDialog.StepEpsilonProductionFound", s //$NON-NLS-1$
                     .toPrettyString () ) );
@@ -1714,31 +1781,13 @@ public class ConvertGrammarDialog implements
       }
 
       this.stepItemList.add ( new StepItem ( oldCFG, null, iNow, jNow,
-          addedEpsilonProduction ) );
+          addedEpsilonProduction, foundProduction, oldWorkingProductions ) );
       addOutlineComment ( line );
     }
     this.gui.repaint ();
     updateConverted ();
     setStatus ();
   }
-
-
-  /**
-   * The entity {@link Production}s
-   */
-  private ArrayList < Production > entityProductions;
-
-
-  /**
-   * The epsilon {@link Production}s
-   */
-  private ArrayList < Production > epsilonProductions;
-
-
-  /**
-   * The working productions
-   */
-  private ArrayList < Production > workingProductions;
 
 
   /**
@@ -1788,6 +1837,12 @@ public class ConvertGrammarDialog implements
       {
         this.modelConverted.getGrammar ().getProduction ().remove ( p );
       }
+    }
+    this.workingProductions = new ArrayList < Production > ();
+    this.workingProductions.addAll ( item.getWorkingProductions () );
+    if ( item.isFoundProduction () )
+    {
+      this.workingProductions.clear ();
     }
     updateConverted ();
     this.convertMachineTableModel.removeLastRow ();

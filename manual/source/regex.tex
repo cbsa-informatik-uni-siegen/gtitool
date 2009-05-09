@@ -2,34 +2,35 @@
 
 Wir wollen uns dies anhand des folgenden Beispiels anschauen: \Symbol{(a$|$b)*abb}
 
-\section{Neue regex Datei anlegen}
+\section{Neue .regex Datei anlegen}
 
 Zu Beginn müssen wir dazu, wie auch beim Automat und bei Grammatiken, den "`Neu\ldots"' Dialog öffnen. Zu finden ist dieser in der Toolbar oder im Menüeintrag "`Datei"'. Dort wählen wir "`Regulärer Ausdruck"' an und klicken auf "`Weiter"'.\vspace{10pt}
 
-Danach müssen wir im nächsten Dialog nur noch ein Alphabet festlegen, auf welchem der Reguläre Ausdruck definiert ist. Hier ist es auch möglich eine Klasse von Zeichen anzugeben, zum Beispiel \Symbol{[a-z]}.\vspace{10pt}
+Danach müssen wir im nächsten Dialog nur noch ein Alphabet festlegen, auf welchem der reguläre Ausdruck definiert ist. Hier ist es auch möglich eine Klasse von Zeichen anzugeben, zum Beispiel \Symbol{[a-z]}.\vspace{10pt}
 
-In unserem Beispiel würde also ein Alphabet bestehend aus \Symbol{a} und \Symbol{b} genügen. Man kann dieses Alphabet auch im Nachhinein noch verändern über den Button "`Dokument editieren"'. Nachdem wir ein Alphabet festgelegt haben bestätigen wir dies mit "`Fertig"'.\vspace{10pt}
+In unserem Beispiel würde also ein Alphabet bestehend aus \Symbol{a} und \Symbol{b} genügen. Man kann dieses Alphabet auch im Nachhinein noch über den Button "`Dokument editieren"' verändern. Nachdem wir ein Alphabet festgelegt haben bestätigen wir dies mit "`Fertig"'.\vspace{10pt}
 
-\section{Regluären Ausdruck eingeben}
+\section{Regulären Ausdruck eingeben}
 
-Nun ist folgender Bildschirm zu sehen:\vspace{10pt}
+Nun ist ein Bildschirm wie in Abbildung \ref{regex} zu sehen.
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=12cm]{../images/regex_example.png}
-\caption{Regul"arer Ausdruck - Eingabefenster}
+\caption{Regulärer Ausdruck - Eingabefenster}
+\label{regex}
 \end{center}
 \end{figure}
 
-Oben rechts ist das Eingabefeld für den reglulären Ausdruck darunter findet man nochmal zur Orientierung das Alphabet, dass wir gerade eingegeben haben, verändert werden kann es aber nur über den Button "`Dokument editieren"'. Im Eingabefeld tragen wir nun unseren Beispielausdruck \Symbol{(a$|$b)*abb} ein.\vspace{10pt}
+Oben rechts ist das Eingabefeld für den regulären Ausdruck. Darunter findet man nochmal zur Orientierung das Alphabet, dass wir gerade eingegeben haben. Wie bereits oben erwähnt kann das Alphabet nur über den Button "`Dokument editieren"' verändert werden. Im Eingabefeld tragen wir nun unseren Beispielausdruck \Symbol{(a$|$b)*abb} ein.\vspace{10pt}
 
-Direkt bei der Eingabe wird im Graph-Fenster in der Mitte der Reguläre Ausdruck als Baum dargestellt.
+Direkt bei der Eingabe wird im Graph-Fenster in der Mitte der reguläre Ausdruck als Baum dargestellt.
 
 \section{Das Informationsfenster}
 
-Im Menü findet sich unter "`Ansicht"' der Eintrag "`Regulärer Ausdruck Info"'. Wenn dieser Punkt aktiviert wird, erscheint auf der rechten Seite, neben dem Graph-Fenster ein Informationsfenster.
+Im Menü findet sich unter "`Ansicht"' der Eintrag "`Regulärer Ausdruck Info"'. Wenn dieser Punkt aktiviert wird, erscheint auf der rechten Seite, neben dem Graph-Fenster, ein Informationsfenster.
 
-Dieses Informationsfenster beinhaltet die Informationen zum aktuell ausgewählten Knoten im Graph-Fenster. Diese Informationen bestehen aus den in der Vorlesung Compilerbau I definierten Funktionen nullable, firstpos, lastpos und followpos. Außerdem werden jetzt auch unter den Blattknoten die jeweilige Position angegeben.
+Dieses Informationsfenster beinhaltet die Informationen zum aktuell ausgewählten Knoten im Graph-Fenster. Diese Informationen bestehen aus den in der Vorlesung Compilerbau I definierten Funktionen nullable, firstpos, lastpos und followpos. Außerdem wird jetzt auch unter den Blattknoten die jeweilige Position angegeben.
 
 Da die Funktion followpos nur auf Positionen definiert ist, wird sie auch nur angezeigt, wenn der ausgewählte Knoten eine Position hat, also ein Blattknoten ist. In unserem Beispiel die Knoten mit \Symbol{a} oder \Symbol{b}.
 
@@ -54,11 +55,11 @@ Dann wird eine neue Datei erstellt, die den Ausdruck in Kernsyntax beinhaltet. D
 
 \subsection{Einen regulären Ausdruck umwandeln}
 
-Einen regulären Ausdruck kann man in einen Automaten umwandeln. Dazu gibt es zwei verschiedene Algorithmen. Zum einen der "`Thompson-Algorithmus"', der aus dem regulären Ausdruck einen $\epsilon$-NDEA konstruiert und den Algorithmus, der aus dem regulären Ausdruck direkt einen DEA konstruiert.
+Einen regulären Ausdruck kann man in einen Automaten umwandeln. Dazu gibt es drei verschiedene Algorithmen. Zum einen der "`Thompson-Algorithmus"', der aus dem regulären Ausdruck einen $\epsilon$-NDEA konstruiert und zwei Algorithmen, um aus dem regulären Ausdruck einen NDEA bzw. direkt einen DEA zu konstruieren.
 
 \subsubsection{Regulären Ausdruck in $\epsilon$-NDEA umwandeln}
 
-Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`$\epsilon$-NDEA"'. Es öffnet sich ein Fenster, in welchem in der oberen Ansicht der reguläre Ausdruck als Graph dargestellt ist. Links befindet sich die Outline, in der die Informationen über den aktuellen Schritt zu finden sind und unten ist ein noch leerer Automat zu finden. Dort wird im weiteren Verlauf der $\epsilon$-NDEA erstellt.
+Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`$\epsilon$-NDEA"'. Es öffnet sich ein Fenster, in welchem in der oberen Ansicht der reguläre Ausdruck als Graph dargestellt ist. Links ist die Outline zu sehen, in der die Informationen über den aktuellen Schritt zu finden sind und unten ist ein noch leerer Automat in welchem im Verlauf des Algorithmus der $\epsilon$-NDEA erstellt wird.
 
 \begin{figure}[h]
 \begin{center}
@@ -67,25 +68,25 @@ Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rig
 \end{center}
 \end{figure}
 
-Oben findet sich die Navigationsleiste, mit der durch den Algorithmus navigiert werden kann.
+Oben befindet sich die Navigationsleiste, mit der durch den Algorithmus navigiert werden kann.
 
-Der Algorithmus geht im Prinzip den Graph von oben nach unten durch und legt dabei jeweils eine Blackbox an für alle nicht Blattknoten. 
+Der Algorithmus geht im Prinzip den Graph von oben nach unten durch und legt dabei jeweils eine Blackbox für alle nicht Blattknoten an.
 
-Wenn wir nun den Algorithmus für unser Beispiel durchgehen kommen wir zu folgender Reihenfolge:
+Wenn wir nun den Algorithmus für unser Beispiel durchgehen, kommen wir zu folgender Reihenfolge:
 \begin{enumerate}
   \item Zunächst wird der Automat für die Konkatenation \Symbol{(a$|$b)*ab·b}, welche im Graph-Fenster markiert wird, erstellt. Dieser besteht aus zwei Blackboxen, eine für den regulären Ausdruck \Symbol{(a$|$b)*ab} und eine für das Symbol \Symbol{b}. Es werden dabei auch der Start- und der Endzustand des Automaten erstellt. Diese ändern sich auch während des Algorithmus nicht mehr.
   \item Aus der Blackbox für \Symbol{(a$|$b)*ab} werden zwei Blackboxen: Eine für \Symbol{(a$|$b)*a} und eine für \Symbol{b}.
   \item Aus der Blackbox für \Symbol{(a$|$b)*a} werden zwei Blackboxen: Eine für \Symbol{(a$|$b)*} und eine für \Symbol{a}.
-  \item Aus der Blackbox für \Symbol{(a$|$b)*} wird der Automat für einen Kleene-Abschluss konstruiert und dadurch eine Blackbox für den Ausdruch \Symbol{a$|$b} erstellt.
+  \item Aus der Blackbox für \Symbol{(a$|$b)*} wird der Automat für einen Kleene-Abschluss konstruiert und dadurch eine Blackbox für den Ausdruck \Symbol{a$|$b} erstellt.
   \item Aus der Blackbox für \Symbol{a$|$b} wird der Automat für eine Disjunktion erstellt und damit zwei Blackboxen für \Symbol{a} und \Symbol{b}.
   \item Nun werden nacheinander von links nach rechts (in der Baumansicht des regulären Ausdruck) die Blackboxen für die einzelnen Symbole durch einen Übergang mit dem jeweiligen Symbol gebildet.
 \end{enumerate}
 
-\paragraph*{Achtung!} Vor der Umwandlung wird der reguläre Ausdruck in Kernsyntax umgewandelt, außer Charakterklassen, diese bleiben erhalten und werden im Algorithmus wie ein Symbol behandelt.
+\paragraph*{Achtung!} Vor der Umwandlung wird der reguläre Ausdruck in Kernsyntax umgewandelt. Außer Charakterklassen, diese bleiben erhalten und werden im Algorithmus wie ein Symbol behandelt.
 
 \subsubsection{Regulären Ausdruck in DEA umwandeln}
 
-Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`DEA"'. Es öffnet sich ein Fenster, dass sehr ähnlich dem Fenster der Umwandlung in einen $\epsilon$-NDEA. Zusätzlich ist hier aber neben dem Graph-Fenster auch noch das Informationsfenster für die Knoten im Graphen eingeblendent. Außerdem wurde der Ausdruck um ein Endzeichen "`\#"' erweitert.
+Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`DEA"'. Es öffnet sich ein Fenster, das sehr ähnlich dem Fenster der Umwandlung in einen $\epsilon$-NDEA ist. Zusätzlich ist hier aber neben dem Graph-Fenster auch noch das Informationsfenster für die Knoten im Graphen eingeblendet. Außerdem wurde der Ausdruck um ein Endzeichen "`\#"' erweitert.
 
 \begin{figure}[h]
 \begin{center}
@@ -97,22 +98,22 @@ Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rig
 Wenn wir den Algorithmus an unserem Beispiel durchgehen, erhalten wir folgenden Ablauf:
 
 \begin{itemize}
-  \item Zunächst wird der Startzustand gebildet, aus allen Positionen die in Firstpos des gesamten Ausdruck enthalten sind. Die Positionen kann man sich auch anschauen, indem man den obersten Knoten im Graph markiert. In unserem Beispiel wird der Zustand \{\State{1,2,3}\}
-  \item Danach läuft der Algorithmus ab. Also es wird für jedes Symbol, dass im Alphabet vorhanden ist, geschaut, ob man eine weitere Position erreicht (followpos). In diesem Fall wird für das Symbol \Symbol{a} die Position \Position{4} als Nachfolger gefunden. Daher wird ein Übergang \Symbol{a} vom Startzustand zu einem neuen Zustand \{\State{4}\} angelegt.
+  \item Zunächst wird der Startzustand, aus allen Positionen die in $firstpos$ des gesamten Ausdruck enthalten sind, gebildet. Die Positionen kann man sich auch anschauen, indem man den obersten Knoten im Graph markiert. In unserem Beispiel wird der Zustand \{\State{1,2,3}\} als Startzustand zum Automat hinzugefügt.
+  \item Danach läuft der Algorithmus ab. Es wird für jedes Symbol, das im Alphabet vorhanden ist, geschaut, ob man eine weitere Position erreicht ($followpos$). In diesem Fall wird für das Symbol \Symbol{a} die Position \Position{4} als Nachfolger gefunden. Daher wird ein Übergang \Symbol{a} vom Startzustand zu einem neuen Zustand \{\State{4}\} angelegt.
   \item Als nächstes kommt das Symbol \Symbol{b}. Für dieses wird ein Übergang zum Zustand \{\State{1,2,3}\} angelegt.
   \item Nun wird dieser Zustand markiert, da für ihn, wenn unser Alphabet nur die Symbole \Symbol{a} und \Symbol{b} umfasst, alle Symbole durchgegangen wurden.
   \item Nun kommen wir zum nächsten Zustand \{\State{1,2,3,4}\}. Für diesen wird das Symbol \Symbol{a} getestet und es wird ein Übergang auf sich selbst angelegt.
-  \item Danach ist \Symbol{b} dran. Für welches ein Übergang in einen neuen Zustand \{\State{1,2,3,5}\} angelegt wird.
-  \item Dies geht dann so weiter, bis der letzte Zustand \{\State{1,2,3,6}\} abgearbeitet wurde. Dann gibt es keine unmarkierten Zustände mehr und es werden die Endzustände gesucht. Diese sind alle, die die Position aus lastpos des gesamten Ausdrucks beinhalten. In unserem Fall ist dies der zuletzt erstellte Zustand \{\State{1,2,3,6}\}.
+  \item Danach ist \Symbol{b} an der Reihe. Für welches ein Übergang in einen neuen Zustand \{\State{1,2,3,5}\} angelegt wird.
+  \item Dies geht dann immer so weiter, bis der letzte Zustand \{\State{1,2,3,6}\} abgearbeitet wurde. Es gibt nun keine unmarkierten Zustände mehr und es werden die Endzustände gesucht. Diese sind alle, die die Position aus lastpos des gesamten Ausdrucks beinhalten. In unserem Fall ist dies der zuletzt erstellte Zustand \{\State{1,2,3,6}\}.
 \end{itemize}
 
-\paragraph*{Achtung 1:} Auch hier wird, wie bei der Umwandlung in einen $\epsilon$-NDEA der Ausdruck erst in Kernsyntax übersetzt, nur dass er hier komplett übersetzt wird.
+\paragraph*{Achtung 1:} Auch hier wird, wie bei der Umwandlung in einen $\epsilon$-NDEA, der Ausdruck erst in Kernsyntax übersetzt, nur dass er hier komplett übersetzt wird.
 
 \paragraph*{Achtung 2:} Wenn das Alphabet viele Symbole umfasst, kann es zu langen Berechnungszeiten kommen, daher empfiehlt es sich, dass Alphabet nicht zu groß zu wählen.
 
 \subsubsection{Regulären Ausdruck in NDEA umwandeln}
 
-Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`NDEA"'. Es öffnet sich ein Fenster, dass sehr ähnlich dem Fenster der Umwandlung in einen DEA ist. Außerdem wurde auch hier der Ausdruck um ein Endzeichen "`\#"' erweitert.
+Im Menü findet sich unter "`Ausführen"' der Punkt "`Umwandeln in\ldots"' $\rightarrow$"`NDEA"'. Es öffnet sich ein Fenster, das sehr ähnlich dem Fenster der Umwandlung in einen DEA ist. Außerdem wurde auch hier der Ausdruck um ein Endzeichen "`\#"' erweitert.
 
 Der Algorithmus läuft im Prinzip genau so wie der Algorithmus zum Erstellen eines DEA, nur das hier nicht Positionsmengen als Zustände dienen, sondern einzelne Positionen.
 
@@ -123,13 +124,13 @@ Der Algorithmus läuft im Prinzip genau so wie der Algorithmus zum Erstellen ein
 \end{center}
 \end{figure}
 
-Wenn wir den Algorithmus an unserem Beispiel durchgehen erhalten wir folgenden Ablauf:
+Wenn wir den Algorithmus an unserem Beispiel durchgehen, erhalten wir folgenden Ablauf:
 
 \begin{itemize}
 
-   \item Zunächst wird für jede Position aus Firstpos des gesamten Ausdrucks ein Startzustand angelegt.
-   \item Danach läuft der Algorithmus ab. Es wird für jeden Zustand (also für die Position) die Funktion Followpos generiert. Für jede Position in Followpos wird dann ein Zustand angelegt und ein Übergang mit dem Symbol an der Position des ausgehenden Zustandes. In unserem Beispiel würde zunächst ein Übergang vom Zustand \State{1} zu sich selbst mit Symbol \Symbol{a} angelegt.
-   \item Danach wird von \State{1} zu \State{2} sowie \State{3} jeweils ein Übergang mit \Symbol{a} gemacht.
+   \item Zunächst wird für jede Position aus $firstpos$ des gesamten Ausdrucks ein Startzustand angelegt.
+   \item Danach läuft der Algorithmus ab. Es wird für jeden Zustand (also für die Position) die Funktion $followpos$ generiert, diese kann man sich ansehen, indem man im regulären Ausdruck auf die jeweilige Position klickt. Für jede Position in $followpos$ wird dann ein Zustand angelegt und ein Übergang mit dem Symbol an der Position des ausgehenden Zustandes. In unserem Beispiel würde zunächst ein Übergang vom Zustand \State{1} zu sich selbst mit Symbol \Symbol{a} angelegt.
+   \item Im Anschluss wird von \State{1} zu \State{2} sowie \State{3} jeweils ein Übergang mit \Symbol{a} gemacht.
    \item Dann wird der Zustand \State{1} markiert.
    \item Dies wiederholt sich für die anderen Zustände.
    \item Zum Schluss wird der Zustand mit der Position des Endmarkers zum Endzustand. In unserem Beispiel ist das der Zustand \State{6}.
@@ -140,11 +141,10 @@ Wenn wir den Algorithmus an unserem Beispiel durchgehen erhalten wir folgenden A
 
 Man kann einen regulären Ausdruck auch nach \LaTeX \ exportieren.
 
-Dazu gibt es im Menü den Eintrag "`Datei"' $\leftarrow$ "`Exportieren nach LaTeX"'. Nach einem Klick auf den Eintrag, erscheint ein Dialog, in welchem man den Ort und den Dateinamen, der zu erstellenden \LaTeX-Datei angibt.
+Dazu gibt es im Menü den Eintrag "`Datei"' $\rightarrow$ "`Exportieren nach LaTeX"'. Nach einem Klick auf den Eintrag erscheint ein Dialog, in welchem man den Ort und den Dateinamen der zu erstellenden \LaTeX-Datei angibt.
 
 Dann wird die Datei erstellt. Dies würde in unserem Beispiel zu folgendem Code führen:
-
-\begin{verbatim}
+\begin{lstlisting}
 \documentclass[a4paper,11pt]{article}
 \usepackage{german}
 \usepackage[utf8]{inputenc}
@@ -153,9 +153,9 @@ Dann wird die Datei erstellt. Dies würde in unserem Beispiel zu folgendem Code 
  %Erstellen des Tabulars fuer den Baum
  \begin{tabular}{ccccccccc}
   %Erstellen der Knoten fuer den Baum
-   &  &  &  &  &  &  & \node{r0}{·}\\[4ex]
-   &  &  &  &  & \node{r1}{·}   &  &  & \node{r2}{b}\\[4ex]
-   &  &  & \node{r3}{·}   &  &  & \node{r4}{b}\\[4ex]
+   &  &  &  &  &  &  & \node{r0}{$\cdot$}\\[4ex]
+   &  &  &  &  & \node{r1}{$\cdot$}   &  &  & \node{r2}{b}\\[4ex]
+   &  &  & \node{r3}{$\cdot$}   &  &  & \node{r4}{b}\\[4ex]
    & \node{r5}{*}   &  &  & \node{r6}{a}\\[4ex]
    & \node{r7}{$|$}\\[4ex]
   \node{r8}{a}   &  & \node{r9}{b}
@@ -172,13 +172,13 @@ Dann wird die Datei erstellt. Dies würde in unserem Beispiel zu folgendem Code 
  \nodeconnect{r0}{r2}
 
 \end{document}
-\end{verbatim}
+\end{lstlisting}
 
-Dies ist ein komplettes \LaTeX-Dokument, dass heißt diese Datei kann so alleine genutzt werden. Man kann aber auch nur den Inhalt von "`document"' in eine andere \LaTeX-Datei einfügen.
+Dies ist ein komplettes \LaTeX-Dokument, dass heißt diese Datei kann so für sich genutzt werden. Man kann aber auch nur den Inhalt von "`document"' in eine andere \LaTeX-Datei einfügen.
 
 \paragraph*{Achtung 1:} Es wird das Package "`tree-dvips"' für \LaTeX\ genutzt. Das Package muss daher auf dem Rechner vorhanden sein, um die Datei nutzen zu können.
 
-\paragraph*{Achtung 2:} Wenn man den Inhalt in anderen \LaTeX-Dokumenten nutzen will muss unbedingt die Zeile
+\paragraph*{Achtung 2:} Wenn man den Inhalt in anderen \LaTeX-Dokumenten nutzen will, muss unbedingt die Zeile
 \begin{verbatim}
 \usepackage{tree-dvips}
 \end{verbatim}

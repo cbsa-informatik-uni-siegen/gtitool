@@ -165,7 +165,7 @@ Nun findet man im Menü unter "`Ausführen"' den Punkt "`Einheitsproduktionen en
 \end{center}
 \end{figure}
 
-Ganz links befindet sich die ursprüngliche Grammatik. Rechts daneben findet man die neue Grammatik. Diese ist am Anfang gleich der ursprünglichen und wird erst im Verlauf des Algorithmus verändert.
+Ganz links befindet sich die ursprüngliche Grammatik. Rechts daneben findet man die neue Grammatik. Diese ist am Anfang gleich der Ursprünglichen und wird erst im Verlauf des Algorithmus verändert.
 
 Zunächst sucht der Algorithmus nun nach einer Einheitsproduktion und findet die Produktion $\NonterminalSymbol{A} \to \StartSymbol{S}$.
 
@@ -187,7 +187,7 @@ $P = \{\StartSymbol{S} \to \NonterminalSymbol{A}\TerminalSymbol{a},\ \StartSymbo
 \NonterminalSymbol{A} \to \epsilon\}$\\
 \end{tabular}
 
-Nun findet man im Menü unter "`Ausführen"' den Punkt "`$\epsilon$-Produktionen entfernen"'. Es erscheint das folgende Fenster.
+Unter dem Menüpunkt "`Ausführen"' findet man den Punkt "`$\epsilon$-Produktionen entfernen"'. Es erscheint das folgende Fenster.
 
 \begin{figure}[h]
 \begin{center}
@@ -196,11 +196,11 @@ Nun findet man im Menü unter "`Ausführen"' den Punkt "`$\epsilon$-Produktionen
 \end{center}
 \end{figure}
 
-Ganz links befindet sich die ursprüngliche Grammatik. Rechts daneben findet man die neue Grammatik. Diese ist am Anfang gleich der ursprünglichen und wird erst im Verlauf des Algorithmus verändert.
+Dieses Fenster ist im Prinzip das gleiche, wie beim Entfernen der Einheitsproduktionen.
 
 Zunächst sucht der Algorithmus nun nach einer $\epsilon$-Produktion und findet die eine für $\NonterminalSymbol{A}$.
 
-Nun wird für jede Produktion, wo $\NonterminalSymbol{A}$ auf der rechten Seite vorkommt eine die gleiche Produktion, ohne \NonterminalSymbol{A} auf der rechten Seite angelegt. In unserem Beispiel wird zunächst die Produktion $\NonterminalSymbol{A} \to \TerminalSymbol{c}$ und dann $\StartSymbol{S} \to \TerminalSymbol{a}$ angelegt.
+Nun wird für jede Produktion, wo $\NonterminalSymbol{A}$ auf der rechten Seite vorkommt, eine gleiche Produktion, ohne \NonterminalSymbol{A} auf der rechten Seite angelegt. In unserem Beispiel wird zunächst die Produktion $\NonterminalSymbol{A} \to \TerminalSymbol{c}$ und dann $\StartSymbol{S} \to \TerminalSymbol{a}$ angelegt.
 
 Zum Schluss werden die $\epsilon$-Produktionen entfernt, außer der für das Startsymbol. Also in unserem Fall $\NonterminalSymbol{A} \to \epsilon$.
 
@@ -219,7 +219,7 @@ $P = \{\StartSymbol{S} \to \NonterminalSymbol{A}\TerminalSymbol{a},\ \StartSymbo
 \NonterminalSymbol{A} \to \epsilon\}$\\
 \end{tabular}
 
-Nun findet man im Menü unter "`Ausführen"' den Punkt "`Links-Rekursion eliminieren"'. Es erscheint das folgende Fenster.
+Im Menü findet man unter "`Ausführen"' den Punkt "`Links-Rekursion eliminieren"'. Es erscheint das folgende Fenster.
 
 \begin{figure}[h]
 \begin{center}
@@ -228,26 +228,27 @@ Nun findet man im Menü unter "`Ausführen"' den Punkt "`Links-Rekursion elimini
 \end{center}
 \end{figure}
 
-Ganz links befindet sich die ursprüngliche Grammatik. Rechts daneben findet man die neue Grammatik. Diese ist am Anfang gleich der ursprünglichen und wird erst im Verlauf des Algorithmus verändert.
+Dieses Fenster ähnelt den Fenstern zum Entfernen der Einheits- bzw. $\epsilon$-Produktionen.
 
-Oben im Fenster der konvertierten Grammatik kann man einstellen, ob zunächst die Epsilon- bzw. Einheitsproduktionen entfernt werden sollen. Diese Möglichkeit wurde gegeben, da der Algorithmus eigentlich eine Grammatik ohne Epsilon- bzw. Einheitsproduktionen verlangt. Aber in dem Beispiel aus der Vorlesung wurde die Epsilonproduktion in der Grammatik belassen mit dem Hinweis, dass dies nichts ausmacht. Da aber das Ergebnis dann nicht exakt das selbe wäre, ist hier die Möglichkeit gegeben, die Produktionen drin zu lassen. Für andere Beispiele sollte man aber diese beiden Optionen an lassen, da sonst der Algorithmus falsche Ergebnisse liefern kann.
+Oben im Fenster der konvertierten Grammatik kann man einstellen ob zunächst die Epsilon- bzw. Einheitsproduktionen entfernt werden sollen. Diese Möglichkeit wurde gegeben, da der Algorithmus eigentlich eine Grammatik ohne Epsilon- bzw. Einheitsproduktionen verlangt. Aber im Beispiel aus der Vorlesung Compilerbau I wurde die $\epsilon$-Produktion in der Grammatik belassen mit dem Hinweis, dass dies nichts ausmacht. Da aber das Ergebnis dann nicht exakt das selbe wäre, ist hier die Möglichkeit gegeben die Produktionen zu belassen. Für andere Beispiele sollte man aber diese beiden Optionen angestellt lassen, da sonst der Algorithmus falsche Ergebnisse liefern kann.
 
 In unserem Beispiel schalten wir die Option Epsilonproduktionen entfernen aus.
 
-Als nächstes kann man die Reihenfolge der Nichtterminalzeichen eingestellt werden, da auch diese sich auf die Ergebnisse des Algorithmus auswirken. Die Reihenfolge kann natürlich genau wie die beiden Optionen zum Entfernen von Produktionen nur am Anfang verändert werden.
+Als nächstes kann die Reihenfolge der Nichtterminalzeichen eingestellt werden, da auch diese sich auf die Ergebnisse des Algorithmus auswirken. Die Reihenfolge kann natürlich genau wie die beiden Optionen zum Entfernen von Produktionen nur am Anfang verändert werden.
 
 In der Vorlesung wurde die Reihenfolge $\StartSymbol{S}, \NonterminalSymbol{A}$ gewählt, daher schieben wir das $\NonterminalSymbol{A}$ einfach nach oben.
 
 Nun kann der Algorithmus ablaufen:
+
 \begin{itemize}
-  \item Im Initialen Schritt passiert nichts mit der Grammatik, da $i = j$ ist und für $\StartSymbol{S}$ keine direkte Linksrekursion existiert.
+  \item Im initialen Schritt passiert nichts mit der Grammatik, da $i = j$ ist und für $\StartSymbol{S}$ keine direkte Linksrekursion existiert.
   \item Nun kommen durch den Durchlauf im Algorithmus zwei Produktionen ($\NonterminalSymbol{A} \to \NonterminalSymbol{A}\TerminalSymbol{b}\TerminalSymbol{d},\NonterminalSymbol{A} \to \TerminalSymbol{b}\TerminalSymbol{d}$) hinzu und die Produktion $\NonterminalSymbol{A} \to \StartSymbol{S}\TerminalSymbol{d}$ wird entfernt.
   \item Im letzten Schritt dieses Beispiels ist $i = j$ und es wird daher nur noch die direkte Linksrekursion von $\NonterminalSymbol{A}$ entfernt.
 \end{itemize}
 
 \subsection{Links-Faktorisierung}
 
-Hierzu nutzen wir eine Beispielgrammatik aus der Compilerbau 1-Vorlesung:
+Hierzu nutzen wir folgende Beispielgrammatik aus der Compilerbau 1-Vorlesung:
 
 \begin{tabular}{lcr}
 G = ($\Sigma, N, S, P )\ mit $\\
@@ -268,7 +269,7 @@ Nun findet man im Menü unter "`Ausführen"' den Punkt "`Links-Faktorisierung"'.
 
 Ganz links befindet sich die ursprüngliche Grammatik. Rechts daneben findet man die konvertierte Grammatik.
 
-Wenn man den Algorithmus dann ablaufen lässt ist der Algorithmus bereits nach einem Schritt fertig. Der Algorithmus findet als längstes gemeinsames Präfix $\TerminalSymbol{i}\NonterminalSymbol{E}\TerminalSymbol{t}\StartSymbol{S}$ und erzeugt ein neues Nichtterminalzeichen $\NonterminalSymbol{S'}$. Als Produktionen kommen hinzu: $\StartSymbol{S} \to \TerminalSymbol{i}\NonterminalSymbol{E}\TerminalSymbol{t}\StartSymbol{S}\NonterminalSymbol{S'}, \NonterminalSymbol{S'} \to \epsilon, \NonterminalSymbol{S'} \to \TerminalSymbol{e}\StartSymbol{S}$, entfernt wurde die Produktion $\StartSymbol{S} \to \TerminalSymbol{i}\NonterminalSymbol{E}\TerminalSymbol{t}\StartSymbol{S}\TerminalSymbol{e}\StartSymbol{S}$.
+Wenn man den Algorithmus dann ablaufen lässt, ist der Algorithmus bereits nach einem Schritt fertig. Der Algorithmus findet als längstes gemeinsames Präfix $\TerminalSymbol{i}\NonterminalSymbol{E}\TerminalSymbol{t}\StartSymbol{S}$ und erzeugt ein neues Nichtterminalzeichen $\NonterminalSymbol{S'}$. Als Produktionen kommen hinzu: $\StartSymbol{S} \to \TerminalSymbol{i}\NonterminalSymbol{E}\TerminalSymbol{t}\StartSymbol{S}\NonterminalSymbol{S'}, \NonterminalSymbol{S'} \to \epsilon, \NonterminalSymbol{S'} \to \TerminalSymbol{e}\StartSymbol{S}$, entfernt wurde die Produktion $\StartSymbol{S} \to \TerminalSymbol{i}\NonterminalSymbol{E}\TerminalSymbol{t}\StartSymbol{S}\TerminalSymbol{e}\StartSymbol{S}$.
 
 \subsection{Recursive Descent Parser erstellen}
 
@@ -286,15 +287,15 @@ Nun findet man im Menü unter "`Ausführen"' den Punkt "`Recursive Descent Parse
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=12cm]{../images/rdp.png}
+\includegraphics[width=6cm]{../images/rdp.png}
 \caption{Grammatik - Recursive Descent Parser}
 \end{center}
 \end{figure}
 
-Es wurde der Recursive Descent Parser in einer einfachen Programmiersprache.
+Es wurde der Recursive Descent Parser in einer einfachen Programmiersprache erstellt.
 
 Es wird für jedes Nonterminal eine Funktion erstellt. Also in unserem Beispiel zunächst eine für \NonterminalSymbol{E}. Darin werden dann verschiedene Fälle behandelt. Da es für \NonterminalSymbol{E} nur die Produktion $\NonterminalSymbol{E} \to \TerminalSymbol{b}$ gibt, gibt es auch nur einen Fall. In diesem wird das Eingabezeichen \TerminalSymbol{b} gelesen, angedeutet durch das macht("b").
 
 Danach wird eine Funktion für \NonterminalSymbol{S} erstellt. Diese beinhaltet drei Fälle. Zunächst wird im ersten Fall die erste Produktion von \NonterminalSymbol{S} behandelt. Als erstes wird \TerminalSymbol{i} gelesen, dann wird die Funktion für das Nonterminal \NonterminalSymbol{E} aufgerufen und so weiter.
 
-Den Recursive Descent Parser kann man entweder als Text speichern oder Drucken.
+Den Recursive Descent Parser kann man entweder als Text speichern oder drucken.

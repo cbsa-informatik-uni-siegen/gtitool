@@ -2335,9 +2335,9 @@ public class ConvertRegexToMachineDialog implements
           childOneSameY.add ( end );
           this.sameY.put ( k.getChildren ().get ( 0 ), childOneSameY );
 
-          startView.moveRelative ( 50, 0 );
+          startView.moveRelative ( 50, 15 );
           finView.moveRelative ( 50 + 2 * JGTIBlackboxGraph.X_SPACE
-              + startView.getWidth () + regexWidth, 0 );
+              + startView.getWidth () + regexWidth, 15 );
 
           double width = regexWidth + 2 * JGTIBlackboxGraph.X_SPACE
               + startView.getWidth () + finView.getWidth ();

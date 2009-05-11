@@ -1,0 +1,11 @@
+for(jede Position P in firstpos(root))
+  füge P als unmarkierten Startzustand zu Dstate hinzu.
+while(es exisitiert ein unmarkierter Zustand T) do begin
+  markiere T;
+  for(jede Position U in followpos(T)) do begin
+    a ist das Symbol an Position T;
+    if(U ist nicht in Dstates) then
+      füge U als unmarkierten Zustand zu Dstates hinzu.
+    Dtran[T,a]:=U
+  end
+end

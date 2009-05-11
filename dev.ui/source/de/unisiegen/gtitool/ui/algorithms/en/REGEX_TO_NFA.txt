@@ -1,0 +1,11 @@
+for(every position P in firstpos(root))
+  create an unmarked startstate P in Dstates.
+while(There is an unmarked state T) do begin
+  mark T;
+  for(every position U in followpos(T)) do begin
+    Let a be the symbol at position T
+    if(U is not in Dstates) then
+      add U as unmarked state to Dstates.
+    Dtran[T,a]:=U
+  end
+end

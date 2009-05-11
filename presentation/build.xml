@@ -8,23 +8,35 @@
 
 	<!-- property -->
 	<property name="sourcedir" value="${basedir}/source" />
+	<property name="sourcedir2" value="${basedir}/source/gtitool2" />
 	<property name="builddir" value="${basedir}/build" />
+	<property name="builddir2" value="${basedir}/build/gtitool2" />
 	<property name="myslidesdir" value="${basedir}/myslides" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="outputfile" value="presentation" />
+	<property name="outputfile2" value="presentation2" />
 
 	<!-- dist -->
 	<target name="dist" description="Dist presentation">
 		<!-- delete -->
 		<delete>
 			<fileset dir="${builddir}" includes="**/*" />
+			<fileset dir="${builddir2}" includes="**/*" />
 		</delete>
 		<!-- copy -->
 		<copy file="${myslidesdir}/myslides" tofile="${builddir}/myslides.cls" />
 		<copy file="${myslidesdir}/affiliation" tofile="${builddir}/affiliation.cfg" />
 		<copy file="${myslidesdir}/calc" tofile="${builddir}/calc.sty" />
+		<copy file="${myslidesdir}/myslides" tofile="${builddir2}/myslides.cls" />
+		<copy file="${myslidesdir}/affiliation" tofile="${builddir2}/affiliation.cfg" />
+		<copy file="${myslidesdir}/calc" tofile="${builddir2}/calc.sty" />
 		<copy todir="${builddir}">
 			<fileset dir="${sourcedir}">
+				<include name="*" />
+			</fileset>
+		</copy>
+		<copy todir="${builddir2}">
+			<fileset dir="${sourcedir2}">
 				<include name="*" />
 			</fileset>
 		</copy>
@@ -35,8 +47,15 @@
 		<exec dir="${builddir}" os="Linux" executable="pdflatex">
 			<arg value="${outputfile}" />
 		</exec>
+		<exec dir="${builddir2}" os="Linux" executable="pdflatex">
+			<arg value="${outputfile2}" />
+		</exec>
+		<exec dir="${builddir2}" os="Linux" executable="pdflatex">
+			<arg value="${outputfile2}" />
+		</exec>
 		<!-- copy -->
 		<copy file="${builddir}/${outputfile}.pdf" todir="${distdir}" />
+		<copy file="${builddir2}/${outputfile2}.pdf" todir="${distdir}" />
 		<!-- message -->
 		<echo message="Dist presentation finished" />
 	</target>

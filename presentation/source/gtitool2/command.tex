@@ -1,0 +1,50 @@
+%%
+%% $Id: command.tex 1301 2008-08-27 07:36:13Z fehler $
+%%
+%% Copyright (c) 2007-2008 Christian Fehler
+%% Copyright (c) 2007-2008 Benjamin Mies
+%%
+
+
+%### removes texlipse warnings
+
+
+\usepackage{color}
+
+\newcommand{\gtitool}[0]{GTI Tool\ }
+\newcommand{\gtitools}[0]{GTI Tools\ }
+
+
+\newcommand{\ClosingDate}[0]{05.09.2008}
+
+
+\newcommand{\cf}[0]{Christian Fehler}
+\newcommand{\bm}[0]{Benjamin Mies}
+
+
+\definecolor{ColorState}{rgb}{0.0,0.0,0.5}
+\definecolor{ColorSymbol}{rgb}{0.0,0.0,0.5}
+\definecolor{ColorNonterminalSymbol}{rgb}{0.0,0.5,1.0}
+\definecolor{ColorStartSymbol}{rgb}{0.5,0.0,1.0}
+\definecolor{ColorTerminalSymbol}{rgb}{0.0,0.0,0.5}
+
+
+\newcommand{\State}[1]{\textbf{\color{ColorState}#1}}
+
+\newcommand{\Word}[1]{\textbf{\color{ColorSymbol}#1}}
+
+\newcommand{\Symbol}[1]{\textbf{\color{ColorSymbol}#1}}
+\newcommand{\Symbols}[1]{\textbf{\color{ColorSymbol}\texttt{\dq}#1\texttt{\dq}}}
+\newcommand{\SymbolEmpty}[0]{\textbf{\color{ColorSymbol}\texttt{\dq}}}
+
+\newcommand{\NonterminalSymbol}[1]{\textbf{\color{ColorNonterminalSymbol}#1}}
+\newcommand{\NonterminalSymbols}[1]{\textbf{\color{ColorNonterminalSymbol}\texttt{\dq}#1\texttt{\dq}}}
+
+\newcommand{\StartSymbol}[1]{\textbf{\color{ColorStartSymbol}#1}}
+\newcommand{\StartSymbols}[1]{\textbf{\color{ColorStartSymbol}\texttt{\dq}#1\texttt{\dq}}}
+
+\newcommand{\TerminalSymbol}[1]{\textbf{\color{ColorTerminalSymbol}#1}}
+\newcommand{\TerminalSymbols}[1]{\textbf{\color{ColorTerminalSymbol}\texttt{\dq}#1\texttt{\dq}}}
+
+
+%### removes texlipse warnings

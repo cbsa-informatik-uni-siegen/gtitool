@@ -1,0 +1,56 @@
+%%
+%% Copyright (c) 2009 Simon Meurer
+%%
+
+
+%### removes texlipse warnings
+
+
+\documentclass[fleqn,landscape,titlepage,german]{myslides}
+
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{textcomp}
+\usepackage{longtable}
+
+
+\pagestyle{headings}
+
+
+\input{command}
+
+
+\begin{document}
+
+\presentation[GTI Tool]{Simon Meurer}
+                       {Ein Lernwerkzeug für die Grundlagen der theoretischen Informatik}
+
+\maketitle
+
+\addoverviewitem{Einleitung}
+\addoverviewitem{Neuerungen}
+\addoverviewitem{Erweiterungen}
+\addoverviewitem{Vorführung}
+\addoverviewitem{Fazit}
+
+\CenteredGraphics
+
+
+\makeoverviewslide
+\include{intro}
+
+\makeoverviewslide
+\include{new}
+
+\makeoverviewslide
+\include{ext}
+
+\makeoverviewslide
+
+\makeoverviewslide
+\include{fazit}
+
+\end{document}
+
+
+%### removes texlipse warnings

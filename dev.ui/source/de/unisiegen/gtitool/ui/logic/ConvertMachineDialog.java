@@ -417,6 +417,12 @@ public final class ConvertMachineDialog implements
 
 
     /**
+     * The actual {@link RegexNode}
+     */
+    private RegexNode actualRegex = null;
+
+
+    /**
      * The added {@link DefaultStateView}.
      */
     private DefaultStateView addedDefaultStateView = null;
@@ -429,21 +435,15 @@ public final class ConvertMachineDialog implements
 
 
     /**
-     * The actual {@link RegexNode}
+     * The added {@link Symbol}.
      */
-    private RegexNode actualRegex = null;
+    private ObjectPair < Transition, Symbol > addedSymbol = null;
 
 
     /**
      * The last finals index
      */
     private int lastFinalsIndex = 0;
-
-
-    /**
-     * The added {@link Symbol}.
-     */
-    private ObjectPair < Transition, Symbol > addedSymbol = null;
 
 
     /**
@@ -506,18 +506,6 @@ public final class ConvertMachineDialog implements
     public final State getActiveState ()
     {
       return this.activeState;
-    }
-
-
-    /**
-     * Returns the lastFinalsIndex.
-     * 
-     * @return The lastFinalsIndex.
-     * @see #lastFinalsIndex
-     */
-    public int getFinalsIndex ()
-    {
-      return this.lastFinalsIndex;
     }
 
 
@@ -618,6 +606,18 @@ public final class ConvertMachineDialog implements
 
 
     /**
+     * Returns the actualRegex.
+     * 
+     * @return The actualRegex.
+     * @see #actualRegex
+     */
+    public RegexNode getActualRegex ()
+    {
+      return this.actualRegex;
+    }
+
+
+    /**
      * Returns the addedDefaultStateView.
      * 
      * @return The addedDefaultStateView.
@@ -642,18 +642,6 @@ public final class ConvertMachineDialog implements
 
 
     /**
-     * Returns the actualRegex.
-     * 
-     * @return The actualRegex.
-     * @see #actualRegex
-     */
-    public RegexNode getActualRegex ()
-    {
-      return this.actualRegex;
-    }
-
-
-    /**
      * Returns the addedSymbol.
      * 
      * @return The addedSymbol.
@@ -662,6 +650,18 @@ public final class ConvertMachineDialog implements
     public final ObjectPair < Transition, Symbol > getAddedSymbol ()
     {
       return this.addedSymbol;
+    }
+
+
+    /**
+     * Returns the lastFinalsIndex.
+     * 
+     * @return The lastFinalsIndex.
+     * @see #lastFinalsIndex
+     */
+    public int getFinalsIndex ()
+    {
+      return this.lastFinalsIndex;
     }
 
 
@@ -1630,6 +1630,18 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * Returns the convertMachineType.
+   * 
+   * @return The convertMachineType.
+   * @see #convertMachineType
+   */
+  public ConvertMachineType getConvertMachineType ()
+  {
+    return this.convertMachineType;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see LogicClass#getGUI()
@@ -1720,8 +1732,8 @@ public final class ConvertMachineDialog implements
   {
     return this.modelConverted;
   }
-
-
+  
+  
   /**
    * Returns the modelOriginal.
    * 
@@ -1731,6 +1743,18 @@ public final class ConvertMachineDialog implements
   public DefaultMachineModel getModelOriginal ()
   {
     return this.modelOriginal;
+  }
+
+
+  /**
+   * Returns the modelRegexConverted.
+   *
+   * @return The modelRegexConverted.
+   * @see #modelRegexConverted
+   */
+  public DefaultRegexModel getModelRegexConverted ()
+  {
+    return this.modelRegexConverted;
   }
 
 
@@ -1776,7 +1800,8 @@ public final class ConvertMachineDialog implements
     if ( this.algorithmWindow == null )
     {
       this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
-          this.gui.jGTIToggleButtonAlgorithm,this.convertMachineType.toString () );
+          this.gui.jGTIToggleButtonAlgorithm, this.convertMachineType
+              .toString () );
     }
     if ( show )
     {

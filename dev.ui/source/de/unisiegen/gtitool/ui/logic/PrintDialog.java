@@ -32,6 +32,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
+import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog.ConvertMachineType;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.PrintDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -506,12 +507,12 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     logger.debug ( "PrintDialog", "allocate a new print dialog" ); //$NON-NLS-1$//$NON-NLS-2$
     if ( parent instanceof JFrame )
     {
-      this.parentFrame = (JFrame)parent;
+      this.parentFrame = ( JFrame ) parent;
       this.gui = new PrintDialogForm ( this, ( JFrame ) parent );
     }
     else
     {
-      this.parentDialog = (JDialog)parent;
+      this.parentDialog = ( JDialog ) parent;
       this.gui = new PrintDialogForm ( this, ( JDialog ) parent );
     }
     hideChooseComponents ();
@@ -1046,10 +1047,21 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       else if ( this.gui.jGTIRadioButtonConvertMachineConvertedGraph
           .isSelected () )
       {
-        printJGraph ( this.convertMachineDialog.getModelConverted ()
-            .getJGTIGraph (), this.convertMachineDialog.getMachinePanel ()
-            .getName ()
-            + " " + Messages.getString ( "PrintDialog.Converted" ) ); //$NON-NLS-1$//$NON-NLS-2$
+        if ( this.convertMachineDialog.getConvertMachineType ().equals (
+            ConvertMachineType.DFA_TO_REGEX ) )
+        {
+          printJGraph ( this.convertMachineDialog.getModelRegexConverted ()
+              .getJGTIGraph (), this.convertMachineDialog.getMachinePanel ()
+              .getName ()
+              + " " + Messages.getString ( "PrintDialog.Converted" ) ); //$NON-NLS-1$//$NON-NLS-2$
+        }
+        else
+        {
+          printJGraph ( this.convertMachineDialog.getModelConverted ()
+              .getJGTIGraph (), this.convertMachineDialog.getMachinePanel ()
+              .getName ()
+              + " " + Messages.getString ( "PrintDialog.Converted" ) ); //$NON-NLS-1$//$NON-NLS-2$
+        }
       }
 
       else if ( this.gui.jGTIRadioButtonConvertMachineTable.isSelected () )
@@ -1176,7 +1188,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
         printTableModel ( this.convertGrammarDialog.getPanel ().getName ()
             + " " //$NON-NLS-1$
-            + this.convertGrammarDialog.getGUI ().getTitle ());
+            + this.convertGrammarDialog.getGUI ().getTitle () );
       }
 
     }

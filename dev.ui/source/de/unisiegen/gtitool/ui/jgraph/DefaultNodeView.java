@@ -12,7 +12,8 @@ import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 /**
  * A {@link DefaultGraphCell} for a {@link RegexNode}
  */
-public class DefaultNodeView extends DefaultGraphCell implements Comparable < DefaultNodeView >
+public class DefaultNodeView extends DefaultGraphCell implements
+    Comparable < DefaultNodeView >
 {
 
   /**
@@ -56,13 +57,26 @@ public class DefaultNodeView extends DefaultGraphCell implements Comparable < De
 
 
   /**
+   * The width of the node view
+   */
+  private int width;
+
+
+  /**
+   * The height of the node view
+   */
+  private int height;
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   public int compareTo ( DefaultNodeView o )
   {
-    if(this.y - o.y == 0) {
+    if ( this.y - o.y == 0 )
+    {
       return this.x - o.x;
     }
     return this.y - o.y;
@@ -71,7 +85,7 @@ public class DefaultNodeView extends DefaultGraphCell implements Comparable < De
 
   /**
    * Returns the {@link RegexNode}
-   *
+   * 
    * @return The {@link RegexNode}
    */
   public RegexNode getNode ()
@@ -119,6 +133,54 @@ public class DefaultNodeView extends DefaultGraphCell implements Comparable < De
 
     bounds.setRect ( newX, newY, bounds.getWidth (), bounds.getHeight () );
     GraphConstants.setBounds ( getAttributes (), bounds );
+  }
+
+
+  /**
+   * Sets the width.
+   * 
+   * @param width The width to set.
+   * @see #width
+   */
+  public void setWidth ( int width )
+  {
+    this.width = width;
+  }
+
+
+  /**
+   * Returns the width.
+   * 
+   * @return The width.
+   * @see #width
+   */
+  public int getWidth ()
+  {
+    return this.width;
+  }
+
+
+  /**
+   * Sets the height.
+   * 
+   * @param height The height to set.
+   * @see #height
+   */
+  public void setHeight ( int height )
+  {
+    this.height = height;
+  }
+
+
+  /**
+   * Returns the height.
+   * 
+   * @return The height.
+   * @see #height
+   */
+  public int getHeight ()
+  {
+    return this.height;
   }
 
 }

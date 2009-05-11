@@ -197,7 +197,7 @@ public class DefaultRegexModel implements DefaultModel, Storable
     }
     catch ( Exception exc )
     {
-      //Nothing to do here. Regex was not legal as it has been saved.
+      // Nothing to do here. Regex was not legal as it has been saved.
     }
 
     if ( !foundVersion )
@@ -500,6 +500,8 @@ public class DefaultRegexModel implements DefaultModel, Storable
             .toString () ) );
       }
     }
+    nodeView.setHeight ( maxY );
+    nodeView.setWidth ( maxX );
     // Set bounds
     GraphConstants.setBounds ( nodeView.getAttributes (),
         new Rectangle2D.Double ( x, y, maxX, maxY ) );
@@ -628,7 +630,7 @@ public class DefaultRegexModel implements DefaultModel, Storable
       {
         name = "$\\epsilon$"; //$NON-NLS-1$
       }
-      else if( name.equals ( "·" )) { //$NON-NLS-1$
+      else if ( name.equals ( "·" ) ) { //$NON-NLS-1$
         name = "$\\cdot$"; //$NON-NLS-1$
       }
       s += "\\node{r" + i + "}{" + name + "}"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$

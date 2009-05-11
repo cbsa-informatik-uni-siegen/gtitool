@@ -58,7 +58,6 @@ public class JGTIGraph extends JGraph implements Printable
    */
   private static final long serialVersionUID = 6157004880461808684L;
 
-
   static
   {
     try
@@ -130,6 +129,7 @@ public class JGTIGraph extends JGraph implements Printable
    * The top margin.
    */
   private int marginTop = 50;
+
 
   /**
    * The page count of a row.
@@ -253,6 +253,20 @@ public class JGTIGraph extends JGraph implements Printable
         int y = bounds.y;
         int width = bounds.width;
         int height = bounds.height;
+
+        minX = Math.min ( minX, x );
+        maxX = Math.max ( maxX, x + width );
+        minY = Math.min ( minY, y );
+        maxY = Math.max ( maxY, y + height );
+      }
+      else if ( object instanceof DefaultNodeView )
+      {
+        DefaultNodeView current = ( DefaultNodeView ) object;
+
+        int x = current.getX ();
+        int y = current.getY ();
+        int width = current.getWidth ();
+        int height = current.getHeight ();
 
         minX = Math.min ( minX, x );
         maxX = Math.max ( maxX, x + width );
@@ -444,7 +458,6 @@ public class JGTIGraph extends JGraph implements Printable
     else
     {
       int row = pageIndex / this.pagesPerRow;
-
       if ( ( row * pageHeight ) < this.graphHeight )
       {
 

@@ -1055,12 +1055,20 @@ public class ConvertRegexToMachineDialog implements
         this.convertType = ConvertRegexType.REGEX_TO_DFA;
         this.modelConverted = new DefaultMachineModel ( new DefaultDFA ( a, a,
             false ) );
+        this.gui
+            .setTitle ( Messages
+                .getString (
+                    "ConvertRegexToMachineDialog.Title", Messages.getString ( "ConvertRegexToMachineDialog.DFA" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
       }
       else
       {
         this.convertType = ConvertRegexType.REGEX_TO_NFA;
         this.modelConverted = new DefaultMachineModel ( new DefaultNFA ( a, a,
             false ) );
+        this.gui
+            .setTitle ( Messages
+                .getString (
+                    "ConvertRegexToMachineDialog.Title", Messages.getString ( "ConvertRegexToMachineDialog.NFA" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
       }
       this.positionStates = new ArrayList < DefaultPositionState > ();
 
@@ -1081,10 +1089,6 @@ public class ConvertRegexToMachineDialog implements
       }
       this.regexNode = this.defaultRegex.getRegexNode ();
       this.regexNode.setShowPositions ( true );
-      this.gui
-          .setTitle ( Messages
-              .getString (
-                  "ConvertRegexToMachineDialog.Title", Messages.getString ( "ConvertRegexToMachineDialog.DFA" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
     else
     {
@@ -2634,7 +2638,6 @@ public class ConvertRegexToMachineDialog implements
                       this.positionStateViewList.get ( positionState )
                           .getState (), this.positionStateViewList
                           .get ( uState ).getState (), a );
-                  t.setActive ( true );
                   addedTransitions.add ( this.modelConverted
                       .createTransitionView ( t, this.positionStateViewList
                           .get ( positionState ), this.positionStateViewList
@@ -2841,7 +2844,6 @@ public class ConvertRegexToMachineDialog implements
                   new DefaultWord (), new DefaultWord (),
                   this.positionStateViewList.get ( positionState ).getState (),
                   this.positionStateViewList.get ( uState ).getState (), s );
-              t.setActive ( true );
               addedTransitions
                   .add ( this.modelConverted.createTransitionView ( t,
                       this.positionStateViewList.get ( positionState ),
@@ -2905,6 +2907,9 @@ public class ConvertRegexToMachineDialog implements
         setStatus ();
         updateGraph ();
       }
+    }
+    for(DefaultTransitionView v : addedTransitions) {
+      v.getTransition ().setActive ( true );
     }
     addOutlineComment ( pretty );
     this.stepItemList.add ( new StepItem ( this.actualStep, addedStates,
@@ -3038,6 +3043,12 @@ public class ConvertRegexToMachineDialog implements
         false );
     if ( !this.stepItemList.isEmpty () )
     {
+      StepItem it = this.stepItemList.get ( this.stepItemList.size () - 1 );
+      for ( DefaultTransitionView v : it.getAddedTransitions () )
+      {
+        v.getTransition ().setActive ( true );
+      }
+
       this.count = stepItem.getActCount ();
     }
     else

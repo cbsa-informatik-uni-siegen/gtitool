@@ -602,12 +602,6 @@ public final class PreferencesDialog implements
 
 
   /**
-   * The {@link ColorItem} of the regex.
-   */
-  private ColorItem colorItemRegex;
-
-
-  /**
    * The {@link ColorItem} of the regex position.
    */
   private ColorItem colorItemRegexPosition;
@@ -1382,7 +1376,6 @@ public final class PreferencesDialog implements
     this.colorItemStateActive.restore ();
     this.colorItemStateError.restore ();
 
-    this.colorItemRegex.restore ();
     this.colorItemRegexToolTip.restore ();
     this.colorItemRegexComment.restore ();
     this.colorItemRegexPosition.restore ();

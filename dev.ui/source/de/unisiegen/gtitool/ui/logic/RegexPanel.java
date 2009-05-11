@@ -350,6 +350,45 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           /**
            * {@inheritDoc}
            * 
+           * @see ColorChangedAdapter#colorChangedRegexMarkedNode(java.awt.Color)
+           */
+          @Override
+          public void colorChangedRegexMarkedNode (
+              @SuppressWarnings ( "unused" ) Color newColor )
+          {
+            getGUI ().repaint ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedAdapter#colorChangedRegexPosition(java.awt.Color)
+           */
+          @Override
+          public void colorChangedRegexPosition (
+              @SuppressWarnings ( "unused" ) Color newColor )
+          {
+            getGUI ().repaint ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedAdapter#colorChangedRegexToolTip(java.awt.Color)
+           */
+          @Override
+          public void colorChangedRegexToolTip (
+              @SuppressWarnings ( "unused" ) Color newColor )
+          {
+            getGUI ().repaint ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           * 
            * @see ColorChangedAdapter#colorChangedRegexToken(java.awt.Color)
            */
           @Override

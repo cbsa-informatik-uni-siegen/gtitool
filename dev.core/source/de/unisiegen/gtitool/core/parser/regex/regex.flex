@@ -95,7 +95,7 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	"+"							{ return symbol(PLUS); }
 	"|"							{ return symbol(OR); }
 	"·"							{ return symbol(CONCAT); }
-	"Epsilon"|"\u03B5"			{ return symbol(EPSILON); }
+	"epsilon"|"\u03B5"			{ return symbol(EPSILON); }
 	"?"							{ return symbol(QUESTION); }
 	"("							{ return symbol(LBRACE); }
 	")"							{ return symbol(RBRACE); }

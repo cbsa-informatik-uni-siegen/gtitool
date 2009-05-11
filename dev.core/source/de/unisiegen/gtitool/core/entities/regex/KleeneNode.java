@@ -207,7 +207,7 @@ public class KleeneNode extends OneChildNode
   @Override
   public boolean isInCoreSyntax ()
   {
-    return true;
+    return this.regex.isInCoreSyntax ();
   }
 
 

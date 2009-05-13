@@ -21,7 +21,6 @@
 		<!-- delete -->
 		<delete>
 			<fileset dir="${builddir}" includes="**/*" />
-			<fileset dir="${builddir2}" includes="**/*" />
 		</delete>
 		<!-- copy -->
 		<copy file="${myslidesdir}/myslides" tofile="${builddir}/myslides.cls" />

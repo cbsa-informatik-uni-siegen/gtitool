@@ -990,6 +990,7 @@ public class ConvertRegexToMachineDialog implements
   {
     this.parent = parent;
     this.panel = panel;
+    this.showErrorState = PreferenceManager.getInstance ().getShowErrorState ();
   }
 
 
@@ -1432,6 +1433,13 @@ public class ConvertRegexToMachineDialog implements
         this.gui );
 
     this.gui.setVisible ( false );
+    if ( this.entityType.equals ( MachineType.DFA ) )
+    {
+      while ( !this.stepItemList.isEmpty () )
+      {
+        performPreviousStep ( false );
+      }
+    }
 
     while ( !this.endReached )
     {
@@ -2494,14 +2502,27 @@ public class ConvertRegexToMachineDialog implements
           markedPositionState = positionState;
           ArrayList < Symbol > a = getNextUnControlledSymbol ( positionState );
 
-          controlledSymbol = a;
+          if ( a != null )
+          {
+            controlledSymbol = new ArrayList < Symbol > ();
+            controlledSymbol.addAll ( a );
+          }
 
-          if ( a != null && !a.isEmpty () )
+          if ( a != null && !a.isEmpty () && controlledSymbol != null )
           {
             this.controlledSymbols.get ( positionState ).addAll ( a );
             DefaultPositionState uState;
             if ( a.size () == 1 )
             {
+              if ( manual && !this.showErrorState )
+              {
+                ArrayList < Symbol > next = getNextUnControlledSymbol ( positionState );
+                if ( next.size () > 1 )
+                {
+                  this.controlledSymbols.get ( positionState ).addAll ( next );
+                  controlledSymbol.addAll ( next );
+                }
+              }
               Symbol s = a.get ( 0 );
               HashSet < Integer > u = new HashSet < Integer > ();
               for ( Integer p : positionState.getPositions () )
@@ -2705,7 +2726,24 @@ public class ConvertRegexToMachineDialog implements
                 .add ( Messages
                     .getPrettyString (
                         "ConvertRegexToMachineDialog.StepMarkState", positionState.toPrettyString () ) ); //$NON-NLS-1$
-
+            DefaultPositionState nextState = getNextUnmarkedState ();
+            if ( nextState != null && manual && !this.showErrorState )
+            {
+              ArrayList < Symbol > next = getNextUnControlledSymbol ( nextState );
+              if ( next.size () > 1 )
+              {
+                this.controlledSymbols.get ( nextState ).addAll ( next );
+                if ( controlledSymbol == null )
+                {
+                  controlledSymbol = new ArrayList < Symbol > ();
+                  controlledSymbol.addAll ( next );
+                }
+                else
+                {
+                  controlledSymbol.addAll ( next );
+                }
+              }
+            }
           }
         }
         else
@@ -2911,7 +2949,8 @@ public class ConvertRegexToMachineDialog implements
         updateGraph ();
       }
     }
-    for(DefaultTransitionView v : addedTransitions) {
+    for ( DefaultTransitionView v : addedTransitions )
+    {
       v.getTransition ().setActive ( true );
     }
     addOutlineComment ( pretty );
@@ -3068,6 +3107,12 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * The show error state flag
+   */
+  private boolean showErrorState = false;
+
+
+  /**
    * Sets the button status.
    */
   private final void setStatus ()
@@ -3155,8 +3200,8 @@ public class ConvertRegexToMachineDialog implements
       this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setEnabled ( true );
       this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setEnabled ( true );
 
-      RegexNode node = ( ( DefaultNodeView ) this.jGTIGraphOriginal.getSelectionCell () )
-          .getNode ();
+      RegexNode node = ( ( DefaultNodeView ) this.jGTIGraphOriginal
+          .getSelectionCell () ).getNode ();
       this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( String
           .valueOf ( node.nullable () ) );
       String firstpos = "{"; //$NON-NLS-1$

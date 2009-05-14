@@ -634,12 +634,6 @@ public final class PreferencesDialog implements
   /**
    * The {@link ColorItem} of the regex tool tip.
    */
-  private ColorItem colorItemRegexToolTip;
-
-
-  /**
-   * The {@link ColorItem} of the regex tool tip.
-   */
   private ColorItem colorItemRegexComment;
 
 
@@ -758,6 +752,12 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The initial show error state
+   */
+  private boolean initialShowErrorState;
+
+
+  /**
    * The initial {@link AlphabetItem}.
    */
   private AlphabetItem initialRegexAlphabetItem;
@@ -839,12 +839,6 @@ public final class PreferencesDialog implements
    * The initial {@link ColorItem} of the Regex token.
    */
   private ColorItem initialColorItemRegexToken;
-
-
-  /**
-   * The initial {@link ColorItem} of the Regex tool tip.
-   */
-  private ColorItem initialColorItemRegexToolTip;
 
 
   /**
@@ -1349,7 +1343,8 @@ public final class PreferencesDialog implements
             .getIndex () );
     this.gui.jGTISliderZoom
         .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM.getFactor () );
-
+    this.gui.jGTICheckBoxShowErrorState
+        .setSelected ( PreferenceManager.DEFAULT_SHOW_ERROR_STATE );
     /*
      * View
      */
@@ -1376,7 +1371,6 @@ public final class PreferencesDialog implements
     this.colorItemStateActive.restore ();
     this.colorItemStateError.restore ();
 
-    this.colorItemRegexToolTip.restore ();
     this.colorItemRegexComment.restore ();
     this.colorItemRegexPosition.restore ();
     this.colorItemRegexToken.restore ();
@@ -1456,6 +1450,7 @@ public final class PreferencesDialog implements
     initLookAndFeel ();
     initWordMode ();
     initZoomFactor ();
+    initErrorState ();
     /*
      * View
      */
@@ -1482,6 +1477,17 @@ public final class PreferencesDialog implements
      * Tab
      */
     initLastActiveTab ();
+  }
+
+
+  /**
+   * Initializes the show error state
+   */
+  private final void initErrorState ()
+  {
+    boolean show = PreferenceManager.getInstance ().getShowErrorState ();
+    this.initialShowErrorState = show;
+    this.gui.jGTICheckBoxShowErrorState.setSelected ( show );
   }
 
 
@@ -1683,9 +1689,6 @@ public final class PreferencesDialog implements
     this.initialColorItemStateError = this.colorItemStateError.clone ();
 
     // Regex
-    this.colorItemRegexToolTip = PreferenceManager.getInstance ()
-        .getColorItemRegexToolTipText ();
-    this.initialColorItemRegexToolTip = this.colorItemRegexToolTip.clone ();
     this.colorItemRegexToken = PreferenceManager.getInstance ()
         .getColorItemRegexToken ();
     this.initialColorItemRegexToken = this.colorItemRegexToken.clone ();
@@ -1902,7 +1905,6 @@ public final class PreferencesDialog implements
     this.regexNode.add ( this.colorItemRegexToken );
     this.regexNode.add ( this.colorItemRegexSymbol );
     this.regexNode.add ( this.colorItemRegexPosition );
-    this.regexNode.add ( this.colorItemRegexToolTip );
     this.regexNode.add ( this.colorItemRegexComment );
     this.regexNode.add ( this.colorItemRegexMarkedNode );
     this.regexNode.add ( this.colorItemRegexSelectedNode );
@@ -3013,6 +3015,12 @@ public final class PreferencesDialog implements
     this.gui.jGTISliderZoom.setToolTipText ( Messages
         .getString ( "PreferencesDialog.ZoomToolTip" ) ); //$NON-NLS-1$
 
+    // Show error state
+    this.gui.jGTICheckBoxShowErrorState.setText ( Messages
+        .getString ( "PreferencesDialog.MachineShowErrorStateToolTip" ) ); //$NON-NLS-1$
+    this.gui.jGTICheckBoxShowErrorState.setToolTipText ( Messages
+        .getString ( "PreferencesDialog.MachineShowErrorStateToolTip" ) ); //$NON-NLS-1$
+
     // Auto Step
     this.gui.jGTILabelAutoStep.setText ( Messages
         .getString ( "PreferencesDialog.AutoStep" ) ); //$NON-NLS-1$
@@ -3259,6 +3267,7 @@ public final class PreferencesDialog implements
     saveLookAndFeel ();
     saveWordMode ();
     saveZoomFactor ();
+    saveShowErrorState ();
 
     // View
     saveTransition ();
@@ -3280,6 +3289,20 @@ public final class PreferencesDialog implements
 
     // Tab
     saveLastActiveTab ();
+  }
+
+
+  /**
+   * Saves the show error state flag
+   */
+  private final void saveShowErrorState ()
+  {
+    boolean b = this.gui.jGTICheckBoxShowErrorState.isSelected ();
+    if ( !this.initialShowErrorState == b )
+    {
+      this.initialShowErrorState = b;
+      PreferenceManager.getInstance ().setShowErrorState ( b );
+    }
   }
 
 
@@ -3463,14 +3486,6 @@ public final class PreferencesDialog implements
       this.regexNode.setExpanded ( this.gui.jGTITreeColors
           .isExpanded ( new TreePath ( this.regexNode.getPath () ) ) );
       PreferenceManager.getInstance ().setColorItemRegexGroup ( this.regexNode );
-    }
-    if ( !this.initialColorItemRegexToolTip.getColor ().equals (
-        this.colorItemRegexToolTip.getColor () ) )
-    {
-      PreferenceManager.getInstance ().setColorItemRegexToolTip (
-          this.colorItemRegexToolTip );
-      PreferenceManager.getInstance ().fireColorChangedRegexToolTip (
-          this.colorItemRegexToolTip.getColor () );
     }
     if ( !this.initialColorItemRegexComment.getColor ().equals (
         this.colorItemRegexComment.getColor () ) )

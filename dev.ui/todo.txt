@@ -1,6 +1,5 @@
 *** TODOs ***
 
-SM		- Fehlerzustand bei Regex -> DFA ausblenden.
 SM		- Neues ENFA -> NFA hinzufügen.
 
 *** Features ***

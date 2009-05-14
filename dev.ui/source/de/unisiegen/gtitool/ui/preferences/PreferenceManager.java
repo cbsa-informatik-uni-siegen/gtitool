@@ -293,6 +293,12 @@ public final class PreferenceManager extends
 
 
   /**
+   * The show error state value.
+   */
+  public static final boolean DEFAULT_SHOW_ERROR_STATE = true;
+
+
+  /**
    * The default working path.
    */
   public static final String DEFAULT_WORKING_PATH = "."; //$NON-NLS-1$
@@ -837,6 +843,18 @@ public final class PreferenceManager extends
 
 
   /**
+   * Returns the show error state value.
+   * 
+   * @return The show error state value.
+   */
+  public final boolean getShowErrorState ()
+  {
+    return this.preferences.getBoolean ( "MachinePanel.ShowErrorState", //$NON-NLS-1$
+        DEFAULT_SHOW_ERROR_STATE );
+  }
+
+
+  /**
    * Returns the {@link TransitionItem}.
    * 
    * @return The {@link TransitionItem}.
@@ -1344,6 +1362,20 @@ public final class PreferenceManager extends
         + Messages.QUOTE + used + Messages.QUOTE );
     this.preferences.putBoolean ( "MachinePanel.SecondViewUsed", //$NON-NLS-1$
         used );
+  }
+
+
+  /**
+   * Sets the show error state value.
+   * 
+   * @param show The show value.
+   */
+  public final void setShowErrorState ( boolean show )
+  {
+    logger.debug ( "setShowErrorState", "set the show error state to "//$NON-NLS-1$//$NON-NLS-2$
+        + Messages.QUOTE + show + Messages.QUOTE );
+    this.preferences.putBoolean ( "MachinePanel.ShowErrorState", //$NON-NLS-1$
+        show );
   }
 
 

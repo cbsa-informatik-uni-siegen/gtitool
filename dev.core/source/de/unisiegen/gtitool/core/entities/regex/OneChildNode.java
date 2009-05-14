@@ -16,42 +16,15 @@ public abstract class OneChildNode extends RegexNode
   private static final long serialVersionUID = -3109784857649152942L;
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#getParentNodeForNode(RegexNode)
-   */
-  @Override
-  public RegexNode getParentNodeForNode ( RegexNode node )
-  {
-    if(this.regex.equals ( node )) {
-      return this;
-    }
-    return this.regex.getParentNodeForNode ( node );
-  }
-  
-  
-  /**
-   * Sets the regex.
-   *
-   * @param regex The regex to set.
-   * @see #regex
-   */
-  public void setRegex ( RegexNode regex )
-  {
-    this.regex = regex;
-  }
-
-  /**
    * Cached {@link ArrayList} for firstPos
    */
   private transient ArrayList < LeafNode > firstPosCache = null;
-
-
+  
+  
   /**
    * Cached {@link ArrayList} for lastPos
    */
   private transient ArrayList < LeafNode > lastPosCache = null;
-
 
   /**
    * Flag that indicates if Node is already used in NFA construction
@@ -95,18 +68,6 @@ public abstract class OneChildNode extends RegexNode
   /**
    * {@inheritDoc}
    * 
-   * @see RegexNode#getNextUnfinishedNode()
-   */
-  @Override
-  public UnfinishedNode getNextUnfinishedNode ()
-  {
-    return this.regex.getNextUnfinishedNode ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see RegexNode#getHeight()
    */
   @Override
@@ -130,6 +91,33 @@ public abstract class OneChildNode extends RegexNode
       return this;
     }
     return this.regex.getNextNodeForNFA ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getNextUnfinishedNode()
+   */
+  @Override
+  public UnfinishedNode getNextUnfinishedNode ()
+  {
+    return this.regex.getNextUnfinishedNode ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getParentNodeForNode(RegexNode)
+   */
+  @Override
+  public RegexNode getParentNodeForNode ( RegexNode node )
+  {
+    if(this.regex.equals ( node )) {
+      return this;
+    }
+    return this.regex.getParentNodeForNode ( node );
   }
 
 
@@ -206,6 +194,18 @@ public abstract class OneChildNode extends RegexNode
       this.lastPosCache = this.regex.lastPos ();
     }
     return this.lastPosCache;
+  }
+
+
+  /**
+   * Sets the regex.
+   *
+   * @param regex The regex to set.
+   * @see #regex
+   */
+  public void setRegex ( RegexNode regex )
+  {
+    this.regex = regex;
   }
 
 

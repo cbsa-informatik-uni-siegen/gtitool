@@ -72,27 +72,6 @@ public class KleeneNode extends OneChildNode
   /**
    * {@inheritDoc}
    * 
-   * @see RegexNode#followPos()
-   */
-  @Override
-  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
-  {
-    HashSet < ObjectPair < LeafNode, LeafNode >> result = new HashSet < ObjectPair < LeafNode, LeafNode > > ();
-    result.addAll ( this.regex.followPos () );
-    for ( LeafNode last : this.regex.lastPos () )
-    {
-      for ( LeafNode first : this.regex.firstPos () )
-      {
-        result.add ( new ObjectPair < LeafNode, LeafNode > ( last, first ) );
-      }
-    }
-    return result;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#clone()
    */
   @Override
@@ -131,6 +110,27 @@ public class KleeneNode extends OneChildNode
       return this.regex.equals ( node.regex );
     }
     return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#followPos()
+   */
+  @Override
+  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
+  {
+    HashSet < ObjectPair < LeafNode, LeafNode >> result = new HashSet < ObjectPair < LeafNode, LeafNode > > ();
+    result.addAll ( this.regex.followPos () );
+    for ( LeafNode last : this.regex.lastPos () )
+    {
+      for ( LeafNode first : this.regex.firstPos () )
+      {
+        result.add ( new ObjectPair < LeafNode, LeafNode > ( last, first ) );
+      }
+    }
+    return result;
   }
 
 

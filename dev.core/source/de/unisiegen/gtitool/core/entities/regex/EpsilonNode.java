@@ -155,6 +155,18 @@ public class EpsilonNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#getNextUnfinishedNode()
+   */
+  @Override
+  public UnfinishedNode getNextUnfinishedNode ()
+  {
+    return null;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#getNodeString()
    */
   @Override
@@ -295,17 +307,5 @@ public class EpsilonNode extends LeafNode
   public String toString ()
   {
     return "\u03B5"; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#getNextUnfinishedNode()
-   */
-  @Override
-  public UnfinishedNode getNextUnfinishedNode ()
-  {
-    return null;
   }
 }

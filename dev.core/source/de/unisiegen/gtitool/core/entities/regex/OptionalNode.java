@@ -37,24 +37,12 @@ public class OptionalNode extends OneChildNode
   private EventListenerList listenerList = new EventListenerList ();
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#followPos()
-   */
-  @Override
-  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
-  {
-    return this.regex.followPos ();
-  }
-
-  /**
    * The offset of this {@link OptionalNode} in the source code.
    * 
    * @see #getParserOffset()
    * @see #setParserOffset(ParserOffset)
    */
   private ParserOffset parserOffset = NO_PARSER_OFFSET;
-
 
   /**
    * Constructor for a Optional/Questionnode in the Regex
@@ -121,6 +109,18 @@ public class OptionalNode extends OneChildNode
       return this.regex.equals ( node.regex );
     }
     return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#followPos()
+   */
+  @Override
+  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
+  {
+    return this.regex.followPos ();
   }
 
 

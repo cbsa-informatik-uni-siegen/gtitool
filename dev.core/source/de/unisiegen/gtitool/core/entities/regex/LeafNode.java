@@ -20,19 +20,6 @@ public abstract class LeafNode extends RegexNode
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#getParentNodeForNode(RegexNode)
-   */
-  @Override
-  public RegexNode getParentNodeForNode (
-      @SuppressWarnings ( "unused" ) RegexNode node )
-  {
-    return null;
-  }
-
-
-  /**
    * Cached {@link ArrayList} for firstPos
    */
   private transient ArrayList < LeafNode > firstPosCache = null;
@@ -55,16 +42,6 @@ public abstract class LeafNode extends RegexNode
    */
   private boolean positionShown = false;
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#followPos()
-   */
-  @Override
-  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
-  {
-    return new HashSet < ObjectPair<LeafNode,LeafNode> >();
-  }
 
   /**
    * {@inheritDoc}
@@ -85,6 +62,16 @@ public abstract class LeafNode extends RegexNode
     return this.firstPosCache;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#followPos()
+   */
+  @Override
+  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
+  {
+    return new HashSet < ObjectPair<LeafNode,LeafNode> >();
+  }
 
   /**
    * {@inheritDoc}
@@ -108,6 +95,19 @@ public abstract class LeafNode extends RegexNode
   {
     this.marked = true;
     return this;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getParentNodeForNode(RegexNode)
+   */
+  @Override
+  public RegexNode getParentNodeForNode (
+      @SuppressWarnings ( "unused" ) RegexNode node )
+  {
+    return null;
   }
 
 

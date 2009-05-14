@@ -422,9 +422,9 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass<Conver
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jGTISplitPaneOutline, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.CancelMnemonic").charAt(0));
-        jGTIButtonCancel.setText(bundle.getString("ConvertMachineDialog.Cancel")); // NOI18N
-        jGTIButtonCancel.setToolTipText(bundle.getString("ConvertMachineDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertGrammarDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setText(bundle.getString("ConvertGrammarDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setToolTipText(bundle.getString("ConvertGrammarDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCancelActionPerformed(evt);
@@ -437,9 +437,9 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass<Conver
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
         getContentPane().add(jGTIButtonCancel, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.OkMnemonic").charAt(0));
-        jGTIButtonOk.setText(bundle.getString("ConvertMachineDialog.Ok")); // NOI18N
-        jGTIButtonOk.setToolTipText(bundle.getString("ConvertMachineDialog.OkToolTip")); // NOI18N
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertGrammarDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setText(bundle.getString("ConvertGrammarDialog.Ok")); // NOI18N
+        jGTIButtonOk.setToolTipText(bundle.getString("ConvertGrammarDialog.OkToolTip")); // NOI18N
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonOkActionPerformed(evt);
@@ -454,6 +454,7 @@ public class ConvertGrammarDialogForm extends JDialog implements GUIClass<Conver
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
         jGTIToggleButtonAlgorithm.setText(bundle.getString("TextWindow.ShowAlgorithm")); // NOI18N
+        jGTIToggleButtonAlgorithm.setToolTipText(bundle.getString("TextWindow.ShowAlgorithmToolTip")); // NOI18N
         jGTIToggleButtonAlgorithm.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToggleButtonAlgorithmItemStateChanged(evt);

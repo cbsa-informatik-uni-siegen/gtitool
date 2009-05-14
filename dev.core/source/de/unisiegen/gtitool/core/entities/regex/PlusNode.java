@@ -47,27 +47,6 @@ public class PlusNode extends OneChildNode
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#followPos()
-   */
-  @Override
-  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
-  {
-    HashSet < ObjectPair < LeafNode, LeafNode >> result = new HashSet < ObjectPair < LeafNode, LeafNode > > ();
-    result.addAll ( new KleeneNode ( this.regex ).followPos () );
-    for ( LeafNode last : this.regex.lastPos () )
-    {
-      for ( LeafNode first : this.regex.firstPos () )
-      {
-        result.add ( new ObjectPair < LeafNode, LeafNode > ( last, first ) );
-      }
-    }
-    return result;
-  }
-
-
-  /**
    * Constructor for a {@link PlusNode}
    * 
    * @param regex The {@link RegexNode} in the Plus
@@ -131,6 +110,27 @@ public class PlusNode extends OneChildNode
       return this.regex.equals ( node.regex );
     }
     return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#followPos()
+   */
+  @Override
+  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
+  {
+    HashSet < ObjectPair < LeafNode, LeafNode >> result = new HashSet < ObjectPair < LeafNode, LeafNode > > ();
+    result.addAll ( new KleeneNode ( this.regex ).followPos () );
+    for ( LeafNode last : this.regex.lastPos () )
+    {
+      for ( LeafNode first : this.regex.firstPos () )
+      {
+        result.add ( new ObjectPair < LeafNode, LeafNode > ( last, first ) );
+      }
+    }
+    return result;
   }
 
 

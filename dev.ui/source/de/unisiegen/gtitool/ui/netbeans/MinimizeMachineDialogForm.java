@@ -221,6 +221,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
         jGTIToggleButtonAlgorithm.setText(bundle.getString("TextWindow.ShowAlgorithm")); // NOI18N
+        jGTIToggleButtonAlgorithm.setToolTipText(bundle.getString("TextWindow.ShowAlgorithmToolTip")); // NOI18N
         jGTIToggleButtonAlgorithm.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToggleButtonAlgorithmItemStateChanged(evt);

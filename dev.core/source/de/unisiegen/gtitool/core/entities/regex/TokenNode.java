@@ -179,6 +179,18 @@ public class TokenNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#getNextUnfinishedNode()
+   */
+  @Override
+  public UnfinishedNode getNextUnfinishedNode ()
+  {
+    return null;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#getNodeString()
    */
   @Override
@@ -321,17 +333,5 @@ public class TokenNode extends LeafNode
   public String toString ()
   {
     return this.name;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#getNextUnfinishedNode()
-   */
-  @Override
-  public UnfinishedNode getNextUnfinishedNode ()
-  {
-    return null;
   }
 }

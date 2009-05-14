@@ -232,6 +232,18 @@ public class CharacterClassNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#getNextUnfinishedNode()
+   */
+  @Override
+  public UnfinishedNode getNextUnfinishedNode ()
+  {
+    return null;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#getNodeString()
    */
   @Override
@@ -445,18 +457,6 @@ public class CharacterClassNode extends LeafNode
     }
     s += "]"; //$NON-NLS-1$
     return s;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#getNextUnfinishedNode()
-   */
-  @Override
-  public UnfinishedNode getNextUnfinishedNode ()
-  {
-    return null;
   }
 
 }

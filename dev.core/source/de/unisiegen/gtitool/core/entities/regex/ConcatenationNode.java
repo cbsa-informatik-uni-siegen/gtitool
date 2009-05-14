@@ -44,28 +44,6 @@ public class ConcatenationNode extends TwoChildNode
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#followPos()
-   */
-  @Override
-  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
-  {
-    HashSet < ObjectPair < LeafNode, LeafNode >> result = new HashSet < ObjectPair < LeafNode, LeafNode > > ();
-    result.addAll ( this.regex1.followPos () );
-    result.addAll ( this.regex2.followPos () );
-    for ( LeafNode last : this.regex1.lastPos () )
-    {
-      for ( LeafNode first : this.regex2.firstPos () )
-      {
-        result.add ( new ObjectPair < LeafNode, LeafNode > ( last, first ) );
-      }
-    }
-    return result;
-  }
-
-
-  /**
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
@@ -188,6 +166,28 @@ public class ConcatenationNode extends TwoChildNode
       this.firstPosCache.addAll ( this.regex2.firstPos () );
     }
     return this.firstPosCache;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#followPos()
+   */
+  @Override
+  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
+  {
+    HashSet < ObjectPair < LeafNode, LeafNode >> result = new HashSet < ObjectPair < LeafNode, LeafNode > > ();
+    result.addAll ( this.regex1.followPos () );
+    result.addAll ( this.regex2.followPos () );
+    for ( LeafNode last : this.regex1.lastPos () )
+    {
+      for ( LeafNode first : this.regex2.firstPos () )
+      {
+        result.add ( new ObjectPair < LeafNode, LeafNode > ( last, first ) );
+      }
+    }
+    return result;
   }
 
 

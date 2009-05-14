@@ -28,9 +28,9 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * The position
+   * The k
    */
-  private int position;
+  private int k;
 
 
   /**
@@ -40,45 +40,24 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see LeafNode#getPosition()
-   */
-  @Override
-  public int getPosition ()
-  {
-    return this.position;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see LeafNode#setPosition(int)
-   */
-  @Override
-  public void setPosition ( int p )
-  {
-    this.position = p;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#clone()
-   */
-  @Override
-  public RegexNode clone ()
-  {
-    return new UnfinishedNode ( this.s0, this.s1, this.k );
-  }
-
-
-  /**
    * The name
    */
   private String name;
+
+
+  /**
+   * The offset of this {@link UnfinishedNode} in the source code.
+   * 
+   * @see #getParserOffset()
+   * @see #setParserOffset(ParserOffset)
+   */
+  private ParserOffset parserOffset = NO_PARSER_OFFSET;
+
+
+  /**
+   * The position
+   */
+  private int position;
 
 
   /**
@@ -91,12 +70,6 @@ public class UnfinishedNode extends LeafNode
    * The {@link State} s1
    */
   private State s1;
-
-
-  /**
-   * The k
-   */
-  private int k;
 
 
   /**
@@ -118,48 +91,35 @@ public class UnfinishedNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
-   * @see RegexNode#getNextUnfinishedNode()
+   * @see PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void addPrettyStringChangedListener (
+      PrettyStringChangedListener listener )
+  {
+    this.listenerList.add ( PrettyStringChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#clone()
    */
   @Override
-  public UnfinishedNode getNextUnfinishedNode ()
+  public RegexNode clone ()
   {
-    return this;
+    return new UnfinishedNode ( this.s0, this.s1, this.k );
   }
 
 
   /**
-   * Returns the s0.
+   * {@inheritDoc}
    * 
-   * @return The s0.
-   * @see #s0
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
-  public State getS0 ()
+  public int compareTo ( @SuppressWarnings ( "unused" ) RegexNode o )
   {
-    return this.s0;
-  }
-
-
-  /**
-   * Returns the s1.
-   * 
-   * @return The s1.
-   * @see #s1
-   */
-  public State getS1 ()
-  {
-    return this.s1;
-  }
-
-
-  /**
-   * Returns the k.
-   * 
-   * @return The k.
-   * @see #k
-   */
-  public int getK ()
-  {
-    return this.k;
+    return 0;
   }
 
 
@@ -180,18 +140,6 @@ public class UnfinishedNode extends LeafNode
       return this.name.equals ( ( ( UnfinishedNode ) o ).getName () );
     }
     return false;
-  }
-
-
-  /**
-   * Returns the name.
-   * 
-   * @return The name.
-   * @see #name
-   */
-  public String getName ()
-  {
-    return this.name;
   }
 
 
@@ -220,6 +168,18 @@ public class UnfinishedNode extends LeafNode
 
 
   /**
+   * Returns the k.
+   * 
+   * @return The k.
+   * @see #k
+   */
+  public int getK ()
+  {
+    return this.k;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see RegexNode#getLeftChildrenCount()
@@ -228,6 +188,30 @@ public class UnfinishedNode extends LeafNode
   public int getLeftChildrenCount ()
   {
     return 0;
+  }
+
+
+  /**
+   * Returns the name.
+   * 
+   * @return The name.
+   * @see #name
+   */
+  public String getName ()
+  {
+    return this.name;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#getNextUnfinishedNode()
+   */
+  @Override
+  public UnfinishedNode getNextUnfinishedNode ()
+  {
+    return this;
   }
 
 
@@ -248,12 +232,59 @@ public class UnfinishedNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
+   */
+  public ParserOffset getParserOffset ()
+  {
+    return this.parserOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LeafNode#getPosition()
+   */
+  @Override
+  public int getPosition ()
+  {
+    return this.position;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see RegexNode#getRightChildrenCount()
    */
   @Override
   public int getRightChildrenCount ()
   {
     return 0;
+  }
+
+
+  /**
+   * Returns the s0.
+   * 
+   * @return The s0.
+   * @see #s0
+   */
+  public State getS0 ()
+  {
+    return this.s0;
+  }
+
+
+  /**
+   * Returns the s1.
+   * 
+   * @return The s1.
+   * @see #s1
+   */
+  public State getS1 ()
+  {
+    return this.s1;
   }
 
 
@@ -284,34 +315,13 @@ public class UnfinishedNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
-   * @see RegexNode#toCoreSyntax(boolean)
+   * @see PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
    */
-  @Override
-  public RegexNode toCoreSyntax (
-      @SuppressWarnings ( "unused" ) boolean withCharacterClasses )
+  public void removePrettyStringChangedListener (
+      PrettyStringChangedListener listener )
   {
-    return this;
+    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
   }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
-   */
-  public ParserOffset getParserOffset ()
-  {
-    return this.parserOffset;
-  }
-
-
-  /**
-   * The offset of this {@link UnfinishedNode} in the source code.
-   * 
-   * @see #getParserOffset()
-   * @see #setParserOffset(ParserOffset)
-   */
-  private ParserOffset parserOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -328,24 +338,25 @@ public class UnfinishedNode extends LeafNode
   /**
    * {@inheritDoc}
    * 
-   * @see PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   * @see LeafNode#setPosition(int)
    */
-  public void addPrettyStringChangedListener (
-      PrettyStringChangedListener listener )
+  @Override
+  public void setPosition ( int p )
   {
-    this.listenerList.add ( PrettyStringChangedListener.class, listener );
+    this.position = p;
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   * @see RegexNode#toCoreSyntax(boolean)
    */
-  public void removePrettyStringChangedListener (
-      PrettyStringChangedListener listener )
+  @Override
+  public RegexNode toCoreSyntax (
+      @SuppressWarnings ( "unused" ) boolean withCharacterClasses )
   {
-    this.listenerList.remove ( PrettyStringChangedListener.class, listener );
+    return this;
   }
 
 
@@ -371,17 +382,6 @@ public class UnfinishedNode extends LeafNode
   public String toString ()
   {
     return "'" + this.name; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
-  public int compareTo ( @SuppressWarnings ( "unused" ) RegexNode o )
-  {
-    return 0;
   }
 
 }

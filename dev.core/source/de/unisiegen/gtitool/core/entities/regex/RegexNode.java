@@ -82,23 +82,6 @@ public abstract class RegexNode implements Entity < RegexNode >
 
 
   /**
-   * Returns the next unfinished node in the {@link RegexNode}
-   * 
-   * @return The next unfinished node in the {@link RegexNode}
-   */
-  public abstract UnfinishedNode getNextUnfinishedNode ();
-
-
-  /**
-   * Returns the ParentNode for the {@link RegexNode} if exists
-   * 
-   * @param node The {@link RegexNode}
-   * @return The ParentNode for the {@link RegexNode} if exists
-   */
-  public abstract RegexNode getParentNodeForNode ( RegexNode node );
-
-
-  /**
    * Returns the max Height of the tree
    * 
    * @return The max Height of the tree
@@ -123,11 +106,28 @@ public abstract class RegexNode implements Entity < RegexNode >
 
 
   /**
+   * Returns the next unfinished node in the {@link RegexNode}
+   * 
+   * @return The next unfinished node in the {@link RegexNode}
+   */
+  public abstract UnfinishedNode getNextUnfinishedNode ();
+
+
+  /**
    * Get the {@link PrettyString} for the Node in the JGTIGraph
    * 
    * @return The {@link PrettyString} for the Node in the JGTIGraph
    */
   public abstract PrettyString getNodeString ();
+
+
+  /**
+   * Returns the ParentNode for the {@link RegexNode} if exists
+   * 
+   * @param node The {@link RegexNode}
+   * @return The ParentNode for the {@link RegexNode} if exists
+   */
+  public abstract RegexNode getParentNodeForNode ( RegexNode node );
 
 
   /**

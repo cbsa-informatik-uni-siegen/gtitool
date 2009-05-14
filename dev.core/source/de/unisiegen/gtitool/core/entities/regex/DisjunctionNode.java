@@ -26,21 +26,6 @@ public class DisjunctionNode extends TwoChildNode
 {
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see RegexNode#followPos()
-   */
-  @Override
-  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
-  {
-    HashSet < ObjectPair < LeafNode, LeafNode >> result = new HashSet < ObjectPair < LeafNode, LeafNode > > ();
-    result.addAll ( this.regex1.followPos () );
-    result.addAll ( this.regex2.followPos () );
-    return result;
-  }
-
-
-  /**
    * The serial version uid
    */
   private static final long serialVersionUID = 8726582926785501568L;
@@ -179,6 +164,21 @@ public class DisjunctionNode extends TwoChildNode
       this.firstPosCache.addAll ( this.regex2.firstPos () );
     }
     return this.firstPosCache;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#followPos()
+   */
+  @Override
+  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
+  {
+    HashSet < ObjectPair < LeafNode, LeafNode >> result = new HashSet < ObjectPair < LeafNode, LeafNode > > ();
+    result.addAll ( this.regex1.followPos () );
+    result.addAll ( this.regex2.followPos () );
+    return result;
   }
 
 

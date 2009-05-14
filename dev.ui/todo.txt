@@ -1,7 +1,7 @@
 *** TODOs ***
 
 SM		- Fehlerzustand bei Regex -> DFA ausblenden.
-SM		- Neue Definition von followpos übernehmen.
+SM		- Neues ENFA -> NFA hinzufügen.
 
 *** Features ***
 		- Der Parser macht keine Vorschläge, siehe "{0, }" beim Alphabet

@@ -1408,6 +1408,10 @@ public final class ConvertMachineDialog implements
         {
           exc.printStackTrace ();
         }
+        this.gui.jGTIButtonOk.setToolTipText ( Messages
+            .getString ( "ConvertMachineDialog.OkToolTipRegex" ) ); //$NON-NLS-1$
+        this.gui.jGTIButtonCancel.setToolTipText ( Messages
+            .getString ( "ConvertMachineDialog.CancelToolTipRegex" ) ); //$NON-NLS-1$
 
         this.gui.setTitle ( Messages.getString (
             "ConvertMachineDialog.Title", Messages//$NON-NLS-1$
@@ -1732,8 +1736,8 @@ public final class ConvertMachineDialog implements
   {
     return this.modelConverted;
   }
-  
-  
+
+
   /**
    * Returns the modelOriginal.
    * 
@@ -1748,7 +1752,7 @@ public final class ConvertMachineDialog implements
 
   /**
    * Returns the modelRegexConverted.
-   *
+   * 
    * @return The modelRegexConverted.
    * @see #modelRegexConverted
    */

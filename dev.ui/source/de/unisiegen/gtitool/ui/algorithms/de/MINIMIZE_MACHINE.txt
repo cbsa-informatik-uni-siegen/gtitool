@@ -1,4 +1,4 @@
-Sei A = (Σ,Q,s,F,δ) der zu minimalisierende DEA.
+Sei A = (Σ,Q,s,F,δ) der DEA.
 Wir dürfen annehmen, dass A nur erreichbare Zustände besitzt.
 Wir definieren A' = (Σ,Q',s',F',δ') durch
 Q' = {[q]A | q ∈ Q}

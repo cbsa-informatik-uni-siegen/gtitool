@@ -2,17 +2,22 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.TreeSet;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
@@ -697,6 +702,97 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     ExchangeDialog exchangeDialog = new ExchangeDialog ( this.mainWindowForm
         .getLogic (), this.model.getElement (), this.file );
     exchangeDialog.show ();
+  }
+
+
+  /**
+   * Handles the export picture event.
+   */
+  public final void handleExportPicture ()
+  {
+    FileFilter fileFilter = new FileFilter ()
+    {
+
+      @Override
+      public boolean accept ( File acceptedFile )
+      {
+        if ( acceptedFile.isDirectory () )
+        {
+          return true;
+        }
+        if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\.png" ) ) //$NON-NLS-1$
+        {
+          return true;
+        }
+        return false;
+      }
+
+
+      @Override
+      public String getDescription ()
+      {
+        return Messages.getString ( "RegexPanel.ExportPicturePNG" ) //$NON-NLS-1$
+            + " (*.png)"; //$NON-NLS-1$
+      }
+    };
+
+    SaveDialog saveDialog = new SaveDialog ( this.mainWindowForm,
+        PreferenceManager.getInstance ().getWorkingPath (), fileFilter,
+        fileFilter );
+    saveDialog.show ();
+
+    if ( ( !saveDialog.isConfirmed () )
+        || ( saveDialog.getSelectedFile () == null ) )
+    {
+      return;
+    }
+
+    if ( saveDialog.getSelectedFile ().exists () )
+    {
+      ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
+          Messages.getString ( "RegexPanel.FileExists", saveDialog //$NON-NLS-1$
+              .getSelectedFile ().getName () ), Messages
+              .getString ( "RegexPanel.ExportPicture" ), true, false, true, //$NON-NLS-1$
+          false, false );
+      confirmDialog.show ();
+      if ( confirmDialog.isNotConfirmed () )
+      {
+        return;
+      }
+    }
+
+    String filename = saveDialog.getSelectedFile ().toString ().toLowerCase ()
+        .matches ( ".+\\.png" ) ? saveDialog.getSelectedFile ().toString () //$NON-NLS-1$
+        : saveDialog.getSelectedFile ().toString () + ".png"; //$NON-NLS-1$
+
+    PreferenceManager.getInstance ().setWorkingPath (
+        saveDialog.getCurrentDirectory ().getAbsolutePath () );
+
+    Rectangle usedBounds = this.jGTIGraph.getUsedBounds ();
+
+    int inset = 20;
+    int width = usedBounds.width + 2 * inset;
+    int height = usedBounds.height + 2 * inset;
+
+    BufferedImage image = new BufferedImage ( width, height,
+        BufferedImage.TYPE_INT_RGB );
+    Graphics graphics = image.getGraphics ();
+
+    graphics.fillRect ( 0, 0, width, height );
+    this.jGTIGraph.paintAll ( graphics );
+    graphics.dispose ();
+
+    try
+    {
+      ImageIO.write ( image, "PNG", new File ( filename ) ); //$NON-NLS-1$
+    }
+    catch ( IOException exc )
+    {
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, Messages
+          .getString ( "RegexPanel.ExportPictureError" ), Messages//$NON-NLS-1$
+          .getString ( "RegexPanel.ExportPictureErrorTitle" ) );//$NON-NLS-1$
+      infoDialog.show ();
+    }
   }
 
 

@@ -2193,6 +2193,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       machinePanel.handleExportPicture ();
+    } else if(this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof RegexPanel ) {
+
+      RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      regexPanel.handleExportPicture ();
     }
     else
     {
@@ -4521,6 +4527,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
         addButtonState ( ButtonState.ENABLED_TO_LATEX );
+        addButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
 
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
         removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
@@ -4530,7 +4537,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_MINIMIZE );
         removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
-        removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
         removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
         removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );

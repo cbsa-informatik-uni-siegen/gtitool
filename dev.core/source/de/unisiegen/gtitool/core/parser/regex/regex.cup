@@ -152,7 +152,12 @@ simple_regex					::= simple_regex:reg STAR:star
 										RESULT = new OptionalNode(reg);
 									   	RESULT.setParserOffset(new ParserOffset(regleft,questionright));
 									:}
-								|	LBRACE:l regex:reg RBRACE:r
+								|	LBRACE:l simple_regex:reg RBRACE:r
+									{:
+										RESULT = reg;
+									   	RESULT.setParserOffset(new ParserOffset(lleft,rright));
+									:}
+								|	LBRACE:l complexRegex:reg RBRACE:r
 									{:
 										RESULT = reg;
 									   	RESULT.setParserOffset(new ParserOffset(lleft,rright));

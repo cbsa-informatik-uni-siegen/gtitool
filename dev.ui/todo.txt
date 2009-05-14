@@ -1,7 +1,6 @@
 *** TODOs ***
 
 SM		- Fehlerzustand bei Regex -> DFA ausblenden.
-SM		- Bildexport für Regex.
 SM		- Neue Definition von followpos übernehmen.
 
 *** Features ***

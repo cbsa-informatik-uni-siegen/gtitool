@@ -4,9 +4,9 @@ http://subclipse.tigris.org/update_1.4.x
 
 
 *** versions ***
-eclipse      3.4.1
-netbeans     6.1
-java         1.5.0_16
-ant          1.7.0
-subclipse    1.4.7
+eclipse      3.4.2
+netbeans     6.5
+java         1.5.0_18
+ant          1.7.1
+subclipse    1.4.8
 texlipse     1.2.2

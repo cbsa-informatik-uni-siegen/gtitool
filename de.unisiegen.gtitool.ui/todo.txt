@@ -1,12 +1,3 @@
 CF		- Fehler beim Konvertieren, wenn PowerSet-Zustände verwendet werden
 CF		- Die SVNVersion Klasse wird zur Laufzeit nicht benötigt
 CF		- AbstractGrammer
-CF		- Erkannte Wörter ausgeben
-CF		- Doppeltes Handling aus den Popupmenüs entfernen
-CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
-CF		- Popupmenü auf der Machine Tabelle
-CF		- Auswahl der Transition so gestalten, dass auch sehr viele gut aussehen
-
-BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
-BM		- Neues AutoLayout
-BM		- Farben beim Minimieren dynamisch berechnen

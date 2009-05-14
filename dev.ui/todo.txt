@@ -1,7 +1,16 @@
+*** TODOs ***
+
 SM		- Druckdialoge prüfen.
 SM		- Handbuch erweitern.(Epsilon-Produktionen entfernen, 
 		  Einheitsproduktionen entfernen, DFA -> Regex, Regex -> NFA)
 SM		- Vortrag machen.
 
 *** Features ***
-- Der Parser macht keine Vorschläge, siehe "{0, }" beim Alphabet
+		- Der Parser macht keine Vorschläge, siehe "{0, }" beim Alphabet
+		- Erkannte Wörter ausgeben
+		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
+		- Auswahl der Transition so gestalten, dass auch sehr viele gut aussehen
+
+		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
+		- Neues AutoLayout
+		- Farben beim Minimieren dynamisch berechnen

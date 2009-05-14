@@ -3,8 +3,11 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
@@ -1125,7 +1128,7 @@ public class ConvertRegexToMachineDialog implements
             public void valueChanged (
                 @SuppressWarnings ( "unused" ) GraphSelectionEvent e )
             {
-              updateRegexInfo ();
+              updateRegexNodeInfo ();
             }
           } );
     }
@@ -3141,16 +3144,21 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * Updates the RegexInfo panel
+   * Updates the RegexNode infos
    */
-  protected void updateRegexInfo ()
+  protected void updateRegexNodeInfo ()
   {
     if ( this.jGTIGraphOriginal.getSelectionCell () instanceof DefaultNodeView )
     {
-      RegexNode node = ( ( DefaultNodeView ) this.jGTIGraphOriginal
-          .getSelectionCell () ).getNode ();
-      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( "" //$NON-NLS-1$
-          + node.nullable () );
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setEnabled ( true );
+      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setEnabled ( true );
+      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setEnabled ( true );
+      this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setEnabled ( true );
+
+      RegexNode node = ( ( DefaultNodeView ) this.jGTIGraphOriginal.getSelectionCell () )
+          .getNode ();
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setText ( String
+          .valueOf ( node.nullable () ) );
       String firstpos = "{"; //$NON-NLS-1$
       for ( LeafNode n : node.firstPos () )
       {
@@ -3174,30 +3182,44 @@ public class ConvertRegexToMachineDialog implements
       lastpos += "}"; //$NON-NLS-1$
       this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( lastpos );
       String followpos = "{"; //$NON-NLS-1$
-      if ( node instanceof LeafNode )
-      {
-        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( true );
-        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( true );
-        LeafNode leaf = ( LeafNode ) node;
-        boolean first = true;
-        for ( Integer n : this.modelOriginal.getRegex ().followPos (
-            leaf.getPosition () ) )
-        {
-          if ( !first )
+      boolean first = true;
+      LinkedList < ObjectPair < LeafNode, LeafNode > > follow = new LinkedList < ObjectPair < LeafNode, LeafNode > > ();
+      follow.addAll ( node.followPos () );
+      Collections.sort ( follow,
+          new Comparator < ObjectPair < LeafNode, LeafNode > > ()
           {
-            followpos += "; "; //$NON-NLS-1$
-          }
-          followpos += n;
-          first = false;
-        }
-        followpos += "}"; //$NON-NLS-1$
-        this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( followpos );
-      }
-      else
+
+            /**
+             * @see java.util.Comparator#compare(java.lang.Object,
+             *      java.lang.Object)
+             */
+            public int compare ( ObjectPair < LeafNode, LeafNode > o1,
+                ObjectPair < LeafNode, LeafNode > o2 )
+            {
+              int p1 = o1.getFirst ().getPosition ()
+                  - o2.getFirst ().getPosition ();
+              if ( p1 != 0 )
+              {
+                return p1;
+              }
+              return o1.getSecond ().getPosition ()
+                  - o2.getSecond ().getPosition ();
+            }
+          } );
+
+      for ( ObjectPair < LeafNode, LeafNode > pair : follow )
       {
-        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
-        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
+        if ( !first )
+        {
+          followpos += "; "; //$NON-NLS-1$
+        }
+        followpos += "(" + pair.getFirst ().getPosition () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + pair.getSecond ().getPosition () + ")"; //$NON-NLS-1$
+        first = false;
       }
+      followpos += "}"; //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( followpos );
+
     }
     else
     {
@@ -3205,8 +3227,10 @@ public class ConvertRegexToMachineDialog implements
       this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setText ( "" ); //$NON-NLS-1$
       this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( "" ); //$NON-NLS-1$
       this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( "" ); //$NON-NLS-1$
-      this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
-      this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
+      this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setEnabled ( false );
+      this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setEnabled ( false );
+      this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setEnabled ( false );
+      this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setEnabled ( false );
     }
   }
 }

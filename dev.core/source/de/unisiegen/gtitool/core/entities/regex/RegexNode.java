@@ -2,9 +2,11 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.util.ObjectPair;
 
 
 /**
@@ -56,6 +58,14 @@ public abstract class RegexNode implements Entity < RegexNode >
 
 
   /**
+   * Function followpos as defined in CB 1
+   * 
+   * @return {@link HashSet} of {@link ObjectPair} that are in followpos
+   */
+  public abstract HashSet < ObjectPair < LeafNode, LeafNode > > followPos ();
+
+
+  /**
    * Gets all Children of this Node
    * 
    * @return All children of this node
@@ -77,6 +87,7 @@ public abstract class RegexNode implements Entity < RegexNode >
    * @return The next unfinished node in the {@link RegexNode}
    */
   public abstract UnfinishedNode getNextUnfinishedNode ();
+
 
   /**
    * Returns the ParentNode for the {@link RegexNode} if exists

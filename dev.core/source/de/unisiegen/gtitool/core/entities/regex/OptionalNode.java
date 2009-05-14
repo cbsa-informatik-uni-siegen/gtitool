@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.event.EventListenerList;
 
@@ -12,6 +13,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.util.ObjectPair;
 
 
 /**
@@ -34,6 +36,16 @@ public class OptionalNode extends OneChildNode
    */
   private EventListenerList listenerList = new EventListenerList ();
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#followPos()
+   */
+  @Override
+  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
+  {
+    return this.regex.followPos ();
+  }
 
   /**
    * The offset of this {@link OptionalNode} in the source code.

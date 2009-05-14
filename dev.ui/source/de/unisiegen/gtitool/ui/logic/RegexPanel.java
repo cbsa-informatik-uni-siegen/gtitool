@@ -14,6 +14,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.Stack;
 import java.util.TreeSet;
 
@@ -52,6 +55,7 @@ import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultNodeView;
@@ -1505,6 +1509,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setEnabled ( true );
       this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setEnabled ( true );
       this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setEnabled ( true );
+      this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setEnabled ( true );
 
       RegexNode node = ( ( DefaultNodeView ) this.jGTIGraph.getSelectionCell () )
           .getNode ();
@@ -1533,30 +1538,44 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       lastpos += "}"; //$NON-NLS-1$
       this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( lastpos );
       String followpos = "{"; //$NON-NLS-1$
-      if ( node instanceof LeafNode )
-      {
-        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( true );
-        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( true );
-        LeafNode leaf = ( LeafNode ) node;
-        boolean first = true;
-        for ( Integer n : this.model.getRegex ().followPos (
-            leaf.getPosition () ) )
-        {
-          if ( !first )
+      boolean first = true;
+      LinkedList < ObjectPair < LeafNode, LeafNode > > follow = new LinkedList < ObjectPair < LeafNode, LeafNode > > ();
+      follow.addAll ( node.followPos () );
+      Collections.sort ( follow,
+          new Comparator < ObjectPair < LeafNode, LeafNode > > ()
           {
-            followpos += "; "; //$NON-NLS-1$
-          }
-          followpos += n;
-          first = false;
-        }
-        followpos += "}"; //$NON-NLS-1$
-        this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( followpos );
-      }
-      else
+
+            /**
+             * @see java.util.Comparator#compare(java.lang.Object,
+             *      java.lang.Object)
+             */
+            public int compare ( ObjectPair < LeafNode, LeafNode > o1,
+                ObjectPair < LeafNode, LeafNode > o2 )
+            {
+              int p1 = o1.getFirst ().getPosition ()
+                  - o2.getFirst ().getPosition ();
+              if ( p1 != 0 )
+              {
+                return p1;
+              }
+              return o1.getSecond ().getPosition ()
+                  - o2.getSecond ().getPosition ();
+            }
+          } );
+
+      for ( ObjectPair < LeafNode, LeafNode > pair : follow )
       {
-        this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
-        this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
+        if ( !first )
+        {
+          followpos += "; "; //$NON-NLS-1$
+        }
+        followpos += "(" + pair.getFirst ().getPosition () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + pair.getSecond ().getPosition () + ")"; //$NON-NLS-1$
+        first = false;
       }
+      followpos += "}"; //$NON-NLS-1$
+      this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setText ( followpos );
+
     }
     else
     {
@@ -1567,8 +1586,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       this.gui.regexNodeInfoPanel.jGTITextAreaNullable.setEnabled ( false );
       this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setEnabled ( false );
       this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setEnabled ( false );
-      this.gui.regexNodeInfoPanel.jScrollPaneFollowpos.setVisible ( false );
-      this.gui.regexNodeInfoPanel.jGTILabelFollowpos.setVisible ( false );
+      this.gui.regexNodeInfoPanel.jGTITextAreaFollowpos.setEnabled ( false );
     }
   }
 

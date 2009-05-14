@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.event.EventListenerList;
 
@@ -12,6 +13,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.util.ObjectPair;
 
 
 /**
@@ -70,6 +72,27 @@ public class KleeneNode extends OneChildNode
   /**
    * {@inheritDoc}
    * 
+   * @see RegexNode#followPos()
+   */
+  @Override
+  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
+  {
+    HashSet < ObjectPair < LeafNode, LeafNode >> result = new HashSet < ObjectPair < LeafNode, LeafNode > > ();
+    result.addAll ( this.regex.followPos () );
+    for ( LeafNode last : this.regex.lastPos () )
+    {
+      for ( LeafNode first : this.regex.firstPos () )
+      {
+        result.add ( new ObjectPair < LeafNode, LeafNode > ( last, first ) );
+      }
+    }
+    return result;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.gtitool.core.entities.regex.RegexNode#clone()
    */
   @Override
@@ -84,8 +107,7 @@ public class KleeneNode extends OneChildNode
    * 
    * @see Comparable#compareTo(java.lang.Object)
    */
-  public int compareTo ( @SuppressWarnings ( "unused" )
-  RegexNode o )
+  public int compareTo ( @SuppressWarnings ( "unused" ) RegexNode o )
   {
     return 0;
   }

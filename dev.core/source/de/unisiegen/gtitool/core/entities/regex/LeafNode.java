@@ -2,6 +2,9 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
+
+import de.unisiegen.gtitool.core.util.ObjectPair;
 
 
 /**
@@ -52,6 +55,16 @@ public abstract class LeafNode extends RegexNode
    */
   private boolean positionShown = false;
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#followPos()
+   */
+  @Override
+  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
+  {
+    return new HashSet < ObjectPair<LeafNode,LeafNode> >();
+  }
 
   /**
    * {@inheritDoc}

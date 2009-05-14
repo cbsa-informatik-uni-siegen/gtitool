@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.core.entities.regex;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.event.EventListenerList;
 
@@ -12,6 +13,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.util.ObjectPair;
 
 
 /**
@@ -22,6 +24,21 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  */
 public class DisjunctionNode extends TwoChildNode
 {
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see RegexNode#followPos()
+   */
+  @Override
+  public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
+  {
+    HashSet < ObjectPair < LeafNode, LeafNode >> result = new HashSet < ObjectPair < LeafNode, LeafNode > > ();
+    result.addAll ( this.regex1.followPos () );
+    result.addAll ( this.regex2.followPos () );
+    return result;
+  }
+
 
   /**
    * The serial version uid
@@ -97,8 +114,7 @@ public class DisjunctionNode extends TwoChildNode
    * 
    * @see Comparable#compareTo(java.lang.Object)
    */
-  public int compareTo ( @SuppressWarnings ( "unused" )
-  RegexNode o )
+  public int compareTo ( @SuppressWarnings ( "unused" ) RegexNode o )
   {
     return 0;
   }

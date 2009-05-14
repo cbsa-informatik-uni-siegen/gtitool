@@ -1,9 +1,8 @@
 *** TODOs ***
 
-SM		- Druckdialoge prüfen.
-SM		- Handbuch erweitern.(Epsilon-Produktionen entfernen, 
-		  Einheitsproduktionen entfernen, DFA -> Regex, Regex -> NFA)
-SM		- Vortrag machen.
+SM		- Fehlerzustand bei Regex -> DFA ausblenden.
+SM		- Bildexport für Regex.
+SM		- Neue Definition von followpos übernehmen.
 
 *** Features ***
 		- Der Parser macht keine Vorschläge, siehe "{0, }" beim Alphabet

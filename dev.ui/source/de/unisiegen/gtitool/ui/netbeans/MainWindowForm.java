@@ -242,6 +242,12 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     {
       return this.jMenuItemSave;
     }
+
+    public JMenuItem getJMenuItemConvertToNFACB() {
+        return jMenuItemConvertToNFACB;
+    }
+    
+    
     
     /**
      * Returns the jMenuItemSaveAs.
@@ -1081,7 +1087,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
      * @see #jMenuItemCreateRDP
      */
     public JMenuItem getJMenuItemCreateRDP() {
-        return jMenuItemCreateRDP;
+        return this.jMenuItemCreateRDP;
     }
 
     /**
@@ -1091,7 +1097,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
      * @see #jMenuItemEliminateEntityProductions
      */
     public JMenuItem getJMenuItemEliminateEntityProductions() {
-        return jMenuItemEliminateEntityProductions;
+        return this.jMenuItemEliminateEntityProductions;
     }
 
     /**
@@ -1101,7 +1107,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
      * @see #jMenuItemEliminateEpsilonProductions
      */
     public JMenuItem getJMenuItemEliminateEpsilonProductions() {
-        return jMenuItemEliminateEpsilonProductions;
+        return this.jMenuItemEliminateEpsilonProductions;
     }
     
 
@@ -1187,6 +1193,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuConvertTo = new javax.swing.JMenu();
         jMenuItemConvertToDFA = new javax.swing.JMenuItem();
         jMenuItemConvertToNFA = new javax.swing.JMenuItem();
+        jMenuItemConvertToNFACB = new javax.swing.JMenuItem();
         jMenuItemConvertToENFA = new javax.swing.JMenuItem();
         jMenuItemConvertToPDA = new javax.swing.JMenuItem();
         jMenuItemConvertToRegex = new javax.swing.JMenuItem();
@@ -1790,6 +1797,14 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuConvertTo.add(jMenuItemConvertToNFA);
 
+        jMenuItemConvertToNFACB.setText(bundle.getString("MainWindow.NFACB")); // NOI18N
+        jMenuItemConvertToNFACB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToNFACBctionPerformed(evt);
+            }
+        });
+        jMenuConvertTo.add(jMenuItemConvertToNFACB);
+
         jMenuItemConvertToENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
         jMenuItemConvertToENFA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2048,19 +2063,19 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_jMenuItemReorderStateNamesActionPerformed
 
     private void jMenuItemConvertToCompletePDAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompletePDAActionPerformed
-         this.logic.handleConvertToComplete(MachineType.PDA);
+         this.logic.handleConvertToComplete(MachineType.PDA, false);
     }//GEN-LAST:event_jMenuItemConvertToCompletePDAActionPerformed
 
     private void jMenuItemConvertToCompleteENFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompleteENFAActionPerformed
-         this.logic.handleConvertToComplete(MachineType.ENFA);
+         this.logic.handleConvertToComplete(MachineType.ENFA, false);
     }//GEN-LAST:event_jMenuItemConvertToCompleteENFAActionPerformed
 
     private void jMenuItemConvertToCompleteNFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompleteNFActionPerformed
-         this.logic.handleConvertToComplete(MachineType.NFA);
+         this.logic.handleConvertToComplete(MachineType.NFA, false);
     }//GEN-LAST:event_jMenuItemConvertToCompleteNFActionPerformed
 
     private void jMenuItemConvertToCompleteDFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompleteDFAActionPerformed
-         this.logic.handleConvertToComplete(MachineType.DFA);
+         this.logic.handleConvertToComplete(MachineType.DFA, false);
     }//GEN-LAST:event_jMenuItemConvertToCompleteDFAActionPerformed
 
     private void jGTIToolBarToggleButtonEnterWordItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToolBarToggleButtonEnterWordItemStateChanged
@@ -2092,19 +2107,19 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_jMenuItemAutoLayoutActionPerformed
 
     private void jMenuItemConvertToPDAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToPDAActionPerformed
-        this.logic.handleConvertTo(MachineType.PDA);
+        this.logic.handleConvertTo(MachineType.PDA, false);
     }//GEN-LAST:event_jMenuItemConvertToPDAActionPerformed
 
     private void jMenuItemConvertToENFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToENFAActionPerformed
-        this.logic.handleConvertTo(MachineType.ENFA);
+        this.logic.handleConvertTo(MachineType.ENFA, false);
     }//GEN-LAST:event_jMenuItemConvertToENFAActionPerformed
 
     private void jMenuItemConvertToNFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToNFActionPerformed
-        this.logic.handleConvertTo(MachineType.NFA);
+        this.logic.handleConvertTo(MachineType.NFA, false);
     }//GEN-LAST:event_jMenuItemConvertToNFActionPerformed
 
     private void jMenuItemConvertToDFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToDFAActionPerformed
-         this.logic.handleConvertTo(MachineType.DFA);
+         this.logic.handleConvertTo(MachineType.DFA, false);
     }//GEN-LAST:event_jMenuItemConvertToDFAActionPerformed
 
     private void jGTIEditorPanelTabbedPaneLeftMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneLeftMouseReleased
@@ -2320,7 +2335,7 @@ private void jMenuItemLeftfactoringActionPerformed(java.awt.event.ActionEvent ev
 }//GEN-LAST:event_jMenuItemLeftfactoringActionPerformed
 
 private void jMenuItemConvertToRegexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToRegexActionPerformed
-    this.logic.handleConvertTo ( RegexType.REGEX );
+    this.logic.handleConvertTo ( RegexType.REGEX, false );
 }//GEN-LAST:event_jMenuItemConvertToRegexActionPerformed
 
 private void jMenuItemCreateRDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCreateRDPActionPerformed
@@ -2334,6 +2349,10 @@ private void jMenuItemEliminateEntityProductionsActionPerformed(java.awt.event.A
 private void jMenuItemEliminateEpsilonProductionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminateEpsilonProductionsActionPerformed
     this.logic.handleEliminateEpsilonProductions();
 }//GEN-LAST:event_jMenuItemEliminateEpsilonProductionsActionPerformed
+
+private void jMenuItemConvertToNFACBctionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToNFACBctionPerformed
+    this.logic.handleConvertTo ( MachineType.NFA, true );
+}//GEN-LAST:event_jMenuItemConvertToNFACBctionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2387,6 +2406,7 @@ private void jMenuItemEliminateEpsilonProductionsActionPerformed(java.awt.event.
     private javax.swing.JMenuItem jMenuItemConvertToDFA;
     private javax.swing.JMenuItem jMenuItemConvertToENFA;
     private javax.swing.JMenuItem jMenuItemConvertToNFA;
+    private javax.swing.JMenuItem jMenuItemConvertToNFACB;
     private javax.swing.JMenuItem jMenuItemConvertToPDA;
     private javax.swing.JMenuItem jMenuItemConvertToRegex;
     private javax.swing.JMenuItem jMenuItemCreateRDP;

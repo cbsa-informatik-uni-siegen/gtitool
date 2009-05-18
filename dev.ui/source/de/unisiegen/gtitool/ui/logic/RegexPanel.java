@@ -966,7 +966,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     {
       ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
           this.mainWindowForm, this );
-      converter.convert ( RegexType.REGEX, MachineType.DFA, false );
+      converter.convert ( RegexType.REGEX, MachineType.DFA, false, false );
     }
   }
 
@@ -1032,7 +1032,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     {
       ConvertRegexToMachineDialog converter = new ConvertRegexToMachineDialog (
           this.mainWindowForm, this );
-      converter.convert ( RegexType.REGEX, MachineType.ENFA, false );
+      converter.convert ( RegexType.REGEX, MachineType.ENFA, false, false );
     }
   }
 

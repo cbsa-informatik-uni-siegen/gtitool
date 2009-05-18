@@ -916,6 +916,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
@@ -933,6 +934,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
@@ -951,6 +953,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( true );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
@@ -968,6 +971,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
@@ -985,6 +989,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
@@ -1002,6 +1007,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( true );
     }
@@ -1019,6 +1025,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
@@ -1677,8 +1684,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    * Handles the convert to action performed.
    * 
    * @param entityType The {@link EntityType} to convert to.
+   * @param cb True if compilerbau version is used
    */
-  public final void handleConvertTo ( EntityType entityType )
+  public final void handleConvertTo ( EntityType entityType, boolean cb )
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
@@ -1694,22 +1702,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
         {
-          panel.getConverter ().convert ( MachineType.DFA, entityType, false );
+          panel.getConverter ().convert ( MachineType.DFA, entityType, false,
+              false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
         {
-          panel.getConverter ().convert ( MachineType.NFA, entityType, false );
+          panel.getConverter ().convert ( MachineType.NFA, entityType, false,
+              false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
         {
-          panel.getConverter ().convert ( MachineType.ENFA, entityType, false );
+          panel.getConverter ().convert ( MachineType.ENFA, entityType, false,
+              cb );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
         {
-          panel.getConverter ().convert ( MachineType.PDA, entityType, false );
+          panel.getConverter ().convert ( MachineType.PDA, entityType, false,
+              false );
         }
         else
         {
@@ -1723,12 +1735,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.RG ) )
         {
-          panel.getConverter ().convert ( GrammarType.RG, entityType, false );
+          panel.getConverter ().convert ( GrammarType.RG, entityType, false,
+              false );
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
         {
-          panel.getConverter ().convert ( GrammarType.CFG, entityType, false );
+          panel.getConverter ().convert ( GrammarType.CFG, entityType, false,
+              false );
         }
         else
         {
@@ -1738,8 +1752,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       else if ( panel instanceof RegexPanel )
       {
         RegexPanel regexPanel = ( RegexPanel ) panel;
-        regexPanel.getConverter ()
-            .convert ( RegexType.REGEX, entityType, false );
+        regexPanel.getConverter ().convert ( RegexType.REGEX, entityType,
+            false, false );
       }
       else
       {
@@ -1753,8 +1767,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    * Handles the convert to complete action performed.
    * 
    * @param entityType The {@link EntityType} to convert to.
+   * @param cb True if compilerbau version is used
    */
-  public final void handleConvertToComplete ( EntityType entityType )
+  public final void handleConvertToComplete ( EntityType entityType,
+      @SuppressWarnings ( "unused" ) boolean cb )
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
@@ -1770,22 +1786,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
         {
-          panel.getConverter ().convert ( MachineType.DFA, entityType, true );
+          panel.getConverter ().convert ( MachineType.DFA, entityType, true,
+              false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
         {
-          panel.getConverter ().convert ( MachineType.NFA, entityType, true );
+          panel.getConverter ().convert ( MachineType.NFA, entityType, true,
+              false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
         {
-          panel.getConverter ().convert ( MachineType.ENFA, entityType, true );
+          panel.getConverter ().convert ( MachineType.ENFA, entityType, true,
+              false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
         {
-          panel.getConverter ().convert ( MachineType.PDA, entityType, true );
+          panel.getConverter ().convert ( MachineType.PDA, entityType, true,
+              false );
         }
         else
         {
@@ -2193,8 +2213,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       machinePanel.handleExportPicture ();
-    } else if(this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel () instanceof RegexPanel ) {
+    }
+    else if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof RegexPanel )
+    {
 
       RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
@@ -5492,6 +5514,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.DFA" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemConvertToNFA ().setText (
         Messages.getString ( "MainWindow.NFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemConvertToNFACB ().setText (
+        Messages.getString ( "MainWindow.NFACB" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemConvertToENFA ().setText (
         Messages.getString ( "MainWindow.ENFA" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemConvertToPDA ().setText (

@@ -1024,12 +1024,11 @@ public class ConvertRegexToMachineDialog implements
   /**
    * {@inheritDoc}
    * 
-   * @see Converter#convert(de.unisiegen.gtitool.core.entities.InputEntity.EntityType,
-   *      de.unisiegen.gtitool.core.entities.InputEntity.EntityType, boolean)
+   * @see Converter#convert(EntityType, EntityType, boolean, boolean)
    */
   public void convert (
       @SuppressWarnings ( "unused" ) EntityType fromEntityType,
-      EntityType toEntityType, @SuppressWarnings ( "unused" ) boolean complete )
+      EntityType toEntityType, @SuppressWarnings ( "unused" ) boolean complete, @SuppressWarnings("unused") boolean cb )
   {
     this.entityType = toEntityType;
     this.gui = new ConvertRegexToMachineDialogForm ( this, this.parent );

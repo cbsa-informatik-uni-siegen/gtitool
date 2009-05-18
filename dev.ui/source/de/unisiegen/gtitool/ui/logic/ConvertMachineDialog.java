@@ -151,6 +151,16 @@ public final class ConvertMachineDialog implements
     ENFA_TO_NFA_COMPLETE,
 
     /**
+     * The {@link ENFA} to {@link NFA} cb-version conversion type.
+     */
+    ENFA_TO_NFA_CB,
+
+    /**
+     * The {@link ENFA} to {@link NFA} cb-version complete conversion type.
+     */
+    ENFA_TO_NFA_COMPLETE_CB,
+
+    /**
      * The {@link NFA} to {@link DFA} conversion type.
      */
     NFA_TO_DFA,
@@ -1196,10 +1206,10 @@ public final class ConvertMachineDialog implements
   /**
    * {@inheritDoc}
    * 
-   * @see Converter#convert(EntityType, EntityType,boolean)
+   * @see Converter#convert(EntityType,EntityType,boolean,boolean)
    */
   public final void convert ( EntityType fromEntityType,
-      EntityType toEntityType, boolean complete )
+      EntityType toEntityType, boolean complete, boolean cb )
   {
     if ( fromEntityType == null )
     {
@@ -1225,13 +1235,27 @@ public final class ConvertMachineDialog implements
     else if ( fromEntityType.equals ( MachineType.ENFA )
         && toEntityType.equals ( MachineType.NFA ) )
     {
-      if ( complete )
+      if ( cb )
       {
-        this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_COMPLETE;
+        if ( complete )
+        {
+          this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_COMPLETE_CB;
+        }
+        else
+        {
+          this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_CB;
+        }
       }
       else
       {
-        this.convertMachineType = ConvertMachineType.ENFA_TO_NFA;
+        if ( complete )
+        {
+          this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_COMPLETE;
+        }
+        else
+        {
+          this.convertMachineType = ConvertMachineType.ENFA_TO_NFA;
+        }
       }
     }
     else if ( fromEntityType.equals ( MachineType.ENFA )
@@ -1360,6 +1384,32 @@ public final class ConvertMachineDialog implements
 
         this.gui.setTitle ( Messages.getString (
             "ConvertMachineDialog.CompleteTitle", Messages//$NON-NLS-1$
+                .getString ( "ConvertMachineDialog.ENFA" ), Messages//$NON-NLS-1$
+                .getString ( "ConvertMachineDialog.NFA" ) ) );//$NON-NLS-1$
+        break;
+      }
+      case ENFA_TO_NFA_CB :
+      {
+        this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
+            this.machineOriginal.getAlphabet (), this.machineOriginal
+                .getPushDownAlphabet (), this.machineOriginal
+                .isUsePushDownAlphabet () ) );
+
+        this.gui.setTitle ( Messages.getString (
+            "ConvertMachineDialog.TitleCB", //$NON-NLS-1$
+            Messages.getString ( "ConvertMachineDialog.ENFA" ), Messages//$NON-NLS-1$
+                .getString ( "ConvertMachineDialog.NFA" ) ) );//$NON-NLS-1$
+        break;
+      }
+      case ENFA_TO_NFA_COMPLETE_CB :
+      {
+        this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
+            this.machineOriginal.getAlphabet (), this.machineOriginal
+                .getPushDownAlphabet (), this.machineOriginal
+                .isUsePushDownAlphabet () ) );
+
+        this.gui.setTitle ( Messages.getString (
+            "ConvertMachineDialog.CompleteTitleCB", Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.ENFA" ), Messages//$NON-NLS-1$
                 .getString ( "ConvertMachineDialog.NFA" ) ) );//$NON-NLS-1$
         break;
@@ -1971,6 +2021,14 @@ public final class ConvertMachineDialog implements
       {
         return true;
       }
+      case ENFA_TO_NFA_CB :
+      {
+        return false;
+      }
+      case ENFA_TO_NFA_COMPLETE_CB :
+      {
+        return true;
+      }
       case ENFA_TO_DFA :
       {
         return false;
@@ -2001,6 +2059,11 @@ public final class ConvertMachineDialog implements
       State normalState )
   {
     String name = stateSet.getName ();
+
+    if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
+    {
+      return name.equals ( normalState.getName () );
+    }
 
     if ( name.charAt ( 0 ) != '{' )
     {
@@ -2142,10 +2205,17 @@ public final class ConvertMachineDialog implements
         }
         case ENFA_TO_NFA :
         case ENFA_TO_NFA_COMPLETE :
+        case ENFA_TO_NFA_CB :
+        case ENFA_TO_NFA_COMPLETE_CB :
         case ENFA_TO_DFA :
         case ENFA_TO_DFA_COMPLETE :
         {
-          this.step = Step.ACTIVATE_START_CLOSURE_STATE;
+          if ( this.machineConverted.getState ().isEmpty () )
+          {
+            this.step = Step.ACTIVATE_START_CLOSURE_STATE;
+            break;
+          }
+          this.step = Step.ACTIVATE_SYMBOLS;
           break;
         }
         case DFA_TO_REGEX :
@@ -2245,82 +2315,171 @@ public final class ConvertMachineDialog implements
         logger.debug ( "performNextStep",//$NON-NLS-1$
             "perform next step: " + this.step );//$NON-NLS-1$
       }
-
       StringBuilder name = new StringBuilder ();
-      name.append ( "{" ); //$NON-NLS-1$
-      boolean first = true;
+
       boolean finalState = false;
-      for ( State currentState : this.machineOriginal.getState () )
+      boolean notImportant = false;
+      if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
       {
-        if ( currentState.isActive () )
+        for ( State currentState : this.machineOriginal.getState () )
         {
-          if ( currentState.isFinalState () )
+          if ( currentState.isActive () )
           {
-            finalState = true;
-          }
-          if ( !first )
-          {
-            name.append ( ", " );//$NON-NLS-1$
-          }
-          first = false;
-          name.append ( currentState.getName () );
-        }
-      }
-      name.append ( "}" );//$NON-NLS-1$
+            notImportant = !currentState.isImportant ();
+            if ( currentState.isFinalState () )
+            {
+              finalState = true;
+            }
+            name.append ( currentState.getName () );
+            currentState.setActive ( false );
+            break;
 
-      State stateFound = null;
-      for ( State current : this.machineConverted.getState () )
+          }
+        }
+
+      }
+      else
       {
-        if ( current.getName ().equals ( name.toString () ) )
+        name.append ( "{" ); //$NON-NLS-1$
+        boolean first = true;
+        for ( State currentState : this.machineOriginal.getState () )
         {
-          stateFound = current;
-          break;
+          if ( currentState.isActive () )
+          {
+            if ( currentState.isFinalState () )
+            {
+              finalState = true;
+            }
+            if ( !first )
+            {
+              name.append ( ", " );//$NON-NLS-1$
+            }
+            first = false;
+            name.append ( currentState.getName () );
+          }
         }
+        name.append ( "}" );//$NON-NLS-1$
       }
 
-      if ( stateFound == null )
+      if ( notImportant )
       {
-        State newState;
-        DefaultStateView newStateView;
         try
         {
-          newState = new DefaultState ( this.machineConverted.getAlphabet (),
-              this.machineConverted.getPushDownAlphabet (), name.toString (),
-              true, finalState );
-          newState.setActive ( true );
+          State stateFound = new DefaultState ( name.toString () );
+          PrettyString prettyString = new PrettyString ();
+          prettyString
+              .add ( Messages
+                  .getPrettyString (
+                      "ConvertMachineDialog.StartStateNotImportant", stateFound.toPrettyString () ) ); //$NON-NLS-1$
+          addOutlineComment ( prettyString );
+          boolean found = false;
+          for ( State s : this.machineOriginal.getState () )
+          {
+            if ( s.isActive () )
+            {
+              found = true;
+              break;
+            }
+          }
+          if ( found )
+          {
+            this.step = Step.ADD_START_STATE;
+          }
+          else
+          {
+            setCurrentActiveState ( this.machineConverted.getState ( 0 ),
+                manualStep );
+            this.step = Step.ACTIVATE_OLD_STATE;
+          }
         }
         catch ( StateException exc )
         {
           exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
         }
 
-        newStateView = this.modelConverted.createStateView ( INITIAL_POSITION,
-            INITIAL_POSITION, newState, false );
-
-        Position position = getPosition ( newState );
-        if ( position != null )
-        {
-          newStateView.move ( position.getX (), position.getY () );
-        }
-
-        // add to step item
-        this.stepItemList.get ( this.stepItemList.size () - 1 )
-            .setAddedDefaultStateView ( newStateView );
-
-        stateFound = newState;
       }
+      else
+      {
+        State stateFound = null;
+        for ( State current : this.machineConverted.getState () )
+        {
+          if ( current.getName ().equals ( name.toString () ) )
+          {
+            stateFound = current;
+            break;
+          }
+        }
 
-      setCurrentActiveState ( stateFound, manualStep );
+        if ( stateFound == null )
+        {
+          State newState;
+          DefaultStateView newStateView;
+          try
+          {
+            newState = new DefaultState ( this.machineConverted.getAlphabet (),
+                this.machineConverted.getPushDownAlphabet (), name.toString (),
+                true, finalState );
+            newState.setActive ( true );
+          }
+          catch ( StateException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+            return;
+          }
 
-      // outline
-      PrettyString prettyString = new PrettyString ();
-      prettyString.add ( Messages.getPrettyString (
-          "ConvertMachineDialog.AddStartState", stateFound.toPrettyString () ) ); //$NON-NLS-1$
-      addOutlineComment ( prettyString );
+          newStateView = this.modelConverted.createStateView (
+              INITIAL_POSITION, INITIAL_POSITION, newState, false );
 
-      this.step = Step.ACTIVATE_SYMBOLS;
+          Position position = getPosition ( newState );
+          if ( position != null )
+          {
+            newStateView.move ( position.getX (), position.getY () );
+          }
+
+          // add to step item
+          this.stepItemList.get ( this.stepItemList.size () - 1 )
+              .setAddedDefaultStateView ( newStateView );
+
+          stateFound = newState;
+        }
+        setCurrentActiveState ( stateFound, manualStep );
+        // outline
+        PrettyString prettyString = new PrettyString ();
+        prettyString
+            .add ( Messages
+                .getPrettyString (
+                    "ConvertMachineDialog.AddStartState", stateFound.toPrettyString () ) ); //$NON-NLS-1$
+        addOutlineComment ( prettyString );
+
+        if ( this.convertMachineType
+            .equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
+        {
+          boolean found = false;
+          for ( State s : this.machineOriginal.getState () )
+          {
+            if ( s.isActive () )
+            {
+              found = true;
+              break;
+            }
+          }
+          if ( found )
+          {
+            this.step = Step.ADD_START_STATE;
+          }
+          else
+          {
+            setCurrentActiveState ( this.machineConverted.getState ( 0 ),
+                manualStep );
+            this.step = Step.ACTIVATE_OLD_STATE;
+          }
+        }
+        else
+        {
+          this.step = Step.ACTIVATE_SYMBOLS;
+        }
+      }
     }
     else if ( this.step.equals ( Step.ACTIVATE_OLD_STATE ) )
     {
@@ -2377,6 +2536,16 @@ public final class ConvertMachineDialog implements
           break;
         }
         case NFA_TO_DFA_COMPLETE :
+        {
+          this.step = Step.ACTIVATE_SYMBOLS;
+          break;
+        }
+        case ENFA_TO_NFA_CB :
+        {
+          this.step = Step.ACTIVATE_SYMBOLS;
+          break;
+        }
+        case ENFA_TO_NFA_COMPLETE_CB :
         {
           this.step = Step.ACTIVATE_SYMBOLS;
           break;
@@ -2582,10 +2751,27 @@ public final class ConvertMachineDialog implements
       clearSymbolHighlightOriginal ();
 
       ArrayList < State > newActiveStateList = new ArrayList < State > ();
-      for ( Transition currentTransition : transitionList )
+      if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
       {
-        currentTransition.getStateEnd ().setActive ( true );
-        newActiveStateList.add ( currentTransition.getStateEnd () );
+        for ( Transition currentTransition : transitionList )
+        {
+          for ( State s : Util.getClosure ( currentTransition.getStateEnd () ) )
+          {
+            if ( s.isImportant () )
+            {
+              s.setActive ( true );
+              newActiveStateList.add ( s );
+            }
+          }
+        }
+      }
+      else
+      {
+        for ( Transition currentTransition : transitionList )
+        {
+          currentTransition.getStateEnd ().setActive ( true );
+          newActiveStateList.add ( currentTransition.getStateEnd () );
+        }
       }
       Collections.sort ( newActiveStateList );
 
@@ -2658,6 +2844,17 @@ public final class ConvertMachineDialog implements
         case ENFA_TO_NFA_COMPLETE :
         {
           this.step = Step.ACTIVATE_NEW_CLOSURE_STATES;
+          break;
+        }
+
+        case ENFA_TO_NFA_CB :
+        {
+          this.step = Step.ADD_STATE_AND_TRANSITION;
+          break;
+        }
+        case ENFA_TO_NFA_COMPLETE_CB :
+        {
+          this.step = Step.ADD_STATE_AND_TRANSITION;
           break;
         }
         case ENFA_TO_DFA :
@@ -2760,26 +2957,48 @@ public final class ConvertMachineDialog implements
       }
 
       StringBuilder name = new StringBuilder ();
-      name.append ( "{" ); //$NON-NLS-1$
-      boolean first = true;
       boolean finalState = false;
       boolean emptySetStateFound = true;
-      for ( State currentState : this.machineOriginal.getState () )
+      boolean moreAhead = false;
+      if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
       {
-        if ( currentState.isActive () )
+        for ( State currentState : this.machineOriginal.getState () )
         {
-          emptySetStateFound = false;
-
-          finalState = finalState || currentState.isFinalState ();
-          if ( !first )
+          if ( currentState.isActive () )
           {
-            name.append ( ", " );//$NON-NLS-1$
+            if ( name.length () > 0 )
+            {
+              moreAhead = true;
+              break;
+            }
+            currentState.setActive ( false );
+            emptySetStateFound = false;
+            finalState = finalState || currentState.isFinalState ();
+            name.append ( currentState.getName () );
           }
-          first = false;
-          name.append ( currentState.getName () );
         }
       }
-      name.append ( "}" );//$NON-NLS-1$
+      else
+      {
+        name.append ( "{" ); //$NON-NLS-1$
+        boolean first = true;
+        for ( State currentState : this.machineOriginal.getState () )
+        {
+          if ( currentState.isActive () )
+          {
+            emptySetStateFound = false;
+
+            finalState = finalState || currentState.isFinalState ();
+            if ( !first )
+            {
+              name.append ( ", " );//$NON-NLS-1$
+            }
+            first = false;
+            name.append ( currentState.getName () );
+          }
+        }
+        name.append ( "}" );//$NON-NLS-1$
+      }
 
       if ( emptySetStateFound )
       {
@@ -2800,7 +3019,10 @@ public final class ConvertMachineDialog implements
           }
           case ENFA_TO_NFA :
           case ENFA_TO_NFA_COMPLETE :
+          case ENFA_TO_NFA_CB :
+          case ENFA_TO_NFA_COMPLETE_CB :
           {
+
             this.step = Step.FINISH;
 
             // outline
@@ -3010,8 +3232,14 @@ public final class ConvertMachineDialog implements
                 .toPrettyString () ) );
         addOutlineComment ( prettyString );
       }
-
-      this.step = Step.FINISH;
+      if ( moreAhead )
+      {
+        this.step = Step.ADD_STATE_AND_TRANSITION;
+      }
+      else
+      {
+        this.step = Step.FINISH;
+      }
     }
     else if ( this.step.equals ( Step.FINISH ) )
     {

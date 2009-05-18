@@ -756,6 +756,24 @@ public class DefaultState implements State
   /**
    * {@inheritDoc}
    * 
+   * @see State#isImportant()
+   */
+  public boolean isImportant ()
+  {
+    for ( Transition t : getTransitionBegin () )
+    {
+      if ( t.getSymbol ().size () > 1 || !t.getSymbol ( 0 ).isEpsilon () )
+      {
+        return true;
+      }
+    }
+    return isFinalState ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see State#isLoopTransition()
    */
   public final boolean isLoopTransition ()
@@ -1018,7 +1036,7 @@ public class DefaultState implements State
     {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
     }
-    if (name.equals ( "" ) ) //$NON-NLS-1$
+    if ( name.equals ( "" ) ) //$NON-NLS-1$
     {
       throw new StateEmptyNameException ();
     }
@@ -1117,11 +1135,12 @@ public class DefaultState implements State
       Style styleName = this.selected ? Style.STATE_SELECTED : Style.STATE;
       Style styleSyntax = this.selected ? Style.STATE_SELECTED_SYNTAX
           : Style.NONE;
-      
-      if(this.name.length () == 0) {
+
+      if ( this.name.length () == 0 )
+      {
         return this.cachedPrettyString;
       }
-      
+
       // power set name
       if ( this.name.charAt ( 0 ) == '{' )
       {

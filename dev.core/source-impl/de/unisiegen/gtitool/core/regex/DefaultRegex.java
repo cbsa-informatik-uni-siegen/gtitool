@@ -273,6 +273,9 @@ public class DefaultRegex implements Regex
   public TreeSet < Symbol > getNotRemoveableSymbolsFromAlphabet ()
   {
     TreeSet < Symbol > set = new TreeSet < Symbol > ();
+    if(this.regexNode == null) {
+      return set;
+    }
     for ( LeafNode l : this.regexNode.getTokenNodes () )
     {
       if ( l instanceof TokenNode )

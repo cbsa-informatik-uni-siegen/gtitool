@@ -2217,7 +2217,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () instanceof RegexPanel )
     {
-
+      if ( !handleValidate ( false ) )
+      {
+        return;
+      }
       RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       regexPanel.handleExportPicture ();
@@ -2256,6 +2259,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () instanceof RegexPanel )
     {
+      if ( !handleValidate ( false ) )
+      {
+        return;
+      }
       RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       regexPanel.handleToLatexButtonClicked ();

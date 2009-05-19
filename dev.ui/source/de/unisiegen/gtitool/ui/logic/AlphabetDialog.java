@@ -12,6 +12,7 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.AlphabetDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -181,6 +182,15 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
     this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet.setVisible ( false );
     this.gui.alphabetPanelForm.jGTILabelRegexAlphabet.setVisible ( false );
 
+
+    this.gui.setTitle ( Messages
+        .getString ( "AlphabetDialog.TitleRegex" ) ); //$NON-NLS-1$
+    this.gui.jGTILabelHeadline.setText ( Messages
+        .getString ( "AlphabetDialog.EditRegex" ) ); //$NON-NLS-1$
+    this.gui.jGTIButtonOk.setToolTipText ( Messages
+        .getString ( "AlphabetDialog.OkToolTipRegex" ) ); //$NON-NLS-1$
+    this.gui.jGTIButtonCancel.setToolTipText ( Messages
+        .getString ( "AlphabetDialog.CancelToolTipRegex" ) ); //$NON-NLS-1$
   }
 
 

@@ -4,11 +4,6 @@ SM		- Algorithmus für neues ENFA -> NFA hinzufügen.
 
 
 *** Bugs ***
-SM		- Neue Regex Datei anlegen -> Dokument editieren -> Exception
-SM		- Regex -> Dokument editieren -> Falscher Titel, Überschrift, Tooltip
-		  auf OK und Tooltip auf Abbrechen (Ist: Alphabete, Soll: Alphabet)
-SM		- Leere Regex kann LaTeX exportiert werden
-SM		- Leere Regex -> Als Bild exportieren -> Exception
 
 
 *** Features ***

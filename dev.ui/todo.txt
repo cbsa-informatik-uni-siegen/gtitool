@@ -1,9 +1,17 @@
 *** TODOs ***
-
 SM		- Algorithmus für neues ENFA -> NFA hinzufügen.
 
 
 *** Bugs ***
+SM		- Leere Regex drucken -> ArithmeticException: / by zero
+SM		- Bei Regex "aä" Eintippen -> Graph für "a" wird angezeigt.
+		  Vorschlag: Es wird kein Graph angezeigt und die Komponenten
+		  deaktiviert.
+SM		- Englische Sprache: Convert to -> ... Compilerbau version
+SM		- Zwei Regex öffnen, bei einer die Regex Info ausblenden, Tab wechseln ->
+		  Regex Info ist sichtbar, der Menüeintrag ist nicht ausgewählt
+SM		- Neue Regex anlegen, "Vorlage für" ist aktiv, Tab wechseln, wieder
+		  zurückwechseln, "Vorlage für" ist nicht mehr aktiv
 
 
 *** Features ***
@@ -11,7 +19,6 @@ SM		- Algorithmus für neues ENFA -> NFA hinzufügen.
 		- Erkannte Wörter ausgeben
 		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
 		- Auswahl der Transition so gestalten, dass auch sehr viele gut aussehen
-
 		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 		- Neues AutoLayout
 		- Farben beim Minimieren dynamisch berechnen

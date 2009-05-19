@@ -499,20 +499,33 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         getMainWindow ()
             .removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
       }
+
+      getMainWindow ().addButtonState ( ButtonState.ENABLED_PRINT );
+      getMainWindow ().addButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
+      getMainWindow ().addButtonState ( ButtonState.ENABLED_TO_LATEX );
+      getMainWindow ().addButtonState ( ButtonState.ENABLED_CONVERT_TO );
+      getMainWindow ().addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
+
+      if ( this.model.getRegex ().getRegexNode () != null )
+      {
+        this.model.getRegex ().getRegexNode ().setShowPositions (
+            this.gui.jGTIPanelInfo.isVisible () );
+      }
+      initializeJGraph ();
+      this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+      this.model.createTree ();
+      updateRegexNodeInfo ();
     }
     else
     {
+      initializeJGraph ();
+      this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+      getMainWindow ().removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+      getMainWindow ().removeButtonState ( ButtonState.ENABLED_PRINT );
+      getMainWindow ().removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
+      getMainWindow ().removeButtonState ( ButtonState.ENABLED_TO_LATEX );
       getMainWindow ().removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
     }
-    if ( this.model.getRegex ().getRegexNode () != null )
-    {
-      this.model.getRegex ().getRegexNode ().setShowPositions (
-          this.gui.jGTIPanelInfo.isVisible () );
-    }
-    initializeJGraph ();
-    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
-    this.model.createTree ();
-    updateRegexNodeInfo ();
     fireModifyStatusChanged ( false );
   }
 

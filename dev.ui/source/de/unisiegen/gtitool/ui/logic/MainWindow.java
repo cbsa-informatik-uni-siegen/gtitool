@@ -2345,8 +2345,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_PRINT );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
-      addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
-      addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+      if ( ! ( newEditorPanel instanceof RegexPanel ) )
+      {
+        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+        addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+      }
     }
   }
 
@@ -2365,11 +2368,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         newEditorPanel = new MachinePanel ( this.gui,
             ( DefaultMachineModel ) defaultModel, null );
+        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+        addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
       }
       else if ( defaultModel instanceof DefaultGrammarModel )
       {
         newEditorPanel = new GrammarPanel ( this.gui,
             ( DefaultGrammarModel ) defaultModel, null );
+        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+        addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
       }
       else if ( defaultModel instanceof DefaultRegexModel )
       {
@@ -2417,8 +2424,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_PRINT );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
-      addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
-      addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
     }
   }
 
@@ -2566,6 +2571,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () instanceof RegexPanel )
     {
+      if ( !handleValidate ( false ) )
+      {
+        return;
+      }
       RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       PrintDialog printDialog = new PrintDialog ( this.gui, regexPanel );
@@ -4735,27 +4744,62 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .getSelectedEditorPanel ();
     if ( panel instanceof RegexPanel )
     {
-      RegexPanel regexPanel = ( RegexPanel ) panel;
 
+      RegexPanel regexPanel = ( RegexPanel ) panel;
       if ( !b )
       {
         this.lastDividerLocation = regexPanel.getGUI ().jGTISplitPaneRegex
             .getDividerLocation ();
       }
-      regexPanel.getGUI ().jGTIPanelInfo.setVisible ( b );
-      if ( regexPanel.getRegex ().getRegexNode () != null )
+      for ( int i = 0 ; i < this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPaneLeft ().getTabCount () ; i++ )
       {
-        regexPanel.getRegex ().getRegexNode ().setShowPositions ( b );
-        regexPanel.initializeJGraph ();
-        regexPanel.getGUI ().jGTIScrollPaneGraph.setViewportView ( regexPanel
-            .getJGTIGraph () );
-        ( ( DefaultRegexModel ) regexPanel.getModel () ).createTree ();
-      }
+        EditorPanel p = this.jGTIMainSplitPane
+            .getJGTIEditorPanelTabbedPaneLeft ().getEditorPanel ( i );
+        if ( p instanceof RegexPanel )
+        {
+          RegexPanel r = ( RegexPanel ) p;
+          r.getGUI ().jGTIPanelInfo.setVisible ( b );
+          if ( r.getRegex ().getRegexNode () != null )
+          {
+            r.getRegex ().getRegexNode ().setShowPositions ( b );
+            r.initializeJGraph ();
+            r.getGUI ().jGTIScrollPaneGraph
+                .setViewportView ( r.getJGTIGraph () );
+            ( ( DefaultRegexModel ) r.getModel () ).createTree ();
+          }
 
-      if ( b )
+          if ( b )
+          {
+            r.getGUI ().jGTISplitPaneRegex
+                .setDividerLocation ( this.lastDividerLocation );
+          }
+        }
+      }
+      for ( int i = 0 ; i < this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPaneRight ().getTabCount () ; i++ )
       {
-        regexPanel.getGUI ().jGTISplitPaneRegex
-            .setDividerLocation ( this.lastDividerLocation );
+        EditorPanel p = this.jGTIMainSplitPane
+            .getJGTIEditorPanelTabbedPaneRight ().getEditorPanel ( i );
+        if ( p instanceof RegexPanel )
+        {
+          RegexPanel r = ( RegexPanel ) p;
+          r.getGUI ().jGTIPanelInfo.setVisible ( b );
+          if ( r.getRegex ().getRegexNode () != null )
+          {
+            r.getRegex ().getRegexNode ().setShowPositions ( b );
+            r.initializeJGraph ();
+            r.getGUI ().jGTIScrollPaneGraph
+                .setViewportView ( r.getJGTIGraph () );
+            ( ( DefaultRegexModel ) r.getModel () ).createTree ();
+          }
+
+          if ( b )
+          {
+            r.getGUI ().jGTISplitPaneRegex
+                .setDividerLocation ( this.lastDividerLocation );
+          }
+        }
       }
     }
     else
@@ -5855,6 +5899,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_PRINT );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_VALIDATE );
+        removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       }
       else
       {

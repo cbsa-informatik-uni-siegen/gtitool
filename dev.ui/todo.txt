@@ -1,6 +1,6 @@
 *** TODOs ***
 
-SM		- Neues ENFA -> NFA hinzufügen.
+SM		- Algorithmus für neues ENFA -> NFA hinzufügen.
 
 *** Features ***
 		- Der Parser macht keine Vorschläge, siehe "{0, }" beim Alphabet

@@ -1,0 +1,16 @@
+Sei A = (Σ,Q,s,F,Δ) ein ε-NDEA.
+
+Zunächst den ε-Abschluss E(p) eines Zustand p ∈ Q bilden:
+E(p) = {q ∈ Q | (p,ε) ⊢* (q,ε)}
+
+Danach wird die Menge I der wichtigen Zustände gebildet.
+(Ein Zustand ist wichtig, wenn mindestens eine Transition
+von ihm ausgeht, mit einem Zeichen a ∈ Σ)
+
+Dann ist A' = (Σ,Q',S',F',Δ') der zu A gehörige NDEA, mit:
+- Q' = I U F
+- S' = {p ∈ Q' | p ∈ E(s)}
+- Δ' = {(p,a,q) Q' × Σ × Q' | es ex. ein p' ∈ E(p) mit (p',a,q) ∈ Δ}
+- F' = {p ∈ Q' | E(p) ∩ F ≠ ∅}.
+  
+Es wird nur der erreichbare Teil des Automaten angezeigt.

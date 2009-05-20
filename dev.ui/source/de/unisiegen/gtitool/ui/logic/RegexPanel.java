@@ -46,6 +46,7 @@ import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.exceptions.RegexException;
 import de.unisiegen.gtitool.core.exceptions.RegexParseException;
 import de.unisiegen.gtitool.core.exceptions.RegexValidationException;
+import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
@@ -298,6 +299,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       this.gui.styledRegexParserPanel.setText ( this.model
           .getInitialRegexString () );
     }
+    this.gui.jGTIPanelInfo.setVisible ( this.mainWindowForm
+        .getJCheckBoxMenuItemRegexInfo ().getState () );
     if ( getRegex ().getRegexNode () != null )
     {
       getRegex ().getRegexNode ().setShowPositions (
@@ -427,7 +430,29 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     if ( model.getRegex ().getRegexNode () != null )
     {
       this.currentContent = model.getRegex ().getRegexString ();
-      changeRegex ( model.getRegex ().getRegexNode () );
+
+      try
+      {
+        validate ();
+        changeRegex ( model.getRegex ().getRegexNode () );
+      }
+      catch ( RegexValidationException exc )
+      {
+        boolean ok = true;
+        for ( RegexException e : exc.getRegexException () )
+        {
+          if ( e.getType ().equals ( ErrorType.ERROR ) )
+          {
+            ok = false;
+            break;
+          }
+        }
+        if ( ok )
+        {
+          changeRegex ( model.getRegex ().getRegexNode () );
+        }
+      }
+
     }
     this.gui.styledRegexParserPanel.getDocument ().addDocumentListener (
         this.docListener );
@@ -504,7 +529,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       getMainWindow ().addButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
       getMainWindow ().addButtonState ( ButtonState.ENABLED_TO_LATEX );
       getMainWindow ().addButtonState ( ButtonState.ENABLED_CONVERT_TO );
-      getMainWindow ().addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
+      getMainWindow ().addButtonState (
+          ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
 
       if ( this.model.getRegex ().getRegexNode () != null )
       {
@@ -537,6 +563,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    */
   public void clearValidationMessages ()
   {
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
+        .getString ( "RegexPanel.Error" ) ); //$NON-NLS-1$
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
+        .getString ( "RegexPanel.Warning" ) ); //$NON-NLS-1$
     this.errorTableModel.clearData ();
     this.warningTableModel.clearData ();
   }

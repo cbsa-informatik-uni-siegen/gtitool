@@ -287,6 +287,12 @@ public final class PreferenceManager extends
 
 
   /**
+   * The visible regex info value.
+   */
+  public static final boolean DEFAULT_VISIBLE_REGEX_INFO = true;
+
+
+  /**
    * The second view used value.
    */
   public static final boolean DEFAULT_SECOND_VIEW_USED = false;
@@ -893,6 +899,18 @@ public final class PreferenceManager extends
 
 
   /**
+   * Returns the visible regex info value.
+   * 
+   * @return The visible regex info value.
+   */
+  public final boolean getVisibleRegexInfo ()
+  {
+    return this.preferences.getBoolean ( "RegexPanel.RegexInfoVisible", //$NON-NLS-1$
+        DEFAULT_VISIBLE_REGEX_INFO );
+  }
+
+
+  /**
    * Returns the {@link WordModeItem}.
    * 
    * @return The {@link WordModeItem}.
@@ -1417,6 +1435,20 @@ public final class PreferenceManager extends
     logger.debug ( "setVisibleTable", "set the visible table to "//$NON-NLS-1$//$NON-NLS-2$
         + Messages.QUOTE + visible + Messages.QUOTE );
     this.preferences.putBoolean ( "MachinePanel.TableVisible", //$NON-NLS-1$
+        visible );
+  }
+
+
+  /**
+   * Sets the visible regex info value.
+   * 
+   * @param visible The visible regex info value.
+   */
+  public final void setVisibleRegexInfo ( boolean visible )
+  {
+    logger.debug ( "setVisibleRegexInfo", "set the visible regex info to "//$NON-NLS-1$//$NON-NLS-2$
+        + Messages.QUOTE + visible + Messages.QUOTE );
+    this.preferences.putBoolean ( "RegexPanel.RegexInfoVisible", //$NON-NLS-1$
         visible );
   }
 

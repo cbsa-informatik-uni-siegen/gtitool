@@ -559,6 +559,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       removeButtonState ( ButtonState.SELECTED_MACHINE_TABLE );
     }
+    this.gui.getJCheckBoxMenuItemRegexInfo ().setSelected (
+        PreferenceManager.getInstance ().getVisibleRegexInfo () );
 
     this.gui.setVisible ( true );
     if ( PreferenceManager.getInstance ().getMainWindowMaximized () )
@@ -4272,6 +4274,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_TO_LATEX );
       removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
       removeButtonState ( ButtonState.ENABLED_SAVE );
+      removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+      removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+      removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+      removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+      removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+      removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+      removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
     }
     // MachinePanel
     else
@@ -4734,6 +4743,18 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
+   * Returns the lastDividerLocation.
+   * 
+   * @return The lastDividerLocation.
+   * @see #lastDividerLocation
+   */
+  public int getLastDividerLocation ()
+  {
+    return this.lastDividerLocation;
+  }
+
+
+  /**
    * Handles regex information window state changed
    * 
    * @param b True if window should be shown, else false
@@ -4744,67 +4765,106 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .getSelectedEditorPanel ();
     if ( panel instanceof RegexPanel )
     {
-
       RegexPanel regexPanel = ( RegexPanel ) panel;
-      if ( !b )
+      if ( b != PreferenceManager.getInstance ().getVisibleRegexInfo () )
       {
-        this.lastDividerLocation = regexPanel.getGUI ().jGTISplitPaneRegex
-            .getDividerLocation ();
-      }
-      for ( int i = 0 ; i < this.jGTIMainSplitPane
-          .getJGTIEditorPanelTabbedPaneLeft ().getTabCount () ; i++ )
-      {
-        EditorPanel p = this.jGTIMainSplitPane
-            .getJGTIEditorPanelTabbedPaneLeft ().getEditorPanel ( i );
-        if ( p instanceof RegexPanel )
+        PreferenceManager.getInstance ().setVisibleRegexInfo ( b );
+        if ( !b )
         {
-          RegexPanel r = ( RegexPanel ) p;
-          r.getGUI ().jGTIPanelInfo.setVisible ( b );
-          if ( r.getRegex ().getRegexNode () != null )
+          this.lastDividerLocation = regexPanel.getGUI ().jGTISplitPaneRegex
+              .getDividerLocation ();
+        }
+        for ( int i = 0 ; i < this.jGTIMainSplitPane
+            .getJGTIEditorPanelTabbedPaneLeft ().getTabCount () ; i++ )
+        {
+          EditorPanel p = this.jGTIMainSplitPane
+              .getJGTIEditorPanelTabbedPaneLeft ().getEditorPanel ( i );
+          if ( p instanceof RegexPanel )
           {
-            r.getRegex ().getRegexNode ().setShowPositions ( b );
-            r.initializeJGraph ();
-            r.getGUI ().jGTIScrollPaneGraph
-                .setViewportView ( r.getJGTIGraph () );
-            ( ( DefaultRegexModel ) r.getModel () ).createTree ();
-          }
+            RegexPanel r = ( RegexPanel ) p;
+            r.getGUI ().jGTIPanelInfo.setVisible ( b );
+            if ( r.getRegex ().getRegexNode () != null )
+            {
+              r.getRegex ().getRegexNode ().setShowPositions ( b );
+              try
+              {
+                r.validate ();
+                r.initializeJGraph ();
+              }
+              catch ( RegexValidationException exc )
+              {
+                boolean ok = true;
+                for ( RegexException e : exc.getRegexException () )
+                {
+                  if ( e.getType ().equals ( ErrorType.ERROR ) )
+                  {
+                    ok = false;
+                    break;
+                  }
+                }
+                if ( ok )
+                {
+                  r.initializeJGraph ();
+                  r.getGUI ().jGTIScrollPaneGraph.setViewportView ( r
+                      .getJGTIGraph () );
+                  ( ( DefaultRegexModel ) r.getModel () ).createTree ();
+                }
+              }
+            }
 
-          if ( b )
+            if ( b )
+            {
+              r.getGUI ().jGTISplitPaneRegex
+                  .setDividerLocation ( this.lastDividerLocation );
+            }
+          }
+        }
+        for ( int i = 0 ; i < this.jGTIMainSplitPane
+            .getJGTIEditorPanelTabbedPaneRight ().getTabCount () ; i++ )
+        {
+          EditorPanel p = this.jGTIMainSplitPane
+              .getJGTIEditorPanelTabbedPaneRight ().getEditorPanel ( i );
+          if ( p instanceof RegexPanel )
           {
-            r.getGUI ().jGTISplitPaneRegex
-                .setDividerLocation ( this.lastDividerLocation );
+            RegexPanel r = ( RegexPanel ) p;
+            r.getGUI ().jGTIPanelInfo.setVisible ( b );
+            if ( r.getRegex ().getRegexNode () != null )
+            {
+              r.getRegex ().getRegexNode ().setShowPositions ( b );
+              try
+              {
+                r.validate ();
+                r.initializeJGraph ();
+              }
+              catch ( RegexValidationException exc )
+              {
+                boolean ok = true;
+                for ( RegexException e : exc.getRegexException () )
+                {
+                  if ( e.getType ().equals ( ErrorType.ERROR ) )
+                  {
+                    ok = false;
+                    break;
+                  }
+                }
+                if ( ok )
+                {
+                  r.initializeJGraph ();
+                  r.getGUI ().jGTIScrollPaneGraph.setViewportView ( r
+                      .getJGTIGraph () );
+                  ( ( DefaultRegexModel ) r.getModel () ).createTree ();
+                }
+              }
+            }
+
+            if ( b )
+            {
+              r.getGUI ().jGTISplitPaneRegex
+                  .setDividerLocation ( this.lastDividerLocation );
+            }
           }
         }
       }
-      for ( int i = 0 ; i < this.jGTIMainSplitPane
-          .getJGTIEditorPanelTabbedPaneRight ().getTabCount () ; i++ )
-      {
-        EditorPanel p = this.jGTIMainSplitPane
-            .getJGTIEditorPanelTabbedPaneRight ().getEditorPanel ( i );
-        if ( p instanceof RegexPanel )
-        {
-          RegexPanel r = ( RegexPanel ) p;
-          r.getGUI ().jGTIPanelInfo.setVisible ( b );
-          if ( r.getRegex ().getRegexNode () != null )
-          {
-            r.getRegex ().getRegexNode ().setShowPositions ( b );
-            r.initializeJGraph ();
-            r.getGUI ().jGTIScrollPaneGraph
-                .setViewportView ( r.getJGTIGraph () );
-            ( ( DefaultRegexModel ) r.getModel () ).createTree ();
-          }
-
-          if ( b )
-          {
-            r.getGUI ().jGTISplitPaneRegex
-                .setDividerLocation ( this.lastDividerLocation );
-          }
-        }
-      }
-    }
-    else
-    {
-      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
     }
   }
 

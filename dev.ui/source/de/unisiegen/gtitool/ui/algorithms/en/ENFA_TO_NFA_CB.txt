@@ -3,8 +3,14 @@ Let A = (Σ,Q,s,F,Δ) be a ε-NFA.
 First generate the ε-Closure E(p) to each state p ∈ Q:
 E(p) = {q ∈ Q | (p,ε) ⊢* (q,ε)}
 
-A' = (Σ,Q,s,F',Δ') is the equivalent NFA to A, with:
-- Δ' = {(p,a,q) Q × Σ × Q | there is p' ∈ E(p) with (p',a,q) ∈ Δ}
-- F' = {p ∈ Q | E(p) ∩ F ≠ ∅}.
+Then generate the set I with the important states of A.
+(A state is important, when at least one transition goes
+from it with a symbol a ∈ Σ)
+
+A' = (Σ,Q',S',F,Δ') is the equivalent NFA to A, with:
+- Q' = I U F
+- S' = {p ∈ Q' | p ∈ E(s)}
+- Δ' = {(p,a,q) | p,q ∈ Q' and a ∈ Σ and there is a r ∈ Q.
+        so that (p,a,r) ∈ Δ and q ∈ E(r)}
   
 Only the reachable states are shown.

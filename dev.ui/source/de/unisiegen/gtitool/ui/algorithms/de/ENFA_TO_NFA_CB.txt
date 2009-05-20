@@ -7,10 +7,10 @@ Danach wird die Menge I der wichtigen Zustände gebildet.
 (Ein Zustand ist wichtig, wenn mindestens eine Transition
 von ihm ausgeht, mit einem Zeichen a ∈ Σ)
 
-Dann ist A' = (Σ,Q',S',F',Δ') der zu A gehörige NDEA, mit:
+Dann ist A' = (Σ,Q',S',F,Δ') der zu A gehörige NDEA, mit:
 - Q' = I U F
 - S' = {p ∈ Q' | p ∈ E(s)}
-- Δ' = {(p,a,q) Q' × Σ × Q' | es ex. ein p' ∈ E(p) mit (p',a,q) ∈ Δ}
-- F' = {p ∈ Q' | E(p) ∩ F ≠ ∅}.
+- Δ' = {(p,a,q) | p,q ∈ Q' und a ∈ Σ und es ex. ein r ∈ Q.
+        so dass (p,a,r) ∈ Δ und q ∈ E(r)}
   
 Es wird nur der erreichbare Teil des Automaten angezeigt.

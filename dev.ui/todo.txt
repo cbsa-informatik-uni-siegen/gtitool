@@ -1,7 +1,3 @@
-*** TODOs ***
-SM		- Algorithmus für neues ENFA -> NFA hinzufügen.
-
-
 *** Bugs ***
 SM		- Englische Sprache: Convert to -> ... Compilerbau version
 

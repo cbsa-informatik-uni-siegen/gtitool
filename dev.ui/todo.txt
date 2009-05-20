@@ -1,5 +1,16 @@
 *** Bugs ***
 SM		- Englische Sprache: Convert to -> ... Compilerbau version
+SM		- Wenn eine Regex Fehler oder Warnungen enthält und dann geändert wird,
+		  werden die Fehler oder Warnungen entfernt, nicht aber die Überschrift
+		  der Fehler und Warnungen angepasst, zum Beispiel "Warnung [61]". Beim
+		  Automaten funktioniert es.
+SM		- "äää" als Regex bei Default Alphabet eingeben, Datei speichern, Datei
+		  schließen, Datei wieder öffnen -> Es wird ein Graph mit nicht gültigen
+		  Alphabet dargestellt.
+SM		- Neue Regex anlegen, Datei schließen, Menüeintrag "Regulärer Ausdruck
+		  Info" auswählen -> Exception
+SM		- Neue Regex anlegen, "Regulärer Ausdruck Info" deaktivieren, neue Regex
+		  anlegen -> Info sichtbar, Menüeintrag deaktiviert.
 
 
 *** Features ***

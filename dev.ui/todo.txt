@@ -1,14 +1,5 @@
 *** Bugs ***
 SM		- Englische Sprache: Convert to -> ... Compilerbau version
-SM		- Deutsche Sprache: Einstellungen, Alphabet -> "Regex Alphabet"
-SM		- Das Highlighten der Symbole in einer Transition geht nicht mehr,
-		  auch, wenn die Symbole nicht zusammengefasst werden. Reproduzierbar:
-		  Einen Automaten mit dem Alphabet {0, 1} anlegen, einen Übergang
-		  mit diesen Symbolen anlegen und die Wortnavigation starten. Von dem
-		  Problem sind alle Beweißwerkzeuge der stabilen Version betroffen.
-		  Auch wenn die Symbole zusammengefasst werden, was vielleicht bei
-		  {0, 1, 2} noch nicht sein muss, müssen die Symbole dann in der Gruppe
-		  gehighlighted werden.
 
 
 *** Features ***

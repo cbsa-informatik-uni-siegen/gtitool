@@ -1524,8 +1524,55 @@ public final class DefaultTransition implements Transition
         }
         else
         {
+          ArrayList < Symbol > activeSymbols = new ArrayList < Symbol > ();
+          for ( Symbol s : a )
+          {
+            if ( s.isActive () )
+            {
+              if ( !s.equals ( a.get ( 0 ) )
+                  || !s.equals ( a.get ( a.size () - 1 ) ) )
+              {
+                activeSymbols.add ( s );
+              }
+            }
+          }
           this.cachedPrettyString.add ( a.get ( 0 ) );
-          this.cachedPrettyString.add ( new PrettyToken ( "..", Style.NONE ) ); //$NON-NLS-1$
+          if ( activeSymbols.isEmpty () )
+          {
+
+            this.cachedPrettyString.add ( new PrettyToken ( "..", Style.NONE ) ); //$NON-NLS-1$
+          }
+          else
+          {
+            int lastIndex = 0;
+            for ( Symbol s : activeSymbols )
+            {
+              int index = a.indexOf ( s );
+              int diff = index - lastIndex;
+              if ( diff == 1 )
+              {
+                this.cachedPrettyString.add ( new PrettyToken (
+                    ", ", Style.NONE ) ); //$NON-NLS-1$
+                this.cachedPrettyString.add ( s );
+              }
+              else if ( diff > 1 )
+              {
+                this.cachedPrettyString.add ( new PrettyToken (
+                    "..", Style.NONE ) ); //$NON-NLS-1$
+                this.cachedPrettyString.add ( s );
+              }
+              lastIndex = index;
+              if(activeSymbols.indexOf ( s ) == activeSymbols.size () -1) {
+                if(index == a.size () - 2) {
+                  this.cachedPrettyString.add ( new PrettyToken (
+                      ", ", Style.NONE ) ); //$NON-NLS-1$
+                } else {
+                  this.cachedPrettyString.add ( new PrettyToken (
+                      "..", Style.NONE ) ); //$NON-NLS-1$
+                }
+              }
+            }
+          }
           this.cachedPrettyString.add ( a.get ( a.size () - 1 ) );
         }
         t.removeAll ( a );

@@ -189,26 +189,27 @@ public class DefaultRegexAlphabet extends DefaultAlphabet
       s.add ( new DefaultSymbol () );
       return s;
     }
-    String firstSymbol = list.get ( counter ).getName ();
-    String firstString = Character.toString ( firstSymbol.charAt ( 0 ) );
-    if ( firstSymbol.length () > 1 )
+    Symbol firstSymbol = list.get ( counter );
+    if ( firstSymbol.getName ().length () > 1 )
     {
-      firstString = firstSymbol;
       dist = 2;
     }
-    s.add ( new DefaultSymbol ( firstString ) );
+    s.add ( firstSymbol );
     while ( dist == 1 )
     {
-      char c1 = list.get ( counter ).getName ().charAt ( 0 );
+      Symbol s1 =list.get ( counter );
+      Symbol s2 = null;
+      char c1 = s1.getName ().charAt ( 0 );
       char c2 = 0;
       if ( counter + 1 != list.size () )
       {
-        c2 = list.get ( ++counter ).getName ().charAt ( 0 );
+        s2 = list.get ( ++counter );
+        c2 = s2.getName ().charAt ( 0 );
       }
       dist = c2 - c1;
       if ( dist == 1 )
       {
-        s.add ( new DefaultSymbol ( Character.toString ( c2 ) ) );
+        s.add ( s2 );
       }
     }
     return s;

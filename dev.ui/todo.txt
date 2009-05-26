@@ -1,7 +1,3 @@
-*** Bugs ***
-SM		- Englische Sprache: Convert to -> "NFA (Compilerbau version)" ersetzen durch "NFA (Compiler version)" 
-
-
 *** Features ***
 		- Der Parser macht keine Vorschläge, siehe "{0, }" beim Alphabet
 		- Erkannte Wörter ausgeben

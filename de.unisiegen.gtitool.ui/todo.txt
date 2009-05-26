@@ -1,3 +1,4 @@
 CF		- Fehler beim Konvertieren, wenn PowerSet-Zustände verwendet werden
 CF		- Die SVNVersion Klasse wird zur Laufzeit nicht benötigt
 CF		- AbstractGrammer
+CF		- Autovervollständigung des Parseralphabet bei Regex anpassen. (Bei Standardalphabet keinen falschen Ausdruck generieren)

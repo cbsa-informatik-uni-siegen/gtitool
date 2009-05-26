@@ -1,5 +1,5 @@
 *** Bugs ***
-SM		- Englische Sprache: Convert to -> ... Compilerbau version
+SM		- Englische Sprache: Convert to -> "NFA (Compilerbau version)" ersetzen durch "NFA (Compiler version)" 
 
 
 *** Features ***

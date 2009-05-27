@@ -6,3 +6,7 @@
 		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 		- Neues AutoLayout
 		- Farben beim Minimieren dynamisch berechnen
+		- LaTeX Export (Dynamische Umsetzung wie bei TPML)
+		- Bei einer Grammatik direkt das Wort eingeben können
+		- Drucken: Mehrere Komponenten pro Seite mit Auto-Verkleinerung, also
+		  nur mit einem Print-Job

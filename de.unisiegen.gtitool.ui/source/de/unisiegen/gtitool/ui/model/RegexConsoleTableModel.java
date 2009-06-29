@@ -21,12 +21,6 @@ public final class RegexConsoleTableModel extends AbstractTableModel
 {
 
   /**
-   * The serial version id
-   */
-  private static final long serialVersionUID = -5683546628566227934L;
-
-
-  /**
    * The console table entry.
    * 
    * @author Christian Fehler
@@ -67,6 +61,12 @@ public final class RegexConsoleTableModel extends AbstractTableModel
       this.symbol = symbol;
     }
   }
+
+
+  /**
+   * The serial version id
+   */
+  private static final long serialVersionUID = -5683546628566227934L;
 
 
   /**

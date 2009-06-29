@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.core.exceptions;
 
 
-import de.unisiegen.gtitool.core.exceptions.CoreException;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 

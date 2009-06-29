@@ -1562,11 +1562,15 @@ public final class DefaultTransition implements Transition
                 this.cachedPrettyString.add ( s );
               }
               lastIndex = index;
-              if(activeSymbols.indexOf ( s ) == activeSymbols.size () -1) {
-                if(index == a.size () - 2) {
+              if ( activeSymbols.indexOf ( s ) == activeSymbols.size () - 1 )
+              {
+                if ( index == a.size () - 2 )
+                {
                   this.cachedPrettyString.add ( new PrettyToken (
                       ", ", Style.NONE ) ); //$NON-NLS-1$
-                } else {
+                }
+                else
+                {
                   this.cachedPrettyString.add ( new PrettyToken (
                       "..", Style.NONE ) ); //$NON-NLS-1$
                 }

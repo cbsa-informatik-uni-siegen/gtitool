@@ -204,12 +204,15 @@ public interface State extends Entity < State >, Storable, Modifyable
 
 
   /**
-   * Returns true if at least one {@link Transition} goes from this with no Epsilon
+   * Returns true if at least one {@link Transition} goes from this with no
+   * Epsilon
    * 
-   * @return True if at least one {@link Transition} goes from this with no Epsilon
+   * @return True if at least one {@link Transition} goes from this with no
+   *         Epsilon
    */
   public boolean isImportant ();
-  
+
+
   /**
    * Returns true if a {@link Transition} is present which starts and ends in
    * this {@link State}, otherwise false.

@@ -172,7 +172,7 @@ public class NodeView extends VertexView
             g.setColor ( PreferenceManager.getInstance ()
                 .getColorItemRegexSelectedNode ().getColor () );
           }
-          else if (leaf.isActive ())
+          else if ( leaf.isActive () )
           {
             g.setColor ( PreferenceManager.getInstance ()
                 .getColorItemRegexMarkedNode ().getColor () );
@@ -195,7 +195,7 @@ public class NodeView extends VertexView
               g.setColor ( PreferenceManager.getInstance ()
                   .getColorItemRegexSelectedNode ().getColor () );
             }
-            else if(leaf.isActive ())
+            else if ( leaf.isActive () )
             {
               g.setColor ( PreferenceManager.getInstance ()
                   .getColorItemRegexMarkedNode ().getColor () );
@@ -215,7 +215,7 @@ public class NodeView extends VertexView
             g.setColor ( PreferenceManager.getInstance ()
                 .getColorItemRegexSelectedNode ().getColor () );
           }
-          else if(node.isActive ())
+          else if ( node.isActive () )
           {
             g.setColor ( PreferenceManager.getInstance ()
                 .getColorItemRegexMarkedNode ().getColor () );

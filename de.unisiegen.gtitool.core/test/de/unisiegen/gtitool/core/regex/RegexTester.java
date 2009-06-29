@@ -5,7 +5,6 @@ import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
-import de.unisiegen.gtitool.core.regex.DefaultRegex;
 
 
 /**
@@ -51,17 +50,16 @@ public class RegexTester
 
     try
     {
-      RegexNode regex = ( RegexNode ) regexParseable.newParser (
-          "[abcde]" ).parse (); //$NON-NLS-1$
-      
+      RegexNode regex = ( RegexNode ) regexParseable
+          .newParser ( "[abcde]" ).parse (); //$NON-NLS-1$
+
       System.err.println ( regex.toPrettyString ().toString () );
     }
     catch ( Exception e )
     {
       e.printStackTrace ();
     }
-    
+
   }
-  
-  
+
 }

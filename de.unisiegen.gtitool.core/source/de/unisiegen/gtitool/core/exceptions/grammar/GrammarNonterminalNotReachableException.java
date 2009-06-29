@@ -12,7 +12,8 @@ import de.unisiegen.gtitool.core.i18n.Messages;
  * {@link NonterminalSymbol}, which is not reachable.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: GrammarNonterminalNotReachableException.java 1372 2008-10-30
+ *          08:36:20Z fehler $
  */
 public final class GrammarNonterminalNotReachableException extends
     GrammarException implements NonterminalSymbolInvolvedException

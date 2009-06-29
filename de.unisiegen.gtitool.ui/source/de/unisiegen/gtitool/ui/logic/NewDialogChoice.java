@@ -29,7 +29,7 @@ public final class NewDialogChoice implements LogicClass < NewDialogChoiceForm >
      * Grammar is choosen.
      */
     GRAMMAR,
-    
+
     /**
      * Regex is choosen.
      */
@@ -127,6 +127,15 @@ public final class NewDialogChoice implements LogicClass < NewDialogChoiceForm >
 
 
   /**
+   * Handle the next button pressed event.
+   */
+  public final void handleNextNewDialogChoice ()
+  {
+    this.parent.handleNextNewDialogChoice ();
+  }
+
+
+  /**
    * Handle machine item state changed.
    * 
    * @param evt The {@link ItemEvent}
@@ -137,14 +146,5 @@ public final class NewDialogChoice implements LogicClass < NewDialogChoiceForm >
     {
       this.actualChoice = Choice.REGEX;
     }
-  }
-
-
-  /**
-   * Handle the next button pressed event.
-   */
-  public final void handleNextNewDialogChoice ()
-  {
-    this.parent.handleNextNewDialogChoice ();
   }
 }

@@ -624,14 +624,16 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     }
     return null;
   }
-  
+
+
   /**
    * Use only if names are unique!
-   *
+   * 
    * @param name
    * @return The {@link DefaultStateView}
    */
-  public final DefaultStateView getStateViewForName(String name) {
+  public final DefaultStateView getStateViewForName ( String name )
+  {
     for ( DefaultStateView view : this.stateViewList )
     {
       if ( view.getState ().getName ().equals ( name ) )

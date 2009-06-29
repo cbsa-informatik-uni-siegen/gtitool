@@ -896,7 +896,7 @@ public class ConvertGrammarDialog implements
     ArrayList < Production > productions = new ArrayList < Production > ();
     for ( Production p : cfg.getProductionForNonTerminal ( s ) )
     {
-      if ( p.getProductionWord ().size () > 0
+      if ( ( p.getProductionWord ().size () > 0 )
           && p.getProductionWord ().get ( 0 ).getName ().equals ( s.getName () ) )
       {
         productions.add ( p );
@@ -917,8 +917,8 @@ public class ConvertGrammarDialog implements
     ArrayList < Production > productions = new ArrayList < Production > ();
     for ( Production p : cfg.getProduction () )
     {
-      if ( p.getProductionWord ().size () == 1
-          && p.getProductionWord ().get ( 0 ) instanceof NonterminalSymbol )
+      if ( ( p.getProductionWord ().size () == 1 )
+          && ( p.getProductionWord ().get ( 0 ) instanceof NonterminalSymbol ) )
       {
         productions.add ( p );
       }
@@ -1055,7 +1055,7 @@ public class ConvertGrammarDialog implements
     for ( Production p : cfg.getProduction () )
     {
       if ( p.getNonterminalSymbol ().getName ().equals ( a.getName () )
-          && p.getProductionWord ().size () > 0
+          && ( p.getProductionWord ().size () > 0 )
           && p.getProductionWord ().get ( 0 ).getName ().equals ( b.getName () ) )
       {
         productions.add ( p );
@@ -1083,7 +1083,8 @@ public class ConvertGrammarDialog implements
       for ( int k = 0 ; k < prefix.get ().size () ; k++ )
       {
 
-        if ( word.size () <= k || !prefix.get ( k ).equals ( word.get ( k ) ) )
+        if ( ( word.size () <= k )
+            || !prefix.get ( k ).equals ( word.get ( k ) ) )
         {
           fit = false;
         }
@@ -1158,7 +1159,7 @@ public class ConvertGrammarDialog implements
    */
   public void handleAlgorithmWindowChanged ( boolean show )
   {
-    if ( this.algorithm == null || this.algorithm.length () == 0 )
+    if ( ( this.algorithm == null ) || ( this.algorithm.length () == 0 ) )
     {
       TextLoader loader = new TextLoader ();
       this.algorithm = loader.loadAlgorithm ( this.convertType );
@@ -1581,7 +1582,7 @@ public class ConvertGrammarDialog implements
         }
       }
       PrettyString line = new PrettyString ();
-      if ( a != null && prefix != null )
+      if ( ( a != null ) && ( prefix != null ) )
       {
         line.add ( Messages.getPrettyString (
             "ConvertGrammarDialog.StepFactor", a.toPrettyString (), prefix //$NON-NLS-1$
@@ -1643,8 +1644,8 @@ public class ConvertGrammarDialog implements
             if ( !cfg.getProduction ().contains ( newProd ) )
             {
               cfg.addProduction ( newProd );
-              if ( newProd.getProductionWord ().size () == 1
-                  && newProd.getProductionWord ().get ( 0 ) instanceof NonterminalSymbol )
+              if ( ( newProd.getProductionWord ().size () == 1 )
+                  && ( newProd.getProductionWord ().get ( 0 ) instanceof NonterminalSymbol ) )
               {
                 this.entityProductions.add ( newProd );
               }
@@ -1810,7 +1811,7 @@ public class ConvertGrammarDialog implements
     {
       this.i = item.getINow ();
       this.j = item.getJNow ();
-      if ( this.i == 1 && this.j == 1 )
+      if ( ( this.i == 1 ) && ( this.j == 1 ) )
       {
         if ( this.initialEliminateEntityProductionsDone )
         {

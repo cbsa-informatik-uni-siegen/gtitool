@@ -10,7 +10,8 @@ import de.unisiegen.gtitool.core.entities.Transition;
  * The listener interface for receiving {@link Transition} changes.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: TransitionChangedListener.java 1372 2008-10-30 08:36:20Z fehler
+ *          $
  */
 public interface TransitionChangedListener extends EventListener
 {

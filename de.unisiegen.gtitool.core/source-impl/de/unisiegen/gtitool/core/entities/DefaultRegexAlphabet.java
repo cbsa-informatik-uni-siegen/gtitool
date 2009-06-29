@@ -35,15 +35,47 @@ public class DefaultRegexAlphabet extends DefaultAlphabet
 
 
   /**
-   * Creates new {@link DefaultRegexAlphabet}
+   * Checks the {@link Symbol}s in the {@link ArrayList} for Classes
    * 
-   * @param symbols The {@link Symbol}s of the Alphabet
-   * @throws AlphabetException When a reserved {@link Symbol} is in it
+   * @param list The {@link ArrayList} containing the {@link Symbol}s to check
+   * @return {@link ArrayList} with the first class, if there is one, else there
+   *         is only one Element in the {@link ArrayList}
    */
-  public DefaultRegexAlphabet ( Iterable < Symbol > symbols )
-      throws AlphabetException
+  public static ArrayList < Symbol > checkForClass ( ArrayList < Symbol > list )
   {
-    super ( symbols );
+    int dist = 1;
+    int counter = 0;
+    ArrayList < Symbol > s = new ArrayList < Symbol > ();
+    // Epsilon
+    if ( ( list == null ) || ( list.get ( counter ).getName () == null ) )
+    {
+      s.add ( new DefaultSymbol () );
+      return s;
+    }
+    Symbol firstSymbol = list.get ( counter );
+    if ( firstSymbol.getName ().length () > 1 )
+    {
+      dist = 2;
+    }
+    s.add ( firstSymbol );
+    while ( dist == 1 )
+    {
+      Symbol s1 = list.get ( counter );
+      Symbol s2 = null;
+      char c1 = s1.getName ().charAt ( 0 );
+      char c2 = 0;
+      if ( counter + 1 != list.size () )
+      {
+        s2 = list.get ( ++counter );
+        c2 = s2.getName ().charAt ( 0 );
+      }
+      dist = c2 - c1;
+      if ( dist == 1 )
+      {
+        s.add ( s2 );
+      }
+    }
+    return s;
   }
 
 
@@ -62,18 +94,15 @@ public class DefaultRegexAlphabet extends DefaultAlphabet
 
 
   /**
-   * {@inheritDoc}
+   * Creates new {@link DefaultRegexAlphabet}
    * 
-   * @see Alphabet#contains(Symbol)
+   * @param symbols The {@link Symbol}s of the Alphabet
+   * @throws AlphabetException When a reserved {@link Symbol} is in it
    */
-  @Override
-  public boolean contains ( Symbol symbol )
+  public DefaultRegexAlphabet ( Iterable < Symbol > symbols )
+      throws AlphabetException
   {
-    if ( symbol.getName ().length () == 0 )
-    {
-      return true;
-    }
-    return this.symbolSet.contains ( symbol );
+    super ( symbols );
   }
 
 
@@ -125,6 +154,22 @@ public class DefaultRegexAlphabet extends DefaultAlphabet
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Alphabet#contains(Symbol)
+   */
+  @Override
+  public boolean contains ( Symbol symbol )
+  {
+    if ( symbol.getName ().length () == 0 )
+    {
+      return true;
+    }
+    return this.symbolSet.contains ( symbol );
+  }
+
+
+  /**
    * Returns a {@link PrettyString} with Classes
    * 
    * @return {@link PrettyString} with Classes
@@ -168,50 +213,5 @@ public class DefaultRegexAlphabet extends DefaultAlphabet
     string.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
 
     return string;
-  }
-
-
-  /**
-   * Checks the {@link Symbol}s in the {@link ArrayList} for Classes
-   * 
-   * @param list The {@link ArrayList} containing the {@link Symbol}s to check
-   * @return {@link ArrayList} with the first class, if there is one, else there
-   *         is only one Element in the {@link ArrayList}
-   */
-  public static ArrayList < Symbol > checkForClass ( ArrayList < Symbol > list )
-  {
-    int dist = 1;
-    int counter = 0;
-    ArrayList < Symbol > s = new ArrayList < Symbol > ();
-    // Epsilon
-    if ( list == null || list.get ( counter ).getName () == null )
-    {
-      s.add ( new DefaultSymbol () );
-      return s;
-    }
-    Symbol firstSymbol = list.get ( counter );
-    if ( firstSymbol.getName ().length () > 1 )
-    {
-      dist = 2;
-    }
-    s.add ( firstSymbol );
-    while ( dist == 1 )
-    {
-      Symbol s1 =list.get ( counter );
-      Symbol s2 = null;
-      char c1 = s1.getName ().charAt ( 0 );
-      char c2 = 0;
-      if ( counter + 1 != list.size () )
-      {
-        s2 = list.get ( ++counter );
-        c2 = s2.getName ().charAt ( 0 );
-      }
-      dist = c2 - c1;
-      if ( dist == 1 )
-      {
-        s.add ( s2 );
-      }
-    }
-    return s;
   }
 }

@@ -18,6 +18,38 @@ public class TextLoader
 {
 
   /**
+   * Loads the algorithm for a given {@link ConvertGrammarType}
+   * 
+   * @param type The {@link ConvertGrammarType}
+   * @return The algorithm
+   */
+  public String loadAlgorithm ( ConvertGrammarType type )
+  {
+    String filename = "/de/unisiegen/gtitool/ui/algorithms/"; //$NON-NLS-1$
+    filename += PreferenceManager.getInstance ().getLanguageItem ()
+        .getLocale ().toString ()
+        + "/" + type.toString () + ".txt"; //$NON-NLS-1$ //$NON-NLS-2$
+    return loadTextFromFile ( filename );
+  }
+
+
+  /**
+   * Loads the algorithm for a given {@link ConvertMachineType}
+   * 
+   * @param type The {@link ConvertMachineType}
+   * @return The algorithm
+   */
+  public String loadAlgorithm ( ConvertMachineType type )
+  {
+    String filename = "/de/unisiegen/gtitool/ui/algorithms/"; //$NON-NLS-1$
+    filename += PreferenceManager.getInstance ().getLanguageItem ()
+        .getLocale ().toString ()
+        + "/" + type.toString () + ".txt"; //$NON-NLS-1$ //$NON-NLS-2$
+    return loadTextFromFile ( filename );
+  }
+
+
+  /**
    * Loads the algorithm for a given {@link ConvertRegexType}
    * 
    * @param type The {@link ConvertRegexType}
@@ -44,38 +76,6 @@ public class TextLoader
     filename += PreferenceManager.getInstance ().getLanguageItem ()
         .getLocale ().toString ()
         + "/MINIMIZE_MACHINE.txt"; //$NON-NLS-1$
-    return loadTextFromFile ( filename );
-  }
-
-
-  /**
-   * Loads the algorithm for a given {@link ConvertMachineType}
-   * 
-   * @param type The {@link ConvertMachineType}
-   * @return The algorithm
-   */
-  public String loadAlgorithm ( ConvertMachineType type )
-  {
-    String filename = "/de/unisiegen/gtitool/ui/algorithms/"; //$NON-NLS-1$
-    filename += PreferenceManager.getInstance ().getLanguageItem ()
-        .getLocale ().toString ()
-        + "/" + type.toString () + ".txt"; //$NON-NLS-1$ //$NON-NLS-2$
-    return loadTextFromFile ( filename );
-  }
-
-
-  /**
-   * Loads the algorithm for a given {@link ConvertGrammarType}
-   * 
-   * @param type The {@link ConvertGrammarType}
-   * @return The algorithm
-   */
-  public String loadAlgorithm ( ConvertGrammarType type )
-  {
-    String filename = "/de/unisiegen/gtitool/ui/algorithms/"; //$NON-NLS-1$
-    filename += PreferenceManager.getInstance ().getLanguageItem ()
-        .getLocale ().toString ()
-        + "/" + type.toString () + ".txt"; //$NON-NLS-1$ //$NON-NLS-2$
     return loadTextFromFile ( filename );
   }
 

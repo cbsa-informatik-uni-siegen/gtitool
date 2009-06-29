@@ -117,8 +117,8 @@ public final class JGTITextPane extends JTextPane implements Printable
     {
       return NO_SUCH_PAGE;
     }
-    int x = (int)pageFormat.getImageableX() + 1;
-    int y = (int)pageFormat.getImageableY() + 1;
+    int x = ( int ) pageFormat.getImageableX () + 1;
+    int y = ( int ) pageFormat.getImageableY () + 1;
     graphics.translate ( x, y );
     print ( graphics );
     return Printable.PAGE_EXISTS;

@@ -122,7 +122,7 @@ public class DefaultRegex implements Regex
       a = new DefaultRegexAlphabet ();
       a.add ( this.alphabet.get () );
       DefaultRegex r = new DefaultRegex ( a );
-      if ( this.regexNode != null && this.regexString != null )
+      if ( ( this.regexNode != null ) && ( this.regexString != null ) )
       {
         r.setRegexNode ( getRegexNode (), getRegexString () );
       }
@@ -273,7 +273,8 @@ public class DefaultRegex implements Regex
   public TreeSet < Symbol > getNotRemoveableSymbolsFromAlphabet ()
   {
     TreeSet < Symbol > set = new TreeSet < Symbol > ();
-    if(this.regexNode == null) {
+    if ( this.regexNode == null )
+    {
       return set;
     }
     for ( LeafNode l : this.regexNode.getTokenNodes () )
@@ -405,8 +406,8 @@ public class DefaultRegex implements Regex
    */
   public void validate () throws RegexValidationException
   {
-    if ( this.regexNode == null
-        || ( this.regexNode instanceof TokenNode && ( ( TokenNode ) this.regexNode )
+    if ( ( this.regexNode == null )
+        || ( ( this.regexNode instanceof TokenNode ) && ( ( TokenNode ) this.regexNode )
             .getName ().equals ( "" ) ) ) //$NON-NLS-1$
     {
       ArrayList < RegexException > elist = new ArrayList < RegexException > ();

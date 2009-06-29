@@ -12,7 +12,8 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * The test class of the {@link StyledStateParserPanel}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: StyledStateParserPanelTest.java 926 2008-05-23 15:08:53Z fehler
+ *          $
  */
 public class StyledStateParserPanelTest
 {

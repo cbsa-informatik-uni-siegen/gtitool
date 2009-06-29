@@ -23,17 +23,6 @@ public class RegexUndoItem
 
 
   /**
-   * Creates a new {@link RegexUndoItem} for a RegexString
-   * 
-   * @param regexString The {@link String}
-   */
-  public RegexUndoItem ( String regexString )
-  {
-    this.regexString = regexString;
-  }
-
-
-  /**
    * Creates a new {@link RegexUndoItem} for a {@link DefaultRegexAlphabet}
    * 
    * @param lastAlphabet The {@link DefaultRegexAlphabet}
@@ -45,26 +34,13 @@ public class RegexUndoItem
 
 
   /**
-   * Returns the lastAlphabet.
+   * Creates a new {@link RegexUndoItem} for a RegexString
    * 
-   * @return The lastAlphabet.
-   * @see #lastAlphabet
+   * @param regexString The {@link String}
    */
-  public DefaultRegexAlphabet getLastAlphabet ()
+  public RegexUndoItem ( String regexString )
   {
-    return this.lastAlphabet;
-  }
-
-
-  /**
-   * Returns the regexString.
-   * 
-   * @return The regexString.
-   * @see #regexString
-   */
-  public String getRegexString ()
-  {
-    return this.regexString;
+    this.regexString = regexString;
   }
 
 
@@ -90,6 +66,30 @@ public class RegexUndoItem
       return this.lastAlphabet.equals ( other.getLastAlphabet () );
     }
     return false;
+  }
+
+
+  /**
+   * Returns the lastAlphabet.
+   * 
+   * @return The lastAlphabet.
+   * @see #lastAlphabet
+   */
+  public DefaultRegexAlphabet getLastAlphabet ()
+  {
+    return this.lastAlphabet;
+  }
+
+
+  /**
+   * Returns the regexString.
+   * 
+   * @return The regexString.
+   * @see #regexString
+   */
+  public String getRegexString ()
+  {
+    return this.regexString;
   }
 
 

@@ -10,7 +10,8 @@ import de.unisiegen.gtitool.core.entities.Production;
  * The listener interface for receiving {@link Production} changes.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: ProductionChangedListener.java 1372 2008-10-30 08:36:20Z fehler
+ *          $
  */
 public interface ProductionChangedListener extends EventListener
 {

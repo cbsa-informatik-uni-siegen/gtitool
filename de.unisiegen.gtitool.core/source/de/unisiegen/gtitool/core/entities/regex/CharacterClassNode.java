@@ -157,7 +157,7 @@ public class CharacterClassNode extends LeafNode
     if ( obj instanceof CharacterClassNode )
     {
       CharacterClassNode charNode = ( CharacterClassNode ) obj;
-      if ( this.char1 == charNode.char1 && this.char2 == charNode.char2 )
+      if ( ( this.char1 == charNode.char1 ) && ( this.char2 == charNode.char2 ) )
       {
         return this.position == ( ( CharacterClassNode ) obj ).position;
       }
@@ -397,7 +397,7 @@ public class CharacterClassNode extends LeafNode
         System.arraycopy ( this.chars, 0, newChars, 0, this.chars.length - 1 );
         DisjunctionNode dis = new DisjunctionNode ( new CharacterClassNode (
             newChars ).toCoreSyntax ( withCharacterClasses ), new TokenNode (
-            Character.toString ( this.chars [ this.chars.length-1 ] ) ) );
+            Character.toString ( this.chars [ this.chars.length - 1 ] ) ) );
         return dis;
       }
       DisjunctionNode dis = new DisjunctionNode ( new TokenNode ( Character

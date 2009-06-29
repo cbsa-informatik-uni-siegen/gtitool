@@ -59,7 +59,7 @@ public final class InfoDialog implements LogicClass < InfoDialogForm >
    * @param text The text of the {@link InfoDialog}.
    * @param title The title of the {@link InfoDialog}.
    */
-  public InfoDialog ( JFrame parent, String text, String title )
+  public InfoDialog ( JDialog parent, String text, String title )
   {
     logger.debug ( "InfoDialog", "allocate a new info dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
@@ -78,7 +78,7 @@ public final class InfoDialog implements LogicClass < InfoDialogForm >
    * @param text The text of the {@link InfoDialog}.
    * @param title The title of the {@link InfoDialog}.
    */
-  public InfoDialog ( JDialog parent, String text, String title )
+  public InfoDialog ( JFrame parent, String text, String title )
   {
     logger.debug ( "InfoDialog", "allocate a new info dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;

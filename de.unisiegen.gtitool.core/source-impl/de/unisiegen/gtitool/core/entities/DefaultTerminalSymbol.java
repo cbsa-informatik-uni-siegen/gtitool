@@ -39,7 +39,8 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
 
   /**
-   * This {@link DefaultTerminalSymbol} is a error {@link DefaultTerminalSymbol} .
+   * This {@link DefaultTerminalSymbol} is a error {@link DefaultTerminalSymbol}
+   * .
    */
   private boolean error = false;
 

@@ -153,8 +153,8 @@
 
 	<!-- parser regex-alphabet -->
 	<target name="parser-regex-alphabet">
-		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/regexAlphabet/regexAlphabet.flex" destdir="${sourcegenerateddir}" nobak="yes" />
-		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/regexAlphabet/regexAlphabet.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/regexAlphabet" package="de.unisiegen.gtitool.core.parser.regexAlphabet" parser="RegexAlphabetAbstractParser" symbols="RegexAlphabetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/regexalphabet/regexalphabet.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/regexalphabet/regexalphabet.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/regexalphabet" package="de.unisiegen.gtitool.core.parser.regexalphabet" parser="RegexAlphabetAbstractParser" symbols="RegexAlphabetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 
 	<!-- parser stack -->

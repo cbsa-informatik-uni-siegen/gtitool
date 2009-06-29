@@ -36,6 +36,7 @@ public class OptionalNode extends OneChildNode
    */
   private EventListenerList listenerList = new EventListenerList ();
 
+
   /**
    * The offset of this {@link OptionalNode} in the source code.
    * 
@@ -43,6 +44,7 @@ public class OptionalNode extends OneChildNode
    * @see #setParserOffset(ParserOffset)
    */
   private ParserOffset parserOffset = NO_PARSER_OFFSET;
+
 
   /**
    * Constructor for a Optional/Questionnode in the Regex
@@ -84,8 +86,7 @@ public class OptionalNode extends OneChildNode
    * 
    * @see Comparable#compareTo(java.lang.Object)
    */
-  public int compareTo ( @SuppressWarnings ( "unused" )
-  RegexNode o )
+  public int compareTo ( @SuppressWarnings ( "unused" ) RegexNode o )
   {
     return 0;
   }

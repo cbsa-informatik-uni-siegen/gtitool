@@ -31,20 +31,6 @@ public class JGTIBlackboxGraph extends JGTIGraph
 
 
   /**
-   * Creates new {@link JGTIBlackboxGraph}
-   * 
-   * @param defaultMachineModel
-   * @param defaultGraphModel
-   */
-  public JGTIBlackboxGraph ( DefaultMachineModel defaultMachineModel,
-      DefaultGraphModel defaultGraphModel )
-  {
-    super ( defaultMachineModel, defaultGraphModel );
-    this.defaultBlackboxViews = new ArrayList < DefaultBlackboxView > ();
-  }
-
-
-  /**
    * The x space
    */
   public static int X_SPACE = 8;
@@ -63,55 +49,16 @@ public class JGTIBlackboxGraph extends JGTIGraph
 
 
   /**
-   * {@inheritDoc}
+   * Creates new {@link JGTIBlackboxGraph}
    * 
-   * @see JGTIGraph#paintComponent(java.awt.Graphics)
+   * @param defaultMachineModel
+   * @param defaultGraphModel
    */
-  @Override
-  protected void paintComponent ( Graphics graphics )
+  public JGTIBlackboxGraph ( DefaultMachineModel defaultMachineModel,
+      DefaultGraphModel defaultGraphModel )
   {
-    super.paintComponent ( graphics );
-
-    Graphics2D g = ( Graphics2D ) graphics;
-    g.scale ( SCALE_FACTOR, SCALE_FACTOR );
-
-    for ( DefaultBlackboxView bview : this.defaultBlackboxViews )
-    {
-      DefaultStateView startView = bview.getStartState ();
-      DefaultStateView endView = bview.getFinalState ();
-      int x0 = ( int ) ( bview.getStartState ().getPositionX () - JGTIBlackboxGraph.X_SPACE );
-      int y0 = ( int ) ( bview.getStartState ().getPositionY () - JGTIBlackboxGraph.Y_SPACE );
-      int y1 = ( int ) ( bview.getStartState ().getHeight () + 2 * JGTIBlackboxGraph.Y_SPACE );
-
-      int x1 = ( int ) ( endView.getPositionX () - startView.getPositionX ()
-          + endView.getWidth () + 2 * X_SPACE );
-      g.drawRoundRect ( x0, y0, x1, y1, 20, 20 );
-
-      int xString = ( int ) ( bview.getStartState ().getPositionX ()
-          + bview.getStartState ().getWidth () + 2 * JGTIBlackboxGraph.X_SPACE );
-      int yString = ( int ) ( bview.getStartState ().getPositionY () + bview
-          .getStartState ().getHeight () / 2 );
-      g.drawString ( bview.getContentString (), xString, yString );
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.jgraph.JGTIGraph#getToolTipText(java.awt.event.MouseEvent)
-   */
-  @Override
-  public String getToolTipText ( MouseEvent event )
-  {
-    for ( DefaultBlackboxView bview : this.defaultBlackboxViews )
-    {
-      if ( bview.containsPoint ( event.getPoint () ) && bview.needsToolTip () )
-      {
-        return bview.getContent ().toString ();
-      }
-    }
-    return super.getToolTipText ( event );
+    super ( defaultMachineModel, defaultGraphModel );
+    this.defaultBlackboxViews = new ArrayList < DefaultBlackboxView > ();
   }
 
 
@@ -157,15 +104,54 @@ public class JGTIBlackboxGraph extends JGTIGraph
 
 
   /**
-   * Removes the black box for a specified {@link RegexNode}
+   * {@inheritDoc}
    * 
-   * @param n The {@link RegexNode}
+   * @see de.unisiegen.gtitool.ui.jgraph.JGTIGraph#getToolTipText(java.awt.event.MouseEvent)
    */
-  public void removeBlackBox ( RegexNode n )
+  @Override
+  public String getToolTipText ( MouseEvent event )
   {
-    if ( getBlackboxViewForRegexNode ( n ) != null )
+    for ( DefaultBlackboxView bview : this.defaultBlackboxViews )
     {
-      removeBlackBox ( getBlackboxViewForRegexNode ( n ) );
+      if ( bview.containsPoint ( event.getPoint () ) && bview.needsToolTip () )
+      {
+        return bview.getContent ().toString ();
+      }
+    }
+    return super.getToolTipText ( event );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see JGTIGraph#paintComponent(java.awt.Graphics)
+   */
+  @Override
+  protected void paintComponent ( Graphics graphics )
+  {
+    super.paintComponent ( graphics );
+
+    Graphics2D g = ( Graphics2D ) graphics;
+    g.scale ( SCALE_FACTOR, SCALE_FACTOR );
+
+    for ( DefaultBlackboxView bview : this.defaultBlackboxViews )
+    {
+      DefaultStateView startView = bview.getStartState ();
+      DefaultStateView endView = bview.getFinalState ();
+      int x0 = ( int ) ( bview.getStartState ().getPositionX () - JGTIBlackboxGraph.X_SPACE );
+      int y0 = ( int ) ( bview.getStartState ().getPositionY () - JGTIBlackboxGraph.Y_SPACE );
+      int y1 = ( int ) ( bview.getStartState ().getHeight () + 2 * JGTIBlackboxGraph.Y_SPACE );
+
+      int x1 = ( int ) ( endView.getPositionX () - startView.getPositionX ()
+          + endView.getWidth () + 2 * X_SPACE );
+      g.drawRoundRect ( x0, y0, x1, y1, 20, 20 );
+
+      int xString = ( int ) ( bview.getStartState ().getPositionX ()
+          + bview.getStartState ().getWidth () + 2 * JGTIBlackboxGraph.X_SPACE );
+      int yString = ( int ) ( bview.getStartState ().getPositionY () + bview
+          .getStartState ().getHeight () / 2 );
+      g.drawString ( bview.getContentString (), xString, yString );
     }
   }
 
@@ -184,5 +170,19 @@ public class JGTIBlackboxGraph extends JGTIGraph
     this.defaultBlackboxViews.remove ( defaultBlackboxView );
 
     repaint ();
+  }
+
+
+  /**
+   * Removes the black box for a specified {@link RegexNode}
+   * 
+   * @param n The {@link RegexNode}
+   */
+  public void removeBlackBox ( RegexNode n )
+  {
+    if ( getBlackboxViewForRegexNode ( n ) != null )
+    {
+      removeBlackBox ( getBlackboxViewForRegexNode ( n ) );
+    }
   }
 }

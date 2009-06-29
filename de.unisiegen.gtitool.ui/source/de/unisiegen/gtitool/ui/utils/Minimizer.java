@@ -214,38 +214,36 @@ public class Minimizer
    * @return The created {@link PrettyString}.
    */
   private PrettyString createPrettyString (
-      ArrayList < DefaultStateView > states, ArrayList < DefaultStateView > oldGroup )
+      ArrayList < DefaultStateView > states,
+      ArrayList < DefaultStateView > oldGroup )
   {
     PrettyString prettyString = new PrettyString ();
-    
+
     for ( int i = 0 ; i < states.size () ; i++ )
     {
-      if ( i != 0 && i < ( states.size () - 1 ) )
+      if ( ( i != 0 ) && ( i < ( states.size () - 1 ) ) )
       {
         prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
       }
-      if ( i != 0 && i == ( states.size () - 1 ) )
+      if ( ( i != 0 ) && ( i == ( states.size () - 1 ) ) )
       {
         prettyString.add ( new PrettyToken ( " " + Messages //$NON-NLS-1$
             .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
       }
       prettyString.add ( states.get ( i ).getState () );
     }
-    
-
 
     prettyString.add ( new PrettyToken ( " " + Messages //$NON-NLS-1$
         .getString ( "MinimizeMachineDialog.PrettyString" ) //$NON-NLS-1$
         + " ", Style.NONE ) ); //$NON-NLS-1$
-    
-    
+
     for ( int i = 0 ; i < oldGroup.size () ; i++ )
     {
-      if ( i != 0 && i < ( oldGroup.size () - 1 ) )
+      if ( ( i != 0 ) && ( i < ( oldGroup.size () - 1 ) ) )
       {
         prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
       }
-      if ( i != 0 && i == ( oldGroup.size () - 1 ) )
+      if ( ( i != 0 ) && ( i == ( oldGroup.size () - 1 ) ) )
       {
         prettyString.add ( new PrettyToken ( " " + Messages //$NON-NLS-1$
             .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
@@ -253,6 +251,28 @@ public class Minimizer
       prettyString.add ( oldGroup.get ( i ).getState () );
     }
     return prettyString;
+  }
+
+
+  /**
+   * Returns the group for a given {@link State}.
+   * 
+   * @param state The {@link State}
+   * @return The group containing the {@link State}
+   */
+  private ArrayList < DefaultStateView > getGroupForState ( State state )
+  {
+    for ( ArrayList < DefaultStateView > currentGroup : this.activeGroups )
+    {
+      for ( DefaultStateView current : currentGroup )
+      {
+        if ( current.getState ().equals ( state ) )
+        {
+          return currentGroup;
+        }
+      }
+    }
+    return null;
   }
 
 
@@ -348,11 +368,11 @@ public class Minimizer
           + " ", Style.NONE ) ); //$NON-NLS-1$
       for ( int i = 0 ; i < this.notReachable.size () ; i++ )
       {
-        if ( i != 0 && i < ( this.notReachable.size () - 1 ) )
+        if ( ( i != 0 ) && ( i < ( this.notReachable.size () - 1 ) ) )
         {
           prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
         }
-        if ( i != 0 && i == ( this.notReachable.size () - 1 ) )
+        if ( ( i != 0 ) && ( i == ( this.notReachable.size () - 1 ) ) )
         {
           prettyString.add ( new PrettyToken ( " " + Messages //$NON-NLS-1$
               .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
@@ -401,11 +421,11 @@ public class Minimizer
 
       for ( int i = 0 ; i < states.size () ; i++ )
       {
-        if ( i != 0 && i < ( states.size () - 1 ) )
+        if ( ( i != 0 ) && ( i < ( states.size () - 1 ) ) )
         {
           prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
         }
-        if ( i != 0 && i == ( states.size () - 1 ) )
+        if ( ( i != 0 ) && ( i == ( states.size () - 1 ) ) )
         {
           prettyString.add ( new PrettyToken ( " " + Messages //$NON-NLS-1$
               .getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$>
@@ -424,7 +444,7 @@ public class Minimizer
     this.previousSteps.push ( this.activeMinimizeItem );
 
     minimize ();
-    
+
     // Add a final step to show the new machine.
     this.previousSteps.push ( new MinimizeItem ( getGroups (), Messages
         .getPrettyString ( "MinimizeMachineDialog.FinalPrettyString" ), //$NON-NLS-1$
@@ -466,6 +486,26 @@ public class Minimizer
 
 
   /**
+   * Returns true if given {@link State} is in this group
+   * 
+   * @param group The group of {@link DefaultStateView}s
+   * @param state The {@link State}
+   * @return true if given {@link State} is in this group, else false
+   */
+  private boolean isInGroup ( ArrayList < DefaultStateView > group, State state )
+  {
+    for ( DefaultStateView current : group )
+    {
+      if ( current.getState ().equals ( state ) )
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  /**
    * The internal minimize operation.
    */
   private void minimize ()
@@ -499,7 +539,8 @@ public class Minimizer
       ArrayList < Transition > transitionList = new ArrayList < Transition > ();
       transitionList.addAll ( this.transitions );
       this.previousSteps.push ( new MinimizeItem ( oldGroup,
-          createPrettyString ( this.newGroupStates, currentGroup ), transitionList, null ) );
+          createPrettyString ( this.newGroupStates, currentGroup ),
+          transitionList, null ) );
       this.newGroupStates = new ArrayList < DefaultStateView > ();
       minimize ();
       return;
@@ -550,48 +591,6 @@ public class Minimizer
     this.begin = this.previousSteps.isEmpty ();
     this.finished = false;
   }
-  
-  /**
-   * Returns the group for a given {@link State}.
-   *
-   * @param state The {@link State}
-   * 
-   * @return The group containing the {@link State}
-   */
-  private ArrayList < DefaultStateView > getGroupForState(State state)
-  {
-    for ( ArrayList < DefaultStateView > currentGroup : this.activeGroups )
-    {
-      for ( DefaultStateView current : currentGroup )
-      {
-        if (current.getState ().equals ( state ))
-        {
-          return currentGroup;
-        }
-      }
-    }
-    return null;
-  }
-  
-  /**
-   * Returns true if given {@link State} is in this group
-   *
-   * @param group The group of {@link DefaultStateView}s
-   * @param state The {@link State}
-   * 
-   * @return true if given {@link State} is in this group, else false
-   */
-  private boolean isInGroup(ArrayList < DefaultStateView > group, State state)
-  {
-    for ( DefaultStateView current : group )
-    {
-      if (current.getState ().equals ( state ))
-      {
-        return true;
-      }
-    }
-    return false;
-  }
 
 
   /**
@@ -605,19 +604,19 @@ public class Minimizer
     this.transitions.clear ();
     for ( Symbol symbol : this.model.getMachine ().getAlphabet () )
     {
-      loop: for ( DefaultStateView defaultStateView : group )
+      loop : for ( DefaultStateView defaultStateView : group )
       {
         for ( Transition transition : defaultStateView.getState ()
             .getTransitionBegin () )
         {
           if ( transition.getSymbol ().contains ( symbol ) )
           {
-            if (targetGroup == null)
+            if ( targetGroup == null )
             {
               targetGroup = getGroupForState ( transition.getStateEnd () );
               continue loop;
             }
-            if (!isInGroup ( targetGroup, transition.getStateEnd ()))
+            if ( !isInGroup ( targetGroup, transition.getStateEnd () ) )
             {
               this.newGroupStates.remove ( defaultStateView );
               this.newGroupStates.add ( defaultStateView );
@@ -626,7 +625,7 @@ public class Minimizer
           }
         }
       }
-    targetGroup = null;
+      targetGroup = null;
     }
     if ( this.newGroupStates.size () == group.size () )
     {

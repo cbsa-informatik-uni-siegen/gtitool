@@ -37,7 +37,7 @@ public class DefaultBlackBoxState extends DefaultState
 
   /**
    * TODO
-   *
+   * 
    * @param r
    */
   public void setReady ( boolean r )

@@ -88,8 +88,7 @@ public class EpsilonNode extends LeafNode
    * 
    * @see Comparable#compareTo(java.lang.Object)
    */
-  public int compareTo ( @SuppressWarnings ( "unused" )
-  RegexNode o )
+  public int compareTo ( @SuppressWarnings ( "unused" ) RegexNode o )
   {
     return 0;
   }
@@ -276,8 +275,8 @@ public class EpsilonNode extends LeafNode
    * @see RegexNode#toCoreSyntax(boolean)
    */
   @Override
-  public RegexNode toCoreSyntax ( @SuppressWarnings ( "unused" )
-  boolean withCharacterClasses )
+  public RegexNode toCoreSyntax (
+      @SuppressWarnings ( "unused" ) boolean withCharacterClasses )
   {
     return this;
   }

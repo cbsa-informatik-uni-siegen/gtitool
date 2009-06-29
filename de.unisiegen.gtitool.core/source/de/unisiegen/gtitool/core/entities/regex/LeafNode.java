@@ -62,6 +62,7 @@ public abstract class LeafNode extends RegexNode
     return this.firstPosCache;
   }
 
+
   /**
    * {@inheritDoc}
    * 
@@ -70,8 +71,9 @@ public abstract class LeafNode extends RegexNode
   @Override
   public HashSet < ObjectPair < LeafNode, LeafNode >> followPos ()
   {
-    return new HashSet < ObjectPair<LeafNode,LeafNode> >();
+    return new HashSet < ObjectPair < LeafNode, LeafNode > > ();
   }
+
 
   /**
    * {@inheritDoc}

@@ -762,7 +762,7 @@ public class DefaultState implements State
   {
     for ( Transition t : getTransitionBegin () )
     {
-      if ( t.getSymbol ().size () > 1 || !t.getSymbol ( 0 ).isEpsilon () )
+      if ( ( t.getSymbol ().size () > 1 ) || !t.getSymbol ( 0 ).isEpsilon () )
       {
         return true;
       }

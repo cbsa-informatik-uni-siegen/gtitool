@@ -1,9 +1,10 @@
-package de.unisiegen.gtitool.core.parser.regexAlphabet;
+package de.unisiegen.gtitool.core.parser.regexalphabet;
 
 
 import java_cup.runtime.Symbol;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+import de.unisiegen.gtitool.core.parser.regexalphabet.RegexAlphabetAbstractParser;
 import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
 
 

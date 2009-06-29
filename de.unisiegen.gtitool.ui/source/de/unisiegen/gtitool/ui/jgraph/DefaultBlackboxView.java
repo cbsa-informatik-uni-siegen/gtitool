@@ -129,17 +129,6 @@ public class DefaultBlackboxView
 
 
   /**
-   * Returns true if Tooltip is needed
-   * 
-   * @return True if Tooltip is needed
-   */
-  public boolean needsToolTip ()
-  {
-    return this.content.toPrettyString ().toString ().length () > 15;
-  }
-
-
-  /**
    * Returns the finalState.
    * 
    * @return The finalState.
@@ -173,6 +162,17 @@ public class DefaultBlackboxView
   {
     return this.startState.hashCode () + this.finalState.hashCode ()
         + this.content.hashCode ();
+  }
+
+
+  /**
+   * Returns true if Tooltip is needed
+   * 
+   * @return True if Tooltip is needed
+   */
+  public boolean needsToolTip ()
+  {
+    return this.content.toPrettyString ().toString ().length () > 15;
   }
 
 }

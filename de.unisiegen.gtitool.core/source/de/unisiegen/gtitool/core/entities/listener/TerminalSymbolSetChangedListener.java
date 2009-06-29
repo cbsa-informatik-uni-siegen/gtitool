@@ -10,7 +10,8 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
  * The listener interface for receiving {@link TerminalSymbolSet} changes.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: TerminalSymbolSetChangedListener.java 1372 2008-10-30 08:36:20Z
+ *          fehler $
  */
 public interface TerminalSymbolSetChangedListener extends EventListener
 {

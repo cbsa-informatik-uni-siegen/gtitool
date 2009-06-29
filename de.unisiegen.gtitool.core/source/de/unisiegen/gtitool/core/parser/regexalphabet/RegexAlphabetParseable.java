@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.parser.regexAlphabet;
+package de.unisiegen.gtitool.core.parser.regexalphabet;
 
 
 import java.io.StringReader;

@@ -764,7 +764,6 @@ public class DefaultAlphabet implements Alphabet
     result.append ( "{" ); //$NON-NLS-1$
     boolean first = true;
 
-
     ArrayList < Symbol > t = new ArrayList < Symbol > ();
     t.addAll ( this.symbolSet );
     while ( !t.isEmpty () )

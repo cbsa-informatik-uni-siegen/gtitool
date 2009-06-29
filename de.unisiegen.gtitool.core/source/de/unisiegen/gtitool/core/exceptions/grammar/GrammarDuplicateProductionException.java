@@ -14,7 +14,8 @@ import de.unisiegen.gtitool.core.i18n.Messages;
  * {@link Production} that exists more than one time.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: GrammarDuplicateProductionException.java 1372 2008-10-30
+ *          08:36:20Z fehler $
  */
 public final class GrammarDuplicateProductionException extends GrammarException
     implements ProductionInvolvedException

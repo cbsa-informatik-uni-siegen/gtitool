@@ -10,7 +10,8 @@ import de.unisiegen.gtitool.core.entities.Production;
  * Involved {@link Production} interface.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: ProductionInvolvedException.java 1372 2008-10-30 08:36:20Z
+ *          fehler $
  */
 public interface ProductionInvolvedException
 {

@@ -174,6 +174,15 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
 
 
   /**
+   * Get a specified production.
+   * 
+   * @param index the index of the production.
+   * @return the specified {@link Production}.
+   */
+  public Production getProductionAt ( int index );
+
+
+  /**
    * Get all {@link Production}s for a given non terminal of this grammar.
    * 
    * @param s The non terminal symbol
@@ -181,15 +190,6 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
    */
   public ArrayList < Production > getProductionForNonTerminal (
       NonterminalSymbol s );
-
-
-  /**
-   * Get a specified production.
-   * 
-   * @param index the index of the production.
-   * @return the specified {@link Production}.
-   */
-  public Production getProductionAt ( int index );
 
 
   /**

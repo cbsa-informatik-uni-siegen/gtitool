@@ -4,7 +4,7 @@
  * @author Christian Fehler
  * @version $Id: alphabet.flex 1277 2008-08-20 07:43:44Z fehler $
  */
-package de.unisiegen.gtitool.core.parser.regexAlphabet;
+package de.unisiegen.gtitool.core.parser.regexalphabet;
 
 import java.io.StringReader;
 import java_cup.runtime.Symbol;

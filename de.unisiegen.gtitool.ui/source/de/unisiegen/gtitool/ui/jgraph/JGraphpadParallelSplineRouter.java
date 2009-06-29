@@ -1,10 +1,9 @@
 /*
- * Copyright (c) 2001-2005, Gaudenz Alder
- * All rights reserved. 
- * 
- * See LICENSE file in distribution for license details
+ * Copyright (c) 2001-2005, Gaudenz Alder All rights reserved. See LICENSE file
+ * in distribution for license details
  */
 package de.unisiegen.gtitool.ui.jgraph;
+
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -19,74 +18,114 @@ import org.jgraph.graph.PortView;
 
 import de.unisiegen.gtitool.core.entities.State;
 
+
 @SuppressWarnings ( "all" )
-public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting {
+public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting
+{
 
-	protected static GraphModel emptyModel = new DefaultGraphModel();
+  protected static GraphModel emptyModel = new DefaultGraphModel ();
 
-	public static JGraphpadParallelSplineRouter sharedInstance = new JGraphpadParallelSplineRouter();
 
-	/**
-	 * The distance between the control point and the middle line. A larger
-	 * number will lead to a more "bubbly" appearance of the bezier edges.
-	 */
-	public double edgeSeparation = 25;
+  public static JGraphpadParallelSplineRouter sharedInstance = new JGraphpadParallelSplineRouter ();
 
-	private JGraphpadParallelSplineRouter() {
-		// empty
-	}
 
-	/**
-	 * Returns the array of parallel edges.
-	 * 
-	 * @param edge
-	 */
-	public Object[] getParallelEdges(EdgeView edge) {
-		return DefaultGraphModel.getEdgesBetween(emptyModel, edge.getSource()
-				.getParentView().getCell(), edge.getTarget().getParentView()
-				.getCell(), false);
-	}
+  /**
+   * @return Returns the sharedInstance.
+   */
+  public static JGraphpadParallelSplineRouter getSharedInstance ()
+  {
+    return sharedInstance;
+  }
 
-	public List routeEdge(GraphLayoutCache cache, EdgeView edge) {
-		List newPoints = new ArrayList();
 
-		// Check presence of source/target nodes
-		if ((null == edge.getSource()) || (null == edge.getTarget())
-				|| (null == edge.getSource().getParentView())
-				|| (null == edge.getTarget().getParentView())) {
-			return null;
-		}
-		newPoints.add(edge.getSource());
+  /**
+   * The distance between the control point and the middle line. A larger number
+   * will lead to a more "bubbly" appearance of the bezier edges.
+   */
+  public double edgeSeparation = 25;
 
-		Object[] edges = getParallelEdges(edge);
-		// Find the position of the current edge that we are currently routing
-		if (edges == null)
-			return null;
-		int position = 0;
-		for (int i = 0; i < edges.length; i++) {
-			Object e = edges[i];
-			if (e == edge.getCell()) {
-				position = i;
-			}
-		}
 
-		// If there is only 1 edge between the two vertices, we don't need this
-		// special routing
-		if (edges.length >= 2) {
-		  // MODIFYBEGIN
+  private JGraphpadParallelSplineRouter ()
+  {
+    // empty
+  }
+
+
+  /**
+   * @return Returns the edgeSeparation.
+   */
+  public double getEdgeSeparation ()
+  {
+    return this.edgeSeparation;
+  }
+
+
+  public int getEdgeStyle ()
+  {
+    return GraphConstants.STYLE_SPLINE;
+  }
+
+
+  /**
+   * Returns the array of parallel edges.
+   * 
+   * @param edge
+   */
+  public Object [] getParallelEdges ( EdgeView edge )
+  {
+    return DefaultGraphModel.getEdgesBetween ( emptyModel, edge.getSource ()
+        .getParentView ().getCell (), edge.getTarget ().getParentView ()
+        .getCell (), false );
+  }
+
+
+  public List routeEdge ( GraphLayoutCache cache, EdgeView edge )
+  {
+    List newPoints = new ArrayList ();
+
+    // Check presence of source/target nodes
+    if ( ( null == edge.getSource () ) || ( null == edge.getTarget () )
+        || ( null == edge.getSource ().getParentView () )
+        || ( null == edge.getTarget ().getParentView () ) )
+    {
+      return null;
+    }
+    newPoints.add ( edge.getSource () );
+
+    Object [] edges = getParallelEdges ( edge );
+    // Find the position of the current edge that we are currently routing
+    if ( edges == null )
+    {
+      return null;
+    }
+    int position = 0;
+    for ( int i = 0 ; i < edges.length ; i++ )
+    {
+      Object e = edges [ i ];
+      if ( e == edge.getCell () )
+      {
+        position = i;
+      }
+    }
+
+    // If there is only 1 edge between the two vertices, we don't need this
+    // special routing
+    if ( edges.length >= 2 )
+    {
+      // MODIFYBEGIN
       // Find the end point positions
       Point2D from = ( ( PortView ) edge.getSource () ).getLocation ();
       Point2D to = ( ( PortView ) edge.getTarget () ).getLocation ();
 
-      if ( from != null && to != null )
+      if ( ( from != null ) && ( to != null ) )
       {
         double fromX = from.getX ();
         double fromY = from.getY ();
         double toX = to.getX ();
         double toY = to.getY ();
 
-        StateView stateView = ( StateView ) ( ( PortView ) edge
-            .getSource () ).getParentView ();
+        StateView stateView = ( StateView ) ( ( PortView ) edge.getSource () )
+            .getParentView ();
         if ( stateView.getCell () instanceof DefaultStateView )
         {
           DefaultStateView defaultStateView = ( DefaultStateView ) stateView
@@ -142,7 +181,7 @@ public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting {
         // modify the location of the control point along the axis of
         // the
         // normal using the edge position
-        double r = edgeSeparation * ( Math.floor ( position / 2 ) + 1 );
+        double r = this.edgeSeparation * ( Math.floor ( position / 2 ) + 1 );
         if ( ( position % 2 ) == 0 )
         {
           r = -r;
@@ -158,35 +197,18 @@ public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting {
         // add the control point to the points list
         newPoints.add ( controlPoint );
         // MODIFYEND
-			}
-		}
-		newPoints.add(edge.getTarget());
-		return newPoints;
-	}
+      }
+    }
+    newPoints.add ( edge.getTarget () );
+    return newPoints;
+  }
 
-	public int getEdgeStyle() {
-		return GraphConstants.STYLE_SPLINE;
-	}
 
-	/**
-	 * @return Returns the edgeSeparation.
-	 */
-	public double getEdgeSeparation() {
-		return edgeSeparation;
-	}
-
-	/**
-	 * @param edgeSeparation
-	 *            The edgeSeparation to set.
-	 */
-	public void setEdgeSeparation(double edgeSeparation) {
-		this.edgeSeparation = edgeSeparation;
-	}
-
-	/**
-	 * @return Returns the sharedInstance.
-	 */
-	public static JGraphpadParallelSplineRouter getSharedInstance() {
-		return sharedInstance;
-	}
+  /**
+   * @param edgeSeparation The edgeSeparation to set.
+   */
+  public void setEdgeSeparation ( double edgeSeparation )
+  {
+    this.edgeSeparation = edgeSeparation;
+  }
 }

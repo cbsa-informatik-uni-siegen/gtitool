@@ -14,7 +14,8 @@ import de.unisiegen.gtitool.ui.logic.MachinePanel;
  * Representation of {@link RedoUndoItem} for edit {@link Alphabet} action.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: MachineAlphabetChangedItem.java 1202 2008-07-26 17:02:31Z
+ *          fehler $
  */
 public final class MachineAlphabetChangedItem extends RedoUndoItem
 {
@@ -82,7 +83,7 @@ public final class MachineAlphabetChangedItem extends RedoUndoItem
   /**
    * Allocates a new {@link MachineAlphabetChangedItem}.
    * 
-   * @param machinePanel The {@link MachinePanel}. 
+   * @param machinePanel The {@link MachinePanel}.
    * @param machine The {@link Machine}.
    * @param newAlphabet The new {@link Alphabet}.
    * @param newPushDownAlphabet The new push down {@link Alphabet}.

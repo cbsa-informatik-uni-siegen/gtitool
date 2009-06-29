@@ -15,16 +15,18 @@ public abstract class OneChildNode extends RegexNode
    */
   private static final long serialVersionUID = -3109784857649152942L;
 
+
   /**
    * Cached {@link ArrayList} for firstPos
    */
   private transient ArrayList < LeafNode > firstPosCache = null;
-  
-  
+
+
   /**
    * Cached {@link ArrayList} for lastPos
    */
   private transient ArrayList < LeafNode > lastPosCache = null;
+
 
   /**
    * Flag that indicates if Node is already used in NFA construction
@@ -114,7 +116,8 @@ public abstract class OneChildNode extends RegexNode
   @Override
   public RegexNode getParentNodeForNode ( RegexNode node )
   {
-    if(this.regex.equals ( node )) {
+    if ( this.regex.equals ( node ) )
+    {
       return this;
     }
     return this.regex.getParentNodeForNode ( node );
@@ -199,7 +202,7 @@ public abstract class OneChildNode extends RegexNode
 
   /**
    * Sets the regex.
-   *
+   * 
    * @param regex The regex to set.
    * @see #regex
    */

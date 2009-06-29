@@ -61,12 +61,12 @@ public final class SaveDialog implements LogicClass < SaveDialogForm >
    * @param fileFilter The selected {@link FileFilter}.
    * @param choosableFileFilter The choosable {@link FileFilter}s.
    */
-  public SaveDialog ( JFrame parent, String workingPath, FileFilter fileFilter,
-      FileFilter ... choosableFileFilter )
+  public SaveDialog ( JDialog parent, String workingPath,
+      FileFilter fileFilter, FileFilter ... choosableFileFilter )
   {
     logger.debug ( "SaveDialog", "allocate a new save dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    this.parent = parent;
+    this.dialog = parent;
     this.gui = new SaveDialogForm ( this, parent );
     this.gui.jGTIFileChooser.setCurrentDirectory ( new File ( workingPath ) );
 
@@ -101,12 +101,12 @@ public final class SaveDialog implements LogicClass < SaveDialogForm >
    * @param fileFilter The selected {@link FileFilter}.
    * @param choosableFileFilter The choosable {@link FileFilter}s.
    */
-  public SaveDialog ( JDialog parent, String workingPath,
-      FileFilter fileFilter, FileFilter ... choosableFileFilter )
+  public SaveDialog ( JFrame parent, String workingPath, FileFilter fileFilter,
+      FileFilter ... choosableFileFilter )
   {
     logger.debug ( "SaveDialog", "allocate a new save dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    this.dialog = parent;
+    this.parent = parent;
     this.gui = new SaveDialogForm ( this, parent );
     this.gui.jGTIFileChooser.setCurrentDirectory ( new File ( workingPath ) );
 

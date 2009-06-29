@@ -181,6 +181,18 @@ public final class MinimizeMachineDialog implements
 
 
   /**
+   * The algorithm window
+   */
+  private TextWindow algorithmWindow;
+
+
+  /**
+   * The algorithm
+   */
+  private String algorithm;
+
+
+  /**
    * Allocates a new {@link MinimizeMachineDialog}.
    * 
    * @param mainWindowForm The parent {@link MainWindowForm}.
@@ -453,6 +465,36 @@ public final class MinimizeMachineDialog implements
       }
     }
     return target;
+  }
+
+
+  /**
+   * Handles the algorithm window changed
+   * 
+   * @param show True if window should be shown.
+   */
+  public void handleAlgorithmWindowChanged ( boolean show )
+  {
+    if ( ( this.algorithm == null ) || ( this.algorithm.length () == 0 ) )
+    {
+      TextLoader loader = new TextLoader ();
+      this.algorithm = loader.loadMinimizeAlgorithm ();
+    }
+
+    if ( this.algorithmWindow == null )
+    {
+      this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
+          this.gui.jGTIToggleButtonAlgorithm, "MINIMIZE" ); //$NON-NLS-1$
+    }
+
+    if ( show )
+    {
+      this.algorithmWindow.show ();
+    }
+    else
+    {
+      this.algorithmWindow.dispose ();
+    }
   }
 
 
@@ -761,47 +803,5 @@ public final class MinimizeMachineDialog implements
     }
     this.gui.setBounds ( rect );
     this.gui.setVisible ( true );
-  }
-
-
-  /**
-   * The algorithm window
-   */
-  private TextWindow algorithmWindow;
-
-
-  /**
-   * The algorithm
-   */
-  private String algorithm;
-
-
-  /**
-   * Handles the algorithm window changed
-   * 
-   * @param show True if window should be shown.
-   */
-  public void handleAlgorithmWindowChanged ( boolean show )
-  {
-    if ( this.algorithm == null || this.algorithm.length () == 0 )
-    {
-      TextLoader loader = new TextLoader ();
-      this.algorithm = loader.loadMinimizeAlgorithm ();
-    }
-
-    if ( this.algorithmWindow == null )
-    {
-      this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
-          this.gui.jGTIToggleButtonAlgorithm, "MINIMIZE" ); //$NON-NLS-1$
-    }
-
-    if ( show )
-    {
-      this.algorithmWindow.show ();
-    }
-    else
-    {
-      this.algorithmWindow.dispose ();
-    }
   }
 }

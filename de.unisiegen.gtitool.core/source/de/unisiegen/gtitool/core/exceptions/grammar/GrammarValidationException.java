@@ -12,7 +12,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * grammar fails.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: GrammarValidationException.java 1372 2008-10-30 08:36:20Z
+ *          fehler $
  */
 public final class GrammarValidationException extends CoreException implements
     Iterable < GrammarException >

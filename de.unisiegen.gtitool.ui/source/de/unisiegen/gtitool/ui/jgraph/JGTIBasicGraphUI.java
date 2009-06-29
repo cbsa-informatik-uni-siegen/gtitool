@@ -144,11 +144,12 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
     public final void mouseDragged ( MouseEvent event )
     {
 
-      if(getFocus () instanceof NodeView) {
+      if ( getFocus () instanceof NodeView )
+      {
         event.consume ();
         return;
       }
-      
+
       autoscroll ( getGraph (), event.getPoint () );
       if ( getGraph ().isEnabled () && !event.isConsumed () )
       {
@@ -209,7 +210,7 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
     @Override
     public final void mousePressed ( MouseEvent event )
     {
-      
+
       this.handler = null;
       if ( !event.isConsumed () && getGraph ().isEnabled () )
       {
@@ -245,7 +246,8 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
             if ( !event.isConsumed () && ( this.cell != null )
                 && !getGraph ().isCellSelected ( this.cell.getCell () ) )
             {
-              if ( this.cell instanceof StateView || this.cell instanceof NodeView )
+              if ( ( this.cell instanceof StateView )
+                  || ( this.cell instanceof NodeView ) )
               {
                 handleSelection ( event );
               }

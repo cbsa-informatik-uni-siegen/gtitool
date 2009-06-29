@@ -41,6 +41,18 @@ public class DefaultNodeView extends DefaultGraphCell implements
 
 
   /**
+   * The width of the node view
+   */
+  private int width;
+
+
+  /**
+   * The height of the node view
+   */
+  private int height;
+
+
+  /**
    * @param regexNode
    * @param x
    * @param y
@@ -54,18 +66,6 @@ public class DefaultNodeView extends DefaultGraphCell implements
 
     this.regexNode = regexNode;
   }
-
-
-  /**
-   * The width of the node view
-   */
-  private int width;
-
-
-  /**
-   * The height of the node view
-   */
-  private int height;
 
 
   /**
@@ -84,6 +84,18 @@ public class DefaultNodeView extends DefaultGraphCell implements
 
 
   /**
+   * Returns the height.
+   * 
+   * @return The height.
+   * @see #height
+   */
+  public int getHeight ()
+  {
+    return this.height;
+  }
+
+
+  /**
    * Returns the {@link RegexNode}
    * 
    * @return The {@link RegexNode}
@@ -91,6 +103,18 @@ public class DefaultNodeView extends DefaultGraphCell implements
   public RegexNode getNode ()
   {
     return this.regexNode;
+  }
+
+
+  /**
+   * Returns the width.
+   * 
+   * @return The width.
+   * @see #width
+   */
+  public int getWidth ()
+  {
+    return this.width;
   }
 
 
@@ -137,30 +161,6 @@ public class DefaultNodeView extends DefaultGraphCell implements
 
 
   /**
-   * Sets the width.
-   * 
-   * @param width The width to set.
-   * @see #width
-   */
-  public void setWidth ( int width )
-  {
-    this.width = width;
-  }
-
-
-  /**
-   * Returns the width.
-   * 
-   * @return The width.
-   * @see #width
-   */
-  public int getWidth ()
-  {
-    return this.width;
-  }
-
-
-  /**
    * Sets the height.
    * 
    * @param height The height to set.
@@ -173,14 +173,14 @@ public class DefaultNodeView extends DefaultGraphCell implements
 
 
   /**
-   * Returns the height.
+   * Sets the width.
    * 
-   * @return The height.
-   * @see #height
+   * @param width The width to set.
+   * @see #width
    */
-  public int getHeight ()
+  public void setWidth ( int width )
   {
-    return this.height;
+    this.width = width;
   }
 
 }

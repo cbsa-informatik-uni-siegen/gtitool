@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
 import de.unisiegen.gtitool.core.parser.regex.RegexParseable;
-import de.unisiegen.gtitool.core.parser.regexAlphabet.RegexAlphabetParseable;
+import de.unisiegen.gtitool.core.parser.regexalphabet.RegexAlphabetParseable;
 import de.unisiegen.gtitool.core.parser.symbol.SymbolParseable;
 import de.unisiegen.gtitool.core.parser.transition.TransitionParseable;
 import de.unisiegen.gtitool.core.parser.word.WordParseable;
@@ -92,7 +92,8 @@ public class ParserTest
       DefaultRegex conv = new DefaultRegex ( new DefaultRegexAlphabet (
           new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ),
           new DefaultSymbol ( "c" ), new DefaultSymbol ( "d" ) ) );
-      conv.setRegexNode ( regex.toCoreSyntax ( true ), regex.toCoreSyntax ( true ).toString () );
+      conv.setRegexNode ( regex.toCoreSyntax ( true ), regex.toCoreSyntax (
+          true ).toString () );
       System.out.println ( conv.getRegexNode () );
       String firstpos = "";
       for ( RegexNode current : regex.firstPos () )
@@ -120,8 +121,8 @@ public class ParserTest
       }
       System.out.println ( "LastPos: {" + lastpos + "}" );
 
-      RegexNode coreSyntax = regex.toCoreSyntax (true);
-      System.out.println ("ToCoreSyntax:" + coreSyntax.toString () );
+      RegexNode coreSyntax = regex.toCoreSyntax ( true );
+      System.out.println ( "ToCoreSyntax:" + coreSyntax.toString () );
 
       String followPos = "";
       for ( Integer current : conv.followPos ( 1 ) )
@@ -144,8 +145,9 @@ public class ParserTest
     {
       String transitionText = "{2,Z, [3-6],A,[a-z]}";
       TransitionParseable tp = new TransitionParseable ();
-      DefaultTransition t = (DefaultTransition) tp.newParser ( transitionText ).parse ();
-      System.out.println (t.toString ());
+      DefaultTransition t = ( DefaultTransition ) tp
+          .newParser ( transitionText ).parse ();
+      System.out.println ( t.toString () );
     }
     catch ( Exception e )
     {
@@ -157,8 +159,9 @@ public class ParserTest
     {
       String regexAlphabetString = "{1,[a-z],2 }";
       RegexAlphabetParseable rap = new RegexAlphabetParseable ();
-      DefaultRegexAlphabet t = (DefaultRegexAlphabet) rap.newParser ( regexAlphabetString ).parse ();
-      System.out.println (t.toString ());
+      DefaultRegexAlphabet t = ( DefaultRegexAlphabet ) rap.newParser (
+          regexAlphabetString ).parse ();
+      System.out.println ( t.toString () );
     }
     catch ( Exception e )
     {

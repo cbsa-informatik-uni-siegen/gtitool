@@ -182,9 +182,7 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
     this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet.setVisible ( false );
     this.gui.alphabetPanelForm.jGTILabelRegexAlphabet.setVisible ( false );
 
-
-    this.gui.setTitle ( Messages
-        .getString ( "AlphabetDialog.TitleRegex" ) ); //$NON-NLS-1$
+    this.gui.setTitle ( Messages.getString ( "AlphabetDialog.TitleRegex" ) ); //$NON-NLS-1$
     this.gui.jGTILabelHeadline.setText ( Messages
         .getString ( "AlphabetDialog.EditRegex" ) ); //$NON-NLS-1$
     this.gui.jGTIButtonOk.setToolTipText ( Messages

@@ -1481,17 +1481,6 @@ public final class PreferencesDialog implements
 
 
   /**
-   * Initializes the show error state
-   */
-  private final void initErrorState ()
-  {
-    boolean show = PreferenceManager.getInstance ().getShowErrorState ();
-    this.initialShowErrorState = show;
-    this.gui.jGTICheckBoxShowErrorState.setSelected ( show );
-  }
-
-
-  /**
    * Initializes the {@link Alphabet}.
    */
   private final void initAlphabet ()
@@ -2007,6 +1996,17 @@ public final class PreferencesDialog implements
 
     ToolTipManager.sharedInstance ().registerComponent (
         this.gui.jGTITreeColors );
+  }
+
+
+  /**
+   * Initializes the show error state
+   */
+  private final void initErrorState ()
+  {
+    boolean show = PreferenceManager.getInstance ().getShowErrorState ();
+    this.initialShowErrorState = show;
+    this.gui.jGTICheckBoxShowErrorState.setSelected ( show );
   }
 
 
@@ -3293,20 +3293,6 @@ public final class PreferencesDialog implements
 
 
   /**
-   * Saves the show error state flag
-   */
-  private final void saveShowErrorState ()
-  {
-    boolean b = this.gui.jGTICheckBoxShowErrorState.isSelected ();
-    if ( !this.initialShowErrorState == b )
-    {
-      this.initialShowErrorState = b;
-      PreferenceManager.getInstance ().setShowErrorState ( b );
-    }
-  }
-
-
-  /**
    * Saves the data of the {@link AlphabetItem}.
    */
   private final void saveAlphabet ()
@@ -3912,6 +3898,20 @@ public final class PreferencesDialog implements
 
 
   /**
+   * Saves the show error state flag
+   */
+  private final void saveShowErrorState ()
+  {
+    boolean b = this.gui.jGTICheckBoxShowErrorState.isSelected ();
+    if ( !this.initialShowErrorState == b )
+    {
+      this.initialShowErrorState = b;
+      PreferenceManager.getInstance ().setShowErrorState ( b );
+    }
+  }
+
+
+  /**
    * Saves the data of the start {@link NonterminalSymbolItem}.
    */
   private final void saveStartSymbol ()
@@ -4004,8 +4004,8 @@ public final class PreferencesDialog implements
         .getParsedObject () == null )
         || ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
             .getParsedObject () == null )
-        || this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
-            .getParsedObject () == null )
+        || ( this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+            .getParsedObject () == null ) )
     {
       enabled = false;
       this.gui.jGTITabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, Color.RED );

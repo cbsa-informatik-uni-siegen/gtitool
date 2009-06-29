@@ -1845,7 +1845,7 @@ public final class ConvertMachineDialog implements
    */
   public final void handleAlgorithmWindowChanged ( boolean show )
   {
-    if ( this.algorithm == null || this.algorithm.length () == 0 )
+    if ( ( this.algorithm == null ) || ( this.algorithm.length () == 0 ) )
     {
       TextLoader loader = new TextLoader ();
       this.algorithm = loader.loadAlgorithm ( this.convertMachineType );
@@ -3503,8 +3503,8 @@ public final class ConvertMachineDialog implements
 
         RegexNode nextUnfishedNode = this.modelRegexConverted.getRegex ()
             .getRegexNode ().getNextUnfinishedNode ();
-        if ( this.finalsIndex + 1 >= this.finals.size ()
-            && nextUnfishedNode == null )
+        if ( ( this.finalsIndex + 1 >= this.finals.size () )
+            && ( nextUnfishedNode == null ) )
         {
           this.endReached = true;
         }

@@ -10,7 +10,8 @@ import de.unisiegen.gtitool.core.entities.ProductionWord;
  * The listener interface for receiving {@link ProductionWord} changes.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: ProductionWordChangedListener.java 1372 2008-10-30 08:36:20Z
+ *          fehler $
  */
 public interface ProductionWordChangedListener extends EventListener
 {

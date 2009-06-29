@@ -30,6 +30,18 @@ public class XGrid
 
 
   /**
+   * Returns the x_positions.
+   * 
+   * @return The x_positions.
+   * @see #x_positions
+   */
+  public HashMap < String, Integer > getX_positions ()
+  {
+    return this.x_positions;
+  }
+
+
+  /**
    * Moves a state, so that it does not go too far away
    * 
    * @param v The state
@@ -47,22 +59,11 @@ public class XGrid
     {
       n = new Integer ( last + 1 );
     }
-    if(!list.contains ( was )) {
+    if ( !list.contains ( was ) )
+    {
       n = was;
     }
     this.x_positions.put ( v.getState ().getName (), n );
-  }
-
-
-  /**
-   * Returns the x_positions.
-   * 
-   * @return The x_positions.
-   * @see #x_positions
-   */
-  public HashMap < String, Integer > getX_positions ()
-  {
-    return this.x_positions;
   }
 
 

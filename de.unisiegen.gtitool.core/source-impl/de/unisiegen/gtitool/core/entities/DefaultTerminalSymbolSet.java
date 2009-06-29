@@ -29,7 +29,8 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * The {@link DefaultTerminalSymbolSet} entity.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: DefaultTerminalSymbolSet.java 1586 2009-06-29 20:45:10Z fehler
+ *          $
  */
 public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 {
@@ -38,6 +39,41 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
    * The serial version uid.
    */
   private static final long serialVersionUID = 2256414069656309793L;
+
+
+  /**
+   * Checks the {@link TerminalSymbol}s in the {@link ArrayList} for Classes
+   * 
+   * @param list The {@link ArrayList} containing the {@link TerminalSymbol}s to
+   *          check
+   * @return {@link ArrayList} with the first class, if there is one, else there
+   *         is only one Element in the {@link ArrayList}
+   */
+  public static ArrayList < TerminalSymbol > checkForClass (
+      ArrayList < TerminalSymbol > list )
+  {
+    int dist = 1;
+    int counter = 0;
+    ArrayList < TerminalSymbol > s = new ArrayList < TerminalSymbol > ();
+
+    char first = list.get ( counter ).getName ().charAt ( 0 );
+    s.add ( new DefaultTerminalSymbol ( Character.toString ( first ) ) );
+    while ( dist == 1 )
+    {
+      char c1 = list.get ( counter ).getName ().charAt ( 0 );
+      char c2 = 0;
+      if ( counter + 1 != list.size () )
+      {
+        c2 = list.get ( ++counter ).getName ().charAt ( 0 );
+      }
+      dist = c2 - c1;
+      if ( dist == 1 )
+      {
+        s.add ( new DefaultTerminalSymbol ( Character.toString ( c2 ) ) );
+      }
+    }
+    return s;
+  }
 
 
   /**
@@ -323,8 +359,8 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Checks the {@link TerminalSymbol} list for {@link TerminalSymbol}s with
-   * the same name.
+   * Checks the {@link TerminalSymbol} list for {@link TerminalSymbol}s with the
+   * same name.
    * 
    * @param terminalSymbols The {@link TerminalSymbol} list.
    * @throws TerminalSymbolSetException If a {@link TerminalSymbol} is
@@ -359,41 +395,6 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       throw new TerminalSymbolSetMoreThanOneSymbolException ( this,
           negativeSymbols );
     }
-  }
-
-
-  /**
-   * Checks the {@link TerminalSymbol}s in the {@link ArrayList} for Classes
-   * 
-   * @param list The {@link ArrayList} containing the {@link TerminalSymbol}s
-   *          to check
-   * @return {@link ArrayList} with the first class, if there is one, else there
-   *         is only one Element in the {@link ArrayList}
-   */
-  public static ArrayList < TerminalSymbol > checkForClass (
-      ArrayList < TerminalSymbol > list )
-  {
-    int dist = 1;
-    int counter = 0;
-    ArrayList < TerminalSymbol > s = new ArrayList < TerminalSymbol > ();
-
-    char first = list.get ( counter ).getName ().charAt ( 0 );
-    s.add ( new DefaultTerminalSymbol ( Character.toString ( first ) ) );
-    while ( dist == 1 )
-    {
-      char c1 = list.get ( counter ).getName ().charAt ( 0 );
-      char c2 = 0;
-      if ( counter + 1 != list.size () )
-      {
-        c2 = list.get ( ++counter ).getName ().charAt ( 0 );
-      }
-      dist = c2 - c1;
-      if ( dist == 1 )
-      {
-        s.add ( new DefaultTerminalSymbol ( Character.toString ( c2 ) ) );
-      }
-    }
-    return s;
   }
 
 

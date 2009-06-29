@@ -98,7 +98,7 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
    * @param noToAllButtonVisible The no to all button visible flag.
    * @param cancelButtonVisible The cancel button visible flag.
    */
-  public ConfirmDialog ( JFrame parent, String text, String title,
+  public ConfirmDialog ( JDialog parent, String text, String title,
       boolean yesButtonVisible, boolean yesToAllButtonVisible,
       boolean noButtonVisible, boolean noToAllButtonVisible,
       boolean cancelButtonVisible )
@@ -123,7 +123,7 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
    * @param noToAllButtonVisible The no to all button visible flag.
    * @param cancelButtonVisible The cancel button visible flag.
    */
-  public ConfirmDialog ( JDialog parent, String text, String title,
+  public ConfirmDialog ( JFrame parent, String text, String title,
       boolean yesButtonVisible, boolean yesToAllButtonVisible,
       boolean noButtonVisible, boolean noToAllButtonVisible,
       boolean cancelButtonVisible )

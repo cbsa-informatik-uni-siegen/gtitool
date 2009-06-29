@@ -104,6 +104,24 @@ public class DefaultRegexModel implements DefaultModel, Storable
 
 
   /**
+   * The actualt RegexString. Used for saving
+   */
+  private String actualRegexString;
+
+
+  /**
+   * The {@link FontMetrics}
+   */
+  private FontMetrics metrics = null;
+
+
+  /**
+   * The x overhead
+   */
+  private int x_moving = 0;
+
+
+  /**
    * Constructor for a new {@link DefaultRegexModel}
    * 
    * @param regex The {@link DefaultRegex} for this model
@@ -112,30 +130,6 @@ public class DefaultRegexModel implements DefaultModel, Storable
   {
     this.regex = regex;
     this.initialRegexString = null;
-  }
-
-
-  /**
-   * Returns the regex.
-   * 
-   * @return The regex.
-   * @see #regex
-   */
-  public DefaultRegex getRegex ()
-  {
-    return this.regex;
-  }
-
-
-  /**
-   * Changes the RegexNode
-   * 
-   * @param node The new {@link RegexNode}
-   * @param regexString The new String for the Regex
-   */
-  public void changeRegexNode ( RegexNode node, String regexString )
-  {
-    this.regex.setRegexNode ( node, regexString );
   }
 
 
@@ -166,7 +160,7 @@ public class DefaultRegexModel implements DefaultModel, Storable
       if ( attr.getName ().equals ( "regexString" ) ) //$NON-NLS-1$
       {
         regexString = attr.getValue ();
-        if ( regexString != null && regexString.equals ( " " ) ) //$NON-NLS-1$
+        if ( ( regexString != null ) && regexString.equals ( " " ) ) //$NON-NLS-1$
         {
           regexString = new String ();
         }
@@ -209,156 +203,6 @@ public class DefaultRegexModel implements DefaultModel, Storable
 
 
   /**
-   * Returns the jGTIGraph.
-   * 
-   * @return The jGTIGraph.
-   * @see #jGTIGraph
-   */
-  public JGTIGraph getJGTIGraph ()
-  {
-    return this.jGTIGraph;
-  }
-
-
-  /**
-   * The actualt RegexString. Used for saving
-   */
-  private String actualRegexString;
-
-
-  /**
-   * Sets the actualRegexString.
-   * 
-   * @param actualRegexString The actualRegexString to set.
-   * @see #actualRegexString
-   */
-  public void setActualRegexString ( String actualRegexString )
-  {
-    this.actualRegexString = actualRegexString;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see DefaultModel#getElement()
-   */
-  public Element getElement ()
-  {
-    Element newElement = new Element ( "RegexModel" ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "regexVersion", //$NON-NLS-1$
-        REGEX_VERSION ) );
-    newElement.addElement ( this.regex.getAlphabet () );
-
-    if ( this.actualRegexString == null
-        || this.actualRegexString.length () == 0 )
-    {
-      newElement.addAttribute ( new Attribute ( "regexString", //$NON-NLS-1$
-          " " ) ); //$NON-NLS-1$
-    }
-    else
-    {
-      newElement.addAttribute ( new Attribute ( "regexString", //$NON-NLS-1$
-          this.actualRegexString ) );
-    }
-    return newElement;
-  }
-
-
-  /**
-   * The {@link FontMetrics}
-   */
-  private FontMetrics metrics = null;
-
-
-  /**
-   * Initializes the {@link JGTIGraph}
-   */
-  public void initializeGraph ()
-  {
-    this.graphModel = new DefaultGraphModel ();
-
-    this.jGTIGraph = new JGTIGraph ( this.graphModel );
-    this.jGTIGraph.setDoubleBuffered ( false );
-    this.jGTIGraph.getGraphLayoutCache ()
-        .setFactory ( new GPCellViewFactory () );
-    this.jGTIGraph.setInvokesStopCellEditing ( true );
-    this.jGTIGraph.setJumpToDefaultPort ( true );
-    this.jGTIGraph.setSizeable ( false );
-    this.jGTIGraph.setConnectable ( false );
-    this.jGTIGraph.setDisconnectable ( false );
-    this.jGTIGraph.setEdgeLabelsMovable ( false );
-    this.jGTIGraph.setEditable ( false );
-    this.jGTIGraph.setHandleSize ( 0 );
-    this.jGTIGraph.setXorEnabled ( false );
-
-    this.metrics = getJGTIGraph ().getFontMetrics ( this.jGTIGraph.getFont () );
-
-    EdgeView.renderer = new EdgeRenderer ();
-    EdgeView.renderer.setForeground ( Color.BLACK );
-  }
-
-
-  /**
-   * The x overhead
-   */
-  private int x_moving = 0;
-
-
-  /**
-   * Creates the Tree
-   */
-  public void createTree ()
-  {
-    if ( this.regex == null || this.regex.getRegexNode () == null
-        || this.regex.getRegexNode ().toString ().length () == 0 )
-    {
-      return;
-    }
-    this.X_SPACE = 70;
-    this.Y_SPACE = 50;
-
-    this.regexEdgeViewList.clear ();
-    this.nodeViewList.clear ();
-
-    if ( this.regex.getRegexNode ().getWidth () > 18 )
-    {
-      this.X_SPACE -= 20;
-    }
-    if ( this.regex.getRegexNode ().getHeight () > 8 )
-    {
-      this.Y_SPACE -= 10;
-    }
-
-    DefaultNodeView parent = createNodeView ( 0, 0, this.regex.getRegexNode () );
-    addNodesToModel ( parent );
-
-    int x_overhead = 0;
-
-    for ( DefaultNodeView nodeView : getNodeViewList () )
-    {
-      int act_x = nodeView.getX ();
-      if ( act_x < 0 && Math.abs ( act_x ) > x_overhead )
-      {
-        x_overhead = Math.abs ( act_x );
-      }
-    }
-    this.x_moving = x_overhead / ( this.X_SPACE / 2 );
-    if ( x_overhead > 0 )
-    {
-      x_overhead += this.X_BORDER;
-
-      for ( DefaultNodeView nodeView : getNodeViewList () )
-      {
-        nodeView.moveRelative ( x_overhead, 0 );
-      }
-      getGraphModel ().cellsChanged (
-          DefaultGraphModel.getAll ( getGraphModel () ) );
-    }
-  }
-
-
-  /**
    * Recursivly add the Nodes to the Model
    * 
    * @param parent The parent {@link DefaultNodeView}
@@ -388,9 +232,9 @@ public class DefaultRegexModel implements DefaultModel, Storable
             DisjunctionNode dis = ( DisjunctionNode ) childNode;
             x -= ( ( this.X_SPACE / 2 ) * dis.countRightChildren () );
           }
-          else if ( childNode instanceof KleeneNode
-              || childNode instanceof PlusNode
-              || childNode instanceof OptionalNode )
+          else if ( ( childNode instanceof KleeneNode )
+              || ( childNode instanceof PlusNode )
+              || ( childNode instanceof OptionalNode ) )
           {
             x -= ( ( this.X_SPACE / 2 ) * ( childNode.getRightChildrenCount () ) );
           }
@@ -410,9 +254,9 @@ public class DefaultRegexModel implements DefaultModel, Storable
             DisjunctionNode dis = ( DisjunctionNode ) childNode;
             x += ( ( this.X_SPACE / 2 ) * dis.countLeftChildren () );
           }
-          else if ( childNode instanceof KleeneNode
-              || childNode instanceof PlusNode
-              || childNode instanceof OptionalNode )
+          else if ( ( childNode instanceof KleeneNode )
+              || ( childNode instanceof PlusNode )
+              || ( childNode instanceof OptionalNode ) )
           {
             x += ( ( this.X_SPACE / 2 ) * ( childNode.getLeftChildrenCount () ) );
           }
@@ -436,30 +280,14 @@ public class DefaultRegexModel implements DefaultModel, Storable
 
 
   /**
-   * Creates a new {@link DefaultRegexEdgeView}
+   * Changes the RegexNode
    * 
-   * @param parent The parent {@link DefaultNodeView}
-   * @param child The child {@link DefaultNodeView}
-   * @return The created {@link DefaultRegexEdgeView}
+   * @param node The new {@link RegexNode}
+   * @param regexString The new String for the Regex
    */
-  public DefaultRegexEdgeView createRegexEdgeView ( DefaultNodeView parent,
-      DefaultNodeView child )
+  public void changeRegexNode ( RegexNode node, String regexString )
   {
-    DefaultRegexEdgeView edgeView = new DefaultRegexEdgeView ( parent, child );
-
-    // Set the parallel routing
-    JGraphpadParallelSplineRouter.getSharedInstance ().setEdgeSeparation ( 25 );
-    GraphConstants.setRouting ( edgeView.getAttributes (),
-        JGraphpadParallelSplineRouter.getSharedInstance () );
-
-    GraphConstants.setSelectable ( edgeView.getAttributes (), false );
-
-    this.jGTIGraph.getGraphLayoutCache ().insertEdge ( edgeView,
-        parent.getChildAt ( 0 ), child.getChildAt ( 0 ) );
-
-    this.regexEdgeViewList.add ( edgeView );
-
-    return edgeView;
+    this.regex.setRegexNode ( node, regexString );
   }
 
 
@@ -532,14 +360,110 @@ public class DefaultRegexModel implements DefaultModel, Storable
 
 
   /**
-   * Returns the nodeViewList.
+   * Creates a new {@link DefaultRegexEdgeView}
    * 
-   * @return The nodeViewList.
-   * @see #nodeViewList
+   * @param parent The parent {@link DefaultNodeView}
+   * @param child The child {@link DefaultNodeView}
+   * @return The created {@link DefaultRegexEdgeView}
    */
-  public ArrayList < DefaultNodeView > getNodeViewList ()
+  public DefaultRegexEdgeView createRegexEdgeView ( DefaultNodeView parent,
+      DefaultNodeView child )
   {
-    return this.nodeViewList;
+    DefaultRegexEdgeView edgeView = new DefaultRegexEdgeView ( parent, child );
+
+    // Set the parallel routing
+    JGraphpadParallelSplineRouter.getSharedInstance ().setEdgeSeparation ( 25 );
+    GraphConstants.setRouting ( edgeView.getAttributes (),
+        JGraphpadParallelSplineRouter.getSharedInstance () );
+
+    GraphConstants.setSelectable ( edgeView.getAttributes (), false );
+
+    this.jGTIGraph.getGraphLayoutCache ().insertEdge ( edgeView,
+        parent.getChildAt ( 0 ), child.getChildAt ( 0 ) );
+
+    this.regexEdgeViewList.add ( edgeView );
+
+    return edgeView;
+  }
+
+
+  /**
+   * Creates the Tree
+   */
+  public void createTree ()
+  {
+    if ( ( this.regex == null ) || ( this.regex.getRegexNode () == null )
+        || ( this.regex.getRegexNode ().toString ().length () == 0 ) )
+    {
+      return;
+    }
+    this.X_SPACE = 70;
+    this.Y_SPACE = 50;
+
+    this.regexEdgeViewList.clear ();
+    this.nodeViewList.clear ();
+
+    if ( this.regex.getRegexNode ().getWidth () > 18 )
+    {
+      this.X_SPACE -= 20;
+    }
+    if ( this.regex.getRegexNode ().getHeight () > 8 )
+    {
+      this.Y_SPACE -= 10;
+    }
+
+    DefaultNodeView parent = createNodeView ( 0, 0, this.regex.getRegexNode () );
+    addNodesToModel ( parent );
+
+    int x_overhead = 0;
+
+    for ( DefaultNodeView nodeView : getNodeViewList () )
+    {
+      int act_x = nodeView.getX ();
+      if ( ( act_x < 0 ) && ( Math.abs ( act_x ) > x_overhead ) )
+      {
+        x_overhead = Math.abs ( act_x );
+      }
+    }
+    this.x_moving = x_overhead / ( this.X_SPACE / 2 );
+    if ( x_overhead > 0 )
+    {
+      x_overhead += this.X_BORDER;
+
+      for ( DefaultNodeView nodeView : getNodeViewList () )
+      {
+        nodeView.moveRelative ( x_overhead, 0 );
+      }
+      getGraphModel ().cellsChanged (
+          DefaultGraphModel.getAll ( getGraphModel () ) );
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see DefaultModel#getElement()
+   */
+  public Element getElement ()
+  {
+    Element newElement = new Element ( "RegexModel" ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "regexVersion", //$NON-NLS-1$
+        REGEX_VERSION ) );
+    newElement.addElement ( this.regex.getAlphabet () );
+
+    if ( ( this.actualRegexString == null )
+        || ( this.actualRegexString.length () == 0 ) )
+    {
+      newElement.addAttribute ( new Attribute ( "regexString", //$NON-NLS-1$
+          " " ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      newElement.addAttribute ( new Attribute ( "regexString", //$NON-NLS-1$
+          this.actualRegexString ) );
+    }
+    return newElement;
   }
 
 
@@ -564,6 +488,82 @@ public class DefaultRegexModel implements DefaultModel, Storable
   public String getInitialRegexString ()
   {
     return this.initialRegexString;
+  }
+
+
+  /**
+   * Returns the jGTIGraph.
+   * 
+   * @return The jGTIGraph.
+   * @see #jGTIGraph
+   */
+  public JGTIGraph getJGTIGraph ()
+  {
+    return this.jGTIGraph;
+  }
+
+
+  /**
+   * Returns the nodeViewList.
+   * 
+   * @return The nodeViewList.
+   * @see #nodeViewList
+   */
+  public ArrayList < DefaultNodeView > getNodeViewList ()
+  {
+    return this.nodeViewList;
+  }
+
+
+  /**
+   * Returns the regex.
+   * 
+   * @return The regex.
+   * @see #regex
+   */
+  public DefaultRegex getRegex ()
+  {
+    return this.regex;
+  }
+
+
+  /**
+   * Initializes the {@link JGTIGraph}
+   */
+  public void initializeGraph ()
+  {
+    this.graphModel = new DefaultGraphModel ();
+
+    this.jGTIGraph = new JGTIGraph ( this.graphModel );
+    this.jGTIGraph.setDoubleBuffered ( false );
+    this.jGTIGraph.getGraphLayoutCache ()
+        .setFactory ( new GPCellViewFactory () );
+    this.jGTIGraph.setInvokesStopCellEditing ( true );
+    this.jGTIGraph.setJumpToDefaultPort ( true );
+    this.jGTIGraph.setSizeable ( false );
+    this.jGTIGraph.setConnectable ( false );
+    this.jGTIGraph.setDisconnectable ( false );
+    this.jGTIGraph.setEdgeLabelsMovable ( false );
+    this.jGTIGraph.setEditable ( false );
+    this.jGTIGraph.setHandleSize ( 0 );
+    this.jGTIGraph.setXorEnabled ( false );
+
+    this.metrics = getJGTIGraph ().getFontMetrics ( this.jGTIGraph.getFont () );
+
+    EdgeView.renderer = new EdgeRenderer ();
+    EdgeView.renderer.setForeground ( Color.BLACK );
+  }
+
+
+  /**
+   * Sets the actualRegexString.
+   * 
+   * @param actualRegexString The actualRegexString to set.
+   * @see #actualRegexString
+   */
+  public void setActualRegexString ( String actualRegexString )
+  {
+    this.actualRegexString = actualRegexString;
   }
 
 
@@ -635,7 +635,7 @@ public class DefaultRegexModel implements DefaultModel, Storable
       }
       s += "\\node{r" + i + "}{" + name + "}"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
       if ( !view.equals ( nodes.get ( nodes.size () - 1 ) )
-          && view.getY () != nodes.get ( i + 1 ).getY () )
+          && ( view.getY () != nodes.get ( i + 1 ).getY () ) )
       {
         s += "\\\\[4ex]\n"; //$NON-NLS-1$
         j = 0;

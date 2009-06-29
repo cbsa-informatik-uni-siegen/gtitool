@@ -156,30 +156,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * Returns the currentContent.
-   * 
-   * @return The currentContent.
-   * @see #currentContent
-   */
-  public String getCurrentContent ()
-  {
-    return this.currentContent;
-  }
-
-
-  /**
-   * Sets the currentContent.
-   * 
-   * @param currentContent The currentContent to set.
-   * @see #currentContent
-   */
-  public void setCurrentContent ( String currentContent )
-  {
-    this.currentContent = currentContent;
-  }
-
-
-  /**
    * The {@link TextDocumentListener}
    */
   private TextDocumentListener docListener = new TextDocumentListener ();
@@ -243,30 +219,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * The undo history implemented as a {@link Stack}
    */
   private Stack < RegexUndoItem > undohistory = new Stack < RegexUndoItem > ();
-
-
-  /**
-   * Returns the undohistory.
-   * 
-   * @return The undohistory.
-   * @see #undohistory
-   */
-  public Stack < RegexUndoItem > getUndohistory ()
-  {
-    return this.undohistory;
-  }
-
-
-  /**
-   * Returns the redohistory.
-   * 
-   * @return The redohistory.
-   * @see #redohistory
-   */
-  public Stack < RegexUndoItem > getRedohistory ()
-  {
-    return this.redohistory;
-  }
 
 
   /**
@@ -336,32 +288,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           /**
            * {@inheritDoc}
            * 
-           * @see ColorChangedAdapter#colorChangedRegexSelectedNode(java.awt.Color)
-           */
-          @Override
-          public void colorChangedRegexSelectedNode (
-              @SuppressWarnings ( "unused" ) Color newColor )
-          {
-            getJGTIGraph ().repaint ();
-          }
-
-
-          /**
-           * {@inheritDoc}
-           * 
-           * @see ColorChangedAdapter#colorChangedRegexSymbol(java.awt.Color)
-           */
-          @Override
-          public void colorChangedRegexSymbol (
-              @SuppressWarnings ( "unused" ) Color newColor )
-          {
-            getGUI ().repaint ();
-          }
-
-
-          /**
-           * {@inheritDoc}
-           * 
            * @see ColorChangedAdapter#colorChangedRegexMarkedNode(java.awt.Color)
            */
           @Override
@@ -388,10 +314,23 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           /**
            * {@inheritDoc}
            * 
-           * @see ColorChangedAdapter#colorChangedRegexToolTip(java.awt.Color)
+           * @see ColorChangedAdapter#colorChangedRegexSelectedNode(java.awt.Color)
            */
           @Override
-          public void colorChangedRegexToolTip (
+          public void colorChangedRegexSelectedNode (
+              @SuppressWarnings ( "unused" ) Color newColor )
+          {
+            getJGTIGraph ().repaint ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedAdapter#colorChangedRegexSymbol(java.awt.Color)
+           */
+          @Override
+          public void colorChangedRegexSymbol (
               @SuppressWarnings ( "unused" ) Color newColor )
           {
             getGUI ().repaint ();
@@ -405,6 +344,19 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
            */
           @Override
           public void colorChangedRegexToken (
+              @SuppressWarnings ( "unused" ) Color newColor )
+          {
+            getGUI ().repaint ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedAdapter#colorChangedRegexToolTip(java.awt.Color)
+           */
+          @Override
+          public void colorChangedRegexToolTip (
               @SuppressWarnings ( "unused" ) Color newColor )
           {
             getGUI ().repaint ();
@@ -613,6 +565,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
+   * Returns the currentContent.
+   * 
+   * @return The currentContent.
+   * @see #currentContent
+   */
+  public String getCurrentContent ()
+  {
+    return this.currentContent;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see EditorPanel#getFile()
@@ -727,6 +691,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
+   * Returns the redohistory.
+   * 
+   * @return The redohistory.
+   * @see #redohistory
+   */
+  public Stack < RegexUndoItem > getRedohistory ()
+  {
+    return this.redohistory;
+  }
+
+
+  /**
    * Returns the regex.
    * 
    * @return The regex.
@@ -734,6 +710,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public DefaultRegex getRegex ()
   {
     return this.model.getRegex ();
+  }
+
+
+  /**
+   * Returns the undohistory.
+   * 
+   * @return The undohistory.
+   * @see #undohistory
+   */
+  public Stack < RegexUndoItem > getUndohistory ()
+  {
+    return this.undohistory;
   }
 
 
@@ -1282,7 +1270,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     return !this.model.getInitialRegexString ().equals (
         this.gui.styledRegexParserPanel.getText () )
         || this.model.getRegex ().getAlphabet ().isModified ()
-        || this.file == null;
+        || ( this.file == null );
   }
 
 
@@ -1327,6 +1315,45 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         .getString ( "RegexPanel.InformationTitle" ) ); //$NON-NLS-1$
     this.gui.jGTILabelRegex.setText ( Messages
         .getString ( "RegexPanel.RegexTitle" ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Preforms the {@link Alphabet} change.
+   * 
+   * @param oldAlphabet The old {@link Alphabet}.
+   * @param newAlphabet The new {@link Alphabet}.
+   */
+  public final void performAlphabetChange ( Alphabet oldAlphabet,
+      Alphabet newAlphabet )
+  {
+    TreeSet < Symbol > symbolsToAdd = new TreeSet < Symbol > ();
+    TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
+    for ( Symbol current : newAlphabet )
+    {
+      if ( !oldAlphabet.contains ( current ) )
+      {
+        symbolsToAdd.add ( current );
+      }
+    }
+    for ( Symbol current : oldAlphabet )
+    {
+      if ( !newAlphabet.contains ( current ) )
+      {
+        symbolsToRemove.add ( current );
+      }
+    }
+    try
+    {
+      oldAlphabet.add ( symbolsToAdd );
+      oldAlphabet.remove ( symbolsToRemove );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -1417,45 +1444,6 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
 
   /**
-   * Preforms the {@link Alphabet} change.
-   * 
-   * @param oldAlphabet The old {@link Alphabet}.
-   * @param newAlphabet The new {@link Alphabet}.
-   */
-  public final void performAlphabetChange ( Alphabet oldAlphabet,
-      Alphabet newAlphabet )
-  {
-    TreeSet < Symbol > symbolsToAdd = new TreeSet < Symbol > ();
-    TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
-    for ( Symbol current : newAlphabet )
-    {
-      if ( !oldAlphabet.contains ( current ) )
-      {
-        symbolsToAdd.add ( current );
-      }
-    }
-    for ( Symbol current : oldAlphabet )
-    {
-      if ( !newAlphabet.contains ( current ) )
-      {
-        symbolsToRemove.add ( current );
-      }
-    }
-    try
-    {
-      oldAlphabet.add ( symbolsToAdd );
-      oldAlphabet.remove ( symbolsToRemove );
-    }
-    catch ( AlphabetException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-    fireModifyStatusChanged ( false );
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
@@ -1477,6 +1465,18 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.model.setInitialRegexString ( this.gui.styledRegexParserPanel
         .getText () );
     this.model.getRegex ().getAlphabet ().resetModify ();
+  }
+
+
+  /**
+   * Sets the currentContent.
+   * 
+   * @param currentContent The currentContent to set.
+   * @see #currentContent
+   */
+  public void setCurrentContent ( String currentContent )
+  {
+    this.currentContent = currentContent;
   }
 
 

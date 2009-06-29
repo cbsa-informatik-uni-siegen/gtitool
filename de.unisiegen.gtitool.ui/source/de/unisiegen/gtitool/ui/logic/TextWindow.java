@@ -102,37 +102,20 @@ public class TextWindow implements LogicClass < TextForm >
 
 
   /**
-   * Shows the Dialog
+   * Dispose the {@link MainWindowForm}
    */
-  public void show ()
+  public void dispose ()
   {
-    Rectangle rect;
     if ( this.algorithm )
     {
-      rect = PreferenceManager.getInstance ().getAlgorithmDialogBounds ();
-      if ( ( rect.x == PreferenceManager.DEFAULT_ALGORITHM_DIALOG_POSITION_X )
-          || ( rect.y == PreferenceManager.DEFAULT_ALGORITHM_DIALOG_POSITION_Y ) )
-      {
-        rect.x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-            - ( this.gui.getWidth () / 2 );
-        rect.y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-            - ( this.gui.getHeight () / 2 );
-      }
+      PreferenceManager.getInstance ()
+          .setAlgorithmDialogPreferences ( this.gui );
     }
     else
     {
-      rect = PreferenceManager.getInstance ().getRDPDialogBounds ();
-      if ( ( rect.x == PreferenceManager.DEFAULT_RDP_DIALOG_POSITION_X )
-          || ( rect.y == PreferenceManager.DEFAULT_RDP_DIALOG_POSITION_Y ) )
-      {
-        rect.x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-            - ( this.gui.getWidth () / 2 );
-        rect.y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-            - ( this.gui.getHeight () / 2 );
-      }
+      PreferenceManager.getInstance ().setRDPDialogPreferences ( this.gui );
     }
-    this.gui.setBounds ( rect );
-    this.gui.setVisible ( true );
+    this.gui.dispose ();
   }
 
 
@@ -148,20 +131,26 @@ public class TextWindow implements LogicClass < TextForm >
 
 
   /**
-   * Dispose the {@link MainWindowForm}
+   * Returns the jobName.
+   * 
+   * @return The jobName.
+   * @see #jobName
    */
-  public void dispose ()
+  public String getJobName ()
   {
-    if ( this.algorithm )
-    {
-      PreferenceManager.getInstance ()
-          .setAlgorithmDialogPreferences ( this.gui );
-    }
-    else
-    {
-      PreferenceManager.getInstance ().setRDPDialogPreferences ( this.gui );
-    }
-    this.gui.dispose ();
+    return this.jobName;
+  }
+
+
+  /**
+   * Returns the text.
+   * 
+   * @return The text.
+   * @see #text
+   */
+  public String getText ()
+  {
+    return this.text;
   }
 
 
@@ -184,6 +173,16 @@ public class TextWindow implements LogicClass < TextForm >
     {
       this.toggleButton.setSelected ( false );
     }
+  }
+
+
+  /**
+   * Handles the print button clicked
+   */
+  public void handlePrint ()
+  {
+    PrintDialog dialog = new PrintDialog ( this.parent, this );
+    dialog.show ();
   }
 
 
@@ -279,40 +278,6 @@ public class TextWindow implements LogicClass < TextForm >
 
 
   /**
-   * Handles the print button clicked
-   */
-  public void handlePrint ()
-  {
-    PrintDialog dialog = new PrintDialog ( this.parent, this );
-    dialog.show ();
-  }
-
-
-  /**
-   * Returns the jobName.
-   * 
-   * @return The jobName.
-   * @see #jobName
-   */
-  public String getJobName ()
-  {
-    return this.jobName;
-  }
-
-
-  /**
-   * Returns the text.
-   * 
-   * @return The text.
-   * @see #text
-   */
-  public String getText ()
-  {
-    return this.text;
-  }
-
-
-  /**
    * Returns the algorithm.
    * 
    * @return The algorithm.
@@ -321,6 +286,41 @@ public class TextWindow implements LogicClass < TextForm >
   public boolean isAlgorithm ()
   {
     return this.algorithm;
+  }
+
+
+  /**
+   * Shows the Dialog
+   */
+  public void show ()
+  {
+    Rectangle rect;
+    if ( this.algorithm )
+    {
+      rect = PreferenceManager.getInstance ().getAlgorithmDialogBounds ();
+      if ( ( rect.x == PreferenceManager.DEFAULT_ALGORITHM_DIALOG_POSITION_X )
+          || ( rect.y == PreferenceManager.DEFAULT_ALGORITHM_DIALOG_POSITION_Y ) )
+      {
+        rect.x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+            - ( this.gui.getWidth () / 2 );
+        rect.y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+            - ( this.gui.getHeight () / 2 );
+      }
+    }
+    else
+    {
+      rect = PreferenceManager.getInstance ().getRDPDialogBounds ();
+      if ( ( rect.x == PreferenceManager.DEFAULT_RDP_DIALOG_POSITION_X )
+          || ( rect.y == PreferenceManager.DEFAULT_RDP_DIALOG_POSITION_Y ) )
+      {
+        rect.x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+            - ( this.gui.getWidth () / 2 );
+        rect.y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+            - ( this.gui.getHeight () / 2 );
+      }
+    }
+    this.gui.setBounds ( rect );
+    this.gui.setVisible ( true );
   }
 
 }

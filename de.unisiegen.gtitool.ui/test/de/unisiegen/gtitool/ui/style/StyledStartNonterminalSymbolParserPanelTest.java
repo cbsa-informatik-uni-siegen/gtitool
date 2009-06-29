@@ -12,7 +12,8 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * The test class of the {@link StyledStartNonterminalSymbolParserPanel}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: StyledStartNonterminalSymbolParserPanelTest.java 1087
+ *          2008-07-03 22:10:41Z fehler $
  */
 public class StyledStartNonterminalSymbolParserPanelTest
 {
@@ -25,8 +26,7 @@ public class StyledStartNonterminalSymbolParserPanelTest
   public static void main ( String [] arguments )
   {
     JFrame jFrame = new JFrame ( "StartNonterminalSymbolPanelTest" ); //$NON-NLS-1$
-    StyledStartNonterminalSymbolParserPanel styledStartNonterminalSymbolParserPanel = new 
-    StyledStartNonterminalSymbolParserPanel ();
+    StyledStartNonterminalSymbolParserPanel styledStartNonterminalSymbolParserPanel = new StyledStartNonterminalSymbolParserPanel ();
     styledStartNonterminalSymbolParserPanel
         .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbol > ()
         {

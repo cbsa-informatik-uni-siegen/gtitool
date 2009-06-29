@@ -16,7 +16,8 @@ import de.unisiegen.gtitool.core.i18n.Messages;
  * regular.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: GrammarRegularGrammarException.java 1372 2008-10-30 08:36:20Z
+ *          fehler $
  */
 public final class GrammarRegularGrammarException extends GrammarException
     implements ProductionWordMembersInvolvedException

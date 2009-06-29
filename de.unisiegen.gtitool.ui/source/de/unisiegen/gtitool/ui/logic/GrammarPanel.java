@@ -305,6 +305,55 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
+   * TODO
+   * 
+   * @param g
+   * @return The string of the RDP
+   */
+  private String createRDP ( Grammar g )
+  {
+    StringBuilder result = new StringBuilder ();
+    boolean first = true;
+    for ( NonterminalSymbol A : g.getNonterminalSymbolSet () )
+    {
+      if ( !first )
+      {
+        result.append ( "\n\n" ); //$NON-NLS-1$
+      }
+      else
+      {
+        first = false;
+      }
+      result.append ( "void " ); //$NON-NLS-1$
+      result.append ( A );
+      result.append ( "() {\n" ); //$NON-NLS-1$
+      for ( Production p : g.getProductionForNonTerminal ( A ) )
+      {
+        result.append ( "   case:{\n" ); //$NON-NLS-1$
+        for ( ProductionWordMember m : p.getProductionWord () )
+        {
+          if ( m instanceof NonterminalSymbol )
+          {
+            result.append ( "      " ); //$NON-NLS-1$
+            result.append ( m );
+            result.append ( "();\n" ); //$NON-NLS-1$
+          }
+          else if ( m instanceof TerminalSymbol )
+          {
+            result.append ( "      match(\"" ); //$NON-NLS-1$
+            result.append ( m );
+            result.append ( "\");\n" ); //$NON-NLS-1$
+          }
+        }
+        result.append ( "   }\n" ); //$NON-NLS-1$
+      }
+      result.append ( "}" ); //$NON-NLS-1$
+    }
+    return result.toString ();
+  }
+
+
+  /**
    * Let the listeners know that the modify status has changed.
    * 
    * @param forceModify True if the modify is forced, otherwise false.
@@ -574,6 +623,17 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
+   * TODO
+   */
+  public final void handleCreateRDP ()
+  {
+    TextWindow w = new TextWindow ( this.mainWindowForm,
+        createRDP ( this.grammar ), false, null, getName () + "_RDP" ); //$NON-NLS-1$
+    w.show ();
+  }
+
+
+  /**
    * Handle delete production button pressed.
    */
   public final void handleDeleteProduction ()
@@ -650,17 +710,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
-   * Opens {@link ConvertGrammarDialog} for elimination of LeftRecursion
-   */
-  public final void handleEliminateLeftRecursion ()
-  {
-    ConvertGrammarDialog converter = new ConvertGrammarDialog (
-        this.mainWindowForm, this );
-    converter.convert ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION );
-  }
-
-
-  /**
    * Opens {@link ConvertGrammarDialog} for elimination of entity productions
    */
   public final void handleEliminateEntityProductions ()
@@ -685,11 +734,11 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   /**
    * Opens {@link ConvertGrammarDialog} for elimination of LeftRecursion
    */
-  public final void handleLeftFactoring ()
+  public final void handleEliminateLeftRecursion ()
   {
     ConvertGrammarDialog converter = new ConvertGrammarDialog (
         this.mainWindowForm, this );
-    converter.convert ( ConvertGrammarType.LEFT_FACTORING );
+    converter.convert ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION );
   }
 
 
@@ -719,62 +768,13 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
-   * TODO
-   * 
-   * @param g
-   * @return The string of the RDP
+   * Opens {@link ConvertGrammarDialog} for elimination of LeftRecursion
    */
-  private String createRDP ( Grammar g )
+  public final void handleLeftFactoring ()
   {
-    StringBuilder result = new StringBuilder ();
-    boolean first = true;
-    for ( NonterminalSymbol A : g.getNonterminalSymbolSet () )
-    {
-      if ( !first )
-      {
-        result.append ( "\n\n" ); //$NON-NLS-1$
-      }
-      else
-      {
-        first = false;
-      }
-      result.append ( "void " ); //$NON-NLS-1$
-      result.append ( A );
-      result.append ( "() {\n" ); //$NON-NLS-1$
-      for ( Production p : g.getProductionForNonTerminal ( A ) )
-      {
-        result.append ( "   case:{\n" ); //$NON-NLS-1$
-        for ( ProductionWordMember m : p.getProductionWord () )
-        {
-          if ( m instanceof NonterminalSymbol )
-          {
-            result.append ( "      " ); //$NON-NLS-1$
-            result.append ( m );
-            result.append ( "();\n" ); //$NON-NLS-1$
-          }
-          else if ( m instanceof TerminalSymbol )
-          {
-            result.append ( "      match(\"" ); //$NON-NLS-1$
-            result.append ( m );
-            result.append ( "\");\n" ); //$NON-NLS-1$
-          }
-        }
-        result.append ( "   }\n" ); //$NON-NLS-1$
-      }
-      result.append ( "}" ); //$NON-NLS-1$
-    }
-    return result.toString ();
-  }
-
-
-  /**
-   * TODO
-   */
-  public final void handleCreateRDP ()
-  {
-    TextWindow w = new TextWindow ( this.mainWindowForm,
-        createRDP ( this.grammar ), false, null, getName () + "_RDP" ); //$NON-NLS-1$
-    w.show ();
+    ConvertGrammarDialog converter = new ConvertGrammarDialog (
+        this.mainWindowForm, this );
+    converter.convert ( ConvertGrammarType.LEFT_FACTORING );
   }
 
 

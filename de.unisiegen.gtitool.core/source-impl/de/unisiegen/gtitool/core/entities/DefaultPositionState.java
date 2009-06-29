@@ -48,14 +48,19 @@ public class DefaultPositionState extends DefaultState
 
 
   /**
-   * Returns the positions.
+   * {@inheritDoc}
    * 
-   * @return The positions.
-   * @see #positions
+   * @see DefaultState#equals(java.lang.Object)
    */
-  public HashSet < Integer > getPositions ()
+  @Override
+  public boolean equals ( Object other )
   {
-    return this.positions;
+    if ( other instanceof DefaultPositionState )
+    {
+      DefaultPositionState positionState = ( DefaultPositionState ) other;
+      return this.positions.equals ( positionState.getPositions () );
+    }
+    return false;
   }
 
 
@@ -77,51 +82,14 @@ public class DefaultPositionState extends DefaultState
 
 
   /**
-   * Returns the mark.
+   * Returns the positions.
    * 
-   * @return The mark.
-   * @see #mark
+   * @return The positions.
+   * @see #positions
    */
-  public boolean isMarked ()
+  public HashSet < Integer > getPositions ()
   {
-    return this.mark;
-  }
-
-
-  /**
-   * Unmarks the State
-   */
-  public void unMark ()
-  {
-    setActive ( false );
-    this.mark = false;
-  }
-
-
-  /**
-   * Marks the State
-   */
-  public void mark ()
-  {
-    setActive ( true );
-    this.mark = true;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see DefaultState#equals(java.lang.Object)
-   */
-  @Override
-  public boolean equals ( Object other )
-  {
-    if ( other instanceof DefaultPositionState )
-    {
-      DefaultPositionState positionState = ( DefaultPositionState ) other;
-      return this.positions.equals ( positionState.getPositions () );
-    }
-    return false;
+    return this.positions;
   }
 
 
@@ -139,6 +107,38 @@ public class DefaultPositionState extends DefaultState
       i += n.hashCode () * n.hashCode ();
     }
     return i;
+  }
+
+
+  /**
+   * Returns the mark.
+   * 
+   * @return The mark.
+   * @see #mark
+   */
+  public boolean isMarked ()
+  {
+    return this.mark;
+  }
+
+
+  /**
+   * Marks the State
+   */
+  public void mark ()
+  {
+    setActive ( true );
+    this.mark = true;
+  }
+
+
+  /**
+   * Unmarks the State
+   */
+  public void unMark ()
+  {
+    setActive ( false );
+    this.mark = false;
   }
 
 }

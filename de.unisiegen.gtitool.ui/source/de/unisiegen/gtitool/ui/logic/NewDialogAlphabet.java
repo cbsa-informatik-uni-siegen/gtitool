@@ -34,6 +34,51 @@ public final class NewDialogAlphabet implements
 
 
   /**
+   * Allocate a new {@link NewDialogAlphabet}.
+   * 
+   * @param parent The dialog containing this panel.
+   */
+  public NewDialogAlphabet ( NewDialog parent )
+  {
+    this.parent = parent;
+    this.gui = new NewDialogAlphabetForm ( this );
+    /*
+     * Alphabet changed listener
+     */
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
+        {
+
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
+          {
+            setButtonStatus ();
+          }
+        } );
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
+        {
+
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
+          {
+            setButtonStatus ();
+          }
+        } );
+    this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
+        {
+
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
+          {
+            setButtonStatus ();
+          }
+        } );
+  }
+
+
+  /**
    * Changes GUI elements
    */
   public void changeGui ()
@@ -80,51 +125,6 @@ public final class NewDialogAlphabet implements
 
 
   /**
-   * Allocate a new {@link NewDialogAlphabet}.
-   * 
-   * @param parent The dialog containing this panel.
-   */
-  public NewDialogAlphabet ( NewDialog parent )
-  {
-    this.parent = parent;
-    this.gui = new NewDialogAlphabetForm ( this );
-    /*
-     * Alphabet changed listener
-     */
-    this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
-        {
-
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          Alphabet newAlphabet )
-          {
-            setButtonStatus ();
-          }
-        } );
-    this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
-        {
-
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          Alphabet newAlphabet )
-          {
-            setButtonStatus ();
-          }
-        } );
-    this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
-        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
-        {
-
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          Alphabet newAlphabet )
-          {
-            setButtonStatus ();
-          }
-        } );
-  }
-
-
-  /**
    * Returns the {@link Alphabet} of the new file.
    * 
    * @return The {@link Alphabet} of the new file.
@@ -132,18 +132,6 @@ public final class NewDialogAlphabet implements
   public final Alphabet getAlphabet ()
   {
     return this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .getParsedObject ();
-  }
-
-
-  /**
-   * Returns the {@link DefaultRegexAlphabet} of the new file.
-   * 
-   * @return The {@link DefaultRegexAlphabet} of the new file.
-   */
-  public final DefaultRegexAlphabet getRegexAlphabet ()
-  {
-    return ( DefaultRegexAlphabet ) this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
         .getParsedObject ();
   }
 
@@ -167,6 +155,18 @@ public final class NewDialogAlphabet implements
   public final Alphabet getPushDownAlphabet ()
   {
     return this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+        .getParsedObject ();
+  }
+
+
+  /**
+   * Returns the {@link DefaultRegexAlphabet} of the new file.
+   * 
+   * @return The {@link DefaultRegexAlphabet} of the new file.
+   */
+  public final DefaultRegexAlphabet getRegexAlphabet ()
+  {
+    return ( DefaultRegexAlphabet ) this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
         .getParsedObject ();
   }
 

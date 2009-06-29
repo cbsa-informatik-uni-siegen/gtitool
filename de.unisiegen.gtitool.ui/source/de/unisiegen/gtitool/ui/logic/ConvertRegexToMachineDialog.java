@@ -981,6 +981,12 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
+   * The show error state flag
+   */
+  private boolean showErrorState = false;
+
+
+  /**
    * Creates new from {@link ConvertRegexToMachineDialog}
    * 
    * @param parent The parent {@link JFrame}
@@ -1028,7 +1034,8 @@ public class ConvertRegexToMachineDialog implements
    */
   public void convert (
       @SuppressWarnings ( "unused" ) EntityType fromEntityType,
-      EntityType toEntityType, @SuppressWarnings ( "unused" ) boolean complete, @SuppressWarnings("unused") boolean cb )
+      EntityType toEntityType, @SuppressWarnings ( "unused" ) boolean complete,
+      @SuppressWarnings ( "unused" ) boolean cb )
   {
     this.entityType = toEntityType;
     this.gui = new ConvertRegexToMachineDialogForm ( this, this.parent );
@@ -1332,7 +1339,7 @@ public class ConvertRegexToMachineDialog implements
   {
     // this.algorithm =
     // Messages.getString("ConvertGrammarDialog.CannotEliminateEntityProductions");
-    if ( this.algorithm == null || this.algorithm.length () == 0 )
+    if ( ( this.algorithm == null ) || ( this.algorithm.length () == 0 ) )
     {
       TextLoader loader = new TextLoader ();
       this.algorithm = loader.loadAlgorithm ( this.convertType );
@@ -2507,7 +2514,7 @@ public class ConvertRegexToMachineDialog implements
             controlledSymbol.addAll ( a );
           }
 
-          if ( a != null && !a.isEmpty () && controlledSymbol != null )
+          if ( ( a != null ) && !a.isEmpty () && ( controlledSymbol != null ) )
           {
             this.controlledSymbols.get ( positionState ).addAll ( a );
             DefaultPositionState uState;
@@ -2634,8 +2641,8 @@ public class ConvertRegexToMachineDialog implements
               }
             }
 
-            if ( this.positionStateViewList.get ( uState ) != null
-                && this.positionStateViewList.get ( positionState ) != null )
+            if ( ( this.positionStateViewList.get ( uState ) != null )
+                && ( this.positionStateViewList.get ( positionState ) != null ) )
             {
               ArrayList < Symbol > s = new ArrayList < Symbol > ();
               s.addAll ( a );
@@ -2726,7 +2733,7 @@ public class ConvertRegexToMachineDialog implements
                     .getPrettyString (
                         "ConvertRegexToMachineDialog.StepMarkState", positionState.toPrettyString () ) ); //$NON-NLS-1$
             DefaultPositionState nextState = getNextUnmarkedState ();
-            if ( nextState != null && manual && !this.showErrorState )
+            if ( ( nextState != null ) && manual && !this.showErrorState )
             {
               ArrayList < Symbol > next = getNextUnControlledSymbol ( nextState );
               if ( next.size () > 1 )
@@ -3103,12 +3110,6 @@ public class ConvertRegexToMachineDialog implements
       updateGraph ();
     }
   }
-
-
-  /**
-   * The show error state flag
-   */
-  private boolean showErrorState = false;
 
 
   /**

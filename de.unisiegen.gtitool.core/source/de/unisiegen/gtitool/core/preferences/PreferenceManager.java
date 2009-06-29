@@ -29,7 +29,7 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.i18n.Messages;
-import de.unisiegen.gtitool.core.parser.regexAlphabet.RegexAlphabetParseable;
+import de.unisiegen.gtitool.core.parser.regexalphabet.RegexAlphabetParseable;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;

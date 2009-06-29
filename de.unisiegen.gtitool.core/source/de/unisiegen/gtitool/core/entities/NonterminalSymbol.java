@@ -61,17 +61,17 @@ public interface NonterminalSymbol extends Entity < NonterminalSymbol >,
 
 
   /**
-   * Sets the start value.
-   * 
-   * @param start The start value to set.
-   */
-  public void setStart ( boolean start );
-
-
-  /**
    * Sets the highlighted value.
    * 
    * @param highlighted The highlighted value to set.
    */
   public void setHighlighted ( boolean highlighted );
+
+
+  /**
+   * Sets the start value.
+   * 
+   * @param start The start value to set.
+   */
+  public void setStart ( boolean start );
 }

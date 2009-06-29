@@ -39,12 +39,48 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
   /**
    * {@inheritDoc}
    * 
+   * @see ColorChangedListener#colorChangedRegexMarkedNode(java.awt.Color)
+   */
+  public void colorChangedRegexMarkedNode (
+      @SuppressWarnings ( "unused" ) Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedRegexSelectedNode(java.awt.Color)
+   */
+  public void colorChangedRegexSelectedNode (
+      @SuppressWarnings ( "unused" ) Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see ColorChangedListener#colorChangedNonterminalSymbolError(Color)
    */
   public void colorChangedNonterminalSymbolError (
       @SuppressWarnings ( "unused" ) Color newColor )
   {
     // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedNonterminalSymbolHighlight(Color)
+   */
+  public void colorChangedNonterminalSymbolHighlight (
+      @SuppressWarnings ( "unused" ) Color newColor )
+  {
+    // Override this method if needed
   }
 
 
@@ -102,6 +138,78 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
    * @see ColorChangedListener#colorChangedProductionError(Color)
    */
   public void colorChangedProductionError (
+      @SuppressWarnings ( "unused" ) Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedProductionHighlight(Color)
+   */
+  public void colorChangedProductionHighlight (
+      @SuppressWarnings ( "unused" ) Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedRegexPosition(Color)
+   */
+  public void colorChangedRegexPosition (
+      @SuppressWarnings ( "unused" ) Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedRegexSymbol(Color)
+   */
+  public void colorChangedRegexSymbol (
+      @SuppressWarnings ( "unused" ) Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener#colorChangedRegexComment(java.awt.Color)
+   */
+  public void colorChangedRegexComment (
+      @SuppressWarnings ( "unused" ) Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedRegexToken(Color)
+   */
+  public void colorChangedRegexToken (
+      @SuppressWarnings ( "unused" ) Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedRegexToolTip(Color)
+   */
+  public void colorChangedRegexToolTip (
       @SuppressWarnings ( "unused" ) Color newColor )
   {
     // Override this method if needed.

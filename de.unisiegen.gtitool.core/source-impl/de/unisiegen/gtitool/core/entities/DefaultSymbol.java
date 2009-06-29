@@ -175,6 +175,14 @@ public final class DefaultSymbol implements Symbol
   {
     if ( !this.epsilon && !other.isEpsilon () )
     {
+      if ( this.name.length () > other.getName ().length () )
+      {
+        return -1;
+      }
+      if ( this.name.length () < other.getName ().length () )
+      {
+        return 1;
+      }
       return this.name.compareTo ( other.getName () );
     }
     if ( !this.epsilon && other.isEpsilon () )

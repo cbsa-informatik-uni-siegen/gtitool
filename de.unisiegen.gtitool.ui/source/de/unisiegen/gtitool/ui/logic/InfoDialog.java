@@ -1,9 +1,11 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Window;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.logger.Logger;
@@ -35,7 +37,7 @@ public final class InfoDialog implements LogicClass < InfoDialogForm >
   /**
    * The parent {@link JFrame}.
    */
-  private JFrame parent;
+  private Window parent;
 
 
   /**
@@ -58,6 +60,25 @@ public final class InfoDialog implements LogicClass < InfoDialogForm >
    * @param title The title of the {@link InfoDialog}.
    */
   public InfoDialog ( JFrame parent, String text, String title )
+  {
+    logger.debug ( "InfoDialog", "allocate a new info dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.parent = parent;
+    this.gui = new InfoDialogForm ( this, parent );
+    this.gui.jGTITextAreaInfo.setCursor ( null );
+    this.gui.jGTITextAreaInfo.setText ( text );
+    this.gui.setTitle ( title );
+    this.gui.pack ();
+  }
+
+
+  /**
+   * Allocates a new {@link InfoDialog}.
+   * 
+   * @param parent The parent {@link JFrame}.
+   * @param text The text of the {@link InfoDialog}.
+   * @param title The title of the {@link InfoDialog}.
+   */
+  public InfoDialog ( JDialog parent, String text, String title )
   {
     logger.debug ( "InfoDialog", "allocate a new info dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;

@@ -74,6 +74,8 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         jGTITableOutline = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIPanelPrintAndAlgorithm = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIToggleButtonAlgorithm = new de.unisiegen.gtitool.ui.swing.JGTIToggleButton();
         jGTIButtonPrint = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -144,7 +146,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jGTIToolBarMain, gridBagConstraints);
@@ -180,7 +182,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -196,7 +198,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
@@ -211,12 +213,26 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
+
+        jGTIToggleButtonAlgorithm.setText(bundle.getString("TextWindow.ShowAlgorithm")); // NOI18N
+        jGTIToggleButtonAlgorithm.setToolTipText(bundle.getString("TextWindow.ShowAlgorithmToolTip")); // NOI18N
+        jGTIToggleButtonAlgorithm.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jGTIToggleButtonAlgorithmItemStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        jGTIPanelPrintAndAlgorithm.add(jGTIToggleButtonAlgorithm, gridBagConstraints);
 
         jGTIButtonPrint.setText(bundle.getString("PrintDialog.Print")); // NOI18N
         jGTIButtonPrint.setToolTipText(bundle.getString("PrintDialog.PrintToolTip")); // NOI18N
@@ -227,11 +243,18 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        jGTIPanelPrintAndAlgorithm.add(jGTIButtonPrint, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
-        getContentPane().add(jGTIButtonPrint, gridBagConstraints);
+        getContentPane().add(jGTIPanelPrintAndAlgorithm, gridBagConstraints);
 
         setSize(new java.awt.Dimension(960, 600));
     }// </editor-fold>//GEN-END:initComponents
@@ -276,6 +299,10 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
       this.logic.handleCancel();
     }//GEN-LAST:event_formWindowClosing
 
+private void jGTIToggleButtonAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToggleButtonAlgorithmItemStateChanged
+      this.logic.handleAlgorithmWindowChanged(this.jGTIToggleButtonAlgorithm.isSelected());
+}//GEN-LAST:event_jGTIToggleButtonAlgorithmItemStateChanged
+
 private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonPrintActionPerformed
       this.logic.handlePrint();
 }//GEN-LAST:event_jGTIButtonPrintActionPerformed
@@ -284,12 +311,14 @@ private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//G
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrint;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPrintAndAlgorithm;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneConverted;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableOutline;
+    public de.unisiegen.gtitool.ui.swing.JGTIToggleButton jGTIToggleButtonAlgorithm;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonBeginStep;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonEndStep;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonNextStep;

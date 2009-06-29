@@ -15,11 +15,14 @@ import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
+import de.unisiegen.gtitool.core.regex.DefaultRegex;
+import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.ui.logic.NewDialogMachineChoice.Choice;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -134,6 +137,18 @@ public final class NewDialog implements LogicClass < NewDialogForm >
 
 
   /**
+   * Returns the newDialogChoice.
+   * 
+   * @return The newDialogChoice.
+   * @see #newDialogChoice
+   */
+  public NewDialogChoice getNewDialogChoice ()
+  {
+    return this.newDialogChoice;
+  }
+
+
+  /**
    * Handle previous button pressed for the {@link NewDialogAlphabet}
    */
   public final void handleAlphabetPrevious ()
@@ -143,9 +158,14 @@ public final class NewDialog implements LogicClass < NewDialogForm >
     {
       this.machineChoice.getGUI ().setVisible ( true );
     }
-    else
+    else if ( this.newDialogChoice.getUserChoice ().equals (
+        NewDialogChoice.Choice.GRAMMAR ) )
     {
       this.grammarChoice.getGUI ().setVisible ( true );
+    }
+    else
+    {
+      this.newDialogChoice.getGUI ().setVisible ( true );
     }
     this.newDialogAlphabet.getGUI ().setVisible ( false );
     this.newDialogTerminal.getGUI ().setVisible ( false );
@@ -223,7 +243,8 @@ public final class NewDialog implements LogicClass < NewDialogForm >
         this.gui.dispose ();
       }
     }
-    else
+    else if ( this.newDialogChoice.getUserChoice ().equals (
+        NewDialogChoice.Choice.GRAMMAR ) )
     {
       if ( this.grammarChoice.getUserChoice ().equals (
           NewDialogGrammarChoice.Choice.CONTEXT_FREE ) )
@@ -253,6 +274,16 @@ public final class NewDialog implements LogicClass < NewDialogForm >
 
         this.gui.dispose ();
       }
+    }
+    else
+    {
+      this.newPanel = new RegexPanel ( this.mainWindowForm,
+          new DefaultRegexModel ( new DefaultRegex ( this.newDialogAlphabet
+              .getRegexAlphabet () ) ), null );
+
+      PreferenceManager.getInstance ().setLastChoosenEntityType (
+          RegexType.REGEX );
+      this.gui.dispose ();
     }
   }
 
@@ -284,17 +315,22 @@ public final class NewDialog implements LogicClass < NewDialogForm >
    */
   public final void handleNextNewDialogChoice ()
   {
+    this.newDialogAlphabet.changeGui ();
     if ( this.newDialogChoice.getUserChoice ().equals (
         NewDialogChoice.Choice.MACHINE ) )
     {
       this.machineChoice.getGUI ().setVisible ( true );
     }
-    else
+    else if ( this.newDialogChoice.getUserChoice ().equals (
+        NewDialogChoice.Choice.GRAMMAR ) )
     {
       this.grammarChoice.getGUI ().setVisible ( true );
     }
+    else
+    {
+      this.newDialogAlphabet.getGUI ().setVisible ( true );
+    }
     this.newDialogChoice.getGUI ().setVisible ( false );
-
   }
 
 
@@ -389,6 +425,10 @@ public final class NewDialog implements LogicClass < NewDialogForm >
       this.newDialogChoice.getGUI ().jGTIRadioButtonGrammar.setSelected ( true );
       this.grammarChoice.getGUI ().jGTIRadioButtonContextFreeGrammar
           .setSelected ( true );
+    }
+    else if ( entityType.equals ( RegexType.REGEX ) )
+    {
+      this.newDialogChoice.getGUI ().jGTIRadioButtonRegex.setSelected ( true );
     }
     else
     {

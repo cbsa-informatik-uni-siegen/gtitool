@@ -70,6 +70,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         jGTISliderZoom = new de.unisiegen.gtitool.ui.swing.JGTISlider();
         jGTIPanelGeneralColumn0 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelGeneralColumn1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTICheckBoxShowErrorState = new de.unisiegen.gtitool.ui.swing.JGTICheckBox();
         jGTIPanelView = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTILabelTransition = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIComboBoxTransition = new de.unisiegen.gtitool.ui.swing.JGTIComboBox();
@@ -169,7 +170,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 5);
         jGTIPanelGeneral.add(jGTILabelZoom, gridBagConstraints);
 
         jGTISliderZoom.setMajorTickSpacing(50);
@@ -183,24 +184,35 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
         jGTIPanelGeneral.add(jGTISliderZoom, gridBagConstraints);
 
         jGTIPanelGeneralColumn0.setMinimumSize(new java.awt.Dimension(200, 0));
         jGTIPanelGeneralColumn0.setPreferredSize(new java.awt.Dimension(200, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
         jGTIPanelGeneral.add(jGTIPanelGeneralColumn0, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         jGTIPanelGeneral.add(jGTIPanelGeneralColumn1, gridBagConstraints);
+
+        jGTICheckBoxShowErrorState.setText(bundle.getString("PreferencesDialog.MachineShowErrorStateToolTip")); // NOI18N
+        jGTICheckBoxShowErrorState.setToolTipText(bundle.getString("PreferencesDialog.MachineShowErrorStateToolTip")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
+        jGTIPanelGeneral.add(jGTICheckBoxShowErrorState, gridBagConstraints);
 
         jGTITabbedPane.addTab(bundle.getString("PreferencesDialog.TabGeneral"), null, jGTIPanelGeneral, bundle.getString("PreferencesDialog.TabGeneralToolTip")); // NOI18N
 
@@ -446,6 +458,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonRestore;
+    public de.unisiegen.gtitool.ui.swing.JGTICheckBox jGTICheckBoxShowErrorState;
     public de.unisiegen.gtitool.ui.swing.JGTIComboBox jGTIComboBoxLanguage;
     public de.unisiegen.gtitool.ui.swing.JGTIComboBox jGTIComboBoxLookAndFeel;
     public de.unisiegen.gtitool.ui.swing.JGTIComboBox jGTIComboBoxMouseSelection;

@@ -29,8 +29,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * The {@link DefaultTerminalSymbolSet} entity.
  * 
  * @author Christian Fehler
- * @version $Id: DefaultTerminalSymbolSet.java 1043 2008-06-27 00:09:58Z fehler
- *          $
+ * @version $Id$
  */
 public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 {
@@ -263,7 +262,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   *{@inheritDoc}
+   * {@inheritDoc}
    * 
    * @see TerminalSymbolSet#add(TerminalSymbol[])
    */
@@ -324,8 +323,8 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Checks the {@link TerminalSymbol} list for {@link TerminalSymbol}s with the
-   * same name.
+   * Checks the {@link TerminalSymbol} list for {@link TerminalSymbol}s with
+   * the same name.
    * 
    * @param terminalSymbols The {@link TerminalSymbol} list.
    * @throws TerminalSymbolSetException If a {@link TerminalSymbol} is
@@ -360,6 +359,41 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       throw new TerminalSymbolSetMoreThanOneSymbolException ( this,
           negativeSymbols );
     }
+  }
+
+
+  /**
+   * Checks the {@link TerminalSymbol}s in the {@link ArrayList} for Classes
+   * 
+   * @param list The {@link ArrayList} containing the {@link TerminalSymbol}s
+   *          to check
+   * @return {@link ArrayList} with the first class, if there is one, else there
+   *         is only one Element in the {@link ArrayList}
+   */
+  public static ArrayList < TerminalSymbol > checkForClass (
+      ArrayList < TerminalSymbol > list )
+  {
+    int dist = 1;
+    int counter = 0;
+    ArrayList < TerminalSymbol > s = new ArrayList < TerminalSymbol > ();
+
+    char first = list.get ( counter ).getName ().charAt ( 0 );
+    s.add ( new DefaultTerminalSymbol ( Character.toString ( first ) ) );
+    while ( dist == 1 )
+    {
+      char c1 = list.get ( counter ).getName ().charAt ( 0 );
+      char c2 = 0;
+      if ( counter + 1 != list.size () )
+      {
+        c2 = list.get ( ++counter ).getName ().charAt ( 0 );
+      }
+      dist = c2 - c1;
+      if ( dist == 1 )
+      {
+        s.add ( new DefaultTerminalSymbol ( Character.toString ( c2 ) ) );
+      }
+    }
+    return s;
   }
 
 
@@ -725,16 +759,37 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     {
       this.cachedPrettyString = new PrettyString ();
       this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-      Iterator < TerminalSymbol > iterator = this.terminalSymbolSet.iterator ();
       boolean first = true;
-      while ( iterator.hasNext () )
+      ArrayList < TerminalSymbol > t = new ArrayList < TerminalSymbol > ();
+      t.addAll ( this.terminalSymbolSet );
+      while ( !t.isEmpty () )
       {
+        ArrayList < TerminalSymbol > a = checkForClass ( t );
+
         if ( !first )
         {
           this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         first = false;
-        this.cachedPrettyString.add ( iterator.next () );
+
+        if ( a.size () == 1 )
+        {
+          this.cachedPrettyString.add ( a.get ( 0 ) );
+        }
+        else if ( a.size () == 2 )
+        {
+
+          this.cachedPrettyString.add ( a.get ( 0 ) );
+          this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( a.get ( 1 ) );
+        }
+        else
+        {
+          this.cachedPrettyString.add ( a.get ( 0 ) );
+          this.cachedPrettyString.add ( new PrettyToken ( "..", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( a.get ( a.size () - 1 ) );
+        }
+        t.removeAll ( a );
       }
       this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
     }
@@ -753,16 +808,39 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   {
     StringBuilder result = new StringBuilder ();
     result.append ( "{" ); //$NON-NLS-1$
-    Iterator < TerminalSymbol > iterator = this.terminalSymbolSet.iterator ();
     boolean first = true;
-    while ( iterator.hasNext () )
+    ArrayList < TerminalSymbol > t = new ArrayList < TerminalSymbol > ();
+    t.addAll ( this.terminalSymbolSet );
+    while ( !t.isEmpty () )
     {
+      ArrayList < TerminalSymbol > a = checkForClass ( t );
+
       if ( !first )
       {
-        result.append ( ", " ); //$NON-NLS-1$
+        result.append ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
       }
       first = false;
-      result.append ( iterator.next () );
+
+      if ( a.size () == 1 )
+      {
+        result.append ( a.get ( 0 ) );
+      }
+      else if ( a.size () == 2 )
+      {
+
+        result.append ( a.get ( 0 ) );
+        result.append ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        result.append ( a.get ( 1 ) );
+      }
+      else
+      {
+        result.append ( new PrettyToken ( "[", Style.SYMBOL ) ); //$NON-NLS-1$
+        result.append ( a.get ( 0 ) );
+        result.append ( new PrettyToken ( "-", Style.NONE ) ); //$NON-NLS-1$
+        result.append ( a.get ( a.size () - 1 ) );
+        result.append ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
+      }
+      t.removeAll ( a );
     }
     result.append ( "}" ); //$NON-NLS-1$
     return result.toString ();

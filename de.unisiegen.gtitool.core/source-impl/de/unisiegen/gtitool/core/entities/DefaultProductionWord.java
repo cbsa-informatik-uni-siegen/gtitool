@@ -532,4 +532,23 @@ public final class DefaultProductionWord implements ProductionWord
     }
     return result.toString ();
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ProductionWord#getNonterminals()
+   */
+  public ArrayList < NonterminalSymbol > getNonterminals ()
+  {
+    ArrayList < NonterminalSymbol > symbols = new ArrayList < NonterminalSymbol > ();
+    for ( ProductionWordMember m : this.productionWordMemberList )
+    {
+      if ( m instanceof NonterminalSymbol )
+      {
+        symbols.add ( ( NonterminalSymbol ) m );
+      }
+    }
+    return symbols;
+  }
 }

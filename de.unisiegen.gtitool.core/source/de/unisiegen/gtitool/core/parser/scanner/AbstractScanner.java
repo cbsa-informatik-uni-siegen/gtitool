@@ -50,7 +50,16 @@ public abstract class AbstractScanner implements GTIScanner
    */
   public final Symbol next_token () throws IOException, ScannerException
   {
-    return nextSymbol ();
+    for ( ; ; )
+    {
+      // return the next symbol, skipping comments
+      Symbol symbol = nextSymbol ();
+      if ( symbol != null && getStyleBySymbol ( symbol ) == Style.COMMENT )
+      {
+        continue;
+      }
+      return symbol;
+    }
   }
 
 

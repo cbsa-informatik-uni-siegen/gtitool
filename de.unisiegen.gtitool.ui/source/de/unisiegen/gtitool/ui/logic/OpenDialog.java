@@ -10,6 +10,7 @@ import javax.swing.plaf.basic.BasicFileChooserUI;
 
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
@@ -89,6 +90,11 @@ public final class OpenDialog implements LogicClass < OpenDialogForm >
             return true;
           }
         }
+        if ( file.getName ().toLowerCase ().matches (
+            ".+\\." + RegexType.REGEX.getFileEnding () ) ) //$NON-NLS-1$
+        {
+          return true;
+        }
         return false;
       }
 
@@ -122,6 +128,8 @@ public final class OpenDialog implements LogicClass < OpenDialogForm >
             result.append ( "; " ); //$NON-NLS-1$
           }
         }
+        result.append ( "*." ); //$NON-NLS-1$
+        result.append ( RegexType.REGEX.getFileEnding () );
         result.append ( ")" ); //$NON-NLS-1$
         return result.toString ();
       }
@@ -213,9 +221,43 @@ public final class OpenDialog implements LogicClass < OpenDialogForm >
       }
     };
 
+    // Grammar files
+    FileFilter regexFileFilter = new FileFilter ()
+    {
+
+      @Override
+      public boolean accept ( File file )
+      {
+        if ( file.isDirectory () )
+        {
+          return true;
+        }
+
+        if ( file.getName ().toLowerCase ().matches (
+            ".+\\." + RegexType.REGEX.getFileEnding () ) ) //$NON-NLS-1$
+        {
+          return true;
+        }
+        return false;
+      }
+
+
+      @Override
+      public String getDescription ()
+      {
+        StringBuilder result = new StringBuilder ();
+        result.append ( Messages.getString ( "OpenDialog.FilterFilesRegex" ) ); //$NON-NLS-1$
+        result.append ( " (*." ); //$NON-NLS-1$
+        result.append ( RegexType.REGEX.getFileEnding () );
+        result.append ( ")" ); //$NON-NLS-1$
+        return result.toString ();
+      }
+    };
+
     this.gui.jGTIFileChooser.addChoosableFileFilter ( sourceFileFilter );
     this.gui.jGTIFileChooser.addChoosableFileFilter ( machineFileFilter );
     this.gui.jGTIFileChooser.addChoosableFileFilter ( grammarFileFilter );
+    this.gui.jGTIFileChooser.addChoosableFileFilter ( regexFileFilter );
     this.gui.jGTIFileChooser.setFileFilter ( sourceFileFilter );
   }
 

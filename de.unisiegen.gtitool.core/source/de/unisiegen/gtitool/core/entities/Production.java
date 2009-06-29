@@ -63,11 +63,29 @@ public interface Production extends Entity < Production >, Storable, Modifyable
 
 
   /**
+   * Returns true if this {@link Production} is a highlighted {@link Production}
+   * , otherwise false.
+   * 
+   * @return True if this {@link Production} is a highlighted {@link Production}
+   *         , otherwise false.
+   */
+  public boolean isHighlighted ();
+
+
+  /**
    * Sets the error value.
    * 
    * @param error The error value to set.
    */
   public void setError ( boolean error );
+
+
+  /**
+   * Sets the highlighted value.
+   * 
+   * @param highlighted The highlighted value to set.
+   */
+  public void setHighlighted ( boolean highlighted );
 
 
   /**

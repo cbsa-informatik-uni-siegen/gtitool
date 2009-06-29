@@ -106,7 +106,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-nonterminal-symbol,parser-nonterminal-symbol-set,parser-production,parser-production-word,parser-stack,parser-start-nonterminal-symbol,parser-state,parser-state-set,parser-symbol,parser-terminal-symbol,parser-terminal-symbol-set,parser-transition,parser-word" description="Generate parsers and lexers" />
+	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-nonterminal-symbol,parser-nonterminal-symbol-set,parser-production,parser-production-word,parser-regex,parser-regex-alphabet,parser-stack,parser-start-nonterminal-symbol,parser-state,parser-state-set,parser-symbol,parser-terminal-symbol,parser-terminal-symbol-set,parser-transition,parser-word" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -143,6 +143,18 @@
 	<target name="parser-production-word">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/productionword/productionword.flex" destdir="${sourcegenerateddir}" nobak="yes" />
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/productionword/productionword.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/productionword" package="de.unisiegen.gtitool.core.parser.productionword" parser="ProductionWordAbstractParser" symbols="ProductionWordTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
+	<!-- parser regex -->
+	<target name="parser-regex">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/regex/regex.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/regex/regex.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/regex" package="de.unisiegen.gtitool.core.parser.regex" parser="RegexAbstractParser" symbols="RegexTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
+	<!-- parser regex-alphabet -->
+	<target name="parser-regex-alphabet">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/regexAlphabet/regexAlphabet.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/regexAlphabet/regexAlphabet.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/regexAlphabet" package="de.unisiegen.gtitool.core.parser.regexAlphabet" parser="RegexAlphabetAbstractParser" symbols="RegexAlphabetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 
 	<!-- parser stack -->

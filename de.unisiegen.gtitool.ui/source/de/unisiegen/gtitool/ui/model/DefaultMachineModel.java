@@ -38,6 +38,7 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.EdgeRenderer;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
+import de.unisiegen.gtitool.ui.jgraph.JGTIBlackboxGraph;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.jgraph.JGraphpadParallelSplineRouter;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
@@ -80,7 +81,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   /**
    * The {@link JGTIGraph} containing the diagramm.
    */
-  protected JGTIGraph jGTIGraph;
+  protected JGTIBlackboxGraph jGTIGraph;
 
 
   /**
@@ -623,6 +624,23 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     }
     return null;
   }
+  
+  /**
+   * Use only if names are unique!
+   *
+   * @param name
+   * @return The {@link DefaultStateView}
+   */
+  public final DefaultStateView getStateViewForName(String name) {
+    for ( DefaultStateView view : this.stateViewList )
+    {
+      if ( view.getState ().getName ().equals ( name ) )
+      {
+        return view;
+      }
+    }
+    return null;
+  }
 
 
   /**
@@ -693,7 +711,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   {
     this.graphModel = new DefaultGraphModel ();
 
-    this.jGTIGraph = new JGTIGraph ( this, this.graphModel );
+    this.jGTIGraph = new JGTIBlackboxGraph ( this, this.graphModel );
     this.jGTIGraph.setDoubleBuffered ( false );
     this.jGTIGraph.getGraphLayoutCache ()
         .setFactory ( new GPCellViewFactory () );

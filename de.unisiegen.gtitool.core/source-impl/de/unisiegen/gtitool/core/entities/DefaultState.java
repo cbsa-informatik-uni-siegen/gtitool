@@ -30,7 +30,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultState implements State
+public class DefaultState implements State
 {
 
   /**
@@ -455,7 +455,7 @@ public final class DefaultState implements State
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object other )
+  public boolean equals ( Object other )
   {
     if ( other instanceof DefaultState )
     {
@@ -699,7 +699,7 @@ public final class DefaultState implements State
    * @see Entity#hashCode()
    */
   @Override
-  public final int hashCode ()
+  public int hashCode ()
   {
     if ( this.id == ID_NOT_DEFINED )
     {
@@ -750,6 +750,24 @@ public final class DefaultState implements State
   public final boolean isIdDefined ()
   {
     return this.id != ID_NOT_DEFINED;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see State#isImportant()
+   */
+  public boolean isImportant ()
+  {
+    for ( Transition t : getTransitionBegin () )
+    {
+      if ( t.getSymbol ().size () > 1 || !t.getSymbol ( 0 ).isEpsilon () )
+      {
+        return true;
+      }
+    }
+    return isFinalState ();
   }
 
 
@@ -1107,7 +1125,7 @@ public final class DefaultState implements State
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ()
+  public PrettyString toPrettyString ()
   {
     if ( ( this.cachedPrettyString == null )
         || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
@@ -1117,6 +1135,11 @@ public final class DefaultState implements State
       Style styleName = this.selected ? Style.STATE_SELECTED : Style.STATE;
       Style styleSyntax = this.selected ? Style.STATE_SELECTED_SYNTAX
           : Style.NONE;
+
+      if ( this.name.length () == 0 )
+      {
+        return this.cachedPrettyString;
+      }
 
       // power set name
       if ( this.name.charAt ( 0 ) == '{' )

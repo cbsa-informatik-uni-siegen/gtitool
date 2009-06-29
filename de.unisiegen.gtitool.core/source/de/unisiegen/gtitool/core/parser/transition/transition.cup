@@ -29,6 +29,9 @@ terminal					RCBRACE;
 terminal					EPSILON;
 terminal					ARROWUP;
 terminal					ARROWDOWN;
+terminal					LSBRACE;
+terminal					RSBRACE;
+terminal					MINUS;
 
 
 /****************
@@ -39,6 +42,7 @@ non terminal Transition		transition;
 non terminal Symbol			symbol;
 non terminal Symbol[]		symbol_list;
 non terminal Symbol[]		symbol_list_comma;
+non terminal Symbol[]		class;
 non terminal Word			word;
 non terminal Word			word_read;
 non terminal Word			word_write;
@@ -157,6 +161,16 @@ symbol_list						::= symbol_list:sl symbol:s
 									   System.arraycopy(sl, 0, RESULT, 0, sl.length);
 									   RESULT[sl.length] = s;
 								    :}
+								|	symbol_list:slc COMMA:c class:cl
+								    {:
+								       RESULT = new Symbol[slc.length + cl.length];
+								       System.arraycopy(slc, 0, RESULT, 0, slc.length);
+        							   System.arraycopy(cl, 0, RESULT, slc.length, cl.length);
+								    :}
+								|	class:c
+									{:
+										RESULT = c;
+									:}
 								|	symbol:s
 									{:
 									   RESULT = new Symbol[] { s };
@@ -181,12 +195,41 @@ symbol_list_comma				::= symbol_list_comma:slc COMMA:c symbol:s
 									   System.arraycopy(slc, 0, RESULT, 0, slc.length);
 									   RESULT[slc.length] = s;
 								    :}
+								|	symbol_list_comma:slc COMMA:c class:cl
+								    {:
+								       RESULT = new Symbol[slc.length + cl.length];
+								       System.arraycopy(slc, 0, RESULT, 0, slc.length);
+        							   System.arraycopy(cl, 0, RESULT, slc.length, cl.length);
+								    :}
 								|	symbol:s
 									{:
 									   RESULT = new Symbol[] { s };
 									:}
+								|	class:c
+									{:
+										RESULT = c;
+									:}
 								|	symbol_list_comma_error
 									{: :}
+								;
+								
+class							::= LSBRACE:l symbol:s1 MINUS symbol:s2 RSBRACE:r
+									{:
+									    char c1 = s1.getName ().charAt ( 0 );
+    									char c2 = s2.getName ().charAt ( 0 );
+    									if(c1 > c2){
+											ParserException.throwCharacterClassException(
+												c1, c2, lleft, rright);
+    									}
+    									int c = c2 - c1 + 1;
+    									RESULT = new Symbol[c];
+    									 
+    									int i = 0;
+									    while ( c1 <= c2 )
+    									{
+      										RESULT[i++] = new DefaultSymbol ( Character.toString ( c1++ ) );
+    									}
+									:}								
 								;
 
 symbol_list_comma_error			::= symbol_list_comma:slc COMMA:c epsilon

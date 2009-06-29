@@ -41,6 +41,21 @@ public class SaveDialogForm extends JDialog implements GUIClass <SaveDialog>
     initComponents ();
     this.jGTIFileChooser.setSaveDialog ( this.logic );
   }
+
+
+  /**
+   * Allocates a new {@link SaveDialogForm}.
+   * 
+   * @param logic The {@link SaveDialog}.
+   * @param parent The parent {@link JFrame}.
+   */
+  public SaveDialogForm ( SaveDialog logic, JDialog parent )
+  {
+    super ( parent, true );
+    this.logic = logic ;
+    initComponents ();
+    this.jGTIFileChooser.setSaveDialog ( this.logic );
+  }
   
   /**
    * {@inheritDoc}
@@ -61,10 +76,10 @@ public class SaveDialogForm extends JDialog implements GUIClass <SaveDialog>
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jGTIFileChooser = new de.unisiegen.gtitool.ui.swing.JGTIFileChooser();
-        jGTIPanelButtons = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIButtonSave = new de.unisiegen.gtitool.ui.swing.JGTIButton();
-        jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        this.jGTIFileChooser = new de.unisiegen.gtitool.ui.swing.JGTIFileChooser();
+        this.jGTIPanelButtons = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        this.jGTIButtonSave = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        this.jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -78,8 +93,8 @@ public class SaveDialogForm extends JDialog implements GUIClass <SaveDialog>
             }
         });
 
-        jGTIFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        jGTIFileChooser.setMultiSelectionEnabled(false);
+        this.jGTIFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        this.jGTIFileChooser.setMultiSelectionEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -87,12 +102,12 @@ public class SaveDialogForm extends JDialog implements GUIClass <SaveDialog>
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        getContentPane().add(jGTIFileChooser, gridBagConstraints);
+        getContentPane().add(this.jGTIFileChooser, gridBagConstraints);
 
-        jGTIButtonSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("SaveDialog.SaveMnemonic").charAt(0));
-        jGTIButtonSave.setText(bundle.getString("SaveDialog.Save")); // NOI18N
-        jGTIButtonSave.setToolTipText(bundle.getString("SaveDialog.SaveToolTip")); // NOI18N
-        jGTIButtonSave.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIButtonSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("SaveDialog.SaveMnemonic").charAt(0));
+        this.jGTIButtonSave.setText(bundle.getString("SaveDialog.Save")); // NOI18N
+        this.jGTIButtonSave.setToolTipText(bundle.getString("SaveDialog.SaveToolTip")); // NOI18N
+        this.jGTIButtonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonSaveActionPerformed(evt);
             }
@@ -104,12 +119,12 @@ public class SaveDialogForm extends JDialog implements GUIClass <SaveDialog>
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jGTIPanelButtons.add(jGTIButtonSave, gridBagConstraints);
+        this.jGTIPanelButtons.add(this.jGTIButtonSave, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("SaveDialog.CancelMnemonic").charAt(0));
-        jGTIButtonCancel.setText(bundle.getString("SaveDialog.Cancel")); // NOI18N
-        jGTIButtonCancel.setToolTipText(bundle.getString("SaveDialog.CancelToolTip")); // NOI18N
-        jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("SaveDialog.CancelMnemonic").charAt(0));
+        this.jGTIButtonCancel.setText(bundle.getString("SaveDialog.Cancel")); // NOI18N
+        this.jGTIButtonCancel.setToolTipText(bundle.getString("SaveDialog.CancelToolTip")); // NOI18N
+        this.jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCancelActionPerformed(evt);
             }
@@ -120,7 +135,7 @@ public class SaveDialogForm extends JDialog implements GUIClass <SaveDialog>
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        jGTIPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
+        this.jGTIPanelButtons.add(this.jGTIButtonCancel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -128,7 +143,7 @@ public class SaveDialogForm extends JDialog implements GUIClass <SaveDialog>
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
-        getContentPane().add(jGTIPanelButtons, gridBagConstraints);
+        getContentPane().add(this.jGTIPanelButtons, gridBagConstraints);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-560)/2, (screenSize.height-352)/2, 560, 352);

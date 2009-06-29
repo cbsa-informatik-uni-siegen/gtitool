@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 import javax.swing.event.EventListenerList;
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -334,6 +335,12 @@ public abstract class AbstractGrammar implements Grammar
         element.modifyStatusChanged ( newModifyStatus );
       }
     }
+    TableModelListener [] tableListeners = this.listenerList
+        .getListeners ( TableModelListener.class );
+    for ( TableModelListener l : tableListeners )
+    {
+      l.tableChanged ( new TableModelEvent ( this ) );
+    }
   }
 
 
@@ -342,8 +349,8 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#getColumnClass(int)
    */
-  public Class < ? > getColumnClass (
-      @SuppressWarnings ( "unused" ) int columnIndex )
+  public Class < ? > getColumnClass ( @SuppressWarnings ( "unused" )
+  int columnIndex )
   {
     return Production.class;
   }
@@ -365,7 +372,8 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#getColumnName(int)
    */
-  public String getColumnName ( @SuppressWarnings ( "unused" ) int columnIndex )
+  public String getColumnName ( @SuppressWarnings ( "unused" )
+  int columnIndex )
   {
     return ""; //$NON-NLS-1$
   }
@@ -477,6 +485,26 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * {@inheritDoc}
    * 
+   * @see Grammar#getProductionForNonTerminal(NonterminalSymbol)
+   */
+  public ArrayList < Production > getProductionForNonTerminal (
+      NonterminalSymbol s )
+  {
+    ArrayList < Production > prod = new ArrayList < Production > ();
+    for ( Production p : this.productions )
+    {
+      if ( p.getNonterminalSymbol ().equals ( s ) )
+      {
+        prod.add ( p );
+      }
+    }
+    return prod;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Grammar#getProductionAt(int)
    */
   public Production getProductionAt ( int index )
@@ -575,8 +603,8 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#getValueAt(int, int)
    */
-  public Object getValueAt ( int rowIndex,
-      @SuppressWarnings ( "unused" ) int columnIndex )
+  public Object getValueAt ( int rowIndex, @SuppressWarnings ( "unused" )
+  int columnIndex )
   {
     return this.productions.get ( rowIndex );
   }
@@ -587,8 +615,9 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#isCellEditable(int, int)
    */
-  public boolean isCellEditable ( @SuppressWarnings ( "unused" ) int rowIndex,
-      @SuppressWarnings ( "unused" ) int columnIndex )
+  public boolean isCellEditable ( @SuppressWarnings ( "unused" )
+  int rowIndex, @SuppressWarnings ( "unused" )
+  int columnIndex )
   {
     return false;
   }
@@ -730,9 +759,10 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see TableModel#setValueAt(Object, int, int)
    */
-  public final void setValueAt ( @SuppressWarnings ( "unused" ) Object value,
-      @SuppressWarnings ( "unused" ) int rowIndex,
-      @SuppressWarnings ( "unused" ) int columnIndex )
+  public final void setValueAt ( @SuppressWarnings ( "unused" )
+  Object value, @SuppressWarnings ( "unused" )
+  int rowIndex, @SuppressWarnings ( "unused" )
+  int columnIndex )
   {
     // Do nothing
   }

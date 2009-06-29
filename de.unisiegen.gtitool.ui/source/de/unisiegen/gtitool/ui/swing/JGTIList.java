@@ -180,8 +180,8 @@ public final class JGTIList extends JList implements DropTargetListener
    * 
    * @see DropTargetListener#dragExit(DropTargetEvent)
    */
-  public final void dragExit (
-      @SuppressWarnings ( "unused" ) DropTargetEvent event )
+  public final void dragExit ( @SuppressWarnings ( "unused" )
+  DropTargetEvent event )
   {
     this.dropPoint = null;
     repaint ();
@@ -356,8 +356,8 @@ public final class JGTIList extends JList implements DropTargetListener
           private static final long serialVersionUID = -4319963661932864508L;
 
 
-          public void actionPerformed (
-              @SuppressWarnings ( "unused" ) ActionEvent e )
+          public void actionPerformed ( @SuppressWarnings ( "unused" )
+          ActionEvent e )
           {
             // do nothing
           }
@@ -370,8 +370,8 @@ public final class JGTIList extends JList implements DropTargetListener
           private static final long serialVersionUID = 2449576847404790643L;
 
 
-          public void actionPerformed (
-              @SuppressWarnings ( "unused" ) ActionEvent e )
+          public void actionPerformed ( @SuppressWarnings ( "unused" )
+          ActionEvent e )
           {
             // do nothing
           }
@@ -384,8 +384,8 @@ public final class JGTIList extends JList implements DropTargetListener
           private static final long serialVersionUID = -7404714019259587536L;
 
 
-          public void actionPerformed (
-              @SuppressWarnings ( "unused" ) ActionEvent e )
+          public void actionPerformed ( @SuppressWarnings ( "unused" )
+          ActionEvent e )
           {
             // do nothing
           }
@@ -449,6 +449,26 @@ public final class JGTIList extends JList implements DropTargetListener
         graphics.drawLine ( width - size, y + 1, width, y + size + 1 );
       }
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see javax.swing.JList#locationToIndex(java.awt.Point)
+   */
+  @Override
+  public int locationToIndex ( Point p )
+  {
+    if(getModel ().getSize () == 0) {
+      return super.locationToIndex ( p );
+    }
+    Rectangle r = getCellBounds ( 0, getModel ().getSize () - 1 );
+    if ( r.contains ( p ) )
+    {
+      return super.locationToIndex ( p );
+    }
+    return getModel ().getSize ();
   }
 
 

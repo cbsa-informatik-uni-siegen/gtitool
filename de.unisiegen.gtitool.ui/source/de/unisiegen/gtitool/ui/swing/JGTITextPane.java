@@ -1,6 +1,11 @@
 package de.unisiegen.gtitool.ui.swing;
 
 
+import java.awt.Graphics;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+
 import javax.swing.JComponent;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
@@ -17,7 +22,7 @@ import de.unisiegen.gtitool.logger.Logger;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class JGTITextPane extends JTextPane
+public final class JGTITextPane extends JTextPane implements Printable
 {
 
   /**
@@ -95,5 +100,27 @@ public final class JGTITextPane extends JTextPane
         }
       }
     } );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.awt.print.Printable#print(java.awt.Graphics,
+   *      java.awt.print.PageFormat, int)
+   */
+  @SuppressWarnings ( "unused" )
+  public int print ( Graphics graphics, PageFormat pageFormat, int pageIndex )
+      throws PrinterException
+  {
+    if ( pageIndex >= 1 )
+    {
+      return NO_SUCH_PAGE;
+    }
+    int x = (int)pageFormat.getImageableX() + 1;
+    int y = (int)pageFormat.getImageableY() + 1;
+    graphics.translate ( x, y );
+    print ( graphics );
+    return Printable.PAGE_EXISTS;
   }
 }

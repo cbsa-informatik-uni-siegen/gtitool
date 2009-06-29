@@ -907,6 +907,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       return new ConvertMachineDialog ( this.mainWindowForm, this );
     }
+    else if ( this.machine.getMachineType ().equals ( MachineType.DFA ) )
+    {
+      return new ConvertMachineDialog ( this.mainWindowForm, this );
+    }
     else
     {
       throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$

@@ -126,8 +126,8 @@ public final class JGTIToggleButton extends JToggleButton
    */
   private final void init ()
   {
-    setFocusPainted ( false );
-    setBorderPainted ( false );
-    setOpaque ( false );
+    setFocusPainted ( true );
+    setBorderPainted ( true );
+    setOpaque ( true );
   }
 }

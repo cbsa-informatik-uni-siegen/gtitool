@@ -32,7 +32,7 @@ import de.unisiegen.gtitool.ui.redoundo.StatePositionChangedListener;
  * @version $Id:DefaultStateView.java 910 2008-05-16 00:31:21Z fehler $
  */
 public final class DefaultStateView extends DefaultGraphCell implements
-    Storable, Modifyable
+    Storable, Modifyable, Comparable < DefaultStateView >
 {
 
   /**
@@ -66,12 +66,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * The overwritten {@link Color} of this {@link StateView}.
-   */
-  private Color overwrittenColor;
-
-
-  /**
    * Flag signals that nex state move should be ignored.
    */
   private boolean ignoreStateMove = false;
@@ -93,6 +87,18 @@ public final class DefaultStateView extends DefaultGraphCell implements
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
+
+
+  /**
+   * The {@link DefaultMachineModel}
+   */
+  private DefaultMachineModel machineModel;
+
+
+  /**
+   * The overwritten {@link Color} of this {@link StateView}.
+   */
+  private Color overwrittenColor;
 
 
   /**
@@ -126,12 +132,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * The {@link DefaultMachineModel}
-   */
-  private DefaultMachineModel machineModel;
-
-
-  /**
    * Creates a new {@link DefaultStateView}.
    * 
    * @param machineModel The {@link DefaultMachineModel}.
@@ -150,9 +150,8 @@ public final class DefaultStateView extends DefaultGraphCell implements
     this.state.addStateChangedListener ( new StateChangedListener ()
     {
 
-      public void stateChanged (
-          @SuppressWarnings ( "unused" ) boolean nameChanged,
-          boolean startChanged, boolean loopTransitionChanged )
+      public void stateChanged ( @SuppressWarnings ( "unused" )
+      boolean nameChanged, boolean startChanged, boolean loopTransitionChanged )
       {
         if ( startChanged )
         {
@@ -229,6 +228,17 @@ public final class DefaultStateView extends DefaultGraphCell implements
       StatePositionChangedListener listener )
   {
     this.listenerList.add ( StatePositionChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo ( DefaultStateView o )
+  {
+    return ( int ) ( getPositionX () - o.getPositionX () );
   }
 
 

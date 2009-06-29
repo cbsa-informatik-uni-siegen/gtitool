@@ -3,10 +3,12 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.logger.Logger;
@@ -37,9 +39,9 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
 
 
   /**
-   * The parent {@link JFrame}.
+   * The parent {@link Window}.
    */
-  private JFrame parent;
+  private Window parent;
 
 
   /**
@@ -104,6 +106,51 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
     logger.debug ( "ConfirmDialog", "allocate a new confirm dialog" ); //$NON-NLS-1$//$NON-NLS-2$
     this.parent = parent;
     this.gui = new ConfirmDialogForm ( this, parent );
+    buildGUI ( text, title, yesButtonVisible, yesToAllButtonVisible,
+        noButtonVisible, noToAllButtonVisible, cancelButtonVisible );
+  }
+
+
+  /**
+   * Allocates a new {@link ConfirmDialog}.
+   * 
+   * @param parent The parent {@link JFrame}.
+   * @param text The text of the {@link ConfirmDialog}.
+   * @param title The title of the {@link ConfirmDialog}.
+   * @param yesButtonVisible The yes button visible flag.
+   * @param yesToAllButtonVisible The yes to all button visible flag.
+   * @param noButtonVisible The no button visible flag.
+   * @param noToAllButtonVisible The no to all button visible flag.
+   * @param cancelButtonVisible The cancel button visible flag.
+   */
+  public ConfirmDialog ( JDialog parent, String text, String title,
+      boolean yesButtonVisible, boolean yesToAllButtonVisible,
+      boolean noButtonVisible, boolean noToAllButtonVisible,
+      boolean cancelButtonVisible )
+  {
+    logger.debug ( "ConfirmDialog", "allocate a new confirm dialog" ); //$NON-NLS-1$//$NON-NLS-2$
+    this.parent = parent;
+    this.gui = new ConfirmDialogForm ( this, parent );
+    buildGUI ( text, title, yesButtonVisible, yesToAllButtonVisible,
+        noButtonVisible, noToAllButtonVisible, cancelButtonVisible );
+  }
+
+
+  /**
+   * Builds the GUI
+   * 
+   * @param text The text of the {@link ConfirmDialog}.
+   * @param title The title of the {@link ConfirmDialog}.
+   * @param yesButtonVisible The yes button visible flag.
+   * @param yesToAllButtonVisible The yes to all button visible flag.
+   * @param noButtonVisible The no button visible flag.
+   * @param noToAllButtonVisible The no to all button visible flag.
+   * @param cancelButtonVisible The cancel button visible flag.
+   */
+  private void buildGUI ( String text, String title, boolean yesButtonVisible,
+      boolean yesToAllButtonVisible, boolean noButtonVisible,
+      boolean noToAllButtonVisible, boolean cancelButtonVisible )
+  {
     this.gui.jGTITextAreaInfo.setCursor ( null );
     this.gui.jGTITextAreaInfo.setText ( text );
     this.gui.setTitle ( title );

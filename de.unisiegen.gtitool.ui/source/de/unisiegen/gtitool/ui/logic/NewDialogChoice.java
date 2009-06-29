@@ -28,7 +28,12 @@ public final class NewDialogChoice implements LogicClass < NewDialogChoiceForm >
     /**
      * Grammar is choosen.
      */
-    GRAMMAR;
+    GRAMMAR,
+    
+    /**
+     * Regex is choosen.
+     */
+    REGEX;
   }
 
 
@@ -117,6 +122,20 @@ public final class NewDialogChoice implements LogicClass < NewDialogChoiceForm >
     if ( evt.getStateChange () == ItemEvent.SELECTED )
     {
       this.actualChoice = Choice.MACHINE;
+    }
+  }
+
+
+  /**
+   * Handle machine item state changed.
+   * 
+   * @param evt The {@link ItemEvent}
+   */
+  public final void handleRegexItemStateChanged ( ItemEvent evt )
+  {
+    if ( evt.getStateChange () == ItemEvent.SELECTED )
+    {
+      this.actualChoice = Choice.REGEX;
     }
   }
 

@@ -21,9 +21,59 @@ import de.unisiegen.gtitool.core.preferences.PreferenceManager;
 public enum Style
 {
   /**
+   * Style of keywords.
+   */
+  KEYWORD ( true, false ),
+
+  /**
    * No style.
    */
   NONE ( false, false ),
+
+  /**
+   * Style of {@link NonterminalSymbol}s.
+   */
+  NONTERMINAL_SYMBOL ( true, false ),
+
+  /**
+   * Style of error {@link NonterminalSymbol}s.
+   */
+  NONTERMINAL_SYMBOL_ERROR ( true, false ),
+
+  /**
+   * Style of error {@link NonterminalSymbol}s.
+   */
+  NONTERMINAL_SYMBOL_HIGHLIGHT ( true, false ),
+
+  /**
+   * Style of error {@link Production}s.
+   */
+  PRODUCTION_ERROR ( true, false ),
+
+  /**
+   * Style of error {@link Production}s.
+   */
+  PRODUCTION_HIGHLIGHT ( true, false ),
+
+  /**
+   * Style of a RegexPosition
+   */
+  REGEX_POSITION ( true, false ),
+
+  /**
+   * Style of RegexSymbols
+   */
+  REGEX_SYMBOL ( true, false ),
+
+  /**
+   * Style of a Tool tip text of a Regex
+   */
+  REGEX_TOOL_TIP_TEXT ( false, false ),
+
+  /**
+   * Style of start {@link NonterminalSymbol}s.
+   */
+  START_NONTERMINAL_SYMBOL ( true, false ),
 
   /**
    * Style of {@link State}s.
@@ -41,11 +91,6 @@ public enum Style
   STATE_SELECTED_SYNTAX ( false, false ),
 
   /**
-   * Style of selected {@link Transition}s.
-   */
-  TRANSITION_SELECTED ( true, false ),
-
-  /**
    * Style of {@link Symbol}s.
    */
   SYMBOL ( true, false ),
@@ -61,26 +106,6 @@ public enum Style
   SYMBOL_ERROR ( true, false ),
 
   /**
-   * Style of error {@link Production}s.
-   */
-  PRODUCTION_ERROR ( true, false ),
-
-  /**
-   * Style of {@link NonterminalSymbol}s.
-   */
-  NONTERMINAL_SYMBOL ( true, false ),
-
-  /**
-   * Style of error {@link NonterminalSymbol}s.
-   */
-  NONTERMINAL_SYMBOL_ERROR ( true, false ),
-
-  /**
-   * Style of start {@link NonterminalSymbol}s.
-   */
-  START_NONTERMINAL_SYMBOL ( true, false ),
-
-  /**
    * Style of {@link TerminalSymbol}s.
    */
   TERMINAL_SYMBOL ( true, false ),
@@ -91,9 +116,19 @@ public enum Style
   TERMINAL_SYMBOL_ERROR ( true, false ),
 
   /**
-   * Style of keywords.
+   * Style of RegexTokens
    */
-  KEYWORD ( true, false );
+  TOKEN ( true, false ),
+
+  /**
+   * Style of Comments.
+   */
+  COMMENT ( false, true ),
+
+  /**
+   * Style of selected {@link Transition}s.
+   */
+  TRANSITION_SELECTED ( true, false );
 
   /**
    * The bold value.
@@ -173,6 +208,11 @@ public enum Style
         return PreferenceManager.getInstance ().getColorItemProductionError ()
             .getColor ();
       }
+      case PRODUCTION_HIGHLIGHT :
+      {
+        return PreferenceManager.getInstance ()
+            .getColorItemProductionHighlight ().getColor ();
+      }
       case NONTERMINAL_SYMBOL :
       {
         return PreferenceManager.getInstance ()
@@ -183,6 +223,9 @@ public enum Style
         return PreferenceManager.getInstance ()
             .getColorItemNonterminalSymbolError ().getColor ();
       }
+      case NONTERMINAL_SYMBOL_HIGHLIGHT :
+        return PreferenceManager.getInstance ()
+            .getColorItemNonterminalSymbolHighlight ().getColor ();
       case START_NONTERMINAL_SYMBOL :
       {
         return PreferenceManager.getInstance ()
@@ -203,6 +246,21 @@ public enum Style
         return PreferenceManager.getInstance ().getColorItemParserKeyword ()
             .getColor ();
       }
+      case REGEX_SYMBOL :
+        return PreferenceManager.getInstance ().getColorItemRegexSymbol ()
+            .getColor ();
+      case TOKEN :
+        return PreferenceManager.getInstance ().getColorItemRegexToken ()
+            .getColor ();
+      case REGEX_POSITION :
+        return PreferenceManager.getInstance ().getColorItemRegexPosition ()
+            .getColor ();
+      case COMMENT :
+        return PreferenceManager.getInstance ().getColorItemRegexComment ()
+            .getColor ();
+      case REGEX_TOOL_TIP_TEXT :
+        return PreferenceManager.getInstance ().getColorItemRegexToolTipText ()
+            .getColor ();
       default :
       {
         throw new IllegalArgumentException ( "enum value not supported" ); //$NON-NLS-1$

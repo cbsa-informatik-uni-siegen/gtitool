@@ -18,6 +18,8 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.exceptions.RegexException;
+import de.unisiegen.gtitool.core.exceptions.RegexValidationException;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
@@ -33,6 +35,7 @@ import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.core.util.ObjectPair;
@@ -47,6 +50,7 @@ import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
+import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu.TabPopupMenuType;
@@ -54,8 +58,11 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.style.editor.StyledParserEditor;
+import de.unisiegen.gtitool.ui.style.sidebar.SideBar;
 import de.unisiegen.gtitool.ui.swing.JGTITabbedPane;
 import de.unisiegen.gtitool.ui.swing.JGTITable;
+import de.unisiegen.gtitool.ui.swing.JGTITextArea;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton;
@@ -253,6 +260,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_CONVERT_TO_SOURCE_CFG,
 
     /**
+     * The convert to source regex enabled button state.
+     */
+    ENABLED_CONVERT_TO_SOURCE_REGEX,
+
+    /**
      * The convert to complete enabled button state.
      */
     ENABLED_CONVERT_TO_COMPLETE,
@@ -288,9 +300,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG,
 
     /**
+     * The convert to complete source regex enabled button state.
+     */
+    ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX,
+
+    /**
      * The minimize enabled button state.
      */
     ENABLED_MINIMIZE,
+
+    /**
+     * The convert dfa to regex button state.
+     */
+    ENABLED_CONVERT_DFA_TO_REGEX,
 
     /**
      * The reachable states enabled button state.
@@ -311,6 +333,46 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
      * The save enabled button state.
      */
     ENABLED_SAVE,
+
+    /**
+     * The toLatexExport button state.
+     */
+    ENABLED_TO_LATEX,
+
+    /**
+     * The createRDP button state
+     */
+    ENABLED_CREATE_RDP,
+
+    /**
+     * The toCoreSyntax button state.
+     */
+    ENABLED_TO_CORE_SYNTAX,
+
+    /**
+     * The eliminate left recursion button state
+     */
+    ENABLED_ELIMINATE_LEFT_RECURSION,
+
+    /**
+     * The eliminate entity productions button state
+     */
+    ENABLED_ELIMINATE_ENTITY_PRODUCTIONS,
+
+    /**
+     * The eliminate epsilon productions button state
+     */
+    ENABLED_ELIMINATE_EPSILON_PRODUCTIONS,
+
+    /**
+     * The left factoring button state
+     */
+    ENABLED_LEFT_FACTORING,
+
+    /**
+     * The regex info button state
+     */
+    ENABLED_REGEX_INFO,
 
     /**
      * The machine table selected button state.
@@ -345,7 +407,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     /**
      * The grammar visible button state.
      */
-    VISIBLE_GRAMMAR;
+    VISIBLE_GRAMMAR,
+
+    /**
+     * The regex visible button state.
+     */
+    VISIBLE_REGEX;
   }
 
 
@@ -420,6 +487,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
+   * Saves the last divider location
+   */
+  private int lastDividerLocation = 0;
+
+
+  /**
    * Creates new form {@link MainWindow}.
    */
   public MainWindow ()
@@ -463,6 +536,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
     removeButtonState ( ButtonState.ENABLED_RECENTLY_USED );
     removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
     removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
     removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
     removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
@@ -470,6 +544,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
     removeButtonState ( ButtonState.VISIBLE_MACHINE );
     removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
+    removeButtonState ( ButtonState.VISIBLE_REGEX );
+    removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
+    removeButtonState ( ButtonState.ENABLED_TO_LATEX );
+    removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+    removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+    removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+    removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+    removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+    removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -482,6 +565,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       removeButtonState ( ButtonState.SELECTED_MACHINE_TABLE );
     }
+    this.gui.getJCheckBoxMenuItemRegexInfo ().setSelected (
+        PreferenceManager.getInstance ().getVisibleRegexInfo () );
 
     this.gui.setVisible ( true );
     if ( PreferenceManager.getInstance ().getMainWindowMaximized () )
@@ -835,8 +920,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
@@ -850,8 +938,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
@@ -866,8 +957,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( true );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
@@ -881,8 +975,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
@@ -896,8 +993,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
@@ -911,10 +1011,31 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( true );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
+      this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToNFACB ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToENFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE ) )
         && ( !this.buttonStateList
@@ -940,6 +1061,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -962,6 +1085,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -984,6 +1109,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -1006,6 +1133,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -1028,6 +1157,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -1050,6 +1181,32 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
       this.buttonStateList
           .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
+      this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompletePDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX ) ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
       this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
@@ -1060,6 +1217,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_MINIMIZE );
       this.gui.getJMenuItemMinimize ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
+      this.gui.getJMenuItemConvertToRegex ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REACHABLE_STATES ) )
         && ( !this.buttonStateList
@@ -1105,6 +1269,72 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
       this.gui.getJGTIToolBarButtonSave ().setEnabled ( true );
       this.gui.getJMenuItemSave ().setEnabled ( true );
+    }
+    // to latex
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_TO_LATEX ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_TO_LATEX ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_TO_LATEX );
+      this.gui.getJMenuItemExportLatex ().setEnabled ( true );
+    }
+    // to core syntax
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_TO_CORE_SYNTAX ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_TO_CORE_SYNTAX ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+      this.gui.getJMenuItemToCoreSyntax ().setEnabled ( true );
+    }
+    // eliminate left recursion
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+      this.gui.getJMenuItemEliminateLeftRecursion ().setEnabled ( true );
+    }
+    // eliminate entity productions
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS ) ) )
+    {
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+      this.gui.getJMenuItemEliminateEntityProductions ().setEnabled ( true );
+    }
+    // eliminate epsilon productions
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS ) ) )
+    {
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+      this.gui.getJMenuItemEliminateEpsilonProductions ().setEnabled ( true );
+    }
+    // left factoring
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_LEFT_FACTORING ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_LEFT_FACTORING ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_LEFT_FACTORING );
+      this.gui.getJMenuItemLeftfactoring ().setEnabled ( true );
+    }
+    // create rdp
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CREATE_RDP ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CREATE_RDP ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CREATE_RDP );
+      this.gui.getJMenuItemCreateRDP ().setEnabled ( true );
+    }
+    // regex info view
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REGEX_INFO ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_REGEX_INFO );
+      this.gui.getJCheckBoxMenuItemRegexInfo ().setEnabled ( true );
     }
     // selected
     else if ( ( buttonState.equals ( ButtonState.SELECTED_MACHINE_TABLE ) )
@@ -1167,6 +1397,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.VISIBLE_GRAMMAR );
       this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( true );
     }
+    else if ( ( buttonState.equals ( ButtonState.VISIBLE_REGEX ) )
+        && ( !this.buttonStateList.contains ( ButtonState.VISIBLE_REGEX ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.VISIBLE_REGEX );
+    }
   }
 
 
@@ -1198,6 +1433,18 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final MainWindowForm getGUI ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the lastDividerLocation.
+   * 
+   * @return The lastDividerLocation.
+   * @see #lastDividerLocation
+   */
+  public int getLastDividerLocation ()
+  {
+    return this.lastDividerLocation;
   }
 
 
@@ -1457,8 +1704,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    * Handles the convert to action performed.
    * 
    * @param entityType The {@link EntityType} to convert to.
+   * @param cb True if compilerbau version is used
    */
-  public final void handleConvertTo ( EntityType entityType )
+  public final void handleConvertTo ( EntityType entityType, boolean cb )
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
@@ -1474,22 +1722,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
         {
-          panel.getConverter ().convert ( MachineType.DFA, entityType, false );
+          panel.getConverter ().convert ( MachineType.DFA, entityType, false,
+              false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
         {
-          panel.getConverter ().convert ( MachineType.NFA, entityType, false );
+          panel.getConverter ().convert ( MachineType.NFA, entityType, false,
+              false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
         {
-          panel.getConverter ().convert ( MachineType.ENFA, entityType, false );
+          panel.getConverter ().convert ( MachineType.ENFA, entityType, false,
+              cb );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
         {
-          panel.getConverter ().convert ( MachineType.PDA, entityType, false );
+          panel.getConverter ().convert ( MachineType.PDA, entityType, false,
+              false );
         }
         else
         {
@@ -1503,17 +1755,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.RG ) )
         {
-          panel.getConverter ().convert ( GrammarType.RG, entityType, false );
+          panel.getConverter ().convert ( GrammarType.RG, entityType, false,
+              false );
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
         {
-          panel.getConverter ().convert ( GrammarType.CFG, entityType, false );
+          panel.getConverter ().convert ( GrammarType.CFG, entityType, false,
+              false );
         }
         else
         {
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
         }
+      }
+      else if ( panel instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) panel;
+        regexPanel.getConverter ().convert ( RegexType.REGEX, entityType,
+            false, false );
       }
       else
       {
@@ -1527,8 +1787,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    * Handles the convert to complete action performed.
    * 
    * @param entityType The {@link EntityType} to convert to.
+   * @param cb True if compilerbau version is used
    */
-  public final void handleConvertToComplete ( EntityType entityType )
+  public final void handleConvertToComplete ( EntityType entityType,
+      @SuppressWarnings ( "unused" ) boolean cb )
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
@@ -1544,22 +1806,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
         {
-          panel.getConverter ().convert ( MachineType.DFA, entityType, true );
+          panel.getConverter ().convert ( MachineType.DFA, entityType, true,
+              false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
         {
-          panel.getConverter ().convert ( MachineType.NFA, entityType, true );
+          panel.getConverter ().convert ( MachineType.NFA, entityType, true,
+              false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
         {
-          panel.getConverter ().convert ( MachineType.ENFA, entityType, true );
+          panel.getConverter ().convert ( MachineType.ENFA, entityType, true,
+              false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
         {
-          panel.getConverter ().convert ( MachineType.PDA, entityType, true );
+          panel.getConverter ().convert ( MachineType.PDA, entityType, true,
+              false );
         }
         else
         {
@@ -1570,6 +1836,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
       }
+    }
+  }
+
+
+  /**
+   * Handle the create RDP button clicked
+   */
+  public final void handleCreateRDP ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      gp.handleCreateRDP ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
     }
   }
 
@@ -1778,6 +2063,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( machinePanel.getMachine ().getMachineType ().equals ( MachineType.DFA ) )
     {
       addButtonState ( ButtonState.ENABLED_MINIMIZE );
+      addButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
     }
 
     removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
@@ -1818,6 +2104,48 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else
     {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Handles elimination of left recursion in cfg.
+   */
+  public final void handleEliminateEntityProductions ()
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      ( ( GrammarPanel ) panel ).handleEliminateEntityProductions ();
+    }
+  }
+
+
+  /**
+   * Handles elimination of left recursion in cfg.
+   */
+  public final void handleEliminateEpsilonProductions ()
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      ( ( GrammarPanel ) panel ).handleEliminateEpsilonProductions ();
+    }
+  }
+
+
+  /**
+   * Handles elimination of left recursion in cfg.
+   */
+  public final void handleEliminateLeftRecursion ()
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      ( ( GrammarPanel ) panel ).handleEliminateLeftRecursion ();
     }
   }
 
@@ -1948,6 +2276,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       machinePanel.handleExportPicture ();
     }
+    else if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof RegexPanel )
+    {
+      if ( !handleValidate ( false ) )
+      {
+        return;
+      }
+      RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      regexPanel.handleExportPicture ();
+    }
     else
     {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
@@ -1970,6 +2309,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else
     {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Handles elimination of left recursion in cfg.
+   */
+  public final void handleLeftFactoring ()
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      ( ( GrammarPanel ) panel ).handleLeftFactoring ();
     }
   }
 
@@ -2045,8 +2398,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_PRINT );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
-      addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
-      addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+      if ( ! ( newEditorPanel instanceof RegexPanel ) )
+      {
+        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+        addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+      }
     }
   }
 
@@ -2065,11 +2421,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         newEditorPanel = new MachinePanel ( this.gui,
             ( DefaultMachineModel ) defaultModel, null );
+        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+        addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
       }
       else if ( defaultModel instanceof DefaultGrammarModel )
       {
         newEditorPanel = new GrammarPanel ( this.gui,
             ( DefaultGrammarModel ) defaultModel, null );
+        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+        addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+      }
+      else if ( defaultModel instanceof DefaultRegexModel )
+      {
+        newEditorPanel = new RegexPanel ( this.gui,
+            ( DefaultRegexModel ) defaultModel, null );
       }
       else
       {
@@ -2112,8 +2477,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_PRINT );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
-      addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
-      addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
     }
   }
 
@@ -2143,6 +2506,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       else if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
       {
         defaultModel = new DefaultGrammarModel ( element, null );
+      }
+      else if ( element.getName ().equals ( "RegexModel" ) ) //$NON-NLS-1$
+      {
+        defaultModel = new DefaultRegexModel ( element, true );
       }
       else
       {
@@ -2190,6 +2557,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       exc.printStackTrace ();
       System.exit ( 1 );
       return;
+    }
+    catch ( Exception exc )
+    {
+      exc.printStackTrace ();
     }
 
     handleNew ( defaultModel );
@@ -2248,6 +2619,18 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       GrammarPanel grammarPanel = ( GrammarPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       PrintDialog printDialog = new PrintDialog ( this.gui, grammarPanel );
+      printDialog.show ();
+    }
+    else if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof RegexPanel )
+    {
+      if ( !handleValidate ( false ) )
+      {
+        return;
+      }
+      RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      PrintDialog printDialog = new PrintDialog ( this.gui, regexPanel );
       printDialog.show ();
     }
     else
@@ -2488,6 +2871,121 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
+   * Handles regex information window state changed
+   * 
+   * @param b True if window should be shown, else false
+   */
+  public final void handleRegexInfoChanged ( boolean b )
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof RegexPanel )
+    {
+      RegexPanel regexPanel = ( RegexPanel ) panel;
+      if ( b != PreferenceManager.getInstance ().getVisibleRegexInfo () )
+      {
+        PreferenceManager.getInstance ().setVisibleRegexInfo ( b );
+        if ( !b )
+        {
+          this.lastDividerLocation = regexPanel.getGUI ().jGTISplitPaneRegex
+              .getDividerLocation ();
+        }
+        for ( int i = 0 ; i < this.jGTIMainSplitPane
+            .getJGTIEditorPanelTabbedPaneLeft ().getTabCount () ; i++ )
+        {
+          EditorPanel p = this.jGTIMainSplitPane
+              .getJGTIEditorPanelTabbedPaneLeft ().getEditorPanel ( i );
+          if ( p instanceof RegexPanel )
+          {
+            RegexPanel r = ( RegexPanel ) p;
+            r.getGUI ().jGTIPanelInfo.setVisible ( b );
+            if ( r.getRegex ().getRegexNode () != null )
+            {
+              r.getRegex ().getRegexNode ().setShowPositions ( b );
+              try
+              {
+                r.validate ();
+                r.initializeJGraph ();
+              }
+              catch ( RegexValidationException exc )
+              {
+                boolean ok = true;
+                for ( RegexException e : exc.getRegexException () )
+                {
+                  if ( e.getType ().equals ( ErrorType.ERROR ) )
+                  {
+                    ok = false;
+                    break;
+                  }
+                }
+                if ( ok )
+                {
+                  r.initializeJGraph ();
+                  r.getGUI ().jGTIScrollPaneGraph.setViewportView ( r
+                      .getJGTIGraph () );
+                  ( ( DefaultRegexModel ) r.getModel () ).createTree ();
+                }
+              }
+            }
+
+            if ( b )
+            {
+              r.getGUI ().jGTISplitPaneRegex
+                  .setDividerLocation ( this.lastDividerLocation );
+            }
+          }
+        }
+        for ( int i = 0 ; i < this.jGTIMainSplitPane
+            .getJGTIEditorPanelTabbedPaneRight ().getTabCount () ; i++ )
+        {
+          EditorPanel p = this.jGTIMainSplitPane
+              .getJGTIEditorPanelTabbedPaneRight ().getEditorPanel ( i );
+          if ( p instanceof RegexPanel )
+          {
+            RegexPanel r = ( RegexPanel ) p;
+            r.getGUI ().jGTIPanelInfo.setVisible ( b );
+            if ( r.getRegex ().getRegexNode () != null )
+            {
+              r.getRegex ().getRegexNode ().setShowPositions ( b );
+              try
+              {
+                r.validate ();
+                r.initializeJGraph ();
+              }
+              catch ( RegexValidationException exc )
+              {
+                boolean ok = true;
+                for ( RegexException e : exc.getRegexException () )
+                {
+                  if ( e.getType ().equals ( ErrorType.ERROR ) )
+                  {
+                    ok = false;
+                    break;
+                  }
+                }
+                if ( ok )
+                {
+                  r.initializeJGraph ();
+                  r.getGUI ().jGTIScrollPaneGraph.setViewportView ( r
+                      .getJGTIGraph () );
+                  ( ( DefaultRegexModel ) r.getModel () ).createTree ();
+                }
+              }
+            }
+
+            if ( b )
+            {
+              r.getGUI ().jGTISplitPaneRegex
+                  .setDividerLocation ( this.lastDividerLocation );
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  /**
    * Handles the reorder state names event.
    */
   public final void handleReorderStateNames ()
@@ -2627,10 +3125,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
             ActiveEditor.LEFT_EDITOR ) )
         {
+          JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+          tabbedPane.requestFocus ();
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
           logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
               "handle second view mouse released" );//$NON-NLS-1$
           handleTabbedPaneStateChanged ();
+        }
+        else
+        {
+          JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+          tabbedPane.requestFocus ();
         }
         return;
       }
@@ -2639,10 +3144,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
             ActiveEditor.RIGHT_EDITOR ) )
         {
+          JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+          tabbedPane.requestFocus ();
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
           logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
               "handle second view mouse released" );//$NON-NLS-1$
           handleTabbedPaneStateChanged ();
+        }
+        else
+        {
+          JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+          tabbedPane.requestFocus ();
         }
         return;
       }
@@ -2657,6 +3169,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2676,6 +3190,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2695,6 +3211,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2714,6 +3232,50 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( regexPanel.getJTabbedPaneConsole () == event.getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( regexPanel.getJTabbedPaneConsole () == event.getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            JGTITabbedPane tabbedPane = ( JGTITabbedPane ) event.getSource ();
+            tabbedPane.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2763,6 +3325,44 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           return;
         }
       }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( regexPanel.getJGTIGraph () == event.getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( regexPanel.getJGTIGraph () == event.getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
     }
     else if ( event.getSource () instanceof JGTITable )
     {
@@ -2781,6 +3381,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2804,6 +3406,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2825,6 +3429,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2846,6 +3452,52 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTITableErrors == event.getSource () )
+            || ( regexPanel.getGUI ().jGTITableWarnings == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTITableErrors == event.getSource () )
+            || ( regexPanel.getGUI ().jGTITableWarnings == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            JGTITable table = ( JGTITable ) event.getSource ();
+            table.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2887,6 +3539,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2925,6 +3579,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2955,6 +3611,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -2985,6 +3644,112 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTIScrollPaneErrors
+            .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneErrors
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneGraph
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneGraph
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneWarnings
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneWarnings
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneNodeInfo
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneNodeInfo
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFirstpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFirstpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFollowpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFollowpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneLastpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneLastpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneNullable
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneNullable
+                .getVerticalScrollBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTIScrollPaneErrors
+            .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneErrors
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneGraph
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneGraph
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneWarnings
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneWarnings
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneNodeInfo
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().jGTIScrollPaneNodeInfo
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFirstpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFirstpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFollowpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneFollowpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneLastpos
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneLastpos
+                .getVerticalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneNullable
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jScrollPaneNullable
+                .getVerticalScrollBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            JScrollBar bar = ( JScrollBar ) event.getSource ();
+            bar.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3014,6 +3779,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3040,6 +3807,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3064,6 +3833,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.LEFT_EDITOR ) )
           {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3088,6 +3859,337 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
               ActiveEditor.RIGHT_EDITOR ) )
           {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTITableErrors.getTableHeader () == event
+            .getSource () )
+            || ( regexPanel.getGUI ().jGTITableWarnings.getTableHeader () == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().jGTITableErrors.getTableHeader () == event
+            .getSource () )
+            || ( regexPanel.getGUI ().jGTITableWarnings.getTableHeader () == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            JTableHeader tableHeader = ( JTableHeader ) event.getSource ();
+            tableHeader.requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+
+    }
+    else if ( event.getSource () instanceof StyledParserEditor )
+    {
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().styledRegexAlphabetParserPanel.getEditor () == event
+            .getSource () )
+            || ( regexPanel.getGUI ().styledRegexParserPanel.getEditor () == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().styledRegexAlphabetParserPanel.getEditor () == event
+            .getSource () )
+            || ( regexPanel.getGUI ().styledRegexParserPanel.getEditor () == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+            .getEditor () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledStartNonterminalSymbolParserPanel
+                .getEditor () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledTerminalSymbolSetParserPanel
+                .getEditor () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+            .getEditor () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledStartNonterminalSymbolParserPanel
+                .getEditor () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledTerminalSymbolSetParserPanel
+                .getEditor () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+    }
+    else if ( event.getSource () instanceof JGTITextArea )
+    {
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaFirstpos == event
+            .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaFollowpos == event
+                .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaLastpos == event
+                .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaNullable == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaFirstpos == event
+            .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaFollowpos == event
+                .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaLastpos == event
+                .getSource () )
+            || ( regexPanel.getGUI ().regexNodeInfoPanel.jGTITextAreaNullable == event
+                .getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+    }
+    else if ( event.getSource () instanceof SideBar )
+    {
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().styledRegexAlphabetParserPanel
+            .getSideBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            regexPanel.getGUI ().styledRegexAlphabetParserPanel.getEditor ()
+                .requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+        else if ( regexPanel.getGUI ().styledRegexParserPanel.getSideBar () == event
+            .getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            regexPanel.getGUI ().styledRegexParserPanel.getEditor ()
+                .requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( regexPanel.getGUI ().styledRegexAlphabetParserPanel
+            .getSideBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            regexPanel.getGUI ().styledRegexAlphabetParserPanel.getEditor ()
+                .requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+
+        if ( regexPanel.getGUI ().styledRegexParserPanel.getSideBar () == event
+            .getSource () )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            regexPanel.getGUI ().styledRegexParserPanel.getEditor ()
+                .requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+            .getSideBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledStartNonterminalSymbolParserPanel
+                .getSideBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledTerminalSymbolSetParserPanel
+                .getSideBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+                .getEditor ().requestFocus ();
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
+            handleTabbedPaneStateChanged ();
+          }
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+            .getSideBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledStartNonterminalSymbolParserPanel
+                .getSideBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().styledTerminalSymbolSetParserPanel
+                .getSideBar () == event.getSource () ) )
+        {
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            grammarPanel.getGUI ().styledNonterminalSymbolSetParserPanel
+                .getEditor ().requestFocus ();
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
             logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
                 "handle second view mouse released" );//$NON-NLS-1$
@@ -3327,6 +4429,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
       removeButtonState ( ButtonState.VISIBLE_MACHINE );
       removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
+      removeButtonState ( ButtonState.VISIBLE_REGEX );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
       removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
@@ -3334,8 +4437,16 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
       removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
       removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
+      removeButtonState ( ButtonState.ENABLED_TO_LATEX );
       removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
       removeButtonState ( ButtonState.ENABLED_SAVE );
+      removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+      removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+      removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+      removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+      removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+      removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+      removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
     }
     // MachinePanel
     else
@@ -3346,6 +4457,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         addButtonState ( ButtonState.VISIBLE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
+        removeButtonState ( ButtonState.VISIBLE_REGEX );
+        removeButtonState ( ButtonState.ENABLED_TO_LATEX );
+        removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+        removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+        removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+        removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
@@ -3356,10 +4476,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               .equals ( MachineMode.EDIT_MACHINE ) )
           {
             addButtonState ( ButtonState.ENABLED_MINIMIZE );
+            addButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
           }
           else
           {
             removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+            removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
           }
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
@@ -3368,6 +4490,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
@@ -3375,6 +4498,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
@@ -3382,6 +4506,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         }
         else
         {
@@ -3508,10 +4633,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
+          removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+          removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+          removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+          removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+          removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
         {
+          addButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+          addButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+          addButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+          addButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+          addButtonState ( ButtonState.ENABLED_CREATE_RDP );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
         }
@@ -3525,6 +4660,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         removeButtonState ( ButtonState.VISIBLE_MACHINE );
         addButtonState ( ButtonState.VISIBLE_GRAMMAR );
+        removeButtonState ( ButtonState.VISIBLE_REGEX );
 
         addButtonState ( ButtonState.ENABLED_SAVE_AS );
         addButtonState ( ButtonState.ENABLED_SAVE_ALL );
@@ -3543,10 +4679,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_HISTORY );
         removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
         removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
         removeButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
         removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
+        removeButtonState ( ButtonState.ENABLED_TO_LATEX );
+        removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+        removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
 
         if ( grammarPanel.isUndoAble () )
         {
@@ -3566,11 +4706,83 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_REDO );
         }
       }
+      // RegexPanel
+      else if ( panel instanceof RegexPanel )
+      {
+        RegexPanel regexPanel = ( RegexPanel ) panel;
+
+        addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
+        addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX );
+
+        panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
+            .isSelected () );
+        if ( ( regexPanel.getRegex ().getRegexNode () == null )
+            || regexPanel.getRegex ().getRegexNode ().isInCoreSyntax () )
+        {
+          removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+        }
+        else
+        {
+          addButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+        }
+        addButtonState ( ButtonState.ENABLED_REGEX_INFO );
+
+        removeButtonState ( ButtonState.VISIBLE_MACHINE );
+        removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
+        addButtonState ( ButtonState.VISIBLE_REGEX );
+
+        addButtonState ( ButtonState.ENABLED_SAVE_AS );
+        addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+        addButtonState ( ButtonState.ENABLED_CLOSE );
+        addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+        addButtonState ( ButtonState.ENABLED_PRINT );
+        addButtonState ( ButtonState.ENABLED_CONVERT_TO );
+        addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+        addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+        addButtonState ( ButtonState.ENABLED_TO_LATEX );
+        addButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
+
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
+        removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
+        removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
+        removeButtonState ( ButtonState.ENABLED_HISTORY );
+        removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+        removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
+        removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+        removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
+        removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
+        removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+        removeButtonState ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
+        removeButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+        removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+        removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+
+        if ( regexPanel.isUndoAble () )
+        {
+          addButtonState ( ButtonState.ENABLED_UNDO );
+        }
+        else
+        {
+          removeButtonState ( ButtonState.ENABLED_UNDO );
+        }
+
+        if ( regexPanel.isRedoAble () )
+        {
+          addButtonState ( ButtonState.ENABLED_REDO );
+        }
+        else
+        {
+          removeButtonState ( ButtonState.ENABLED_REDO );
+        }
+      }
       else
       {
         throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
       }
-
       // Save status
       if ( panel.isModified () )
       {
@@ -3610,6 +4822,49 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         PreferenceManager.getInstance ().setVisibleTable ( state );
         machinePanel.setVisibleTable ( state );
       }
+    }
+  }
+
+
+  /**
+   * Handles to core syntax for Regex
+   */
+  public final void handleToCoreSyntax ()
+  {
+    handleValidate ();
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof RegexPanel )
+    {
+      RegexPanel regexPanel = ( RegexPanel ) panel;
+      regexPanel.handleToCoreSyntaxButtonClicked ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Handles the to Latex event
+   */
+  public final void handleToLatex ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof RegexPanel )
+    {
+      if ( !handleValidate ( false ) )
+      {
+        return;
+      }
+      RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      regexPanel.handleToLatexButtonClicked ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
     }
   }
 
@@ -3747,11 +5002,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     int errorCount = 0;
     int warningCount = 0;
-    boolean machinePanelSelected;
 
     if ( panel instanceof MachinePanel )
     {
-      machinePanelSelected = true;
       MachinePanel machinePanel = ( MachinePanel ) panel;
       try
       {
@@ -3778,7 +5031,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
     else if ( panel instanceof GrammarPanel )
     {
-      machinePanelSelected = false;
       GrammarPanel grammarPanel = ( GrammarPanel ) panel;
       try
       {
@@ -3803,10 +5055,113 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
     }
+    else if ( panel instanceof RegexPanel )
+    {
+      panel.clearValidationMessages ();
+      RegexPanel regexPanel = ( RegexPanel ) panel;
+      try
+      {
+        regexPanel.validate ();
+      }
+      catch ( RegexValidationException e )
+      {
+        for ( RegexException error : e.getRegexException () )
+        {
+          if ( error.getType ().equals ( ErrorType.ERROR ) )
+          {
+            regexPanel.addError ( error );
+            errorCount++ ;
+          }
+          else if ( error.getType ().equals ( ErrorType.WARNING ) )
+          {
+            regexPanel.addWarning ( error );
+            warningCount++ ;
+          }
+        }
+      }
+    }
     else
     {
       throw new RuntimeException (
-          "the select panel is not a machine or grammar panel" ); //$NON-NLS-1$
+          "the select panel is not a regex, machine or grammar panel" ); //$NON-NLS-1$
+    }
+
+    String titleWarningString = ""; //$NON-NLS-1$
+    String titleErrorString = ""; //$NON-NLS-1$
+    String titleWarningFoundString = ""; //$NON-NLS-1$
+    String titleErrorFoundString = ""; //$NON-NLS-1$
+    String mwError = "MainWindow.Error"; //$NON-NLS-1$
+    String mwWarning = "MainWindow.Warning"; //$NON-NLS-1$
+    String mwErrorWarning = "MainWindow.ErrorWarning"; //$NON-NLS-1$
+    String mwWarningCountN = "MainWindow."; //$NON-NLS-1$
+    String mwWarningCount1 = "MainWindow."; //$NON-NLS-1$
+    String mwErrorCountN = "MainWindow."; //$NON-NLS-1$
+    String mwErrorCount1 = "MainWindow."; //$NON-NLS-1$
+    String mwErrorWarningCount0 = "MainWindow."; //$NON-NLS-1$
+    String mwErrorWarningCount1 = "MainWindow."; //$NON-NLS-1$
+    String mwErrorWarningCount2 = "MainWindow."; //$NON-NLS-1$
+    String mwErrorWarningCount3 = "MainWindow."; //$NON-NLS-1$
+    String mwNoErrorNoWarning = "MainWindow."; //$NON-NLS-1$
+    String mwNoErrorNoWarningCount = "MainWindow."; //$NON-NLS-1$
+    if ( panel instanceof MachinePanel )
+    {
+      titleErrorString = "MachinePanel.Error"; //$NON-NLS-1$
+      titleWarningString = "MachinePanel.Warning"; //$NON-NLS-1$
+      titleErrorFoundString = "MachinePanel.ErrorFound"; //$NON-NLS-1$
+      titleWarningFoundString = "MachinePanel.WarningFound"; //$NON-NLS-1$
+      mwError += "Machine"; //$NON-NLS-1$
+      mwWarning += "Machine"; //$NON-NLS-1$
+      mwErrorCount1 += "ErrorMachineCountOne"; //$NON-NLS-1$
+      mwErrorCountN += "ErrorMachineCount"; //$NON-NLS-1$
+      mwWarningCount1 += "WarningMachineCountOne"; //$NON-NLS-1$
+      mwWarningCountN += "WarningMachineCount"; //$NON-NLS-1$
+      mwErrorWarning += "Machine"; //$NON-NLS-1$
+      mwErrorWarningCount0 += "ErrorWarningMachineCount0"; //$NON-NLS-1$
+      mwErrorWarningCount1 += "ErrorWarningMachineCount1"; //$NON-NLS-1$
+      mwErrorWarningCount2 += "ErrorWarningMachineCount2"; //$NON-NLS-1$
+      mwErrorWarningCount3 += "ErrorWarningMachineCount3"; //$NON-NLS-1$
+      mwNoErrorNoWarning += "NoErrorNoWarningMachine"; //$NON-NLS-1$
+      mwNoErrorNoWarningCount += "NoErrorNoWarningMachineCount"; //$NON-NLS-1$
+    }
+    else if ( panel instanceof GrammarPanel )
+    {
+      titleErrorString = "GrammarPanel.Error"; //$NON-NLS-1$
+      titleWarningString = "GrammarPanel.Warning"; //$NON-NLS-1$
+      titleErrorFoundString = "GrammarPanel.ErrorFound"; //$NON-NLS-1$
+      titleWarningFoundString = "GrammarPanel.WarningFound"; //$NON-NLS-1$
+      mwError += "Grammar"; //$NON-NLS-1$
+      mwWarning += "Grammar"; //$NON-NLS-1$
+      mwErrorCount1 += "ErrorGrammarCountOne"; //$NON-NLS-1$
+      mwErrorCountN += "ErrorGrammarCount"; //$NON-NLS-1$
+      mwWarningCount1 += "WarningGrammarCountOne"; //$NON-NLS-1$
+      mwWarningCountN += "WarningGrammarCount"; //$NON-NLS-1$
+      mwErrorWarning += "Grammar"; //$NON-NLS-1$
+      mwErrorWarningCount0 += "ErrorWarningGrammarCount0"; //$NON-NLS-1$
+      mwErrorWarningCount1 += "ErrorWarningGrammarCount1"; //$NON-NLS-1$
+      mwErrorWarningCount2 += "ErrorWarningGrammarCount2"; //$NON-NLS-1$
+      mwErrorWarningCount3 += "ErrorWarningGrammarCount3"; //$NON-NLS-1$
+      mwNoErrorNoWarning += "NoErrorNoWarningGrammar"; //$NON-NLS-1$
+      mwNoErrorNoWarningCount += "NoErrorNoWarningGrammarCount"; //$NON-NLS-1$
+    }
+    else if ( panel instanceof RegexPanel )
+    {
+      titleErrorString = "RegexPanel.Error"; //$NON-NLS-1$
+      titleWarningString = "RegexPanel.Warning"; //$NON-NLS-1$
+      titleErrorFoundString = "RegexPanel.ErrorFound"; //$NON-NLS-1$
+      titleWarningFoundString = "RegexPanel.WarningFound"; //$NON-NLS-1$
+      mwError += "Regex"; //$NON-NLS-1$
+      mwWarning += "Regex"; //$NON-NLS-1$
+      mwErrorCount1 += "ErrorRegexCountOne"; //$NON-NLS-1$
+      mwErrorCountN += "ErrorRegexCount"; //$NON-NLS-1$
+      mwWarningCount1 += "WarningRegexCountOne"; //$NON-NLS-1$
+      mwWarningCountN += "WarningRegexCount"; //$NON-NLS-1$
+      mwErrorWarning += "Regex"; //$NON-NLS-1$
+      mwErrorWarningCount0 += "ErrorWarningRegexCount0"; //$NON-NLS-1$
+      mwErrorWarningCount1 += "ErrorWarningRegexCount1"; //$NON-NLS-1$
+      mwErrorWarningCount2 += "ErrorWarningRegexCount2"; //$NON-NLS-1$
+      mwErrorWarningCount3 += "ErrorWarningRegexCount3"; //$NON-NLS-1$
+      mwNoErrorNoWarning += "NoErrorNoWarningRegex"; //$NON-NLS-1$
+      mwNoErrorNoWarningCount += "NoErrorNoWarningRegexCount"; //$NON-NLS-1$
     }
 
     // Return if only errors should be displayes
@@ -3819,15 +5174,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         // Update the titles
         panel.getJTabbedPaneConsole ().setTitleAt ( 0,
-            machinePanelSelected ? Messages.getString ( "MachinePanel.Error" ) //$NON-NLS-1$
-                : Messages.getString ( "GrammarPanel.Error" ) ); //$NON-NLS-1$
+            Messages.getString ( titleErrorString ) );
 
         panel.getJTabbedPaneConsole ().setTitleAt (
             1,
-            Messages.getString (
-                machinePanelSelected ? "MachinePanel.WarningFound" //$NON-NLS-1$
-                    : "GrammarPanel.WarningFound", new Integer ( //$NON-NLS-1$
-                    warningCount ) ) );
+            Messages.getString ( titleWarningFoundString, new Integer (
+                warningCount ) ) );
       }
       return true;
     }
@@ -3839,49 +5191,39 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       String message = null;
       if ( ( errorCount == 1 ) && ( warningCount == 1 ) )
       {
-        message = Messages
-            .getString ( machinePanelSelected ? "MainWindow.ErrorWarningMachineCount0" //$NON-NLS-1$
-                : "MainWindow.ErrorWarningGrammarCount0" ); //$NON-NLS-1$
+        message = Messages.getString ( mwErrorWarningCount0 );
       }
       else if ( ( errorCount == 1 ) && ( warningCount > 1 ) )
       {
-        message = Messages.getString (
-            machinePanelSelected ? "MainWindow.ErrorWarningMachineCount1" //$NON-NLS-1$
-                : "MainWindow.ErrorWarningGrammarCount1", String //$NON-NLS-1$
-                .valueOf ( warningCount ) );
+        message = Messages.getString ( mwErrorWarningCount1, String
+            .valueOf ( warningCount ) );
       }
       else if ( ( errorCount > 1 ) && ( warningCount == 1 ) )
       {
-        message = Messages.getString (
-            machinePanelSelected ? "MainWindow.ErrorWarningMachineCount2" //$NON-NLS-1$
-                : "MainWindow.ErrorWarningGrammarCount2", String //$NON-NLS-1$
-                .valueOf ( errorCount ) );
+        message = Messages.getString ( mwErrorWarningCount2, String
+            .valueOf ( errorCount ) );
       }
       else
       {
-        message = Messages.getString (
-            machinePanelSelected ? "MainWindow.ErrorWarningMachineCount3" //$NON-NLS-1$
-                : "MainWindow.ErrorWarningGrammarCount3", String //$NON-NLS-1$
-                .valueOf ( errorCount ), String.valueOf ( warningCount ) );
+        message = Messages.getString ( mwErrorWarningCount3, String
+            .valueOf ( errorCount ), String.valueOf ( warningCount ) );
       }
 
       // Update the titles
-      panel.getJTabbedPaneConsole ().setTitleAt ( 0,
-          Messages.getString ( machinePanelSelected ? "MachinePanel.ErrorFound" //$NON-NLS-1$
-              : "GrammarPanel.ErrorFound", new Integer ( errorCount ) ) ); //$NON-NLS-1$
+      panel.getJTabbedPaneConsole ().setTitleAt (
+          0,
+          Messages
+              .getString ( titleErrorFoundString, new Integer ( errorCount ) ) );
       panel.getJTabbedPaneConsole ().setTitleAt (
           1,
-          Messages.getString (
-              machinePanelSelected ? "MachinePanel.WarningFound" //$NON-NLS-1$
-                  : "GrammarPanel.WarningFound", new Integer ( //$NON-NLS-1$
-                  warningCount ) ) );
+          Messages.getString ( titleWarningFoundString, new Integer (
+              warningCount ) ) );
 
       // Select the error tab
       panel.getJTabbedPaneConsole ().setSelectedIndex ( 0 );
 
       infoDialog = new InfoDialog ( this.gui, message, Messages
-          .getString ( machinePanelSelected ? "MainWindow.ErrorWarningMachine" //$NON-NLS-1$
-              : "MainWindow.ErrorWarningGrammar" ) ); //$NON-NLS-1$
+          .getString ( mwErrorWarning ) );
     }
     // Only error
     else if ( errorCount > 0 )
@@ -3889,31 +5231,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       String message;
       if ( errorCount == 1 )
       {
-        message = Messages
-            .getString ( machinePanelSelected ? "MainWindow.ErrorMachineCountOne"//$NON-NLS-1$
-                : "MainWindow.ErrorGrammarCountOne" );//$NON-NLS-1$
+        message = Messages.getString ( mwErrorCount1 );
       }
       else
       {
-        message = Messages.getString (
-            machinePanelSelected ? "MainWindow.ErrorMachineCount"//$NON-NLS-1$
-                : "MainWindow.ErrorGrammarCount", String//$NON-NLS-1$
-                .valueOf ( errorCount ) );
+        message = Messages.getString ( mwErrorCountN, String
+            .valueOf ( errorCount ) );
       }
 
       // Update the titles
-      panel.getJTabbedPaneConsole ().setTitleAt ( 0,
-          Messages.getString ( machinePanelSelected ? "MachinePanel.ErrorFound"//$NON-NLS-1$
-              : "GrammarPanel.ErrorFound", new Integer ( errorCount ) ) );//$NON-NLS-1$
+      panel.getJTabbedPaneConsole ().setTitleAt (
+          0,
+          Messages
+              .getString ( titleErrorFoundString, new Integer ( errorCount ) ) );
       panel.getJTabbedPaneConsole ().setTitleAt ( 1,
-          Messages.getString ( machinePanelSelected ? "MachinePanel.Warning"//$NON-NLS-1$
-              : "GrammarPanel.Warning" ) );//$NON-NLS-1$
+          Messages.getString ( titleWarningString ) );
 
       panel.getJTabbedPaneConsole ().setSelectedIndex ( 0 );
 
       infoDialog = new InfoDialog ( this.gui, message, Messages
-          .getString ( machinePanelSelected ? "MainWindow.ErrorMachine"//$NON-NLS-1$
-              : "MainWindow.ErrorGrammar" ) );//$NON-NLS-1$
+          .getString ( mwError ) );
     }
     // Only warning
     else if ( warningCount > 0 )
@@ -3921,57 +5258,39 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       String message;
       if ( warningCount == 1 )
       {
-        message = Messages
-            .getString ( machinePanelSelected ? "MainWindow.WarningMachineCountOne"//$NON-NLS-1$
-                : "MainWindow.WarningGrammarCountOne" );//$NON-NLS-1$
+        message = Messages.getString ( mwWarningCount1 );
       }
       else
       {
-        message = Messages.getString (
-            machinePanelSelected ? "MainWindow.WarningMachineCount"//$NON-NLS-1$
-                : "MainWindow.WarningGrammarCount", String//$NON-NLS-1$
-                .valueOf ( warningCount ) );
+        message = Messages.getString ( mwWarningCountN, String
+            .valueOf ( warningCount ) );
       }
 
       // Update the titles
       panel.getJTabbedPaneConsole ().setTitleAt ( 0,
-          Messages.getString ( machinePanelSelected ? "MachinePanel.Error"//$NON-NLS-1$
-              : "GrammarPanel.Error" ) );//$NON-NLS-1$
+          Messages.getString ( titleErrorString ) );
       panel.getJTabbedPaneConsole ().setTitleAt (
           1,
-          Messages.getString (
-              machinePanelSelected ? "MachinePanel.WarningFound"//$NON-NLS-1$
-                  : "GrammarPanel.WarningFound", new Integer ( //$NON-NLS-1$
-                  warningCount ) ) );
+          Messages.getString ( titleWarningFoundString, new Integer (
+              warningCount ) ) );
 
       // Select the warning tab
       panel.getJTabbedPaneConsole ().setSelectedIndex ( 1 );
 
       infoDialog = new InfoDialog ( this.gui, message, Messages
-          .getString ( machinePanelSelected ? "MainWindow.WarningMachine"//$NON-NLS-1$
-              : "MainWindow.WarningGrammar" ) );//$NON-NLS-1$
+          .getString ( mwWarning ) );
     }
     // No error and no warning
     else
     {
-      // Update the titles
       panel.getJTabbedPaneConsole ().setTitleAt ( 0,
-          Messages.getString ( machinePanelSelected ? "MachinePanel.Error"//$NON-NLS-1$
-              : "GrammarPanel.Error" ) );//$NON-NLS-1$
+          Messages.getString ( titleErrorString ) );
       panel.getJTabbedPaneConsole ().setTitleAt ( 1,
-          Messages.getString ( machinePanelSelected ? "MachinePanel.Warning"//$NON-NLS-1$
-              : "GrammarPanel.Warning" ) );//$NON-NLS-1$
-
-      infoDialog = new InfoDialog (
-          this.gui,
-          Messages
-              .getString ( machinePanelSelected ? "MainWindow.NoErrorNoWarningMachineCount"//$NON-NLS-1$
-                  : "MainWindow.NoErrorNoWarningGrammarCount" ),//$NON-NLS-1$
-          Messages
-              .getString ( machinePanelSelected ? "MainWindow.NoErrorNoWarningMachine"//$NON-NLS-1$
-                  : "MainWindow.NoErrorNoWarningGrammar" ) ); //$NON-NLS-1$
+          Messages.getString ( titleWarningString ) );
+      infoDialog = new InfoDialog ( this.gui, Messages
+          .getString ( mwNoErrorNoWarningCount ), Messages
+          .getString ( mwNoErrorNoWarning ) );
     }
-
     addButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
     panel.setVisibleConsole ( true );
 
@@ -4248,6 +5567,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.ExportPicture" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemExportPicture ().setMnemonic (
         Messages.getString ( "MainWindow.ExportPictureMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // ExportLatex
+    MainWindow.this.gui.getJMenuItemExportLatex ().setText (
+        Messages.getString ( "MainWindow.LatexExport" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemExportLatex ().setMnemonic (
+        Messages.getString ( "MainWindow.LatexExportMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // RecentlyUsed
     MainWindow.this.gui.getJMenuRecentlyUsed ().setText (
         Messages.getString ( "MainWindow.RecentlyUsed" ) ); //$NON-NLS-1$
@@ -4271,11 +5595,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.Undo" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemUndo ().setMnemonic (
         Messages.getString ( "MainWindow.UndoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonUndo ().setToolTipText (
+        Messages.getString ( "MainWindow.UndoToolTip" ) ); //$NON-NLS-1$
     // Redo
     MainWindow.this.gui.getJMenuItemRedo ().setText (
         Messages.getString ( "MainWindow.Redo" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemRedo ().setMnemonic (
         Messages.getString ( "MainWindow.RedoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonRedo ().setToolTipText (
+        Messages.getString ( "MainWindow.RedoToolTip" ) ); //$NON-NLS-1$
     // Preferences
     MainWindow.this.gui.getJMenuItemPreferences ().setText (
         Messages.getString ( "MainWindow.Preferences" ) ); //$NON-NLS-1$
@@ -4304,6 +5632,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.SecondView" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJCheckBoxMenuItemSecondView ().setMnemonic (
         Messages.getString ( "MainWindow.SecondViewMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Regex info
+    MainWindow.this.gui.getJCheckBoxMenuItemRegexInfo ().setText (
+        Messages.getString ( "MainWindow.RegexInfo" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJCheckBoxMenuItemRegexInfo ().setMnemonic (
+        Messages.getString ( "MainWindow.RegexInfoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
 
     /*
      * Execute
@@ -4336,10 +5669,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.DFA" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemConvertToNFA ().setText (
         Messages.getString ( "MainWindow.NFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemConvertToNFACB ().setText (
+        Messages.getString ( "MainWindow.NFACB" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemConvertToENFA ().setText (
         Messages.getString ( "MainWindow.ENFA" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemConvertToPDA ().setText (
         Messages.getString ( "MainWindow.PDA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemConvertToRegex ().setText (
+        Messages.getString ( "MainWindow.REGEX" ) ); //$NON-NLS-1$
     // ConvertToComplete
     MainWindow.this.gui.getJMenuConvertToComplete ().setText (
         Messages.getString ( "MainWindow.ConvertToComplete" ) ); //$NON-NLS-1$
@@ -4367,6 +5704,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.ENFA" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemPDA ().setText (
         Messages.getString ( "MainWindow.PDA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemCFG ().setText (
+        Messages.getString ( "MainWindow.CFG" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemRG ().setText (
+        Messages.getString ( "MainWindow.RG" ) ); //$NON-NLS-1$
     // AutoLayout
     MainWindow.this.gui.getJMenuItemAutoLayout ().setText (
         Messages.getString ( "MainWindow.AutoLayout" ) ); //$NON-NLS-1$
@@ -4377,7 +5718,44 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.Minimize" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemMinimize ().setMnemonic (
         Messages.getString ( "MainWindow.MinimizeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-
+    // To Core Syntax
+    MainWindow.this.gui.getJMenuItemToCoreSyntax ().setText (
+        Messages.getString ( "MainWindow.ToCoreSyntax" ) );//$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemToCoreSyntax ().setMnemonic (
+        Messages.getString ( "MainWindow.ToCoreSyntaxMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Eliminate left recursion
+    MainWindow.this.gui.getJMenuItemEliminateLeftRecursion ().setText (
+        Messages.getString ( "MainWindow.EliminateLeftRecursion" ) );//$NON-NLS-1$
+    MainWindow.this.gui
+        .getJMenuItemEliminateLeftRecursion ()
+        .setMnemonic (
+            Messages
+                .getString ( "MainWindow.EliminateLeftRecursionMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Eliminate entity productions
+    MainWindow.this.gui.getJMenuItemEliminateEntityProductions ().setText (
+        Messages.getString ( "MainWindow.EliminateEntityProductions" ) );//$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemEliminateEntityProductions ()
+        .setMnemonic (
+            Messages.getString (
+                "MainWindow.EliminateEntityProductionsMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Eliminate epsilon productions
+    MainWindow.this.gui.getJMenuItemEliminateEpsilonProductions ().setText (
+        Messages.getString ( "MainWindow.EliminateEpsilonProductions" ) );//$NON-NLS-1$
+    MainWindow.this.gui
+        .getJMenuItemEliminateEpsilonProductions ()
+        .setMnemonic (
+            Messages.getString (
+                "MainWindow.EliminateEpsilonProductionsMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // left factoring
+    MainWindow.this.gui.getJMenuItemLeftfactoring ().setText (
+        Messages.getString ( "MainWindow.LeftFactoring" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemLeftfactoring ().setMnemonic (
+        Messages.getString ( "MainWindow.LeftFactoringMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // create rdp
+    MainWindow.this.gui.getJMenuItemCreateRDP ().setText (
+        Messages.getString ( "MainWindow.CreateRDP" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemCreateRDP ().setMnemonic (
+        Messages.getString ( "MainWindow.CreateRDPMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     /*
      * Extras
      */
@@ -4606,6 +5984,27 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_VALIDATE );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       }
+      else if ( element instanceof DefaultRegexModel )
+      {
+        DefaultRegexModel model = ( DefaultRegexModel ) element;
+        EditorPanel newEditorPanel = new RegexPanel ( this.gui, model, file );
+
+        jGTIEditorPanelTabbedPane.addEditorPanel ( newEditorPanel );
+        newEditorPanel
+            .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+        jGTIEditorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
+        jGTIEditorPanelTabbedPane.setEditorPanelTitle ( newEditorPanel, file
+            .getName () );
+
+        addButtonState ( ButtonState.ENABLED_SAVE_AS );
+        addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+        addButtonState ( ButtonState.ENABLED_CLOSE );
+        addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+        addButtonState ( ButtonState.ENABLED_PRINT );
+        addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+        addButtonState ( ButtonState.ENABLED_VALIDATE );
+        removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+      }
       else
       {
         throw new RuntimeException ( "not supported element" ); //$NON-NLS-1$
@@ -4778,6 +6177,52 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_RECENTLY_USED );
       this.gui.getJMenuRecentlyUsed ().setEnabled ( false );
     }
+    else if ( buttonState.equals ( ButtonState.ENABLED_TO_LATEX ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_TO_LATEX );
+      this.gui.getJMenuItemExportLatex ().setEnabled ( false );
+    }
+    else if ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+      this.gui.getJMenuItemEliminateLeftRecursion ().setEnabled ( false );
+    }
+    else if ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+      this.gui.getJMenuItemEliminateEntityProductions ().setEnabled ( false );
+    }
+    else if ( buttonState
+        .equals ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+      this.gui.getJMenuItemEliminateEpsilonProductions ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_LEFT_FACTORING ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_LEFT_FACTORING );
+      this.gui.getJMenuItemLeftfactoring ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CREATE_RDP ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CREATE_RDP );
+      this.gui.getJMenuItemCreateRDP ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_TO_CORE_SYNTAX ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+      this.gui.getJMenuItemToCoreSyntax ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_REGEX_INFO );
+      this.gui.getJCheckBoxMenuItemRegexInfo ().setEnabled ( false );
+    }
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
@@ -4838,6 +6283,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_MINIMIZE );
       this.gui.getJMenuItemMinimize ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
+      this.gui.getJMenuItemConvertToRegex ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_REACHABLE_STATES ) )
     {
@@ -4916,6 +6366,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.VISIBLE_GRAMMAR );
       this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.VISIBLE_REGEX ) )
+    {
+      this.buttonStateList.remove ( ButtonState.VISIBLE_REGEX );
     }
     else
     {

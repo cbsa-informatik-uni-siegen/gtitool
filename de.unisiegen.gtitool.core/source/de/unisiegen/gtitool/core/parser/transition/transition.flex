@@ -79,6 +79,9 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	","					{ return symbol(COMMA); }
 	"{"					{ return symbol(LCBRACE); }
 	"}"					{ return symbol(RCBRACE); }
+	"["					{ return symbol(LSBRACE); }
+	"]"					{ return symbol(RSBRACE); }
+	"-"					{ return symbol(MINUS); }
 	"\u03B5"			{ return symbol(EPSILON); }
 	"\u2191"			{ return symbol(ARROWUP); }
 	"\u2193"			{ return symbol(ARROWDOWN); }

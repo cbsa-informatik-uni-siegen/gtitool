@@ -13,6 +13,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
@@ -28,6 +29,7 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.i18n.Messages;
+import de.unisiegen.gtitool.core.parser.regexAlphabet.RegexAlphabetParseable;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
@@ -75,10 +77,17 @@ public class PreferenceManager
 
 
   /**
-   * The default {@link Color} of a start {@link NonterminalSymbol}.
+   * The default {@link Color} of the error {@link NonterminalSymbol}.
    */
-  public static final Color DEFAULT_START_NONTERMINAL_SYMBOL_COLOR = new Color (
-      127, 0, 255 );
+  public static final Color DEFAULT_NONTERMINAL_SYMBOL_ERROR_COLOR = new Color (
+      255, 0, 0 );
+
+
+  /**
+   * The default {@link Color} of the error {@link NonterminalSymbol}.
+   */
+  public static final Color DEFAULT_NONTERMINAL_SYMBOL_HIGHLIGHT_COLOR = new Color (
+      0, 255, 0 );
 
 
   /**
@@ -115,9 +124,82 @@ public class PreferenceManager
 
 
   /**
+   * The default {@link Color} of the error {@link Production}.
+   */
+  public static final Color DEFAULT_PRODUCTION_ERROR_COLOR = new Color ( 255,
+      0, 0 );
+
+
+  /**
+   * The default {@link Color} of the error {@link Production}.
+   */
+  public static final Color DEFAULT_PRODUCTION_HIGHLIGHT_COLOR = new Color ( 0,
+      255, 0 );
+
+
+  /**
    * The default push down {@link Alphabet}.
    */
   public static Alphabet DEFAULT_PUSH_DOWN_ALPHABET;
+
+
+  /**
+   * The {@link DefaultRegexAlphabet}
+   */
+  public static Alphabet DEFAULT_REGEX_ALPHABET;
+
+
+  /**
+   * The default {@link Color} of the regex position.
+   */
+  public static final Color DEFAULT_REGEX_POSITION_COLOR = new Color ( 255,
+      255, 0 );
+
+
+  /**
+   * The default {@link Color} of the regex symbol.
+   */
+  public static final Color DEFAULT_REGEX_SYMBOL_COLOR = new Color ( 0, 0, 0 );
+
+
+  /**
+   * The default {@link Color} of the regex token.
+   */
+  public static final Color DEFAULT_REGEX_TOKEN_COLOR = new Color ( 0, 0, 0 );
+
+
+  /**
+   * The default {@link Color} of the regex token.
+   */
+  public static final Color DEFAULT_REGEX_MARKED_NODE_COLOR = new Color ( 255,
+      0, 0 );
+
+
+  /**
+   * The default {@link Color} of the regex token.
+   */
+  public static final Color DEFAULT_REGEX_SELECTED_NODE_COLOR = Color.YELLOW;
+
+
+  /**
+   * The default {@link Color} of the regex tool tip text.
+   */
+  public static final Color DEFAULT_REGEX_TOOL_TIP_TEXT_COLOR = new Color (
+      255, 255, 255 );
+
+
+  /**
+   * The default {@link Color} of the regex tool tip text.
+   */
+  public static final Color DEFAULT_REGEX_COMMENT_COLOR = new Color ( 255, 255,
+      255 );
+
+
+  /**
+   * The default {@link Color} of a start {@link NonterminalSymbol}.
+   */
+  public static final Color DEFAULT_START_NONTERMINAL_SYMBOL_COLOR = new Color (
+      127, 0, 255 );
 
 
   /**
@@ -149,27 +231,6 @@ public class PreferenceManager
    * The default {@link Color} of the error {@link State}.
    */
   public static final Color DEFAULT_STATE_ERROR_COLOR = new Color ( 255, 0, 0 );
-
-
-  /**
-   * The default {@link Color} of the error {@link Production}.
-   */
-  public static final Color DEFAULT_PRODUCTION_ERROR_COLOR = new Color ( 255,
-      0, 0 );
-
-
-  /**
-   * The default {@link Color} of the error {@link TerminalSymbol}.
-   */
-  public static final Color DEFAULT_TERMINAL_SYMBOL_ERROR_COLOR = new Color (
-      255, 0, 0 );
-
-
-  /**
-   * The default {@link Color} of the error {@link NonterminalSymbol}.
-   */
-  public static final Color DEFAULT_NONTERMINAL_SYMBOL_ERROR_COLOR = new Color (
-      255, 0, 0 );
 
 
   /**
@@ -216,6 +277,13 @@ public class PreferenceManager
    */
   public static final Color DEFAULT_TERMINAL_SYMBOL_COLOR = new Color ( 0, 0,
       127 );
+
+
+  /**
+   * The default {@link Color} of the error {@link TerminalSymbol}.
+   */
+  public static final Color DEFAULT_TERMINAL_SYMBOL_ERROR_COLOR = new Color (
+      255, 0, 0 );
 
 
   /**
@@ -287,6 +355,9 @@ public class PreferenceManager
 
       DEFAULT_TERMINAL_SYMBOL_SET = new DefaultTerminalSymbolSet (
           new DefaultTerminalSymbol ( "a" ), new DefaultTerminalSymbol ( "b" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+
+      DEFAULT_REGEX_ALPHABET = ( Alphabet ) new RegexAlphabetParseable ()
+          .newParser ( "[a-z],[A-Z],[0-9]" ).parse (); //$NON-NLS-1$
     }
     catch ( AlphabetException exc )
     {
@@ -299,6 +370,11 @@ public class PreferenceManager
       System.exit ( 1 );
     }
     catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( Exception exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
@@ -412,6 +488,24 @@ public class PreferenceManager
 
 
   /**
+   * Let the listeners know that the color of the error
+   * {@link NonterminalSymbol} has changed.
+   * 
+   * @param newColor The new color of the error {@link NonterminalSymbol}.
+   */
+  public final void fireColorChangedNonterminalSymbolHighlight ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedNonterminalSymbolHighlight ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
    * Let the listeners know that the color of the parser error has changed.
    * 
    * @param newColor The new color of the parser error.
@@ -493,6 +587,143 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedProductionError ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the error {@link Production} has
+   * changed.
+   * 
+   * @param newColor The new color of the error {@link Production}.
+   */
+  public final void fireColorChangedProductionHighlight ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedProductionError ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of Regex position has changed.
+   * 
+   * @param newColor The new color of the Regex positionF.
+   */
+  public final void fireColorChangedRegexPosition ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedRegexPosition ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of Regex position has changed.
+   * 
+   * @param newColor The new color of the Regex positionF.
+   */
+  public final void fireColorChangedRegexSymbol ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedRegexSymbol ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of Regex token has changed.
+   * 
+   * @param newColor The new color of the Regex token.
+   */
+  public final void fireColorChangedRegexToken ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedRegexToken ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of Regex tool tip has changed.
+   * 
+   * @param newColor The new color of the Regex tool tip.
+   */
+  public final void fireColorChangedRegexToolTip ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedRegexToolTip ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of Regex tool tip has changed.
+   * 
+   * @param newColor The new color of the Regex tool tip.
+   */
+  public final void fireColorChangedRegexMarkedNode ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedRegexMarkedNode ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of Regex tool tip has changed.
+   * 
+   * @param newColor The new color of the Regex tool tip.
+   */
+  public final void fireColorChangedRegexSelectedNode ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedRegexSelectedNode ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of Regex tool tip has changed.
+   * 
+   * @param newColor The new color of the Regex tool tip.
+   */
+  public final void fireColorChangedRegexComment ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedRegexComment ( newColor );
       current.colorChanged ();
     }
   }
@@ -898,6 +1129,25 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link ColorItem} of the error {@link NonterminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the error {@link NonterminalSymbol}.
+   */
+  public final ColorItem getColorItemNonterminalSymbolHighlight ()
+  {
+    int rgb = this.preferences.getInt (
+        "Preferences.ColorNonterminalSymbolHighlight", //$NON-NLS-1$
+        DEFAULT_NONTERMINAL_SYMBOL_HIGHLIGHT_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorNonterminalSymbolHighlightCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorNonterminalSymbolHighlightDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_NONTERMINAL_SYMBOL_HIGHLIGHT_COLOR );
+  }
+
+
+  /**
    * Returns the {@link ColorItem} of the {@link NonterminalSymbol} group.
    * 
    * @return The {@link ColorItem} of the {@link NonterminalSymbol} group.
@@ -1022,6 +1272,24 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link ColorItem} of the highlight {@link Production}.
+   * 
+   * @return The {@link ColorItem} of the highlight {@link Production}.
+   */
+  public final ColorItem getColorItemProductionHighlight ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorProductionHighlight", //$NON-NLS-1$
+        DEFAULT_PRODUCTION_HIGHLIGHT_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorProductionHighlightCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorProductionHighlightDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_PRODUCTION_HIGHLIGHT_COLOR );
+  }
+
+
+  /**
    * Returns the {@link ColorItem} of the {@link Production} group.
    * 
    * @return The {@link ColorItem} of the {@link Production} group.
@@ -1035,6 +1303,147 @@ public class PreferenceManager
     boolean expanded = this.preferences.getBoolean (
         "Preferences.ColorProductionGroupExpanded", false ); //$NON-NLS-1$
     return new ColorItem ( caption, description, expanded );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the Regex group.
+   * 
+   * @return The {@link ColorItem} of the Regex group.
+   */
+  public final ColorItem getColorItemRegexGroup ()
+  {
+    String caption = Messages.getString ( "Preferences.ColorRegexGroupCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorRegexGroupDescription" );//$NON-NLS-1$
+    boolean expanded = this.preferences.getBoolean (
+        "Preferences.ColorRegexGroupExpanded", false ); //$NON-NLS-1$
+    return new ColorItem ( caption, description, expanded );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final ColorItem getColorItemRegexPosition ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorRegexPosition", //$NON-NLS-1$
+        DEFAULT_REGEX_POSITION_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorRegexPositionCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorRegexPositionDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_REGEX_POSITION_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final ColorItem getColorItemRegexSymbol ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorRegexSymbol", //$NON-NLS-1$
+        DEFAULT_REGEX_SYMBOL_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorRegexSymbolCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorRegexSymbolDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_REGEX_SYMBOL_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final ColorItem getColorItemRegexToken ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorRegexToken", //$NON-NLS-1$
+        DEFAULT_REGEX_TOKEN_COLOR.getRGB () );
+    String caption = Messages.getString ( "Preferences.ColorRegexTokenCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorRegexTokenDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_REGEX_TOKEN_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the marked Regexnode.
+   * 
+   * @return The {@link ColorItem} of the marked Regexnode.
+   */
+  public final ColorItem getColorItemRegexMarkedNode ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorRegexMarkedNode", //$NON-NLS-1$
+        DEFAULT_REGEX_MARKED_NODE_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorRegexMarkedNodeCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorRegexMarkedNodeDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_REGEX_MARKED_NODE_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the marked Regexnode.
+   * 
+   * @return The {@link ColorItem} of the marked Regexnode.
+   */
+  public final ColorItem getColorItemRegexSelectedNode ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorRegexSelectedNode", //$NON-NLS-1$
+        DEFAULT_REGEX_SELECTED_NODE_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorRegexSelectedNodeCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorRegexSelectedNodeDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_REGEX_SELECTED_NODE_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final ColorItem getColorItemRegexComment ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorRegexComment", //$NON-NLS-1$
+        DEFAULT_REGEX_COMMENT_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorRegexCommentCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorRegexCommentDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_REGEX_COMMENT_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final ColorItem getColorItemRegexToolTipText ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorRegexToolTipText", //$NON-NLS-1$
+        DEFAULT_REGEX_TOOL_TIP_TEXT_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorRegexToolTipTextCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorRegexToolTipTextDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_REGEX_TOOL_TIP_TEXT_COLOR );
   }
 
 
@@ -1509,6 +1918,46 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link AlphabetItem}.
+   * 
+   * @return The push down {@link AlphabetItem}.
+   */
+  public final AlphabetItem getRegexAlphabetItem ()
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    String end = "no item found"; //$NON-NLS-1$
+    int count = 0;
+    while ( true )
+    {
+      String symbol = this.preferences.get ( "DefaultRegexAlphabet" + count, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break;
+      }
+      symbols.add ( new DefaultSymbol ( symbol ) );
+      count++ ;
+    }
+    // Return the default alphabet if no alphabet is found.
+    if ( symbols.size () == 0 )
+    {
+      return new AlphabetItem ( DEFAULT_REGEX_ALPHABET, DEFAULT_REGEX_ALPHABET );
+    }
+    try
+    {
+      return new AlphabetItem ( new DefaultRegexAlphabet ( symbols ),
+          DEFAULT_REGEX_ALPHABET );
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+      return null;
+    }
+  }
+
+
+  /**
    * Returns the start {@link NonterminalSymbol}.
    * 
    * @return The start {@link NonterminalSymbol}.
@@ -1652,6 +2101,45 @@ public class PreferenceManager
 
 
   /**
+   * Sets the {@link AlphabetItem}.
+   * 
+   * @param alphabetItem The {@link AlphabetItem}.
+   */
+  public final void setRegexAlphabetItem ( AlphabetItem alphabetItem )
+  {
+    logger.debug (
+        "setRegexAlphabetItem", "set the alphabet to " + Messages.QUOTE //$NON-NLS-1$ //$NON-NLS-2$
+            + alphabetItem.getAlphabet () + Messages.QUOTE );
+
+    // Delete old data
+    String end = "no item found"; //$NON-NLS-1$
+    int count = 0;
+    loop : while ( true )
+    {
+      String symbol = this.preferences.get ( "DefaultRegexAlphabet" + count, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break loop;
+      }
+      count++ ;
+    }
+    for ( int i = 0 ; i < count ; i++ )
+    {
+      this.preferences.remove ( "DefaultRegexAlphabet" + i ); //$NON-NLS-1$
+    }
+
+    // Set the new data
+    for ( int i = 0 ; i < alphabetItem.getAlphabet ().size () ; i++ )
+    {
+      this.preferences.put (
+          "DefaultRegexAlphabet" + i, alphabetItem.getAlphabet ().get ( i ) //$NON-NLS-1$
+              .getName () );
+    }
+  }
+
+
+  /**
    * Sets the {@link ColorItem} of the parser {@link NonterminalSymbol}.
    * 
    * @param colorItem The {@link ColorItem} of the parser
@@ -1663,7 +2151,7 @@ public class PreferenceManager
         "set color of the nonterminal symbol to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorNonterminalSymbol", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1677,12 +2165,32 @@ public class PreferenceManager
    */
   public final void setColorItemNonterminalSymbolError ( ColorItem colorItem )
   {
-    logger.debug ( "setColorItemNonterminalSymbolError",//$NON-NLS-1$ 
-        "set color of the error nonterminal symbol to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$ 
-            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$ 
-            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$ 
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+    logger.debug ( "setColorItemNonterminalSymbolError",//$NON-NLS-1$
+        "set color of the error nonterminal symbol to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorNonterminalSymbolError", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the highlight {@link NonterminalSymbol}.
+   * 
+   * @param colorItem The {@link ColorItem} of the highlighted
+   *          {@link NonterminalSymbol}.
+   */
+  public final void setColorItemNonterminalSymbolHighlight ( ColorItem colorItem )
+  {
+    logger
+        .debug (
+            "setColorItemNonterminalSymbolHighlight",//$NON-NLS-1$
+            "set color of the highlight nonterminal symbol to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$
+                + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$
+                + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$
+                + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorNonterminalSymbolHighlight", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
@@ -1715,7 +2223,7 @@ public class PreferenceManager
         "set color of the parser error to " + Messages.QUOTE//$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorParserError", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1747,7 +2255,7 @@ public class PreferenceManager
         "set color of the parser highlighting to " + Messages.QUOTE//$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorParserHighlighting", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1764,7 +2272,7 @@ public class PreferenceManager
         "set color of the parser keyword to " + Messages.QUOTE//$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorParserKeyword", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1781,7 +2289,7 @@ public class PreferenceManager
         "set color of the parser warning to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorParserWarning", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1794,12 +2302,29 @@ public class PreferenceManager
    */
   public final void setColorItemProductionError ( ColorItem colorItem )
   {
-    logger.debug ( "setColorItemProductionError",//$NON-NLS-1$ 
-        "set color of the error production to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$ 
-            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$ 
-            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$ 
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+    logger.debug ( "setColorItemProductionError",//$NON-NLS-1$
+        "set color of the error production to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorProductionError", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the error {@link Production}.
+   * 
+   * @param colorItem The {@link ColorItem} of the error {@link Production}.
+   */
+  public final void setColorItemProductionHighlight ( ColorItem colorItem )
+  {
+    logger.debug ( "setColorItemProductionHighlight",//$NON-NLS-1$
+        "set color of the highlight production to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorProductionHighlight", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
@@ -1821,6 +2346,158 @@ public class PreferenceManager
 
 
   /**
+   * Sets the {@link ColorItem} of the Regex group.
+   * 
+   * @param colorItem The {@link ColorItem} of the Regex group.
+   */
+  public final void setColorItemRegexGroup ( ColorItem colorItem )
+  {
+    logger.debug ( "setColorItemRegexGroup", //$NON-NLS-1$
+        "set expanded value of the regex group to " + Messages.QUOTE //$NON-NLS-1$
+            + colorItem.isExpanded () + Messages.QUOTE );
+    this.preferences.putBoolean ( "Preferences.ColorRegexGroupExpanded", //$NON-NLS-1$
+        colorItem.isExpanded () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the Regex position.
+   * 
+   * @param colorItem The {@link ColorItem} of the Regex position.
+   */
+  public final void setColorItemRegexPosition ( ColorItem colorItem )
+  {
+    logger.debug (
+        "setColorItemRegexPosition", "set color of the regex position to " //$NON-NLS-1$//$NON-NLS-2$
+            + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorRegexPosition", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the Regex symbol.
+   * 
+   * @param colorItem The {@link ColorItem} of the Regex symbol.
+   */
+  public final void setColorItemRegexSymbol ( ColorItem colorItem )
+  {
+    logger.debug (
+        "setColorItemRegexSymbol", "set color of the regex symbol to " //$NON-NLS-1$//$NON-NLS-2$
+            + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorRegexSymbol", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the Regex token.
+   * 
+   * @param colorItem The {@link ColorItem} of the Regex token.
+   */
+  public final void setColorItemRegexToken ( ColorItem colorItem )
+  {
+    logger.debug ( "setColorItemRegexToken", "set color of the regex token to " //$NON-NLS-1$//$NON-NLS-2$
+        + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorRegexToken", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the Regex token.
+   * 
+   * @param colorItem The {@link ColorItem} of the Regex token.
+   */
+  public final void setColorItemRegexMarkedNode ( ColorItem colorItem )
+  {
+    logger.debug (
+        "setColorItemRegexMarkedNode", "set color of the regex marked node to " //$NON-NLS-1$//$NON-NLS-2$
+            + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorRegexMarkedNode", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the Regex token.
+   * 
+   * @param colorItem The {@link ColorItem} of the Regex token.
+   */
+  public final void setColorItemRegexSelectedNode ( ColorItem colorItem )
+  {
+    logger
+        .debug (
+            "setColorItemRegexSelectedNode", "set color of the regex selected node to " //$NON-NLS-1$//$NON-NLS-2$
+                + Messages.QUOTE
+                + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+                + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+                + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorRegexSelectedNode", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the Regex tool tip.
+   * 
+   * @param colorItem The {@link ColorItem} of the Regex tool tip.
+   */
+  public final void setColorItemRegexToolTip ( ColorItem colorItem )
+  {
+    logger.debug (
+        "setColorItemRegexToolTip", "set color of the regex tooltip to " //$NON-NLS-1$//$NON-NLS-2$
+            + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorRegexToolTipText", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @param colorItem The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final void setColorItemRegexToolTipText ( ColorItem colorItem )
+  {
+    logger.debug ( "setColorItemRegexToolTipText",//$NON-NLS-1$
+        "set color of the regex tool tip text to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorRegexToolTipText", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @param colorItem The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final void setColorItemRegexComment ( ColorItem colorItem )
+  {
+    logger.debug ( "setColorItemRegexComment",//$NON-NLS-1$
+        "set color of the regex tool tip text to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorRegexComment", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
    * Sets the {@link ColorItem} of the parser start {@link NonterminalSymbol}.
    * 
    * @param colorItem The {@link ColorItem} of the parser start
@@ -1832,7 +2509,7 @@ public class PreferenceManager
         "set color of the start nonterminal symbol to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt (
         "Preferences.ColorStartNonterminalSymbol", colorItem //$NON-NLS-1$
             .getColor ().getRGB () & 0xFFFFFF );
@@ -1849,7 +2526,7 @@ public class PreferenceManager
     logger.debug ( "setColorItemState", "set color of the state to " //$NON-NLS-1$//$NON-NLS-2$
         + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorState", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1866,7 +2543,7 @@ public class PreferenceManager
         "set color of the avtive state to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorStateActive", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1883,7 +2560,7 @@ public class PreferenceManager
         "set background color of the state to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorStateBackground", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1899,7 +2576,7 @@ public class PreferenceManager
     logger.debug ( "setColorItemStateError", "set color of the error state to " //$NON-NLS-1$//$NON-NLS-2$
         + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorStateError", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1915,7 +2592,7 @@ public class PreferenceManager
     logger.debug ( "setColorItemStateFinal", "set color of the final state to " //$NON-NLS-1$//$NON-NLS-2$
         + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorStateFinal", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1948,7 +2625,7 @@ public class PreferenceManager
         "set color of the selected state to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorStateSelected", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1964,7 +2641,7 @@ public class PreferenceManager
     logger.debug ( "setColorItemStateStart", "set color of the start state to " //$NON-NLS-1$//$NON-NLS-2$
         + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorStateStart", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1980,7 +2657,7 @@ public class PreferenceManager
     logger.debug ( "setColorItemSymbol", "set color of the symbol to " //$NON-NLS-1$//$NON-NLS-2$
         + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorSymbol", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -1997,7 +2674,7 @@ public class PreferenceManager
         "set color of the active symbol to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorSymbolActive", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
@@ -2014,7 +2691,7 @@ public class PreferenceManager
         "set color of the error symbol to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorSymbolError", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -2047,7 +2724,7 @@ public class PreferenceManager
         "set color of the terminal symbol to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorTerminalSymbol", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -2060,11 +2737,11 @@ public class PreferenceManager
    */
   public final void setColorItemTerminalSymbolError ( ColorItem colorItem )
   {
-    logger.debug ( "setColorItemTerminalSymbolError",//$NON-NLS-1$ 
+    logger.debug ( "setColorItemTerminalSymbolError",//$NON-NLS-1$
         "set color of the error terminal symbol to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$
             + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$
             + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorTerminalSymbolError", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
@@ -2096,7 +2773,7 @@ public class PreferenceManager
     logger.debug ( "setColorItemTransition", "set color of the transition to " //$NON-NLS-1$//$NON-NLS-2$
         + Messages.QUOTE + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+        + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorTransition", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -2113,7 +2790,7 @@ public class PreferenceManager
         "set color of the active transition to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorTransitionActive", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
@@ -2130,7 +2807,7 @@ public class PreferenceManager
         "set color of the error transition to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorTransitionError", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
   }
@@ -2163,7 +2840,7 @@ public class PreferenceManager
         "set color of the selected transition to " + Messages.QUOTE //$NON-NLS-1$
             + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "Preferences.ColorTransitionSelected", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }

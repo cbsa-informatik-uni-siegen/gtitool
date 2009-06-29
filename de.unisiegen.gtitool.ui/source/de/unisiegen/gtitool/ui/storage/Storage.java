@@ -29,6 +29,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 
 
 /**
@@ -55,7 +56,7 @@ public final class Storage
   /**
    * The debug flag.
    */
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = true;
 
 
   /**
@@ -147,6 +148,10 @@ public final class Storage
       if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
       {
         return new DefaultGrammarModel ( element, null );
+      }
+      if ( element.getName ().equals ( "RegexModel" ) ) //$NON-NLS-1$
+      {
+        return new DefaultRegexModel ( element, false );
       }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }

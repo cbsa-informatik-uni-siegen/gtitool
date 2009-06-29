@@ -38,6 +38,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.MinimizeMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.utils.Minimizer;
+import de.unisiegen.gtitool.ui.utils.TextLoader;
 
 
 /**
@@ -760,5 +761,47 @@ public final class MinimizeMachineDialog implements
     }
     this.gui.setBounds ( rect );
     this.gui.setVisible ( true );
+  }
+
+
+  /**
+   * The algorithm window
+   */
+  private TextWindow algorithmWindow;
+
+
+  /**
+   * The algorithm
+   */
+  private String algorithm;
+
+
+  /**
+   * Handles the algorithm window changed
+   * 
+   * @param show True if window should be shown.
+   */
+  public void handleAlgorithmWindowChanged ( boolean show )
+  {
+    if ( this.algorithm == null || this.algorithm.length () == 0 )
+    {
+      TextLoader loader = new TextLoader ();
+      this.algorithm = loader.loadMinimizeAlgorithm ();
+    }
+
+    if ( this.algorithmWindow == null )
+    {
+      this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
+          this.gui.jGTIToggleButtonAlgorithm, "MINIMIZE" ); //$NON-NLS-1$
+    }
+
+    if ( show )
+    {
+      this.algorithmWindow.show ();
+    }
+    else
+    {
+      this.algorithmWindow.dispose ();
+    }
   }
 }

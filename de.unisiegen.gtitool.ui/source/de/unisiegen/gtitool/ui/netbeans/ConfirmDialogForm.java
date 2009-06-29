@@ -43,6 +43,20 @@ public class ConfirmDialogForm extends JDialog implements GUIClass <ConfirmDialo
     initComponents ();
   }
 
+
+  /**
+   * Allocates a new {@link ConfirmDialogForm}.
+   * 
+   * @param logic The {@link ConfirmDialog}.
+   * @param parent The parent {@link JDialog}.
+   */
+  public ConfirmDialogForm ( ConfirmDialog logic, JDialog parent )
+  {
+    super ( parent, true );
+    this.logic = logic;
+    initComponents ();
+  }
+
   /**
    * {@inheritDoc}
    * 

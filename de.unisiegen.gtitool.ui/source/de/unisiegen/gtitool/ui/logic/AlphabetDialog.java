@@ -6,15 +6,19 @@ import java.util.TreeSet;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
+import de.unisiegen.gtitool.core.regex.DefaultRegex;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.AlphabetDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.redoundo.MachineAlphabetChangedItem;
+import de.unisiegen.gtitool.ui.redoundo.RegexUndoItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -40,15 +44,27 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
 
 
   /**
+   * The {@link MachinePanel}.
+   */
+  private MachinePanel machinePanel;
+
+
+  /**
    * The parent {@link JFrame}.
    */
   private JFrame parent;
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link DefaultRegex} of this dialog
    */
-  private MachinePanel machinePanel;
+  private DefaultRegex regex;
+
+
+  /**
+   * The {@link RegexPanel}
+   */
+  private RegexPanel regexPanel;
 
 
   /**
@@ -64,9 +80,11 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
     this.parent = parent;
     this.machine = machine;
     this.machinePanel = machinePanel;
-    this.gui = new AlphabetDialogForm ( this, parent );
+    this.gui = new AlphabetDialogForm ( this, this.parent );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .setText ( this.machine.getAlphabet () );
+    this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+        .setVisible ( false );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .setNotRemoveableSymbols ( this.machine
             .getNotRemoveableSymbolsFromAlphabet () );
@@ -120,6 +138,59 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
         throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
       }
     }
+
+  }
+
+
+  /**
+   * Creates a new {@link AlphabetDialog} for a {@link DefaultRegexAlphabet}
+   * 
+   * @param parent The parnet frame of the Dialog
+   * @param regexPanel The {@link RegexPanel}
+   * @param regex The {@link DefaultRegex}
+   */
+  public AlphabetDialog ( JFrame parent, RegexPanel regexPanel,
+      DefaultRegex regex )
+  {
+    this.parent = parent;
+    this.regexPanel = regexPanel;
+    this.regex = regex;
+
+    this.gui = new AlphabetDialogForm ( this, this.parent );
+    this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+        .setText ( this.regex.getAlphabet ().toClassPrettyString () );
+    this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+        .setNotRemoveableSymbols ( this.regex
+            .getNotRemoveableSymbolsFromAlphabet () );
+    this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
+        {
+
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
+          {
+            setButtonStatus ();
+          }
+        } );
+
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+        .setVisible ( false );
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+        .setVisible ( false );
+    this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+        .setVisible ( true );
+    this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet.setVisible ( false );
+    this.gui.alphabetPanelForm.jGTILabelRegexAlphabet.setVisible ( false );
+
+
+    this.gui.setTitle ( Messages
+        .getString ( "AlphabetDialog.TitleRegex" ) ); //$NON-NLS-1$
+    this.gui.jGTILabelHeadline.setText ( Messages
+        .getString ( "AlphabetDialog.EditRegex" ) ); //$NON-NLS-1$
+    this.gui.jGTIButtonOk.setToolTipText ( Messages
+        .getString ( "AlphabetDialog.OkToolTipRegex" ) ); //$NON-NLS-1$
+    this.gui.jGTIButtonCancel.setToolTipText ( Messages
+        .getString ( "AlphabetDialog.CancelToolTipRegex" ) ); //$NON-NLS-1$
   }
 
 
@@ -149,33 +220,52 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
   public final void handleOk ()
   {
     this.gui.setVisible ( false );
-    if ( ( this.machine.isUsePushDownAlphabet () != this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
-        .isSelected () )
-        || !this.machine.getAlphabet ().equals (
-            this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-                .getParsedObject () )
-        || !this.machine.getPushDownAlphabet ().equals (
-            this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-                .getParsedObject () ) )
+    if ( this.machine != null )
     {
-      this.machinePanel.getRedoUndoHandler ().addItem (
-          new MachineAlphabetChangedItem ( this.machinePanel, this.machine,
+      if ( ( this.machine.isUsePushDownAlphabet () != this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+          .isSelected () )
+          || !this.machine.getAlphabet ().equals (
               this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-                  .getParsedObject (),
+                  .getParsedObject () )
+          || !this.machine.getPushDownAlphabet ().equals (
               this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-                  .getParsedObject (), this.machine.isUsePushDownAlphabet (),
-              this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
-                  .isSelected () ) );
+                  .getParsedObject () ) )
+      {
+        this.machinePanel.getRedoUndoHandler ().addItem (
+            new MachineAlphabetChangedItem ( this.machinePanel, this.machine,
+                this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+                    .getParsedObject (),
+                this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+                    .getParsedObject (), this.machine.isUsePushDownAlphabet (),
+                this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+                    .isSelected () ) );
+      }
+      performAlphabetChange ( this.machine.getAlphabet (),
+          this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+              .getParsedObject () );
+      performAlphabetChange ( this.machine.getPushDownAlphabet (),
+          this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+              .getParsedObject () );
+      this.machine
+          .setUsePushDownAlphabet ( this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+              .isSelected () );
     }
-    performAlphabetChange ( this.machine.getAlphabet (),
-        this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-            .getParsedObject () );
-    performAlphabetChange ( this.machine.getPushDownAlphabet (),
-        this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-            .getParsedObject () );
-    this.machine
-        .setUsePushDownAlphabet ( this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
-            .isSelected () );
+    else
+    {
+      try
+      {
+        this.regexPanel.addUndoItem ( new RegexUndoItem (
+            new DefaultRegexAlphabet ( this.regex.getAlphabet ().get () ) ) );
+      }
+      catch ( AlphabetException exc )
+      {
+        exc.printStackTrace ();
+      }
+      this.regexPanel.updateRedoUndoButtons ();
+      this.regexPanel.performAlphabetChange ( this.regex.getAlphabet (),
+          this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+              .getParsedObject () );
+    }
     this.gui.dispose ();
   }
 
@@ -223,16 +313,31 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
    */
   protected final void setButtonStatus ()
   {
-    if ( ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .getParsedObject () == null )
-        || ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-            .getParsedObject () == null ) )
+    if ( this.machine != null )
     {
-      this.gui.jGTIButtonOk.setEnabled ( false );
+      if ( ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+          .getParsedObject () == null )
+          || ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+              .getParsedObject () == null ) )
+      {
+        this.gui.jGTIButtonOk.setEnabled ( false );
+      }
+      else
+      {
+        this.gui.jGTIButtonOk.setEnabled ( true );
+      }
     }
     else
     {
-      this.gui.jGTIButtonOk.setEnabled ( true );
+      if ( this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+          .getParsedObject () == null )
+      {
+        this.gui.jGTIButtonOk.setEnabled ( false );
+      }
+      else
+      {
+        this.gui.jGTIButtonOk.setEnabled ( true );
+      }
     }
   }
 

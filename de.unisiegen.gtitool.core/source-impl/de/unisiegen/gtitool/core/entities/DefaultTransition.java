@@ -521,7 +521,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   *{@inheritDoc}
+   * {@inheritDoc}
    * 
    * @see Transition#add(Iterable)
    */
@@ -599,7 +599,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   *{@inheritDoc}
+   * {@inheritDoc}
    * 
    * @see Transition#add(Symbol[])
    */
@@ -1498,14 +1498,84 @@ public final class DefaultTransition implements Transition
       this.cachedPrettyString = new PrettyString ();
       this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
       boolean first = true;
-      for ( Symbol current : this.symbolSet )
+
+      ArrayList < Symbol > t = new ArrayList < Symbol > ();
+      t.addAll ( getSymbol () );
+      while ( !t.isEmpty () )
       {
+        ArrayList < Symbol > a = DefaultRegexAlphabet.checkForClass ( t );
+
         if ( !first )
         {
           this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         first = false;
-        this.cachedPrettyString.add ( current );
+
+        if ( a.size () == 1 )
+        {
+          this.cachedPrettyString.add ( a.get ( 0 ) );
+        }
+        else if ( a.size () == 2 )
+        {
+
+          this.cachedPrettyString.add ( a.get ( 0 ) );
+          this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+          this.cachedPrettyString.add ( a.get ( 1 ) );
+        }
+        else
+        {
+          ArrayList < Symbol > activeSymbols = new ArrayList < Symbol > ();
+          for ( Symbol s : a )
+          {
+            if ( s.isActive () )
+            {
+              if ( !s.equals ( a.get ( 0 ) )
+                  || !s.equals ( a.get ( a.size () - 1 ) ) )
+              {
+                activeSymbols.add ( s );
+              }
+            }
+          }
+          this.cachedPrettyString.add ( a.get ( 0 ) );
+          if ( activeSymbols.isEmpty () )
+          {
+
+            this.cachedPrettyString.add ( new PrettyToken ( "..", Style.NONE ) ); //$NON-NLS-1$
+          }
+          else
+          {
+            int lastIndex = 0;
+            for ( Symbol s : activeSymbols )
+            {
+              int index = a.indexOf ( s );
+              int diff = index - lastIndex;
+              if ( diff == 1 )
+              {
+                this.cachedPrettyString.add ( new PrettyToken (
+                    ", ", Style.NONE ) ); //$NON-NLS-1$
+                this.cachedPrettyString.add ( s );
+              }
+              else if ( diff > 1 )
+              {
+                this.cachedPrettyString.add ( new PrettyToken (
+                    "..", Style.NONE ) ); //$NON-NLS-1$
+                this.cachedPrettyString.add ( s );
+              }
+              lastIndex = index;
+              if(activeSymbols.indexOf ( s ) == activeSymbols.size () -1) {
+                if(index == a.size () - 2) {
+                  this.cachedPrettyString.add ( new PrettyToken (
+                      ", ", Style.NONE ) ); //$NON-NLS-1$
+                } else {
+                  this.cachedPrettyString.add ( new PrettyToken (
+                      "..", Style.NONE ) ); //$NON-NLS-1$
+                }
+              }
+            }
+          }
+          this.cachedPrettyString.add ( a.get ( a.size () - 1 ) );
+        }
+        t.removeAll ( a );
       }
       this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
 
@@ -1645,14 +1715,39 @@ public final class DefaultTransition implements Transition
     StringBuilder result = new StringBuilder ();
     result.append ( "{" ); //$NON-NLS-1$
     boolean first = true;
-    for ( Symbol current : this.symbolSet )
+
+    ArrayList < Symbol > t = new ArrayList < Symbol > ();
+    t.addAll ( getSymbol () );
+    while ( !t.isEmpty () )
     {
+      ArrayList < Symbol > a = DefaultRegexAlphabet.checkForClass ( t );
+
       if ( !first )
       {
-        result.append ( ", " ); //$NON-NLS-1$
+        result.append ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
       }
       first = false;
-      result.append ( current );
+
+      if ( a.size () == 1 )
+      {
+        result.append ( a.get ( 0 ) );
+      }
+      else if ( a.size () == 2 )
+      {
+
+        result.append ( a.get ( 0 ) );
+        result.append ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        result.append ( a.get ( 1 ) );
+      }
+      else
+      {
+        result.append ( new PrettyToken ( "[", Style.SYMBOL ) ); //$NON-NLS-1$
+        result.append ( a.get ( 0 ) );
+        result.append ( new PrettyToken ( "-", Style.NONE ) ); //$NON-NLS-1$
+        result.append ( a.get ( a.size () - 1 ) );
+        result.append ( new PrettyToken ( "]", Style.SYMBOL ) ); //$NON-NLS-1$
+      }
+      t.removeAll ( a );
     }
     result.append ( "}" ); //$NON-NLS-1$
 

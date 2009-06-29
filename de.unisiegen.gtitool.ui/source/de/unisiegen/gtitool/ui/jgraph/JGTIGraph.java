@@ -32,76 +32,8 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
  * @author Christian Fehler
  * @version $Id:GPCellViewFactory.java 910 2008-05-16 00:31:21Z fehler $
  */
-public final class JGTIGraph extends JGraph implements Printable
+public class JGTIGraph extends JGraph implements Printable
 {
-
-  /**
-   * The serial version uid.
-   */
-  private static final long serialVersionUID = 6157004880461808684L;
-
-
-  /**
-   * The height of the graph.
-   */
-  private double graphHeight = 0;
-
-
-  /**
-   * The width of the graph.
-   */
-  private double graphWidth = 0;
-
-
-  /**
-   * The page count of a row.
-   */
-  private int pagesPerRow = 0;
-
-
-  /**
-   * The bottom margin.
-   */
-  private int marginBottom = 50;
-
-
-  /**
-   * The right margin.
-   */
-  private int marginRight = 50;
-
-
-  /**
-   * The left margin.
-   */
-  private int marginLeft = 50;
-
-
-  /**
-   * The top margin.
-   */
-  private int marginTop = 50;
-
-
-  /**
-   * The {@link StateView} which is used to render the painted
-   * {@link Transition}.
-   */
-  private StateView stateView = null;
-
-
-  /**
-   * The end {@link Point} which is used to render the painted
-   * {@link Transition}.
-   */
-  private Point endPoint = null;
-
-
-  /**
-   * The loop {@link Transition} with 50 percent zzom factor.
-   */
-  private static BufferedImage LOOP_TRANSITION_50 = null;
-
 
   /**
    * The loop {@link Transition} with 100 percent zzom factor.
@@ -113,6 +45,18 @@ public final class JGTIGraph extends JGraph implements Printable
    * The loop {@link Transition} with 150 percent zzom factor.
    */
   private static BufferedImage LOOP_TRANSITION_150 = null;
+
+
+  /**
+   * The loop {@link Transition} with 50 percent zzom factor.
+   */
+  private static BufferedImage LOOP_TRANSITION_50 = null;
+
+
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 6157004880461808684L;
 
   static
   {
@@ -142,6 +86,62 @@ public final class JGTIGraph extends JGraph implements Printable
    * The {@link DefaultMachineModel}.
    */
   private DefaultMachineModel defaultMachineModel = null;
+
+
+  /**
+   * The end {@link Point} which is used to render the painted
+   * {@link Transition}.
+   */
+  private Point endPoint = null;
+
+
+  /**
+   * The height of the graph.
+   */
+  private double graphHeight = 0;
+
+
+  /**
+   * The width of the graph.
+   */
+  private double graphWidth = 0;
+
+
+  /**
+   * The bottom margin.
+   */
+  private int marginBottom = 50;
+
+
+  /**
+   * The left margin.
+   */
+  private int marginLeft = 50;
+
+
+  /**
+   * The right margin.
+   */
+  private int marginRight = 50;
+
+
+  /**
+   * The top margin.
+   */
+  private int marginTop = 50;
+
+
+  /**
+   * The page count of a row.
+   */
+  private int pagesPerRow = 0;
+
+
+  /**
+   * The {@link StateView} which is used to render the painted
+   * {@link Transition}.
+   */
+  private StateView stateView = null;
 
 
   /**
@@ -176,7 +176,7 @@ public final class JGTIGraph extends JGraph implements Printable
    * @see JGraph#getToolTipText(MouseEvent)
    */
   @Override
-  public final String getToolTipText ( MouseEvent event )
+  public String getToolTipText ( MouseEvent event )
   {
     Object cell = getFirstCellForLocation ( event.getX (), event.getY () );
 
@@ -259,6 +259,20 @@ public final class JGTIGraph extends JGraph implements Printable
         minY = Math.min ( minY, y );
         maxY = Math.max ( maxY, y + height );
       }
+      else if ( object instanceof DefaultNodeView )
+      {
+        DefaultNodeView current = ( DefaultNodeView ) object;
+
+        int x = current.getX ();
+        int y = current.getY ();
+        int width = current.getWidth ();
+        int height = current.getHeight ();
+
+        minX = Math.min ( minX, x );
+        maxX = Math.max ( maxX, x + width );
+        minY = Math.min ( minY, y );
+        maxY = Math.max ( maxY, y + height );
+      }
     }
 
     return new Rectangle ( minX, minY, maxX - minX, maxY - minY );
@@ -271,7 +285,7 @@ public final class JGTIGraph extends JGraph implements Printable
    * @see JComponent#paintComponent(Graphics)
    */
   @Override
-  protected final void paintComponent ( Graphics graphics )
+  protected void paintComponent ( Graphics graphics )
   {
     super.paintComponent ( graphics );
 
@@ -444,7 +458,6 @@ public final class JGTIGraph extends JGraph implements Printable
     else
     {
       int row = pageIndex / this.pagesPerRow;
-
       if ( ( row * pageHeight ) < this.graphHeight )
       {
 

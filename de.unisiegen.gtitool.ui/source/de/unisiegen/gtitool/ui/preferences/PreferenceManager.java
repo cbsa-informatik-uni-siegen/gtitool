@@ -16,18 +16,23 @@ import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
+import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog;
+import de.unisiegen.gtitool.ui.logic.ConvertRegexToMachineDialog;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.MinimizeMachineDialog;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 import de.unisiegen.gtitool.ui.logic.ReachableStatesDialog;
+import de.unisiegen.gtitool.ui.logic.TextWindow;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
+import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.MinimizeMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ReachableStatesDialogForm;
+import de.unisiegen.gtitool.ui.netbeans.TextForm;
 import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
@@ -146,6 +151,76 @@ public final class PreferenceManager extends
 
 
   /**
+   * The default width of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_REGEX_DIALOG_WIDTH = 960;
+
+
+  /**
+   * The default hight of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_REGEX_DIALOG_HEIGHT = 600;
+
+
+  /**
+   * The default x position of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_REGEX_DIALOG_POSITION_X = Integer.MAX_VALUE;
+
+
+  /**
+   * The default y position of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_REGEX_DIALOG_POSITION_Y = Integer.MAX_VALUE;
+
+  /**
+   * The default width of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_ALGORITHM_DIALOG_WIDTH = 600;
+
+
+  /**
+   * The default hight of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_ALGORITHM_DIALOG_HEIGHT = 450;
+
+
+  /**
+   * The default x position of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_ALGORITHM_DIALOG_POSITION_X = Integer.MAX_VALUE;
+
+
+  /**
+   * The default y position of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_ALGORITHM_DIALOG_POSITION_Y = Integer.MAX_VALUE;
+
+  /**
+   * The default width of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_RDP_DIALOG_WIDTH = 500;
+
+
+  /**
+   * The default hight of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_RDP_DIALOG_HEIGHT = 600;
+
+
+  /**
+   * The default x position of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_RDP_DIALOG_POSITION_X = Integer.MAX_VALUE;
+
+
+  /**
+   * The default y position of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_RDP_DIALOG_POSITION_Y = Integer.MAX_VALUE;
+
+
+  /**
    * The default width of the {@link MinimizeMachineDialog}.
    */
   public static final int DEFAULT_MINIMIZE_MACHINE_DIALOG_WIDTH = 960;
@@ -212,9 +287,21 @@ public final class PreferenceManager extends
 
 
   /**
+   * The visible regex info value.
+   */
+  public static final boolean DEFAULT_VISIBLE_REGEX_INFO = true;
+
+
+  /**
    * The second view used value.
    */
   public static final boolean DEFAULT_SECOND_VIEW_USED = false;
+
+
+  /**
+   * The show error state value.
+   */
+  public static final boolean DEFAULT_SHOW_ERROR_STATE = true;
 
 
   /**
@@ -417,6 +504,63 @@ public final class PreferenceManager extends
 
 
   /**
+   * Returns the {@link ConvertRegexToMachineDialog} bounds.
+   * 
+   * @return The {@link ConvertRegexToMachineDialog} bounds.
+   */
+  public final Rectangle getConvertRegexDialogBounds ()
+  {
+    int x = this.preferences.getInt ( "ConvertRegexDialog.XPosition", //$NON-NLS-1$
+        DEFAULT_CONVERT_REGEX_DIALOG_POSITION_X );
+    int y = this.preferences.getInt ( "ConvertRegexDialog.YPosition", //$NON-NLS-1$
+        DEFAULT_CONVERT_REGEX_DIALOG_POSITION_Y );
+    int width = this.preferences.getInt ( "ConvertRegexDialog.Width",//$NON-NLS-1$
+        DEFAULT_CONVERT_REGEX_DIALOG_WIDTH );
+    int height = this.preferences.getInt ( "ConvertRegexDialog.Height",//$NON-NLS-1$
+        DEFAULT_CONVERT_REGEX_DIALOG_HEIGHT );
+    return new Rectangle ( x, y, width, height );
+  }
+
+
+  /**
+   * Returns the {@link TextWindow} algorithm bounds.
+   * 
+   * @return The {@link TextWindow} algorithm bounds.
+   */
+  public final Rectangle getAlgorithmDialogBounds ()
+  {
+    int x = this.preferences.getInt ( "AlgorithmDialog.XPosition", //$NON-NLS-1$
+        DEFAULT_ALGORITHM_DIALOG_POSITION_X );
+    int y = this.preferences.getInt ( "AlgorithmDialog.YPosition", //$NON-NLS-1$
+        DEFAULT_ALGORITHM_DIALOG_POSITION_Y );
+    int width = this.preferences.getInt ( "AlgorithmDialog.Width",//$NON-NLS-1$
+        DEFAULT_ALGORITHM_DIALOG_WIDTH );
+    int height = this.preferences.getInt ( "AlgorithmDialog.Height",//$NON-NLS-1$
+        DEFAULT_ALGORITHM_DIALOG_HEIGHT );
+    return new Rectangle ( x, y, width, height );
+  }
+
+
+  /**
+   * Returns the {@link ConvertRegexToMachineDialog} bounds.
+   * 
+   * @return The {@link ConvertRegexToMachineDialog} bounds.
+   */
+  public final Rectangle getRDPDialogBounds ()
+  {
+    int x = this.preferences.getInt ( "RDPDialog.XPosition", //$NON-NLS-1$
+        DEFAULT_RDP_DIALOG_POSITION_X );
+    int y = this.preferences.getInt ( "RDPDialog.YPosition", //$NON-NLS-1$
+        DEFAULT_RDP_DIALOG_POSITION_Y );
+    int width = this.preferences.getInt ( "RDPDialog.Width",//$NON-NLS-1$
+        DEFAULT_RDP_DIALOG_WIDTH );
+    int height = this.preferences.getInt ( "RDPDialog.Height",//$NON-NLS-1$
+        DEFAULT_RDP_DIALOG_HEIGHT );
+    return new Rectangle ( x, y, width, height );
+  }
+
+
+  /**
    * Returns the host.
    * 
    * @return The host.
@@ -461,7 +605,10 @@ public final class PreferenceManager extends
     {
       return GrammarType.CFG;
     }
-
+    else if ( entityType.equals ( RegexType.REGEX.toString () ) )
+    {
+      return RegexType.REGEX;
+    }
     return DEFAULT_ENTITY_TYPE;
   }
 
@@ -702,6 +849,18 @@ public final class PreferenceManager extends
 
 
   /**
+   * Returns the show error state value.
+   * 
+   * @return The show error state value.
+   */
+  public final boolean getShowErrorState ()
+  {
+    return this.preferences.getBoolean ( "MachinePanel.ShowErrorState", //$NON-NLS-1$
+        DEFAULT_SHOW_ERROR_STATE );
+  }
+
+
+  /**
    * Returns the {@link TransitionItem}.
    * 
    * @return The {@link TransitionItem}.
@@ -736,6 +895,18 @@ public final class PreferenceManager extends
   {
     return this.preferences.getBoolean ( "MachinePanel.TableVisible", //$NON-NLS-1$
         DEFAULT_VISIBLE_TABLE );
+  }
+
+
+  /**
+   * Returns the visible regex info value.
+   * 
+   * @return The visible regex info value.
+   */
+  public final boolean getVisibleRegexInfo ()
+  {
+    return this.preferences.getBoolean ( "RegexPanel.RegexInfoVisible", //$NON-NLS-1$
+        DEFAULT_VISIBLE_REGEX_INFO );
   }
 
 
@@ -839,12 +1010,72 @@ public final class PreferenceManager extends
     Rectangle bounds = dialog.getBounds ();
     logger.debug ( "setConvertMachineDialogPreferences",//$NON-NLS-1$
         "set convert machine dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
-            + bounds.x + ", y=" + bounds.y + ", width="//$NON-NLS-1$ //$NON-NLS-2$ 
-            + bounds.width + ", height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$ 
+            + bounds.x + ", y=" + bounds.y + ", width="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.width + ", height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "ConvertMachineDialog.XPosition", bounds.x ); //$NON-NLS-1$
     this.preferences.putInt ( "ConvertMachineDialog.YPosition", bounds.y ); //$NON-NLS-1$
     this.preferences.putInt ( "ConvertMachineDialog.Width", bounds.width ); //$NON-NLS-1$
     this.preferences.putInt ( "ConvertMachineDialog.Height", bounds.height ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the {@link ConvertRegexToMachineDialog} preferences.
+   * 
+   * @param dialog The {@link JDialog} of the {@link ConvertRegexToMachineDialogForm}.
+   */
+  public final void setConvertRegexDialogPreferences (
+      ConvertRegexToMachineDialogForm dialog )
+  {
+    Rectangle bounds = dialog.getBounds ();
+    logger.debug ( "setConvertRegexDialogPreferences",//$NON-NLS-1$
+        "set convert regex dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.x + ", y=" + bounds.y + ", width="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.width + ", height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "ConvertRegexDialog.XPosition", bounds.x ); //$NON-NLS-1$
+    this.preferences.putInt ( "ConvertRegexDialog.YPosition", bounds.y ); //$NON-NLS-1$
+    this.preferences.putInt ( "ConvertRegexDialog.Width", bounds.width ); //$NON-NLS-1$
+    this.preferences.putInt ( "ConvertRegexDialog.Height", bounds.height ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the {@link ConvertRegexToMachineDialog} preferences.
+   * 
+   * @param dialog The {@link JDialog} of the {@link ConvertRegexToMachineDialogForm}.
+   */
+  public final void setAlgorithmDialogPreferences (
+      TextForm dialog )
+  {
+    Rectangle bounds = dialog.getBounds ();
+    logger.debug ( "setAlgorithmDialogPreferences",//$NON-NLS-1$
+        "set algorithm dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.x + ", y=" + bounds.y + ", width="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.width + ", height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "AlgorithmDialog.XPosition", bounds.x ); //$NON-NLS-1$
+    this.preferences.putInt ( "AlgorithmDialog.YPosition", bounds.y ); //$NON-NLS-1$
+    this.preferences.putInt ( "AlgorithmDialog.Width", bounds.width ); //$NON-NLS-1$
+    this.preferences.putInt ( "AlgorithmDialog.Height", bounds.height ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the TextWindow preferences.
+   * 
+   * @param dialog The {@link JDialog} of the TextWindow
+   */
+  public final void setRDPDialogPreferences (
+      TextForm dialog )
+  {
+    Rectangle bounds = dialog.getBounds ();
+    logger.debug ( "setRDPDialogPreferences",//$NON-NLS-1$
+        "set RDP dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.x + ", y=" + bounds.y + ", width="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.width + ", height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "RDPDialog.XPosition", bounds.x ); //$NON-NLS-1$
+    this.preferences.putInt ( "RDPDialog.YPosition", bounds.y ); //$NON-NLS-1$
+    this.preferences.putInt ( "RDPDialog.Width", bounds.width ); //$NON-NLS-1$
+    this.preferences.putInt ( "RDPDialog.Height", bounds.height ); //$NON-NLS-1$
   }
 
 
@@ -1075,8 +1306,8 @@ public final class PreferenceManager extends
     Rectangle bounds = dialog.getBounds ();
     logger.debug ( "setReachableStatesDialogPreferences",//$NON-NLS-1$
         "set reachable states dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
-            + bounds.x + ", y=" + bounds.y + ", width="//$NON-NLS-1$ //$NON-NLS-2$ 
-            + bounds.width + ", height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$ 
+            + bounds.x + ", y=" + bounds.y + ", width="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.width + ", height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "ReachableStatesDialog.XPosition", bounds.x ); //$NON-NLS-1$
     this.preferences.putInt ( "ReachableStatesDialog.YPosition", bounds.y ); //$NON-NLS-1$
     this.preferences.putInt ( "ReachableStatesDialog.Width", bounds.width ); //$NON-NLS-1$
@@ -1153,6 +1384,20 @@ public final class PreferenceManager extends
 
 
   /**
+   * Sets the show error state value.
+   * 
+   * @param show The show value.
+   */
+  public final void setShowErrorState ( boolean show )
+  {
+    logger.debug ( "setShowErrorState", "set the show error state to "//$NON-NLS-1$//$NON-NLS-2$
+        + Messages.QUOTE + show + Messages.QUOTE );
+    this.preferences.putBoolean ( "MachinePanel.ShowErrorState", //$NON-NLS-1$
+        show );
+  }
+
+
+  /**
    * Sets the {@link TransitionItem}.
    * 
    * @param transitionItem The {@link TransitionItem}.
@@ -1190,6 +1435,20 @@ public final class PreferenceManager extends
     logger.debug ( "setVisibleTable", "set the visible table to "//$NON-NLS-1$//$NON-NLS-2$
         + Messages.QUOTE + visible + Messages.QUOTE );
     this.preferences.putBoolean ( "MachinePanel.TableVisible", //$NON-NLS-1$
+        visible );
+  }
+
+
+  /**
+   * Sets the visible regex info value.
+   * 
+   * @param visible The visible regex info value.
+   */
+  public final void setVisibleRegexInfo ( boolean visible )
+  {
+    logger.debug ( "setVisibleRegexInfo", "set the visible regex info to "//$NON-NLS-1$//$NON-NLS-2$
+        + Messages.QUOTE + visible + Messages.QUOTE );
+    this.preferences.putBoolean ( "RegexPanel.RegexInfoVisible", //$NON-NLS-1$
         visible );
   }
 

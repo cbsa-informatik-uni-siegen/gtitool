@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
  * The {@link de.unisiegen.gtitool.core.entities.Alphabet} parser class.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version
  */
 public final class AlphabetParser extends AlphabetAbstractParser
 {

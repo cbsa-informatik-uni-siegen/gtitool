@@ -43,6 +43,20 @@ public class InfoDialogForm extends JDialog implements GUIClass <InfoDialog>
     initComponents ();
   }
 
+
+  /**
+   * Allocates a new {@link InfoDialogForm}.
+   * 
+   * @param logic The {@link InfoDialog}.
+   * @param parent The parent {@link JFrame}.
+   */
+  public InfoDialogForm ( InfoDialog logic, JDialog parent )
+  {
+    super ( parent, true );
+    this.logic = logic;
+    initComponents ();
+  }
+
   /**
    * {@inheritDoc}
    * 
@@ -62,9 +76,9 @@ public class InfoDialogForm extends JDialog implements GUIClass <InfoDialog>
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jGTIScrollPaneInfo = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        jGTITextAreaInfo = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
-        jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        this.jGTIScrollPaneInfo = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        this.jGTITextAreaInfo = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
+        this.jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -76,11 +90,11 @@ public class InfoDialogForm extends JDialog implements GUIClass <InfoDialog>
             }
         });
 
-        jGTIScrollPaneInfo.setBorder(null);
-        jGTITextAreaInfo.setFocusable(false);
-        jGTITextAreaInfo.setFont(new java.awt.Font("Dialog", 1, 12));
-        jGTITextAreaInfo.setOpaque(false);
-        jGTIScrollPaneInfo.setViewportView(jGTITextAreaInfo);
+        this.jGTIScrollPaneInfo.setBorder(null);
+        this.jGTITextAreaInfo.setFocusable(false);
+        this.jGTITextAreaInfo.setFont(new java.awt.Font("Dialog", 1, 12));
+        this.jGTITextAreaInfo.setOpaque(false);
+        this.jGTIScrollPaneInfo.setViewportView(this.jGTITextAreaInfo);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -89,12 +103,12 @@ public class InfoDialogForm extends JDialog implements GUIClass <InfoDialog>
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        getContentPane().add(jGTIScrollPaneInfo, gridBagConstraints);
+        getContentPane().add(this.jGTIScrollPaneInfo, gridBagConstraints);
 
-        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("InfoDialog.CloseMnemonic").charAt(0));
+        this.jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("InfoDialog.CloseMnemonic").charAt(0));
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        jGTIButtonClose.setText(bundle.getString("InfoDialog.Close")); // NOI18N
-        jGTIButtonClose.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIButtonClose.setText(bundle.getString("InfoDialog.Close")); // NOI18N
+        this.jGTIButtonClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCloseActionPerformed(evt);
             }
@@ -104,7 +118,7 @@ public class InfoDialogForm extends JDialog implements GUIClass <InfoDialog>
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
-        getContentPane().add(jGTIButtonClose, gridBagConstraints);
+        getContentPane().add(this.jGTIButtonClose, gridBagConstraints);
 
         setSize(new java.awt.Dimension(240, 150));
     }// </editor-fold>//GEN-END:initComponents

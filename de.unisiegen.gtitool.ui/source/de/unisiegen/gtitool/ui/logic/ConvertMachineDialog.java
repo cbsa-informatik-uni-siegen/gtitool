@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 
 import org.jgraph.graph.DefaultGraphModel;
 
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
@@ -23,6 +24,16 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
+import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
+import de.unisiegen.gtitool.core.entities.regex.DisjunctionNode;
+import de.unisiegen.gtitool.core.entities.regex.EpsilonNode;
+import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
+import de.unisiegen.gtitool.core.entities.regex.OneChildNode;
+import de.unisiegen.gtitool.core.entities.regex.Regex;
+import de.unisiegen.gtitool.core.entities.regex.RegexNode;
+import de.unisiegen.gtitool.core.entities.regex.TokenNode;
+import de.unisiegen.gtitool.core.entities.regex.TwoChildNode;
+import de.unisiegen.gtitool.core.entities.regex.UnfinishedNode;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
@@ -38,6 +49,8 @@ import de.unisiegen.gtitool.core.machines.nfa.NFA;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.regex.DefaultRegex;
+import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.core.util.Util;
@@ -52,10 +65,12 @@ import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 import de.unisiegen.gtitool.ui.utils.PowerSet;
+import de.unisiegen.gtitool.ui.utils.TextLoader;
 
 
 /**
@@ -111,6 +126,11 @@ public final class ConvertMachineDialog implements
   public enum ConvertMachineType
   {
     /**
+     * The {@link DFA} to {@link Regex} conversion type.
+     */
+    DFA_TO_REGEX,
+
+    /**
      * The {@link ENFA} to {@link DFA} conversion type.
      */
     ENFA_TO_DFA,
@@ -129,6 +149,16 @@ public final class ConvertMachineDialog implements
      * The {@link ENFA} to {@link NFA} complete conversion type.
      */
     ENFA_TO_NFA_COMPLETE,
+
+    /**
+     * The {@link ENFA} to {@link NFA} cb-version conversion type.
+     */
+    ENFA_TO_NFA_CB,
+
+    /**
+     * The {@link ENFA} to {@link NFA} cb-version complete conversion type.
+     */
+    ENFA_TO_NFA_COMPLETE_CB,
 
     /**
      * The {@link NFA} to {@link DFA} conversion type.
@@ -265,6 +295,11 @@ public final class ConvertMachineDialog implements
     ADD_STATE_AND_TRANSITION,
 
     /**
+     * The calculate new language step
+     */
+    CALCULATE_NEW_LANGUAGE,
+
+    /**
      * The finish step.
      */
     FINISH;
@@ -318,6 +353,10 @@ public final class ConvertMachineDialog implements
         case FINISH :
         {
           return "finish"; //$NON-NLS-1$
+        }
+        case CALCULATE_NEW_LANGUAGE :
+        {
+          return "calculate new language"; //$NON-NLS-1$
         }
       }
       throw new RuntimeException ( "unsupported step" );//$NON-NLS-1$
@@ -388,6 +427,12 @@ public final class ConvertMachineDialog implements
 
 
     /**
+     * The actual {@link RegexNode}
+     */
+    private RegexNode actualRegex = null;
+
+
+    /**
      * The added {@link DefaultStateView}.
      */
     private DefaultStateView addedDefaultStateView = null;
@@ -403,6 +448,12 @@ public final class ConvertMachineDialog implements
      * The added {@link Symbol}.
      */
     private ObjectPair < Transition, Symbol > addedSymbol = null;
+
+
+    /**
+     * The last finals index
+     */
+    private int lastFinalsIndex = 0;
 
 
     /**
@@ -423,6 +474,8 @@ public final class ConvertMachineDialog implements
      *          {@link JGTIGraph}.
      * @param activeSymbolsConverted The active {@link Symbol}s of the converted
      *          {@link JGTIGraph}.
+     * @param actualRegex The actual {@link RegexNode}
+     * @param finalsIndex The last finals index
      */
     public StepItem ( Step activeStep, Symbol currentActiveSymbol,
         State currentActiveState, ArrayList < State > activeStatesOriginal,
@@ -430,16 +483,15 @@ public final class ConvertMachineDialog implements
         ArrayList < Transition > activeTransitionsOriginal,
         ArrayList < Transition > activeTransitionsConverted,
         ArrayList < Symbol > activeSymbolsOriginal,
-        ArrayList < Symbol > activeSymbolsConverted )
+        ArrayList < Symbol > activeSymbolsConverted, RegexNode actualRegex,
+        int finalsIndex )
     {
-      if ( activeStep == null )
-      {
-        throw new IllegalArgumentException ( "active step is null" ); //$NON-NLS-1$
-      }
-      if ( currentActiveSymbol == null )
-      {
-        throw new IllegalArgumentException ( "active symbol is null" ); //$NON-NLS-1$
-      }
+      /**
+       * if ( activeStep == null ) { throw new IllegalArgumentException (
+       * "active step is null" ); //$NON-NLS-1$ } if ( currentActiveSymbol ==
+       * null ) { throw new IllegalArgumentException ( "active symbol is null"
+       * ); //$NON-NLS-1$ }
+       **/
 
       this.activeStep = activeStep;
       this.activeSymbol = currentActiveSymbol;
@@ -450,6 +502,8 @@ public final class ConvertMachineDialog implements
       this.activeTransitionsConverted = activeTransitionsConverted;
       this.activeSymbolsOriginal = activeSymbolsOriginal;
       this.activeSymbolsConverted = activeSymbolsConverted;
+      this.actualRegex = actualRegex;
+      this.lastFinalsIndex = finalsIndex;
     }
 
 
@@ -562,6 +616,18 @@ public final class ConvertMachineDialog implements
 
 
     /**
+     * Returns the actualRegex.
+     * 
+     * @return The actualRegex.
+     * @see #actualRegex
+     */
+    public RegexNode getActualRegex ()
+    {
+      return this.actualRegex;
+    }
+
+
+    /**
      * Returns the addedDefaultStateView.
      * 
      * @return The addedDefaultStateView.
@@ -594,6 +660,18 @@ public final class ConvertMachineDialog implements
     public final ObjectPair < Transition, Symbol > getAddedSymbol ()
     {
       return this.addedSymbol;
+    }
+
+
+    /**
+     * Returns the lastFinalsIndex.
+     * 
+     * @return The lastFinalsIndex.
+     * @see #lastFinalsIndex
+     */
+    public int getFinalsIndex ()
+    {
+      return this.lastFinalsIndex;
     }
 
 
@@ -651,6 +729,18 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * The algorithm
+   */
+  private String algorithm;
+
+
+  /**
+   * The algorithm window
+   */
+  private TextWindow algorithmWindow;
+
+
+  /**
    * The auto step {@link Timer}.
    */
   private Timer autoStepTimer = null;
@@ -693,6 +783,18 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * The final states
+   */
+  private ArrayList < State > finals = new ArrayList < State > ();
+
+
+  /**
+   * The index for the {@link ArrayList} of final states
+   */
+  private int finalsIndex = 0;
+
+
+  /**
    * The {@link ConvertMachineDialogForm}.
    */
   private ConvertMachineDialogForm gui;
@@ -708,6 +810,12 @@ public final class ConvertMachineDialog implements
    * The original {@link JGTIGraph} containing the diagramm.
    */
   private JGTIGraph jGTIGraphOriginal;
+
+
+  /**
+   * Varialbe used for {@link DFA} -> {@link Regex}
+   */
+  private int k;
 
 
   /**
@@ -741,6 +849,12 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * The converted {@link DefaultRegexModel}.
+   */
+  private DefaultRegexModel modelRegexConverted;
+
+
+  /**
    * The parent {@link JFrame}.
    */
   private JFrame parent;
@@ -750,6 +864,12 @@ public final class ConvertMachineDialog implements
    * The {@link Position} map.
    */
   private HashMap < String, Position > positionMap;
+
+
+  /**
+   * The start {@link State} of the original machine
+   */
+  private State start = null;
 
 
   /**
@@ -927,25 +1047,11 @@ public final class ConvertMachineDialog implements
         activeStatesOriginal.add ( current );
       }
     }
-    for ( State current : this.machineConverted.getState () )
-    {
-      if ( current.isActive () )
-      {
-        activeStatesConverted.add ( current );
-      }
-    }
     for ( Transition current : this.machineOriginal.getTransition () )
     {
       if ( current.isActive () )
       {
         activeTransitionsOriginal.add ( current );
-      }
-    }
-    for ( Transition current : this.machineConverted.getTransition () )
-    {
-      if ( current.isActive () )
-      {
-        activeTransitionsConverted.add ( current );
       }
     }
     for ( Transition currentTransition : this.machineOriginal.getTransition () )
@@ -958,21 +1064,49 @@ public final class ConvertMachineDialog implements
         }
       }
     }
-    for ( Transition currentTransition : this.machineConverted.getTransition () )
+
+    if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
     {
-      for ( Symbol currentSymbol : currentTransition )
+      for ( State current : this.machineConverted.getState () )
       {
-        if ( currentSymbol.isActive () )
+        if ( current.isActive () )
         {
-          activeSymbolsConverted.add ( currentSymbol );
+          activeStatesConverted.add ( current );
+        }
+      }
+      for ( Transition current : this.machineConverted.getTransition () )
+      {
+        if ( current.isActive () )
+        {
+          activeTransitionsConverted.add ( current );
+        }
+      }
+      for ( Transition currentTransition : this.machineConverted
+          .getTransition () )
+      {
+        for ( Symbol currentSymbol : currentTransition )
+        {
+          if ( currentSymbol.isActive () )
+          {
+            activeSymbolsConverted.add ( currentSymbol );
+          }
         }
       }
     }
-
-    this.stepItemList.add ( new StepItem ( this.step, this.currentActiveSymbol,
-        this.currentActiveState, activeStatesOriginal, activeStatesConverted,
-        activeTransitionsOriginal, activeTransitionsConverted,
-        activeSymbolsOriginal, activeSymbolsConverted ) );
+    RegexNode node = null;
+    if ( this.modelRegexConverted != null )
+    {
+      if ( this.modelRegexConverted.getRegex ().getRegexNode () != null )
+      {
+        node = this.modelRegexConverted.getRegex ().getRegexNode ().clone ();
+      }
+    }
+    this.stepItemList
+        .add ( new StepItem ( this.step, this.currentActiveSymbol,
+            this.currentActiveState, activeStatesOriginal,
+            activeStatesConverted, activeTransitionsOriginal,
+            activeTransitionsConverted, activeSymbolsOriginal,
+            activeSymbolsConverted, node, this.finalsIndex ) );
   }
 
 
@@ -1072,10 +1206,10 @@ public final class ConvertMachineDialog implements
   /**
    * {@inheritDoc}
    * 
-   * @see Converter#convert(EntityType, EntityType,boolean)
+   * @see Converter#convert(EntityType,EntityType,boolean,boolean)
    */
   public final void convert ( EntityType fromEntityType,
-      EntityType toEntityType, boolean complete )
+      EntityType toEntityType, boolean complete, boolean cb )
   {
     if ( fromEntityType == null )
     {
@@ -1101,13 +1235,27 @@ public final class ConvertMachineDialog implements
     else if ( fromEntityType.equals ( MachineType.ENFA )
         && toEntityType.equals ( MachineType.NFA ) )
     {
-      if ( complete )
+      if ( cb )
       {
-        this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_COMPLETE;
+        if ( complete )
+        {
+          this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_COMPLETE_CB;
+        }
+        else
+        {
+          this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_CB;
+        }
       }
       else
       {
-        this.convertMachineType = ConvertMachineType.ENFA_TO_NFA;
+        if ( complete )
+        {
+          this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_COMPLETE;
+        }
+        else
+        {
+          this.convertMachineType = ConvertMachineType.ENFA_TO_NFA;
+        }
       }
     }
     else if ( fromEntityType.equals ( MachineType.ENFA )
@@ -1121,6 +1269,11 @@ public final class ConvertMachineDialog implements
       {
         this.convertMachineType = ConvertMachineType.ENFA_TO_DFA;
       }
+    }
+    else if ( fromEntityType.equals ( MachineType.DFA )
+        && toEntityType.equals ( RegexType.REGEX ) )
+    {
+      this.convertMachineType = ConvertMachineType.DFA_TO_REGEX;
     }
     else
     {
@@ -1235,6 +1388,32 @@ public final class ConvertMachineDialog implements
                 .getString ( "ConvertMachineDialog.NFA" ) ) );//$NON-NLS-1$
         break;
       }
+      case ENFA_TO_NFA_CB :
+      {
+        this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
+            this.machineOriginal.getAlphabet (), this.machineOriginal
+                .getPushDownAlphabet (), this.machineOriginal
+                .isUsePushDownAlphabet () ) );
+
+        this.gui.setTitle ( Messages.getString (
+            "ConvertMachineDialog.TitleCB", //$NON-NLS-1$
+            Messages.getString ( "ConvertMachineDialog.ENFA" ), Messages//$NON-NLS-1$
+                .getString ( "ConvertMachineDialog.NFA" ) ) );//$NON-NLS-1$
+        break;
+      }
+      case ENFA_TO_NFA_COMPLETE_CB :
+      {
+        this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
+            this.machineOriginal.getAlphabet (), this.machineOriginal
+                .getPushDownAlphabet (), this.machineOriginal
+                .isUsePushDownAlphabet () ) );
+
+        this.gui.setTitle ( Messages.getString (
+            "ConvertMachineDialog.CompleteTitleCB", Messages//$NON-NLS-1$
+                .getString ( "ConvertMachineDialog.ENFA" ), Messages//$NON-NLS-1$
+                .getString ( "ConvertMachineDialog.NFA" ) ) );//$NON-NLS-1$
+        break;
+      }
       case ENFA_TO_DFA :
       {
         this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
@@ -1260,44 +1439,235 @@ public final class ConvertMachineDialog implements
                 .getString ( "ConvertMachineDialog.DFA" ) ) );//$NON-NLS-1$
         break;
       }
+      case DFA_TO_REGEX :
+      {
+        this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
+            this.machineOriginal.getAlphabet (), this.machineOriginal
+                .getPushDownAlphabet (), this.machineOriginal
+                .isUsePushDownAlphabet () ) );
+        this.k = this.modelOriginal.getMachine ().getState ().size () + 1;
+        try
+        {
+          this.modelRegexConverted = new DefaultRegexModel ( new DefaultRegex (
+              new DefaultRegexAlphabet ( this.machineOriginal.getAlphabet ()
+                  .get () ) ) );
+          this.modelRegexConverted.initializeGraph ();
+          this.jGTIGraphConverted = this.modelRegexConverted.getJGTIGraph ();
+        }
+        catch ( AlphabetException exc )
+        {
+          exc.printStackTrace ();
+        }
+        this.gui.jGTIButtonOk.setToolTipText ( Messages
+            .getString ( "ConvertMachineDialog.OkToolTipRegex" ) ); //$NON-NLS-1$
+        this.gui.jGTIButtonCancel.setToolTipText ( Messages
+            .getString ( "ConvertMachineDialog.CancelToolTipRegex" ) ); //$NON-NLS-1$
+
+        this.gui.setTitle ( Messages.getString (
+            "ConvertMachineDialog.Title", Messages//$NON-NLS-1$
+                .getString ( "ConvertMachineDialog.DFA" ), Messages//$NON-NLS-1$
+                .getString ( "ConvertMachineDialog.REGEX" ) ) );//$NON-NLS-1$
+        break;
+      }
     }
 
-    this.jGTIGraphConverted = this.modelConverted.getJGTIGraph ();
-    this.jGTIGraphConverted.setEnabled ( false );
+    if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
+    {
+      this.gui.styledRegexParserPanel.setVisible ( false );
+      this.gui.jGTISplitPaneConverted.setDividerSize ( 0 );
+      this.jGTIGraphConverted = this.modelConverted.getJGTIGraph ();
+      this.machineConverted = this.modelConverted.getMachine ();
+      this.jGTIGraphConverted.setEnabled ( false );
+
+      this.positionMap = new HashMap < String, Position > ();
+      this.step = Step.ACTIVATE_START_STATE;
+      this.currentActiveSymbol = this.machineConverted.getAlphabet ().get ( 0 );
+    }
+    else
+    {
+      this.step = Step.CALCULATE_NEW_LANGUAGE;
+    }
     this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGTIGraphConverted );
-    this.machineConverted = this.modelConverted.getMachine ();
-
-    this.positionMap = new HashMap < String, Position > ();
-
-    this.step = Step.ACTIVATE_START_STATE;
-    this.currentActiveSymbol = this.machineConverted.getAlphabet ().get ( 0 );
 
     if ( isComplete () )
     {
       addPowerSetStates ();
     }
 
-    // auto layout
-    while ( !this.endReached )
+    if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
     {
-      performNextStep ( false );
+      // auto layout
+      while ( !this.endReached )
+      {
+        performNextStep ( false );
+      }
+      new LayoutManager ( this.modelConverted, null ).doLayout ();
+      for ( DefaultStateView current : this.modelConverted.getStateViewList () )
+      {
+        int yOffset = current.getState ().isLoopTransition () ? StateView.LOOP_TRANSITION_OFFSET
+            : 0;
+        this.positionMap.put ( current.getState ().getName (), new Position (
+            current.getPositionX (), current.getPositionY () + yOffset ) );
+      }
+      while ( !this.stepItemList.isEmpty () )
+      {
+        performPreviousStep ( false );
+      }
     }
-    new LayoutManager ( this.modelConverted, null ).doLayout ();
-    for ( DefaultStateView current : this.modelConverted.getStateViewList () )
-    {
-      int yOffset = current.getState ().isLoopTransition () ? StateView.LOOP_TRANSITION_OFFSET
-          : 0;
-      this.positionMap.put ( current.getState ().getName (), new Position (
-          current.getPositionX (), current.getPositionY () + yOffset ) );
-    }
-    while ( !this.stepItemList.isEmpty () )
-    {
-      performPreviousStep ( false );
-    }
-
     setStatus ();
 
     show ();
+  }
+
+
+  /**
+   * Creates a {@link DisjunctionNode} of the symbols
+   * 
+   * @param symbols The symbols for the {@link DisjunctionNode}
+   * @return {@link DisjunctionNode} of the symbols
+   */
+  private RegexNode createDisjunction ( ArrayList < Symbol > symbols )
+  {
+    if ( symbols.size () < 1 )
+    {
+      return null;
+    }
+    Symbol s = symbols.remove ( 0 );
+    RegexNode r;
+    if ( s.equals ( new DefaultSymbol () ) )
+    {
+      r = new EpsilonNode ();
+    }
+    else
+    {
+      r = new TokenNode ( s.getName () );
+    }
+    if ( symbols.size () == 0 )
+    {
+      return r;
+    }
+    return new DisjunctionNode ( createDisjunction ( symbols ), r );
+  }
+
+
+  /**
+   * Eliminates a {@link RegexNode} from a {@link RegexNode}
+   * 
+   * @param node The {@link RegexNode} to delete
+   * @param regex The {@link RegexNode}
+   */
+  private void eliminateNodeFromRegex ( RegexNode node, RegexNode regex )
+  {
+    RegexNode parentRegex = regex.getParentNodeForNode ( node );
+
+    if ( parentRegex instanceof OneChildNode )
+    {
+      eliminateNodeFromRegex ( parentRegex, regex );
+    }
+    if ( parentRegex instanceof ConcatenationNode )
+    {
+      eliminateNodeFromRegex ( parentRegex, regex );
+    }
+    if ( parentRegex instanceof DisjunctionNode )
+    {
+      RegexNode r;
+      if ( ( ( TwoChildNode ) parentRegex ).getRegex1 ().equals ( node ) )
+      {
+        r = ( ( TwoChildNode ) parentRegex ).getRegex2 ();
+      }
+      else
+      {
+        r = ( ( TwoChildNode ) parentRegex ).getRegex1 ();
+      }
+      RegexNode parentParent = regex.getParentNodeForNode ( parentRegex );
+      if ( parentParent instanceof TwoChildNode )
+      {
+        TwoChildNode p = ( TwoChildNode ) parentParent;
+        if ( p.getRegex1 ().equals ( parentRegex ) )
+        {
+          p.setRegex1 ( r );
+        }
+        else
+        {
+          p.setRegex2 ( r );
+        }
+      }
+      else
+      {
+        OneChildNode one = ( OneChildNode ) parentParent;
+        one.setRegex ( r );
+      }
+    }
+  }
+
+
+  /**
+   * Returns the RegexNode for the Languages
+   * 
+   * @param LKK The {@link RegexNode} for LKK
+   * @param LKJ The {@link RegexNode} for LKJ
+   * @return The RegexNode for the Languages
+   */
+  private RegexNode generateRegex ( RegexNode LKK, RegexNode LKJ )
+  {
+    RegexNode regex = LKJ;
+    if ( LKK == null )
+    {
+      return null;
+    }
+    if ( regex == null )
+    {
+      return null;
+    }
+    return new ConcatenationNode ( new KleeneNode ( LKK ), LKJ );
+  }
+
+
+  /**
+   * Returns the RegexNode for the Languages
+   * 
+   * @param LIK The {@link RegexNode} for LIK
+   * @param LKK The {@link RegexNode} for LKK
+   * @param LKJ The {@link RegexNode} for LKJ
+   * @return The RegexNode for the Languages
+   */
+  private RegexNode generateRegex ( RegexNode LIK, RegexNode LKK, RegexNode LKJ )
+  {
+    RegexNode regex = generateRegex ( LKK, LKJ );
+    if ( LIK == null )
+    {
+      return null;
+    }
+    if ( regex == null )
+    {
+      return null;
+    }
+    return new ConcatenationNode ( LIK, regex );
+  }
+
+
+  /**
+   * Returns the RegexNode for the Languages
+   * 
+   * @param LIJ The {@link RegexNode} for LIJ
+   * @param LIK The {@link RegexNode} for LIK
+   * @param LKK The {@link RegexNode} for LKK
+   * @param LKJ The {@link RegexNode} for LKJ
+   * @return The RegexNode for the Languages
+   */
+  private RegexNode generateRegex ( RegexNode LIJ, RegexNode LIK,
+      RegexNode LKK, RegexNode LKJ )
+  {
+    RegexNode regex = generateRegex ( LIK, LKK, LKJ );
+    if ( LIJ == null )
+    {
+      return regex;
+    }
+    if ( regex == null )
+    {
+      return LIJ;
+    }
+    return new DisjunctionNode ( LIJ, regex );
   }
 
 
@@ -1314,6 +1684,18 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * Returns the convertMachineType.
+   * 
+   * @return The convertMachineType.
+   * @see #convertMachineType
+   */
+  public ConvertMachineType getConvertMachineType ()
+  {
+    return this.convertMachineType;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see LogicClass#getGUI()
@@ -1321,6 +1703,64 @@ public final class ConvertMachineDialog implements
   public final ConvertMachineDialogForm getGUI ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the L1 for s0 to s1
+   * 
+   * @param s0 {@link State} s0
+   * @param s1 {@link State} s1
+   * @return The L1 for s0 to s1
+   */
+  private RegexNode getL1 ( State s0, State s1 )
+  {
+    ArrayList < Symbol > l1 = new ArrayList < Symbol > ();
+    if ( s0.equals ( s1 ) )
+    {
+      l1.add ( new DefaultSymbol () );
+    }
+    for ( Transition t : this.machineOriginal.getTransition () )
+    {
+      if ( t.getStateBegin ().equals ( s0 ) && t.getStateEnd ().equals ( s1 ) )
+      {
+        l1.addAll ( t.getSymbol () );
+        for ( Symbol s : t.getSymbol () )
+        {
+          s.setActive ( true );
+        }
+      }
+    }
+    return createDisjunction ( l1 );
+  }
+
+
+  /**
+   * Returns Lk for s0 to s1
+   * 
+   * @param s0 {@link State} s0
+   * @param s1 {@link State} s1
+   * @param tmpK The k
+   * @return Lk for s0 to s1
+   */
+  private RegexNode getLK ( State s0, State s1, int tmpK )
+  {
+    int i = tmpK;
+    if ( i-- != 1 )
+    {
+      State s = this.machineOriginal.getState ( i - 1 );
+
+      RegexNode LIJ = new UnfinishedNode ( s0, s1, i );
+      RegexNode LIK = new UnfinishedNode ( s0, s, i );
+      RegexNode LKK = new UnfinishedNode ( s, s, i );
+      RegexNode LKJ = new UnfinishedNode ( s, s1, i );
+
+      RegexNode result = generateRegex ( LIJ, LIK, LKK, LKJ );
+      return result;
+
+    }
+    RegexNode result = getL1 ( s0, s1 );
+    return result;
   }
 
 
@@ -1361,6 +1801,18 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * Returns the modelRegexConverted.
+   * 
+   * @return The modelRegexConverted.
+   * @see #modelRegexConverted
+   */
+  public DefaultRegexModel getModelRegexConverted ()
+  {
+    return this.modelRegexConverted;
+  }
+
+
+  /**
    * Returns the position of the {@link State} or null if the position is not
    * defined.
    * 
@@ -1383,6 +1835,36 @@ public final class ConvertMachineDialog implements
   public ConvertMachineTableColumnModel getTableColumnModel ()
   {
     return this.tableColumnModel;
+  }
+
+
+  /**
+   * Shows or dispose the Algorithm window
+   * 
+   * @param show Show or dispose
+   */
+  public final void handleAlgorithmWindowChanged ( boolean show )
+  {
+    if ( this.algorithm == null || this.algorithm.length () == 0 )
+    {
+      TextLoader loader = new TextLoader ();
+      this.algorithm = loader.loadAlgorithm ( this.convertMachineType );
+    }
+
+    if ( this.algorithmWindow == null )
+    {
+      this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
+          this.gui.jGTIToggleButtonAlgorithm, this.convertMachineType
+              .toString () );
+    }
+    if ( show )
+    {
+      this.algorithmWindow.show ();
+    }
+    else
+    {
+      this.algorithmWindow.dispose ();
+    }
   }
 
 
@@ -1419,6 +1901,10 @@ public final class ConvertMachineDialog implements
 
     PreferenceManager.getInstance ().setConvertMachineDialogPreferences (
         this.gui );
+    if ( this.algorithmWindow != null )
+    {
+      this.algorithmWindow.dispose ();
+    }
     this.gui.dispose ();
   }
 
@@ -1457,11 +1943,22 @@ public final class ConvertMachineDialog implements
       performNextStep ( false );
     }
 
-    this.machinePanel.getMainWindow ().handleNew (
-        this.modelConverted.getElement (), true );
-
+    if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
+    {
+      this.machinePanel.getMainWindow ().handleNew (
+          this.modelConverted.getElement (), true );
+    }
+    else
+    {
+      this.machinePanel.getMainWindow ().handleNew (
+          new DefaultRegexModel ( this.modelRegexConverted.getRegex () ) );
+    }
     PreferenceManager.getInstance ().setConvertMachineDialogPreferences (
         this.gui );
+    if ( this.algorithmWindow != null )
+    {
+      this.algorithmWindow.dispose ();
+    }
     this.gui.dispose ();
   }
 
@@ -1524,6 +2021,14 @@ public final class ConvertMachineDialog implements
       {
         return true;
       }
+      case ENFA_TO_NFA_CB :
+      {
+        return false;
+      }
+      case ENFA_TO_NFA_COMPLETE_CB :
+      {
+        return true;
+      }
       case ENFA_TO_DFA :
       {
         return false;
@@ -1531,6 +2036,10 @@ public final class ConvertMachineDialog implements
       case ENFA_TO_DFA_COMPLETE :
       {
         return true;
+      }
+      case DFA_TO_REGEX :
+      {
+        return false;
       }
     }
     throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
@@ -1550,6 +2059,11 @@ public final class ConvertMachineDialog implements
       State normalState )
   {
     String name = stateSet.getName ();
+
+    if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
+    {
+      return name.equals ( normalState.getName () );
+    }
 
     if ( name.charAt ( 0 ) != '{' )
     {
@@ -1691,11 +2205,22 @@ public final class ConvertMachineDialog implements
         }
         case ENFA_TO_NFA :
         case ENFA_TO_NFA_COMPLETE :
+        case ENFA_TO_NFA_CB :
+        case ENFA_TO_NFA_COMPLETE_CB :
         case ENFA_TO_DFA :
         case ENFA_TO_DFA_COMPLETE :
         {
-          this.step = Step.ACTIVATE_START_CLOSURE_STATE;
+          if ( this.machineConverted.getState ().isEmpty () )
+          {
+            this.step = Step.ACTIVATE_START_CLOSURE_STATE;
+            break;
+          }
+          this.step = Step.ACTIVATE_SYMBOLS;
           break;
+        }
+        case DFA_TO_REGEX :
+        {
+          throw new IllegalStateException ( "should not be" ); //$NON-NLS-1$
         }
       }
     }
@@ -1790,82 +2315,171 @@ public final class ConvertMachineDialog implements
         logger.debug ( "performNextStep",//$NON-NLS-1$
             "perform next step: " + this.step );//$NON-NLS-1$
       }
-
       StringBuilder name = new StringBuilder ();
-      name.append ( "{" ); //$NON-NLS-1$
-      boolean first = true;
+
       boolean finalState = false;
-      for ( State currentState : this.machineOriginal.getState () )
+      boolean notImportant = false;
+      if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
       {
-        if ( currentState.isActive () )
+        for ( State currentState : this.machineOriginal.getState () )
         {
-          if ( currentState.isFinalState () )
+          if ( currentState.isActive () )
           {
-            finalState = true;
-          }
-          if ( !first )
-          {
-            name.append ( ", " );//$NON-NLS-1$
-          }
-          first = false;
-          name.append ( currentState.getName () );
-        }
-      }
-      name.append ( "}" );//$NON-NLS-1$
+            notImportant = !currentState.isImportant ();
+            if ( currentState.isFinalState () )
+            {
+              finalState = true;
+            }
+            name.append ( currentState.getName () );
+            currentState.setActive ( false );
+            break;
 
-      State stateFound = null;
-      for ( State current : this.machineConverted.getState () )
+          }
+        }
+
+      }
+      else
       {
-        if ( current.getName ().equals ( name.toString () ) )
+        name.append ( "{" ); //$NON-NLS-1$
+        boolean first = true;
+        for ( State currentState : this.machineOriginal.getState () )
         {
-          stateFound = current;
-          break;
+          if ( currentState.isActive () )
+          {
+            if ( currentState.isFinalState () )
+            {
+              finalState = true;
+            }
+            if ( !first )
+            {
+              name.append ( ", " );//$NON-NLS-1$
+            }
+            first = false;
+            name.append ( currentState.getName () );
+          }
         }
+        name.append ( "}" );//$NON-NLS-1$
       }
 
-      if ( stateFound == null )
+      if ( notImportant )
       {
-        State newState;
-        DefaultStateView newStateView;
         try
         {
-          newState = new DefaultState ( this.machineConverted.getAlphabet (),
-              this.machineConverted.getPushDownAlphabet (), name.toString (),
-              true, finalState );
-          newState.setActive ( true );
+          State stateFound = new DefaultState ( name.toString () );
+          PrettyString prettyString = new PrettyString ();
+          prettyString
+              .add ( Messages
+                  .getPrettyString (
+                      "ConvertMachineDialog.StartStateNotImportant", stateFound.toPrettyString () ) ); //$NON-NLS-1$
+          addOutlineComment ( prettyString );
+          boolean found = false;
+          for ( State s : this.machineOriginal.getState () )
+          {
+            if ( s.isActive () )
+            {
+              found = true;
+              break;
+            }
+          }
+          if ( found )
+          {
+            this.step = Step.ADD_START_STATE;
+          }
+          else
+          {
+            setCurrentActiveState ( this.machineConverted.getState ( 0 ),
+                manualStep );
+            this.step = Step.ACTIVATE_OLD_STATE;
+          }
         }
         catch ( StateException exc )
         {
           exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
         }
 
-        newStateView = this.modelConverted.createStateView ( INITIAL_POSITION,
-            INITIAL_POSITION, newState, false );
-
-        Position position = getPosition ( newState );
-        if ( position != null )
-        {
-          newStateView.move ( position.getX (), position.getY () );
-        }
-
-        // add to step item
-        this.stepItemList.get ( this.stepItemList.size () - 1 )
-            .setAddedDefaultStateView ( newStateView );
-
-        stateFound = newState;
       }
+      else
+      {
+        State stateFound = null;
+        for ( State current : this.machineConverted.getState () )
+        {
+          if ( current.getName ().equals ( name.toString () ) )
+          {
+            stateFound = current;
+            break;
+          }
+        }
 
-      setCurrentActiveState ( stateFound, manualStep );
+        if ( stateFound == null )
+        {
+          State newState;
+          DefaultStateView newStateView;
+          try
+          {
+            newState = new DefaultState ( this.machineConverted.getAlphabet (),
+                this.machineConverted.getPushDownAlphabet (), name.toString (),
+                true, finalState );
+            newState.setActive ( true );
+          }
+          catch ( StateException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+            return;
+          }
 
-      // outline
-      PrettyString prettyString = new PrettyString ();
-      prettyString.add ( Messages.getPrettyString (
-          "ConvertMachineDialog.AddStartState", stateFound.toPrettyString () ) ); //$NON-NLS-1$
-      addOutlineComment ( prettyString );
+          newStateView = this.modelConverted.createStateView (
+              INITIAL_POSITION, INITIAL_POSITION, newState, false );
 
-      this.step = Step.ACTIVATE_SYMBOLS;
+          Position position = getPosition ( newState );
+          if ( position != null )
+          {
+            newStateView.move ( position.getX (), position.getY () );
+          }
+
+          // add to step item
+          this.stepItemList.get ( this.stepItemList.size () - 1 )
+              .setAddedDefaultStateView ( newStateView );
+
+          stateFound = newState;
+        }
+        setCurrentActiveState ( stateFound, manualStep );
+        // outline
+        PrettyString prettyString = new PrettyString ();
+        prettyString
+            .add ( Messages
+                .getPrettyString (
+                    "ConvertMachineDialog.AddStartState", stateFound.toPrettyString () ) ); //$NON-NLS-1$
+        addOutlineComment ( prettyString );
+
+        if ( this.convertMachineType
+            .equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
+        {
+          boolean found = false;
+          for ( State s : this.machineOriginal.getState () )
+          {
+            if ( s.isActive () )
+            {
+              found = true;
+              break;
+            }
+          }
+          if ( found )
+          {
+            this.step = Step.ADD_START_STATE;
+          }
+          else
+          {
+            setCurrentActiveState ( this.machineConverted.getState ( 0 ),
+                manualStep );
+            this.step = Step.ACTIVATE_OLD_STATE;
+          }
+        }
+        else
+        {
+          this.step = Step.ACTIVATE_SYMBOLS;
+        }
+      }
     }
     else if ( this.step.equals ( Step.ACTIVATE_OLD_STATE ) )
     {
@@ -1926,6 +2540,16 @@ public final class ConvertMachineDialog implements
           this.step = Step.ACTIVATE_SYMBOLS;
           break;
         }
+        case ENFA_TO_NFA_CB :
+        {
+          this.step = Step.ACTIVATE_SYMBOLS;
+          break;
+        }
+        case ENFA_TO_NFA_COMPLETE_CB :
+        {
+          this.step = Step.ACTIVATE_SYMBOLS;
+          break;
+        }
         case ENFA_TO_NFA :
         {
           this.step = Step.ACTIVATE_OLD_CLOSURE_STATE;
@@ -1945,6 +2569,10 @@ public final class ConvertMachineDialog implements
         {
           this.step = Step.ACTIVATE_OLD_CLOSURE_STATE;
           break;
+        }
+        case DFA_TO_REGEX :
+        {
+          throw new IllegalStateException ( "should not be" ); //$NON-NLS-1$
         }
       }
     }
@@ -2123,10 +2751,27 @@ public final class ConvertMachineDialog implements
       clearSymbolHighlightOriginal ();
 
       ArrayList < State > newActiveStateList = new ArrayList < State > ();
-      for ( Transition currentTransition : transitionList )
+      if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
       {
-        currentTransition.getStateEnd ().setActive ( true );
-        newActiveStateList.add ( currentTransition.getStateEnd () );
+        for ( Transition currentTransition : transitionList )
+        {
+          for ( State s : Util.getClosure ( currentTransition.getStateEnd () ) )
+          {
+            if ( s.isImportant () )
+            {
+              s.setActive ( true );
+              newActiveStateList.add ( s );
+            }
+          }
+        }
+      }
+      else
+      {
+        for ( Transition currentTransition : transitionList )
+        {
+          currentTransition.getStateEnd ().setActive ( true );
+          newActiveStateList.add ( currentTransition.getStateEnd () );
+        }
       }
       Collections.sort ( newActiveStateList );
 
@@ -2201,6 +2846,17 @@ public final class ConvertMachineDialog implements
           this.step = Step.ACTIVATE_NEW_CLOSURE_STATES;
           break;
         }
+
+        case ENFA_TO_NFA_CB :
+        {
+          this.step = Step.ADD_STATE_AND_TRANSITION;
+          break;
+        }
+        case ENFA_TO_NFA_COMPLETE_CB :
+        {
+          this.step = Step.ADD_STATE_AND_TRANSITION;
+          break;
+        }
         case ENFA_TO_DFA :
         {
           this.step = Step.ACTIVATE_NEW_CLOSURE_STATES;
@@ -2210,6 +2866,10 @@ public final class ConvertMachineDialog implements
         {
           this.step = Step.ACTIVATE_NEW_CLOSURE_STATES;
           break;
+        }
+        case DFA_TO_REGEX :
+        {
+          throw new IllegalStateException ( "should not be" ); //$NON-NLS-1$
         }
       }
     }
@@ -2297,26 +2957,48 @@ public final class ConvertMachineDialog implements
       }
 
       StringBuilder name = new StringBuilder ();
-      name.append ( "{" ); //$NON-NLS-1$
-      boolean first = true;
       boolean finalState = false;
       boolean emptySetStateFound = true;
-      for ( State currentState : this.machineOriginal.getState () )
+      boolean moreAhead = false;
+      if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
       {
-        if ( currentState.isActive () )
+        for ( State currentState : this.machineOriginal.getState () )
         {
-          emptySetStateFound = false;
-
-          finalState = finalState || currentState.isFinalState ();
-          if ( !first )
+          if ( currentState.isActive () )
           {
-            name.append ( ", " );//$NON-NLS-1$
+            if ( name.length () > 0 )
+            {
+              moreAhead = true;
+              break;
+            }
+            currentState.setActive ( false );
+            emptySetStateFound = false;
+            finalState = finalState || currentState.isFinalState ();
+            name.append ( currentState.getName () );
           }
-          first = false;
-          name.append ( currentState.getName () );
         }
       }
-      name.append ( "}" );//$NON-NLS-1$
+      else
+      {
+        name.append ( "{" ); //$NON-NLS-1$
+        boolean first = true;
+        for ( State currentState : this.machineOriginal.getState () )
+        {
+          if ( currentState.isActive () )
+          {
+            emptySetStateFound = false;
+
+            finalState = finalState || currentState.isFinalState ();
+            if ( !first )
+            {
+              name.append ( ", " );//$NON-NLS-1$
+            }
+            first = false;
+            name.append ( currentState.getName () );
+          }
+        }
+        name.append ( "}" );//$NON-NLS-1$
+      }
 
       if ( emptySetStateFound )
       {
@@ -2337,7 +3019,10 @@ public final class ConvertMachineDialog implements
           }
           case ENFA_TO_NFA :
           case ENFA_TO_NFA_COMPLETE :
+          case ENFA_TO_NFA_CB :
+          case ENFA_TO_NFA_COMPLETE_CB :
           {
+
             this.step = Step.FINISH;
 
             // outline
@@ -2362,6 +3047,10 @@ public final class ConvertMachineDialog implements
             name.delete ( 0, name.length () );
             name.append ( "\u2205" );//$NON-NLS-1$
             break;
+          }
+          case DFA_TO_REGEX :
+          {
+            throw new IllegalStateException ( "should not be" ); //$NON-NLS-1$
           }
         }
       }
@@ -2543,8 +3232,14 @@ public final class ConvertMachineDialog implements
                 .toPrettyString () ) );
         addOutlineComment ( prettyString );
       }
-
-      this.step = Step.FINISH;
+      if ( moreAhead )
+      {
+        this.step = Step.ADD_STATE_AND_TRANSITION;
+      }
+      else
+      {
+        this.step = Step.FINISH;
+      }
     }
     else if ( this.step.equals ( Step.FINISH ) )
     {
@@ -2653,6 +3348,168 @@ public final class ConvertMachineDialog implements
 
       this.step = Step.ACTIVATE_OLD_STATE;
     }
+    else if ( this.step.equals ( Step.CALCULATE_NEW_LANGUAGE ) )
+    {
+      clearStateHighlightOriginal ();
+      clearTransitionHighlightOriginal ();
+      clearSymbolHighlightOriginal ();
+
+      RegexNode node = this.modelRegexConverted.getRegex ().getRegexNode ();
+      if ( node == null )
+      {
+        this.finals.clear ();
+        for ( State s : this.modelOriginal.getMachine ().getState () )
+        {
+          if ( s.isStartState () )
+          {
+            this.start = s;
+          }
+          if ( s.isFinalState () )
+          {
+            this.finals.add ( s );
+          }
+        }
+        State finState = this.finals.get ( this.finalsIndex );
+        RegexNode newNode = getLK ( this.start, finState, this.k );
+        this.start.setActive ( true );
+        finState.setActive ( true );
+
+        this.modelRegexConverted.getRegex ().setRegexNode ( newNode,
+            newNode.toString () );
+        PrettyString string = new PrettyString ();
+        PrettyString kString = new PrettyString ( new PrettyToken ( String
+            .valueOf ( this.k ), Style.REGEX_SYMBOL ) );
+        string.add ( Messages.getPrettyString (
+            "ConvertMachineDialog.CreateLanguage", this.start.toPrettyString () //$NON-NLS-1$
+            , finState.toPrettyString (), kString, newNode.toPrettyString () ) );
+        addOutlineComment ( string );
+      }
+      else
+      {
+        UnfinishedNode uNode = node.getNextUnfinishedNode ();
+        if ( uNode != null )
+        {
+          RegexNode newNode = null;
+          RegexNode parentNode = node.getParentNodeForNode ( uNode );
+          if ( parentNode instanceof OneChildNode )
+          {
+            RegexNode tmp = getLK ( uNode.getS0 (), uNode.getS1 (), uNode
+                .getK () );
+            newNode = tmp;
+            if ( tmp != null )
+            {
+              ( ( OneChildNode ) parentNode ).setRegex ( tmp );
+            }
+            else
+            {
+              eliminateNodeFromRegex ( uNode, node );
+            }
+
+          }
+          if ( parentNode instanceof TwoChildNode )
+          {
+            TwoChildNode two = ( TwoChildNode ) parentNode;
+
+            RegexNode r = getLK ( uNode.getS0 (), uNode.getS1 (), uNode.getK () );
+            newNode = r;
+            if ( r != null )
+            {
+              if ( two.getRegex1 ().equals ( uNode ) )
+              {
+                two.setRegex1 ( r );
+              }
+              else
+              {
+                two.setRegex2 ( r );
+              }
+            }
+            else
+            {
+              eliminateNodeFromRegex ( uNode, node );
+            }
+          }
+          this.modelRegexConverted.getRegex ().setRegexNode ( node,
+              node.toString () );
+
+          uNode.getS0 ().setActive ( true );
+          uNode.getS1 ().setActive ( true );
+          for ( Transition t : this.machineOriginal.getTransition () )
+          {
+            if ( t.getStateBegin ().equals ( uNode.getS0 () )
+                && t.getStateEnd ().equals ( uNode.getS1 () ) )
+            {
+              t.setActive ( true );
+            }
+          }
+
+          PrettyString string = new PrettyString ();
+          PrettyString kString = new PrettyString ( new PrettyToken ( String
+              .valueOf ( uNode.getK () ), Style.REGEX_SYMBOL ) );
+          if ( newNode != null )
+          {
+            string
+                .add ( Messages
+                    .getPrettyString (
+                        "ConvertMachineDialog.CreateLanguage", uNode.getS0 ().toPrettyString () //$NON-NLS-1$
+                        , uNode.getS1 ().toPrettyString (), kString, newNode
+                            .toPrettyString () ) );
+          }
+          else
+          {
+            string
+                .add ( Messages
+                    .getPrettyString (
+                        "ConvertMachineDialog.CreateLanguage", uNode.getS0 ().toPrettyString () //$NON-NLS-1$
+                        , uNode.getS1 ().toPrettyString (), kString,
+                        new PrettyString ( new PrettyToken (
+                            "\u2205", Style.KEYWORD ) ) ) ); //$NON-NLS-1$
+          }
+          addOutlineComment ( string );
+        }
+        else
+        {
+          this.finalsIndex++ ;
+          RegexNode n = getLK ( this.start,
+              this.finals.get ( this.finalsIndex ), this.k );
+          RegexNode newNode;
+          if ( n == null )
+          {
+            newNode = node;
+          }
+          else
+          {
+            newNode = new DisjunctionNode ( node, n );
+          }
+          this.modelRegexConverted.getRegex ().setRegexNode ( newNode,
+              newNode.toString () );
+
+          PrettyString string = new PrettyString ();
+          if ( n != null )
+          {
+            this.start.setActive ( true );
+            this.finals.get ( this.finalsIndex ).setActive ( true );
+            string.add ( Messages.getPrettyString (
+                "ConvertMachineDialog.CreateDisjunction", this.finals.get ( //$NON-NLS-1$
+                    this.finalsIndex ).toPrettyString (), node
+                    .toPrettyString (), n.toPrettyString () ) );
+          }
+          addOutlineComment ( string );
+
+        }
+      }
+
+      if ( this.modelRegexConverted.getRegex ().getRegexNode () != null )
+      {
+
+        RegexNode nextUnfishedNode = this.modelRegexConverted.getRegex ()
+            .getRegexNode ().getNextUnfinishedNode ();
+        if ( this.finalsIndex + 1 >= this.finals.size ()
+            && nextUnfishedNode == null )
+        {
+          this.endReached = true;
+        }
+      }
+    }
     else
     {
       throw new RuntimeException ( "unsupported step" ); //$NON-NLS-1$
@@ -2683,11 +3540,14 @@ public final class ConvertMachineDialog implements
     StepItem stepItem = this.stepItemList
         .remove ( this.stepItemList.size () - 1 );
     clearStateHighlightOriginal ();
-    clearStateHighlightConverted ();
+    if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
+    {
+      clearStateHighlightConverted ();
+      clearTransitionHighlightConverted ();
+      clearSymbolHighlightConverted ();
+    }
     clearTransitionHighlightOriginal ();
-    clearTransitionHighlightConverted ();
     clearSymbolHighlightOriginal ();
-    clearSymbolHighlightConverted ();
 
     for ( State current : stepItem.getActiveStatesOriginal () )
     {
@@ -2732,6 +3592,33 @@ public final class ConvertMachineDialog implements
       Transition transition = stepItem.getAddedSymbol ().getFirst ();
       Symbol symbol = stepItem.getAddedSymbol ().getSecond ();
       transition.remove ( symbol );
+    }
+    if ( this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
+    {
+      this.finalsIndex = stepItem.getFinalsIndex ();
+      if ( stepItem.getActualRegex () != null )
+      {
+        RegexNode node = stepItem.getActualRegex ();
+        this.modelRegexConverted.changeRegexNode ( node, node.toString () );
+      }
+      else
+      {
+        this.k = this.modelOriginal.getMachine ().getState ().size () + 1;
+        try
+        {
+          this.modelRegexConverted = new DefaultRegexModel ( new DefaultRegex (
+              new DefaultRegexAlphabet ( this.machineOriginal.getAlphabet ()
+                  .get () ) ) );
+          this.modelRegexConverted.initializeGraph ();
+          this.jGTIGraphConverted = this.modelRegexConverted.getJGTIGraph ();
+        }
+        catch ( Exception e )
+        {
+          e.printStackTrace ();
+          System.exit ( 1 );
+        }
+
+      }
     }
 
     // outline
@@ -2845,9 +3732,26 @@ public final class ConvertMachineDialog implements
    */
   private final void updateGraph ()
   {
-    this.modelOriginal.getGraphModel ().cellsChanged (
-        DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
     this.modelConverted.getGraphModel ().cellsChanged (
         DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
+    if ( this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
+    {
+      this.modelRegexConverted.initializeGraph ();
+      this.jGTIGraphConverted = this.modelRegexConverted.getJGTIGraph ();
+      this.gui.jGTIScrollPaneConverted
+          .setViewportView ( this.jGTIGraphConverted );
+      if ( this.modelRegexConverted.getRegex ().getRegexNode () != null )
+      {
+        this.modelRegexConverted.createTree ();
+        this.gui.styledRegexParserPanel.setText ( this.modelRegexConverted
+            .getRegex ().getRegexNode ().toPrettyString ().toString () );
+      }
+      else
+      {
+        this.gui.styledRegexParserPanel.setText ( "" ); //$NON-NLS-1$
+      }
+    }
+    this.modelOriginal.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
   }
 }

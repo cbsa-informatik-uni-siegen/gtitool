@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.exceptions.alphabet;
 import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -14,7 +15,8 @@ import de.unisiegen.gtitool.core.i18n.Messages;
  * {@link Alphabet} is not correct.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: AlphabetMoreThanOneSymbolException.java 1372 2008-10-30
+ *          08:36:20Z fehler $
  */
 public final class AlphabetMoreThanOneSymbolException extends AlphabetException
 {
@@ -40,10 +42,21 @@ public final class AlphabetMoreThanOneSymbolException extends AlphabetException
     setPrettyMessage ( Messages
         .getPrettyString ( "AlphabetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
 
-    // description
-    setPrettyDescription ( Messages.getPrettyString (
-        "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( 0 ) //$NON-NLS-1$
-            .toPrettyString (), alphabet.toPrettyString () ) );
+    if ( alphabet instanceof DefaultRegexAlphabet )
+    {
+      // description
+      setPrettyDescription ( Messages.getPrettyString (
+          "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( 0 ) //$NON-NLS-1$
+              .toPrettyString (), ( ( DefaultRegexAlphabet ) alphabet )
+              .toClassPrettyString () ) );
+    }
+    else
+    {
+      // description
+      setPrettyDescription ( Messages.getPrettyString (
+          "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( 0 ) //$NON-NLS-1$
+              .toPrettyString (), alphabet.toPrettyString () ) );
+    }
   }
 
 

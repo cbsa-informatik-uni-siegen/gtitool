@@ -44,6 +44,15 @@ public interface ColorChangedListener extends EventListener
 
 
   /**
+   * Invoked when the color of the highlighted {@link NonterminalSymbol}
+   * changed.
+   * 
+   * @param newColor The new color of the highlighted {@link NonterminalSymbol}.
+   */
+  public void colorChangedNonterminalSymbolHighlight ( Color newColor );
+
+
+  /**
    * Invoked when the color of the parser error changed.
    * 
    * @param newColor The new color of the error warning.
@@ -81,6 +90,70 @@ public interface ColorChangedListener extends EventListener
    * @param newColor The new color of the error {@link Production}.
    */
   public void colorChangedProductionError ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the highlight {@link Production} changed.
+   * 
+   * @param newColor The new color of the highlight {@link Production}.
+   */
+  public void colorChangedProductionHighlight ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the Regex position changed.
+   * 
+   * @param newColor The new color of the Regex position.
+   */
+  public void colorChangedRegexPosition ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the Regex symbol changed.
+   * 
+   * @param newColor The new color of the Regex symbol.
+   */
+  public void colorChangedRegexSymbol ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the Regex token changed.
+   * 
+   * @param newColor The new color of the Regex token.
+   */
+  public void colorChangedRegexToken ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the Regex tool tip changed.
+   * 
+   * @param newColor The new color of the Regex tool tip.
+   */
+  public void colorChangedRegexToolTip ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the Regex marked node changed.
+   * 
+   * @param newColor The new color of the Regex marked node.
+   */
+  public void colorChangedRegexMarkedNode ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the Regex marked node changed.
+   * 
+   * @param newColor The new color of the Regex marked node.
+   */
+  public void colorChangedRegexSelectedNode ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the Regex comment changed.
+   * 
+   * @param newColor The new color of the Regex comment.
+   */
+  public void colorChangedRegexComment ( Color newColor );
 
 
   /**

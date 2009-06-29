@@ -158,11 +158,12 @@ public abstract class AbstractConvertGrammar implements Converter
   /**
    * {@inheritDoc}
    * 
-   * @see Converter#convert(EntityType,EntityType,boolean)
+   * @see Converter#convert(EntityType,EntityType,boolean,boolean)
    */
   public final void convert (
       @SuppressWarnings ( "unused" ) EntityType fromEntityType,
-      EntityType toEntityType, @SuppressWarnings ( "unused" ) boolean complete )
+      EntityType toEntityType, @SuppressWarnings ( "unused" ) boolean complete,
+      @SuppressWarnings ( "unused" ) boolean cb )
   {
     if ( ! ( toEntityType instanceof MachineType ) )
     {

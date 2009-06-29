@@ -65,6 +65,14 @@ public interface ProductionWord extends Entity < ProductionWord >, Storable,
 
 
   /**
+   * Returns the {@link NonterminalSymbol}s the word contains
+   * 
+   * @return The {@link NonterminalSymbol}s the word contains
+   */
+  public ArrayList < NonterminalSymbol > getNonterminals ();
+
+
+  /**
    * Returns the size of the {@link ProductionWord}.
    * 
    * @return the size of the {@link ProductionWord}.

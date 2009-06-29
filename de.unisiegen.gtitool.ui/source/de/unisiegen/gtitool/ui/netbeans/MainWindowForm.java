@@ -12,6 +12,7 @@ import javax.swing.JToolBar;
 
 import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
+import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 import de.unisiegen.gtitool.ui.swing.JGTIPanel;
@@ -39,7 +40,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
     /**
      * The {@link MainWindow}.
-     */ 
+     */
     private MainWindow logic;
     
 
@@ -94,6 +95,18 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     public final JMenuItem getJMenuItemClose ()
     {
       return this.jMenuItemClose;
+    }
+
+    
+    
+    /**
+     * Returns the jMenuItemExportLatex.
+     *
+     * @return The jMenuItemExportLatex.
+     * @see #jMenuItemExportLatex
+     */
+    public JMenuItem getJMenuItemExportLatex() {
+        return this.jMenuItemExportLatex;
     }
     
     /**
@@ -211,6 +224,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }
 
     /**
+     * Returns the jMenuItemToCoreSyntax.
+     * 
+     * @return The jMenuItemToCoreSyntax.
+     */
+    public JMenuItem getJMenuItemToCoreSyntax() {
+        return this.jMenuItemToCoreSyntax;
+    }
+
+    /**
      * Returns the jMenuItemSave.
      *
      * @return The jMenuItemSave.
@@ -220,6 +242,12 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     {
       return this.jMenuItemSave;
     }
+
+    public JMenuItem getJMenuItemConvertToNFACB() {
+        return jMenuItemConvertToNFACB;
+    }
+    
+    
     
     /**
      * Returns the jMenuItemSaveAs.
@@ -319,6 +347,12 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     {
       return this.jGTIPanelLeftOuter;
     }
+
+    public JMenuItem getJMenuItemEliminateLeftRecursion() {
+        return this.jMenuItemEliminateLeftRecursion;
+    }
+    
+    
 
     /**
      * Returns the outer right {@link JGTIPanel}.
@@ -836,6 +870,18 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
       return this.jMenuItemHistory;
     }
 
+    
+    /**
+     * Returns the jCheckBoxMenuItemRegexInfo.
+     *
+     * @return The jCheckBoxMenuItemRegexInfo.
+     * @see #jCheckBoxMenuItemRegexInfo
+     */
+    public final JCheckBoxMenuItem getJCheckBoxMenuItemRegexInfo ()
+    {
+      return this.jCheckBoxMenuItemRegexInfo;
+    }
+
 
     /**
      * Returns the jMenuItemReachableStates.
@@ -956,6 +1002,12 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
       return this.jToolBarEdit;
     }
 
+    public JMenuItem getJMenuItemLeftfactoring() {
+        return this.jMenuItemLeftfactoring;
+    }
+    
+    
+
     
     /**
      * Returns the jToolBarFile.
@@ -1013,6 +1065,51 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     {
       return this.jMenuItemMinimize;
     }
+    
+    
+    /**
+     * Returns the jMenuItemConvertToRegex.
+     *
+     * @return The jMenuItemConvertToRegex.
+     * @see #jMenuItemConvertToRegex
+     */
+    public final JMenuItem getJMenuItemConvertToRegex ()
+    {
+      return this.jMenuItemConvertToRegex;
+    }
+
+    
+    
+    /**
+     * Returns the jMenuItemCreateRDP.
+     *
+     * @return The jMenuItemCreateRDP.
+     * @see #jMenuItemCreateRDP
+     */
+    public JMenuItem getJMenuItemCreateRDP() {
+        return this.jMenuItemCreateRDP;
+    }
+
+    /**
+     * Returns the jMenuItemEliminateEntityProductions.
+     *
+     * @return The jMenuItemEliminateEntityProductions.
+     * @see #jMenuItemEliminateEntityProductions
+     */
+    public JMenuItem getJMenuItemEliminateEntityProductions() {
+        return this.jMenuItemEliminateEntityProductions;
+    }
+
+    /**
+     * Returns the jMenuItemEliminateEpsilonProductions.
+     *
+     * @return The jMenuItemEliminateEpsilonProductions.
+     * @see #jMenuItemEliminateEpsilonProductions
+     */
+    public JMenuItem getJMenuItemEliminateEpsilonProductions() {
+        return this.jMenuItemEliminateEpsilonProductions;
+    }
+    
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -1072,6 +1169,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemSaveAll = new javax.swing.JMenuItem();
         jSeparatorFile3 = new javax.swing.JSeparator();
         jMenuItemExportPicture = new javax.swing.JMenuItem();
+        jMenuItemExportLatex = new javax.swing.JMenuItem();
         jSeparatorFile4 = new javax.swing.JSeparator();
         jMenuRecentlyUsed = new javax.swing.JMenu();
         jSeparatorFile5 = new javax.swing.JSeparator();
@@ -1084,6 +1182,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuView = new javax.swing.JMenu();
         jCheckBoxMenuItemConsole = new javax.swing.JCheckBoxMenuItem();
         jCheckBoxMenuItemTable = new javax.swing.JCheckBoxMenuItem();
+        jCheckBoxMenuItemRegexInfo = new javax.swing.JCheckBoxMenuItem();
         jSeparatorView = new javax.swing.JSeparator();
         jCheckBoxMenuItemSecondView = new javax.swing.JCheckBoxMenuItem();
         jMenuExecute = new javax.swing.JMenu();
@@ -1094,8 +1193,10 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuConvertTo = new javax.swing.JMenu();
         jMenuItemConvertToDFA = new javax.swing.JMenuItem();
         jMenuItemConvertToNFA = new javax.swing.JMenuItem();
+        jMenuItemConvertToNFACB = new javax.swing.JMenuItem();
         jMenuItemConvertToENFA = new javax.swing.JMenuItem();
         jMenuItemConvertToPDA = new javax.swing.JMenuItem();
+        jMenuItemConvertToRegex = new javax.swing.JMenuItem();
         jMenuConvertToComplete = new javax.swing.JMenu();
         jMenuItemConvertToCompleteDFA = new javax.swing.JMenuItem();
         jMenuItemConvertToCompleteNFA = new javax.swing.JMenuItem();
@@ -1111,6 +1212,12 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jSeparatorExecute1 = new javax.swing.JSeparator();
         jMenuItemAutoLayout = new javax.swing.JMenuItem();
         jMenuItemMinimize = new javax.swing.JMenuItem();
+        jMenuItemToCoreSyntax = new javax.swing.JMenuItem();
+        jMenuItemEliminateLeftRecursion = new javax.swing.JMenuItem();
+        jMenuItemEliminateEntityProductions = new javax.swing.JMenuItem();
+        jMenuItemEliminateEpsilonProductions = new javax.swing.JMenuItem();
+        jMenuItemLeftfactoring = new javax.swing.JMenuItem();
+        jMenuItemCreateRDP = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
@@ -1526,6 +1633,16 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
             }
         });
         jMenuFile.add(jMenuItemExportPicture);
+
+        jMenuItemExportLatex.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemExportLatex.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LatexExportMnemonic").charAt(0));
+        jMenuItemExportLatex.setText(bundle.getString("MainWindow.LatexExport")); // NOI18N
+        jMenuItemExportLatex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemExportLatexActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemExportLatex);
         jMenuFile.add(jSeparatorFile4);
 
         jMenuRecentlyUsed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/small/empty.png"))); // NOI18N
@@ -1607,6 +1724,16 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
             }
         });
         jMenuView.add(jCheckBoxMenuItemTable);
+
+        jCheckBoxMenuItemRegexInfo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RegexInfoMnemonic").charAt(0));
+        jCheckBoxMenuItemRegexInfo.setSelected(true);
+        jCheckBoxMenuItemRegexInfo.setText(bundle.getString("MainWindow.RegexInfo")); // NOI18N
+        jCheckBoxMenuItemRegexInfo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBoxMenuItemRegexInfoItemStateChanged(evt);
+            }
+        });
+        jMenuView.add(jCheckBoxMenuItemRegexInfo);
         jMenuView.add(jSeparatorView);
 
         jCheckBoxMenuItemSecondView.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SecondViewMnemonic").charAt(0));
@@ -1670,6 +1797,14 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuConvertTo.add(jMenuItemConvertToNFA);
 
+        jMenuItemConvertToNFACB.setText(bundle.getString("MainWindow.NFACB")); // NOI18N
+        jMenuItemConvertToNFACB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToNFACBctionPerformed(evt);
+            }
+        });
+        jMenuConvertTo.add(jMenuItemConvertToNFACB);
+
         jMenuItemConvertToENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
         jMenuItemConvertToENFA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1685,6 +1820,14 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
             }
         });
         jMenuConvertTo.add(jMenuItemConvertToPDA);
+
+        jMenuItemConvertToRegex.setText(bundle.getString("MainWindow.REGEX")); // NOI18N
+        jMenuItemConvertToRegex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToRegexActionPerformed(evt);
+            }
+        });
+        jMenuConvertTo.add(jMenuItemConvertToRegex);
 
         jMenuExecute.add(jMenuConvertTo);
 
@@ -1797,6 +1940,60 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuExecute.add(jMenuItemMinimize);
 
+        jMenuItemToCoreSyntax.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ToCoreSyntaxMnemonic").charAt(0));
+        jMenuItemToCoreSyntax.setText(bundle.getString("MainWindow.ToCoreSyntax")); // NOI18N
+        jMenuItemToCoreSyntax.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemToCoreSyntaxActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemToCoreSyntax);
+
+        jMenuItemEliminateLeftRecursion.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EliminateLeftRecursionMnemonic").charAt(0));
+        jMenuItemEliminateLeftRecursion.setText(bundle.getString("MainWindow.EliminateLeftRecursion")); // NOI18N
+        jMenuItemEliminateLeftRecursion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEliminateLeftRecursionActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemEliminateLeftRecursion);
+
+        jMenuItemEliminateEntityProductions.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EliminateEntityProductionsMnemonic").charAt(0));
+        jMenuItemEliminateEntityProductions.setText(bundle.getString("MainWindow.EliminateEntityProductions")); // NOI18N
+        jMenuItemEliminateEntityProductions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEliminateEntityProductionsActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemEliminateEntityProductions);
+
+        jMenuItemEliminateEpsilonProductions.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EliminateEpsilonProductionsMnemonic").charAt(0));
+        jMenuItemEliminateEpsilonProductions.setText(bundle.getString("MainWindow.EliminateEpsilonProductions")); // NOI18N
+        jMenuItemEliminateEpsilonProductions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEliminateEpsilonProductionsActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemEliminateEpsilonProductions);
+
+        jMenuItemLeftfactoring.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LeftFactoringMnemonic").charAt(0));
+        jMenuItemLeftfactoring.setText(bundle.getString("MainWindow.LeftFactoring")); // NOI18N
+        jMenuItemLeftfactoring.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLeftfactoringActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemLeftfactoring);
+
+        jMenuItemCreateRDP.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CreateRDPMnemonic").charAt(0));
+        jMenuItemCreateRDP.setText(bundle.getString("MainWindow.CreateRDP")); // NOI18N
+        jMenuItemCreateRDP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCreateRDPActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemCreateRDP);
+
         jMenuBarMain.add(jMenuExecute);
 
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
@@ -1866,19 +2063,19 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_jMenuItemReorderStateNamesActionPerformed
 
     private void jMenuItemConvertToCompletePDAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompletePDAActionPerformed
-         this.logic.handleConvertToComplete(MachineType.PDA);
+         this.logic.handleConvertToComplete(MachineType.PDA, false);
     }//GEN-LAST:event_jMenuItemConvertToCompletePDAActionPerformed
 
     private void jMenuItemConvertToCompleteENFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompleteENFAActionPerformed
-         this.logic.handleConvertToComplete(MachineType.ENFA);
+         this.logic.handleConvertToComplete(MachineType.ENFA, false);
     }//GEN-LAST:event_jMenuItemConvertToCompleteENFAActionPerformed
 
     private void jMenuItemConvertToCompleteNFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompleteNFActionPerformed
-         this.logic.handleConvertToComplete(MachineType.NFA);
+         this.logic.handleConvertToComplete(MachineType.NFA, false);
     }//GEN-LAST:event_jMenuItemConvertToCompleteNFActionPerformed
 
     private void jMenuItemConvertToCompleteDFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompleteDFAActionPerformed
-         this.logic.handleConvertToComplete(MachineType.DFA);
+         this.logic.handleConvertToComplete(MachineType.DFA, false);
     }//GEN-LAST:event_jMenuItemConvertToCompleteDFAActionPerformed
 
     private void jGTIToolBarToggleButtonEnterWordItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToolBarToggleButtonEnterWordItemStateChanged
@@ -1910,19 +2107,19 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_jMenuItemAutoLayoutActionPerformed
 
     private void jMenuItemConvertToPDAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToPDAActionPerformed
-        this.logic.handleConvertTo(MachineType.PDA);
+        this.logic.handleConvertTo(MachineType.PDA, false);
     }//GEN-LAST:event_jMenuItemConvertToPDAActionPerformed
 
     private void jMenuItemConvertToENFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToENFAActionPerformed
-        this.logic.handleConvertTo(MachineType.ENFA);
+        this.logic.handleConvertTo(MachineType.ENFA, false);
     }//GEN-LAST:event_jMenuItemConvertToENFAActionPerformed
 
     private void jMenuItemConvertToNFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToNFActionPerformed
-        this.logic.handleConvertTo(MachineType.NFA);
+        this.logic.handleConvertTo(MachineType.NFA, false);
     }//GEN-LAST:event_jMenuItemConvertToNFActionPerformed
 
     private void jMenuItemConvertToDFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToDFAActionPerformed
-         this.logic.handleConvertTo(MachineType.DFA);
+         this.logic.handleConvertTo(MachineType.DFA, false);
     }//GEN-LAST:event_jMenuItemConvertToDFAActionPerformed
 
     private void jGTIEditorPanelTabbedPaneLeftMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneLeftMouseReleased
@@ -2094,7 +2291,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_formWindowClosing
 
     private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
-        this.logic.handleAbout(); 
+        this.logic.handleAbout();
     }//GEN-LAST:event_jMenuItemAboutActionPerformed
 
     private void jMenuItemPreferencesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPreferencesActionPerformed
@@ -2106,7 +2303,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_handleQuit
 
     private void handleOpen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleOpen
-        this.logic.handleOpen(); 
+        this.logic.handleOpen();
     }//GEN-LAST:event_handleOpen
 
 private void jMenuItemPrinthandleClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPrinthandleClose
@@ -2116,9 +2313,50 @@ private void jMenuItemPrinthandleClose(java.awt.event.ActionEvent evt) {//GEN-FI
 private void jMenuItemExportPictureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExportPictureActionPerformed
   this.logic.handleExportPicture();
 }//GEN-LAST:event_jMenuItemExportPictureActionPerformed
+
+private void jMenuItemExportLatexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExportLatexActionPerformed
+  this.logic.handleToLatex();
+}//GEN-LAST:event_jMenuItemExportLatexActionPerformed
+
+private void jMenuItemToCoreSyntaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemToCoreSyntaxActionPerformed
+    this.logic.handleToCoreSyntax();
+}//GEN-LAST:event_jMenuItemToCoreSyntaxActionPerformed
+
+private void jCheckBoxMenuItemRegexInfoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemRegexInfoItemStateChanged
+    this.logic.handleRegexInfoChanged(this.jCheckBoxMenuItemRegexInfo.isSelected());
+}//GEN-LAST:event_jCheckBoxMenuItemRegexInfoItemStateChanged
+
+private void jMenuItemEliminateLeftRecursionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminateLeftRecursionActionPerformed
+    this.logic.handleEliminateLeftRecursion();
+}//GEN-LAST:event_jMenuItemEliminateLeftRecursionActionPerformed
+
+private void jMenuItemLeftfactoringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLeftfactoringActionPerformed
+    this.logic.handleLeftFactoring();
+}//GEN-LAST:event_jMenuItemLeftfactoringActionPerformed
+
+private void jMenuItemConvertToRegexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToRegexActionPerformed
+    this.logic.handleConvertTo ( RegexType.REGEX, false );
+}//GEN-LAST:event_jMenuItemConvertToRegexActionPerformed
+
+private void jMenuItemCreateRDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCreateRDPActionPerformed
+    this.logic.handleCreateRDP();
+}//GEN-LAST:event_jMenuItemCreateRDPActionPerformed
+
+private void jMenuItemEliminateEntityProductionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminateEntityProductionsActionPerformed
+    this.logic.handleEliminateEntityProductions();
+}//GEN-LAST:event_jMenuItemEliminateEntityProductionsActionPerformed
+
+private void jMenuItemEliminateEpsilonProductionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminateEpsilonProductionsActionPerformed
+    this.logic.handleEliminateEpsilonProductions();
+}//GEN-LAST:event_jMenuItemEliminateEpsilonProductionsActionPerformed
+
+private void jMenuItemConvertToNFACBctionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToNFACBctionPerformed
+    this.logic.handleConvertTo ( MachineType.NFA, true );
+}//GEN-LAST:event_jMenuItemConvertToNFACBctionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemRegexInfo;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemSecondView;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemTable;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane jGTIEditorPanelTabbedPaneLeft;
@@ -2168,14 +2406,22 @@ private void jMenuItemExportPictureActionPerformed(java.awt.event.ActionEvent ev
     private javax.swing.JMenuItem jMenuItemConvertToDFA;
     private javax.swing.JMenuItem jMenuItemConvertToENFA;
     private javax.swing.JMenuItem jMenuItemConvertToNFA;
+    private javax.swing.JMenuItem jMenuItemConvertToNFACB;
     private javax.swing.JMenuItem jMenuItemConvertToPDA;
+    private javax.swing.JMenuItem jMenuItemConvertToRegex;
+    private javax.swing.JMenuItem jMenuItemCreateRDP;
     private javax.swing.JMenuItem jMenuItemDFA;
     private javax.swing.JMenuItem jMenuItemENFA;
     private javax.swing.JMenuItem jMenuItemEditMachine;
+    private javax.swing.JMenuItem jMenuItemEliminateEntityProductions;
+    private javax.swing.JMenuItem jMenuItemEliminateEpsilonProductions;
+    private javax.swing.JMenuItem jMenuItemEliminateLeftRecursion;
     private javax.swing.JMenuItem jMenuItemEnterWord;
     private javax.swing.JMenuItem jMenuItemExchange;
+    private javax.swing.JMenuItem jMenuItemExportLatex;
     private javax.swing.JMenuItem jMenuItemExportPicture;
     private javax.swing.JMenuItem jMenuItemHistory;
+    private javax.swing.JMenuItem jMenuItemLeftfactoring;
     private javax.swing.JMenuItem jMenuItemMinimize;
     private javax.swing.JMenuItem jMenuItemNFA;
     private javax.swing.JMenuItem jMenuItemNew;
@@ -2191,6 +2437,7 @@ private void jMenuItemExportPictureActionPerformed(java.awt.event.ActionEvent ev
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAll;
     private javax.swing.JMenuItem jMenuItemSaveAs;
+    private javax.swing.JMenuItem jMenuItemToCoreSyntax;
     private javax.swing.JMenuItem jMenuItemUndo;
     private javax.swing.JMenuItem jMenuItemValidate;
     private javax.swing.JMenu jMenuRecentlyUsed;

@@ -40,6 +40,12 @@ public final class DefaultProduction implements Production
 
 
   /**
+   * This {@link Production} is a highlighted {@link Production}.
+   */
+  private boolean highlighted = false;
+
+
+  /**
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
@@ -367,6 +373,17 @@ public final class DefaultProduction implements Production
   /**
    * {@inheritDoc}
    * 
+   * @see Production#isHighlighted()
+   */
+  public boolean isHighlighted ()
+  {
+    return this.highlighted;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Modifyable#isModified()
    */
   public final boolean isModified ()
@@ -436,6 +453,21 @@ public final class DefaultProduction implements Production
     if ( this.error != error )
     {
       this.error = error;
+      firePrettyStringChanged ();
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Production#setHighlighted(boolean)
+   */
+  public void setHighlighted ( boolean highlighted )
+  {
+    if ( this.highlighted != highlighted )
+    {
+      this.highlighted = highlighted;
       firePrettyStringChanged ();
     }
   }
@@ -539,6 +571,11 @@ public final class DefaultProduction implements Production
       {
         this.cachedPrettyString.add ( new PrettyToken ( "\u2192", //$NON-NLS-1$
             Style.PRODUCTION_ERROR ) );
+      }
+      else if ( this.highlighted )
+      {
+        this.cachedPrettyString.add ( new PrettyToken ( "\u2192", //$NON-NLS-1$
+            Style.PRODUCTION_HIGHLIGHT ) );
       }
       else
       {

@@ -5,6 +5,9 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.i18n.Messages;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 
 
 /**
@@ -20,6 +23,38 @@ public class ParserException extends ScannerException
    * The serial version uid.
    */
   private static final long serialVersionUID = -6750690466685873423L;
+
+
+  /**
+   * Thrown when second character is greater than the first.
+   * 
+   * @param c1 Greater char
+   * @param c2 Lower char
+   * @param pos1 first pos
+   * @param pos2 last pos
+   */
+  public static void throwCharacterClassException ( char c1, char c2, int pos1,
+      int pos2 )
+  {
+    throw new ParserException ( pos1, pos2, Messages.getPrettyString (
+        "Parser.14", //$NON-NLS-1$
+        new PrettyString ( new PrettyToken ( Character.toString ( c1 ),
+            Style.REGEX_SYMBOL ) ),
+        new PrettyString ( new PrettyToken ( Character.toString ( c2 ),
+            Style.REGEX_SYMBOL ) ) ).toHTMLString () );
+  }
+
+
+  /**
+   * Throws new Comment Exception
+   * 
+   * @param pos1 First position
+   * @param pos2 Last position
+   */
+  public static void throwCommentException ( int pos1, int pos2 )
+  {
+    throw new ParserException ( pos1, pos2, Messages.getString ( "Parser.17" ) ); //$NON-NLS-1$
+  }
 
 
   /**

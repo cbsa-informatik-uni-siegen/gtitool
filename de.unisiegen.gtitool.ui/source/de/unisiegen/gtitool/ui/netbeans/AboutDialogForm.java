@@ -72,6 +72,7 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         jGTILabelDeveloper = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTILabelDeveloper0 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTILabelDeveloper1 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelDeveloper2 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTITabbedPaneLicenses = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
         jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
@@ -92,7 +93,7 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         jGTILabelName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jGTILabelName.setText("GTI Tool ?.?.?.?");
         jGTILabelName.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        jGTILabelName.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jGTILabelName.setFont(new java.awt.Font("Dialog", 1, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -189,8 +190,17 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 10, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
         jGTIPanelSouth.add(jGTILabelDeveloper1, gridBagConstraints);
+
+        jGTILabelDeveloper2.setText("Simon Meurer");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        jGTIPanelSouth.add(jGTILabelDeveloper2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -248,6 +258,7 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper0;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper1;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper2;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelName;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelVersion;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelVersionEntry;

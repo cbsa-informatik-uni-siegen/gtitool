@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.logic;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicFileChooserUI;
@@ -41,6 +42,12 @@ public final class SaveDialog implements LogicClass < SaveDialogForm >
 
 
   /**
+   * TODO
+   */
+  private JDialog dialog;
+
+
+  /**
    * Flag that indicates if the dialog was confirmed.
    */
   private boolean confirmed = false;
@@ -60,6 +67,46 @@ public final class SaveDialog implements LogicClass < SaveDialogForm >
     logger.debug ( "SaveDialog", "allocate a new save dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     this.parent = parent;
+    this.gui = new SaveDialogForm ( this, parent );
+    this.gui.jGTIFileChooser.setCurrentDirectory ( new File ( workingPath ) );
+
+    boolean found = false;
+    for ( FileFilter current : choosableFileFilter )
+    {
+      if ( current == fileFilter )
+      {
+        found = true;
+        break;
+      }
+    }
+    if ( !found )
+    {
+      throw new IllegalArgumentException (
+          "the file filter must be a member of the choosable filter" ); //$NON-NLS-1$
+    }
+
+    for ( FileFilter current : choosableFileFilter )
+    {
+      this.gui.jGTIFileChooser.addChoosableFileFilter ( current );
+    }
+    this.gui.jGTIFileChooser.setFileFilter ( fileFilter );
+  }
+
+
+  /**
+   * Allocates a new {@link SaveDialog}.
+   * 
+   * @param parent The parent {@link JFrame}.
+   * @param workingPath The working path.
+   * @param fileFilter The selected {@link FileFilter}.
+   * @param choosableFileFilter The choosable {@link FileFilter}s.
+   */
+  public SaveDialog ( JDialog parent, String workingPath,
+      FileFilter fileFilter, FileFilter ... choosableFileFilter )
+  {
+    logger.debug ( "SaveDialog", "allocate a new save dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    this.dialog = parent;
     this.gui = new SaveDialogForm ( this, parent );
     this.gui.jGTIFileChooser.setCurrentDirectory ( new File ( workingPath ) );
 
@@ -207,10 +254,22 @@ public final class SaveDialog implements LogicClass < SaveDialogForm >
   {
     logger.debug ( "show", "show the save dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-        - ( this.gui.getWidth () / 2 );
-    int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-        - ( this.gui.getHeight () / 2 );
+    int x;
+    int y;
+    if ( this.parent != null )
+    {
+      x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+          - ( this.gui.getWidth () / 2 );
+      y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+          - ( this.gui.getHeight () / 2 );
+    }
+    else
+    {
+      x = this.dialog.getBounds ().x + ( this.dialog.getWidth () / 2 )
+          - ( this.gui.getWidth () / 2 );
+      y = this.dialog.getBounds ().y + ( this.dialog.getHeight () / 2 )
+          - ( this.gui.getHeight () / 2 );
+    }
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
   }

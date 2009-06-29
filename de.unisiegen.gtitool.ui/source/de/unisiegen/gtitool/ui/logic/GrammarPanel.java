@@ -43,6 +43,7 @@ import de.unisiegen.gtitool.ui.convert.ConvertRegularGrammar;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.i18n.Messages;
+import de.unisiegen.gtitool.ui.logic.ConvertGrammarDialog.ConvertGrammarType;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
@@ -649,6 +650,50 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
+   * Opens {@link ConvertGrammarDialog} for elimination of LeftRecursion
+   */
+  public final void handleEliminateLeftRecursion ()
+  {
+    ConvertGrammarDialog converter = new ConvertGrammarDialog (
+        this.mainWindowForm, this );
+    converter.convert ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION );
+  }
+
+
+  /**
+   * Opens {@link ConvertGrammarDialog} for elimination of entity productions
+   */
+  public final void handleEliminateEntityProductions ()
+  {
+    ConvertGrammarDialog converter = new ConvertGrammarDialog (
+        this.mainWindowForm, this );
+    converter.convert ( ConvertGrammarType.ELIMINATE_ENTITY_PRODUCTIONS );
+  }
+
+
+  /**
+   * Opens {@link ConvertGrammarDialog} for elimination of epsilon productions
+   */
+  public final void handleEliminateEpsilonProductions ()
+  {
+    ConvertGrammarDialog converter = new ConvertGrammarDialog (
+        this.mainWindowForm, this );
+    converter.convert ( ConvertGrammarType.ELIMINATE_EPSILON_PRODUCTIONS );
+  }
+
+
+  /**
+   * Opens {@link ConvertGrammarDialog} for elimination of LeftRecursion
+   */
+  public final void handleLeftFactoring ()
+  {
+    ConvertGrammarDialog converter = new ConvertGrammarDialog (
+        this.mainWindowForm, this );
+    converter.convert ( ConvertGrammarType.LEFT_FACTORING );
+  }
+
+
+  /**
    * Handles the {@link Exchange}.
    */
   public final void handleExchange ()
@@ -670,6 +715,66 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     {
       handleDeleteProduction ();
     }
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param g
+   * @return The string of the RDP
+   */
+  private String createRDP ( Grammar g )
+  {
+    StringBuilder result = new StringBuilder ();
+    boolean first = true;
+    for ( NonterminalSymbol A : g.getNonterminalSymbolSet () )
+    {
+      if ( !first )
+      {
+        result.append ( "\n\n" ); //$NON-NLS-1$
+      }
+      else
+      {
+        first = false;
+      }
+      result.append ( "void " ); //$NON-NLS-1$
+      result.append ( A );
+      result.append ( "() {\n" ); //$NON-NLS-1$
+      for ( Production p : g.getProductionForNonTerminal ( A ) )
+      {
+        result.append ( "   case:{\n" ); //$NON-NLS-1$
+        for ( ProductionWordMember m : p.getProductionWord () )
+        {
+          if ( m instanceof NonterminalSymbol )
+          {
+            result.append ( "      " ); //$NON-NLS-1$
+            result.append ( m );
+            result.append ( "();\n" ); //$NON-NLS-1$
+          }
+          else if ( m instanceof TerminalSymbol )
+          {
+            result.append ( "      match(\"" ); //$NON-NLS-1$
+            result.append ( m );
+            result.append ( "\");\n" ); //$NON-NLS-1$
+          }
+        }
+        result.append ( "   }\n" ); //$NON-NLS-1$
+      }
+      result.append ( "}" ); //$NON-NLS-1$
+    }
+    return result.toString ();
+  }
+
+
+  /**
+   * TODO
+   */
+  public final void handleCreateRDP ()
+  {
+    TextWindow w = new TextWindow ( this.mainWindowForm,
+        createRDP ( this.grammar ), false, null, getName () + "_RDP" ); //$NON-NLS-1$
+    w.show ();
   }
 
 
@@ -1091,6 +1196,13 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         mouseListener );
     this.gui.jGTIScrollPaneWarnings.getVerticalScrollBar ().addMouseListener (
         mouseListener );
+
+    this.gui.styledNonterminalSymbolSetParserPanel
+        .addMouseListener ( mouseListener );
+    this.gui.styledStartNonterminalSymbolParserPanel
+        .addMouseListener ( mouseListener );
+    this.gui.styledTerminalSymbolSetParserPanel
+        .addMouseListener ( mouseListener );
   }
 
 

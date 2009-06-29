@@ -15,7 +15,7 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
  * The {@link Alphabet} {@link Parseable} class.
  * 
  * @author Christian Fehler
- * @version $Id: RegexAlphabetParseable.java 1043 2008-06-27 00:09:58Z fehler $
+ * @version $Id$
  */
 public final class RegexAlphabetParseable implements Parseable
 {

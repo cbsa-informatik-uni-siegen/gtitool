@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
  * The {@link ConvertMachineDialogForm}.
  * 
  * @author Christian Fehler
- * @version $Id: ConvertMachineDialogForm.java 1220 2008-08-01 09:22:03Z fehler $
+ * @version $Id$
  */
 @SuppressWarnings({"all"})
 public class ConvertGrammarDialogForm extends JDialog implements GUIClass<ConvertGrammarDialog> {

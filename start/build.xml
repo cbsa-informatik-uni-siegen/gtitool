@@ -2,7 +2,7 @@
 <!--
 	$Id: build.xml 674 2008-03-25 00:53:49Z fehler $
 	
-	Copyright (c) 2007-2008 Christian Fehler
+	Copyright (c) 2007-2009 Christian Fehler
 -->
 <project name="gtitool.start" default="dist" basedir=".">
 

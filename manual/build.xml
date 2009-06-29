@@ -2,7 +2,7 @@
 <!--
 	$Id$
 	
-	Copyright (c) 2007-2008 Christian Fehler
+	Copyright (c) 2007-2009 Christian Fehler
 -->
 <project name="gtitool.manual" default="dist" basedir=".">
 

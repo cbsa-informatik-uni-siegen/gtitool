@@ -1,7 +1,7 @@
 <!--
 	$Id: launch4j.xml 246 2007-11-29 21:34:33Z fehler $
 	
-	Copyright (c) 2007-2008 Christian Fehler
+	Copyright (c) 2007-2009 Christian Fehler
 -->
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
@@ -18,7 +18,7 @@
     <fileVersion>@gtitool.version@</fileVersion>
     <txtFileVersion>@gtitool.version@</txtFileVersion>
     <fileDescription>GTI Tool</fileDescription>
-    <copyright>Copyright (c) 2007-2008 C. Fehler, B. Mies</copyright>
+    <copyright>Copyright (c) 2007-2009 C. Fehler, B. Mies</copyright>
     <productVersion>@gtitool.version@</productVersion>
     <txtProductVersion>@gtitool.version@</txtProductVersion>
     <productName>GTI Tool</productName>

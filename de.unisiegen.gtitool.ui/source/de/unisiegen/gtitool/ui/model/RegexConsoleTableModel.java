@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.RegexException;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
@@ -41,24 +40,15 @@ public final class RegexConsoleTableModel extends AbstractTableModel
 
 
     /**
-     * The symbol
-     */
-    public Symbol symbol;
-
-
-    /**
      * Allocates a new {@link ConsoleTableEntry}.
      * 
      * @param message The message.
      * @param description The description.
-     * @param symbol The {@link Symbol}
      */
-    public ConsoleTableEntry ( PrettyString message, PrettyString description,
-        Symbol symbol )
+    public ConsoleTableEntry ( PrettyString message, PrettyString description )
     {
       this.message = message;
       this.description = description;
-      this.symbol = symbol;
     }
   }
 
@@ -111,7 +101,7 @@ public final class RegexConsoleTableModel extends AbstractTableModel
   public final void addRow ( RegexException regexException )
   {
     this.data.add ( new ConsoleTableEntry ( regexException.getPrettyMessage (),
-        regexException.getPrettyDescription (), null ) );
+        regexException.getPrettyDescription () ) );
     fireTableRowsInserted ( this.data.size () - 1, this.data.size () - 1 );
   }
 

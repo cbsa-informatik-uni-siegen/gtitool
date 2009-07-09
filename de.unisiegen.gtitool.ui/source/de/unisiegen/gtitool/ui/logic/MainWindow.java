@@ -3919,7 +3919,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
 
     }
-    else if ( event.getSource () instanceof StyledParserEditor )
+    else if ( event.getSource () instanceof StyledParserEditor < ? > )
     {
       if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
           .getSelectedEditorPanel () instanceof RegexPanel )
@@ -4069,7 +4069,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
     }
-    else if ( event.getSource () instanceof SideBar )
+    else if ( event.getSource () instanceof SideBar < ? > )
     {
       if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
           .getSelectedEditorPanel () instanceof RegexPanel )

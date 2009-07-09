@@ -56,7 +56,7 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
      */
     public TableEditorDelegate ()
     {
-      // Do nothing
+      // do nothing
     }
 
 
@@ -138,19 +138,6 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
      * @return True
      */
     public final boolean shouldSelectCell (
-        @SuppressWarnings ( "unused" ) EventObject event )
-    {
-      return true;
-    }
-
-
-    /**
-     * Starts the cell editing.
-     * 
-     * @param event The {@link EventObject}.
-     * @return True.
-     */
-    public final boolean startCellEditing (
         @SuppressWarnings ( "unused" ) EventObject event )
     {
       return true;

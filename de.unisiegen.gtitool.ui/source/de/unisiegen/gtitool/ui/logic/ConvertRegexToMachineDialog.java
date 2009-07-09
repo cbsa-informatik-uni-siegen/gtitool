@@ -70,7 +70,6 @@ import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
-import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 import de.unisiegen.gtitool.ui.utils.TextLoader;
 import de.unisiegen.gtitool.ui.utils.XGrid;
@@ -450,12 +449,6 @@ public class ConvertRegexToMachineDialog implements
 
 
     /**
-     * The {@link RedoUndoItem} for the concatenation
-     */
-    private RedoUndoItem redoUndoItem;
-
-
-    /**
      * The removed black boxes
      */
     private ArrayList < BlackBox > removedBlackboxes;
@@ -484,7 +477,6 @@ public class ConvertRegexToMachineDialog implements
      * 
      * @param activeStep The active {@link Step}
      * @param addedStates The added states
-     * @param redoUndoItem The {@link RedoUndoItem} for Concatenation
      * @param addedTransitions The added Transitions
      * @param setStartFalse The start states that where made normal
      * @param setFinalFalse The final states that where made normal
@@ -503,7 +495,6 @@ public class ConvertRegexToMachineDialog implements
     public StepItem (
         Step activeStep,
         ArrayList < String > addedStates,
-        RedoUndoItem redoUndoItem,
         ArrayList < DefaultTransitionView > addedTransitions,
         ArrayList < DefaultStateView > setStartFalse,
         ArrayList < DefaultStateView > setFinalFalse,
@@ -524,7 +515,6 @@ public class ConvertRegexToMachineDialog implements
       }
       this.activeStep = activeStep;
       this.addedStates = addedStates;
-      this.redoUndoItem = redoUndoItem;
       this.setFinalFalse = setFinalFalse;
       this.setStartFalse = setStartFalse;
       this.addedTransitions = addedTransitions;
@@ -671,18 +661,6 @@ public class ConvertRegexToMachineDialog implements
     public HashMap < String, Position > getPositions ()
     {
       return this.positions;
-    }
-
-
-    /**
-     * Returns the redoUndoItem.
-     * 
-     * @return The redoUndoItem.
-     * @see #redoUndoItem
-     */
-    public RedoUndoItem getRedoUndoItem ()
-    {
-      return this.redoUndoItem;
     }
 
 
@@ -1532,7 +1510,6 @@ public class ConvertRegexToMachineDialog implements
     ArrayList < DefaultStateView > setStartFalse = new ArrayList < DefaultStateView > ();
     ArrayList < DefaultTransitionView > addedTransitions = new ArrayList < DefaultTransitionView > ();
     int c = this.count;
-    RedoUndoItem redoUndoItem = null;
     boolean errorCreated = false;
     DefaultPositionState markedPositionState = null;
     ArrayList < Symbol > controlledSymbol = null;
@@ -2961,10 +2938,10 @@ public class ConvertRegexToMachineDialog implements
     }
     addOutlineComment ( pretty );
     this.stepItemList.add ( new StepItem ( this.actualStep, addedStates,
-        redoUndoItem, addedTransitions, setStartFalse, setFinalFalse,
-        this.count, lastActive, errorCreated, markedPositionState,
-        controlledSymbol, addedSymbolsToTransition, removedBlackBoxes,
-        addedBlackBoxes, positions, xGridClone, lastFollowPos ) );
+        addedTransitions, setStartFalse, setFinalFalse, this.count, lastActive,
+        errorCreated, markedPositionState, controlledSymbol,
+        addedSymbolsToTransition, removedBlackBoxes, addedBlackBoxes,
+        positions, xGridClone, lastFollowPos ) );
     this.count = c;
   }
 

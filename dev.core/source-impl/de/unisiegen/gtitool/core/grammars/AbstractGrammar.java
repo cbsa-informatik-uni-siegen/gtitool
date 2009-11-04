@@ -12,7 +12,6 @@ import javax.swing.table.TableModel;
 import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
-import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
@@ -32,7 +31,6 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetE
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Modifyable;
-import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -137,14 +135,10 @@ public abstract class AbstractGrammar implements Grammar
 
     // validation elements
     if ( validationElements == null )
-    {
       throw new NullPointerException ( "validation elements is null" ); //$NON-NLS-1$
-    }
     this.validationElementList = new ArrayList < ValidationElement > ();
     for ( ValidationElement current : validationElements )
-    {
       this.validationElementList.add ( current );
-    }
 
     // reset modify
     resetModify ();
@@ -202,13 +196,9 @@ public abstract class AbstractGrammar implements Grammar
     {
       ArrayList < Production > duplicatedList = new ArrayList < Production > ();
       for ( int j = i + 1 ; j < this.productions.size () ; j++ )
-      {
         if ( !foundDuplicates.contains ( this.productions.get ( i ) )
             && this.productions.get ( i ).equals ( this.productions.get ( j ) ) )
-        {
           duplicatedList.add ( this.productions.get ( j ) );
-        }
-      }
       if ( duplicatedList.size () > 0 )
       {
         foundDuplicates.add ( this.productions.get ( i ) );
@@ -231,10 +221,8 @@ public abstract class AbstractGrammar implements Grammar
     ArrayList < GrammarException > grammarExceptionList = new ArrayList < GrammarException > ();
 
     for ( NonterminalSymbol current : getNotReachableNonterminalSymbols () )
-    {
       grammarExceptionList.add ( new GrammarNonterminalNotReachableException (
           current ) );
-    }
 
     return grammarExceptionList;
   }
@@ -255,61 +243,43 @@ public abstract class AbstractGrammar implements Grammar
 
       ArrayList < ProductionWordMember > wordMemberList = new ArrayList < ProductionWordMember > ();
       for ( ProductionWordMember wordMember : current.getProductionWord () )
-      {
         wordMemberList.add ( wordMember );
-      }
 
       // Epsilon
       if ( wordMemberList.size () == 0 )
-      {
         continue;
-      }
 
       // One member and not a TerminalSymbol
       if ( wordMemberList.size () == 1 )
-      {
         if ( ! ( wordMemberList.get ( 0 ) instanceof TerminalSymbol ) )
         {
           symbols.add ( wordMemberList.get ( 0 ) );
           grammarExceptionList.add ( new GrammarRegularGrammarException (
               current, symbols ) );
         }
-      }
 
       // Two members and not a TerminalSymbol and a NonterminalSymbol
       if ( wordMemberList.size () == 2 )
       {
         if ( ! ( wordMemberList.get ( 0 ) instanceof TerminalSymbol ) )
-        {
           symbols.add ( wordMemberList.get ( 0 ) );
-        }
         if ( ! ( wordMemberList.get ( 1 ) instanceof NonterminalSymbol ) )
-        {
           symbols.add ( wordMemberList.get ( 1 ) );
-        }
         if ( symbols.size () > 0 )
-        {
           grammarExceptionList.add ( new GrammarRegularGrammarException (
               current, symbols ) );
-        }
       }
 
       // More than two members
       if ( wordMemberList.size () > 2 )
       {
         if ( ! ( wordMemberList.get ( 0 ) instanceof TerminalSymbol ) )
-        {
           symbols.add ( wordMemberList.get ( 0 ) );
-        }
         if ( ! ( wordMemberList.get ( 1 ) instanceof NonterminalSymbol ) )
-        {
           symbols.add ( wordMemberList.get ( 1 ) );
-        }
 
         for ( int i = 2 ; i < wordMemberList.size () ; i++ )
-        {
           symbols.add ( wordMemberList.get ( i ) );
-        }
 
         grammarExceptionList.add ( new GrammarRegularGrammarException (
             current, symbols ) );
@@ -329,26 +299,18 @@ public abstract class AbstractGrammar implements Grammar
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
-    {
       for ( ModifyStatusChangedListener element : listeners )
-      {
         element.modifyStatusChanged ( true );
-      }
-    }
     else
     {
       boolean newModifyStatus = isModified ();
       for ( ModifyStatusChangedListener element : listeners )
-      {
         element.modifyStatusChanged ( newModifyStatus );
-      }
     }
     TableModelListener [] tableListeners = this.listenerList
         .getListeners ( TableModelListener.class );
     for ( TableModelListener l : tableListeners )
-    {
       l.tableChanged ( new TableModelEvent ( this ) );
-    }
   }
 
 
@@ -416,14 +378,10 @@ public abstract class AbstractGrammar implements Grammar
     ArrayList < NonterminalSymbol > notReachable = new ArrayList < NonterminalSymbol > ();
 
     for ( NonterminalSymbol current : this.nonterminalSymbolSet )
-    {
       notReachable.add ( current );
-    }
 
     for ( NonterminalSymbol current : reachable )
-    {
       notReachable.remove ( current );
-    }
     return notReachable;
   }
 
@@ -442,13 +400,9 @@ public abstract class AbstractGrammar implements Grammar
     {
       notRemoveableNonterminalSymbols.add ( current.getNonterminalSymbol () );
       for ( ProductionWordMember currentMember : current.getProductionWord () )
-      {
         if ( currentMember instanceof NonterminalSymbol )
-        {
           notRemoveableNonterminalSymbols
               .add ( ( NonterminalSymbol ) currentMember );
-        }
-      }
     }
     return notRemoveableNonterminalSymbols;
   }
@@ -465,15 +419,9 @@ public abstract class AbstractGrammar implements Grammar
   {
     TreeSet < TerminalSymbol > notRemoveableTerminalSymbols = new TreeSet < TerminalSymbol > ();
     for ( Production current : this.productions )
-    {
       for ( ProductionWordMember currentMember : current.getProductionWord () )
-      {
         if ( currentMember instanceof TerminalSymbol )
-        {
           notRemoveableTerminalSymbols.add ( ( TerminalSymbol ) currentMember );
-        }
-      }
-    }
     return notRemoveableTerminalSymbols;
   }
 
@@ -499,12 +447,8 @@ public abstract class AbstractGrammar implements Grammar
   {
     ArrayList < Production > prod = new ArrayList < Production > ();
     for ( Production p : this.productions )
-    {
       if ( p.getNonterminalSymbol ().equals ( s ) )
-      {
         prod.add ( p );
-      }
-    }
     return prod;
   }
 
@@ -531,12 +475,8 @@ public abstract class AbstractGrammar implements Grammar
     ArrayList < NonterminalSymbol > todoList = new ArrayList < NonterminalSymbol > ();
 
     for ( NonterminalSymbol current : this.nonterminalSymbolSet )
-    {
       if ( current.isStart () )
-      {
         todoList.add ( current );
-      }
-    }
 
     while ( todoList.size () > 0 )
     {
@@ -545,7 +485,6 @@ public abstract class AbstractGrammar implements Grammar
 
       ArrayList < Production > productionList = new ArrayList < Production > ();
       for ( Production currentProduction : this.productions )
-      {
         if ( currentProduction.getNonterminalSymbol ().equals (
             currentNonterminalSymbol ) )
         {
@@ -553,19 +492,14 @@ public abstract class AbstractGrammar implements Grammar
 
           for ( ProductionWordMember currentMember : currentProduction
               .getProductionWord () )
-          {
             if ( currentMember instanceof DefaultNonterminalSymbol )
             {
               DefaultNonterminalSymbol currentNonterminalMember = ( DefaultNonterminalSymbol ) currentMember;
               if ( !todoList.contains ( currentNonterminalMember )
                   && !reachable.contains ( currentNonterminalMember ) )
-              {
                 todoList.add ( currentNonterminalMember );
-              }
             }
-          }
         }
-      }
     }
 
     return reachable;
@@ -637,40 +571,24 @@ public abstract class AbstractGrammar implements Grammar
   public final boolean isModified ()
   {
     if ( this.productions.size () != this.initialProductions.size () )
-    {
       return true;
-    }
     for ( int i = 0 ; i < this.productions.size () ; i++ )
-    {
       if ( !this.productions.get ( i ).equals (
           this.initialProductions.get ( i ) ) )
-      {
         return true;
-      }
-    }
 
     if ( this.nonterminalSymbolSet.isModified () )
-    {
       return true;
-    }
 
     if ( this.terminalSymbolSet.isModified () )
-    {
       return true;
-    }
 
     if ( !this.initialStartNonterminalSymbol.equals ( this.startSymbol ) )
-    {
       return true;
-    }
 
     for ( Production current : this.productions )
-    {
       if ( current.isModified () )
-      {
         return true;
-      }
-    }
     return false;
   }
 
@@ -727,9 +645,7 @@ public abstract class AbstractGrammar implements Grammar
     this.initialStartNonterminalSymbol = this.startSymbol;
 
     for ( Production current : this.productions )
-    {
       current.resetModify ();
-    }
   }
 
 
@@ -786,18 +702,14 @@ public abstract class AbstractGrammar implements Grammar
                   this.startSymbol ) );
       for ( ProductionWordMember currentMember : currentProduction
           .getProductionWord () )
-      {
         if ( currentMember instanceof NonterminalSymbol )
         {
           NonterminalSymbol currentSymbol = ( NonterminalSymbol ) currentMember;
           currentSymbol.setStart ( currentSymbol.equals ( this.startSymbol ) );
         }
-      }
     }
     for ( NonterminalSymbol current : this.nonterminalSymbolSet )
-    {
       current.setStart ( current.equals ( this.startSymbol ) );
-    }
   }
 
 
@@ -812,27 +724,35 @@ public abstract class AbstractGrammar implements Grammar
 
     if ( this.validationElementList
         .contains ( ValidationElement.DUPLICATE_PRODUCTION ) )
-    {
       grammarExceptionList.addAll ( checkDuplicateProduction () );
-    }
 
     if ( this.validationElementList
         .contains ( ValidationElement.NONTERMINAL_NOT_REACHABLE ) )
-    {
       grammarExceptionList.addAll ( checkNonterminalNotReachable () );
-    }
 
     if ( this.validationElementList
         .contains ( ValidationElement.GRAMMAR_NOT_REGULAR ) )
-    {
       grammarExceptionList.addAll ( checkRegularGrammar () );
-    }
 
     // Throw the exception if a warning or an error has occurred.
     if ( grammarExceptionList.size () > 0 )
-    {
       throw new GrammarValidationException ( grammarExceptionList );
-    }
+  }
+  
+  
+  /**
+   * returns a list of productions for a given nonterminal
+   *
+   * @param X the nonterminal
+   * @return list of productions which belongs to X
+   */
+  private ArrayList<ProductionWord> getProductionForNonterminal(final NonterminalSymbol X)
+  {
+    ArrayList < ProductionWord > prods = new ArrayList < ProductionWord > ();
+    for ( Production p : this.productions )
+      if ( p.getNonterminalSymbol ().equals ( X ) )
+        prods.add ( p.getProductionWord () );
+    return prods;
   }
 
 
@@ -842,70 +762,47 @@ public abstract class AbstractGrammar implements Grammar
   public final FirstSet first ( final ProductionWord pw )
   {
     DefaultFirstSet fs = new DefaultFirstSet ();
-    for ( ProductionWordMember X : pw )
-    {
-      if ( X instanceof NonterminalSymbol )
+    if(pw.get ().size () >= 1 && pw.get ( 0 ) instanceof TerminalSymbol)
+      try
       {
-        NonterminalSymbol x = ( NonterminalSymbol ) X;
-        if ( !this.nonterminalSymbolSet.contains ( x ) )
+        fs.add ( (TerminalSymbol)pw.get(0) );
+      }
+      catch ( TerminalSymbolSetException exc1 )
+      {
+        exc1.printStackTrace();
+      }
+    else
+      for ( ProductionWordMember X : pw )
+        if ( X instanceof NonterminalSymbol )
         {
-          ; // todo throw exception
-        }
-        Production prod = null;
-        for ( Production p : this.productions )
-        {
-          if ( p.getNonterminalSymbol ().equals ( x ) )
+          NonterminalSymbol x = ( NonterminalSymbol ) X;
+          if ( !this.nonterminalSymbolSet.contains ( x ) )
+            ; // todo throw exception
+          ArrayList < ProductionWord > prods = getProductionForNonterminal ( x );
+          for ( ProductionWord p : prods )
           {
-            prod = p;
-          }
-        }
-        if ( prod == null )
-        {
-          ; // todo throw exception
-        }
-        else if ( prod.getProductionWord ().epsilon () )
-        {
-          fs.epsilon ( true );
-        }
-        else
-        {
-          for ( ProductionWordMember pwm : prod.getProductionWord () )
-          {
-            DefaultProductionWord dpw = new DefaultProductionWord ();
-            dpw.add ( pwm );
-            if(first ( dpw ).epsilon ())
+            if ( p.epsilon () )
+              fs.epsilon ( true );
+            for ( ProductionWordMember pwm : p )
             {
-              continue;
-            } else {
+              if(pwm.getName ().equals ( x.getName () ))
+                break;
+              DefaultFirstSet fsX = ( DefaultFirstSet ) first ( new DefaultProductionWord (
+                  pwm ) );
+              if ( fsX.epsilon () )
+                break;
               try
               {
-                fs.add ( new DefaultTerminalSymbol(pwm.getElement ()));
+                fs.add ( fsX );
               }
               catch ( TerminalSymbolSetException exc )
               {
-                exc.printStackTrace();
+                exc.printStackTrace ();
               }
-              catch ( StoreException exc )
-              {
-                exc.printStackTrace();
-              }
+              break;
             }
           }
         }
-      }
-      else
-      { // X is TerminalSymbol
-        try
-        {
-          fs.add ( ( TerminalSymbol ) X );
-        }
-        catch ( TerminalSymbolSetException exc )
-        {
-          // TerminalSymbol already exists in the set => do nothing
-          // exc.printStackTrace();
-        }
-      }
-    }
     return fs;
   }
 

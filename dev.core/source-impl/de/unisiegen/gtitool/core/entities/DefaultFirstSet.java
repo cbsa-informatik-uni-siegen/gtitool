@@ -18,9 +18,30 @@ import de.unisiegen.gtitool.core.storage.Element;
  */
 public class DefaultFirstSet implements FirstSet
 {
-  private TerminalSymbolSet terminalSymbolSet;
+
+  /**
+   * serialversion
+   */
+  private static final long serialVersionUID = 2593661660846010642L;
+
+  /**
+   * set of terminal symbols
+   */
+  private final DefaultTerminalSymbolSet terminalSymbolSet;
   
+  /**
+   * defines whether epsilon is part of this set
+   */
   private boolean epsilon;
+  
+  /**
+   * default ctor
+   *
+   */
+  public DefaultFirstSet() {
+    this.terminalSymbolSet = new DefaultTerminalSymbolSet();
+    this.epsilon = false;
+  }
 
   /**
    * TODO

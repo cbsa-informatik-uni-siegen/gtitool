@@ -19,7 +19,7 @@ import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
  * LRGrammar is a grammar class with some additional methods needed for the
  * construction of LR parsers
  */
-public class LRGrammar extends AbstractGrammar implements CFG
+public class LR0Grammar extends ExtendedGrammar
 {
 
   /**
@@ -35,22 +35,10 @@ public class LRGrammar extends AbstractGrammar implements CFG
    * @param terminalSymbolSet
    * @param startSymbol
    */
-  public LRGrammar ( NonterminalSymbolSet nonterminalSymbolSet,
+  public LR0Grammar ( NonterminalSymbolSet nonterminalSymbolSet,
       TerminalSymbolSet terminalSymbolSet, NonterminalSymbol startSymbol )
   {
-    super ( nonterminalSymbolSet, terminalSymbolSet, startSymbol,
-        ValidationElement.DUPLICATE_PRODUCTION,
-        ValidationElement.NONTERMINAL_NOT_REACHABLE );
-
-    // TODO: find a unique symbol here!
-    this.setStartSymbol ( new DefaultNonterminalSymbol ( startSymbol
-        .toString ()
-        + "'" ) );
-
-    this.startProduction = new DefaultProduction ( this.getStartSymbol (),
-        new DefaultProductionWord ( startSymbol ) );
-
-    this.addProduction ( this.startProduction );
+    super ( nonterminalSymbolSet, terminalSymbolSet, startSymbol );
   }
 
 
@@ -102,8 +90,8 @@ public class LRGrammar extends AbstractGrammar implements CFG
   public ArrayList < LR0Item > startClosure ()
   {
     ArrayList < LR0Item > ret = new ArrayList < LR0Item > ();
-    ret.add ( new LR0Item ( this.startProduction.getNonterminalSymbol (),
-        this.startProduction.getProductionWord (), 0 ) );
+    ret.add ( new LR0Item ( this.getStartProduction().getNonterminalSymbol (),
+        this.getStartProduction().getProductionWord (), 0 ) );
     return ret;
   }
 
@@ -124,24 +112,9 @@ public class LRGrammar extends AbstractGrammar implements CFG
     for ( LR0Item item : items )
       if ( item.getProductionWord ().get ( item.getDotPosition () ).equals (
           productionWord ) )
-        ret.add ( new LR0Item ( item.getNonterminalSymbol (), item
-            .getProductionWord (), item.getDotPosition () + 1 ) );
+        ret.add ( item.incDot () );
 
     return ret;
   }
 
-
-  /**
-   * TODO
-   * 
-   * @see de.unisiegen.gtitool.core.grammars.AbstractGrammar#getGrammarType()
-   */
-  @Override
-  public GrammarType getGrammarType ()
-  {
-    return GrammarType.CFG;
-  }
-
-
-  private DefaultProduction startProduction;
 }

@@ -17,7 +17,7 @@ public class LR0Item extends DefaultProduction
 
   /**
    * TODO
-   *
+   * 
    * @param nonterminalSymbol
    * @param productionWord
    * @param dotPosition
@@ -55,7 +55,7 @@ public class LR0Item extends DefaultProduction
 
   /**
    * TODO
-   *
+   * 
    * @return
    */
   public NonterminalSymbol getNonterminalAfterDot ()
@@ -64,9 +64,16 @@ public class LR0Item extends DefaultProduction
   }
 
 
+  public LR0Item incDot ()
+  {
+    return new LR0Item ( getNonterminalSymbol (), getProductionWord (),
+        getDotPosition () + 1 );
+  }
+
+
   /**
    * TODO
-   *
+   * 
    * @param other
    * @return
    * @see de.unisiegen.gtitool.core.entities.DefaultProduction#compareTo(de.unisiegen.gtitool.core.entities.Production)
@@ -74,7 +81,7 @@ public class LR0Item extends DefaultProduction
   @Override
   public int compareTo ( Production other )
   {
-    int compare = ( ( DefaultProduction ) ( this ) ).compareTo ( other );
+    int compare = super.compareTo ( other );
 
     if ( compare != 0 )
       return compare;
@@ -85,7 +92,7 @@ public class LR0Item extends DefaultProduction
 
   /**
    * TODO
-   *
+   * 
    * @param other
    * @return
    * @see de.unisiegen.gtitool.core.entities.DefaultProduction#equals(java.lang.Object)

@@ -10,26 +10,23 @@ import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.LR0Item;
+import de.unisiegen.gtitool.core.entities.LR1Item;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 
 
 /**
  * TODO
  */
-public class LR0Test
+public class LR1Test
 {
 
-  /**
-   * TODO
-   *
-   * @param arguments
-   */
   public static void main ( String [] arguments )
   {
     NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" );
@@ -71,7 +68,7 @@ public class LR0Test
       return;
     }
 
-    LR0Grammar grammar = new LR0Grammar ( nonterminalSet, terminalSet, E );
+    LR1Grammar grammar = new LR1Grammar ( nonterminalSet, terminalSet, E );
 
     grammar.addProduction ( new DefaultProduction ( E,
         new DefaultProductionWord ( E, plus, T ) ) );
@@ -91,46 +88,34 @@ public class LR0Test
     grammar.addProduction ( new DefaultProduction ( F,
         new DefaultProductionWord ( lparen, E, rparen ) ) );
 
-    ArrayList < LR0Item > closure0 = grammar.closure ( grammar.startClosure () );
+    ArrayList < LR1Item > closure0 = grammar.closure ( grammar.startClosure () );
 
-    System.out.println("closure(start())");
-    for ( LR0Item item : closure0 )
+    System.out.println ( "closure(start())" );
+    for ( LR1Item item : closure0 )
       System.out.println ( item.toString () );
-    
-    ArrayList <LR0Item> move0E = grammar.move ( closure0, E );
-    
-    System.out.println("move(0, E)");
-    for (LR0Item item : move0E)
+
+    ArrayList < LR1Item > move0E = grammar.move ( closure0, E );
+
+    System.out.println ( "move(0, E)" );
+    for ( LR1Item item : move0E )
       System.out.println ( item.toString () );
-    
-    ArrayList <LR0Item> closure1 = grammar.closure ( move0E );
-    
-    System.out.println("closure(move(0, E)) = 1");
-    for (LR0Item item : closure1)
+
+    ArrayList < LR1Item > closure1 = grammar.closure ( move0E );
+
+    System.out.println ( "closure(move(0, E)) = 1" );
+    for ( LR1Item item : closure1 )
       System.out.println ( item.toString () );
-    
-    ArrayList <LR0Item> move0T = grammar.move ( closure0, T );
-    
-    System.out.println("move(0, T)");
-    for (LR0Item item : move0T)
+
+    ArrayList < LR1Item > move0T = grammar.move ( closure0, T );
+
+    System.out.println ( "move(0, T)" );
+    for ( LR1Item item : move0T )
       System.out.println ( item.toString () );
-    
-    ArrayList <LR0Item> closure2 = grammar.closure ( move0T );
-    
-    System.out.println("closure(move(0, T)) = 2");
-    for (LR0Item item : closure2)
-      System.out.println ( item.toString () );
-    
-    ArrayList <LR0Item> move0lparen = grammar.move ( closure0, lparen );
-    
-    System.out.println("move(0, ()");
-    for (LR0Item item : move0lparen)
-      System.out.println ( item.toString () );
-    
-    ArrayList <LR0Item> closure3 = grammar.closure ( move0lparen );
-    
-    System.out.println("closure(move(0, ()) = 3");
-    for (LR0Item item : closure3)
+
+    ArrayList < LR1Item > closure2 = grammar.closure ( move0T );
+
+    System.out.println ( "closure(move(0, T)) = 2" );
+    for ( LR1Item item : closure2 )
       System.out.println ( item.toString () );
   }
 }

@@ -12,6 +12,7 @@ import javax.swing.table.TableModel;
 import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
@@ -750,10 +751,29 @@ public abstract class AbstractGrammar implements Grammar
   private ArrayList < ProductionWord > getProductionForNonterminal (
       final NonterminalSymbol X )
   {
-    ArrayList < ProductionWord > prods = new ArrayList < ProductionWord > ();
+    ArrayList < ProductionWord > prodWords = new ArrayList < ProductionWord > ();
     for ( Production p : this.productions )
       if ( p.getNonterminalSymbol ().equals ( X ) )
-        prods.add ( p.getProductionWord () );
+        prodWords.add ( p.getProductionWord () );
+    return prodWords;
+  }
+
+
+  /**
+   * returns a list of {@link Production}s containing a specified
+   * {@link NonterminalSymbol}
+   * 
+   * @param X The {@link NonterminalSymbol}
+   * @return a list of {@link Production}s containing the
+   *         {@link NonterminalSymbol} {@code X}
+   */
+  private ArrayList < Production > getProductionsContainingNonterminalSymbol (
+      NonterminalSymbol X )
+  {
+    ArrayList < Production > prods = new ArrayList < Production > ();
+    for ( Production p : this.productions )
+      if ( p.contains ( X ) )
+        prods.add ( p );
     return prods;
   }
 
@@ -764,17 +784,26 @@ public abstract class AbstractGrammar implements Grammar
   public final FirstSet first ( final ProductionWord pw )
       throws GrammarInvalidNonterminalException
   {
-    DefaultFirstSet fs = new DefaultFirstSet ();
+    DefaultFirstSet firstSet = new DefaultFirstSet ();
+    /*
+     * ProductionWord starts with a TerminalSymbol => we can derive a word from
+     * pw that starts with that TerminalSymbol
+     */
     if ( pw.get ().size () >= 1 && pw.get ( 0 ) instanceof TerminalSymbol )
       try
       {
-        fs.add ( ( TerminalSymbol ) pw.get ( 0 ) );
+        firstSet.add ( ( TerminalSymbol ) pw.get ( 0 ) );
       }
       catch ( TerminalSymbolSetException exc1 )
       {
         exc1.printStackTrace ();
       }
     else
+    /*
+     * pw is a Nonterminal X of the form X -> X_1\dots X_nnow search for an
+     * index i such that j < i.(\epsilon \in X_j) andif terminalsymbol a \in X_i
+     * we can derive a word form pw thatstarts with a (add it to the firstSet)
+     */
     {
       ProductionWordMember X = pw.get ( 0 );
       // for ( ProductionWordMember X : pw ) TODO: verify logic
@@ -784,11 +813,11 @@ public abstract class AbstractGrammar implements Grammar
         if ( !this.nonterminalSymbolSet.contains ( x ) )
           throw new GrammarInvalidNonterminalException ( x,
               this.nonterminalSymbolSet );
-        ArrayList < ProductionWord > prods = getProductionForNonterminal ( x );
-        for ( ProductionWord p : prods )
+        ArrayList < ProductionWord > prodWords = getProductionForNonterminal ( x );
+        for ( ProductionWord p : prodWords )
         {
           if ( p.epsilon () )
-            fs.epsilon ( true );
+            firstSet.epsilon ( true );
           for ( ProductionWordMember pwm : p )
           {
             if ( pwm.getName ().equals ( x.getName () ) )
@@ -799,7 +828,7 @@ public abstract class AbstractGrammar implements Grammar
               break;
             try
             {
-              fs.add ( fsX );
+              firstSet.add ( fsX );
             }
             catch ( TerminalSymbolSetException exc )
             {
@@ -810,7 +839,7 @@ public abstract class AbstractGrammar implements Grammar
         }// end outer for
       }// end if
     }// end else
-    return fs;
+    return firstSet;
   }
 
 
@@ -818,9 +847,22 @@ public abstract class AbstractGrammar implements Grammar
    * {@inheritDoc}
    */
   public final TerminalSymbolSet follow ( final Production p )
+      throws TerminalSymbolSetException
   {
-    TerminalSymbolSet nss = new DefaultTerminalSymbolSet ();
+    DefaultTerminalSymbolSet followSet = new DefaultTerminalSymbolSet ();
+    DefaultNonterminalSymbol prodNonterminalSymbol = ( DefaultNonterminalSymbol ) p
+        .getNonterminalSymbol ();
 
-    return nss;
+    /*
+     * (1) we add the endmarker to the follow set (by definition)
+     */
+    followSet.add ( DefaultTerminalSymbol.EndMarker );
+    
+    /*
+     * (2)
+     */
+    ArrayList < Production > prods = getProductionsContainingNonterminalSymbol ( prodNonterminalSymbol );
+
+    return followSet;
   }
 }

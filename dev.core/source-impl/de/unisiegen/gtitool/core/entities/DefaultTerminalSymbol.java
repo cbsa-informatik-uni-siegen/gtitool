@@ -35,7 +35,9 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   /**
    * defines the endmarker of a word
    */
-  public static final String EndMarker = "$"; //$NON-NLS-1$
+  public static final DefaultTerminalSymbol EndMarker =
+    new DefaultTerminalSymbol (
+      "$"); //$NON-NLS-1$
 
 
   /**

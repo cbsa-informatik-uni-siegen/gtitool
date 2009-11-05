@@ -13,6 +13,7 @@ import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 
 
 /**
@@ -31,8 +32,8 @@ public class LR1Grammar extends ExtendedGrammar
   public ArrayList < LR1Item > startClosure ()
   {
     ArrayList < LR1Item > ret = new ArrayList < LR1Item > ();
-    ret.add ( new LR1Item ( this.getStartProduction ().getNonterminalSymbol (),
-        this.getStartProduction ().getProductionWord (), 0,
+    ret.add ( new LR1Item ( getStartProduction ().getNonterminalSymbol (),
+        getStartProduction ().getProductionWord (), 0,
         new DefaultTerminalSymbol ( "$" ) ) ); // TODO:
     // where to
     // get the
@@ -57,7 +58,7 @@ public class LR1Grammar extends ExtendedGrammar
         if ( !item.dotPrecedesNonterminal () )
           continue;
 
-        for ( Production production : this.getProduction () )
+        for ( Production production : getProduction () )
         {
           if ( !item.getNonterminalAfterDot ().equals (
               production.getNonterminalSymbol () ) )
@@ -67,21 +68,28 @@ public class LR1Grammar extends ExtendedGrammar
 
           remainingPart.add ( item.getLookAhead () );
 
-          FirstSet firstElements = super.first ( remainingPart );
-
-          System.out.println ( "FIRST: " + remainingPart.toString() );
-
-          for ( TerminalSymbol symbol : firstElements )
+          FirstSet firstElements;
+          try
           {
-            System.out.println ( "\t" + symbol );
-            final LR1Item newProduction = new LR1Item ( production
-                .getNonterminalSymbol (), production.getProductionWord (), 0,
-                symbol );
+            firstElements = super.first ( remainingPart );
+            
+            System.out.println ( "FIRST: " + remainingPart.toString() );
 
-            if ( !ret.contains ( newProduction ) )
-              ret.add ( newProduction );
+            for ( TerminalSymbol symbol : firstElements )
+            {
+              System.out.println ( "\t" + symbol );
+              final LR1Item newProduction = new LR1Item ( production
+                  .getNonterminalSymbol (), production.getProductionWord (), 0,
+                  symbol );
+
+              if ( !ret.contains ( newProduction ) )
+                ret.add ( newProduction );
+            }
           }
-
+          catch ( GrammarInvalidNonterminalException exc )
+          {
+            exc.printStackTrace();
+          }
         }
       }
     }

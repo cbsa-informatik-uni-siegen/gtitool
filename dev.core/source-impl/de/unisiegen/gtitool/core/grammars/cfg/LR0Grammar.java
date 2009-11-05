@@ -2,17 +2,22 @@ package de.unisiegen.gtitool.core.grammars.cfg;
 
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
-import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
-import de.unisiegen.gtitool.core.entities.DefaultProduction;
-import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.LR0Item;
+import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.machines.dfa.LR0;
 
 
 /**
@@ -48,16 +53,16 @@ public class LR0Grammar extends ExtendedGrammar
    * @param items
    * @return The closure
    */
-  public ArrayList < LR0Item > closure ( final ArrayList < LR0Item > items )
+  public LR0ItemSet closure ( final LR0ItemSet items )
   {
-    ArrayList < LR0Item > ret = new ArrayList < LR0Item > ( items );
+    LR0ItemSet ret = new LR0ItemSet ( items );
 
     for ( int oldSize = ret.size (), newSize = 0 ; newSize != oldSize ; newSize = ret
         .size () )
     {
       oldSize = ret.size ();
 
-      ArrayList < LR0Item > currentItems = new ArrayList < LR0Item > ( ret );
+      LR0ItemSet currentItems = new LR0ItemSet ( ret );
       for ( LR0Item item : currentItems )
       {
         if ( !item.dotPrecedesNonterminal () )
@@ -87,9 +92,9 @@ public class LR0Grammar extends ExtendedGrammar
    * @return The start closure
    */
 
-  public ArrayList < LR0Item > startClosure ()
+  public LR0ItemSet startClosure ()
   {
-    ArrayList < LR0Item > ret = new ArrayList < LR0Item > ();
+    LR0ItemSet ret = new LR0ItemSet ();
     ret.add ( new LR0Item ( this.getStartProduction().getNonterminalSymbol (),
         this.getStartProduction().getProductionWord (), 0 ) );
     return ret;
@@ -104,10 +109,10 @@ public class LR0Grammar extends ExtendedGrammar
    * @param productionWord
    * @return
    */
-  public ArrayList < LR0Item > move ( ArrayList < LR0Item > items,
+  public LR0ItemSet move ( LR0ItemSet items,
       ProductionWordMember productionWord )
   {
-    ArrayList < LR0Item > ret = new ArrayList < LR0Item > ();
+    LR0ItemSet ret = new LR0ItemSet ();
 
     for ( LR0Item item : items )
       if ( item.getProductionWord ().get ( item.getDotPosition () ).equals (
@@ -117,4 +122,27 @@ public class LR0Grammar extends ExtendedGrammar
     return ret;
   }
 
+  public LR0 makeLR0Automata() throws AlphabetException
+  {    
+    ArrayList<Symbol> symbols = new ArrayList<Symbol>();
+   
+    for(TerminalSymbol symbol : this.getTerminalSymbolSet())
+      symbols.add ( new DefaultSymbol(symbol.toString()) );
+    
+    for(NonterminalSymbol symbol : this.getNonterminalSymbolSet())
+      symbols.add ( new DefaultSymbol(symbol.toString()) );
+    
+    Alphabet alphabet = new DefaultAlphabet(symbols);
+    
+    LR0 lr0Automata = new LR0(alphabet);
+    
+    TreeSet<LR0ItemSet> lr0States = new TreeSet<LR0ItemSet>();
+    
+    lr0States.add ( this.startClosure() );
+    
+    
+    
+    return lr0Automata;
+  }
+  
 }

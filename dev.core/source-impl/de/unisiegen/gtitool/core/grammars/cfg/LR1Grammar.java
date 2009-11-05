@@ -89,6 +89,7 @@ public class LR1Grammar extends ExtendedGrammar
           catch ( GrammarInvalidNonterminalException exc )
           {
             exc.printStackTrace();
+            return null;
           }
         }
       }

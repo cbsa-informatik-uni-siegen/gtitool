@@ -24,6 +24,7 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarDuplicateProductionException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarNonterminalNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarRegularGrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
@@ -738,15 +739,16 @@ public abstract class AbstractGrammar implements Grammar
     if ( grammarExceptionList.size () > 0 )
       throw new GrammarValidationException ( grammarExceptionList );
   }
-  
-  
+
+
   /**
    * returns a list of productions for a given nonterminal
-   *
+   * 
    * @param X the nonterminal
    * @return list of productions which belongs to X
    */
-  private ArrayList<ProductionWord> getProductionForNonterminal(final NonterminalSymbol X)
+  private ArrayList < ProductionWord > getProductionForNonterminal (
+      final NonterminalSymbol X )
   {
     ArrayList < ProductionWord > prods = new ArrayList < ProductionWord > ();
     for ( Production p : this.productions )
@@ -760,49 +762,54 @@ public abstract class AbstractGrammar implements Grammar
    * {@inheritDoc}
    */
   public final FirstSet first ( final ProductionWord pw )
+      throws GrammarInvalidNonterminalException
   {
     DefaultFirstSet fs = new DefaultFirstSet ();
-    if(pw.get ().size () >= 1 && pw.get ( 0 ) instanceof TerminalSymbol)
+    if ( pw.get ().size () >= 1 && pw.get ( 0 ) instanceof TerminalSymbol )
       try
       {
-        fs.add ( (TerminalSymbol)pw.get(0) );
+        fs.add ( ( TerminalSymbol ) pw.get ( 0 ) );
       }
       catch ( TerminalSymbolSetException exc1 )
       {
-        exc1.printStackTrace();
+        exc1.printStackTrace ();
       }
     else
-      for ( ProductionWordMember X : pw )
-        if ( X instanceof NonterminalSymbol )
+    {
+      ProductionWordMember X = pw.get ( 0 );
+      // for ( ProductionWordMember X : pw ) TODO: verify logic
+      if ( X instanceof NonterminalSymbol )
+      {
+        NonterminalSymbol x = ( NonterminalSymbol ) X;
+        if ( !this.nonterminalSymbolSet.contains ( x ) )
+          throw new GrammarInvalidNonterminalException ( x,
+              this.nonterminalSymbolSet );
+        ArrayList < ProductionWord > prods = getProductionForNonterminal ( x );
+        for ( ProductionWord p : prods )
         {
-          NonterminalSymbol x = ( NonterminalSymbol ) X;
-          if ( !this.nonterminalSymbolSet.contains ( x ) )
-            ; // todo throw exception
-          ArrayList < ProductionWord > prods = getProductionForNonterminal ( x );
-          for ( ProductionWord p : prods )
+          if ( p.epsilon () )
+            fs.epsilon ( true );
+          for ( ProductionWordMember pwm : p )
           {
-            if ( p.epsilon () )
-              fs.epsilon ( true );
-            for ( ProductionWordMember pwm : p )
-            {
-              if(pwm.getName ().equals ( x.getName () ))
-                break;
-              DefaultFirstSet fsX = ( DefaultFirstSet ) first ( new DefaultProductionWord (
-                  pwm ) );
-              if ( fsX.epsilon () )
-                break;
-              try
-              {
-                fs.add ( fsX );
-              }
-              catch ( TerminalSymbolSetException exc )
-              {
-                exc.printStackTrace ();
-              }
+            if ( pwm.getName ().equals ( x.getName () ) )
               break;
+            DefaultFirstSet fsX = ( DefaultFirstSet ) first ( new DefaultProductionWord (
+                pwm ) );
+            if ( fsX.epsilon () )
+              break;
+            try
+            {
+              fs.add ( fsX );
             }
-          }
-        }
+            catch ( TerminalSymbolSetException exc )
+            {
+              exc.printStackTrace ();
+            }
+            break;
+          }// end inner for
+        }// end outer for
+      }// end if
+    }// end else
     return fs;
   }
 

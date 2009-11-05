@@ -15,6 +15,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
@@ -258,17 +259,20 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
 
   /**
    * calculates the first set
-   *
+   * 
    * @param pw the ProductionWord
    * @return the set of symbols the Production can begin with
+   * @throws GrammarInvalidNonterminalException
    */
-  public FirstSet first ( final ProductionWord pw );
-  
+  public FirstSet first ( final ProductionWord pw )
+      throws GrammarInvalidNonterminalException;
+
+
   /**
    * calculates the follow set
-   *
+   * 
    * @param p the Production
    * @return set of symbols following directly to the Production p
    */
-  public TerminalSymbolSet follow(final Production p);
+  public TerminalSymbolSet follow ( final Production p );
 }

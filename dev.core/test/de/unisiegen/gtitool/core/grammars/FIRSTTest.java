@@ -12,6 +12,7 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
@@ -84,10 +85,17 @@ public class FIRSTTest
     grammar.addProduction ( new DefaultProduction ( F,
         new DefaultProductionWord ( lparen, E, rparen ) ) );
 
-    @SuppressWarnings("unused")
-    DefaultFirstSet fs = ( DefaultFirstSet ) grammar.first ( grammar
-        .getProductionAt ( 0 ).getProductionWord () );
-    printFirstSet(fs);
+    DefaultFirstSet fs;
+    try
+    {
+      fs = ( DefaultFirstSet ) grammar.first ( grammar
+          .getProductionAt ( 0 ).getProductionWord () );
+      printFirstSet(fs);
+    }
+    catch ( GrammarInvalidNonterminalException exc )
+    {
+      exc.printStackTrace();
+    }
   }
   
   private static void printFirstSet(final DefaultFirstSet fs)

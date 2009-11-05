@@ -64,7 +64,8 @@ public class DefaultFirstSet implements FirstSet
    */
   public void add ( TerminalSymbol terminalSymbol ) throws TerminalSymbolSetException
   {
-    this.terminalSymbolSet.add ( terminalSymbol );
+    if(!contains ( terminalSymbol ))
+      this.terminalSymbolSet.add ( terminalSymbol );
   }
 
 

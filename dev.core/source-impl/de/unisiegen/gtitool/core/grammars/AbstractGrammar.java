@@ -846,12 +846,10 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * {@inheritDoc}
    */
-  public final TerminalSymbolSet follow ( final Production p )
+  public final TerminalSymbolSet follow ( final NonterminalSymbol p )
       throws TerminalSymbolSetException
   {
     DefaultTerminalSymbolSet followSet = new DefaultTerminalSymbolSet ();
-    DefaultNonterminalSymbol prodNonterminalSymbol = ( DefaultNonterminalSymbol ) p
-        .getNonterminalSymbol ();
 
     /*
      * (1) we add the endmarker to the follow set (by definition)
@@ -859,9 +857,11 @@ public abstract class AbstractGrammar implements Grammar
     followSet.add ( DefaultTerminalSymbol.EndMarker );
     
     /*
-     * (2)
+     * (2) if there exists a Production X -> \alpha A \beta, A is Nonterminal (here p)
+     *     and TerminalSymbol t \in first(\beta)
+     *     => add t to followSet
      */
-    ArrayList < Production > prods = getProductionsContainingNonterminalSymbol ( prodNonterminalSymbol );
+    ArrayList < Production > prods = getProductionsContainingNonterminalSymbol ( p );
 
     return followSet;
   }

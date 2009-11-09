@@ -276,6 +276,6 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
    * @return set of symbols following directly to the Production p
    * @throws TerminalSymbolSetException
    */
-  public TerminalSymbolSet follow ( final Production p )
+  public TerminalSymbolSet follow ( final NonterminalSymbol p )
       throws TerminalSymbolSetException;
 }

@@ -53,6 +53,10 @@ public class LR0Item extends DefaultProduction
   }
 
 
+  public ProductionWordMember getProductionWordMemberAfterDot()
+  {
+    return getProductionWord().get ( getDotPosition() );
+  }
   /**
    * TODO
    * 
@@ -60,7 +64,7 @@ public class LR0Item extends DefaultProduction
    */
   public NonterminalSymbol getNonterminalAfterDot ()
   {
-    return ( NonterminalSymbol ) getProductionWord ().get ( getDotPosition () );
+    return ( NonterminalSymbol ) getProductionWordMemberAfterDot();
   }
 
 

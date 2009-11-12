@@ -2,21 +2,27 @@ package de.unisiegen.gtitool.core.grammars.cfg;
 
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
+import de.unisiegen.gtitool.core.entities.LR0State;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.dfa.LR0;
 
 
@@ -95,8 +101,8 @@ public class LR0Grammar extends ExtendedGrammar
   public LR0ItemSet startClosure ()
   {
     LR0ItemSet ret = new LR0ItemSet ();
-    ret.add ( new LR0Item ( this.getStartProduction().getNonterminalSymbol (),
-        this.getStartProduction().getProductionWord (), 0 ) );
+    ret.add ( new LR0Item ( this.getStartProduction ().getNonterminalSymbol (),
+        this.getStartProduction ().getProductionWord (), 0 ) );
     return ret;
   }
 
@@ -109,8 +115,7 @@ public class LR0Grammar extends ExtendedGrammar
    * @param productionWord
    * @return
    */
-  public LR0ItemSet move ( LR0ItemSet items,
-      ProductionWordMember productionWord )
+  public LR0ItemSet move ( LR0ItemSet items, ProductionWordMember productionWord )
   {
     LR0ItemSet ret = new LR0ItemSet ();
 
@@ -122,27 +127,63 @@ public class LR0Grammar extends ExtendedGrammar
     return ret;
   }
 
-  public LR0 makeLR0Automata() throws AlphabetException
-  {    
-    ArrayList<Symbol> symbols = new ArrayList<Symbol>();
-   
-    for(TerminalSymbol symbol : this.getTerminalSymbolSet())
-      symbols.add ( new DefaultSymbol(symbol.toString()) );
-    
-    for(NonterminalSymbol symbol : this.getNonterminalSymbolSet())
-      symbols.add ( new DefaultSymbol(symbol.toString()) );
-    
-    Alphabet alphabet = new DefaultAlphabet(symbols);
-    
-    LR0 lr0Automata = new LR0(alphabet);
-    
-    TreeSet<LR0ItemSet> lr0States = new TreeSet<LR0ItemSet>();
-    
-    lr0States.add ( this.startClosure() );
-    
-    
-    
+
+  public LR0 makeLR0Automata () throws AlphabetException
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+
+    for ( TerminalSymbol symbol : this.getTerminalSymbolSet () )
+      symbols.add ( new DefaultSymbol ( symbol.toString () ) );
+
+    for ( NonterminalSymbol symbol : this.getNonterminalSymbolSet () )
+      symbols.add ( new DefaultSymbol ( symbol.toString () ) );
+
+    Alphabet alphabet = new DefaultAlphabet ( symbols );
+
+    LR0 lr0Automata = new LR0 ( alphabet );
+
+    LR0ItemSet start = this.startClosure ();
+
+    for ( int oldSize = lr0Automata.getState ().size (), newSize = 0 ; oldSize != newSize ; oldSize = newSize )
+    {
+      for ( State baseState : lr0Automata.getState () )
+      {
+        LR0State currentState = ( LR0State ) baseState;
+        LR0ItemSet currentItemSet = currentState.getLR0Items ();
+
+        for ( LR0Item item : currentItemSet )
+        {
+          LR0ItemSet newItemSet = closure ( move ( currentItemSet, item
+              .getProductionWordMemberAfterDot () ) );
+          try
+          {
+            LR0State newState = new LR0State ( alphabet, newItemSet
+                .equals ( start ), newItemSet );
+
+            if ( !lr0Automata.getState ().contains ( newState ) )
+              lr0Automata.addState ( newState );
+
+            lr0Automata.addTransition ( new DefaultTransition ( alphabet,
+                new DefaultAlphabet (), new DefaultWord (), new DefaultWord (),
+                currentState, newState, new DefaultSymbol ( item
+                    .getProductionWordMemberAfterDot ().toString () ) ) );
+          }
+          catch ( StateException e )
+          {
+            e.printStackTrace (); // shouldn't happen
+          }
+          catch ( TransitionSymbolOnlyOneTimeException e )
+          {
+            e.printStackTrace ();
+          }
+          catch ( TransitionSymbolNotInAlphabetException e )
+          {
+            e.printStackTrace ();
+          }
+        }
+      }
+    }
+
     return lr0Automata;
   }
-  
 }

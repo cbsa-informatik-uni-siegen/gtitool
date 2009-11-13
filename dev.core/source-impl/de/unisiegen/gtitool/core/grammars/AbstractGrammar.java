@@ -772,7 +772,7 @@ public abstract class AbstractGrammar implements Grammar
   {
     ArrayList < Production > prods = new ArrayList < Production > ();
     for ( Production p : this.productions )
-      if ( p.contains ( X ) )
+      if ( p.getProductionWord ().contains ( X ) )
         prods.add ( p );
     return prods;
   }
@@ -784,6 +784,8 @@ public abstract class AbstractGrammar implements Grammar
   public final FirstSet first ( final ProductionWord pw )
       throws GrammarInvalidNonterminalException
   {
+    if(pw == null)
+      throw new NullPointerException("ProductionWord is null"); //$NON-NLS-1$
     DefaultFirstSet firstSet = new DefaultFirstSet ();
     /*
      * ProductionWord starts with a TerminalSymbol => we can derive a word from
@@ -846,23 +848,61 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * {@inheritDoc}
    */
-  public final TerminalSymbolSet follow ( final NonterminalSymbol p )
+  public final TerminalSymbolSet follow ( final NonterminalSymbol A )
       throws TerminalSymbolSetException
   {
     DefaultTerminalSymbolSet followSet = new DefaultTerminalSymbolSet ();
 
     /*
-     * (1) we add the endmarker to the follow set (by definition)
+     * (1) add the endmarker to the follow set if we're
+     *     dealing with the start symbol (by definition)
      */
-    followSet.add ( DefaultTerminalSymbol.EndMarker );
+    if(this.initialStartNonterminalSymbol.equals ( A ))
+      followSet.add ( DefaultTerminalSymbol.EndMarker );
     
     /*
      * (2) if there exists a Production X -> \alpha A \beta, A is Nonterminal (here p)
      *     and TerminalSymbol t \in first(\beta)
      *     => add t to followSet
      */
-    ArrayList < Production > prods = getProductionsContainingNonterminalSymbol ( p );
-
+    ArrayList < Production > prods = getProductionsContainingNonterminalSymbol ( A );
+ outer:
+   for(Production p : prods)
+    {
+      ProductionWord pw = p.getProductionWord ();
+      for(int i = 0; i < pw.size (); ++i)
+        if(pw.get(i).getName ().equals ( A.getName () ))
+        {
+          ArrayList<ProductionWordMember> newPwm = new ArrayList<ProductionWordMember>();
+          for(int j = i + 1; j < pw.size (); ++j)
+            newPwm.add ( pw.get ( j ) );
+          DefaultProductionWord remainingPW = new DefaultProductionWord(newPwm);
+          try
+          {
+            if(remainingPW.size () != 0)
+            {
+              DefaultFirstSet fs = (DefaultFirstSet)first(remainingPW);
+              if(!fs.epsilon ()) //case (2)
+                followSet.add ( fs );
+              /*
+               * (3) \epsilon \in first(\beta)
+               *     => add follow(X) to follow(A)
+               */
+              else //case (3)
+                followSet.add ( follow(p.getNonterminalSymbol ()) );
+            }
+            else //case (3) \beta is empty => add follow(X) to follow(A)
+              followSet.add(follow(p.getNonterminalSymbol ()));
+          }
+          catch ( GrammarInvalidNonterminalException exc )
+          {
+            exc.printStackTrace();
+            break outer;
+          }
+          break;
+        }
+    }
+    
     return followSet;
   }
 }

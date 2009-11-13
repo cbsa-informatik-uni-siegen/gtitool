@@ -78,11 +78,32 @@ public interface ProductionWord extends Entity < ProductionWord >, Storable,
    * @return the size of the {@link ProductionWord}.
    */
   public int size ();
-  
+
+
   /**
    * Returns whether we have an epsilon or not
-   *
+   * 
    * @return true if we have an epsilon
    */
-  public boolean epsilon();
+  public boolean epsilon ();
+
+
+  /**
+   * checks whether ns is part of this {@link ProductionWord}
+   * 
+   * @param ns the {@link NonterminalSymbol}
+   * @return true if {@code ns} is part of this {@link ProductionWord}, false
+   *         otherwise
+   */
+  public boolean contains ( NonterminalSymbol ns );
+
+
+  /**
+   * checks whether ts is part of this {@link ProductionWord}
+   * 
+   * @param ts the {@link NonterminalSymbol}
+   * @return true if {@code ts} is part of this {@link ProductionWord}, false
+   *         otherwise
+   */
+  public boolean contains ( TerminalSymbol ts );
 }

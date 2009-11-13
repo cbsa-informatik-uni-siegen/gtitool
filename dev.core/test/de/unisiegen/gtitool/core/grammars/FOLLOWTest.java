@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.core.grammars;
 
 
-import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
@@ -12,24 +11,23 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 
 
 /**
- * test case for the first set
+ * test case for the follow set
  */
-public class FIRSTTest
+public class FOLLOWTest
 {
 
   /**
-   * test function for the first set
-   *
-   * @param arguments
+   * test function for the follow set
+   * 
+   * @param args
    */
-  public static void main ( final String [] arguments )
+  public static void main ( String [] args )
   {
     NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" ); //$NON-NLS-1$
 
@@ -92,11 +90,11 @@ public class FIRSTTest
 
     try
     {
-      DefaultFirstSet fs = ( DefaultFirstSet ) grammar.first ( grammar
-          .getProductionAt ( 0 ).getProductionWord () );
-      printFirstSet ( fs );
+      TerminalSymbolSet tss = grammar.follow ( grammar
+          .getNonterminalSymbolSet ().get ( 0 ) );
+      printTerminalSymbolSet ( tss );
     }
-    catch ( GrammarInvalidNonterminalException exc )
+    catch ( TerminalSymbolSetException exc )
     {
       exc.printStackTrace ();
     }
@@ -104,17 +102,17 @@ public class FIRSTTest
 
 
   /**
-   * print out a {@link DefaultFirstSet}
+   * print out a {@link TerminalSymbolSet}
    * 
-   * @param fs the {@link DefaultFirstSet}
+   * @param tss the {@link TerminalSymbolSet}
    */
-  private static void printFirstSet ( final DefaultFirstSet fs )
+  private static void printTerminalSymbolSet ( final TerminalSymbolSet tss )
   {
-    for ( TerminalSymbol ts : fs )
+    for ( TerminalSymbol ts : tss )
     {
       DefaultTerminalSymbol dts = ( DefaultTerminalSymbol ) ts;
       System.out.println ( dts );
     }
-    System.out.println ( "Contains epsilon: " + fs.epsilon () ); //$NON-NLS-1$
   }
+
 }

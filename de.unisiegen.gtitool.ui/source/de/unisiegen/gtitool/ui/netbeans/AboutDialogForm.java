@@ -138,7 +138,7 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         jGTIPanelSouth.add(jGTILabelWebpage, gridBagConstraints);
 
         jGTILabelWebpageEntry.setForeground(java.awt.Color.blue);
-        jGTILabelWebpageEntry.setText("http://theoinf.math.uni-siegen.de/gtitool");
+        jGTILabelWebpageEntry.setText("http://vcs.informatik.uni-siegen.de/projects/gtitool");
         jGTILabelWebpageEntry.setToolTipText(bundle.getString("AboutDialog.WebpageEntryToolTip")); // NOI18N
         jGTILabelWebpageEntry.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

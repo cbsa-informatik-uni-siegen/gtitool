@@ -1,5 +1,4 @@
-package de.unisiegen.gtitool.core.grammars;
-
+package de.unisiegen.gtitool.core.machines.dfa;
 
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
@@ -7,12 +6,12 @@ import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.LR0Item;
-import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
@@ -20,15 +19,10 @@ import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 
 /**
  * TODO
+ *
  */
 public class LR0Test
 {
-
-  /**
-   * TODO
-   * 
-   * @param arguments
-   */
   public static void main ( String [] arguments )
   {
     NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" );
@@ -90,46 +84,16 @@ public class LR0Test
     grammar.addProduction ( new DefaultProduction ( F,
         new DefaultProductionWord ( lparen, E, rparen ) ) );
 
-    LR0ItemSet closure0 = grammar.closure ( grammar.startProduction () );
+    try
+    {
+      LR0 automata = grammar.makeLR0Automata();
+      for(State state : automata.getState())
+        System.out.println(state.toString());
+    }
+    catch(AlphabetException e)
+    {
+      e.printStackTrace();
+    }
 
-    System.out.println ( "closure(start())" );
-    for ( LR0Item item : closure0 )
-      System.out.println ( item.toString () );
-
-    LR0ItemSet move0E = grammar.move ( closure0, E );
-
-    System.out.println ( "move(0, E)" );
-    for ( LR0Item item : move0E )
-      System.out.println ( item.toString () );
-
-    LR0ItemSet closure1 = grammar.closure ( move0E );
-
-    System.out.println ( "closure(move(0, E)) = 1" );
-    for ( LR0Item item : closure1 )
-      System.out.println ( item.toString () );
-
-    LR0ItemSet move0T = grammar.move ( closure0, T );
-
-    System.out.println ( "move(0, T)" );
-    for ( LR0Item item : move0T )
-      System.out.println ( item.toString () );
-
-    LR0ItemSet closure2 = grammar.closure ( move0T );
-
-    System.out.println ( "closure(move(0, T)) = 2" );
-    for ( LR0Item item : closure2 )
-      System.out.println ( item.toString () );
-
-    LR0ItemSet move0lparen = grammar.move ( closure0, lparen );
-
-    System.out.println ( "move(0, ()" );
-    for ( LR0Item item : move0lparen )
-      System.out.println ( item.toString () );
-
-    LR0ItemSet closure3 = grammar.closure ( move0lparen );
-
-    System.out.println ( "closure(move(0, ()) = 3" );
-    for ( LR0Item item : closure3 )
-      System.out.println ( item.toString () );
   }
 }

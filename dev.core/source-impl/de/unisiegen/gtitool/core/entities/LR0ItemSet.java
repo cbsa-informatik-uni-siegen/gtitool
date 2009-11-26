@@ -120,6 +120,10 @@ Storable, Modifyable, Iterable < LR0Item >
     return null;
   }
 
+  public boolean equals(LR0ItemSet o)
+  {
+    return this.rep.equals ( o.rep );
+  }
   /**
    * TODO
    *

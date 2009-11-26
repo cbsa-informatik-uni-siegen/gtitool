@@ -15,14 +15,25 @@ public class LR0State extends DefaultState
   {
     super ( alphabet, new DefaultAlphabet (), makeStateString ( lr0Items ),
         startState, true );
-    
+
     this.lr0Items = lr0Items;
   }
 
-  public LR0ItemSet getLR0Items()
+
+  public LR0ItemSet getLR0Items ()
   {
     return this.lr0Items;
   }
+
+
+  public boolean equals ( Object other )
+  {
+    if ( ! ( other instanceof LR0State ) )
+      return false;
+
+    return ( ( LR0State ) other ).getLR0Items ().equals ( getLR0Items () );
+  }
+
 
   private static String makeStateString ( LR0ItemSet items )
   {
@@ -31,6 +42,7 @@ public class LR0State extends DefaultState
       ret += item.toString () + '\n';
     return ret;
   }
-  
+
+
   private LR0ItemSet lr0Items;
 }

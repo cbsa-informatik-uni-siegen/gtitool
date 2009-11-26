@@ -98,7 +98,7 @@ public class LR0Grammar extends ExtendedGrammar
    * @return The start closure
    */
 
-  public LR0ItemSet startClosure ()
+  public LR0ItemSet startProduction ()
   {
     LR0ItemSet ret = new LR0ItemSet ();
     ret.add ( new LR0Item ( this.getStartProduction ().getNonterminalSymbol (),
@@ -120,8 +120,9 @@ public class LR0Grammar extends ExtendedGrammar
     LR0ItemSet ret = new LR0ItemSet ();
 
     for ( LR0Item item : items )
-      if ( item.getProductionWord ().get ( item.getDotPosition () ).equals (
-          productionWord ) )
+      if ( !item.dotIsAtEnd ()
+          && item.getProductionWord ().get ( item.getDotPosition () ).equals (
+              productionWord ) )
         ret.add ( item.incDot () );
 
     return ret;
@@ -142,26 +143,47 @@ public class LR0Grammar extends ExtendedGrammar
 
     LR0 lr0Automata = new LR0 ( alphabet );
 
-    LR0ItemSet start = this.startClosure ();
-
-    for ( int oldSize = lr0Automata.getState ().size (), newSize = 0 ; oldSize != newSize ; oldSize = newSize )
+    try
     {
-      for ( State baseState : lr0Automata.getState () )
+      LR0State startState = new LR0State ( alphabet, true, closure ( this
+          .startProduction () ) );
+
+      lr0Automata.addState ( startState );
+    }
+    catch ( StateException exc )
+    {
+      exc.printStackTrace ();
+    }
+
+    for ( int oldSize = lr0Automata.getState ().size (), newSize = 0 ; oldSize != newSize ; newSize = lr0Automata
+        .getState ().size () )
+    {
+      ArrayList < State > oldStates = new ArrayList < State > ( lr0Automata
+          .getState () );
+
+      oldSize = oldStates.size ();
+
+      for ( State baseState : oldStates )
       {
         LR0State currentState = ( LR0State ) baseState;
         LR0ItemSet currentItemSet = currentState.getLR0Items ();
 
         for ( LR0Item item : currentItemSet )
         {
+          if ( item.dotIsAtEnd () )
+            continue;
+
           LR0ItemSet newItemSet = closure ( move ( currentItemSet, item
               .getProductionWordMemberAfterDot () ) );
           try
           {
-            LR0State newState = new LR0State ( alphabet, newItemSet
-                .equals ( start ), newItemSet );
+            LR0State newState = new LR0State ( alphabet, false, newItemSet );
 
             if ( !lr0Automata.getState ().contains ( newState ) )
               lr0Automata.addState ( newState );
+            else
+              newState = ( LR0State ) lr0Automata.getState ().get (
+                  lr0Automata.getState ().indexOf ( newState ) );
 
             lr0Automata.addTransition ( new DefaultTransition ( alphabet,
                 new DefaultAlphabet (), new DefaultWord (), new DefaultWord (),
@@ -182,6 +204,9 @@ public class LR0Grammar extends ExtendedGrammar
           }
         }
       }
+
+      if ( newSize > 15 )
+        break; // HACK HACK
     }
 
     return lr0Automata;

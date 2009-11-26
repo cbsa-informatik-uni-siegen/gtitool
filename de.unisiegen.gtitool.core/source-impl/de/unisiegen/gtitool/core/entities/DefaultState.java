@@ -443,7 +443,7 @@ public class DefaultState implements State
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( State other )
+  public int compareTo ( State other )
   {
     return this.name.compareTo ( other.getName () );
   }

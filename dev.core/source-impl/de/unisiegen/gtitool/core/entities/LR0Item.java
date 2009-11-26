@@ -41,6 +41,12 @@ public class LR0Item extends DefaultProduction
   }
 
 
+  public boolean dotIsAtEnd ()
+  {
+    return getDotPosition () == this.getProductionWord ().size ();
+  }
+
+
   /**
    * Returns whether the dot of this LR0Item precedes a Nonterminal symbol
    * 
@@ -53,10 +59,12 @@ public class LR0Item extends DefaultProduction
   }
 
 
-  public ProductionWordMember getProductionWordMemberAfterDot()
+  public ProductionWordMember getProductionWordMemberAfterDot ()
   {
-    return getProductionWord().get ( getDotPosition() );
+    return getProductionWord ().get ( getDotPosition () );
   }
+
+
   /**
    * TODO
    * 
@@ -64,14 +72,14 @@ public class LR0Item extends DefaultProduction
    */
   public NonterminalSymbol getNonterminalAfterDot ()
   {
-    return ( NonterminalSymbol ) getProductionWordMemberAfterDot();
+    return ( NonterminalSymbol ) getProductionWordMemberAfterDot ();
   }
 
 
   public LR0Item incDot ()
   {
     return new LR0Item ( getNonterminalSymbol (), getProductionWord (),
-        getDotPosition () + 1 );
+        getDotPosition () + 1);
   }
 
 

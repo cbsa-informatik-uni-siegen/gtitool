@@ -129,6 +129,12 @@ public class LR0Grammar extends ExtendedGrammar
   }
 
 
+  /**
+   * TODO
+   *
+   * @return
+   * @throws AlphabetException
+   */
   public LR0 makeLR0Automata () throws AlphabetException
   {
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();

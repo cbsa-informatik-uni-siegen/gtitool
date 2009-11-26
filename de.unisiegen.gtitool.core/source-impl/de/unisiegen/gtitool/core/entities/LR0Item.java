@@ -135,8 +135,11 @@ public class LR0Item extends DefaultProduction
 
     int stringDotIndex = 0;
     
-    return leftSide + rightSide.substring ( 0, getDotPosition () ) + "\u2022" //$NON-NLS-1$
-        + rightSide.substring ( this.getDotPosition () );
+    for(int i = 0; i != this.getDotPosition(); ++i)
+      stringDotIndex += this.getProductionWord ().get(i).toString ().length ();
+    
+    return leftSide + rightSide.substring ( 0, stringDotIndex ) + "\u2022" //$NON-NLS-1$
+        + rightSide.substring ( stringDotIndex );
   }
 
 

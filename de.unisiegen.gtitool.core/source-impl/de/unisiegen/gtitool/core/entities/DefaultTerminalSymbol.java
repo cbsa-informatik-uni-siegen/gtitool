@@ -30,6 +30,14 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * The serial verion uid.
    */
   private static final long serialVersionUID = -5069749430451559892L;
+  
+  
+  /**
+   * defines the endmarker of a word
+   */
+  public static final DefaultTerminalSymbol EndMarker =
+    new DefaultTerminalSymbol (
+      "$"); //$NON-NLS-1$
 
 
   /**
@@ -63,7 +71,7 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   /**
    * The {@link EventListenerList}.
    */
-  private EventListenerList listenerList = new EventListenerList ();
+  private final EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -75,42 +83,32 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   public DefaultTerminalSymbol ( Element element ) throws StoreException
   {
     // Check if the element is correct
-    if ( !element.getName ().equals ( "TerminalSymbol" ) ) //$NON-NLS-1$
-    {
+    if ( !element.getName ().equals ( "TerminalSymbol" ) )
       throw new IllegalArgumentException (
           "element " + Messages.QUOTE + element.getName () //$NON-NLS-1$
               + Messages.QUOTE + " is not a terminal symbol" ); //$NON-NLS-1$
-    }
 
     // Attribute
     boolean foundName = false;
     for ( Attribute current : element.getAttribute () )
-    {
       if ( current.getName ().equals ( "name" ) ) //$NON-NLS-1$
       {
         setName ( current.getValue () );
         foundName = true;
       }
       else
-      {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-      }
-    }
 
     // Not all attribute values found
     if ( !foundName )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-    }
 
     // Element
     if ( element.getElement ().size () > 0 )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-    }
   }
 
 
@@ -175,9 +173,7 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
     PrettyStringChangedListener [] listeners = this.listenerList
         .getListeners ( PrettyStringChangedListener.class );
     for ( PrettyStringChangedListener current : listeners )
-    {
       current.prettyStringChanged ();
-    }
   }
 
 
@@ -274,9 +270,7 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   private final void setName ( String name )
   {
     if ( name == null )
-    {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
-    }
 
     if ( ( this.name == null ) || !this.name.equals ( name ) )
     {
@@ -309,15 +303,11 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
     {
       this.cachedPrettyString = new PrettyString ();
       if ( this.error )
-      {
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.TERMINAL_SYMBOL_ERROR ) );
-      }
       else
-      {
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.TERMINAL_SYMBOL ) );
-      }
     }
 
     return this.cachedPrettyString;

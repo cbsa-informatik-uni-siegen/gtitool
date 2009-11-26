@@ -24,7 +24,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultProduction implements Production
+public class DefaultProduction implements Production
 {
 
   /**
@@ -195,7 +195,7 @@ public final class DefaultProduction implements Production
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( Production other )
+  public int compareTo ( Production other )
   {
     // NonterminalSymbol
     int compare = this.nonterminalSymbol.compareTo ( other
@@ -252,7 +252,7 @@ public final class DefaultProduction implements Production
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object other )
+  public boolean equals ( Object other )
   {
     if ( other instanceof DefaultProduction )
     {
@@ -595,7 +595,7 @@ public final class DefaultProduction implements Production
    * @see Entity#toString()
    */
   @Override
-  public final String toString ()
+  public String toString ()
   {
     return this.nonterminalSymbol.toString () + " \u2192 " //$NON-NLS-1$
         + this.productionWord.toString ();

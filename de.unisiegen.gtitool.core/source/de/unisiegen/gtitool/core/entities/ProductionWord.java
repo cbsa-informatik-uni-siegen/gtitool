@@ -78,4 +78,11 @@ public interface ProductionWord extends Entity < ProductionWord >, Storable,
    * @return the size of the {@link ProductionWord}.
    */
   public int size ();
+  
+  /**
+   * Returns whether we have an epsilon or not
+   *
+   * @return true if we have an epsilon
+   */
+  public boolean epsilon();
 }

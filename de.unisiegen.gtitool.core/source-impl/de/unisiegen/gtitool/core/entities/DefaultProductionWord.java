@@ -39,7 +39,7 @@ public final class DefaultProductionWord implements ProductionWord
   /**
    * The {@link EventListenerList}.
    */
-  private EventListenerList listenerList = new EventListenerList ();
+  private final EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -54,13 +54,13 @@ public final class DefaultProductionWord implements ProductionWord
   /**
    * The {@link ProductionWordMember} list.
    */
-  private ArrayList < ProductionWordMember > productionWordMemberList;
+  private final ArrayList < ProductionWordMember > productionWordMemberList;
 
 
   /**
    * The initial {@link ProductionWordMember} list.
    */
-  private ArrayList < ProductionWordMember > initialProductionWordMemberList;
+  private final ArrayList < ProductionWordMember > initialProductionWordMemberList;
 
 
   /**
@@ -72,7 +72,7 @@ public final class DefaultProductionWord implements ProductionWord
   /**
    * The {@link PrettyStringChangedListener}.
    */
-  private PrettyStringChangedListener prettyStringChangedListener;
+  private final PrettyStringChangedListener prettyStringChangedListener;
 
 
   /**
@@ -550,5 +550,14 @@ public final class DefaultProductionWord implements ProductionWord
       }
     }
     return result.toString ();
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ProductionWord#epsilon()
+   */
+  public final boolean epsilon(){
+    return this.productionWordMemberList.isEmpty ();
   }
 }

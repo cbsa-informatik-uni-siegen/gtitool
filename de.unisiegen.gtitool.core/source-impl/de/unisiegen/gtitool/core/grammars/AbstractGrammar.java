@@ -9,19 +9,27 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarDuplicateProductionException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarNonterminalNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarRegularGrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -45,19 +53,19 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * List of listeners
    */
-  private EventListenerList listenerList = new EventListenerList ();
+  private final EventListenerList listenerList = new EventListenerList ();
 
 
   /**
    * The {@link NonterminalSymbolSet}.
    */
-  private NonterminalSymbolSet nonterminalSymbolSet;
+  private final NonterminalSymbolSet nonterminalSymbolSet;
 
 
   /**
    * The {@link TerminalSymbolSet}.
    */
-  private TerminalSymbolSet terminalSymbolSet;
+  private final TerminalSymbolSet terminalSymbolSet;
 
 
   /**
@@ -69,7 +77,7 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * List containing all {@link Production}s until last save.
    */
-  private ArrayList < Production > initialProductions = new ArrayList < Production > ();
+  private final ArrayList < Production > initialProductions = new ArrayList < Production > ();
 
 
   /**
@@ -81,13 +89,13 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * The {@link ModifyStatusChangedListener}.
    */
-  private ModifyStatusChangedListener modifyStatusChangedListener;
+  private final ModifyStatusChangedListener modifyStatusChangedListener;
 
 
   /**
    * The validation element list.
    */
-  private ArrayList < ValidationElement > validationElementList;
+  private final ArrayList < ValidationElement > validationElementList;
 
 
   /**
@@ -129,14 +137,10 @@ public abstract class AbstractGrammar implements Grammar
 
     // validation elements
     if ( validationElements == null )
-    {
       throw new NullPointerException ( "validation elements is null" ); //$NON-NLS-1$
-    }
     this.validationElementList = new ArrayList < ValidationElement > ();
     for ( ValidationElement current : validationElements )
-    {
       this.validationElementList.add ( current );
-    }
 
     // reset modify
     resetModify ();
@@ -194,13 +198,9 @@ public abstract class AbstractGrammar implements Grammar
     {
       ArrayList < Production > duplicatedList = new ArrayList < Production > ();
       for ( int j = i + 1 ; j < this.productions.size () ; j++ )
-      {
         if ( !foundDuplicates.contains ( this.productions.get ( i ) )
             && this.productions.get ( i ).equals ( this.productions.get ( j ) ) )
-        {
           duplicatedList.add ( this.productions.get ( j ) );
-        }
-      }
       if ( duplicatedList.size () > 0 )
       {
         foundDuplicates.add ( this.productions.get ( i ) );
@@ -223,10 +223,8 @@ public abstract class AbstractGrammar implements Grammar
     ArrayList < GrammarException > grammarExceptionList = new ArrayList < GrammarException > ();
 
     for ( NonterminalSymbol current : getNotReachableNonterminalSymbols () )
-    {
       grammarExceptionList.add ( new GrammarNonterminalNotReachableException (
           current ) );
-    }
 
     return grammarExceptionList;
   }
@@ -247,61 +245,43 @@ public abstract class AbstractGrammar implements Grammar
 
       ArrayList < ProductionWordMember > wordMemberList = new ArrayList < ProductionWordMember > ();
       for ( ProductionWordMember wordMember : current.getProductionWord () )
-      {
         wordMemberList.add ( wordMember );
-      }
 
       // Epsilon
       if ( wordMemberList.size () == 0 )
-      {
         continue;
-      }
 
       // One member and not a TerminalSymbol
       if ( wordMemberList.size () == 1 )
-      {
         if ( ! ( wordMemberList.get ( 0 ) instanceof TerminalSymbol ) )
         {
           symbols.add ( wordMemberList.get ( 0 ) );
           grammarExceptionList.add ( new GrammarRegularGrammarException (
               current, symbols ) );
         }
-      }
 
       // Two members and not a TerminalSymbol and a NonterminalSymbol
       if ( wordMemberList.size () == 2 )
       {
         if ( ! ( wordMemberList.get ( 0 ) instanceof TerminalSymbol ) )
-        {
           symbols.add ( wordMemberList.get ( 0 ) );
-        }
         if ( ! ( wordMemberList.get ( 1 ) instanceof NonterminalSymbol ) )
-        {
           symbols.add ( wordMemberList.get ( 1 ) );
-        }
         if ( symbols.size () > 0 )
-        {
           grammarExceptionList.add ( new GrammarRegularGrammarException (
               current, symbols ) );
-        }
       }
 
       // More than two members
       if ( wordMemberList.size () > 2 )
       {
         if ( ! ( wordMemberList.get ( 0 ) instanceof TerminalSymbol ) )
-        {
           symbols.add ( wordMemberList.get ( 0 ) );
-        }
         if ( ! ( wordMemberList.get ( 1 ) instanceof NonterminalSymbol ) )
-        {
           symbols.add ( wordMemberList.get ( 1 ) );
-        }
 
         for ( int i = 2 ; i < wordMemberList.size () ; i++ )
-        {
           symbols.add ( wordMemberList.get ( i ) );
-        }
 
         grammarExceptionList.add ( new GrammarRegularGrammarException (
             current, symbols ) );
@@ -321,26 +301,18 @@ public abstract class AbstractGrammar implements Grammar
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
-    {
       for ( ModifyStatusChangedListener element : listeners )
-      {
         element.modifyStatusChanged ( true );
-      }
-    }
     else
     {
       boolean newModifyStatus = isModified ();
       for ( ModifyStatusChangedListener element : listeners )
-      {
         element.modifyStatusChanged ( newModifyStatus );
-      }
     }
     TableModelListener [] tableListeners = this.listenerList
         .getListeners ( TableModelListener.class );
     for ( TableModelListener l : tableListeners )
-    {
       l.tableChanged ( new TableModelEvent ( this ) );
-    }
   }
 
 
@@ -349,8 +321,8 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#getColumnClass(int)
    */
-  public Class < ? > getColumnClass ( @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public Class < ? > getColumnClass (
+      @SuppressWarnings ( "unused" ) int columnIndex )
   {
     return Production.class;
   }
@@ -372,8 +344,7 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#getColumnName(int)
    */
-  public String getColumnName ( @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public String getColumnName ( @SuppressWarnings ( "unused" ) int columnIndex )
   {
     return ""; //$NON-NLS-1$
   }
@@ -409,14 +380,10 @@ public abstract class AbstractGrammar implements Grammar
     ArrayList < NonterminalSymbol > notReachable = new ArrayList < NonterminalSymbol > ();
 
     for ( NonterminalSymbol current : this.nonterminalSymbolSet )
-    {
       notReachable.add ( current );
-    }
 
     for ( NonterminalSymbol current : reachable )
-    {
       notReachable.remove ( current );
-    }
     return notReachable;
   }
 
@@ -435,13 +402,9 @@ public abstract class AbstractGrammar implements Grammar
     {
       notRemoveableNonterminalSymbols.add ( current.getNonterminalSymbol () );
       for ( ProductionWordMember currentMember : current.getProductionWord () )
-      {
         if ( currentMember instanceof NonterminalSymbol )
-        {
           notRemoveableNonterminalSymbols
               .add ( ( NonterminalSymbol ) currentMember );
-        }
-      }
     }
     return notRemoveableNonterminalSymbols;
   }
@@ -458,15 +421,9 @@ public abstract class AbstractGrammar implements Grammar
   {
     TreeSet < TerminalSymbol > notRemoveableTerminalSymbols = new TreeSet < TerminalSymbol > ();
     for ( Production current : this.productions )
-    {
       for ( ProductionWordMember currentMember : current.getProductionWord () )
-      {
         if ( currentMember instanceof TerminalSymbol )
-        {
           notRemoveableTerminalSymbols.add ( ( TerminalSymbol ) currentMember );
-        }
-      }
-    }
     return notRemoveableTerminalSymbols;
   }
 
@@ -492,12 +449,8 @@ public abstract class AbstractGrammar implements Grammar
   {
     ArrayList < Production > prod = new ArrayList < Production > ();
     for ( Production p : this.productions )
-    {
       if ( p.getNonterminalSymbol ().equals ( s ) )
-      {
         prod.add ( p );
-      }
-    }
     return prod;
   }
 
@@ -524,12 +477,8 @@ public abstract class AbstractGrammar implements Grammar
     ArrayList < NonterminalSymbol > todoList = new ArrayList < NonterminalSymbol > ();
 
     for ( NonterminalSymbol current : this.nonterminalSymbolSet )
-    {
       if ( current.isStart () )
-      {
         todoList.add ( current );
-      }
-    }
 
     while ( todoList.size () > 0 )
     {
@@ -538,7 +487,6 @@ public abstract class AbstractGrammar implements Grammar
 
       ArrayList < Production > productionList = new ArrayList < Production > ();
       for ( Production currentProduction : this.productions )
-      {
         if ( currentProduction.getNonterminalSymbol ().equals (
             currentNonterminalSymbol ) )
         {
@@ -546,19 +494,14 @@ public abstract class AbstractGrammar implements Grammar
 
           for ( ProductionWordMember currentMember : currentProduction
               .getProductionWord () )
-          {
             if ( currentMember instanceof DefaultNonterminalSymbol )
             {
               DefaultNonterminalSymbol currentNonterminalMember = ( DefaultNonterminalSymbol ) currentMember;
               if ( !todoList.contains ( currentNonterminalMember )
                   && !reachable.contains ( currentNonterminalMember ) )
-              {
                 todoList.add ( currentNonterminalMember );
-              }
             }
-          }
         }
-      }
     }
 
     return reachable;
@@ -603,8 +546,8 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#getValueAt(int, int)
    */
-  public Object getValueAt ( int rowIndex, @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public Object getValueAt ( int rowIndex,
+      @SuppressWarnings ( "unused" ) int columnIndex )
   {
     return this.productions.get ( rowIndex );
   }
@@ -615,9 +558,8 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#isCellEditable(int, int)
    */
-  public boolean isCellEditable ( @SuppressWarnings ( "unused" )
-  int rowIndex, @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public boolean isCellEditable ( @SuppressWarnings ( "unused" ) int rowIndex,
+      @SuppressWarnings ( "unused" ) int columnIndex )
   {
     return false;
   }
@@ -631,40 +573,24 @@ public abstract class AbstractGrammar implements Grammar
   public final boolean isModified ()
   {
     if ( this.productions.size () != this.initialProductions.size () )
-    {
       return true;
-    }
     for ( int i = 0 ; i < this.productions.size () ; i++ )
-    {
       if ( !this.productions.get ( i ).equals (
           this.initialProductions.get ( i ) ) )
-      {
         return true;
-      }
-    }
 
     if ( this.nonterminalSymbolSet.isModified () )
-    {
       return true;
-    }
 
     if ( this.terminalSymbolSet.isModified () )
-    {
       return true;
-    }
 
     if ( !this.initialStartNonterminalSymbol.equals ( this.startSymbol ) )
-    {
       return true;
-    }
 
     for ( Production current : this.productions )
-    {
       if ( current.isModified () )
-      {
         return true;
-      }
-    }
     return false;
   }
 
@@ -721,9 +647,7 @@ public abstract class AbstractGrammar implements Grammar
     this.initialStartNonterminalSymbol = this.startSymbol;
 
     for ( Production current : this.productions )
-    {
       current.resetModify ();
-    }
   }
 
 
@@ -759,10 +683,9 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see TableModel#setValueAt(Object, int, int)
    */
-  public final void setValueAt ( @SuppressWarnings ( "unused" )
-  Object value, @SuppressWarnings ( "unused" )
-  int rowIndex, @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public final void setValueAt ( @SuppressWarnings ( "unused" ) Object value,
+      @SuppressWarnings ( "unused" ) int rowIndex,
+      @SuppressWarnings ( "unused" ) int columnIndex )
   {
     // Do nothing
   }
@@ -781,18 +704,14 @@ public abstract class AbstractGrammar implements Grammar
                   this.startSymbol ) );
       for ( ProductionWordMember currentMember : currentProduction
           .getProductionWord () )
-      {
         if ( currentMember instanceof NonterminalSymbol )
         {
           NonterminalSymbol currentSymbol = ( NonterminalSymbol ) currentMember;
           currentSymbol.setStart ( currentSymbol.equals ( this.startSymbol ) );
         }
-      }
     }
     for ( NonterminalSymbol current : this.nonterminalSymbolSet )
-    {
       current.setStart ( current.equals ( this.startSymbol ) );
-    }
   }
 
 
@@ -807,26 +726,143 @@ public abstract class AbstractGrammar implements Grammar
 
     if ( this.validationElementList
         .contains ( ValidationElement.DUPLICATE_PRODUCTION ) )
-    {
       grammarExceptionList.addAll ( checkDuplicateProduction () );
-    }
 
     if ( this.validationElementList
         .contains ( ValidationElement.NONTERMINAL_NOT_REACHABLE ) )
-    {
       grammarExceptionList.addAll ( checkNonterminalNotReachable () );
-    }
 
     if ( this.validationElementList
         .contains ( ValidationElement.GRAMMAR_NOT_REGULAR ) )
-    {
       grammarExceptionList.addAll ( checkRegularGrammar () );
-    }
 
     // Throw the exception if a warning or an error has occurred.
     if ( grammarExceptionList.size () > 0 )
-    {
       throw new GrammarValidationException ( grammarExceptionList );
-    }
+  }
+
+
+  /**
+   * returns a list of productions for a given nonterminal
+   * 
+   * @param X the nonterminal
+   * @return list of productions which belongs to X
+   */
+  private ArrayList < ProductionWord > getProductionForNonterminal (
+      final NonterminalSymbol X )
+  {
+    ArrayList < ProductionWord > prodWords = new ArrayList < ProductionWord > ();
+    for ( Production p : this.productions )
+      if ( p.getNonterminalSymbol ().equals ( X ) )
+        prodWords.add ( p.getProductionWord () );
+    return prodWords;
+  }
+
+
+  /**
+   * returns a list of {@link Production}s containing a specified
+   * {@link NonterminalSymbol}
+   * 
+   * @param X The {@link NonterminalSymbol}
+   * @return a list of {@link Production}s containing the
+   *         {@link NonterminalSymbol} {@code X}
+   */
+  private ArrayList < Production > getProductionsContainingNonterminalSymbol (
+      NonterminalSymbol X )
+  {
+    ArrayList < Production > prods = new ArrayList < Production > ();
+    for ( Production p : this.productions )
+      if ( p.contains ( X ) )
+        prods.add ( p );
+    return prods;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final FirstSet first ( final ProductionWord pw )
+      throws GrammarInvalidNonterminalException
+  {
+    DefaultFirstSet firstSet = new DefaultFirstSet ();
+    /*
+     * ProductionWord starts with a TerminalSymbol => we can derive a word from
+     * pw that starts with that TerminalSymbol
+     */
+    if ( pw.get ().size () >= 1 && pw.get ( 0 ) instanceof TerminalSymbol )
+      try
+      {
+        firstSet.add ( ( TerminalSymbol ) pw.get ( 0 ) );
+      }
+      catch ( TerminalSymbolSetException exc1 )
+      {
+        exc1.printStackTrace ();
+      }
+    else
+    /*
+     * pw is a Nonterminal X of the form X -> X_1\dots X_nnow search for an
+     * index i such that j < i.(\epsilon \in X_j) andif terminalsymbol a \in X_i
+     * we can derive a word form pw thatstarts with a (add it to the firstSet)
+     */
+    {
+      ProductionWordMember X = pw.get ( 0 );
+      // for ( ProductionWordMember X : pw ) TODO: verify logic
+      if ( X instanceof NonterminalSymbol )
+      {
+        NonterminalSymbol x = ( NonterminalSymbol ) X;
+        if ( !this.nonterminalSymbolSet.contains ( x ) )
+          throw new GrammarInvalidNonterminalException ( x,
+              this.nonterminalSymbolSet );
+        ArrayList < ProductionWord > prodWords = getProductionForNonterminal ( x );
+        for ( ProductionWord p : prodWords )
+        {
+          if ( p.epsilon () )
+            firstSet.epsilon ( true );
+          for ( ProductionWordMember pwm : p )
+          {
+            if ( pwm.getName ().equals ( x.getName () ) )
+              break;
+            DefaultFirstSet fsX = ( DefaultFirstSet ) first ( new DefaultProductionWord (
+                pwm ) );
+            if ( fsX.epsilon () )
+              break;
+            try
+            {
+              firstSet.add ( fsX );
+            }
+            catch ( TerminalSymbolSetException exc )
+            {
+              exc.printStackTrace ();
+            }
+            break;
+          }// end inner for
+        }// end outer for
+      }// end if
+    }// end else
+    return firstSet;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final TerminalSymbolSet follow ( final NonterminalSymbol p )
+      throws TerminalSymbolSetException
+  {
+    DefaultTerminalSymbolSet followSet = new DefaultTerminalSymbolSet ();
+
+    /*
+     * (1) we add the endmarker to the follow set (by definition)
+     */
+    followSet.add ( DefaultTerminalSymbol.EndMarker );
+    
+    /*
+     * (2) if there exists a Production X -> \alpha A \beta, A is Nonterminal (here p)
+     *     and TerminalSymbol t \in first(\beta)
+     *     => add t to followSet
+     */
+    ArrayList < Production > prods = getProductionsContainingNonterminalSymbol ( p );
+
+    return followSet;
   }
 }

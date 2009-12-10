@@ -19,6 +19,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
@@ -34,7 +35,7 @@ public class LR0Grammar extends ExtendedGrammar
 {
 
   /**
-   * TODO
+   * version
    */
   private static final long serialVersionUID = 1L;
 
@@ -108,21 +109,21 @@ public class LR0Grammar extends ExtendedGrammar
 
 
   /**
-   * Calculates the move function for a given set of LR0items and a terminal or
+   * Calculates the move function for a given set of LR0 items and a terminal or
    * nonterminal symbol the dot should be moved over
    * 
-   * @param items
-   * @param productionWord
-   * @return
+   * @param items - The set of LR0 items
+   * @param member - The item to move the dot over
+   * @return MOVE(items, member)
    */
-  public LR0ItemSet move ( LR0ItemSet items, ProductionWordMember productionWord )
+  public LR0ItemSet move ( LR0ItemSet items, ProductionWordMember member )
   {
     LR0ItemSet ret = new LR0ItemSet ();
 
     for ( LR0Item item : items )
       if ( !item.dotIsAtEnd ()
           && item.getProductionWord ().get ( item.getDotPosition () ).equals (
-              productionWord ) )
+              member ) )
         ret.add ( item.incDot () );
 
     return ret;
@@ -131,11 +132,12 @@ public class LR0Grammar extends ExtendedGrammar
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @throws AlphabetException
    */
-  public LR0 makeLR0Automata () throws AlphabetException
+
+  public Alphabet makeAutomataAlphabet () throws AlphabetException
   {
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
 
@@ -145,7 +147,13 @@ public class LR0Grammar extends ExtendedGrammar
     for ( NonterminalSymbol symbol : this.getNonterminalSymbolSet () )
       symbols.add ( new DefaultSymbol ( symbol.toString () ) );
 
-    Alphabet alphabet = new DefaultAlphabet ( symbols );
+    return new DefaultAlphabet ( symbols );
+  }
+
+
+  public LR0 makeLR0Automata () throws AlphabetException
+  {
+    Alphabet alphabet = makeAutomataAlphabet ();
 
     LR0 lr0Automata = new LR0 ( alphabet );
 
@@ -191,10 +199,24 @@ public class LR0Grammar extends ExtendedGrammar
               newState = ( LR0State ) lr0Automata.getState ().get (
                   lr0Automata.getState ().indexOf ( newState ) );
 
-            lr0Automata.addTransition ( new DefaultTransition ( alphabet,
+            Transition newTransition = new DefaultTransition ( alphabet,
                 new DefaultAlphabet (), new DefaultWord (), new DefaultWord (),
                 currentState, newState, new DefaultSymbol ( item
-                    .getProductionWordMemberAfterDot ().toString () ) ) );
+                    .getProductionWordMemberAfterDot ().toString () ) );
+
+            boolean transitionAlreadyExists = false;
+
+            for ( Transition trans : lr0Automata.getTransition () )
+            {
+              if ( trans.compareByStates ( newTransition )) 
+              {
+                transitionAlreadyExists = true;
+                break;
+              }
+            }
+
+            if ( !transitionAlreadyExists )
+              lr0Automata.addTransition ( newTransition );
           }
           catch ( StateException e )
           {
@@ -210,9 +232,6 @@ public class LR0Grammar extends ExtendedGrammar
           }
         }
       }
-
-      if ( newSize > 15 )
-        break; // HACK HACK
     }
 
     return lr0Automata;

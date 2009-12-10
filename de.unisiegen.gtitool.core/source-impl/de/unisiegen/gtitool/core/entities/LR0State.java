@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.util.Iterator;
+import java.util.TreeSet;
+
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 
 
@@ -38,8 +41,18 @@ public class LR0State extends DefaultState
   private static String makeStateString ( LR0ItemSet items )
   {
     String ret = "";
-    for ( LR0Item item : items )
-      ret += item.toString () + '\n';
+    TreeSet < LR0Item > set = items.get ();
+
+    Iterator < LR0Item > it = set.iterator ();
+
+    while ( it.hasNext () )
+    {
+      ret += it.next ().toString ();
+
+      if ( it.hasNext () )
+        ret += ", ";
+    }
+
     return ret;
   }
 

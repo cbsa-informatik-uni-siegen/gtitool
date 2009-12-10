@@ -446,4 +446,7 @@ public interface Transition extends Entity < Transition >, Storable,
    * @return The {@link PrettyString} for the stack operation.
    */
   public PrettyString toStackOperationPrettyString ();
+
+
+  public boolean compareByStates ( Transition other );
 }

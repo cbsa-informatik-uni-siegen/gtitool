@@ -440,6 +440,9 @@ public abstract class AbstractMachine implements Machine
     }
     if ( !this.pushDownAlphabet.equals ( state.getPushDownAlphabet () ) )
     {
+      System.out.println ( this.pushDownAlphabet );
+      System.out.println ( state.getPushDownAlphabet () );
+
       throw new IllegalArgumentException ( "not the same push down alphabet" ); //$NON-NLS-1$
     }
 

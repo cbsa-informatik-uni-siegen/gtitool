@@ -1780,4 +1780,17 @@ public final class DefaultTransition implements Transition
     }
     return result.toString ();
   }
+
+
+  public boolean compareByStates ( Transition other )
+  {
+    if ( ! ( other instanceof DefaultTransition ) )
+      return false;
+
+    final DefaultTransition otherDT = ( DefaultTransition ) ( other );
+
+    return getStateBegin ().equals ( otherDT.getStateBegin () )
+        && getStateEnd ().equals ( otherDT.getStateEnd () )
+        && getSymbol ().equals ( other.getSymbol () );
+  }
 }

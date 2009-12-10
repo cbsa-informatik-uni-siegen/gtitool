@@ -1207,6 +1207,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemConvertToENFA = new javax.swing.JMenuItem();
         jMenuItemConvertToPDA = new javax.swing.JMenuItem();
         jMenuItemConvertToRegex = new javax.swing.JMenuItem();
+        jMenuItemConvertToLR0 = new javax.swing.JMenuItem();
         jMenuConvertToComplete = new javax.swing.JMenu();
         jMenuItemConvertToCompleteDFA = new javax.swing.JMenuItem();
         jMenuItemConvertToCompleteNFA = new javax.swing.JMenuItem();
@@ -1840,6 +1841,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuConvertTo.add(jMenuItemConvertToRegex);
 
+        jMenuItemConvertToLR0.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LR0").charAt(0));
+        jMenuItemConvertToLR0.setText(bundle.getString("MainWindow.LR0")); // NOI18N
+        jMenuItemConvertToLR0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToLR0ActionPerformed(evt);
+            }
+        });
+        jMenuConvertTo.add(jMenuItemConvertToLR0);
+
         jMenuExecute.add(jMenuConvertTo);
 
         jMenuConvertToComplete.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConvertToCompleteMnemonic").charAt(0));
@@ -2377,6 +2387,10 @@ private void jMenuItemConvertToNFACBctionPerformed(java.awt.event.ActionEvent ev
 private void jMenuItemCreateTDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCreateTDPActionPerformed
     this.logic.handleCreateTDP();
 }//GEN-LAST:event_jMenuItemCreateTDPActionPerformed
+
+private void jMenuItemConvertToLR0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToLR0ActionPerformed
+    this.logic.handleConvertTo(MachineType.LR0, true);
+}//GEN-LAST:event_jMenuItemConvertToLR0ActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2429,6 +2443,7 @@ private void jMenuItemCreateTDPActionPerformed(java.awt.event.ActionEvent evt) {
     private javax.swing.JMenuItem jMenuItemConvertToCompletePDA;
     private javax.swing.JMenuItem jMenuItemConvertToDFA;
     private javax.swing.JMenuItem jMenuItemConvertToENFA;
+    private javax.swing.JMenuItem jMenuItemConvertToLR0;
     private javax.swing.JMenuItem jMenuItemConvertToNFA;
     private javax.swing.JMenuItem jMenuItemConvertToNFACB;
     private javax.swing.JMenuItem jMenuItemConvertToPDA;

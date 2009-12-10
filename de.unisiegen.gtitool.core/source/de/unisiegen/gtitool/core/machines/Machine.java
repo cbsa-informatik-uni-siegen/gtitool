@@ -19,6 +19,7 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
+import de.unisiegen.gtitool.core.machines.dfa.LR0;
 import de.unisiegen.gtitool.core.machines.enfa.ENFA;
 import de.unisiegen.gtitool.core.machines.listener.MachineChangedListener;
 import de.unisiegen.gtitool.core.machines.nfa.NFA;
@@ -61,7 +62,12 @@ public interface Machine extends InputEntity, Serializable, TableModel,
     /**
      * The {@link PDA} machine type.
      */
-    PDA;
+    PDA,
+    
+    /**
+     * The {@link LR0} machine type.
+     */
+    LR0;
 
     /**
      * The file ending.
@@ -99,6 +105,10 @@ public interface Machine extends InputEntity, Serializable, TableModel,
         case PDA :
         {
           return "PDA"; //$NON-NLS-1$
+        }
+        case LR0 :
+        {
+          return "LR0"; //$NON-NLS-1$
         }
       }
       throw new IllegalArgumentException ( "unsupported machine type" ); //$NON-NLS-1$
@@ -185,7 +195,7 @@ public interface Machine extends InputEntity, Serializable, TableModel,
    * The available machines.
    */
   public static final String [] AVAILABLE_MACHINES =
-  { "DFA", "NFA", "ENFA", "PDA" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+  { "DFA", "NFA", "ENFA", "PDA", "LR0" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
 
 
   /**

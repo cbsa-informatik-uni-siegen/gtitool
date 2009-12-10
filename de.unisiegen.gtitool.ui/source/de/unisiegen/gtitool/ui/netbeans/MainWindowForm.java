@@ -1109,6 +1109,16 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     public JMenuItem getJMenuItemEliminateEpsilonProductions() {
         return this.jMenuItemEliminateEpsilonProductions;
     }
+
+    /**
+     * Returns the jMenuItemCreateTDP
+     *
+     * @return The jMenuItemCreateTDP
+     * @see #jMenuItemCreateTDP
+     */
+    public JMenuItem getJMenuItemCreateTDP() {
+        return this.jMenuItemCreateTDP;
+    }
     
 
     /** This method is called from within the constructor to
@@ -1218,6 +1228,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemEliminateEpsilonProductions = new javax.swing.JMenuItem();
         jMenuItemLeftfactoring = new javax.swing.JMenuItem();
         jMenuItemCreateRDP = new javax.swing.JMenuItem();
+        jMenuItemCreateTDP = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
@@ -1994,6 +2005,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuExecute.add(jMenuItemCreateRDP);
 
+        jMenuItemCreateTDP.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CreateTDPPDAMnemonic").charAt(0));
+        jMenuItemCreateTDP.setText(bundle.getString("MainWindow.CreateTDPPDA")); // NOI18N
+        jMenuItemCreateTDP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCreateTDPActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemCreateTDP);
+
         jMenuBarMain.add(jMenuExecute);
 
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
@@ -2353,6 +2373,10 @@ private void jMenuItemEliminateEpsilonProductionsActionPerformed(java.awt.event.
 private void jMenuItemConvertToNFACBctionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToNFACBctionPerformed
     this.logic.handleConvertTo ( MachineType.NFA, true );
 }//GEN-LAST:event_jMenuItemConvertToNFACBctionPerformed
+
+private void jMenuItemCreateTDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCreateTDPActionPerformed
+    this.logic.handleCreateTDP();
+}//GEN-LAST:event_jMenuItemCreateTDPActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2410,6 +2434,7 @@ private void jMenuItemConvertToNFACBctionPerformed(java.awt.event.ActionEvent ev
     private javax.swing.JMenuItem jMenuItemConvertToPDA;
     private javax.swing.JMenuItem jMenuItemConvertToRegex;
     private javax.swing.JMenuItem jMenuItemCreateRDP;
+    private javax.swing.JMenuItem jMenuItemCreateTDP;
     private javax.swing.JMenuItem jMenuItemDFA;
     private javax.swing.JMenuItem jMenuItemENFA;
     private javax.swing.JMenuItem jMenuItemEditMachine;

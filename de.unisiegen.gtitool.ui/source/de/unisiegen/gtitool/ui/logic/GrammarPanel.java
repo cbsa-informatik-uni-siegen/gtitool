@@ -84,7 +84,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   /**
    * The {@link DefaultGrammarModel}.
    */
-  private DefaultGrammarModel model;
+  private final DefaultGrammarModel model;
 
 
   /**
@@ -108,13 +108,13 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   /**
    * The {@link EventListenerList}.
    */
-  private EventListenerList listenerList = new EventListenerList ();
+  private final EventListenerList listenerList = new EventListenerList ();
 
 
   /**
    * The {@link RedoUndoHandler}
    */
-  private RedoUndoHandler redoUndoHandler;
+  private final RedoUndoHandler redoUndoHandler;
 
 
   /**
@@ -144,7 +144,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   /**
    * The {@link GrammarColumnModel}.
    */
-  private GrammarColumnModel grammarColumnModel = new GrammarColumnModel ();
+  private final GrammarColumnModel grammarColumnModel = new GrammarColumnModel ();
 
 
   /**
@@ -264,14 +264,10 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     this.grammar.getStartSymbol ().setError ( false );
 
     for ( NonterminalSymbol current : this.grammar.getNonterminalSymbolSet () )
-    {
       current.setError ( false );
-    }
 
     for ( TerminalSymbol current : this.grammar.getTerminalSymbolSet () )
-    {
       current.setError ( false );
-    }
 
     for ( Production currentProduction : this.grammar.getProduction () )
     {
@@ -279,9 +275,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       currentProduction.getNonterminalSymbol ().setError ( false );
       for ( ProductionWordMember currentMember : currentProduction
           .getProductionWord () )
-      {
         currentMember.setError ( false );
-      }
     }
     this.gui.jGTITableGrammar.repaint ();
   }
@@ -305,7 +299,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
-   * TODO
+   * generates the rdp source code from a given grammar
    * 
    * @param g
    * @return The string of the RDP
@@ -317,13 +311,9 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     for ( NonterminalSymbol A : g.getNonterminalSymbolSet () )
     {
       if ( !first )
-      {
         result.append ( "\n\n" ); //$NON-NLS-1$
-      }
       else
-      {
         first = false;
-      }
       result.append ( "void " ); //$NON-NLS-1$
       result.append ( A );
       result.append ( "() {\n" ); //$NON-NLS-1$
@@ -331,7 +321,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       {
         result.append ( "   case:{\n" ); //$NON-NLS-1$
         for ( ProductionWordMember m : p.getProductionWord () )
-        {
           if ( m instanceof NonterminalSymbol )
           {
             result.append ( "      " ); //$NON-NLS-1$
@@ -344,7 +333,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
             result.append ( m );
             result.append ( "\");\n" ); //$NON-NLS-1$
           }
-        }
         result.append ( "   }\n" ); //$NON-NLS-1$
       }
       result.append ( "}" ); //$NON-NLS-1$
@@ -365,19 +353,13 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
-    {
       for ( ModifyStatusChangedListener current : listeners )
-      {
         current.modifyStatusChanged ( true );
-      }
-    }
     else
     {
       boolean newModifyStatus = isModified ();
       for ( ModifyStatusChangedListener current : listeners )
-      {
         current.modifyStatusChanged ( newModifyStatus );
-      }
     }
   }
 
@@ -390,9 +372,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   public Converter getConverter ()
   {
     if ( this.grammar instanceof RG )
-    {
       return new ConvertRegularGrammar ( this.mainWindowForm, this.grammar );
-    }
     return new ConvertContextFreeGrammar ( this.mainWindowForm, this.grammar );
   }
 
@@ -592,18 +572,12 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   {
     JTable table;
     if ( event.getSource () == this.gui.jGTITableErrors.getSelectionModel () )
-    {
       table = this.gui.jGTITableErrors;
-    }
     else if ( event.getSource () == this.gui.jGTITableWarnings
         .getSelectionModel () )
-    {
       table = this.gui.jGTITableWarnings;
-    }
     else
-    {
       throw new IllegalArgumentException ( "wrong event source" ); //$NON-NLS-1$
-    }
 
     this.gui.jGTITableGrammar.clearSelection ();
     clearProductionHighlights ();
@@ -623,13 +597,24 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
-   * TODO
+   * Handles create rdp button pressed
    */
   public final void handleCreateRDP ()
   {
     TextWindow w = new TextWindow ( this.mainWindowForm,
         createRDP ( this.grammar ), false, null, getName () + "_RDP" ); //$NON-NLS-1$
     w.show ();
+  }
+  
+  
+  /**
+   * 
+   * Handle create tdp button pressed
+   *
+   */
+  public final void handleCreateTDP ()
+  {
+    ; //TODO implement logic
   }
 
 
@@ -643,22 +628,16 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       int [] rows = this.gui.jGTITableGrammar.getSelectedRows ();
 
       if ( rows.length == 0 )
-      {
         return;
-      }
 
       String message = null;
       if ( rows.length == 1 )
-      {
         message = Messages.getString (
             "ProductionPopupMenu.DeleteProductionQuestion", //$NON-NLS-1$
             this.grammar.getProductionAt ( rows [ 0 ] ) );
-      }
       else
-      {
         message = Messages
             .getString ( "ProductionPopupMenu.DeleteProductionsQuestion" ); //$NON-NLS-1$
-      }
 
       ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
           message, Messages
@@ -761,9 +740,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   public final void handleGrammarTableKeyReleased ( KeyEvent event )
   {
     if ( event.getKeyCode () == KeyEvent.VK_DELETE )
-    {
       handleDeleteProduction ();
-    }
   }
 
 
@@ -798,9 +775,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   public final File handleSave ()
   {
     if ( this.file == null )
-    {
       return handleSaveAs ();
-    }
     try
     {
       Storage.getInstance ().store ( this.model, this.file );
@@ -833,14 +808,10 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         public boolean accept ( File acceptedFile )
         {
           if ( acceptedFile.isDirectory () )
-          {
             return true;
-          }
           if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
               + GrammarPanel.this.grammar.getGrammarType ().getFileEnding () ) )
-          {
             return true;
-          }
           return false;
         }
 
@@ -863,9 +834,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
       if ( ( !saveDialog.isConfirmed () )
           || ( saveDialog.getSelectedFile () == null ) )
-      {
         return null;
-      }
 
       if ( saveDialog.getSelectedFile ().exists () )
       {
@@ -876,9 +845,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
             true, false, true, false, false );
         confirmDialog.show ();
         if ( confirmDialog.isNotConfirmed () )
-        {
           return null;
-        }
       }
 
       String filename = saveDialog.getSelectedFile ().toString ().matches (
@@ -913,9 +880,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   public final void handleTableMouseClickedEvent ( MouseEvent event )
   {
     if ( event.getButton () == MouseEvent.BUTTON2 )
-    {
       return;
-    }
 
     if ( event.getButton () == MouseEvent.BUTTON3 )
     {
@@ -927,15 +892,9 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       int rowIndex = this.gui.jGTITableGrammar.rowAtPoint ( event.getPoint () );
 
       if ( rows.length > 1 )
-      {
         for ( int row : rows )
-        {
           if ( row == rowIndex )
-          {
             multiRowChoosen = true;
-          }
-        }
-      }
       if ( !multiRowChoosen )
       {
         if ( rowIndex == -1 )
@@ -953,12 +912,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         }
       }
       else
-      {
         for ( int element : rows )
-        {
           productions.add ( this.grammar.getProductionAt ( element ) );
-        }
-      }
 
       ProductionPopupMenu popupmenu = new ProductionPopupMenu ( this,
           this.model, productions );
@@ -1025,9 +980,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       NonterminalSymbol nonterminalSymbol )
   {
     if ( nonterminalSymbol == null )
-    {
       return;
-    }
 
     nonterminalSymbol.setError ( true );
   }
@@ -1043,9 +996,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       ArrayList < Production > productionList )
   {
     if ( productionList == null )
-    {
       return;
-    }
 
     for ( Production currentProduction : productionList )
     {
@@ -1053,9 +1004,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       currentProduction.getNonterminalSymbol ().setError ( true );
       for ( ProductionWordMember currentMember : currentProduction
           .getProductionWord () )
-      {
         currentMember.setError ( true );
-      }
     }
   }
 
@@ -1070,14 +1019,10 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       ArrayList < ProductionWordMember > productionWordMember )
   {
     if ( productionWordMember == null )
-    {
       return;
-    }
 
     for ( ProductionWordMember currentMember : productionWordMember )
-    {
       currentMember.setError ( true );
-    }
   }
 
 
@@ -1091,10 +1036,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     this.gui.jGTITableGrammar.addAllowedDndSource ( this.gui.jGTITableGrammar );
     this.gui.jGTITableGrammar.getTableHeader ().setReorderingAllowed ( false );
     if ( this.grammar.getColumnCount () > 0 )
-    {
       this.gui.jGTITableGrammar.getSelectionModel ().setSelectionInterval ( 0,
           0 );
-    }
 
     // ModifyStatusChangedListener
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
@@ -1280,24 +1223,18 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     int newTargetIndex = targetIndex;
 
     if ( ( indeces.length > 0 ) && ( indeces [ 0 ] < targetIndex ) )
-    {
       newTargetIndex++ ;
-    }
 
     for ( int index : indeces )
     {
       productions.add ( this.grammar.getProductionAt ( index ) );
 
       if ( index < targetIndex )
-      {
         newTargetIndex-- ;
-      }
     }
 
     for ( int i = indeces.length - 1 ; i > -1 ; i-- )
-    {
       this.grammar.getProduction ().remove ( indeces [ i ] );
-    }
 
     newTargetIndex = Math.min ( newTargetIndex, this.grammar.getRowCount () );
 
@@ -1311,14 +1248,12 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     boolean changed = false;
 
     for ( int i = 0 ; i < oldProductions.size () ; i++ )
-    {
       if ( !this.grammar.getProductionAt ( i )
           .equals ( oldProductions.get ( i ) ) )
       {
         changed = true;
         break;
       }
-    }
     if ( changed )
     {
       ProductionsListChangedItem item = new ProductionsListChangedItem (

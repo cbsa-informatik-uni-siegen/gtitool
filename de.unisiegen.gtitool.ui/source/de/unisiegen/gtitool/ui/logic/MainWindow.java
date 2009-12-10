@@ -373,6 +373,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
      * The regex info button state
      */
     ENABLED_REGEX_INFO,
+    
+    /**
+     * The createTDP button state
+     */
+    ENABLED_CREATE_TDP,
 
     /**
      * The machine table selected button state.
@@ -459,31 +464,31 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   /**
    * The {@link MainWindowForm}.
    */
-  private MainWindowForm gui;
+  private final MainWindowForm gui;
 
 
   /**
    * The {@link ModifyStatusChangedListener}.
    */
-  private ModifyStatusChangedListener modifyStatusChangedListener;
+  private final ModifyStatusChangedListener modifyStatusChangedListener;
 
 
   /**
    * List contains the recently used files
    */
-  private ArrayList < RecentlyUsedMenuItem > recentlyUsedFiles = new ArrayList < RecentlyUsedMenuItem > ();
+  private final ArrayList < RecentlyUsedMenuItem > recentlyUsedFiles = new ArrayList < RecentlyUsedMenuItem > ();
 
 
   /**
    * The {@link ButtonState} list.
    */
-  private ArrayList < ButtonState > buttonStateList = new ArrayList < ButtonState > ();
+  private final ArrayList < ButtonState > buttonStateList = new ArrayList < ButtonState > ();
 
 
   /**
    * The {@link JGTIMainSplitPane}.
    */
-  private JGTIMainSplitPane jGTIMainSplitPane;
+  private final JGTIMainSplitPane jGTIMainSplitPane;
 
 
   /**
@@ -553,35 +558,28 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
     removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
     removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+    removeButtonState ( ButtonState.ENABLED_CREATE_TDP);
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
         PreferenceManager.getInstance ().getVisibleConsole () );
     if ( PreferenceManager.getInstance ().getVisibleTable () )
-    {
       addButtonState ( ButtonState.SELECTED_MACHINE_TABLE );
-    }
     else
-    {
       removeButtonState ( ButtonState.SELECTED_MACHINE_TABLE );
-    }
     this.gui.getJCheckBoxMenuItemRegexInfo ().setSelected (
         PreferenceManager.getInstance ().getVisibleRegexInfo () );
 
     this.gui.setVisible ( true );
     if ( PreferenceManager.getInstance ().getMainWindowMaximized () )
-    {
       this.gui.setExtendedState ( this.gui.getExtendedState ()
           | Frame.MAXIMIZED_BOTH );
-    }
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
     for ( File file : PreferenceManager.getInstance ()
         .getRecentlyUsedFilesItem ().getFiles () )
-    {
       this.recentlyUsedFiles.add ( new RecentlyUsedMenuItem ( this, file ) );
-    }
     organizeRecentlyUsedFilesMenu ();
 
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
@@ -590,13 +588,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       public void modifyStatusChanged ( boolean modified )
       {
         if ( modified )
-        {
           addButtonState ( ButtonState.ENABLED_SAVE );
-        }
         else
-        {
           removeButtonState ( ButtonState.ENABLED_SAVE );
-        }
       }
     };
 
@@ -610,9 +604,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       handleSecondViewStateChanged ();
     }
     else
-    {
       this.gui.getJCheckBoxMenuItemSecondView ().setSelected ( secondViewUsed );
-    }
   }
 
 
@@ -1249,24 +1241,18 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {
       if ( !this.buttonStateList.contains ( ButtonState.ENABLED_SAVE ) )
-      {
         this.buttonStateList.add ( ButtonState.ENABLED_SAVE );
-      }
       logger.debug ( "setSaveState", "set save status to " + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
           + true + Messages.QUOTE );
       EditorPanel panel = this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       if ( panel != null )
-      {
         this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
             .setEditorPanelTitle ( panel, "*" //$NON-NLS-1$
                 + panel.getName () );
-      }
       else
-      {
         throw new IllegalArgumentException (
             "the save status should be false if no panel is selected" ); //$NON-NLS-1$
-      }
       this.gui.getJGTIToolBarButtonSave ().setEnabled ( true );
       this.gui.getJMenuItemSave ().setEnabled ( true );
     }
@@ -1329,7 +1315,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_CREATE_RDP );
       this.gui.getJMenuItemCreateRDP ().setEnabled ( true );
     }
-    // regex info view
+    //create tdp
+    else if( ( buttonState.equals ( ButtonState.ENABLED_CREATE_TDP ))
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CREATE_TDP )))
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CREATE_TDP );
+      this.gui.getJMenuItemCreateTDP().setEnabled(true);
+    }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REGEX_INFO ) ) )
     {
@@ -1354,17 +1346,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( buttonState.equals ( ButtonState.SELECTED_MOUSE ) )
     {
       if ( !this.buttonStateList.contains ( ButtonState.SELECTED_MOUSE ) )
-      {
         this.buttonStateList.add ( ButtonState.SELECTED_MOUSE );
-      }
       this.gui.getJGTIToolBarToggleButtonMouse ().setSelected ( true );
     }
     else if ( buttonState.equals ( ButtonState.SELECTED_AUTO_STEP ) )
     {
       if ( !this.buttonStateList.contains ( ButtonState.SELECTED_AUTO_STEP ) )
-      {
         this.buttonStateList.add ( ButtonState.SELECTED_AUTO_STEP );
-      }
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setSelected ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.SELECTED_ENTER_WORD ) )
@@ -1399,9 +1387,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
     else if ( ( buttonState.equals ( ButtonState.VISIBLE_REGEX ) )
         && ( !this.buttonStateList.contains ( ButtonState.VISIBLE_REGEX ) ) )
-    {
       this.buttonStateList.add ( ButtonState.VISIBLE_REGEX );
-    }
   }
 
 
@@ -1419,9 +1405,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           .getRedoUndoHandler () ).doLayout ();
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -1458,12 +1442,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     int result = 0;
 
     for ( EditorPanel current : this.jGTIMainSplitPane )
-    {
       if ( current.isModified () )
-      {
         result++ ;
-      }
-    }
 
     return result;
   }
@@ -1503,9 +1483,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       grammarPanel.handleAddProduction ();
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -1518,9 +1496,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () == null )
-    {
       throw new RuntimeException ( "no selected editor panel" ); //$NON-NLS-1$
-    }
 
     return handleClose ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel (), this.jGTIMainSplitPane
@@ -1545,15 +1521,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     boolean resultNotConfirmedAll = notConfirmedAll;
 
     if ( editorPanel.isModified () )
-    {
       if ( notConfirmedAll )
       {
         // do nothing
       }
       else if ( confirmedAll )
-      {
         handleSave ( editorPanel );
-      }
       else
       {
         ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui, Messages
@@ -1564,24 +1537,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         confirmDialog.show ();
 
         if ( confirmDialog.isConfirmed () )
-        {
           handleSave ( editorPanel );
-        }
         else if ( confirmDialog.isConfirmedAll () )
         {
           handleSave ( editorPanel );
           resultConfirmedAll = true;
         }
         else if ( confirmDialog.isNotConfirmedAll () )
-        {
           resultNotConfirmedAll = true;
-        }
         else if ( confirmDialog.isCanceled () )
-        {
           return CloseState.CANCELED;
-        }
       }
-    }
 
     this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ().removeEditorPanel (
         editorPanel );
@@ -1590,14 +1556,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     handleTabbedPaneStateChanged ();
 
     if ( resultNotConfirmedAll )
-    {
       return CloseState.NOT_CONFIRMED_ALL;
-    }
 
     if ( resultConfirmedAll )
-    {
       return CloseState.CONFIRMED_ALL;
-    }
 
     return CloseState.CONFIRMED;
   }
@@ -1629,17 +1591,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           yesToAll, noToAll );
 
       if ( closeState.equals ( CloseState.CANCELED ) )
-      {
         return;
-      }
       if ( closeState.equals ( CloseState.NOT_CONFIRMED_ALL ) )
-      {
         noToAll = true;
-      }
       if ( closeState.equals ( CloseState.CONFIRMED_ALL ) )
-      {
         yesToAll = true;
-      }
     }
 
     // close all left editor panels
@@ -1657,17 +1613,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       CloseState closeState = handleClose ( current, getModifiedFileCount (),
           yesToAll, noToAll );
       if ( closeState.equals ( CloseState.CANCELED ) )
-      {
         return;
-      }
       if ( closeState.equals ( CloseState.NOT_CONFIRMED_ALL ) )
-      {
         noToAll = true;
-      }
       if ( closeState.equals ( CloseState.CONFIRMED_ALL ) )
-      {
         yesToAll = true;
-      }
     }
 
     this.jGTIMainSplitPane.setActiveEditor ( activeEditor );
@@ -1686,13 +1636,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( PreferenceManager.getInstance ().getVisibleConsole () != selected )
     {
       if ( selected )
-      {
         addButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
-      }
       else
-      {
         removeButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
-      }
 
       editorPanel.setVisibleConsole ( selected );
       PreferenceManager.getInstance ().setVisibleConsole ( selected );
@@ -1713,7 +1659,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     // if there are no validation errors perform the action
     if ( handleValidate ( false ) )
-    {
       // MachinePanel
       if ( panel instanceof MachinePanel )
       {
@@ -1721,32 +1666,22 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
-        {
           panel.getConverter ().convert ( MachineType.DFA, entityType, false,
               false );
-        }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
-        {
           panel.getConverter ().convert ( MachineType.NFA, entityType, false,
               false );
-        }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
-        {
           panel.getConverter ().convert ( MachineType.ENFA, entityType, false,
               cb );
-        }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
-        {
           panel.getConverter ().convert ( MachineType.PDA, entityType, false,
               false );
-        }
         else
-        {
           throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
-        }
       }
       // GrammarPanel
       else if ( panel instanceof GrammarPanel )
@@ -1754,20 +1689,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         GrammarPanel grammarPanel = ( GrammarPanel ) panel;
         if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.RG ) )
-        {
           panel.getConverter ().convert ( GrammarType.RG, entityType, false,
               false );
-        }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
-        {
           panel.getConverter ().convert ( GrammarType.CFG, entityType, false,
               false );
-        }
         else
-        {
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
-        }
       }
       else if ( panel instanceof RegexPanel )
       {
@@ -1776,10 +1705,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             false, false );
       }
       else
-      {
         throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-      }
-    }
   }
 
 
@@ -1797,7 +1723,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     // if there are no validation errors perform the action
     if ( handleValidate ( false ) )
-    {
       // MachinePanel
       if ( panel instanceof MachinePanel )
       {
@@ -1805,38 +1730,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
-        {
           panel.getConverter ().convert ( MachineType.DFA, entityType, true,
               false );
-        }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
-        {
           panel.getConverter ().convert ( MachineType.NFA, entityType, true,
               false );
-        }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
-        {
           panel.getConverter ().convert ( MachineType.ENFA, entityType, true,
               false );
-        }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
-        {
           panel.getConverter ().convert ( MachineType.PDA, entityType, true,
               false );
-        }
         else
-        {
           throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
-        }
       }
       else
-      {
         throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-      }
-    }
   }
 
 
@@ -1853,9 +1765,24 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       gp.handleCreateRDP ();
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Handle the create Top Down Parser buttun clicked
+   */
+  public final void handleCreateTDP ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      gp.handleCreateTDP ();
     }
+    else
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
   }
 
 
@@ -1878,13 +1805,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       int count = 0;
       for ( EditorPanel current : this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane () )
-      {
         if ( current.getFile () == null )
         {
           nameList.add ( current.getName () );
           count++ ;
         }
-      }
 
       String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
           + "." + grammarType.toString ().toLowerCase (); //$NON-NLS-1$
@@ -1952,13 +1877,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       int count = 0;
       for ( EditorPanel current : this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane () )
-      {
         if ( current.getFile () == null )
         {
           nameList.add ( current.getName () );
           count++ ;
         }
-      }
 
       String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
           + "." + machineType.toString ().toLowerCase (); //$NON-NLS-1$
@@ -2041,9 +1964,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
-    {
       throw new IllegalArgumentException ( "unsupported panel" ); //$NON-NLS-1$
-    }
 
     MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleEditMachine ();
@@ -2070,22 +1991,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
 
     if ( machinePanel.isUndoAble () )
-    {
       addButtonState ( ButtonState.ENABLED_UNDO );
-    }
     else
-    {
       removeButtonState ( ButtonState.ENABLED_UNDO );
-    }
 
     if ( machinePanel.isRedoAble () )
-    {
       addButtonState ( ButtonState.ENABLED_REDO );
-    }
     else
-    {
       removeButtonState ( ButtonState.ENABLED_REDO );
-    }
   }
 
 
@@ -2102,9 +2015,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       grammarPanel.handleEditProduction ();
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -2116,9 +2027,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
-    {
       ( ( GrammarPanel ) panel ).handleEliminateEntityProductions ();
-    }
   }
 
 
@@ -2130,9 +2039,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
-    {
       ( ( GrammarPanel ) panel ).handleEliminateEpsilonProductions ();
-    }
   }
 
 
@@ -2144,9 +2051,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
-    {
       ( ( GrammarPanel ) panel ).handleEliminateLeftRecursion ();
-    }
   }
 
 
@@ -2162,9 +2067,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .getSelectedEditorPanel ();
 
     if ( ! ( panel instanceof MachinePanel ) )
-    {
       throw new IllegalArgumentException ( "unsupported panel" ); //$NON-NLS-1$
-    }
 
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
@@ -2193,9 +2096,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_REDO );
     }
     else
-    {
       removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
-    }
   }
 
 
@@ -2208,9 +2109,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
-    {
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
     boolean selected = this.gui.getJGTIToolBarToggleButtonEnterWord ()
@@ -2220,9 +2119,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       // happens if the enter word menu item state changed
       if ( !machinePanel.getMachineMode ().equals ( MachineMode.EDIT_MACHINE ) )
-      {
         return;
-      }
 
       logger.debug ( "handleEnterWordToggleButton", //$NON-NLS-1$
           "handle enter word toggle button selected: " + selected ); //$NON-NLS-1$
@@ -2233,9 +2130,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       // happens if the enter word menu item state changed
       if ( machinePanel.getMachineMode ().equals ( MachineMode.EDIT_MACHINE ) )
-      {
         return;
-      }
 
       logger.debug ( "handleEnterWordToggleButton", //$NON-NLS-1$
           "handle enter word toggle button selected: " + selected ); //$NON-NLS-1$
@@ -2258,9 +2153,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       exchangeDialog.show ();
     }
     else
-    {
       panel.handleExchange ();
-    }
   }
 
 
@@ -2280,17 +2173,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .getSelectedEditorPanel () instanceof RegexPanel )
     {
       if ( !handleValidate ( false ) )
-      {
         return;
-      }
       RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       regexPanel.handleExportPicture ();
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -2307,9 +2196,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       machinePanel.handleHistory ();
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -2321,9 +2208,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
-    {
       ( ( GrammarPanel ) panel ).handleLeftFactoring ();
-    }
   }
 
 
@@ -2346,9 +2231,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -2366,13 +2249,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       int count = 0;
       for ( EditorPanel current : this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane () )
-      {
         if ( current.getFile () == null )
         {
           nameList.add ( current.getName () );
           count++ ;
         }
-      }
 
       String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
           + newDialog.getEditorPanel ().getFileEnding ();
@@ -2432,26 +2313,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
       }
       else if ( defaultModel instanceof DefaultRegexModel )
-      {
         newEditorPanel = new RegexPanel ( this.gui,
             ( DefaultRegexModel ) defaultModel, null );
-      }
       else
-      {
         throw new RuntimeException ( "unsupported model" ); //$NON-NLS-1$
-      }
 
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;
       for ( EditorPanel current : this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane () )
-      {
         if ( current.getFile () == null )
         {
           nameList.add ( current.getName () );
           count++ ;
         }
-      }
 
       String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
           + newEditorPanel.getFileEnding ();
@@ -2498,23 +2373,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         defaultModel = new DefaultMachineModel ( element, null );
 
         if ( autoLayout )
-        {
           new LayoutManager ( ( DefaultMachineModel ) defaultModel, null )
               .doLayout ();
-        }
       }
-      else if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
-      {
+      else if ( element.getName ().equals ( "GrammarModel" ) )
         defaultModel = new DefaultGrammarModel ( element, null );
-      }
-      else if ( element.getName ().equals ( "RegexModel" ) ) //$NON-NLS-1$
-      {
+      else if ( element.getName ().equals ( "RegexModel" ) )
         defaultModel = new DefaultRegexModel ( element, true );
-      }
       else
-      {
         throw new IllegalArgumentException ( "unsupported model" ); //$NON-NLS-1$
-      }
     }
     catch ( TransitionSymbolOnlyOneTimeException exc )
     {
@@ -2577,14 +2444,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     openDialog.show ();
     if ( ( !openDialog.isConfirmed () )
         || ( openDialog.getSelectedFile () == null ) )
-    {
       return;
-    }
 
     for ( File file : openDialog.getSelectedFiles () )
-    {
       openFile ( file, true );
-    }
     PreferenceManager.getInstance ().setWorkingPath (
         openDialog.getSelectedFile ().getParentFile ().getAbsolutePath () );
   }
@@ -2625,18 +2488,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .getSelectedEditorPanel () instanceof RegexPanel )
     {
       if ( !handleValidate ( false ) )
-      {
         return;
-      }
       RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       PrintDialog printDialog = new PrintDialog ( this.gui, regexPanel );
       printDialog.show ();
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -2654,22 +2513,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ArrayList < ObjectPair < File, ActiveEditor > > openedFiles = new ArrayList < ObjectPair < File, ActiveEditor > > ();
     for ( EditorPanel current : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPaneLeft () )
-    {
       if ( current.getFile () != null )
-      {
         openedFiles.add ( new ObjectPair < File, ActiveEditor > ( current
             .getFile (), ActiveEditor.LEFT_EDITOR ) );
-      }
-    }
     for ( EditorPanel current : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPaneRight () )
-    {
       if ( current.getFile () != null )
-      {
         openedFiles.add ( new ObjectPair < File, ActiveEditor > ( current
             .getFile (), ActiveEditor.RIGHT_EDITOR ) );
-      }
-    }
 
     boolean yesToAll = false;
     boolean noToAll = false;
@@ -2691,10 +2542,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         {
           File file = current.handleSave ();
           if ( file != null )
-          {
             this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
                 .setEditorPanelTitle ( current, file.getName () );
-          }
         }
         else if ( noToAll )
         {
@@ -2714,29 +2563,21 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           {
             File file = current.handleSave ();
             if ( file != null )
-            {
               this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
                   .setEditorPanelTitle ( current, file.getName () );
-            }
           }
           else if ( confirmDialog.isConfirmedAll () )
           {
             File file = current.handleSave ();
             if ( file != null )
-            {
               this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
                   .setEditorPanelTitle ( current, file.getName () );
-            }
             yesToAll = true;
           }
           else if ( confirmDialog.isNotConfirmedAll () )
-          {
             noToAll = true;
-          }
           else if ( confirmDialog.isCanceled () )
-          {
             return;
-          }
         }
       }
       this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
@@ -2760,10 +2601,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         {
           File file = current.handleSave ();
           if ( file != null )
-          {
             this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
                 .setEditorPanelTitle ( current, file.getName () );
-          }
         }
         else if ( noToAll )
         {
@@ -2783,29 +2622,21 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           {
             File file = current.handleSave ();
             if ( file != null )
-            {
               this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
                   .setEditorPanelTitle ( current, file.getName () );
-            }
           }
           else if ( confirmDialog.isConfirmedAll () )
           {
             File file = current.handleSave ();
             if ( file != null )
-            {
               this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
                   .setEditorPanelTitle ( current, file.getName () );
-            }
             yesToAll = true;
           }
           else if ( confirmDialog.isNotConfirmedAll () )
-          {
             noToAll = true;
-          }
           else if ( confirmDialog.isCanceled () )
-          {
             return;
-          }
         }
       }
       this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
@@ -2818,9 +2649,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     ArrayList < File > files = new ArrayList < File > ();
     for ( RecentlyUsedMenuItem item : this.recentlyUsedFiles )
-    {
       files.add ( item.getFile () );
-    }
     PreferenceManager.getInstance ().setRecentlyUsedFilesItem (
         new RecentlyUsedFilesItem ( files ) );
 
@@ -2850,9 +2679,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -2864,9 +2691,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel != null )
-    {
       panel.handleRedo ();
-    }
   }
 
 
@@ -2886,10 +2711,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         PreferenceManager.getInstance ().setVisibleRegexInfo ( b );
         if ( !b )
-        {
           this.lastDividerLocation = regexPanel.getGUI ().jGTISplitPaneRegex
               .getDividerLocation ();
-        }
         for ( int i = 0 ; i < this.jGTIMainSplitPane
             .getJGTIEditorPanelTabbedPaneLeft ().getTabCount () ; i++ )
         {
@@ -2911,13 +2734,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               {
                 boolean ok = true;
                 for ( RegexException e : exc.getRegexException () )
-                {
                   if ( e.getType ().equals ( ErrorType.ERROR ) )
                   {
                     ok = false;
                     break;
                   }
-                }
                 if ( ok )
                 {
                   r.initializeJGraph ();
@@ -2929,10 +2750,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             }
 
             if ( b )
-            {
               r.getGUI ().jGTISplitPaneRegex
                   .setDividerLocation ( this.lastDividerLocation );
-            }
           }
         }
         for ( int i = 0 ; i < this.jGTIMainSplitPane
@@ -2956,13 +2775,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               {
                 boolean ok = true;
                 for ( RegexException e : exc.getRegexException () )
-                {
                   if ( e.getType ().equals ( ErrorType.ERROR ) )
                   {
                     ok = false;
                     break;
                   }
-                }
                 if ( ok )
                 {
                   r.initializeJGraph ();
@@ -2974,10 +2791,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             }
 
             if ( b )
-            {
               r.getGUI ().jGTISplitPaneRegex
                   .setDividerLocation ( this.lastDividerLocation );
-            }
           }
         }
       }
@@ -2998,9 +2813,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       machinePanel.handleReorderStateNames ();
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -3011,9 +2824,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () == null )
-    {
       throw new RuntimeException ( "no selected editor panel" ); //$NON-NLS-1$
-    }
 
     handleSave ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () );
@@ -3037,24 +2848,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
       for ( EditorPanel current : this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPaneLeft () )
-      {
         if ( current == editorPanel )
         {
           this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
               .setEditorPanelTitle ( editorPanel, file.getName () );
           return;
         }
-      }
       for ( EditorPanel current : this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPaneRight () )
-      {
         if ( current == editorPanel )
         {
           this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
               .setEditorPanelTitle ( editorPanel, file.getName () );
           return;
         }
-      }
     }
   }
 
@@ -3067,16 +2874,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // save the left editor panels
     for ( EditorPanel current : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPaneLeft () )
-    {
       handleSave ( current );
-    }
 
     // save the right editor panels
     for ( EditorPanel current : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPaneRight () )
-    {
       handleSave ( current );
-    }
   }
 
 
@@ -3096,15 +2899,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       organizeRecentlyUsedFilesMenu ();
       for ( EditorPanel current : this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane () )
-      {
         if ( ( !current.equals ( this.jGTIMainSplitPane
             .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel () ) && file
             .equals ( current.getFile () ) ) )
-        {
           this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
               .removeEditorPanel ( current );
-        }
-      }
       this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
           .setEditorPanelTitle ( panel, file.getName () );
     }
@@ -4200,10 +3999,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
     }
     else
-    {
       throw new IllegalArgumentException ( "unsupported source: " //$NON-NLS-1$
           + event.getSource () );
-    }
   }
 
 
@@ -4230,9 +4027,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void handleSecondViewMoveToRight ()
   {
     if ( !this.gui.getJCheckBoxMenuItemSecondView ().isSelected () )
-    {
       this.gui.getJCheckBoxMenuItemSecondView ().setSelected ( true );
-    }
 
     EditorPanel editorPanel = this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
@@ -4261,10 +4056,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       EditorPanel selectedEditorPanelLeft = null;
       if ( this.jGTIMainSplitPane.getActiveEditor ().equals (
           ActiveEditor.LEFT_EDITOR ) )
-      {
         selectedEditorPanelLeft = this.jGTIMainSplitPane
             .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
-      }
 
       EditorPanel selectedEditorPanelRight = this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
@@ -4284,23 +4077,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       // set the selected editor panel
       if ( this.jGTIMainSplitPane.getActiveEditor ().equals (
           ActiveEditor.RIGHT_EDITOR ) )
-      {
         if ( selectedEditorPanelRight != null )
-        {
           this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
               .setSelectedEditorPanel ( selectedEditorPanelRight );
-        }
         else
-        {
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-        }
-      }
 
       if ( selectedEditorPanelLeft != null )
-      {
         this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
             .setSelectedEditorPanel ( selectedEditorPanelLeft );
-      }
 
       handleTabbedPaneStateChanged ();
     }
@@ -4317,9 +4102,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void handleTabbedPaneMouseReleased ( MouseEvent event )
   {
     if ( ! ( event.getSource () instanceof JGTIEditorPanelTabbedPane ) )
-    {
       throw new IllegalArgumentException ( "unsupported source" ); //$NON-NLS-1$
-    }
 
     // second view
     handleSecondViewMouseReleased ( event );
@@ -4331,22 +4114,16 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     if ( ( event.getButton () == MouseEvent.BUTTON1 )
         && ( event.getClickCount () >= 2 ) && ( tabIndex == -1 ) )
-    {
       handleNew ();
-    }
     else if ( event.getButton () == MouseEvent.BUTTON3 )
     {
       TabPopupMenu popupMenu;
       if ( tabIndex == -1 )
-      {
         popupMenu = new TabPopupMenu ( this, TabPopupMenuType.TAB_DEACTIVE,
             this.jGTIMainSplitPane.getActiveEditor () );
-      }
       else
-      {
         popupMenu = new TabPopupMenu ( this, TabPopupMenuType.TAB_ACTIVE,
             this.jGTIMainSplitPane.getActiveEditor () );
-      }
       popupMenu.show ( ( Component ) event.getSource (), event.getX (), event
           .getY () );
     }
@@ -4374,33 +4151,23 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     // needed because of the drag and drop of editor tabs
     if ( event != null )
-    {
       if ( event.getSource () == this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPaneLeft () )
-      {
         this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-      }
       else if ( event.getSource () == this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPaneRight () )
-      {
         this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
-      }
       else
-      {
         throw new RuntimeException ( "unsupported source" ); //$NON-NLS-1$
-      }
-    }
 
     // stop the auto step
     removeButtonState ( ButtonState.SELECTED_AUTO_STEP );
     for ( EditorPanel current : this.jGTIMainSplitPane )
-    {
       if ( current instanceof MachinePanel )
       {
         MachinePanel machinePanel = ( MachinePanel ) current;
         machinePanel.cancelAutoStepTimer ();
       }
-    }
 
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
@@ -4447,6 +4214,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
       removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
       removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
+      removeButtonState ( ButtonState.ENABLED_CREATE_TDP);
     }
     // MachinePanel
     else
@@ -4466,6 +4234,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
+        removeButtonState ( ButtonState.ENABLED_CREATE_TDP);
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
@@ -4509,9 +4278,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         }
         else
-        {
           throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
-        }
 
         machinePanel.setVisibleConsole ( this.gui
             .getJCheckBoxMenuItemConsole ().isSelected ()
@@ -4601,27 +4368,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
 
           if ( machinePanel.isUndoAble () )
-          {
             addButtonState ( ButtonState.ENABLED_UNDO );
-          }
           else
-          {
             removeButtonState ( ButtonState.ENABLED_UNDO );
-          }
 
           if ( machinePanel.isRedoAble () )
-          {
             addButtonState ( ButtonState.ENABLED_REDO );
-          }
           else
-          {
             removeButtonState ( ButtonState.ENABLED_REDO );
-          }
         }
         else
-        {
           throw new RuntimeException ( "unsupported machine mode" ); //$NON-NLS-1$
-        }
       }
       // GrammarPanel
       else if ( panel instanceof GrammarPanel )
@@ -4638,6 +4395,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
           removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
           removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+          removeButtonState ( ButtonState.ENABLED_CREATE_TDP);
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
@@ -4649,11 +4407,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CREATE_RDP );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+          addButtonState ( ButtonState.ENABLED_CREATE_TDP);
         }
         else
-        {
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
-        }
 
         panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
             .isSelected () );
@@ -4689,22 +4446,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
 
         if ( grammarPanel.isUndoAble () )
-        {
           addButtonState ( ButtonState.ENABLED_UNDO );
-        }
         else
-        {
           removeButtonState ( ButtonState.ENABLED_UNDO );
-        }
 
         if ( grammarPanel.isRedoAble () )
-        {
           addButtonState ( ButtonState.ENABLED_REDO );
-        }
         else
-        {
           removeButtonState ( ButtonState.ENABLED_REDO );
-        }
       }
       // RegexPanel
       else if ( panel instanceof RegexPanel )
@@ -4718,13 +4467,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .isSelected () );
         if ( ( regexPanel.getRegex ().getRegexNode () == null )
             || regexPanel.getRegex ().getRegexNode ().isInCoreSyntax () )
-        {
           removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
-        }
         else
-        {
           addButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
-        }
         addButtonState ( ButtonState.ENABLED_REGEX_INFO );
 
         removeButtonState ( ButtonState.VISIBLE_MACHINE );
@@ -4760,38 +4505,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+        removeButtonState ( ButtonState.ENABLED_CREATE_TDP);
 
         if ( regexPanel.isUndoAble () )
-        {
           addButtonState ( ButtonState.ENABLED_UNDO );
-        }
         else
-        {
           removeButtonState ( ButtonState.ENABLED_UNDO );
-        }
 
         if ( regexPanel.isRedoAble () )
-        {
           addButtonState ( ButtonState.ENABLED_REDO );
-        }
         else
-        {
           removeButtonState ( ButtonState.ENABLED_REDO );
-        }
       }
       else
-      {
         throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-      }
       // Save status
       if ( panel.isModified () )
-      {
         addButtonState ( ButtonState.ENABLED_SAVE );
-      }
       else
-      {
         removeButtonState ( ButtonState.ENABLED_SAVE );
-      }
     }
   }
 
@@ -4811,13 +4543,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       if ( PreferenceManager.getInstance ().getVisibleTable () != state )
       {
         if ( state )
-        {
           addButtonState ( ButtonState.SELECTED_MACHINE_TABLE );
-        }
         else
-        {
           removeButtonState ( ButtonState.SELECTED_MACHINE_TABLE );
-        }
 
         PreferenceManager.getInstance ().setVisibleTable ( state );
         machinePanel.setVisibleTable ( state );
@@ -4840,9 +4568,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       regexPanel.handleToCoreSyntaxButtonClicked ();
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -4855,17 +4581,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .getSelectedEditorPanel () instanceof RegexPanel )
     {
       if ( !handleValidate ( false ) )
-      {
         return;
-      }
       RegexPanel regexPanel = ( RegexPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       regexPanel.handleToLatexButtonClicked ();
     }
     else
-    {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -4878,13 +4600,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     for ( EditorPanel panel : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane () )
-    {
       if ( panel instanceof MachinePanel )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
         machinePanel.handleToolbarAddState ( state );
       }
-    }
   }
 
 
@@ -4897,13 +4617,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     for ( EditorPanel panel : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane () )
-    {
       if ( ( panel instanceof MachinePanel ) )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
         machinePanel.handleToolbarEnd ( state );
       }
-    }
   }
 
 
@@ -4916,13 +4634,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     for ( EditorPanel panel : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane () )
-    {
       if ( ( panel instanceof MachinePanel ) )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
         machinePanel.handleToolbarMouse ( state );
       }
-    }
   }
 
 
@@ -4935,13 +4651,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     for ( EditorPanel panel : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane () )
-    {
       if ( ( panel instanceof MachinePanel ) )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
         machinePanel.handleToolbarStart ( state );
       }
-    }
   }
 
 
@@ -4954,14 +4668,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     for ( EditorPanel panel : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane () )
-    {
       if ( ( panel instanceof MachinePanel ) )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
 
         machinePanel.handleToolbarTransition ( state );
       }
-    }
   }
 
 
@@ -4973,9 +4685,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel != null )
-    {
       panel.handleUndo ();
-    }
   }
 
 
@@ -5015,7 +4725,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
 
         for ( MachineException error : e.getMachineException () )
-        {
           if ( error.getType ().equals ( ErrorType.ERROR ) )
           {
             machinePanel.addError ( error );
@@ -5026,7 +4735,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             machinePanel.addWarning ( error );
             warningCount++ ;
           }
-        }
       }
     }
     else if ( panel instanceof GrammarPanel )
@@ -5041,7 +4749,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
 
         for ( GrammarException error : e.getGrammarException () )
-        {
           if ( error.getType ().equals ( ErrorType.ERROR ) )
           {
             grammarPanel.addError ( error );
@@ -5052,7 +4759,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             grammarPanel.addWarning ( error );
             warningCount++ ;
           }
-        }
       }
     }
     else if ( panel instanceof RegexPanel )
@@ -5066,7 +4772,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       catch ( RegexValidationException e )
       {
         for ( RegexException error : e.getRegexException () )
-        {
           if ( error.getType ().equals ( ErrorType.ERROR ) )
           {
             regexPanel.addError ( error );
@@ -5077,14 +4782,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             regexPanel.addWarning ( error );
             warningCount++ ;
           }
-        }
       }
     }
     else
-    {
       throw new RuntimeException (
           "the select panel is not a regex, machine or grammar panel" ); //$NON-NLS-1$
-    }
 
     String titleWarningString = ""; //$NON-NLS-1$
     String titleErrorString = ""; //$NON-NLS-1$
@@ -5190,24 +4892,16 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       String message = null;
       if ( ( errorCount == 1 ) && ( warningCount == 1 ) )
-      {
         message = Messages.getString ( mwErrorWarningCount0 );
-      }
       else if ( ( errorCount == 1 ) && ( warningCount > 1 ) )
-      {
         message = Messages.getString ( mwErrorWarningCount1, String
             .valueOf ( warningCount ) );
-      }
       else if ( ( errorCount > 1 ) && ( warningCount == 1 ) )
-      {
         message = Messages.getString ( mwErrorWarningCount2, String
             .valueOf ( errorCount ) );
-      }
       else
-      {
         message = Messages.getString ( mwErrorWarningCount3, String
             .valueOf ( errorCount ), String.valueOf ( warningCount ) );
-      }
 
       // Update the titles
       panel.getJTabbedPaneConsole ().setTitleAt (
@@ -5230,14 +4924,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       String message;
       if ( errorCount == 1 )
-      {
         message = Messages.getString ( mwErrorCount1 );
-      }
       else
-      {
         message = Messages.getString ( mwErrorCountN, String
             .valueOf ( errorCount ) );
-      }
 
       // Update the titles
       panel.getJTabbedPaneConsole ().setTitleAt (
@@ -5257,14 +4947,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       String message;
       if ( warningCount == 1 )
-      {
         message = Messages.getString ( mwWarningCount1 );
-      }
       else
-      {
         message = Messages.getString ( mwWarningCountN, String
             .valueOf ( warningCount ) );
-      }
 
       // Update the titles
       panel.getJTabbedPaneConsole ().setTitleAt ( 0,
@@ -5324,9 +5010,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
-    {
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
 
     MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleWordNextStep ();
@@ -5341,9 +5025,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
-    {
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
 
     MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleWordPreviousStep ();
@@ -5358,15 +5040,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
-    {
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
     if ( machinePanel.handleWordStart () )
-    {
       addButtonState ( ButtonState.ENABLED_HISTORY );
-    }
   }
 
 
@@ -5378,9 +5056,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
-    {
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
     addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
@@ -5887,7 +5563,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // check if we already have an editor panel for the file in the left editor
     for ( EditorPanel current : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPaneLeft () )
-    {
       if ( file.equals ( current.getFile () ) )
       {
         this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
@@ -5901,19 +5576,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           this.recentlyUsedFiles.remove ( item );
           this.recentlyUsedFiles.add ( 0, item );
           if ( this.recentlyUsedFiles.size () > 10 )
-          {
             this.recentlyUsedFiles.remove ( 10 );
-          }
           organizeRecentlyUsedFilesMenu ();
         }
         return;
       }
-    }
 
     // check if we already have an editor panel for the file in the right editor
     for ( EditorPanel current : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPaneRight () )
-    {
       if ( file.equals ( current.getFile () ) )
       {
         this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
@@ -5927,14 +5598,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           this.recentlyUsedFiles.remove ( item );
           this.recentlyUsedFiles.add ( 0, item );
           if ( this.recentlyUsedFiles.size () > 10 )
-          {
             this.recentlyUsedFiles.remove ( 10 );
-          }
           organizeRecentlyUsedFilesMenu ();
         }
         return;
       }
-    }
 
     try
     {
@@ -6006,9 +5674,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       }
       else
-      {
         throw new RuntimeException ( "not supported element" ); //$NON-NLS-1$
-      }
 
       // reorganize recently used files
       if ( addToRecentlyUsed )
@@ -6017,9 +5683,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         this.recentlyUsedFiles.remove ( item );
         this.recentlyUsedFiles.add ( 0, item );
         if ( this.recentlyUsedFiles.size () > 10 )
-        {
           this.recentlyUsedFiles.remove ( 10 );
-        }
         organizeRecentlyUsedFilesMenu ();
       }
     }
@@ -6044,27 +5708,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     this.gui.getJMenuRecentlyUsed ().removeAll ();
 
     for ( RecentlyUsedMenuItem item : this.recentlyUsedFiles )
-    {
       if ( item.getFile ().exists () )
-      {
         this.gui.getJMenuRecentlyUsed ().add ( item );
-      }
       else
-      {
         notExistingFiles.add ( item );
-      }
-    }
 
     this.recentlyUsedFiles.removeAll ( notExistingFiles );
 
     if ( this.recentlyUsedFiles.size () > 0 )
-    {
       addButtonState ( ButtonState.ENABLED_RECENTLY_USED );
-    }
     else
-    {
       removeButtonState ( ButtonState.ENABLED_RECENTLY_USED );
-    }
   }
 
 
@@ -6223,6 +5877,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_REGEX_INFO );
       this.gui.getJCheckBoxMenuItemRegexInfo ().setEnabled ( false );
     }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CREATE_TDP ))
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CREATE_TDP );
+      this.gui.getJMenuItemCreateTDP ().setEnabled ( false );
+    }
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
@@ -6233,42 +5892,28 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarToggleButtonStartState ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_DEACTIVE ) )
-    {
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" );//$NON-NLS-1$
-    }
     else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP ) )
-    {
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" );//$NON-NLS-1$
-    }
     else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_START ) )
-    {
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" );//$NON-NLS-1$
-    }
     else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STOP ) )
-    {
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" );//$NON-NLS-1$
-    }
     else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT ) )
-    {
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" ); //$NON-NLS-1$
-    }
     else if ( buttonState
         .equals ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS ) )
-    {
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" ); //$NON-NLS-1$
-    }
     else if ( buttonState
         .equals ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS ) )
-    {
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" ); //$NON-NLS-1$
-    }
     else if ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO );
@@ -6312,10 +5957,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       EditorPanel panel = this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       if ( panel != null )
-      {
         this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
             .setEditorPanelTitle ( panel, panel.getName () );
-      }
       this.gui.getJGTIToolBarButtonSave ().setEnabled ( false );
       this.gui.getJMenuItemSave ().setEnabled ( false );
     }
@@ -6368,14 +6011,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( false );
     }
     else if ( buttonState.equals ( ButtonState.VISIBLE_REGEX ) )
-    {
       this.buttonStateList.remove ( ButtonState.VISIBLE_REGEX );
-    }
     else
-    {
       throw new IllegalArgumentException ( "unsupported button state: " //$NON-NLS-1$
           + buttonState );
-    }
   }
 
 
@@ -6386,9 +6025,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     for ( ObjectPair < File, ActiveEditor > current : PreferenceManager
         .getInstance ().getOpenedFilesItem ().getFiles () )
-    {
       openFile ( current.getFirst (), false, current.getSecond () );
-    }
 
     File activeFile = PreferenceManager.getInstance ().getOpenedFilesItem ()
         .getActiveFile ();
@@ -6398,7 +6035,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       // left editor
       for ( EditorPanel current : this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPaneLeft () )
-      {
         if ( current.getFile ().getAbsolutePath ().equals (
             activeFile.getAbsolutePath () ) )
         {
@@ -6407,11 +6043,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
           break;
         }
-      }
       // right editor
       for ( EditorPanel current : this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPaneRight () )
-      {
         if ( current.getFile ().getAbsolutePath ().equals (
             activeFile.getAbsolutePath () ) )
         {
@@ -6420,7 +6054,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
           break;
         }
-      }
     }
   }
 
@@ -6433,9 +6066,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
-    {
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
 
     if ( this.gui.getJGTIToolBarToggleButtonAutoStep ().isSelected () )
     {
@@ -6449,20 +6080,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .isPreviousSymbolAvailable ();
 
     if ( !nextAvailable && !previousAvailable )
-    {
       addButtonState ( ButtonState.ENABLED_NAVIGATION_STOP );
-    }
     else if ( !nextAvailable && previousAvailable )
-    {
       addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
-    }
     else if ( nextAvailable && !previousAvailable )
-    {
       addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
-    }
     else if ( nextAvailable && previousAvailable )
-    {
       addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
-    }
   }
 }

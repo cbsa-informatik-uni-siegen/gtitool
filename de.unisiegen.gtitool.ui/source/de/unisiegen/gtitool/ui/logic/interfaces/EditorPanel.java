@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.ui.convert.Converter;
@@ -36,7 +37,7 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * 
    * @return The {@link Converter}.
    */
-  public Converter getConverter ();
+  public Converter getConverter ( EntityType destination );
 
 
   /**

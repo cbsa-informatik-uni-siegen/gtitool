@@ -40,6 +40,7 @@ import org.jgraph.graph.GraphSelectionModel;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
@@ -558,7 +559,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @see EditorPanel#getConverter()
    */
-  public Converter getConverter ()
+  public Converter getConverter (EntityType destination)
   {
     return new ConvertRegexToMachineDialog ( this.mainWindowForm, this );
   }

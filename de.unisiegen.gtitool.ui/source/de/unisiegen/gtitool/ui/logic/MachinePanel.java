@@ -57,6 +57,7 @@ import de.unisiegen.gtitool.core.entities.StateSet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
@@ -102,6 +103,7 @@ import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.style.StyledStateSetParserPanel;
 import de.unisiegen.gtitool.ui.style.editor.ParserTableCellEditor;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.AcceptedStatus;
+
 
 
 /**
@@ -897,7 +899,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @see EditorPanel#getConverter()
    */
-  public final Converter getConverter ()
+  public final Converter getConverter (EntityType destination)
   {
     if ( this.machine.getMachineType ().equals ( MachineType.NFA ) )
     {

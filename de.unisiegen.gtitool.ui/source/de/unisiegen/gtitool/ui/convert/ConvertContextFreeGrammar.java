@@ -66,7 +66,6 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
     }
   }
 
-
   /**
    * {@inheritDoc}
    * 

@@ -1666,19 +1666,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
-          panel.getConverter ().convert ( MachineType.DFA, entityType, false,
+          panel.getConverter (entityType).convert ( MachineType.DFA, entityType, false,
               false );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
-          panel.getConverter ().convert ( MachineType.NFA, entityType, false,
+          panel.getConverter (entityType).convert ( MachineType.NFA, entityType, false,
               false );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
-          panel.getConverter ().convert ( MachineType.ENFA, entityType, false,
+          panel.getConverter (entityType).convert ( MachineType.ENFA, entityType, false,
               cb );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
-          panel.getConverter ().convert ( MachineType.PDA, entityType, false,
+          panel.getConverter (entityType).convert ( MachineType.PDA, entityType, false,
               false );
         else
           throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
@@ -1689,11 +1689,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         GrammarPanel grammarPanel = ( GrammarPanel ) panel;
         if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.RG ) )
-          panel.getConverter ().convert ( GrammarType.RG, entityType, false,
+          panel.getConverter (entityType).convert ( GrammarType.RG, entityType, false,
               false );
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
-          panel.getConverter ().convert ( GrammarType.CFG, entityType, false,
+          panel.getConverter (entityType).convert ( GrammarType.CFG, entityType, false,
               false );
         else
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
@@ -1701,7 +1701,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       else if ( panel instanceof RegexPanel )
       {
         RegexPanel regexPanel = ( RegexPanel ) panel;
-        regexPanel.getConverter ().convert ( RegexType.REGEX, entityType,
+        regexPanel.getConverter (entityType).convert ( RegexType.REGEX, entityType,
             false, false );
       }
       else
@@ -1730,19 +1730,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
-          panel.getConverter ().convert ( MachineType.DFA, entityType, true,
+          panel.getConverter (entityType).convert ( MachineType.DFA, entityType, true,
               false );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
-          panel.getConverter ().convert ( MachineType.NFA, entityType, true,
+          panel.getConverter (entityType).convert ( MachineType.NFA, entityType, true,
               false );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
-          panel.getConverter ().convert ( MachineType.ENFA, entityType, true,
+          panel.getConverter (entityType).convert ( MachineType.ENFA, entityType, true,
               false );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
-          panel.getConverter ().convert ( MachineType.PDA, entityType, true,
+          panel.getConverter (entityType).convert ( MachineType.PDA, entityType, true,
               false );
         else
           throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$

@@ -119,6 +119,15 @@ public abstract class AbstractConvertGrammar implements Converter
   }
 
 
+  public AbstractConvertGrammar ( MainWindowForm mainWindowForm,
+      Grammar grammar, Alphabet alphabet )
+  {
+    this.mainWindowForm = mainWindowForm;
+    this.grammar = grammar;
+    this.alphabet = alphabet;
+  }
+
+
   /**
    * Add the new {@link MachinePanel} to the {@link MainWindowForm}.
    */
@@ -178,6 +187,12 @@ public abstract class AbstractConvertGrammar implements Converter
 
     new LayoutManager ( this.model, this.newPanel.getRedoUndoHandler () )
         .doLayout ();
+  }
+
+
+  protected MachineType getMachineType ()
+  {
+    return this.machineType;
   }
 
 

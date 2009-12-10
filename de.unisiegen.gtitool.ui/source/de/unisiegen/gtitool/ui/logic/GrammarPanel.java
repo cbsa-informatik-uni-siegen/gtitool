@@ -30,16 +30,20 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.convert.ConvertContextFreeGrammar;
 import de.unisiegen.gtitool.ui.convert.ConvertRegularGrammar;
+import de.unisiegen.gtitool.ui.convert.ConvertToLR0;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -369,8 +373,26 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * 
    * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#getConverter()
    */
-  public Converter getConverter ()
+  public Converter getConverter ( EntityType destination )
   {
+    if ( destination instanceof MachineType )
+      switch ( ( MachineType ) destination )
+      {
+        case LR0 :
+          try
+          {
+            return new ConvertToLR0 ( this.mainWindowForm, this.grammar );
+          }
+          catch ( AlphabetException e )
+          {
+            e.printStackTrace (); // TODO
+          }
+          break;
+        default :
+          break;
+      }
+
+    // old cases
     if ( this.grammar instanceof RG )
       return new ConvertRegularGrammar ( this.mainWindowForm, this.grammar );
     return new ConvertContextFreeGrammar ( this.mainWindowForm, this.grammar );
@@ -605,16 +627,14 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         createRDP ( this.grammar ), false, null, getName () + "_RDP" ); //$NON-NLS-1$
     w.show ();
   }
-  
-  
+
+
   /**
-   * 
    * Handle create tdp button pressed
-   *
    */
   public final void handleCreateTDP ()
   {
-    ; //TODO implement logic
+    ; // TODO implement logic
   }
 
 

@@ -208,7 +208,7 @@ public class LR0Grammar extends ExtendedGrammar
 
             for ( Transition trans : lr0Automata.getTransition () )
             {
-              if ( trans.compareByStates ( newTransition )) 
+              if ( trans.compareByStates ( newTransition ) )
               {
                 transitionAlreadyExists = true;
                 break;

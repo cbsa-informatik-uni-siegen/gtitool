@@ -2385,7 +2385,7 @@ private void jMenuItemConvertToNFACBctionPerformed(java.awt.event.ActionEvent ev
 }//GEN-LAST:event_jMenuItemConvertToNFACBctionPerformed
 
 private void jMenuItemCreateTDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCreateTDPActionPerformed
-    this.logic.handleCreateTDP();
+    this.logic.handleConvertTo ( MachineType.TDP, true);
 }//GEN-LAST:event_jMenuItemCreateTDPActionPerformed
 
 private void jMenuItemConvertToLR0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToLR0ActionPerformed

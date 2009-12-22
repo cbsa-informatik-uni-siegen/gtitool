@@ -1774,15 +1774,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleCreateTDP ()
   {
-    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel () instanceof GrammarPanel )
-    {
-      GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
-          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
-      gp.handleCreateTDP ();
-    }
-    else
-      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    //TODO: implement logic
   }
 
 

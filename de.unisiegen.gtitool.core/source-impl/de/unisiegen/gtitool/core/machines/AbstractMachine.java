@@ -104,22 +104,14 @@ public abstract class AbstractMachine implements Machine
       Alphabet alphabet, Alphabet pushDownAlphabet, boolean usePushDownAlphabet )
       throws StoreException
   {
-    if ( machineType.equals ( ( "DFA" ) ) ) //$NON-NLS-1$
-    {
+    if ( machineType.equals ( ( "DFA" ) ) )
       return new DefaultDFA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
-    }
-    if ( machineType.equals ( ( "NFA" ) ) ) //$NON-NLS-1$
-    {
+    if ( machineType.equals ( ( "NFA" ) ) )
       return new DefaultNFA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
-    }
-    if ( machineType.equals ( ( "ENFA" ) ) ) //$NON-NLS-1$
-    {
+    if ( machineType.equals ( ( "ENFA" ) ) )
       return new DefaultENFA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
-    }
-    if ( machineType.equals ( ( "PDA" ) ) ) //$NON-NLS-1$
-    {
+    if ( machineType.equals ( ( "PDA" ) ) )
       return new DefaultPDA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
-    }
     throw new StoreException ( Messages
         .getString ( "StoreException.WrongMachineType" ) ); //$NON-NLS-1$
   }
@@ -128,13 +120,13 @@ public abstract class AbstractMachine implements Machine
   /**
    * The {@link Alphabet} of this {@link AbstractMachine}.
    */
-  private Alphabet alphabet;
+  private final Alphabet alphabet;
 
 
   /**
    * The push down {@link Alphabet} of this {@link AbstractMachine}.
    */
-  private Alphabet pushDownAlphabet;
+  private final Alphabet pushDownAlphabet;
 
 
   /**
@@ -164,31 +156,31 @@ public abstract class AbstractMachine implements Machine
   /**
    * The history of this {@link AbstractMachine}.
    */
-  private ArrayList < HistoryItem > history;
+  private final ArrayList < HistoryItem > history;
 
 
   /**
    * The list of the {@link State}s.
    */
-  private ArrayList < State > stateList;
+  private final ArrayList < State > stateList;
 
 
   /**
    * The initial list of the {@link State}s.
    */
-  private ArrayList < State > initialStateList;
+  private final ArrayList < State > initialStateList;
 
 
   /**
    * The list of the {@link Transition}.
    */
-  private ArrayList < Transition > transitionList;
+  private final ArrayList < Transition > transitionList;
 
 
   /**
    * The list of the {@link Transition}.
    */
-  private ArrayList < Transition > initialTransitionList;
+  private final ArrayList < Transition > initialTransitionList;
 
 
   /**
@@ -206,44 +198,44 @@ public abstract class AbstractMachine implements Machine
   /**
    * The validation element list.
    */
-  private ArrayList < ValidationElement > validationElementList;
+  private final ArrayList < ValidationElement > validationElementList;
 
 
   /**
    * List of listeners
    */
-  private EventListenerList listenerList = new EventListenerList ();
+  private final EventListenerList listenerList = new EventListenerList ();
 
 
   /**
    * The {@link AlphabetChangedListener}.
    */
-  private AlphabetChangedListener alphabetChangedListener;
+  private final AlphabetChangedListener alphabetChangedListener;
 
 
   /**
    * The {@link TransitionChangedListener}.
    */
-  private TransitionChangedListener transitionChangedListener;
+  private final TransitionChangedListener transitionChangedListener;
 
 
   /**
    * The {@link StateChangedListener}.
    */
-  private StateChangedListener stateChangedListener;
+  private final StateChangedListener stateChangedListener;
 
 
   /**
    * The {@link ModifyStatusChangedListener}.
    */
-  private ModifyStatusChangedListener modifyStatusChangedListener;
+  private final ModifyStatusChangedListener modifyStatusChangedListener;
 
 
   /**
    * The list of cached values which is needed because of the {@link Transition}
    * highlighting.
    */
-  private ArrayList < ObjectTriple < Integer, Integer, Object >> cachedValueList;
+  private final ArrayList < ObjectTriple < Integer, Integer, Object >> cachedValueList;
 
 
   /**
@@ -261,16 +253,12 @@ public abstract class AbstractMachine implements Machine
   {
     // alphabet
     if ( alphabet == null )
-    {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
-    }
     this.alphabet = alphabet;
 
     // push down alphabet
     if ( pushDownAlphabet == null )
-    {
       throw new NullPointerException ( "push down alphabet is null" ); //$NON-NLS-1$
-    }
     this.pushDownAlphabet = pushDownAlphabet;
 
     // use push down alphabet
@@ -278,14 +266,10 @@ public abstract class AbstractMachine implements Machine
 
     // validation elements
     if ( validationElements == null )
-    {
       throw new NullPointerException ( "validation elements is null" ); //$NON-NLS-1$
-    }
     this.validationElementList = new ArrayList < ValidationElement > ();
     for ( ValidationElement current : validationElements )
-    {
       this.validationElementList.add ( current );
-    }
 
     // state list
     this.stateList = new ArrayList < State > ();
@@ -336,9 +320,7 @@ public abstract class AbstractMachine implements Machine
           @SuppressWarnings ( "unused" ) boolean loopTransitionChanged )
       {
         if ( nameChanged )
-        {
           fireTableDataChanged ();
-        }
       }
     };
 
@@ -393,17 +375,11 @@ public abstract class AbstractMachine implements Machine
   public final void addState ( Iterable < State > states )
   {
     if ( states == null )
-    {
       throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
-    }
     if ( !states.iterator ().hasNext () )
-    {
       throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
-    }
     for ( State current : states )
-    {
       addState ( current );
-    }
   }
 
 
@@ -415,29 +391,19 @@ public abstract class AbstractMachine implements Machine
   public final void addState ( State state )
   {
     if ( state == null )
-    {
       throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
-    }
     if ( ( state.isIdDefined () ) && ( this.stateList.contains ( state ) ) )
-    {
       throw new IllegalArgumentException ( "state is already added" ); //$NON-NLS-1$
-    }
 
     // Set the state alphabet if it is not set already.
     if ( state.getAlphabet () == null )
-    {
       state.setAlphabet ( this.alphabet );
-    }
     if ( !this.alphabet.equals ( state.getAlphabet () ) )
-    {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
-    }
 
     // Set the state push down alphabet if it is not set already.
     if ( state.getPushDownAlphabet () == null )
-    {
       state.setPushDownAlphabet ( this.pushDownAlphabet );
-    }
     if ( !this.pushDownAlphabet.equals ( state.getPushDownAlphabet () ) )
     {
       System.out.println ( this.pushDownAlphabet );
@@ -447,16 +413,9 @@ public abstract class AbstractMachine implements Machine
     }
 
     if ( state.getId () == State.ID_NOT_DEFINED )
-    {
       state.setId ( ++this.currentStateId );
-    }
-    else
-    {
-      if ( state.getId () > this.currentStateId )
-      {
-        this.currentStateId = state.getId ();
-      }
-    }
+    else if ( state.getId () > this.currentStateId )
+      this.currentStateId = state.getId ();
 
     this.stateList.add ( state );
     link ( state );
@@ -475,17 +434,11 @@ public abstract class AbstractMachine implements Machine
   public final void addState ( State ... states )
   {
     if ( states == null )
-    {
       throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
-    }
     if ( states.length == 0 )
-    {
       throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
-    }
     for ( State current : states )
-    {
       addState ( current );
-    }
   }
 
 
@@ -508,17 +461,11 @@ public abstract class AbstractMachine implements Machine
   public final void addTransition ( Iterable < Transition > transitions )
   {
     if ( transitions == null )
-    {
       throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
-    }
     if ( !transitions.iterator ().hasNext () )
-    {
       throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
-    }
     for ( Transition current : transitions )
-    {
       addTransition ( current );
-    }
   }
 
 
@@ -530,46 +477,27 @@ public abstract class AbstractMachine implements Machine
   public final void addTransition ( Transition transition )
   {
     if ( transition == null )
-    {
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
-    }
     if ( ( transition.isIdDefined () )
         && ( this.transitionList.contains ( transition ) ) )
-    {
       throw new IllegalArgumentException ( "transition is already added" ); //$NON-NLS-1$
-    }
 
     // Set the transition alphabet if it is not set already.
     if ( transition.getAlphabet () == null )
-    {
       transition.setAlphabet ( this.alphabet );
-    }
     if ( !this.alphabet.equals ( transition.getAlphabet () ) )
-    {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
-    }
 
     // Set the transition push down alphabet if it is not set already.
     if ( transition.getPushDownAlphabet () == null )
-    {
       transition.setPushDownAlphabet ( this.pushDownAlphabet );
-    }
     if ( !this.pushDownAlphabet.equals ( transition.getPushDownAlphabet () ) )
-    {
       throw new IllegalArgumentException ( "not the same push down alphabet" ); //$NON-NLS-1$
-    }
 
     if ( transition.getId () == Transition.ID_NOT_DEFINED )
-    {
       transition.setId ( ++this.currentTransitionId );
-    }
-    else
-    {
-      if ( transition.getId () > this.currentTransitionId )
-      {
-        this.currentTransitionId = transition.getId ();
-      }
-    }
+    else if ( transition.getId () > this.currentTransitionId )
+      this.currentTransitionId = transition.getId ();
     this.transitionList.add ( transition );
     link ( transition );
     fireTableDataChanged ();
@@ -588,17 +516,11 @@ public abstract class AbstractMachine implements Machine
   public final void addTransition ( Transition ... transitions )
   {
     if ( transitions == null )
-    {
       throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
-    }
     if ( transitions.length == 0 )
-    {
       throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
-    }
     for ( Transition current : transitions )
-    {
       addTransition ( current );
-    }
   }
 
 
@@ -615,24 +537,16 @@ public abstract class AbstractMachine implements Machine
     {
       TreeSet < Symbol > currentSymbolSet = new TreeSet < Symbol > ();
       for ( Transition currentTransition : currentState.getTransitionBegin () )
-      {
         currentSymbolSet.addAll ( currentTransition.getSymbol () );
-      }
       TreeSet < Symbol > notUsedSymbolSet = new TreeSet < Symbol > ();
       for ( Symbol currentSymbol : this.alphabet )
-      {
         // the symbols must be cloned
         notUsedSymbolSet.add ( new DefaultSymbol ( currentSymbol.getName () ) );
-      }
       for ( Symbol currentSymbol : currentSymbolSet )
-      {
         notUsedSymbolSet.remove ( currentSymbol );
-      }
       if ( notUsedSymbolSet.size () > 0 )
-      {
         machineExceptionList.add ( new MachineAllSymbolsException (
             currentState, notUsedSymbolSet ) );
-      }
     }
     return machineExceptionList;
   }
@@ -647,16 +561,12 @@ public abstract class AbstractMachine implements Machine
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     for ( Transition currentTransition : this.getTransition () )
-    {
       if ( currentTransition.getTransitionType ().equals (
           TransitionType.EPSILON_ONLY )
           || currentTransition.getTransitionType ().equals (
               TransitionType.EPSILON_SYMBOL ) )
-      {
         machineExceptionList.add ( new MachineEpsilonTransitionException (
             currentTransition ) );
-      }
-    }
     return machineExceptionList;
   }
 
@@ -671,17 +581,13 @@ public abstract class AbstractMachine implements Machine
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     boolean found = false;
     loop : for ( State currentState : this.stateList )
-    {
       if ( currentState.isFinalState () )
       {
         found = true;
         break loop;
       }
-    }
     if ( !found )
-    {
       machineExceptionList.add ( new MachineStateFinalException () );
-    }
     return machineExceptionList;
   }
 
@@ -696,17 +602,11 @@ public abstract class AbstractMachine implements Machine
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     ArrayList < State > startStateList = new ArrayList < State > ();
     for ( State current : this.stateList )
-    {
       if ( current.isStartState () )
-      {
         startStateList.add ( current );
-      }
-    }
     if ( startStateList.size () >= 2 )
-    {
       machineExceptionList.add ( new MachineStateStartException (
           startStateList ) );
-    }
     return machineExceptionList;
   }
 
@@ -721,17 +621,11 @@ public abstract class AbstractMachine implements Machine
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     ArrayList < State > startStateList = new ArrayList < State > ();
     for ( State current : this.getState () )
-    {
       if ( current.isStartState () )
-      {
         startStateList.add ( current );
-      }
-    }
     if ( startStateList.size () == 0 )
-    {
       machineExceptionList.add ( new MachineStateStartException (
           startStateList ) );
-    }
     return machineExceptionList;
   }
 
@@ -748,25 +642,17 @@ public abstract class AbstractMachine implements Machine
     firstLoop : for ( int i = 0 ; i < this.getState ().size () ; i++ )
     {
       if ( duplicatedListAll.contains ( this.getState ().get ( i ) ) )
-      {
         continue firstLoop;
-      }
       ArrayList < State > duplicatedListOne = new ArrayList < State > ();
       for ( int j = i + 1 ; j < this.getState ().size () ; j++ )
-      {
         if ( this.getState ().get ( i ).getName ().equals (
             this.getState ().get ( j ).getName () ) )
-        {
           duplicatedListOne.add ( this.getState ().get ( j ) );
-        }
-      }
       if ( duplicatedListOne.size () > 0 )
       {
         duplicatedListOne.add ( this.getState ().get ( i ) );
         for ( State current : duplicatedListOne )
-        {
           duplicatedListAll.add ( current );
-        }
         machineExceptionList.add ( new MachineStateNameException (
             duplicatedListOne ) );
       }
@@ -785,10 +671,8 @@ public abstract class AbstractMachine implements Machine
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
 
     for ( State current : getNotReachableStates () )
-    {
       machineExceptionList.add ( new MachineStateNotReachableException (
           current ) );
-    }
 
     return machineExceptionList;
   }
@@ -804,32 +688,22 @@ public abstract class AbstractMachine implements Machine
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     for ( State currentState : this.getState () )
-    {
       for ( Symbol currentSymbol : this.alphabet )
       {
         ArrayList < Transition > transitions = new ArrayList < Transition > ();
         ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
         for ( Transition currentTransition : currentState.getTransitionBegin () )
-        {
           if ( currentTransition.contains ( currentSymbol ) )
           {
             transitions.add ( currentTransition );
             for ( Symbol addSymbol : currentTransition.getSymbol () )
-            {
               if ( addSymbol.equals ( currentSymbol ) )
-              {
                 symbols.add ( addSymbol );
-              }
-            }
           }
-        }
         if ( transitions.size () > 1 )
-        {
           machineExceptionList.add ( new MachineSymbolOnlyOneTimeException (
               currentState, symbols, transitions ) );
-        }
       }
-    }
     return machineExceptionList;
   }
 
@@ -843,15 +717,11 @@ public abstract class AbstractMachine implements Machine
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     for ( Transition currentTransition : this.getTransition () )
-    {
       if ( ( currentTransition.getPushDownWordRead ().size () > 0 )
           || ( currentTransition.getPushDownWordWrite ().size () > 0 ) )
-      {
         machineExceptionList
             .add ( new MachineTransitionStackOperationsException (
                 currentTransition ) );
-      }
-    }
     return machineExceptionList;
   }
 
@@ -862,9 +732,7 @@ public abstract class AbstractMachine implements Machine
   private final void clearActiveState ()
   {
     for ( State current : this.stateList )
-    {
       current.setActive ( false );
-    }
   }
 
 
@@ -874,12 +742,8 @@ public abstract class AbstractMachine implements Machine
   private final void clearActiveSymbol ()
   {
     for ( Transition currentTransition : this.transitionList )
-    {
       for ( Symbol currentSymbol : currentTransition )
-      {
         currentSymbol.setActive ( false );
-      }
-    }
   }
 
 
@@ -889,9 +753,7 @@ public abstract class AbstractMachine implements Machine
   private final void clearActiveTransition ()
   {
     for ( Transition current : this.transitionList )
-    {
       current.setActive ( false );
-    }
   }
 
 
@@ -913,13 +775,10 @@ public abstract class AbstractMachine implements Machine
   {
     // transition
     for ( Transition current : this.transitionList )
-    {
       current.setSelected ( false );
-    }
 
     // find the columns
     for ( int i = 0 ; i < getColumnCount () ; i++ )
-    {
       for ( int j = 0 ; j < getRowCount () ; j++ )
       {
         Object value = getValueAt ( j, i );
@@ -932,17 +791,12 @@ public abstract class AbstractMachine implements Machine
         {
           StateSet stateSet = ( StateSet ) value;
           for ( State currentState : stateSet )
-          {
             currentState.setSelected ( false );
-          }
         }
         else
-        {
           throw new RuntimeException ( "not supported table value class: " //$NON-NLS-1$
               + value.getClass ().getSimpleName () );
-        }
       }
-    }
   }
 
 
@@ -957,9 +811,7 @@ public abstract class AbstractMachine implements Machine
         .size () );
     Stack result = new DefaultStack ();
     for ( int i = oldStackSymbolList.size () - 1 ; i >= 0 ; i-- )
-    {
       result.push ( oldStackSymbolList.get ( i ) );
-    }
     return result;
   }
 
@@ -973,9 +825,7 @@ public abstract class AbstractMachine implements Machine
     MachineChangedListener [] listeners = this.listenerList
         .getListeners ( MachineChangedListener.class );
     for ( MachineChangedListener current : listeners )
-    {
       current.startEditing ();
-    }
   }
 
 
@@ -988,9 +838,7 @@ public abstract class AbstractMachine implements Machine
     MachineChangedListener [] listeners = this.listenerList
         .getListeners ( MachineChangedListener.class );
     for ( MachineChangedListener current : listeners )
-    {
       current.stopEditing ();
-    }
   }
 
 
@@ -1009,9 +857,7 @@ public abstract class AbstractMachine implements Machine
     MachineChangedListener [] listeners = this.listenerList
         .getListeners ( MachineChangedListener.class );
     for ( MachineChangedListener current : listeners )
-    {
       current.symbolAdded ( transition, addedSymbols );
-    }
   }
 
 
@@ -1030,9 +876,7 @@ public abstract class AbstractMachine implements Machine
     MachineChangedListener [] listeners = this.listenerList
         .getListeners ( MachineChangedListener.class );
     for ( MachineChangedListener current : listeners )
-    {
       current.symbolRemoved ( transition, removedSymbols );
-    }
   }
 
 
@@ -1049,9 +893,7 @@ public abstract class AbstractMachine implements Machine
     MachineChangedListener [] listeners = this.listenerList
         .getListeners ( MachineChangedListener.class );
     for ( MachineChangedListener current : listeners )
-    {
       current.transitionAdded ( newTransition );
-    }
   }
 
 
@@ -1067,9 +909,7 @@ public abstract class AbstractMachine implements Machine
     MachineChangedListener [] listeners = this.listenerList
         .getListeners ( MachineChangedListener.class );
     for ( MachineChangedListener current : listeners )
-    {
       current.transitionRemoved ( transition );
-    }
   }
 
 
@@ -1083,19 +923,13 @@ public abstract class AbstractMachine implements Machine
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
-    {
       for ( ModifyStatusChangedListener current : listeners )
-      {
         current.modifyStatusChanged ( true );
-      }
-    }
     else
     {
       boolean newModifyStatus = isModified ();
       for ( ModifyStatusChangedListener current : listeners )
-      {
         current.modifyStatusChanged ( newModifyStatus );
-      }
     }
   }
 
@@ -1114,9 +948,7 @@ public abstract class AbstractMachine implements Machine
     TableModelListener [] listeners = this.listenerList
         .getListeners ( TableModelListener.class );
     for ( TableModelListener current : listeners )
-    {
       current.tableChanged ( event );
-    }
   }
 
 
@@ -1166,26 +998,20 @@ public abstract class AbstractMachine implements Machine
         Word newWord = new DefaultWord ();
         words.add ( newWord );
         if ( isWordAccepted ( newWord ) )
-        {
           result.add ( newWord );
-        }
       }
       else
       {
         tmpWords.clear ();
         for ( Word currentWord : words )
-        {
           for ( Symbol currentSymbol : this.alphabet )
           {
             Word newWord = new DefaultWord ( currentWord );
             newWord.add ( currentSymbol );
             tmpWords.add ( newWord );
             if ( isWordAccepted ( newWord ) )
-            {
               result.add ( newWord );
-            }
           }
-        }
 
         words.clear ();
         words.addAll ( tmpWords );
@@ -1239,13 +1065,9 @@ public abstract class AbstractMachine implements Machine
   public final String getColumnName ( int columnIndex )
   {
     if ( columnIndex == STATE_COLUMN )
-    {
       return ""; //$NON-NLS-1$
-    }
     if ( columnIndex == EPSILON_COLUMN )
-    {
       return "\u03B5"; //$NON-NLS-1$
-    }
     return this.alphabet.get ( columnIndex - SPECIAL_COLUMN_COUNT ).toString ();
   }
 
@@ -1268,12 +1090,8 @@ public abstract class AbstractMachine implements Machine
     int result = -1;
 
     for ( State current : this.stateList )
-    {
       if ( current.getId () > result )
-      {
         result = current.getId ();
-      }
-    }
 
     result++ ;
 
@@ -1293,9 +1111,7 @@ public abstract class AbstractMachine implements Machine
     notReachable.addAll ( this.stateList );
 
     for ( State current : reachable )
-    {
       notReachable.remove ( current );
-    }
     return notReachable;
   }
 
@@ -1309,15 +1125,9 @@ public abstract class AbstractMachine implements Machine
   {
     TreeSet < Symbol > notRemoveableSymbols = new TreeSet < Symbol > ();
     for ( Transition currentTransition : this.transitionList )
-    {
       for ( Symbol currentSymbol : currentTransition )
-      {
         if ( !currentSymbol.isEpsilon () )
-        {
           notRemoveableSymbols.add ( currentSymbol );
-        }
-      }
-    }
     return notRemoveableSymbols;
   }
 
@@ -1333,13 +1143,9 @@ public abstract class AbstractMachine implements Machine
     for ( Transition current : this.transitionList )
     {
       for ( Symbol currentSymbol : current.getPushDownWordRead () )
-      {
         notRemoveableSymbols.add ( currentSymbol );
-      }
       for ( Symbol currentSymbol : current.getPushDownWordWrite () )
-      {
         notRemoveableSymbols.add ( currentSymbol );
-      }
     }
     return notRemoveableSymbols;
   }
@@ -1356,18 +1162,12 @@ public abstract class AbstractMachine implements Machine
 
     ArrayList < State > activeStateList = new ArrayList < State > ();
     for ( State current : this.stateList )
-    {
       if ( current.isActive () )
-      {
         activeStateList.add ( current );
-      }
-    }
 
     for ( State currentState : activeStateList )
-    {
       transitionLoop : for ( Transition currentTransition : currentState
           .getTransitionBegin () )
-      {
         // epsilon
         if ( currentTransition.getTransitionType ().equals (
             TransitionType.EPSILON_ONLY )
@@ -1380,16 +1180,10 @@ public abstract class AbstractMachine implements Machine
 
           // the read word must match
           if ( readWord.size () != stackSymbols.size () )
-          {
             continue transitionLoop;
-          }
           for ( int i = 0 ; i < readWord.size () ; i++ )
-          {
             if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
-            {
               continue transitionLoop;
-            }
-          }
           result.add ( currentTransition );
         }
         // no epsilon
@@ -1416,24 +1210,14 @@ public abstract class AbstractMachine implements Machine
 
           // the read word must match
           if ( readWord.size () != stackSymbols.size () )
-          {
             continue transitionLoop;
-          }
           for ( int i = 0 ; i < readWord.size () ; i++ )
-          {
             if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
-            {
               continue transitionLoop;
-            }
-          }
 
           if ( currentTransition.contains ( symbol ) )
-          {
             result.add ( currentTransition );
-          }
         }
-      }
-    }
 
     return result;
   }
@@ -1461,12 +1245,8 @@ public abstract class AbstractMachine implements Machine
     ArrayList < State > todoList = new ArrayList < State > ();
 
     for ( State current : this.stateList )
-    {
       if ( current.isStartState () )
-      {
         todoList.add ( current );
-      }
-    }
 
     while ( todoList.size () > 0 )
     {
@@ -1477,9 +1257,7 @@ public abstract class AbstractMachine implements Machine
       {
         State endState = currentTransition.getStateEnd ();
         if ( !todoList.contains ( endState ) && !reachable.contains ( endState ) )
-        {
           todoList.add ( endState );
-        }
       }
     }
 
@@ -1548,7 +1326,7 @@ public abstract class AbstractMachine implements Machine
    * 
    * @see Machine#getTableColumnModel()
    */
-  public final TableColumnModel getTableColumnModel ()
+  public TableColumnModel getTableColumnModel ()
   {
     DefaultTableColumnModel columnModel = new DefaultTableColumnModel ();
 
@@ -1663,12 +1441,10 @@ public abstract class AbstractMachine implements Machine
     if ( columnIndex == EPSILON_COLUMN )
     {
       for ( Transition currentTransition : currentState.getTransitionBegin () )
-      {
         if ( currentTransition.getTransitionType ().equals (
             TransitionType.EPSILON_ONLY )
             || currentTransition.getTransitionType ().equals (
                 TransitionType.EPSILON_SYMBOL ) )
-        {
           try
           {
             stateEndList.add ( currentTransition.getStateEnd () );
@@ -1678,8 +1454,6 @@ public abstract class AbstractMachine implements Machine
             exc.printStackTrace ();
             System.exit ( 1 );
           }
-        }
-      }
     }
     // normal columns
     else
@@ -1687,9 +1461,7 @@ public abstract class AbstractMachine implements Machine
       Symbol currentSymbol = this.alphabet.get ( columnIndex
           - SPECIAL_COLUMN_COUNT );
       for ( Transition currentTransition : currentState.getTransitionBegin () )
-      {
         if ( currentTransition.contains ( currentSymbol ) )
-        {
           try
           {
             stateEndList.add ( currentTransition.getStateEnd () );
@@ -1699,8 +1471,6 @@ public abstract class AbstractMachine implements Machine
             exc.printStackTrace ();
             System.exit ( 1 );
           }
-        }
-      }
     }
 
     for ( int i = 0 ; i < this.cachedValueList.size () ; i++ )
@@ -1721,7 +1491,6 @@ public abstract class AbstractMachine implements Machine
         }
 
         for ( int j = 0 ; j < stateEndList.size () ; j++ )
-        {
           try
           {
             cachedStateSet.get ( j ).setName (
@@ -1732,7 +1501,6 @@ public abstract class AbstractMachine implements Machine
             exc.printStackTrace ();
             System.exit ( 1 );
           }
-        }
         return cache.getThird ();
       }
     }
@@ -1740,7 +1508,6 @@ public abstract class AbstractMachine implements Machine
     StateSet newStateEndList = new DefaultStateSet ();
 
     for ( State current : stateEndList )
-    {
       try
       {
         State newState = new DefaultState ( current.getName () );
@@ -1757,7 +1524,6 @@ public abstract class AbstractMachine implements Machine
         exc.printStackTrace ();
         System.exit ( 1 );
       }
-    }
 
     this.cachedValueList
         .add ( new ObjectTriple < Integer, Integer, Object > ( new Integer (
@@ -1798,16 +1564,10 @@ public abstract class AbstractMachine implements Machine
   public final boolean isEveryStateUnique ()
   {
     for ( int i = 0 ; i < this.stateList.size () ; i++ )
-    {
       for ( int j = i + 1 ; j < this.stateList.size () ; j++ )
-      {
         if ( this.stateList.get ( i ).getName ().equals (
             this.stateList.get ( j ).getName () ) )
-        {
           return false;
-        }
-      }
-    }
     return true;
   }
 
@@ -1820,76 +1580,50 @@ public abstract class AbstractMachine implements Machine
   public final boolean isModified ()
   {
     if ( this.stateList.size () != this.initialStateList.size () )
-    {
       return true;
-    }
     if ( this.transitionList.size () != this.initialTransitionList.size () )
-    {
       return true;
-    }
 
     boolean found;
     for ( int i = 0 ; i < this.stateList.size () ; i++ )
     {
       found = false;
       for ( int j = 0 ; j < this.initialStateList.size () ; j++ )
-      {
         if ( this.stateList.get ( i ) == this.initialStateList.get ( j ) )
         {
           found = true;
           break;
         }
-      }
       if ( !found )
-      {
         return true;
-      }
     }
 
     for ( int i = 0 ; i < this.transitionList.size () ; i++ )
     {
       found = false;
       for ( int j = 0 ; j < this.initialTransitionList.size () ; j++ )
-      {
         if ( this.transitionList.get ( i ) == this.initialTransitionList
             .get ( j ) )
         {
           found = true;
           break;
         }
-      }
       if ( !found )
-      {
         return true;
-      }
     }
 
     if ( this.alphabet.isModified () )
-    {
       return true;
-    }
     if ( this.pushDownAlphabet.isModified () )
-    {
       return true;
-    }
     if ( this.usePushDownAlphabet != this.initialUsePushDownAlphabet )
-    {
       return true;
-    }
     for ( State current : this.stateList )
-    {
       if ( current.isModified () )
-      {
         return true;
-      }
-    }
     for ( Transition current : this.transitionList )
-    {
       if ( current.isModified () )
-      {
         return true;
-      }
-    }
     return false;
   }
 
@@ -1902,16 +1636,12 @@ public abstract class AbstractMachine implements Machine
   public final boolean isNextSymbolAvailable ()
   {
     if ( this.word == null )
-    {
       return false;
-    }
 
     // special case for the pda navigation
     if ( getMachineType ().equals ( MachineType.PDA )
         && ( getPossibleTransitions ().size () > 0 ) )
-    {
       return true;
-    }
 
     // the exception is thrown if the word is finished
     try
@@ -1927,12 +1657,8 @@ public abstract class AbstractMachine implements Machine
     // save the new active states
     ArrayList < State > newActiveStates = new ArrayList < State > ();
     for ( State current : this.stateList )
-    {
       if ( current.isActive () )
-      {
         newActiveStates.add ( current );
-      }
-    }
 
     if ( newActiveStates.size () == 0 )
     {
@@ -1953,9 +1679,7 @@ public abstract class AbstractMachine implements Machine
   public final boolean isPreviousSymbolAvailable ()
   {
     if ( this.word == null )
-    {
       return false;
-    }
 
     return !this.history.isEmpty ();
   }
@@ -1980,9 +1704,7 @@ public abstract class AbstractMachine implements Machine
   public final boolean isUserInputNeeded ()
   {
     if ( getMachineType ().equals ( MachineType.PDA ) )
-    {
       return getPossibleTransitions ().size () >= 2;
-    }
     return false;
   }
 
@@ -1995,17 +1717,11 @@ public abstract class AbstractMachine implements Machine
   public final boolean isWordAccepted ()
   {
     if ( this.stack.size () > 0 )
-    {
       return false;
-    }
 
     for ( State current : this.stateList )
-    {
       if ( current.isActive () && current.isFinalState () )
-      {
         return true;
-      }
-    }
 
     return false;
   }
@@ -2027,12 +1743,8 @@ public abstract class AbstractMachine implements Machine
 
     // start states
     for ( State current : this.stateList )
-    {
       if ( current.isStartState () )
-      {
         activeStates.addAll ( Util.getClosure ( current ) );
-      }
-    }
 
     try
     {
@@ -2041,20 +1753,14 @@ public abstract class AbstractMachine implements Machine
         tmpActiveStates.clear ();
         Symbol symbol = testWord.nextSymbol ();
         for ( State currentState : activeStates )
-        {
           for ( Transition currentTransition : currentState
               .getTransitionBegin () )
-          {
             if ( currentTransition.contains ( symbol ) )
-            {
               if ( !tmpActiveStates.contains ( currentState ) )
               {
                 tmpActiveStates.add ( currentTransition.getStateEnd () );
                 break;
               }
-            }
-          }
-        }
 
         activeStates.clear ();
         activeStates.addAll ( Util.getClosure ( tmpActiveStates ) );
@@ -2068,12 +1774,8 @@ public abstract class AbstractMachine implements Machine
     }
 
     for ( State current : activeStates )
-    {
       if ( current.isFinalState () )
-      {
         return true;
-      }
-    }
 
     return false;
   }
@@ -2099,9 +1801,7 @@ public abstract class AbstractMachine implements Machine
         }
       }
       else if ( current.getStateBegin ().equals ( state ) )
-      {
         state.addTransitionBegin ( current );
-      }
       // State end
       if ( current.getStateEnd () == null )
       {
@@ -2112,9 +1812,7 @@ public abstract class AbstractMachine implements Machine
         }
       }
       else if ( current.getStateEnd ().equals ( state ) )
-      {
         state.addTransitionEnd ( current );
-      }
     }
   }
 
@@ -2138,9 +1836,7 @@ public abstract class AbstractMachine implements Machine
         }
       }
       else if ( transition.getStateBegin ().equals ( currentState ) )
-      {
         currentState.addTransitionBegin ( transition );
-      }
       // State end
       if ( transition.getStateEnd () == null )
       {
@@ -2151,9 +1847,7 @@ public abstract class AbstractMachine implements Machine
         }
       }
       else if ( transition.getStateEnd ().equals ( currentState ) )
-      {
         currentState.addTransitionEnd ( transition );
-      }
     }
   }
 
@@ -2167,17 +1861,11 @@ public abstract class AbstractMachine implements Machine
   {
     ArrayList < State > activeStateList = new ArrayList < State > ();
     for ( State current : this.stateList )
-    {
       if ( current.isActive () )
-      {
         activeStateList.add ( current );
-      }
-    }
 
     if ( activeStateList.size () == 0 )
-    {
       throw new RuntimeException ( "active state set is empty" ); //$NON-NLS-1$
-    }
 
     TreeSet < State > oldActiveStateSet = new TreeSet < State > ();
     TreeSet < Transition > oldActiveTransitionSet = new TreeSet < Transition > ();
@@ -2185,27 +1873,17 @@ public abstract class AbstractMachine implements Machine
     Stack oldStack = cloneCurrentStack ();
 
     for ( State current : this.stateList )
-    {
       if ( current.isActive () )
-      {
         oldActiveStateSet.add ( current );
-      }
-    }
 
     for ( Transition current : this.transitionList )
-    {
       if ( current.isActive () )
       {
         oldActiveTransitionSet.add ( current );
         for ( Symbol currentSymbol : current )
-        {
           if ( currentSymbol.isActive () )
-          {
             oldActiveSymbolList.add ( currentSymbol );
-          }
-        }
       }
-    }
 
     HistoryItem historyItem = new HistoryItem ( oldActiveStateSet,
         oldActiveTransitionSet, oldActiveSymbolList, oldStack, false );
@@ -2218,10 +1896,8 @@ public abstract class AbstractMachine implements Machine
     // check for epsilon transitions
     boolean epsilonTransitionFound = false;
     stateLoop : for ( State activeState : oldActiveStateSet )
-    {
       transitionLoop : for ( Transition current : activeState
           .getTransitionBegin () )
-      {
         if ( ( current.getTransitionType ().equals (
             TransitionType.EPSILON_ONLY ) || current.getTransitionType ()
             .equals ( TransitionType.EPSILON_SYMBOL ) )
@@ -2235,37 +1911,25 @@ public abstract class AbstractMachine implements Machine
 
           // the read word must match
           if ( readWord.size () != stackSymbols.size () )
-          {
             continue transitionLoop;
-          }
           for ( int i = 0 ; i < readWord.size () ; i++ )
-          {
             if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
-            {
               continue transitionLoop;
-            }
-          }
 
           epsilonTransitionFound = true;
           break stateLoop;
         }
-      }
-    }
 
     // epsilon transition found
     if ( epsilonTransitionFound )
-    {
       for ( State currentState : oldActiveStateSet )
       {
         // add the old state if not a pda
         if ( !getMachineType ().equals ( MachineType.PDA ) )
-        {
           currentState.setActive ( true );
-        }
 
         transitionLoop : for ( Transition currentTransition : currentState
             .getTransitionBegin () )
-        {
           if ( ( currentTransition.getTransitionType ().equals (
               TransitionType.EPSILON_ONLY ) || currentTransition
               .getTransitionType ().equals ( TransitionType.EPSILON_SYMBOL ) )
@@ -2278,43 +1942,30 @@ public abstract class AbstractMachine implements Machine
 
             // the read word must match
             if ( readWord.size () != stackSymbols.size () )
-            {
               continue transitionLoop;
-            }
             for ( int i = 0 ; i < readWord.size () ; i++ )
-            {
               if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
-              {
                 continue transitionLoop;
-              }
-            }
 
             // add the state begin if not a pda
             if ( !getMachineType ().equals ( MachineType.PDA ) )
-            {
               currentTransition.getStateBegin ().setActive ( true );
-            }
 
             currentTransition.setActive ( true );
 
             currentTransition.getStateEnd ().setActive ( true );
 
             for ( Symbol currentSymbol : currentTransition )
-            {
               if ( currentSymbol.isEpsilon () )
               {
                 currentSymbol.setActive ( true );
                 break;
               }
-            }
 
             replaceStack ( readWord.size (), currentTransition
                 .getPushDownWordWrite () );
           }
-        }
       }
-    }
-    // no epsilon transition found
     else
     {
       Symbol symbol;
@@ -2329,7 +1980,6 @@ public abstract class AbstractMachine implements Machine
       }
 
       for ( State currentState : oldActiveStateSet )
-      {
         transitionLoop : for ( Transition currentTransition : currentState
             .getTransitionBegin () )
         {
@@ -2339,16 +1989,10 @@ public abstract class AbstractMachine implements Machine
 
           // the read word must match
           if ( readWord.size () != stackSymbols.size () )
-          {
             continue transitionLoop;
-          }
           for ( int i = 0 ; i < readWord.size () ; i++ )
-          {
             if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
-            {
               continue transitionLoop;
-            }
-          }
 
           if ( currentTransition.contains ( symbol ) )
           {
@@ -2357,20 +2001,17 @@ public abstract class AbstractMachine implements Machine
             currentTransition.getStateEnd ().setActive ( true );
 
             for ( Symbol currentSymbol : currentTransition )
-            {
               if ( !currentSymbol.isEpsilon ()
                   && currentSymbol.getName ().equals ( symbol.getName () ) )
               {
                 currentSymbol.setActive ( true );
                 break;
               }
-            }
 
             replaceStack ( readWord.size (), currentTransition
                 .getPushDownWordWrite () );
           }
         }
-      }
     }
   }
 
@@ -2384,17 +2025,11 @@ public abstract class AbstractMachine implements Machine
   {
     ArrayList < State > activeStateList = new ArrayList < State > ();
     for ( State current : this.stateList )
-    {
       if ( current.isActive () )
-      {
         activeStateList.add ( current );
-      }
-    }
 
     if ( activeStateList.size () == 0 )
-    {
       throw new RuntimeException ( "active state set is empty" ); //$NON-NLS-1$
-    }
 
     TreeSet < State > oldActiveStateSet = new TreeSet < State > ();
     TreeSet < Transition > oldActiveTransitionSet = new TreeSet < Transition > ();
@@ -2402,27 +2037,17 @@ public abstract class AbstractMachine implements Machine
     Stack oldStack = cloneCurrentStack ();
 
     for ( State current : this.stateList )
-    {
       if ( current.isActive () )
-      {
         oldActiveStateSet.add ( current );
-      }
-    }
 
     for ( Transition current : this.transitionList )
-    {
       if ( current.isActive () )
       {
         oldActiveTransitionSet.add ( current );
         for ( Symbol currentSymbol : current )
-        {
           if ( currentSymbol.isActive () )
-          {
             oldActiveSymbolList.add ( currentSymbol );
-          }
-        }
       }
-    }
 
     HistoryItem historyItem = new HistoryItem ( oldActiveStateSet,
         oldActiveTransitionSet, oldActiveSymbolList, oldStack, false );
@@ -2446,13 +2071,11 @@ public abstract class AbstractMachine implements Machine
       transition.getStateEnd ().setActive ( true );
 
       for ( Symbol currentSymbol : transition )
-      {
         if ( currentSymbol.isEpsilon () )
         {
           currentSymbol.setActive ( true );
           break;
         }
-      }
 
       replaceStack ( readWord.size (), transition.getPushDownWordWrite () );
     }
@@ -2478,9 +2101,7 @@ public abstract class AbstractMachine implements Machine
   public final void previousSymbol ()
   {
     if ( this.history.size () == 0 )
-    {
       throw new RuntimeException ( "history is empty" ); //$NON-NLS-1$
-    }
 
     clearActiveState ();
     clearActiveTransition ();
@@ -2492,25 +2113,16 @@ public abstract class AbstractMachine implements Machine
     ArrayList < Symbol > historyStackSymbolList = historyItem.getStack ().peak (
         historyItem.getStack ().size () );
     for ( int i = historyStackSymbolList.size () - 1 ; i >= 0 ; i-- )
-    {
       this.stack.push ( historyStackSymbolList.get ( i ) );
-    }
 
     for ( State current : historyItem.getStateSet () )
-    {
       current.setActive ( true );
-    }
     for ( Transition current : historyItem.getTransitionSet () )
-    {
       current.setActive ( true );
-    }
     for ( Symbol current : historyItem.getSymbolSet () )
-    {
       current.setActive ( true );
-    }
 
     if ( historyItem.isNextWordStep () )
-    {
       try
       {
         this.word.previousSymbol ();
@@ -2521,7 +2133,6 @@ public abstract class AbstractMachine implements Machine
         System.exit ( 1 );
         return;
       }
-    }
   }
 
 
@@ -2557,17 +2168,11 @@ public abstract class AbstractMachine implements Machine
   public final void removeState ( Iterable < State > states )
   {
     if ( states == null )
-    {
       throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
-    }
     if ( !states.iterator ().hasNext () )
-    {
       throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
-    }
     for ( State current : states )
-    {
       removeState ( current );
-    }
   }
 
 
@@ -2580,13 +2185,9 @@ public abstract class AbstractMachine implements Machine
   {
     this.stateList.remove ( state );
     for ( Transition current : state.getTransitionBegin () )
-    {
       removeTransition ( current );
-    }
     for ( Transition current : state.getTransitionEnd () )
-    {
       removeTransition ( current );
-    }
     fireTableDataChanged ();
     state.removeStateChangedListener ( this.stateChangedListener );
     state.removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
@@ -2602,17 +2203,11 @@ public abstract class AbstractMachine implements Machine
   public final void removeState ( State ... states )
   {
     if ( states == null )
-    {
       throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
-    }
     if ( states.length == 0 )
-    {
       throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
-    }
     for ( State current : states )
-    {
       removeState ( current );
-    }
   }
 
 
@@ -2646,17 +2241,11 @@ public abstract class AbstractMachine implements Machine
   public final void removeTransition ( Iterable < Transition > transitions )
   {
     if ( transitions == null )
-    {
       throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
-    }
     if ( !transitions.iterator ().hasNext () )
-    {
       throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
-    }
     for ( Transition current : transitions )
-    {
       removeTransition ( current );
-    }
   }
 
 
@@ -2671,14 +2260,10 @@ public abstract class AbstractMachine implements Machine
     for ( State current : this.stateList )
     {
       if ( current.getTransitionBegin ().contains ( transition ) )
-      {
         current.removeTransitionBegin ( transition );
-      }
 
       if ( current.getTransitionEnd ().contains ( transition ) )
-      {
         current.removeTransitionEnd ( transition );
-      }
     }
     fireTableDataChanged ();
     transition
@@ -2697,17 +2282,11 @@ public abstract class AbstractMachine implements Machine
   public final void removeTransition ( Transition ... transitions )
   {
     if ( transitions == null )
-    {
       throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
-    }
     if ( transitions.length == 0 )
-    {
       throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
-    }
     for ( Transition current : transitions )
-    {
       removeTransition ( current );
-    }
   }
 
 
@@ -2721,13 +2300,9 @@ public abstract class AbstractMachine implements Machine
   private final void replaceStack ( int size, Word replacement )
   {
     for ( int i = 0 ; i < size ; i++ )
-    {
       this.stack.pop ();
-    }
     for ( int i = replacement.size () - 1 ; i >= 0 ; i-- )
-    {
       this.stack.push ( replacement.get ( i ) );
-    }
   }
 
 
@@ -2746,13 +2321,9 @@ public abstract class AbstractMachine implements Machine
     this.pushDownAlphabet.resetModify ();
     this.initialUsePushDownAlphabet = this.usePushDownAlphabet;
     for ( State current : this.stateList )
-    {
       current.resetModify ();
-    }
     for ( Transition current : this.transitionList )
-    {
       current.resetModify ();
-    }
   }
 
 
@@ -2769,13 +2340,11 @@ public abstract class AbstractMachine implements Machine
     // find the row
     int row = -1;
     for ( int i = 0 ; i < this.stateList.size () ; i++ )
-    {
       if ( this.stateList.get ( i ).equals ( state ) )
       {
         row = i;
         break;
       }
-    }
 
     State chachedState = ( State ) getValueAt ( row, STATE_COLUMN );
     chachedState.setSelected ( true );
@@ -2795,34 +2364,26 @@ public abstract class AbstractMachine implements Machine
 
     // transition
     for ( Transition current : transitionList )
-    {
       current.setSelected ( true );
-    }
 
     for ( Transition current : transitionList )
     {
       // find the row
       int row = -1;
       for ( int i = 0 ; i < this.stateList.size () ; i++ )
-      {
         if ( this.stateList.get ( i ).equals ( current.getStateBegin () ) )
         {
           row = i;
           break;
         }
-      }
 
       if ( current.getTransitionType ().equals ( TransitionType.EPSILON_ONLY ) )
       {
         StateSet stateSet = ( StateSet ) getValueAt ( row, EPSILON_COLUMN );
 
         for ( State currentState : stateSet )
-        {
           if ( currentState.equals ( current.getStateEnd () ) )
-          {
             currentState.setSelected ( true );
-          }
-        }
       }
       else if ( current.getTransitionType ().equals (
           TransitionType.EPSILON_SYMBOL ) )
@@ -2830,61 +2391,39 @@ public abstract class AbstractMachine implements Machine
         StateSet stateSet = ( StateSet ) getValueAt ( row, EPSILON_COLUMN );
 
         for ( State currentState : stateSet )
-        {
           if ( currentState.equals ( current.getStateEnd () ) )
-          {
             currentState.setSelected ( true );
-          }
-        }
 
         // find the columns
         for ( int i = 0 ; i < this.alphabet.size () ; i++ )
-        {
           for ( int j = 0 ; j < current.size () ; j++ )
-          {
             if ( this.alphabet.get ( i ).equals ( current.getSymbol ( j ) ) )
             {
               int column = i + SPECIAL_COLUMN_COUNT;
               stateSet = ( StateSet ) getValueAt ( row, column );
 
               for ( State currentState : stateSet )
-              {
                 if ( currentState.equals ( current.getStateEnd () ) )
-                {
                   currentState.setSelected ( true );
-                }
-              }
             }
-          }
-        }
       }
       else if ( current.getTransitionType ().equals ( TransitionType.SYMBOL ) )
       {
         // find the columns
         for ( int i = 0 ; i < this.alphabet.size () ; i++ )
-        {
           for ( int j = 0 ; j < current.size () ; j++ )
-          {
             if ( this.alphabet.get ( i ).equals ( current.getSymbol ( j ) ) )
             {
               int column = i + SPECIAL_COLUMN_COUNT;
               StateSet stateSet = ( StateSet ) getValueAt ( row, column );
 
               for ( State currentState : stateSet )
-              {
                 if ( currentState.equals ( current.getStateEnd () ) )
-                {
                   currentState.setSelected ( true );
-                }
-              }
             }
-          }
-        }
       }
       else
-      {
         throw new RuntimeException ( "unsupported transition type" ); //$NON-NLS-1$
-      }
     }
   }
 
@@ -2910,10 +2449,8 @@ public abstract class AbstractMachine implements Machine
   {
     // State column
     if ( columnIndex == STATE_COLUMN )
-    {
       throw new IllegalArgumentException (
           "the state column should not be editable" ); //$NON-NLS-1$
-    }
 
     if ( value == null )
     {
@@ -2936,48 +2473,36 @@ public abstract class AbstractMachine implements Machine
     {
       boolean found = false;
       for ( State currentOld : stateSetOld )
-      {
         if ( currentNew.getName ().equals ( currentOld.getName () ) )
         {
           found = true;
           break;
         }
-      }
       if ( !found )
-      {
         for ( State stateMember : this.stateList )
-        {
           if ( stateMember.getName ().equals ( currentNew.getName () ) )
           {
             stateAdd.add ( stateMember );
             break;
           }
-        }
-      }
     }
 
     for ( State currentOld : stateSetOld )
     {
       boolean found = false;
       for ( State currentNew : stateSetNew )
-      {
         if ( currentOld.getName ().equals ( currentNew.getName () ) )
         {
           found = true;
           break;
         }
-      }
       if ( !found )
-      {
         for ( State stateMember : this.stateList )
-        {
           if ( stateMember.getName ().equals ( currentOld.getName () ) )
           {
             stateRemove.add ( stateMember );
             break;
           }
-        }
-      }
     }
 
     logger.debug ( "setValueAt", "state add: " + stateAdd ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2990,7 +2515,6 @@ public abstract class AbstractMachine implements Machine
 
     // Add the transitions
     for ( State currentState : stateAdd )
-    {
       try
       {
         // Epsilon transition
@@ -3000,7 +2524,6 @@ public abstract class AbstractMachine implements Machine
 
           Transition foundTransition = null;
           loopTransition : for ( Transition currentTransition : this.transitionList )
-          {
             if ( ( ! ( currentTransition.getTransitionType ().equals (
                 TransitionType.EPSILON_ONLY ) || currentTransition
                 .getTransitionType ().equals ( TransitionType.EPSILON_SYMBOL ) ) )
@@ -3012,7 +2535,6 @@ public abstract class AbstractMachine implements Machine
               foundTransition = currentTransition;
               break loopTransition;
             }
-          }
 
           if ( foundTransition == null )
           {
@@ -3023,17 +2545,14 @@ public abstract class AbstractMachine implements Machine
             transitionAdd.add ( newTransition );
           }
           else
-          {
             symbolsAdd.add ( new ObjectPair < Transition, Symbol > (
                 foundTransition, new DefaultSymbol () ) );
-          }
         }
         // No epsilon transition
         else
         {
           Transition foundTransition = null;
           loopTransition : for ( Transition currentTransition : this.transitionList )
-          {
             if ( currentTransition.getStateBegin ().getName ().equals (
                 stateBegin.getName () )
                 && currentTransition.getStateEnd ().getName ().equals (
@@ -3042,7 +2561,6 @@ public abstract class AbstractMachine implements Machine
               foundTransition = currentTransition;
               break loopTransition;
             }
-          }
           if ( foundTransition == null )
           {
             logger.debug ( "setValueAt", //$NON-NLS-1$
@@ -3073,18 +2591,14 @@ public abstract class AbstractMachine implements Machine
         exc.printStackTrace ();
         System.exit ( 1 );
       }
-    }
 
     // Remove the transitions and symbols
     for ( State currentState : stateRemove )
-    {
       for ( Transition currentTransition : this.transitionList )
-      {
         if ( currentTransition.getStateBegin ().getName ().equals (
             stateBegin.getName () )
             && currentTransition.getStateEnd ().getName ().equals (
                 currentState.getName () ) )
-        {
           // Epsilon transition
           if ( ( columnIndex == EPSILON_COLUMN )
               && currentTransition.getTransitionType ().equals (
@@ -3100,14 +2614,12 @@ public abstract class AbstractMachine implements Machine
             logger.debug (
                 "setValueAt", "remove transition: only epsilon symbol" ); //$NON-NLS-1$ //$NON-NLS-2$
             for ( Symbol epsilonSymbol : currentTransition )
-            {
               if ( epsilonSymbol.isEpsilon () )
               {
                 symbolsRemove.add ( new ObjectPair < Transition, Symbol > (
                     currentTransition, epsilonSymbol ) );
                 break;
               }
-            }
           }
           // No epsilon transition
           else if ( columnIndex > EPSILON_COLUMN )
@@ -3117,13 +2629,11 @@ public abstract class AbstractMachine implements Machine
             Symbol symbolRemove = null;
             loopSymbol : for ( Symbol currentSymbol : currentTransition
                 .getSymbol () )
-            {
               if ( currentSymbol.equals ( symbolColumn ) )
               {
                 symbolRemove = currentSymbol;
                 break loopSymbol;
               }
-            }
 
             if ( symbolRemove != null )
             {
@@ -3144,19 +2654,12 @@ public abstract class AbstractMachine implements Machine
               }
             }
             else
-            {
               logger.debug ( "setValueAt", //$NON-NLS-1$
                   "remove transition: no epsilon: nothing found" ); //$NON-NLS-1$
-            }
           }
           else
-          {
             logger.debug ( "setValueAt", //$NON-NLS-1$
                 "remove transition: epsilon column: no epsilon transition" ); //$NON-NLS-1$
-          }
-        }
-      }
-    }
 
     if ( ( transitionAdd.size () > 0 ) || ( transitionRemove.size () > 0 )
         || ( symbolsAdd.size () > 0 ) || ( symbolsRemove.size () > 0 ) )
@@ -3218,9 +2721,7 @@ public abstract class AbstractMachine implements Machine
   {
     // Word
     if ( startWord == null )
-    {
       throw new NullPointerException ( "word is null" ); //$NON-NLS-1$
-    }
     this.word = startWord;
     this.word.start ();
 
@@ -3229,12 +2730,8 @@ public abstract class AbstractMachine implements Machine
     clearHistory ();
 
     for ( State current : this.stateList )
-    {
       if ( current.isStartState () )
-      {
         current.setActive ( true );
-      }
-    }
   }
 
 
@@ -3266,60 +2763,40 @@ public abstract class AbstractMachine implements Machine
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
 
     if ( this.validationElementList.contains ( ValidationElement.ALL_SYMBOLS ) )
-    {
       machineExceptionList.addAll ( checkAllSymbols () );
-    }
 
     if ( this.validationElementList
         .contains ( ValidationElement.EPSILON_TRANSITION ) )
-    {
       machineExceptionList.addAll ( checkEpsilonTransition () );
-    }
 
     if ( this.validationElementList
         .contains ( ValidationElement.TRANSITION_STACK_OPERATION ) )
-    {
       machineExceptionList.addAll ( checkTransitionStackOperation () );
-    }
 
     if ( this.validationElementList.contains ( ValidationElement.FINAL_STATE ) )
-    {
       machineExceptionList.addAll ( checkFinalState () );
-    }
 
     if ( this.validationElementList
         .contains ( ValidationElement.MORE_THAN_ONE_START_STATE ) )
-    {
       machineExceptionList.addAll ( checkMoreThanOneStartState () );
-    }
 
     if ( this.validationElementList
         .contains ( ValidationElement.NO_START_STATE ) )
-    {
       machineExceptionList.addAll ( checkNoStartState () );
-    }
 
     if ( this.validationElementList.contains ( ValidationElement.STATE_NAME ) )
-    {
       machineExceptionList.addAll ( checkStateName () );
-    }
 
     if ( this.validationElementList
         .contains ( ValidationElement.STATE_NOT_REACHABLE ) )
-    {
       machineExceptionList.addAll ( checkStateNotReachable () );
-    }
 
     if ( this.validationElementList
         .contains ( ValidationElement.SYMBOL_ONLY_ONE_TIME ) )
-    {
       machineExceptionList.addAll ( checkSymbolOnlyOneTime () );
-    }
 
     // Throw the exception if a warning or an error has occurred.
     if ( machineExceptionList.size () > 0 )
-    {
       throw new MachineValidationException ( machineExceptionList );
-    }
   }
 }

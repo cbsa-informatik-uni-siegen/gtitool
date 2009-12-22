@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.machines.AbstractMachine;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultPDA extends AbstractMachine implements PDA
+public class DefaultPDA extends AbstractMachine implements PDA
 {
 
   /**

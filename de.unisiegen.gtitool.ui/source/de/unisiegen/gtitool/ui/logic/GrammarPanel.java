@@ -44,6 +44,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.convert.ConvertContextFreeGrammar;
 import de.unisiegen.gtitool.ui.convert.ConvertRegularGrammar;
 import de.unisiegen.gtitool.ui.convert.ConvertToLR0;
+import de.unisiegen.gtitool.ui.convert.ConvertToTDP;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -385,9 +386,12 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
           }
           catch ( AlphabetException e )
           {
-            e.printStackTrace (); // TODO
+            e.printStackTrace ();
+            System.exit ( 1 );
           }
           break;
+        case TDP :
+          return new ConvertToTDP ( this.mainWindowForm, this.grammar );
         default :
           break;
       }
@@ -626,15 +630,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     TextWindow w = new TextWindow ( this.mainWindowForm,
         createRDP ( this.grammar ), false, null, getName () + "_RDP" ); //$NON-NLS-1$
     w.show ();
-  }
-
-
-  /**
-   * Handle create tdp button pressed
-   */
-  public final void handleCreateTDP ()
-  {
-    ; // TODO implement logic
   }
 
 

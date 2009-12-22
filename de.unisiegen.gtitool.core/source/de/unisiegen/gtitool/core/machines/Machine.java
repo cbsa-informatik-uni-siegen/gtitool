@@ -10,6 +10,7 @@ import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.InputEntity;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -23,6 +24,7 @@ import de.unisiegen.gtitool.core.machines.dfa.LR0;
 import de.unisiegen.gtitool.core.machines.enfa.ENFA;
 import de.unisiegen.gtitool.core.machines.listener.MachineChangedListener;
 import de.unisiegen.gtitool.core.machines.nfa.NFA;
+import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 
@@ -67,7 +69,12 @@ public interface Machine extends InputEntity, Serializable, TableModel,
     /**
      * The {@link LR0} machine type.
      */
-    LR0;
+    LR0,
+    
+    /**
+     * The {@link DefaultTDP} machine type.
+     */
+    TDP;
 
     /**
      * The file ending.
@@ -109,6 +116,10 @@ public interface Machine extends InputEntity, Serializable, TableModel,
         case LR0 :
         {
           return "LR0"; //$NON-NLS-1$
+        }
+        case TDP :
+        {
+          return "TDP"; //$NON-NLS-1$
         }
       }
       throw new IllegalArgumentException ( "unsupported machine type" ); //$NON-NLS-1$
@@ -189,6 +200,11 @@ public interface Machine extends InputEntity, Serializable, TableModel,
    * The count of special columns.
    */
   public static final int SPECIAL_COLUMN_COUNT = 2;
+  
+  /**
+   * The index of the {@link NonterminalSymbol} column
+   */
+  public static final int NONTERMINAL_COLUMN = 0;
 
 
   /**

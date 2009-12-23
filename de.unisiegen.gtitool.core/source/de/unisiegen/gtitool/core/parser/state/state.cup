@@ -68,6 +68,7 @@ state							::= power_state:ps
 									   try
 									   {
 									     RESULT = new DefaultState(name.toString());
+									     RESULT.setPowerStates(ps.get());
 									   }
 									   catch (StateException exc)
 									   {
@@ -158,9 +159,48 @@ state_list_comma				::= state_list_comma:slc COMMA:c state_name:sn
 									   System.arraycopy(slc, 0, RESULT, 0, slc.length);
 									   RESULT[slc.length] = sn;
 								    :}
+								|	state_list_comma:slc COMMA:c power_state:ps
+								    {:
+								       RESULT = new State[slc.length + 1];
+									   System.arraycopy(slc, 0, RESULT, 0, slc.length);
+									   
+									   StringBuilder name = new StringBuilder();
+									   name.append("{");
+									   boolean first = true ;
+									   for (State current : ps.get())
+									   {
+									     if (!first)
+									     {
+									       name.append(", ");
+									     }
+									     first = false;
+									     name.append(current.getName());
+									   }
+									   name.append("}");
+									   
+									   RESULT[slc.length] = new DefaultState(name.toString());
+								    :}
 								|	state_name:sn
 									{:
 									   RESULT = new State[] { sn };
+									:}
+								|	power_state:ps
+									{:
+									   StringBuilder name = new StringBuilder();
+									   name.append("{");
+									   boolean first = true ;
+									   for (State current : ps.get())
+									   {
+									     if (!first)
+									     {
+									       name.append(", ");
+									     }
+									     first = false;
+									     name.append(current.getName());
+									   }
+									   name.append("}");
+									   
+									   RESULT = new State[] { new DefaultState(name.toString()) };
 									:}
 								|	state_list_comma_error
 									{: :}

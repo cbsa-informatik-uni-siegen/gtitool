@@ -46,6 +46,7 @@ import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.ENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.nfa.NFA;
+import de.unisiegen.gtitool.core.parser.state.StateParseable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -2058,59 +2059,29 @@ public final class ConvertMachineDialog implements
   private final boolean isStateMemberOfStateSet ( State stateSet,
       State normalState )
   {
-    String name = stateSet.getName ();
+    StateParseable stateParseable = new StateParseable ();
 
-    if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
+    try
     {
-      return name.equals ( normalState.getName () );
-    }
-
-    if ( name.charAt ( 0 ) != '{' )
-    {
-      throw new RuntimeException ( "not a state set name: " + name ); //$NON-NLS-1$
-    }
-    if ( name.charAt ( name.length () - 1 ) != '}' )
-    {
-      throw new RuntimeException ( "not a state set name: " + name ); //$NON-NLS-1$
-    }
-
-    String [] splitStateSet = name.substring ( 1, name.length () - 1 ).split (
-        "," ); //$NON-NLS-1$
-
-    for ( String current : splitStateSet )
-    {
-      String newName = current;
-
-      if ( newName.length () == 0 )
+      State state = ( State ) stateParseable.newParser ( stateSet.toString () )
+          .parse ();
+      ArrayList < State > powerStates = state.getPowerStates ();
+      if ( powerStates != null )
       {
-        throw new RuntimeException ( "name is empty" ); //$NON-NLS-1$
-      }
-
-      // remove spaces
-      while ( newName.charAt ( 0 ) == ' ' )
-      {
-        newName = newName.substring ( 1 );
-
-        if ( newName.length () == 0 )
+        for ( State current : powerStates )
         {
-          throw new RuntimeException ( "name is empty" ); //$NON-NLS-1$
+          if ( current.getName ().equals ( normalState.getName () ) )
+          {
+            return true;
+          }
         }
       }
-      while ( newName.charAt ( newName.length () - 1 ) == ' ' )
-      {
-        newName = newName.substring ( 0, newName.length () - 1 );
-
-        if ( newName.length () == 0 )
-        {
-          throw new RuntimeException ( "name is empty" ); //$NON-NLS-1$
-        }
-      }
-
-      if ( normalState.getName ().equals ( newName ) )
-      {
-        return true;
-      }
     }
+    catch ( Exception exc )
+    {
+      exc.printStackTrace ();
+    }
+
     return false;
   }
 

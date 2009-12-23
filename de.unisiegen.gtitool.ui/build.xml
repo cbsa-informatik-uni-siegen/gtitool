@@ -32,6 +32,7 @@
 	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
+	<property name="testdir" value="${basedir}/test" />
 
 	<!-- dist -->
 	<target name="dist" depends="dist-core,dist-jgraph,dist-tinylaf,version,dist-preclean,dist-compile,dist-jar,dist-clean,dist-internal" description="Build distribution">
@@ -132,10 +133,10 @@
 		<mkdir dir="${distdir}" />
 		<delete dir="${classesdir}" includeemptydirs="true" />
 		<mkdir dir="${classesdir}" />
-		<javac includes="de/unisiegen/gtitool/ui/utils/SVNVersion.java" debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on">
-			<src path="${sourcedir}" />
+		<javac includes="de/unisiegen/gtitool/ui/SVNVersion.java" debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on">
+			<src path="${testdir}" />
 		</javac>
-		<java classname="de.unisiegen.gtitool.ui.utils.SVNVersion" dir="${basedir}" fork="true" outputproperty="gtitool.version.build">
+		<java classname="de.unisiegen.gtitool.ui.SVNVersion" dir="${basedir}" fork="true" outputproperty="gtitool.version.build">
 			<classpath>
 				<pathelement path="${classesdir}" />
 			</classpath>

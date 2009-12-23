@@ -84,6 +84,14 @@ public interface State extends Entity < State >, Storable, Modifyable
 
 
   /**
+   * Returns the power states.
+   * 
+   * @return The power states.
+   */
+  public ArrayList < State > getPowerStates ();
+
+
+  /**
    * Returns the push down {@link Alphabet}.
    * 
    * @return The push down {@link Alphabet}.
@@ -334,6 +342,14 @@ public interface State extends Entity < State >, Storable, Modifyable
    * @throws StateException If something with the {@link State} is not correct.
    */
   public void setName ( String name ) throws StateException;
+
+
+  /**
+   * Sets the power states.
+   * 
+   * @param powerStates The power states.
+   */
+  public void setPowerStates ( ArrayList < State > powerStates );
 
 
   /**

@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.utils;
+package de.unisiegen.gtitool.ui;
 
 
 import java.io.BufferedReader;

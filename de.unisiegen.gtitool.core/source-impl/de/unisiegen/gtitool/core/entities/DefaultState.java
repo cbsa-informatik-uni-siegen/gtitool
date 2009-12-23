@@ -164,6 +164,12 @@ public class DefaultState implements State
 
 
   /**
+   * The power states.
+   */
+  private ArrayList < State > powerStates = null;
+
+
+  /**
    * Allocates a new {@link DefaultState}.
    * 
    * @param alphabet The {@link Alphabet} of this {@link DefaultState}.
@@ -591,6 +597,17 @@ public class DefaultState implements State
   public final ParserOffset getParserOffset ()
   {
     return this.parserOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see #powerStates
+   */
+  public final ArrayList < State > getPowerStates ()
+  {
+    return this.powerStates;
   }
 
 
@@ -1059,6 +1076,17 @@ public class DefaultState implements State
   public final void setParserOffset ( ParserOffset parserOffset )
   {
     this.parserOffset = parserOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see #powerStates
+   */
+  public final void setPowerStates ( ArrayList < State > powerStates )
+  {
+    this.powerStates = powerStates;
   }
 
 

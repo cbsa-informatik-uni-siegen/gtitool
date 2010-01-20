@@ -57,7 +57,7 @@ public abstract class AbstractConvertGrammar implements Converter
   /**
    * The {@link Grammar}.
    */
-  private Grammar grammar;
+  private final Grammar grammar;
 
 
   /**
@@ -69,7 +69,7 @@ public abstract class AbstractConvertGrammar implements Converter
   /**
    * The {@link MainWindowForm}.
    */
-  private MainWindowForm mainWindowForm;
+  private final MainWindowForm mainWindowForm;
 
 
   /**
@@ -103,9 +103,7 @@ public abstract class AbstractConvertGrammar implements Converter
 
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
     for ( TerminalSymbol current : grammar.getTerminalSymbolSet () )
-    {
       symbols.add ( new DefaultSymbol ( current.getName () ) );
-    }
 
     try
     {
@@ -119,6 +117,14 @@ public abstract class AbstractConvertGrammar implements Converter
   }
 
 
+  /**
+   * Allocate a new {@link AbstractConvertGrammar}.
+   * 
+   * @param mainWindowForm The {@link MainWindowForm}.
+   * @param grammar The {@link Grammar}.
+   * @param alphabet The {@link Alphabet}
+   * 
+   */
   public AbstractConvertGrammar ( MainWindowForm mainWindowForm,
       Grammar grammar, Alphabet alphabet )
   {
@@ -137,13 +143,11 @@ public abstract class AbstractConvertGrammar implements Converter
     int count = 0;
     for ( EditorPanel current : this.mainWindowForm.getJGTIMainSplitPane ()
         .getJGTIEditorPanelTabbedPane () )
-    {
       if ( current.getFile () == null )
       {
         nameList.add ( current.getName () );
         count++ ;
       }
-    }
 
     String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
         + "." + this.machineType.toString ().toLowerCase (); //$NON-NLS-1$
@@ -175,10 +179,8 @@ public abstract class AbstractConvertGrammar implements Converter
       @SuppressWarnings ( "unused" ) boolean cb )
   {
     if ( ! ( toEntityType instanceof MachineType ) )
-    {
       throw new IllegalArgumentException ( "unsopported to entity type: " //$NON-NLS-1$
           + toEntityType );
-    }
 
     this.machineType = ( MachineType ) toEntityType;
     createMachine ();
@@ -226,15 +228,11 @@ public abstract class AbstractConvertGrammar implements Converter
     {
       State state = null;
       if ( name != null )
-      {
         state = new DefaultState ( this.alphabet, this.pushDownAlphabet, name,
             false, false );
-      }
       else
-      {
         state = new DefaultState ( this.alphabet, this.pushDownAlphabet,
             this.model.getMachine ().getNextStateName (), false, false );
-      }
       DefaultStateView stateView = this.model.createStateView ( this.position,
           this.position, state, false );
       this.position += 50;
@@ -268,9 +266,7 @@ public abstract class AbstractConvertGrammar implements Converter
       ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
       symbolList.addAll ( symbols );
       if ( symbolList.size () == 0 )
-      {
         symbolList.add ( new DefaultSymbol () );
-      }
 
       Transition transition = new DefaultTransition ( this.alphabet,
           this.pushDownAlphabet, read, write, source.getState (), target

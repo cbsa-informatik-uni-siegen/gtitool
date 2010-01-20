@@ -1770,15 +1770,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handle the create Top Down Parser buttun clicked
-   */
-  public final void handleCreateTDP ()
-  {
-    //TODO: implement logic
-  }
-
-
-  /**
    * Uses the active {@link EditorPanel} as draft for a new file.
    * 
    * @param grammarType The type of the new file.

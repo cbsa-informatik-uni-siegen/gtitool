@@ -87,13 +87,13 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   /**
    * The {@link EventListenerList}.
    */
-  private EventListenerList listenerList = new EventListenerList ();
+  private final EventListenerList listenerList = new EventListenerList ();
 
 
   /**
    * The {@link Machine}
    */
-  private Machine machine;
+  private final Machine machine;
 
 
   /**
@@ -129,7 +129,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   /**
    * A list of all {@link DefaultStateView}s
    */
-  private ArrayList < DefaultStateView > stateViewList = new ArrayList < DefaultStateView > ();
+  private final ArrayList < DefaultStateView > stateViewList = new ArrayList < DefaultStateView > ();
 
 
   /**
@@ -141,7 +141,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   /**
    * A list of all {@link DefaultTransitionView}s
    */
-  private ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
+  private final ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
 
 
   /**
@@ -168,10 +168,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
     // Check if the element is correct
     if ( !element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
-    {
       throw new IllegalArgumentException ( "element " + Messages.QUOTE //$NON-NLS-1$
           + element.getName () + Messages.QUOTE + " is not a machine model" ); //$NON-NLS-1$
-    }
 
     // Attribute
     boolean foundMachineType = false;
@@ -180,27 +178,20 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     String machineType = null;
     boolean usePushDownAlphabet = true;
     for ( Attribute attribute : element.getAttribute () )
-    {
       if ( attribute.getName ().equals ( "machineType" ) ) //$NON-NLS-1$
       {
         foundMachineType = true;
         if ( overwrittenMachineType == null )
-        {
           machineType = attribute.getValue ();
-        }
         else
-        {
           machineType = overwrittenMachineType;
-        }
       }
       else if ( attribute.getName ().equals ( "machineVersion" ) ) //$NON-NLS-1$
       {
         foundMachineVersion = true;
         if ( MACHINE_VERSION != attribute.getValueInt () )
-        {
           throw new StoreException ( Messages
               .getString ( "StoreException.IncompatibleVersion" ) ); //$NON-NLS-1$
-        }
       }
       else if ( attribute.getName ().equals ( "usePushDownAlphabet" ) ) //$NON-NLS-1$
       {
@@ -208,18 +199,13 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
         usePushDownAlphabet = attribute.getValueBoolean ();
       }
       else
-      {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-      }
-    }
 
     if ( ( !foundMachineType ) || ( !foundMachineVersion )
         || ( !foundUsePushDownAlphabet ) )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-    }
 
     // Element
     Alphabet alphabet = null;
@@ -227,7 +213,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     boolean foundAlphabet = false;
     boolean foundPushDownAlphabet = false;
     for ( Element current : element.getElement () )
-    {
       if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
         alphabet = new DefaultAlphabet ( current );
@@ -241,16 +226,11 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
       else if ( ( !current.getName ().equals ( "StateView" ) ) //$NON-NLS-1$
           && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
-      {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-      }
-    }
     if ( ( !foundAlphabet ) || ( !foundPushDownAlphabet ) )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
-    }
     // initialize this model elements
     this.machine = AbstractMachine.createMachine ( machineType, alphabet,
         pushDownAlphabet, usePushDownAlphabet );
@@ -261,7 +241,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
     // Load the states
     for ( Element current : element.getElement () )
-    {
       if ( current.getName ().equals ( "StateView" ) ) //$NON-NLS-1$
       {
         double x = 0;
@@ -281,19 +260,15 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
           }
         }
         if ( ! ( xValueLoaded && yValueLoaded ) )
-        {
           throw new StoreException ( Messages
               .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-        }
         for ( Element childElement : current.getElement () )
-        {
           if ( childElement.getName ().equals ( "State" ) ) //$NON-NLS-1$
           {
             state = new DefaultState ( childElement );
             state.setAlphabet ( alphabet );
             state.setPushDownAlphabet ( pushDownAlphabet );
           }
-        }
 
         double newX = x + StateView.getWidth ( state ) / 2;
         double newY = y + StateView.getHeight ( state ) / 2;
@@ -301,15 +276,11 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
       else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
           && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
-      {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-      }
-    }
 
     // Load the transitions
     for ( Element current : element.getElement () )
-    {
       if ( current.getName ().equals ( "TransitionView" ) ) //$NON-NLS-1$
       {
         Transition transition = new DefaultTransition ( current.getElement ( 0 ) );
@@ -323,11 +294,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
       else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
           && ( !current.getName ().equals ( "StateView" ) ) ) //$NON-NLS-1$
-      {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-      }
-    }
 
     // Reset modify
     resetModify ();
@@ -500,19 +468,13 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
-    {
       for ( ModifyStatusChangedListener current : listeners )
-      {
         current.modifyStatusChanged ( true );
-      }
-    }
     else
     {
       boolean newModifyStatus = isModified ();
       for ( ModifyStatusChangedListener current : listeners )
-      {
         current.modifyStatusChanged ( newModifyStatus );
-      }
     }
 
     // change from normal state name to power state name
@@ -522,11 +484,9 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       double newHeight = StateView.getHeight ( current.getState () );
       if ( ( current.getWidth () != newWidth )
           || ( current.getHeight () != newHeight ) )
-      {
         GraphConstants.setBounds ( current.getAttributes (),
             new Rectangle2D.Double ( current.getPositionX (), current
                 .getPositionY (), newWidth, newHeight ) );
-      }
     }
   }
 
@@ -551,13 +511,9 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     newPushDownAlphabet.setName ( "PushDownAlphabet" ); //$NON-NLS-1$
     newElement.addElement ( newPushDownAlphabet );
     for ( DefaultStateView stateView : this.stateViewList )
-    {
       newElement.addElement ( stateView.getElement () );
-    }
     for ( DefaultTransitionView transitionView : this.transitionViewList )
-    {
       newElement.addElement ( transitionView.getElement () );
-    }
     return newElement;
   }
 
@@ -616,12 +572,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public final DefaultStateView getStateById ( int id )
   {
     for ( DefaultStateView view : this.stateViewList )
-    {
       if ( view.getState ().getId () == id )
-      {
         return view;
-      }
-    }
     return null;
   }
 
@@ -635,12 +587,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public final DefaultStateView getStateViewForName ( String name )
   {
     for ( DefaultStateView view : this.stateViewList )
-    {
       if ( view.getState ().getName ().equals ( name ) )
-      {
         return view;
-      }
-    }
     return null;
   }
 
@@ -654,12 +602,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public final DefaultStateView getStateViewForState ( State state )
   {
     for ( DefaultStateView view : this.stateViewList )
-    {
       if ( view.getState ().equals ( state ) )
-      {
         return view;
-      }
-    }
     return null;
   }
 
@@ -685,12 +629,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       Transition transition )
   {
     for ( DefaultTransitionView view : this.transitionViewList )
-    {
       if ( view.getTransition ().equals ( transition ) )
-      {
         return view;
-      }
-    }
     return null;
   }
 
@@ -766,10 +706,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       public void stopEditing ()
       {
         if ( DefaultMachineModel.this.redoUndoHandler != null )
-        {
           DefaultMachineModel.this.redoUndoHandler
               .addItem ( DefaultMachineModel.this.multiItem );
-        }
       }
 
 
@@ -881,16 +819,10 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public final boolean isModified ()
   {
     if ( this.machine.isModified () )
-    {
       return true;
-    }
     for ( DefaultStateView current : this.stateViewList )
-    {
       if ( current.isModified () )
-      {
         return true;
-      }
-    }
     return false;
   }
 
@@ -919,20 +851,14 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   {
     ArrayList < DefaultTransitionView > removeList = new ArrayList < DefaultTransitionView > ();
     for ( DefaultTransitionView current : this.transitionViewList )
-    {
       if ( ( current.getTransition ().getStateBegin ().equals ( stateView
           .getState () ) )
           || ( current.getTransition ().getStateEnd ().equals ( stateView
               .getState () ) ) )
-      {
         removeList.add ( current );
-      }
-    }
 
     for ( DefaultTransitionView current : removeList )
-    {
       removeTransition ( current, false );
-    }
 
     this.graphModel.remove ( new Object []
     { stateView } );
@@ -943,9 +869,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
     RedoUndoItem item = new StateRemovedItem ( this, stateView, removeList );
     if ( ( this.redoUndoHandler != null ) && createUndoStep )
-    {
       this.redoUndoHandler.addItem ( item );
-    }
     return item;
   }
 
@@ -982,9 +906,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public final void resetModify ()
   {
     for ( DefaultStateView current : this.stateViewList )
-    {
       current.resetModify ();
-    }
     this.machine.resetModify ();
   }
 

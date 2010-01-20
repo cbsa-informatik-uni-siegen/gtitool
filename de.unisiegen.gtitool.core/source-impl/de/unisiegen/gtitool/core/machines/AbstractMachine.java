@@ -104,13 +104,13 @@ public abstract class AbstractMachine implements Machine
       Alphabet alphabet, Alphabet pushDownAlphabet, boolean usePushDownAlphabet )
       throws StoreException
   {
-    if ( machineType.equals ( ( "DFA" ) ) )
+    if ( machineType.equals ( ( "DFA" ) ) ) //$NON-NLS-1$
       return new DefaultDFA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
-    if ( machineType.equals ( ( "NFA" ) ) )
+    if ( machineType.equals ( ( "NFA" ) ) ) //$NON-NLS-1$
       return new DefaultNFA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
-    if ( machineType.equals ( ( "ENFA" ) ) )
+    if ( machineType.equals ( ( "ENFA" ) ) ) //$NON-NLS-1$
       return new DefaultENFA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
-    if ( machineType.equals ( ( "PDA" ) ) )
+    if ( machineType.equals ( ( "PDA" ) ) ) //$NON-NLS-1$
       return new DefaultPDA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
     throw new StoreException ( Messages
         .getString ( "StoreException.WrongMachineType" ) ); //$NON-NLS-1$

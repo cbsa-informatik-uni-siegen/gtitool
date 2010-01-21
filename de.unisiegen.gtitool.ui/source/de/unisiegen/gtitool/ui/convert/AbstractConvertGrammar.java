@@ -187,8 +187,9 @@ public abstract class AbstractConvertGrammar implements Converter
     performProductions ();
     addPanelToView ();
 
-    new LayoutManager ( this.model, this.newPanel.getRedoUndoHandler () )
-        .doLayout ();
+    if(this.machineType != MachineType.TDP)
+      new LayoutManager ( this.model, this.newPanel.getRedoUndoHandler () )
+          .doLayout ();
   }
 
 

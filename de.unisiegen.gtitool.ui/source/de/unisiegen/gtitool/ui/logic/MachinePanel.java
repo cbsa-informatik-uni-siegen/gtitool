@@ -65,6 +65,7 @@ import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
+import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -84,6 +85,8 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.PDATableColumnModel;
 import de.unisiegen.gtitool.ui.model.PDATableModel;
+import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
+import de.unisiegen.gtitool.ui.model.PTTableModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinePanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
@@ -103,7 +106,6 @@ import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.style.StyledStateSetParserPanel;
 import de.unisiegen.gtitool.ui.style.editor.ParserTableCellEditor;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.AcceptedStatus;
-
 
 
 /**
@@ -418,20 +420,28 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
     this.model.setRedoUndoHandler ( this.redoUndoHandler );
 
-    intitializeMouseAdapter ();
-
     setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
         .getState () );
     setVisibleTable ( this.mainWindowForm.getJCheckBoxMenuItemTable ()
         .getState () );
 
     initialize ();
-    initializeMachineTable ();
-    initializePDATable ();
-    initializeSecondView ();
+    if ( ! ( model.getMachine () instanceof DefaultTDP ) )
+    {
+      intitializeMouseAdapter ();
+      initializeGraph ();
+      initializeMachineTable ();
+      initializePDATable ();
+      initializeSecondView ();
 
-    addListener ();
-    addGraphListener ();
+      addListener ();
+      addGraphListener ();
+    }
+    else
+    {
+      initializeTDPTable ();
+      initializeParsingTable ();
+    }
 
     if ( PreferenceManager.getInstance ().getWordModeItem ().equals (
         WordModeItem.LEFT ) )
@@ -899,7 +909,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @see EditorPanel#getConverter()
    */
-  public final Converter getConverter (EntityType destination)
+  public final Converter getConverter ( EntityType destination )
   {
     if ( this.machine.getMachineType ().equals ( MachineType.NFA ) )
     {
@@ -2206,12 +2216,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   private final void initialize ()
   {
     this.machine = this.model.getMachine ();
-    this.jGTIGraph = this.model.getJGTIGraph ();
-    this.jGTIGraph.getSelectionModel ().setSelectionMode (
-        GraphSelectionModel.SINGLE_GRAPH_SELECTION );
-    this.graphModel = this.model.getGraphModel ();
-    this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
-        .getZoomFactorItem ().getFactor () ) / 100;
 
     if ( activeMouseAdapter == null )
     {
@@ -2219,10 +2223,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     }
     switch ( activeMouseAdapter )
     {
-
       case MOUSE :
       {
-        handleToolbarMouse ( true );
+        // is handled in initializeGraph
+        // handleToolbarMouse ( true );
         break;
       }
       case ADD_STATE :
@@ -2246,8 +2250,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         break;
       }
     }
-
-    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
 
     this.errorTableModel = new MachineConsoleTableModel ();
     this.gui.jGTITableErrors.setModel ( this.errorTableModel );
@@ -2286,6 +2288,24 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.gui.wordPanelForm.setAlphabet ( this.machine.getAlphabet () );
     this.gui.wordPanelForm.setPushDownAlphabet ( this.machine
         .getPushDownAlphabet () );
+  }
+
+
+  /**
+   * Initializes the {@link JGTIGraph}
+   */
+  public final void initializeGraph ()
+  {
+    this.jGTIGraph = this.model.getJGTIGraph ();
+    this.jGTIGraph.getSelectionModel ().setSelectionMode (
+        GraphSelectionModel.SINGLE_GRAPH_SELECTION );
+    this.graphModel = this.model.getGraphModel ();
+    this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
+        .getZoomFactorItem ().getFactor () ) / 100;
+    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
+
+    if ( activeMouseAdapter == ActiveMouseAdapter.MOUSE )
+      handleToolbarMouse ( true );
   }
 
 
@@ -2508,16 +2528,20 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   private final void intitializeMouseAdapter ()
   {
-    // cancel dragging if mouse leaves jgraph area
-    this.model.getJGTIGraph ().addMouseListener ( new MouseAdapter ()
+    if ( ! ( this.machine instanceof DefaultTDP ) )
     {
-
-      @Override
-      public void mouseExited ( @SuppressWarnings ( "unused" ) MouseEvent event )
+      // cancel dragging if mouse leaves jgraph area
+      this.model.getJGTIGraph ().addMouseListener ( new MouseAdapter ()
       {
-        cancelDraggingProgress ();
-      }
-    } );
+
+        @Override
+        public void mouseExited (
+            @SuppressWarnings ( "unused" ) MouseEvent event )
+        {
+          cancelDraggingProgress ();
+        }
+      } );
+    }
 
     this.normalMouse = new MouseAdapter ()
     {
@@ -3009,6 +3033,36 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * Initializes the TDP action table
+   */
+  private final void initializeTDPTable ()
+  {
+    /*
+     * initialize the parsing table
+     */
+    this.gui.jGTITableMachine.setModel ( new PTTableModel() );
+    this.gui.jGTITableMachine.setColumnModel ( new PTTableColumnModel (
+        this.machine.getAlphabet () ) );
+    this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableMachine
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.gui.jGTITableMachine.setCellSelectionEnabled ( true );
+    this.gui.jGTITableMachine.setValueAt ( "test", 1, 1 );
+    //we don't need the pda stack operation table
+    setVisiblePDATable ( false );
+  }
+
+
+  /**
+   * Initializes the parsing table
+   */
+  private final void initializeParsingTable ()
+  {
+
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#isModified()
@@ -3179,8 +3233,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final void performCellsChanged ()
   {
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    if ( this.graphModel != null )
+      this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( this.graphModel ) );
   }
 
 

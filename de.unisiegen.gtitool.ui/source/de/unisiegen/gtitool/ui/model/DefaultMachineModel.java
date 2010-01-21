@@ -28,6 +28,7 @@ import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.listener.MachineChangedListener;
+import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
@@ -234,9 +235,13 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     // initialize this model elements
     this.machine = AbstractMachine.createMachine ( machineType, alphabet,
         pushDownAlphabet, usePushDownAlphabet );
-    initializeModifyStatusChangedListener ();
-    initializeStatePositionChangedListener ();
-    initializeGraph ();
+    
+    if(!(this.machine instanceof DefaultTDP))
+    {
+      initializeModifyStatusChangedListener ();
+      initializeStatePositionChangedListener ();
+      initializeGraph ();
+    }
     initializeMachineChangedListener ();
 
     // Load the states
@@ -310,12 +315,16 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public DefaultMachineModel ( Machine machine )
   {
     this.machine = machine;
-    this.pdaTableModel = new PDATableModel ();
-    initializeModifyStatusChangedListener ();
-    initializeStatePositionChangedListener ();
-    initializeGraph ();
+    
+    if(!(machine instanceof DefaultTDP))
+    {
+      this.pdaTableModel = new PDATableModel ();
+      initializeModifyStatusChangedListener ();
+      initializeStatePositionChangedListener ();
+      initializeGraph ();
+    }
     initializeMachineChangedListener ();
-
+    
     // Reset modify
     resetModify ();
   }

@@ -16,7 +16,16 @@ public final class PTTableModel extends AbstractTableModel
    * The serial version uid.
    */
   private static final long serialVersionUID = -316758216882858877L;
+  
+  private String data;
 
+  @Override
+  public final String getColumnName(int columnIndex)
+  {
+    if(columnIndex == 0)
+      return "ParsingTable";
+    return "";
+  }
 
   /**
    * TODO
@@ -26,7 +35,7 @@ public final class PTTableModel extends AbstractTableModel
    */
   public int getColumnCount ()
   {
-    return 0;
+    return 1;
   }
 
 
@@ -38,7 +47,7 @@ public final class PTTableModel extends AbstractTableModel
    */
   public int getRowCount ()
   {
-    return 0;
+    return 1;
   }
 
 
@@ -52,7 +61,7 @@ public final class PTTableModel extends AbstractTableModel
    */
   public Object getValueAt ( int arg0, int arg1 )
   {
-    return null;
+    return "test";
   }
 
 }

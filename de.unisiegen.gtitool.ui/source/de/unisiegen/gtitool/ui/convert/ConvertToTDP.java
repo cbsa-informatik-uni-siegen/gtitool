@@ -40,4 +40,14 @@ public class ConvertToTDP extends ConvertContextFreeGrammar
         true );
     createMachinePanel ( machine );
   }
+  
+  /**
+   * {@inheritDoc}
+   * @see de.unisiegen.gtitool.ui.convert.ConvertContextFreeGrammar#performProductions()
+   */
+  @Override
+  protected void performProductions()
+  {
+    
+  }
 }

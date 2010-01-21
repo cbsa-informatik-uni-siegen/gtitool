@@ -5,7 +5,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
- * The interface for deterministic finite automatons.
+ * The interface for deterministic finite automata.
  * 
  * @author Christian Fehler
  * @version $Id$

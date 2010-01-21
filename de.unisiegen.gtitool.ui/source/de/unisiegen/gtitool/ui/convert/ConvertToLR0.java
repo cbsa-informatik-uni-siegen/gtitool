@@ -113,15 +113,10 @@ public class ConvertToLR0 extends AbstractConvertGrammar
     for ( State state : copy )
       stateViews.put ( state, createStateViewFromState ( state ) );
 
-    for ( State state : copy )
-      for ( State state2 : copy )
-        for ( Transition transition : transCopy )
-          if ( transition.getStateBegin ().equals ( state )
-              && transition.getStateEnd ().equals ( state2 ) )
-            this.createTransition ( new DefaultWord (), new DefaultWord (),
-                stateViews.get ( state ), stateViews.get ( state2 ),
-                new ArrayList < Symbol > ( transition.getSymbol () ) );
-
+    for ( Transition transition : transCopy )
+      this.getModel ().createTransitionView ( transition,
+          stateViews.get ( transition.getStateBegin () ),
+          stateViews.get ( transition.getStateEnd () ), true, false, false );
   }
 
 

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
-import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -68,9 +67,8 @@ public class ConvertToLR0 extends AbstractConvertGrammar
   {
     try
     {
-      this.machine = this.lr0Grammar.makeLR0Automata ();
+      this.machine = new LR0 ( this.lr0Grammar );
 
-      // createMachinePanel ( new LR0 ( this.machine.getAlphabet () ) );
       createMachinePanel ( this.machine );
     }
     catch ( AlphabetException e )

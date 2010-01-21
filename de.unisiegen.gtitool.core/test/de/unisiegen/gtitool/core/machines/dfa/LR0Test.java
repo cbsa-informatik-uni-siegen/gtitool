@@ -86,8 +86,8 @@ public class LR0Test
 
     try
     {
-      LR0 automata = grammar.makeLR0Automata();
-      for(State state : automata.getState())
+      LR0 automaton = new LR0(grammar);
+      for(State state : automaton.getState())
         System.out.println(state.toString());
     }
     catch(AlphabetException e)

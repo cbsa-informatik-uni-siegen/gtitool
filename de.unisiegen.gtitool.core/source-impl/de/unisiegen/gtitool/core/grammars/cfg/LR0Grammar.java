@@ -156,7 +156,7 @@ public class LR0Grammar extends ExtendedGrammar
     Alphabet alphabet = makeAutomataAlphabet ();
 
     LR0 lr0Automata = new LR0 ( alphabet );
-
+    
     try
     {
       LR0State startState = new LR0State ( alphabet, true, closure ( this
@@ -192,7 +192,7 @@ public class LR0Grammar extends ExtendedGrammar
           try
           {
             LR0State newState = new LR0State ( alphabet, false, newItemSet );
-
+            
             if ( !lr0Automata.getState ().contains ( newState ) )
               lr0Automata.addState ( newState );
             else

@@ -20,21 +20,13 @@ public class LR0State extends DefaultState
         startState, true );
 
     this.lr0Items = lr0Items;
+    this.setId ( this.hashCode () );
   }
 
 
   public LR0ItemSet getLR0Items ()
   {
     return this.lr0Items;
-  }
-
-
-  public boolean equals ( Object other )
-  {
-    if ( ! ( other instanceof LR0State ) )
-      return false;
-
-    return ( ( LR0State ) other ).getLR0Items ().equals ( getLR0Items () );
   }
 
 
@@ -54,6 +46,11 @@ public class LR0State extends DefaultState
     }
 
     return ret;
+  }
+  
+  public int hashCode()
+  {
+    return this.toString ().hashCode ();
   }
 
 

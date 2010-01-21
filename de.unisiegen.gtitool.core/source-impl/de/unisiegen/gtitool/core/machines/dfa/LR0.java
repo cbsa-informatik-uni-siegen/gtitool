@@ -15,9 +15,9 @@ public class LR0 extends AbstractMachine implements DFA
 
   public LR0 ( Alphabet alphabet )
   {
-    super ( alphabet, new DefaultAlphabet(), false,
-        ValidationElement.ALL_SYMBOLS, ValidationElement.FINAL_STATE,
-        ValidationElement.STATE_NAME, ValidationElement.SYMBOL_ONLY_ONE_TIME );
+    super ( alphabet, new DefaultAlphabet (), false,
+        ValidationElement.FINAL_STATE, ValidationElement.STATE_NAME,
+        ValidationElement.SYMBOL_ONLY_ONE_TIME );
   }
 
 

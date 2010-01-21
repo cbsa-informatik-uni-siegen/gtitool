@@ -1036,7 +1036,7 @@ public class DefaultState implements State
   {
     if ( this.id != ID_NOT_DEFINED )
     {
-      throw new IllegalArgumentException ( "id is already setted" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "id " + this.id + " is already set" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
     this.id = id;
   }

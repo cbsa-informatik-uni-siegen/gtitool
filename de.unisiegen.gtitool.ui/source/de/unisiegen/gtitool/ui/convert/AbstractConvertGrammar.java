@@ -248,6 +248,15 @@ public abstract class AbstractConvertGrammar implements Converter
   }
 
 
+  protected final DefaultStateView createStateViewFromState ( State state )
+  {
+    DefaultStateView stateView = this.model.createStateView ( this.position,
+        this.position, state, false, false );
+    this.position += 50;
+    return stateView;
+  }
+
+
   /**
    * Create a new {@link Transition}.
    * 

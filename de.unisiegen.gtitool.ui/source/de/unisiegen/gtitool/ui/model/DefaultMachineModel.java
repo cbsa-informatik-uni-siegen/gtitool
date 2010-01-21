@@ -272,7 +272,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
         double newX = x + StateView.getWidth ( state ) / 2;
         double newY = y + StateView.getHeight ( state ) / 2;
-        createStateView ( newX, newY, state, false );
+        createStateView ( newX, newY, state, false, true );
       }
       else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
           && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
@@ -333,6 +333,13 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   }
 
 
+  public final DefaultStateView createStateView ( double x, double y,
+      State state, boolean createUndoStep )
+  {
+    return this.createStateView ( x, y, state, createUndoStep, true );
+  }
+
+
   /**
    * Create a new State view
    * 
@@ -344,9 +351,10 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    */
   @SuppressWarnings ( "unchecked" )
   public final DefaultStateView createStateView ( double x, double y,
-      State state, boolean createUndoStep )
+      State state, boolean createUndoStep, boolean addStateToMachine )
   {
-    this.machine.addState ( state );
+    if ( addStateToMachine )
+      this.machine.addState ( state );
 
     DefaultStateView stateView = new DefaultStateView ( this, this.graphModel,
         state );

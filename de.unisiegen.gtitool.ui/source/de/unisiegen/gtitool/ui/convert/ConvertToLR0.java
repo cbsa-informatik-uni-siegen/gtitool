@@ -70,11 +70,8 @@ public class ConvertToLR0 extends AbstractConvertGrammar
     {
       this.machine = this.lr0Grammar.makeLR0Automata ();
 
-      // for(State state : this.machine.getState())
-      // System.err.println (state.toString());
-
-      createMachinePanel ( new LR0 ( this.machine.getAlphabet () ) );
-      // createMachinePanel ( machine );
+      // createMachinePanel ( new LR0 ( this.machine.getAlphabet () ) );
+      createMachinePanel ( this.machine );
     }
     catch ( AlphabetException e )
     {
@@ -114,7 +111,7 @@ public class ConvertToLR0 extends AbstractConvertGrammar
     TreeMap < State, DefaultStateView > stateViews = new TreeMap < State, DefaultStateView > ();
 
     for ( State state : copy )
-      stateViews.put ( state, createStateView ( state.getName () ) );
+      stateViews.put ( state, createStateViewFromState ( state ) );
 
     for ( State state : copy )
       for ( State state2 : copy )
@@ -124,6 +121,7 @@ public class ConvertToLR0 extends AbstractConvertGrammar
             this.createTransition ( new DefaultWord (), new DefaultWord (),
                 stateViews.get ( state ), stateViews.get ( state2 ),
                 new ArrayList < Symbol > ( transition.getSymbol () ) );
+
   }
 
 

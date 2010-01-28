@@ -102,6 +102,9 @@ public interface NonterminalSymbolSet extends Entity < NonterminalSymbolSet >,
   public NonterminalSymbol get ( int index );
 
 
+  public NonterminalSymbol get ( String name );
+
+
   /**
    * Remove the given {@link NonterminalSymbol}s from this
    * {@link NonterminalSymbolSet}.

@@ -56,8 +56,8 @@ public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
    */
   public void add ( TerminalSymbol ... terminalSymbols )
       throws TerminalSymbolSetException;
-  
-  
+
+
   /**
    * Appends the specified {@link TerminalSymbol}s to the end of this
    * {@link TerminalSymbolSet}.
@@ -130,6 +130,9 @@ public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
    * @return The {@link TerminalSymbol} with the given index.
    */
   public TerminalSymbol get ( int index );
+
+
+  public TerminalSymbol get ( String name );
 
 
   /**

@@ -284,15 +284,15 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     for ( TerminalSymbol current : terminalSymbols )
       add ( current );
   }
-  
-  
+
+
   /**
    * {@inheritDoc}
    */
   public void addIfNonexistent ( Iterable < TerminalSymbol > terminalSymbols )
   {
-    for(TerminalSymbol ts : terminalSymbols)
-      addIfNonexistent(ts);
+    for ( TerminalSymbol ts : terminalSymbols )
+      addIfNonexistent ( ts );
   }
 
 
@@ -301,12 +301,12 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
    */
   public void addIfNonexistent ( TerminalSymbol terminalSymbol )
   {
-    if(terminalSymbol == null)
+    if ( terminalSymbol == null )
       throw new NullPointerException ( "terminal symbols is null" ); //$NON-NLS-1$
     this.terminalSymbolSet.add ( terminalSymbol );
-    
+
     terminalSymbol
-    .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+        .addPrettyStringChangedListener ( this.prettyStringChangedListener );
 
     fireTerminalSymbolSetChanged ();
     fireModifyStatusChanged ();
@@ -319,8 +319,8 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
    */
   public void addIfNonexistent ( TerminalSymbol ... terminalSymbols )
   {
-    for(TerminalSymbol ts : terminalSymbols)
-      addIfNonexistent(ts);
+    for ( TerminalSymbol ts : terminalSymbols )
+      addIfNonexistent ( ts );
   }
 
 
@@ -803,5 +803,26 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     }
     result.append ( "}" ); //$NON-NLS-1$
     return result.toString ();
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param name
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.TerminalSymbolSet#get(java.lang.String)
+   */
+  public TerminalSymbol get ( String name )
+  {
+    Iterator < TerminalSymbol > iterator = this.terminalSymbolSet.iterator ();
+    while ( iterator.hasNext () )
+    {
+      TerminalSymbol next = iterator.next ();
+
+      if ( next.toString ().equals ( name ) )
+        return next;
+    }
+    return null;
   }
 }

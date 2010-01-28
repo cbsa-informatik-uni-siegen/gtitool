@@ -3,18 +3,19 @@ package de.unisiegen.gtitool.core.entities;
 
 /**
  * TODO
- *
  */
 public class LRReduceAction implements LRAction
 {
 
-  public LRReduceAction(Production production)
+  public LRReduceAction ( Production production )
   {
     this.production = production;
   }
+
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.LRAction#getReduceAction()
    */
@@ -23,9 +24,10 @@ public class LRReduceAction implements LRAction
     return production;
   }
 
+
   /**
    * TODO
-   *
+   * 
    * @return
    * @see de.unisiegen.gtitool.core.entities.LRAction#getTransitionType()
    */
@@ -34,5 +36,19 @@ public class LRReduceAction implements LRAction
     return LRAction.TransitionType.REDUCE;
   }
 
+
   private Production production;
+
+
+  /**
+   * TODO
+   * 
+   * @param o
+   * @return
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo ( LRAction o )
+  {
+    return production.compareTo(o.getReduceAction());
+  }
 }

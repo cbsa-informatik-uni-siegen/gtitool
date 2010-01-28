@@ -30,4 +30,16 @@ public class LRShiftAction implements LRAction
     return LRAction.TransitionType.SHIFT;
   }
 
+  /**
+   * TODO
+   *
+   * @param o
+   * @return
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo ( LRAction o )
+  {
+    return 0;
+  }
+
 }

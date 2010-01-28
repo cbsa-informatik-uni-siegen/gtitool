@@ -27,10 +27,10 @@ public class DefaultLRActionSet implements LRActionSet
    */
   public void add ( Iterable < LRAction > actions ) throws LRActionSetException
   {
-    Iterator<LRAction> iter = actions.iterator ();
-    
-    while(iter.hasNext())
-      this.rep.add ( iter.next() );
+    Iterator < LRAction > iter = actions.iterator ();
+
+    while ( iter.hasNext () )
+      this.rep.add ( iter.next () );
   }
 
 
@@ -41,8 +41,9 @@ public class DefaultLRActionSet implements LRActionSet
    * @throws LRActionSetException
    * @see de.unisiegen.gtitool.core.entities.LRActionSet#add(de.unisiegen.gtitool.core.entities.LRAction)
    */
-  public void add ( LRAction actions ) throws LRActionSetException
+  public void add ( LRAction action ) throws LRActionSetException
   {
+    this.rep.add ( action );
   }
 
 
@@ -53,8 +54,10 @@ public class DefaultLRActionSet implements LRActionSet
    * @throws LRActionSetException
    * @see de.unisiegen.gtitool.core.entities.LRActionSet#add(de.unisiegen.gtitool.core.entities.LRAction[])
    */
-  public void add ( LRAction ... actions ) throws LRActionSetException
+  public void add ( LRAction ... actions )
   {
+    for ( LRAction action : actions )
+      this.rep.add ( action );
   }
 
 
@@ -67,7 +70,7 @@ public class DefaultLRActionSet implements LRActionSet
    */
   public boolean contains ( LRAction action )
   {
-    return false;
+    return this.rep.contains ( action );
   }
 
 
@@ -233,10 +236,10 @@ public class DefaultLRActionSet implements LRActionSet
    */
   public Iterator < LRAction > iterator ()
   {
-    return rep.iterator ();
+    return this.rep.iterator ();
   }
 
 
-  private TreeSet < LRAction > rep;
+  private TreeSet < LRAction > rep = new TreeSet < LRAction > ();
 
 }

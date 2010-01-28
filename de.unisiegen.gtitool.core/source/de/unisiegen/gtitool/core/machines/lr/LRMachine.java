@@ -47,6 +47,7 @@ public interface LRMachine
    * @return True if the given {@link Word} is accepted, otherwise false.
    */
   public boolean isWordAccepted ( Word testWord );
-  
-  public void transit(LRAction transition);
+
+
+  public boolean transit ( LRAction transition );
 }

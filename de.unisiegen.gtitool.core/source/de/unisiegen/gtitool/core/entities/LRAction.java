@@ -1,10 +1,12 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+
+
 /**
  * TODO
  */
-public interface LRAction
+public interface LRAction extends Comparable<LRAction>
 {
 
   public enum TransitionType

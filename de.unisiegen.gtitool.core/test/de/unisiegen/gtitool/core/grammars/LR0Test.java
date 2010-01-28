@@ -24,12 +24,7 @@ import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 public class LR0Test
 {
 
-  /**
-   * TODO
-   * 
-   * @param arguments
-   */
-  public static void main ( String [] arguments )
+  public static LR0Grammar testGrammar ()
   {
     NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" );
 
@@ -46,7 +41,8 @@ public class LR0Test
     }
     catch ( NonterminalSymbolSetException e )
     {
-      return;
+      e.printStackTrace ();
+      System.exit ( 1 );
     }
 
     TerminalSymbolSet terminalSet = new DefaultTerminalSymbolSet ();
@@ -67,7 +63,8 @@ public class LR0Test
     }
     catch ( TerminalSymbolSetException e )
     {
-      return;
+      e.printStackTrace ();
+      System.exit ( 1 );
     }
 
     LR0Grammar grammar = new LR0Grammar ( nonterminalSet, terminalSet, E );
@@ -90,13 +87,27 @@ public class LR0Test
     grammar.addProduction ( new DefaultProduction ( F,
         new DefaultProductionWord ( lparen, E, rparen ) ) );
 
+    return grammar;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param arguments
+   */
+  public static void main ( String [] arguments )
+  {
+    LR0Grammar grammar = testGrammar ();
+
     LR0ItemSet closure0 = grammar.closure ( grammar.startProduction () );
 
     System.out.println ( "closure(start())" );
     for ( LR0Item item : closure0 )
       System.out.println ( item.toString () );
 
-    LR0ItemSet move0E = grammar.move ( closure0, E );
+    LR0ItemSet move0E = grammar.move ( closure0, grammar
+        .getNonterminalSymbolSet ().get ( "E" ) );
 
     System.out.println ( "move(0, E)" );
     for ( LR0Item item : move0E )
@@ -108,7 +119,8 @@ public class LR0Test
     for ( LR0Item item : closure1 )
       System.out.println ( item.toString () );
 
-    LR0ItemSet move0T = grammar.move ( closure0, T );
+    LR0ItemSet move0T = grammar.move ( closure0, grammar
+        .getNonterminalSymbolSet ().get ( "T" ) );
 
     System.out.println ( "move(0, T)" );
     for ( LR0Item item : move0T )
@@ -120,7 +132,8 @@ public class LR0Test
     for ( LR0Item item : closure2 )
       System.out.println ( item.toString () );
 
-    LR0ItemSet move0lparen = grammar.move ( closure0, lparen );
+    LR0ItemSet move0lparen = grammar.move ( closure0, grammar
+        .getTerminalSymbolSet ().get ( "(" ) );
 
     System.out.println ( "move(0, ()" );
     for ( LR0Item item : move0lparen )

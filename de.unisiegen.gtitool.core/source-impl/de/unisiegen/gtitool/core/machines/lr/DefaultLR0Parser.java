@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.machines.lr;
 
 import de.unisiegen.gtitool.core.entities.DefaultLRActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
@@ -13,6 +14,8 @@ import de.unisiegen.gtitool.core.entities.LRActionSet;
 import de.unisiegen.gtitool.core.entities.LRReduceAction;
 import de.unisiegen.gtitool.core.entities.LRShiftAction;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
@@ -47,24 +50,27 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * 
    * @param transition
    * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#transit(de.unisiegen.gtitool.core.entities.LRAction)
+   * @return true if the transition could be made
    */
-  public void transit ( LRAction action )
+  public boolean transit ( LRAction action )
   {
-    LRAction trans;
-
     // first let the LR0 automaton run
     switch ( action.getTransitionType () )
     {
       case REDUCE :
         for ( int i = 0 ; i < action.getReduceAction ().getProductionWord ()
             .size () ; ++i )
-          lr0Automaton.previousSymbol ();
+          this.lr0Automaton.previousSymbol ();
         this.lr0Automaton.setWord ( new DefaultWord ( new DefaultSymbol (
             action.getReduceAction ().getNonterminalSymbol ().toString () ) ) );
         this.lr0Automaton.nextSymbol ();
         break;
       case SHIFT :
         this.lr0Automaton.nextSymbol ();
+        break;
+      case ACCEPT :
+        this.lr0Automaton.nextSymbol ();
+        // TODO
         break;
     }
 
@@ -75,11 +81,19 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
 
     LR0ItemSet items = lr0state.getLR0Items ();
 
-    LRActionSet possibleAction = actions ( items );
+    LRActionSet possibleActions = actions ( items, new DefaultTerminalSymbol (
+        word.get ( this.wordIndex ).toString () ) );
+
+    if ( !possibleActions.contains ( action ) )
+      return false;
+
+    ++this.wordIndex;
+    // TODO
+    return true;
   }
 
 
-  private static LRActionSet actions ( LR0ItemSet items )
+  private static LRActionSet actions ( LR0ItemSet items, TerminalSymbol symbol )
   {
     LRActionSet ret = new DefaultLRActionSet ();
 
@@ -94,7 +108,8 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
           else
             ret.add ( new LRReduceAction ( item ) );
         }
-        else if ( item.dotPrecedesTerminal () )
+        else if ( item.dotPrecedesTerminal ()
+            && item.getProductionWordMemberAfterDot ().equals ( symbol ) )
           ret.add ( new LRShiftAction () );
       }
     }
@@ -108,8 +123,22 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   }
 
 
+  public void start ( Word word )
+  {
+    this.word = word;
+    this.wordIndex = 0;
+    this.lr0Automaton.start ( word );
+  }
+
+
   private LR0Grammar grammar;
 
 
   private LR0 lr0Automaton;
+
+
+  private Word word;
+
+
+  private int wordIndex;
 }

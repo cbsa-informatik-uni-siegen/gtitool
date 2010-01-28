@@ -772,4 +772,26 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     result.append ( "}" ); //$NON-NLS-1$
     return result.toString ();
   }
+
+
+  /**
+   * TODO
+   * 
+   * @param name
+   * @return The symbol with the given name
+   * @see de.unisiegen.gtitool.core.entities.NonterminalSymbolSet#get(java.lang.String)
+   */
+  public NonterminalSymbol get ( String name )
+  {
+    Iterator < NonterminalSymbol > iterator = this.nonterminalSymbolSet
+        .iterator ();
+    while ( iterator.hasNext () )
+    {
+      NonterminalSymbol next = iterator.next ();
+
+      if ( next.toString ().equals ( name ) )
+        return next;
+    }
+    return null;
+  }
 }

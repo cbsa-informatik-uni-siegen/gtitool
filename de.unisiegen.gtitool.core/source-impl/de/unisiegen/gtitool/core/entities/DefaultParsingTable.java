@@ -95,16 +95,11 @@ public class DefaultParsingTable implements ParsingTable
         this.parsingTable.get ( i ).add ( new TreeSet < Production > () );
         int j = 0; // column counter
 
-        int prodIdx = 0;
-        for ( FirstSet fs : fsProds )
-        {
-          // terminal ts is in first(a) for a A -> a or
-          // epsilon is in first(a) and ts is in follow(ns)
-          if ( fs.contains ( ts )
-              || ( fs.epsilon () && cfg.follow ( ns ).contains ( ts ) ) )
-            this.parsingTable.get ( i ).get ( j ).add ( prods.get ( prodIdx ) );
-          ++prodIdx;
-        }
+        for ( Production p : prods )
+          if ( cfg.first ( p.getProductionWord () ).contains ( ts )
+              || ( cfg.first ( p.getProductionWord () ).epsilon () && cfg
+                  .follow ( ns ).contains ( ts ) ) )
+            this.parsingTable.get ( i ).get ( j ).add ( p );
 
       }
       ++i;
@@ -117,25 +112,25 @@ public class DefaultParsingTable implements ParsingTable
    * 
    * @see de.unisiegen.gtitool.core.entities.ParsingTable#get(int, int)
    */
-  public TreeSet < Production > get ( int col, int row )
+  public TreeSet < Production > get ( int row, int col )
   {
-    return this.parsingTable.get ( col ).get ( row );
+    return this.parsingTable.get ( row ).get ( col );
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.entities.ParsingTable#get(de.unisiegen.gtitool.core.entities.TerminalSymbol,
-   *      de.unisiegen.gtitool.core.entities.NonterminalSymbol)
+   * @see de.unisiegen.gtitool.core.entities.ParsingTable#get(de.unisiegen.gtitool.core.entities.NonterminalSymbol,
+   *      de.unisiegen.gtitool.core.entities.TerminalSymbol)
    */
-  public TreeSet < Production > get ( TerminalSymbol ts, NonterminalSymbol ns )
+  public TreeSet < Production > get ( NonterminalSymbol ns, TerminalSymbol ts )
   {
     int col = getTerminalSymbolIndex ( ts );
     int row = getNonterminalSymbolIndex ( ns );
     if ( col == -1 || row == -1 )
       return new TreeSet < Production > ();
-    return get ( col, row );
+    return get ( row, col );
   }
 
 

@@ -11,9 +11,7 @@ import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
-import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
-import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
@@ -30,8 +28,6 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalExc
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarNonterminalNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarRegularGrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -826,9 +822,25 @@ public abstract class AbstractGrammar implements Grammar
         }// end outer for
       }// end if
     }// end else
+    
     return firstSet;
   }
 
+  
+//  public FirstSet first ( final ProductionWordMember pwm)
+//  {
+//    DefaultFirstSet fs = new DefaultFirstSet();
+//      if(pwm instanceof TerminalSymbol)
+//        fs.add ( (TerminalSymbol) pwm);
+//      else
+//      {
+//        ArrayList<Production> prods = getProductionForNonTerminal ( (NonterminalSymbol)pwm );
+//        for(Production p : prods)
+//          if(p.getProductionWord ().epsilon ())
+//            fs.epsilon ( true );
+//      }
+//    return fs;
+//  }
 
   /**
    * {@inheritDoc}
@@ -836,62 +848,48 @@ public abstract class AbstractGrammar implements Grammar
    * @throws GrammarInvalidNonterminalException
    */
   public final TerminalSymbolSet follow ( final NonterminalSymbol p )
-      throws TerminalSymbolSetException, GrammarInvalidNonterminalException
+      throws GrammarInvalidNonterminalException
   {
     DefaultTerminalSymbolSet followSet = new DefaultTerminalSymbolSet ();
-    //we use this set to determine for which nonterminal we already
-    //calculated case 3
-    DefaultNonterminalSymbolSet seen = new DefaultNonterminalSymbolSet();
 
-    /*
-     * (1) we add the endmarker to the follow set (by definition)
-     */
-    if ( p.isStart () )
-      followSet.addIfNonexistent( DefaultTerminalSymbol.EndMarker );
-
-    /*
-     * (2) get all productions where nonterminal p is on the right side
-     */
-    ArrayList < Production > prods = getProductionsContainingNonterminalSymbol ( p );
-
-    for ( Production prod : prods )
-    {
-      ProductionWord rest = null;
-      ProductionWord pw = prod.getProductionWord ();
-
-      // we now have productions A -> aBb, B = p
-      for ( int i = 0 ; i < pw.size () ; ++i )
-        // extract the rest word b
-        if ( pw.get ( i ).getName ().equals ( p.getName () ) )
-        {
-          ArrayList < ProductionWordMember > restPWM = new ArrayList < ProductionWordMember > ();
-          for ( int j = i + 1 ; j < pw.size () ; ++j )
-            restPWM.add ( pw.get ( j ) );
-          rest = new DefaultProductionWord ( restPWM );
-          break;
-        }
-
-      // if restPWM is not empty => case 2: add every terminal a in first(b) to
-      // our follow set
-      if ( rest != null && rest.size () != 0 )
-        followSet.addIfNonexistent ( first ( rest ) );
-
-      // case 3: b is epsilon or epsilon in first(b) => add all terminals from
-      // follow(A) to the follow set
-      if ( rest == null || rest.size () == 0 || first ( rest ).epsilon () )
-        if(!seen.contains ( prod.getNonterminalSymbol () ))
-        {
-          followSet.addIfNonexistent ( follow ( prod.getNonterminalSymbol () ) );
-          try
-          {
-            seen.add ( prod.getNonterminalSymbol () );
-          }
-          catch ( NonterminalSymbolSetException exc )
-          {
-            exc.printStackTrace();
-          }
-        }
-    }// end for
+//    /*
+//     * (1) we add the endmarker to the follow set (by definition)
+//     */
+//    if ( p.isStart () )
+//      followSet.addIfNonexistent( DefaultTerminalSymbol.EndMarker );
+//
+//    /*
+//     * (2) get all productions where nonterminal p is on the right side
+//     */
+//    ArrayList < Production > prods = getProductionsContainingNonterminalSymbol ( p );
+//
+//    for ( Production prod : prods )
+//    {
+//      ProductionWord rest = null;
+//      ProductionWord pw = prod.getProductionWord ();
+//
+//      // we now have productions A -> aBb, B = p
+//      for ( int i = 0 ; i < pw.size () ; ++i )
+//        // extract the rest word b
+//        if ( pw.get ( i ).getName ().equals ( p.getName () ) )
+//        {
+//          ArrayList < ProductionWordMember > restPWM = new ArrayList < ProductionWordMember > ();
+//          for ( int j = i + 1 ; j < pw.size () ; ++j )
+//            restPWM.add ( pw.get ( j ) );
+//          rest = new DefaultProductionWord ( restPWM );
+//          break;
+//        }
+//
+//      // if restPWM is not empty => case 2: add every terminal a in first(b) to
+//      // our follow set
+//      if ( rest != null && rest.size () != 0 )
+//        followSet.add ( first ( rest ) );
+//
+//      // case 3: b is epsilon or epsilon in first(b) => add all terminals from
+//      // follow(A) to the follow set
+//      if ( rest == null || rest.size () == 0 || first ( rest ).epsilon () )
+//        followSet.add ( follow ( prod.getNonterminalSymbol () ) );
+//    }// end for
 
     return followSet;
   }//end follow

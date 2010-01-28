@@ -107,9 +107,5 @@ public class FOLLOWTest
     {
       exc.printStackTrace();
     }
-    catch ( TerminalSymbolSetException exc )
-    {
-      exc.printStackTrace();
-    }
   }
 }

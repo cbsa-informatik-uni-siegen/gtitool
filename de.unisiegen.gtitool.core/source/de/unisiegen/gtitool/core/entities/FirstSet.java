@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
- * TODO
+ * Implementation of the first set (see dragon book)
  */
 public interface FirstSet extends Entity < TerminalSymbolSet >, Storable,
     Modifyable, Iterable < TerminalSymbol >
@@ -32,18 +32,46 @@ public interface FirstSet extends Entity < TerminalSymbolSet >, Storable,
   public void epsilon ( boolean epsilon );
 
 
+  /**
+   * TODO
+   *
+   * @param terminalSymbols
+   * @throws TerminalSymbolSetException
+   */
   public void add ( Iterable < TerminalSymbol > terminalSymbols )
       throws TerminalSymbolSetException;
 
 
+  /**
+   * TODO
+   *
+   * @param terminalSymbol
+   * @throws TerminalSymbolSetException
+   */
   public void add ( TerminalSymbol terminalSymbol )
       throws TerminalSymbolSetException;
 
+  /**
+   * TODO
+   *
+   * @param listener
+   */
   public void addTerminalSymbolSetChangedListener (
       TerminalSymbolSetChangedListener listener );
   
+  /**
+   * clears the set
+   *
+   */
   public void clear ();
   
+  /**
+   * checks whether terminalSymbol is in this set or not
+   * 
+   * @param terminalSymbol the symbol we're checking against
+   *                       the other ones
+   * @return true if terminalSymbol is in the set, false otherwise
+   */
   public boolean contains ( TerminalSymbol terminalSymbol );
   
   /**

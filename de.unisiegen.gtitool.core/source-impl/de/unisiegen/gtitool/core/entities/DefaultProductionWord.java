@@ -108,35 +108,23 @@ public final class DefaultProductionWord implements ProductionWord
 
     // Check if the element is correct
     if ( !element.getName ().equals ( "ProductionWord" ) ) //$NON-NLS-1$
-    {
       throw new IllegalArgumentException ( "element " + Messages.QUOTE //$NON-NLS-1$
           + element.getName () + Messages.QUOTE + " is not a production word" ); //$NON-NLS-1$
-    }
 
     // Element
     for ( Element current : element.getElement () )
-    {
       if ( current.getName ().equals ( "TerminalSymbol" ) ) //$NON-NLS-1$
-      {
         add ( new DefaultTerminalSymbol ( current ) );
-      }
       else if ( current.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
-      {
         add ( new DefaultNonterminalSymbol ( current ) );
-      }
       else
-      {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-      }
-    }
 
     // Attribute
     if ( element.getAttribute ().size () > 0 )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-    }
 
     resetModify ();
   }
@@ -154,9 +142,7 @@ public final class DefaultProductionWord implements ProductionWord
 
     // ProductionWordMember
     if ( productionWordMembers == null )
-    {
       throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
-    }
     add ( productionWordMembers );
 
     resetModify ();
@@ -173,9 +159,7 @@ public final class DefaultProductionWord implements ProductionWord
     this ();
     // ProductionWordMember
     if ( productionWordMembers == null )
-    {
       throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
-    }
     add ( productionWordMembers );
 
     resetModify ();
@@ -191,13 +175,9 @@ public final class DefaultProductionWord implements ProductionWord
       Iterable < ProductionWordMember > productionWordMembers )
   {
     if ( productionWordMembers == null )
-    {
       throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
-    }
     for ( ProductionWordMember current : productionWordMembers )
-    {
       add ( current );
-    }
   }
 
 
@@ -210,9 +190,7 @@ public final class DefaultProductionWord implements ProductionWord
   {
     // ProductionWordMember
     if ( productionWordMember == null )
-    {
       throw new NullPointerException ( "production word member is null" ); //$NON-NLS-1$
-    }
 
     productionWordMember
         .addPrettyStringChangedListener ( this.prettyStringChangedListener );
@@ -231,13 +209,9 @@ public final class DefaultProductionWord implements ProductionWord
   public final void add ( ProductionWordMember ... productionWordMembers )
   {
     if ( productionWordMembers == null )
-    {
       throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
-    }
     for ( ProductionWordMember current : productionWordMembers )
-    {
       add ( current );
-    }
   }
 
 
@@ -286,15 +260,11 @@ public final class DefaultProductionWord implements ProductionWord
       int compare = firstList.get ( i ).getName ().compareTo (
           secondList.get ( i ).getName () );
       if ( compare != 0 )
-      {
         return compare;
-      }
     }
 
     if ( firstList.size () == secondList.size () )
-    {
       return 0;
-    }
 
     return firstList.size () < secondList.size () ? -1 : 1;
   }
@@ -328,9 +298,7 @@ public final class DefaultProductionWord implements ProductionWord
     PrettyStringChangedListener [] listeners = this.listenerList
         .getListeners ( PrettyStringChangedListener.class );
     for ( PrettyStringChangedListener current : listeners )
-    {
       current.prettyStringChanged ();
-    }
   }
 
 
@@ -365,9 +333,7 @@ public final class DefaultProductionWord implements ProductionWord
   {
     Element newElement = new Element ( "ProductionWord" ); //$NON-NLS-1$
     for ( ProductionWordMember current : this.productionWordMemberList )
-    {
       newElement.addElement ( current );
-    }
     return newElement;
   }
 
@@ -381,12 +347,8 @@ public final class DefaultProductionWord implements ProductionWord
   {
     ArrayList < NonterminalSymbol > symbols = new ArrayList < NonterminalSymbol > ();
     for ( ProductionWordMember m : this.productionWordMemberList )
-    {
       if ( m instanceof NonterminalSymbol )
-      {
         symbols.add ( ( NonterminalSymbol ) m );
-      }
-    }
     return symbols;
   }
 
@@ -423,9 +385,7 @@ public final class DefaultProductionWord implements ProductionWord
   {
     if ( !this.initialProductionWordMemberList
         .equals ( this.productionWordMemberList ) )
-    {
       return true;
-    }
     return false;
   }
 
@@ -512,17 +472,11 @@ public final class DefaultProductionWord implements ProductionWord
     {
       this.cachedPrettyString = new PrettyString ();
       if ( this.productionWordMemberList.size () == 0 )
-      {
         this.cachedPrettyString.add ( new PrettyToken (
             "\u03B5", Style.TERMINAL_SYMBOL ) ); //$NON-NLS-1$
-      }
       else
-      {
         for ( ProductionWordMember current : this.productionWordMemberList )
-        {
           this.cachedPrettyString.add ( current );
-        }
-      }
     }
 
     return this.cachedPrettyString;
@@ -539,16 +493,10 @@ public final class DefaultProductionWord implements ProductionWord
   {
     StringBuilder result = new StringBuilder ();
     if ( this.productionWordMemberList.size () == 0 )
-    {
       result.append ( "\u03B5" ); //$NON-NLS-1$
-    }
     else
-    {
       for ( ProductionWordMember current : this.productionWordMemberList )
-      {
         result.append ( current.getName () );
-      }
-    }
     return result.toString ();
   }
   
@@ -559,5 +507,19 @@ public final class DefaultProductionWord implements ProductionWord
    */
   public final boolean epsilon(){
     return this.productionWordMemberList.isEmpty ();
+  }
+  
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ProductionWord#contains(de.unisiegen.gtitool.core.entities.ProductionWordMember)
+   */
+  public boolean contains(ProductionWordMember pwm)
+  {
+    for(ProductionWordMember p : this.productionWordMemberList)
+      if(p.equals ( pwm ))
+        return true;
+    return false;
   }
 }

@@ -11,6 +11,7 @@ import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
@@ -29,6 +30,7 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalExc
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarNonterminalNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarRegularGrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
@@ -772,7 +774,7 @@ public abstract class AbstractGrammar implements Grammar
   {
     ArrayList < Production > prods = new ArrayList < Production > ();
     for ( Production p : this.productions )
-      if ( p.contains ( X ) )
+      if ( p.getProductionWord ().contains ( X ) )
         prods.add ( p );
     return prods;
   }
@@ -790,14 +792,7 @@ public abstract class AbstractGrammar implements Grammar
      * pw that starts with that TerminalSymbol
      */
     if ( pw.get ().size () >= 1 && pw.get ( 0 ) instanceof TerminalSymbol )
-      try
-      {
         firstSet.add ( ( TerminalSymbol ) pw.get ( 0 ) );
-      }
-      catch ( TerminalSymbolSetException exc1 )
-      {
-        exc1.printStackTrace ();
-      }
     else
     /*
      * pw is a Nonterminal X of the form X -> X_1\dots X_nnow search for an
@@ -806,7 +801,6 @@ public abstract class AbstractGrammar implements Grammar
      */
     {
       ProductionWordMember X = pw.get ( 0 );
-      // for ( ProductionWordMember X : pw ) TODO: verify logic
       if ( X instanceof NonterminalSymbol )
       {
         NonterminalSymbol x = ( NonterminalSymbol ) X;
@@ -826,14 +820,7 @@ public abstract class AbstractGrammar implements Grammar
                 pwm ) );
             if ( fsX.epsilon () )
               break;
-            try
-            {
-              firstSet.add ( fsX );
-            }
-            catch ( TerminalSymbolSetException exc )
-            {
-              exc.printStackTrace ();
-            }
+            firstSet.add ( fsX );
             break;
           }// end inner for
         }// end outer for
@@ -845,24 +832,67 @@ public abstract class AbstractGrammar implements Grammar
 
   /**
    * {@inheritDoc}
+   * 
+   * @throws GrammarInvalidNonterminalException
    */
   public final TerminalSymbolSet follow ( final NonterminalSymbol p )
-      throws TerminalSymbolSetException
+      throws TerminalSymbolSetException, GrammarInvalidNonterminalException
   {
     DefaultTerminalSymbolSet followSet = new DefaultTerminalSymbolSet ();
+    //we use this set to determine for which nonterminal we already
+    //calculated case 3
+    DefaultNonterminalSymbolSet seen = new DefaultNonterminalSymbolSet();
 
     /*
      * (1) we add the endmarker to the follow set (by definition)
      */
-    followSet.add ( DefaultTerminalSymbol.EndMarker );
-    
+    if ( p.isStart () )
+      followSet.addIfNonexistent( DefaultTerminalSymbol.EndMarker );
+
     /*
-     * (2) if there exists a Production X -> \alpha A \beta, A is Nonterminal (here p)
-     *     and TerminalSymbol t \in first(\beta)
-     *     => add t to followSet
+     * (2) get all productions where nonterminal p is on the right side
      */
     ArrayList < Production > prods = getProductionsContainingNonterminalSymbol ( p );
 
+    for ( Production prod : prods )
+    {
+      ProductionWord rest = null;
+      ProductionWord pw = prod.getProductionWord ();
+
+      // we now have productions A -> aBb, B = p
+      for ( int i = 0 ; i < pw.size () ; ++i )
+        // extract the rest word b
+        if ( pw.get ( i ).getName ().equals ( p.getName () ) )
+        {
+          ArrayList < ProductionWordMember > restPWM = new ArrayList < ProductionWordMember > ();
+          for ( int j = i + 1 ; j < pw.size () ; ++j )
+            restPWM.add ( pw.get ( j ) );
+          rest = new DefaultProductionWord ( restPWM );
+          break;
+        }
+
+      // if restPWM is not empty => case 2: add every terminal a in first(b) to
+      // our follow set
+      if ( rest != null && rest.size () != 0 )
+        followSet.addIfNonexistent ( first ( rest ) );
+
+      // case 3: b is epsilon or epsilon in first(b) => add all terminals from
+      // follow(A) to the follow set
+      if ( rest == null || rest.size () == 0 || first ( rest ).epsilon () )
+        if(!seen.contains ( prod.getNonterminalSymbol () ))
+        {
+          followSet.addIfNonexistent ( follow ( prod.getNonterminalSymbol () ) );
+          try
+          {
+            seen.add ( prod.getNonterminalSymbol () );
+          }
+          catch ( NonterminalSymbolSetException exc )
+          {
+            exc.printStackTrace();
+          }
+        }
+    }// end for
+
     return followSet;
-  }
+  }//end follow
 }

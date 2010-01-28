@@ -56,6 +56,36 @@ public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
    */
   public void add ( TerminalSymbol ... terminalSymbols )
       throws TerminalSymbolSetException;
+  
+  
+  /**
+   * Appends the specified {@link TerminalSymbol}s to the end of this
+   * {@link TerminalSymbolSet}.
+   * 
+   * @param terminalSymbols The {@link TerminalSymbol}s to be appended to this
+   *          {@link TerminalSymbolSet}.
+   */
+  public void addIfNonexistent ( Iterable < TerminalSymbol > terminalSymbols );
+
+
+  /**
+   * Appends the specified {@link TerminalSymbol} to the end of this
+   * {@link TerminalSymbolSet}.
+   * 
+   * @param terminalSymbol The {@link TerminalSymbol} to be appended to this
+   *          {@link TerminalSymbolSet}.
+   */
+  public void addIfNonexistent ( TerminalSymbol terminalSymbol );
+
+
+  /**
+   * Appends the specified {@link TerminalSymbol}s to the end of this
+   * {@link TerminalSymbolSet}.
+   * 
+   * @param terminalSymbols The {@link TerminalSymbol}s to be appended to this
+   *          {@link TerminalSymbolSet}.
+   */
+  public void addIfNonexistent ( TerminalSymbol ... terminalSymbols );
 
 
   /**

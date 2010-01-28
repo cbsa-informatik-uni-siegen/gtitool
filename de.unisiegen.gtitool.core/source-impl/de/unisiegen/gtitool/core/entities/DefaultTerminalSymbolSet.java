@@ -63,14 +63,10 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       char c1 = list.get ( counter ).getName ().charAt ( 0 );
       char c2 = 0;
       if ( counter + 1 != list.size () )
-      {
         c2 = list.get ( ++counter ).getName ().charAt ( 0 );
-      }
       dist = c2 - c1;
       if ( dist == 1 )
-      {
         s.add ( new DefaultTerminalSymbol ( Character.toString ( c2 ) ) );
-      }
     }
     return s;
   }
@@ -79,7 +75,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   /**
    * The {@link EventListenerList}.
    */
-  private EventListenerList listenerList = new EventListenerList ();
+  private final EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -94,13 +90,13 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   /**
    * The set of {@link TerminalSymbol}s.
    */
-  private TreeSet < TerminalSymbol > terminalSymbolSet;
+  private final TreeSet < TerminalSymbol > terminalSymbolSet;
 
 
   /**
    * The initial set of {@link TerminalSymbol}s.
    */
-  private TreeSet < TerminalSymbol > initialTerminalSymbolSet;
+  private final TreeSet < TerminalSymbol > initialTerminalSymbolSet;
 
 
   /**
@@ -112,7 +108,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   /**
    * The {@link PrettyStringChangedListener}.
    */
-  private PrettyStringChangedListener prettyStringChangedListener;
+  private final PrettyStringChangedListener prettyStringChangedListener;
 
 
   /**
@@ -151,33 +147,23 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     this ();
 
     // Check if the element is correct
-    if ( !element.getName ().equals ( "TerminalSymbolSet" ) ) //$NON-NLS-1$
-    {
+    if ( !element.getName ().equals ( "TerminalSymbolSet" ) )
       throw new IllegalArgumentException (
           "element " + Messages.QUOTE + element.getName () //$NON-NLS-1$
               + Messages.QUOTE + " is not a terminal symbol set" ); //$NON-NLS-1$
-    }
 
     // Attribute
     if ( element.getAttribute ().size () > 0 )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-    }
 
     // Element
     for ( Element current : element.getElement () )
-    {
-      if ( current.getName ().equals ( "TerminalSymbol" ) ) //$NON-NLS-1$
-      {
+      if ( current.getName ().equals ( "TerminalSymbol" ) )
         add ( new DefaultTerminalSymbol ( current ) );
-      }
       else
-      {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-      }
-    }
 
     resetModify ();
   }
@@ -197,9 +183,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
     // TerminalSymbols
     if ( terminalSymbols == null )
-    {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
     add ( terminalSymbols );
 
     resetModify ();
@@ -220,9 +204,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
     // TerminalSymbols
     if ( terminalSymbols == null )
-    {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
     add ( terminalSymbols );
 
     resetModify ();
@@ -238,19 +220,13 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       throws TerminalSymbolSetException
   {
     if ( terminalSymbols == null )
-    {
       throw new NullPointerException ( "terminal symbols is null" ); //$NON-NLS-1$
-    }
     ArrayList < TerminalSymbol > symbolList = new ArrayList < TerminalSymbol > ();
     for ( TerminalSymbol current : terminalSymbols )
-    {
       symbolList.add ( current );
-    }
     checkDuplicated ( symbolList );
     for ( TerminalSymbol current : terminalSymbols )
-    {
       add ( current );
-    }
   }
 
 
@@ -264,9 +240,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   {
     // TerminalSymbol
     if ( terminalSymbol == null )
-    {
       throw new NullPointerException ( "terminal symbol is null" ); //$NON-NLS-1$
-    }
     /*
      * Throws an TerminalSymbolSetException if the symbol which should be added
      * is already in this TerminalSymbolSet.
@@ -275,12 +249,8 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     {
       ArrayList < TerminalSymbol > negativeSymbols = new ArrayList < TerminalSymbol > ();
       for ( TerminalSymbol current : this.terminalSymbolSet )
-      {
         if ( terminalSymbol.equals ( current ) )
-        {
           negativeSymbols.add ( current );
-        }
-      }
       negativeSymbols.add ( terminalSymbol );
       throw new TerminalSymbolSetMoreThanOneSymbolException ( this,
           negativeSymbols );
@@ -306,19 +276,51 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       throws TerminalSymbolSetException
   {
     if ( terminalSymbols == null )
-    {
       throw new NullPointerException ( "terminal symbols is null" ); //$NON-NLS-1$
-    }
     ArrayList < TerminalSymbol > symbolList = new ArrayList < TerminalSymbol > ();
     for ( TerminalSymbol current : terminalSymbols )
-    {
       symbolList.add ( current );
-    }
     checkDuplicated ( symbolList );
     for ( TerminalSymbol current : terminalSymbols )
-    {
       add ( current );
-    }
+  }
+  
+  
+  /**
+   * {@inheritDoc}
+   */
+  public void addIfNonexistent ( Iterable < TerminalSymbol > terminalSymbols )
+  {
+    for(TerminalSymbol ts : terminalSymbols)
+      addIfNonexistent(ts);
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public void addIfNonexistent ( TerminalSymbol terminalSymbol )
+  {
+    if(terminalSymbol == null)
+      throw new NullPointerException ( "terminal symbols is null" ); //$NON-NLS-1$
+    this.terminalSymbolSet.add ( terminalSymbol );
+    
+    terminalSymbol
+    .addPrettyStringChangedListener ( this.prettyStringChangedListener );
+
+    fireTerminalSymbolSetChanged ();
+    fireModifyStatusChanged ();
+    firePrettyStringChanged ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public void addIfNonexistent ( TerminalSymbol ... terminalSymbols )
+  {
+    for(TerminalSymbol ts : terminalSymbols)
+      addIfNonexistent(ts);
   }
 
 
@@ -372,26 +374,18 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   {
     TerminalSymbol duplicated = null;
     loop : for ( int i = 0 ; i < terminalSymbols.size () ; i++ )
-    {
       for ( int j = i + 1 ; j < terminalSymbols.size () ; j++ )
-      {
         if ( terminalSymbols.get ( i ).equals ( terminalSymbols.get ( j ) ) )
         {
           duplicated = terminalSymbols.get ( i );
           break loop;
         }
-      }
-    }
     if ( duplicated != null )
     {
       ArrayList < TerminalSymbol > negativeSymbols = new ArrayList < TerminalSymbol > ();
       for ( TerminalSymbol current : terminalSymbols )
-      {
         if ( duplicated.equals ( current ) )
-        {
           negativeSymbols.add ( current );
-        }
-      }
       throw new TerminalSymbolSetMoreThanOneSymbolException ( this,
           negativeSymbols );
     }
@@ -406,10 +400,8 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   public final void clear ()
   {
     for ( TerminalSymbol current : this.terminalSymbolSet )
-    {
       current
           .removePrettyStringChangedListener ( this.prettyStringChangedListener );
-    }
 
     this.terminalSymbolSet.clear ();
     fireTerminalSymbolSetChanged ();
@@ -437,15 +429,11 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     {
       int compare = firstList.get ( i ).compareTo ( secondList.get ( i ) );
       if ( compare != 0 )
-      {
         return compare;
-      }
     }
 
     if ( firstList.size () == secondList.size () )
-    {
       return 0;
-    }
 
     return firstList.size () < secondList.size () ? -1 : 1;
   }
@@ -489,9 +477,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
     for ( ModifyStatusChangedListener current : listeners )
-    {
       current.modifyStatusChanged ( newModifyStatus );
-    }
   }
 
 
@@ -505,9 +491,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     PrettyStringChangedListener [] listeners = this.listenerList
         .getListeners ( PrettyStringChangedListener.class );
     for ( PrettyStringChangedListener current : listeners )
-    {
       current.prettyStringChanged ();
-    }
   }
 
 
@@ -519,9 +503,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     TerminalSymbolSetChangedListener [] listeners = this.listenerList
         .getListeners ( TerminalSymbolSetChangedListener.class );
     for ( TerminalSymbolSetChangedListener current : listeners )
-    {
       current.terminalSymbolSetChanged ( this );
-    }
   }
 
 
@@ -545,9 +527,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   {
     Iterator < TerminalSymbol > iterator = this.terminalSymbolSet.iterator ();
     for ( int i = 0 ; i < index ; i++ )
-    {
       iterator.next ();
-    }
     return iterator.next ();
   }
 
@@ -561,9 +541,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   {
     Element newElement = new Element ( "TerminalSymbolSet" ); //$NON-NLS-1$
     for ( TerminalSymbol current : this.terminalSymbolSet )
-    {
       newElement.addElement ( current );
-    }
     return newElement;
   }
 
@@ -621,13 +599,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   public final void remove ( Iterable < TerminalSymbol > terminalSymbols )
   {
     if ( terminalSymbols == null )
-    {
       throw new NullPointerException ( "terminal symbols is null" ); //$NON-NLS-1$
-    }
     for ( TerminalSymbol current : terminalSymbols )
-    {
       remove ( current );
-    }
   }
 
 
@@ -639,14 +613,10 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   public final void remove ( TerminalSymbol terminalSymbol )
   {
     if ( terminalSymbol == null )
-    {
       throw new NullPointerException ( "terminal symbol is null" ); //$NON-NLS-1$
-    }
     if ( !this.terminalSymbolSet.contains ( terminalSymbol ) )
-    {
       throw new IllegalArgumentException (
           "terminal symbol is not in this terminal symbol set" ); //$NON-NLS-1$
-    }
 
     terminalSymbol
         .removePrettyStringChangedListener ( this.prettyStringChangedListener );
@@ -667,13 +637,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   public final void remove ( TerminalSymbol ... terminalSymbols )
   {
     if ( terminalSymbols == null )
-    {
       throw new NullPointerException ( "terminal symbols is null" ); //$NON-NLS-1$
-    }
     for ( TerminalSymbol current : terminalSymbols )
-    {
       remove ( current );
-    }
   }
 
 
@@ -768,15 +734,11 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
         ArrayList < TerminalSymbol > a = checkForClass ( t );
 
         if ( !first )
-        {
           this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-        }
         first = false;
 
         if ( a.size () == 1 )
-        {
           this.cachedPrettyString.add ( a.get ( 0 ) );
-        }
         else if ( a.size () == 2 )
         {
 
@@ -817,15 +779,11 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       ArrayList < TerminalSymbol > a = checkForClass ( t );
 
       if ( !first )
-      {
         result.append ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-      }
       first = false;
 
       if ( a.size () == 1 )
-      {
         result.append ( a.get ( 0 ) );
-      }
       else if ( a.size () == 2 )
       {
 

@@ -78,11 +78,21 @@ public interface ProductionWord extends Entity < ProductionWord >, Storable,
    * @return the size of the {@link ProductionWord}.
    */
   public int size ();
-  
+
+
   /**
    * Returns whether we have an epsilon or not
-   *
+   * 
    * @return true if we have an epsilon
    */
-  public boolean epsilon();
+  public boolean epsilon ();
+
+
+  /**
+   * checks whether the production word contains a specified symbol
+   * 
+   * @param pwm the symbol we're searching for
+   * @return true if the production word contains pwm, false otherwise
+   */
+  public boolean contains ( ProductionWordMember pwm );
 }

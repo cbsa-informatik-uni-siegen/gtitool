@@ -6,7 +6,6 @@ import java.util.TreeSet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.Element;
@@ -44,16 +43,13 @@ public class DefaultFirstSet implements FirstSet
   }
 
   /**
-   * TODO
-   *
-   * @param terminalSymbols
-   * @throws TerminalSymbolSetException
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.gtitool.core.entities.FirstSet#add(java.lang.Iterable)
    */
   public void add ( Iterable < TerminalSymbol > terminalSymbols )
-      throws TerminalSymbolSetException
   {
-    this.terminalSymbolSet.add ( terminalSymbols );
+    this.terminalSymbolSet.addIfNonexistent ( terminalSymbols );
   }
 
 
@@ -62,10 +58,9 @@ public class DefaultFirstSet implements FirstSet
    * 
    * @see de.unisiegen.gtitool.core.entities.FirstSet#add(de.unisiegen.gtitool.core.entities.TerminalSymbol)
    */
-  public void add ( TerminalSymbol terminalSymbol ) throws TerminalSymbolSetException
+  public void add ( TerminalSymbol terminalSymbol )
   {
-    if(!contains ( terminalSymbol ))
-      this.terminalSymbolSet.add ( terminalSymbol );
+    this.terminalSymbolSet.addIfNonexistent ( terminalSymbol );
   }
 
 
@@ -252,17 +247,6 @@ public class DefaultFirstSet implements FirstSet
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
-   */
-  public PrettyString toPrettyString ()
-  {
-    return this.terminalSymbolSet.toPrettyString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   public int compareTo ( TerminalSymbolSet o )
@@ -338,4 +322,24 @@ public class DefaultFirstSet implements FirstSet
     return this.terminalSymbolSet.iterator ();
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString()
+  {
+    return this.terminalSymbolSet.toString ();
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
+   */
+  public PrettyString toPrettyString()
+  {
+    return this.terminalSymbolSet.toPrettyString ();
+  }
 }

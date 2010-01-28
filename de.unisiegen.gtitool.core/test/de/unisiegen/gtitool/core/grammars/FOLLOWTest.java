@@ -1,7 +1,5 @@
 package de.unisiegen.gtitool.core.grammars;
 
-
-import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
@@ -19,11 +17,13 @@ import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 
 
 /**
- * tests the first set
+ * test class for follow
+ *
  */
-public class FIRSTTest
+@SuppressWarnings (
+    { "all" } )
+public class FOLLOWTest
 {
-
   /**
    * the program entry point
    *
@@ -89,31 +89,27 @@ public class FIRSTTest
 
     grammar.addProduction ( new DefaultProduction ( F,
         new DefaultProductionWord ( lparen, E, rparen ) ) );
-
-    DefaultFirstSet fs;
+    
     try
     {
-      fs = ( DefaultFirstSet ) grammar.first ( grammar
-          .getProductionAt ( 0 ).getProductionWord () );
-      printFirstSet(fs);
+      TerminalSymbolSet follow = grammar.follow ( E );
+      System.out.println(follow);
+      
+      follow = grammar.follow ( T );
+      System.out.println(follow);
+      for(TerminalSymbol ts : follow)
+        System.out.println(ts);
+      
+      follow = grammar.follow ( F );
+      System.out.println(follow);
     }
     catch ( GrammarInvalidNonterminalException exc )
     {
       exc.printStackTrace();
     }
-  }
-  
-  /**
-   * prints a first set
-   *
-   * @param fs the first set
-   */
-  private static void printFirstSet(final DefaultFirstSet fs)
-  {
-    for(TerminalSymbol ts : fs)
+    catch ( TerminalSymbolSetException exc )
     {
-      DefaultTerminalSymbol dts = (DefaultTerminalSymbol)ts;
-      System.out.println(dts);
+      exc.printStackTrace();
     }
   }
 }

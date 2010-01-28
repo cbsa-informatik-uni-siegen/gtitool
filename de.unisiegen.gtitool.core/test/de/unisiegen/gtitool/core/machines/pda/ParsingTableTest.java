@@ -1,15 +1,18 @@
-package de.unisiegen.gtitool.core.grammars;
+package de.unisiegen.gtitool.core.machines.pda;
 
 
-import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
+import java.util.TreeSet;
+
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
@@ -19,14 +22,16 @@ import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 
 
 /**
- * tests the first set
+ * test class for the parsing table
  */
-public class FIRSTTest
+@SuppressWarnings (
+{ "all" } )
+public class ParsingTableTest
 {
 
   /**
-   * the program entry point
-   *
+   * entry point of the test program
+   * 
    * @param arguments command line arguments
    */
   public static void main ( final String [] arguments )
@@ -90,30 +95,28 @@ public class FIRSTTest
     grammar.addProduction ( new DefaultProduction ( F,
         new DefaultProductionWord ( lparen, E, rparen ) ) );
 
-    DefaultFirstSet fs;
     try
     {
-      fs = ( DefaultFirstSet ) grammar.first ( grammar
-          .getProductionAt ( 0 ).getProductionWord () );
-      printFirstSet(fs);
+      DefaultParsingTable parsingTable = new DefaultParsingTable ( grammar );
+      for ( NonterminalSymbol ns : grammar.getNonterminalSymbolSet () )
+        for ( TerminalSymbol ts : grammar.getTerminalSymbolSet () )
+        {
+          TreeSet < Production > prods = parsingTable.get ( ts, ns );
+          if ( prods.isEmpty () )
+            System.out.println ( "M[" + ns.getName () + "," + ts.getName ()
+                + "] is empty" );
+          else
+            System.out.println ( "M[" + ns.getName () + "," + ts.getName ()
+                + "] = " + prods.toString () );
+        }
     }
     catch ( GrammarInvalidNonterminalException exc )
     {
-      exc.printStackTrace();
+      exc.printStackTrace ();
     }
-  }
-  
-  /**
-   * prints a first set
-   *
-   * @param fs the first set
-   */
-  private static void printFirstSet(final DefaultFirstSet fs)
-  {
-    for(TerminalSymbol ts : fs)
+    catch ( TerminalSymbolSetException exc )
     {
-      DefaultTerminalSymbol dts = (DefaultTerminalSymbol)ts;
-      System.out.println(dts);
+      exc.printStackTrace ();
     }
   }
 }

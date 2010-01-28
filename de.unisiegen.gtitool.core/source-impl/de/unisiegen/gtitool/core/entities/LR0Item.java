@@ -59,6 +59,13 @@ public class LR0Item extends DefaultProduction
   }
 
 
+  public boolean dotPrecedesTerminal ()
+  {
+    return getDotPosition () < this.getProductionWord ().size ()
+        && getProductionWord ().get ( getDotPosition () ) instanceof TerminalSymbol;
+  }
+
+
   public ProductionWordMember getProductionWordMemberAfterDot ()
   {
     return getProductionWord ().get ( getDotPosition () );
@@ -79,7 +86,7 @@ public class LR0Item extends DefaultProduction
   public LR0Item incDot ()
   {
     return new LR0Item ( getNonterminalSymbol (), getProductionWord (),
-        getDotPosition () + 1);
+        getDotPosition () + 1 );
   }
 
 
@@ -134,10 +141,11 @@ public class LR0Item extends DefaultProduction
     final String rightSide = this.getProductionWord ().toString ();
 
     int stringDotIndex = 0;
-    
-    for(int i = 0; i != this.getDotPosition(); ++i)
-      stringDotIndex += this.getProductionWord ().get(i).toString ().length ();
-    
+
+    for ( int i = 0 ; i != this.getDotPosition () ; ++i )
+      stringDotIndex += this.getProductionWord ().get ( i ).toString ()
+          .length ();
+
     return leftSide + rightSide.substring ( 0, stringDotIndex ) + "\u2022" //$NON-NLS-1$
         + rightSide.substring ( stringDotIndex );
   }

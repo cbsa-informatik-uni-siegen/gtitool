@@ -6,72 +6,92 @@ import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.Element;
-import de.unisiegen.gtitool.core.storage.Modifyable;
-import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
  * TODO
  */
-public class LR0ItemSet implements Entity < LR0ItemSet >, Storable, Modifyable,
-    Iterable < LR0Item >
+public class DefaultLRActionSet implements LRActionSet
 {
 
-  public LR0ItemSet ()
+  /**
+   * TODO
+   * 
+   * @param actions
+   * @throws LRActionSetException
+   * @see de.unisiegen.gtitool.core.entities.LRActionSet#add(java.lang.Iterable)
+   */
+  public void add ( Iterable < LRAction > actions ) throws LRActionSetException
   {
-
+    Iterator<LRAction> iter = actions.iterator ();
+    
+    while(iter.hasNext())
+      this.rep.add ( iter.next() );
   }
 
 
-  public LR0ItemSet ( LR0ItemSet items )
+  /**
+   * TODO
+   * 
+   * @param actions
+   * @throws LRActionSetException
+   * @see de.unisiegen.gtitool.core.entities.LRActionSet#add(de.unisiegen.gtitool.core.entities.LRAction)
+   */
+  public void add ( LRAction actions ) throws LRActionSetException
   {
-    this.rep = new TreeSet < LR0Item > ( items.get () );
   }
 
 
-  public LR0ItemSet ( Iterable < LR0Item > items )
+  /**
+   * TODO
+   * 
+   * @param actions
+   * @throws LRActionSetException
+   * @see de.unisiegen.gtitool.core.entities.LRActionSet#add(de.unisiegen.gtitool.core.entities.LRAction[])
+   */
+  public void add ( LRAction ... actions ) throws LRActionSetException
   {
-    add ( items );
   }
 
 
-  public void add ( Iterable < LR0Item > items )
+  /**
+   * TODO
+   * 
+   * @param action
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.LRActionSet#contains(de.unisiegen.gtitool.core.entities.LRAction)
+   */
+  public boolean contains ( LRAction action )
   {
-    for ( LR0Item item : items )
-      this.rep.add ( item );
+    return false;
   }
 
 
-  public void add ( LR0Item item )
-  {
-    this.rep.add ( item );
-  }
-
-
-  public int size ()
-  {
-    return this.rep.size ();
-  }
-
-
-  public boolean contains ( LR0Item item )
-  {
-    return this.rep.contains ( item );
-  }
-
-
-  public TreeSet < LR0Item > get ()
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.LRActionSet#get()
+   */
+  public TreeSet < LRAction > get ()
   {
     return this.rep;
   }
 
 
-  public final Iterator < LR0Item > iterator ()
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.LRActionSet#size()
+   */
+  public int size ()
   {
-    return this.rep.iterator ();
+    return rep.size ();
   }
 
 
@@ -134,12 +154,6 @@ public class LR0ItemSet implements Entity < LR0ItemSet >, Storable, Modifyable,
   }
 
 
-  public boolean equals ( LR0ItemSet o )
-  {
-    return this.rep.equals ( o.rep );
-  }
-
-
   /**
    * TODO
    * 
@@ -147,7 +161,7 @@ public class LR0ItemSet implements Entity < LR0ItemSet >, Storable, Modifyable,
    * @return
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
-  public int compareTo ( LR0ItemSet o )
+  public int compareTo ( LRActionSet o )
   {
     return 0;
   }
@@ -211,5 +225,18 @@ public class LR0ItemSet implements Entity < LR0ItemSet >, Storable, Modifyable,
   }
 
 
-  private TreeSet < LR0Item > rep = new TreeSet < LR0Item > ();
+  /**
+   * TODO
+   * 
+   * @return
+   * @see java.lang.Iterable#iterator()
+   */
+  public Iterator < LRAction > iterator ()
+  {
+    return rep.iterator ();
+  }
+
+
+  private TreeSet < LRAction > rep;
+
 }

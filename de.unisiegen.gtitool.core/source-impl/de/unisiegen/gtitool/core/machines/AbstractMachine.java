@@ -1854,6 +1854,11 @@ public abstract class AbstractMachine implements Machine
     }
   }
 
+  
+  public void setWord(Word newWord)
+  {
+    this.word = newWord;
+  }
 
   /**
    * {@inheritDoc}
@@ -2801,5 +2806,10 @@ public abstract class AbstractMachine implements Machine
     // Throw the exception if a warning or an error has occurred.
     if ( machineExceptionList.size () > 0 )
       throw new MachineValidationException ( machineExceptionList );
+  }
+  
+  public State getCurrentState()
+  {
+    return this.stateList.get ( 0 );
   }
 }

@@ -64,8 +64,9 @@ public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
    * 
    * @param terminalSymbols The {@link TerminalSymbol}s to be appended to this
    *          {@link TerminalSymbolSet}.
+   * @return true if some elements are not already present
    */
-  public void addIfNonexistent ( Iterable < TerminalSymbol > terminalSymbols );
+  public boolean addIfNonexistent ( Iterable < TerminalSymbol > terminalSymbols );
 
 
   /**
@@ -74,8 +75,9 @@ public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
    * 
    * @param terminalSymbol The {@link TerminalSymbol} to be appended to this
    *          {@link TerminalSymbolSet}.
+   * @return true if some elements are not already present
    */
-  public void addIfNonexistent ( TerminalSymbol terminalSymbol );
+  public boolean addIfNonexistent ( TerminalSymbol terminalSymbol );
 
 
   /**
@@ -84,8 +86,9 @@ public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
    * 
    * @param terminalSymbols The {@link TerminalSymbol}s to be appended to this
    *          {@link TerminalSymbolSet}.
+   * @return true if element is not already present
    */
-  public void addIfNonexistent ( TerminalSymbol ... terminalSymbols );
+  public boolean addIfNonexistent ( TerminalSymbol ... terminalSymbols );
 
 
   /**

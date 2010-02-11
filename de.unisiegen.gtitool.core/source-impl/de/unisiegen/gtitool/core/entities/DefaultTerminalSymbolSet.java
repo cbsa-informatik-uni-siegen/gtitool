@@ -289,21 +289,24 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   /**
    * {@inheritDoc}
    */
-  public void addIfNonexistent ( Iterable < TerminalSymbol > terminalSymbols )
+  public boolean addIfNonexistent ( Iterable < TerminalSymbol > terminalSymbols )
   {
+    boolean modified = false;
     for ( TerminalSymbol ts : terminalSymbols )
-      addIfNonexistent ( ts );
+      if(addIfNonexistent ( ts ))
+        modified = true;
+    return modified;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  public void addIfNonexistent ( TerminalSymbol terminalSymbol )
+  public boolean addIfNonexistent ( TerminalSymbol terminalSymbol )
   {
     if ( terminalSymbol == null )
       throw new NullPointerException ( "terminal symbols is null" ); //$NON-NLS-1$
-    this.terminalSymbolSet.add ( terminalSymbol );
+    boolean modified = this.terminalSymbolSet.add ( terminalSymbol );
 
     terminalSymbol
         .addPrettyStringChangedListener ( this.prettyStringChangedListener );
@@ -311,16 +314,21 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     fireTerminalSymbolSetChanged ();
     fireModifyStatusChanged ();
     firePrettyStringChanged ();
+    
+    return modified;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  public void addIfNonexistent ( TerminalSymbol ... terminalSymbols )
+  public boolean addIfNonexistent ( TerminalSymbol ... terminalSymbols )
   {
+    boolean modified = false;
     for ( TerminalSymbol ts : terminalSymbols )
-      addIfNonexistent ( ts );
+      if(addIfNonexistent ( ts ))
+        modified = true;
+    return modified;
   }
 
 
@@ -807,10 +815,8 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param name
-   * @return
    * @see de.unisiegen.gtitool.core.entities.TerminalSymbolSet#get(java.lang.String)
    */
   public TerminalSymbol get ( String name )

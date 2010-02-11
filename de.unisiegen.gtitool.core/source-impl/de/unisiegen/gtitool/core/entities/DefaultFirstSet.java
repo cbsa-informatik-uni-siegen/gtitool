@@ -1,5 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
+
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -13,7 +14,6 @@ import de.unisiegen.gtitool.core.storage.Element;
 
 /**
  * Represents the FirstSet
- *
  */
 public class DefaultFirstSet implements FirstSet
 {
@@ -23,24 +23,35 @@ public class DefaultFirstSet implements FirstSet
    */
   private static final long serialVersionUID = 2593661660846010642L;
 
+
   /**
    * set of terminal symbols
    */
   private final DefaultTerminalSymbolSet terminalSymbolSet;
-  
+
+
   /**
    * defines whether epsilon is part of this set
    */
   private boolean epsilon;
-  
+
+
+  /**
+   * modified status
+   */
+  private boolean modified;
+
+
   /**
    * default ctor
-   *
    */
-  public DefaultFirstSet() {
-    this.terminalSymbolSet = new DefaultTerminalSymbolSet();
+  public DefaultFirstSet ()
+  {
+    this.terminalSymbolSet = new DefaultTerminalSymbolSet ();
     this.epsilon = false;
+    this.modified = false;
   }
+
 
   /**
    * {@inheritDoc}
@@ -49,7 +60,7 @@ public class DefaultFirstSet implements FirstSet
    */
   public void add ( Iterable < TerminalSymbol > terminalSymbols )
   {
-    this.terminalSymbolSet.addIfNonexistent ( terminalSymbols );
+    this.modified = this.terminalSymbolSet.addIfNonexistent ( terminalSymbols );
   }
 
 
@@ -60,7 +71,18 @@ public class DefaultFirstSet implements FirstSet
    */
   public void add ( TerminalSymbol terminalSymbol )
   {
-    this.terminalSymbolSet.addIfNonexistent ( terminalSymbol );
+    this.modified = this.terminalSymbolSet.addIfNonexistent ( terminalSymbol );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.FirstSet#modified()
+   */
+  public boolean modified ()
+  {
+    return this.modified;
   }
 
 
@@ -114,7 +136,7 @@ public class DefaultFirstSet implements FirstSet
    * 
    * @see de.unisiegen.gtitool.core.entities.FirstSet#epsilon(boolean)
    */
-  public void epsilon ( @SuppressWarnings("hiding") final boolean epsilon )
+  public void epsilon ( @SuppressWarnings ( "hiding" ) final boolean epsilon )
   {
     this.epsilon = epsilon;
   }
@@ -303,7 +325,7 @@ public class DefaultFirstSet implements FirstSet
 
   /**
    * {@inheritDoc}
-   *
+   * 
    * @see de.unisiegen.gtitool.core.storage.Modifyable#resetModify()
    */
   public void resetModify ()
@@ -322,23 +344,25 @@ public class DefaultFirstSet implements FirstSet
     return this.terminalSymbolSet.iterator ();
   }
 
+
   /**
    * {@inheritDoc}
    * 
    * @see java.lang.Object#toString()
    */
   @Override
-  public String toString()
+  public String toString ()
   {
     return this.terminalSymbolSet.toString ();
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
    */
-  public PrettyString toPrettyString()
+  public PrettyString toPrettyString ()
   {
     return this.terminalSymbolSet.toPrettyString ();
   }

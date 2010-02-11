@@ -135,4 +135,13 @@ public interface FirstSet extends Entity < TerminalSymbolSet >, Storable,
    *         {@link TerminalSymbolSet}.
    */
   public int size ();
+  
+  
+  /**
+   * 
+   * returns if last set-operation modified the set
+   *
+   * @return true, if last set-operation modified the set
+   */
+  public boolean modified();
 }

@@ -90,12 +90,9 @@ public class FIRSTTest
     grammar.addProduction ( new DefaultProduction ( F,
         new DefaultProductionWord ( lparen, E, rparen ) ) );
 
-    DefaultFirstSet fs;
     try
     {
-      fs = ( DefaultFirstSet ) grammar.first ( grammar
-          .getProductionAt ( 0 ).getProductionWord () );
-      printFirstSet(fs);
+      printFirstSet ( (DefaultFirstSet)grammar.first ( F ) );
     }
     catch ( GrammarInvalidNonterminalException exc )
     {

@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.core.grammars;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeSet;
 
 import javax.swing.event.EventListenerList;
@@ -12,6 +13,7 @@ import javax.swing.table.TableModel;
 import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
@@ -100,6 +102,18 @@ public abstract class AbstractGrammar implements Grammar
    * The start symbol of this grammar.
    */
   private NonterminalSymbol startSymbol;
+
+
+  /**
+   * calculated first sets
+   */
+  private HashMap < NonterminalSymbol, FirstSet > firstSets = null;
+
+
+  /**
+   * calculated follow sets
+   */
+  private HashMap < NonterminalSymbol, TerminalSymbolSet > followSets = null;
 
 
   /**
@@ -758,26 +772,11 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * returns a list of {@link Production}s containing a specified
-   * {@link NonterminalSymbol}
+   * calculates first set for a ProductionWord
    * 
-   * @param X The {@link NonterminalSymbol}
-   * @return a list of {@link Production}s containing the
-   *         {@link NonterminalSymbol} {@code X}
-   */
-  private ArrayList < Production > getProductionsContainingNonterminalSymbol (
-      NonterminalSymbol X )
-  {
-    ArrayList < Production > prods = new ArrayList < Production > ();
-    for ( Production p : this.productions )
-      if ( p.getProductionWord ().contains ( X ) )
-        prods.add ( p );
-    return prods;
-  }
-
-
-  /**
-   * {@inheritDoc}
+   * @param pw the ProductionWord
+   * @return the first set for the given ProductionWord
+   * @throws GrammarInvalidNonterminalException
    */
   public final FirstSet first ( final ProductionWord pw )
       throws GrammarInvalidNonterminalException
@@ -788,7 +787,7 @@ public abstract class AbstractGrammar implements Grammar
      * pw that starts with that TerminalSymbol
      */
     if ( pw.get ().size () >= 1 && pw.get ( 0 ) instanceof TerminalSymbol )
-        firstSet.add ( ( TerminalSymbol ) pw.get ( 0 ) );
+      firstSet.add ( ( TerminalSymbol ) pw.get ( 0 ) );
     else
     /*
      * pw is a Nonterminal X of the form X -> X_1\dots X_nnow search for an
@@ -822,75 +821,201 @@ public abstract class AbstractGrammar implements Grammar
         }// end outer for
       }// end if
     }// end else
-    
     return firstSet;
   }
 
-  
-//  public FirstSet first ( final ProductionWordMember pwm)
-//  {
-//    DefaultFirstSet fs = new DefaultFirstSet();
-//      if(pwm instanceof TerminalSymbol)
-//        fs.add ( (TerminalSymbol) pwm);
-//      else
-//      {
-//        ArrayList<Production> prods = getProductionForNonTerminal ( (NonterminalSymbol)pwm );
-//        for(Production p : prods)
-//          if(p.getProductionWord ().epsilon ())
-//            fs.epsilon ( true );
-//      }
-//    return fs;
-//  }
+
+  /**
+   * calculates all first sets for the nonterminals
+   * 
+   * @throws GrammarInvalidNonterminalException
+   */
+  private final void calculateAllFirstSets ()
+      throws GrammarInvalidNonterminalException
+  {
+    for ( NonterminalSymbol ns : this.nonterminalSymbolSet )
+    {
+      ArrayList < Production > prods = getProductionForNonTerminal ( ns );
+      DefaultFirstSet fs = new DefaultFirstSet ();
+      for ( Production p : prods )
+        fs.add ( first ( p.getProductionWord () ) );
+      this.firstSets.put ( ns, fs );
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.grammars.Grammar#first(de.unisiegen.gtitool.core.entities.NonterminalSymbol)
+   */
+  public FirstSet first ( final NonterminalSymbol ns )
+      throws GrammarInvalidNonterminalException
+  {
+    if ( this.firstSets == null )
+    {
+      this.firstSets = new HashMap < NonterminalSymbol, FirstSet > ();
+      calculateAllFirstSets ();
+    }
+    return this.firstSets.get ( ns );
+  }
+
+
+  /**
+   * checks if a set got changed
+   * 
+   * @return true, if one of the follow sets got changed
+   */
+  private boolean followSetsModified ()
+  {
+    for ( TerminalSymbolSet tss : this.followSets.values () )
+      if ( tss.isModified () )
+        return true;
+    return false;
+  }
+
+
+  /**
+   * resets the modified field in all follow sets
+   */
+  private void resetFollowSetsModified ()
+  {
+    for ( TerminalSymbolSet tss : this.followSets.values () )
+      tss.resetModify ();
+  }
+
+
+  /**
+   * returns a set of ProductionWords containing the NonterminalSymbol ns
+   * 
+   * @param ns {@link NonterminalSymbol}
+   * @return set of ProductionWord's containing the NonterminalSymbol ns
+   */
+  private ArrayList < ProductionWord > getProductionWordsForNonterminal (
+      final NonterminalSymbol ns )
+  {
+    ArrayList < ProductionWord > pws = new ArrayList < ProductionWord > ();
+    for ( Production p : this.productions )
+      if ( p.getProductionWord ().contains ( ns ) )
+        pws.add ( p.getProductionWord () );
+    return pws;
+  }
+
+
+  /**
+   * extracts the rest of the {@link ProductionWord} right after the
+   * {@link NonterminalSymbol} {@code ns}
+   * 
+   * @param ns the {@link NonterminalSymbol}
+   * @param pw the {@link ProductionWord}
+   * @return rest of the the {@link ProductionWord} right after the
+   *         {@link NonterminalSymbol}
+   */
+  private final ProductionWord getProductionWordAfter (
+      final NonterminalSymbol ns, final ProductionWord pw)
+  {
+    ArrayList < ProductionWordMember > rest = new ArrayList < ProductionWordMember > ();
+    for ( int i = 0 ; i < pw.size () ; ++i )
+      if ( pw.get ( i ).equals ( ns ) )
+      {
+        for ( int j = i + 1 ; j < pw.size () ; ++j )
+          rest.add ( pw.get ( j ) );
+        break;
+      }
+    return new DefaultProductionWord ( rest );
+  }
+
+
+  /**
+   * calculates follow sets for each NonterminalSymbol
+   * @throws GrammarInvalidNonterminalException
+   */
+  private final void calculateAllFollowSets () throws GrammarInvalidNonterminalException
+  {
+    do
+    {
+      resetFollowSetsModified ();
+      for(NonterminalSymbol ns : this.nonterminalSymbolSet)
+      {
+        //case 1
+        if(ns.isStart ())
+          this.followSets.get ( ns ).addIfNonexistent ( DefaultTerminalSymbol.EndMarker );
+        
+        //case 2 and 3
+        ArrayList<ProductionWord> pws = getProductionWordsForNonterminal(ns);
+        for(ProductionWord pw : pws)
+        {
+          ProductionWord rest = getProductionWordAfter(ns, pw);
+          
+          //case 2
+          if(rest.size () > 0)
+            this.followSets.get ( ns ).addIfNonexistent ( first(rest) );
+          //else //case 3
+        }
+      }
+    }
+    while ( followSetsModified () );
+  }
+
+
+  /**
+   * initializes the follow sets
+   */
+  private void initFollowSets ()
+  {
+    this.followSets = new HashMap < NonterminalSymbol, TerminalSymbolSet > ();
+    for ( NonterminalSymbol ns : this.nonterminalSymbolSet )
+      this.followSets.put ( ns, new DefaultTerminalSymbolSet () );
+  }
+
 
   /**
    * {@inheritDoc}
    * 
    * @throws GrammarInvalidNonterminalException
    */
-  public final TerminalSymbolSet follow ( final NonterminalSymbol p )
+  public final TerminalSymbolSet follow ( final NonterminalSymbol ns )
       throws GrammarInvalidNonterminalException
   {
-    DefaultTerminalSymbolSet followSet = new DefaultTerminalSymbolSet ();
-
-//    /*
-//     * (1) we add the endmarker to the follow set (by definition)
-//     */
-//    if ( p.isStart () )
-//      followSet.addIfNonexistent( DefaultTerminalSymbol.EndMarker );
-//
-//    /*
-//     * (2) get all productions where nonterminal p is on the right side
-//     */
-//    ArrayList < Production > prods = getProductionsContainingNonterminalSymbol ( p );
-//
-//    for ( Production prod : prods )
-//    {
-//      ProductionWord rest = null;
-//      ProductionWord pw = prod.getProductionWord ();
-//
-//      // we now have productions A -> aBb, B = p
-//      for ( int i = 0 ; i < pw.size () ; ++i )
-//        // extract the rest word b
-//        if ( pw.get ( i ).getName ().equals ( p.getName () ) )
-//        {
-//          ArrayList < ProductionWordMember > restPWM = new ArrayList < ProductionWordMember > ();
-//          for ( int j = i + 1 ; j < pw.size () ; ++j )
-//            restPWM.add ( pw.get ( j ) );
-//          rest = new DefaultProductionWord ( restPWM );
-//          break;
-//        }
-//
-//      // if restPWM is not empty => case 2: add every terminal a in first(b) to
-//      // our follow set
-//      if ( rest != null && rest.size () != 0 )
-//        followSet.add ( first ( rest ) );
-//
-//      // case 3: b is epsilon or epsilon in first(b) => add all terminals from
-//      // follow(A) to the follow set
-//      if ( rest == null || rest.size () == 0 || first ( rest ).epsilon () )
-//        followSet.add ( follow ( prod.getNonterminalSymbol () ) );
-//    }// end for
-
-    return followSet;
-  }//end follow
+    if ( this.followSets == null )
+    {
+      initFollowSets ();
+      calculateAllFollowSets ();
+    }
+    return this.followSets.get ( ns );
+    // /*
+    // * (2) get all productions where nonterminal p is on the right side
+    // */
+    // ArrayList < Production > prods =
+    // getProductionsContainingNonterminalSymbol ( p );
+    //
+    // for ( Production prod : prods )
+    // {
+    // ProductionWord rest = null;
+    // ProductionWord pw = prod.getProductionWord ();
+    //
+    // // we now have productions A -> aBb, B = p
+    // for ( int i = 0 ; i < pw.size () ; ++i )
+    // // extract the rest word b
+    // if ( pw.get ( i ).getName ().equals ( p.getName () ) )
+    // {
+    // ArrayList < ProductionWordMember > restPWM = new ArrayList <
+    // ProductionWordMember > ();
+    // for ( int j = i + 1 ; j < pw.size () ; ++j )
+    // restPWM.add ( pw.get ( j ) );
+    // rest = new DefaultProductionWord ( restPWM );
+    // break;
+    // }
+    //
+    // // if restPWM is not empty => case 2: add every terminal a in first(b) to
+    // // our follow set
+    // if ( rest != null && rest.size () != 0 )
+    // followSet.add ( first ( rest ) );
+    //
+    // // case 3: b is epsilon or epsilon in first(b) => add all terminals from
+    // // follow(A) to the follow set
+    // if ( rest == null || rest.size () == 0 || first ( rest ).epsilon () )
+    // followSet.add ( follow ( prod.getNonterminalSymbol () ) );
+    // }// end for
+  }// end follow
 }

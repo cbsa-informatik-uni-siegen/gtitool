@@ -16,6 +16,7 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -273,7 +274,8 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
    * @param p the Production
    * @return set of symbols following directly to the Production p
    * @throws GrammarInvalidNonterminalException
+   * @throws TerminalSymbolSetException 
    */
   public TerminalSymbolSet follow ( final NonterminalSymbol p )
-      throws GrammarInvalidNonterminalException;
+      throws GrammarInvalidNonterminalException, TerminalSymbolSetException;
 }

@@ -1,5 +1,6 @@
 package de.unisiegen.gtitool.core.grammars;
 
+
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
@@ -18,15 +19,15 @@ import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 
 /**
  * test class for follow
- *
  */
 @SuppressWarnings (
-    { "all" } )
+{ "all" } )
 public class FOLLOWTest
 {
+
   /**
    * the program entry point
-   *
+   * 
    * @param arguments command line arguments
    */
   public static void main ( final String [] arguments )
@@ -89,23 +90,31 @@ public class FOLLOWTest
 
     grammar.addProduction ( new DefaultProduction ( F,
         new DefaultProductionWord ( lparen, E, rparen ) ) );
-    
+
     try
     {
-      TerminalSymbolSet follow = grammar.follow ( E );
-      System.out.println(follow);
-      
-      follow = grammar.follow ( T );
-      System.out.println(follow);
-      for(TerminalSymbol ts : follow)
-        System.out.println(ts);
-      
-      follow = grammar.follow ( F );
-      System.out.println(follow);
+      TerminalSymbolSet follow;
+      try
+      {
+        follow = grammar.follow ( E );
+        System.out.println ( follow );
+
+        follow = grammar.follow ( T );
+        System.out.println ( follow );
+        for ( TerminalSymbol ts : follow )
+          System.out.println ( ts );
+
+        follow = grammar.follow ( F );
+        System.out.println ( follow );
+      }
+      catch ( TerminalSymbolSetException exc )
+      {
+        exc.printStackTrace ();
+      }
     }
     catch ( GrammarInvalidNonterminalException exc )
     {
-      exc.printStackTrace();
+      exc.printStackTrace ();
     }
   }
 }

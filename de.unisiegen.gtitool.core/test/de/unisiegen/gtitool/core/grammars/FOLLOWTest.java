@@ -94,23 +94,16 @@ public class FOLLOWTest
     try
     {
       TerminalSymbolSet follow;
-      try
-      {
-        follow = grammar.follow ( E );
-        System.out.println ( follow );
+      follow = grammar.follow ( E );
+      System.out.println ( follow );
 
-        follow = grammar.follow ( T );
-        System.out.println ( follow );
-        for ( TerminalSymbol ts : follow )
-          System.out.println ( ts );
+      follow = grammar.follow ( T );
+      System.out.println ( follow );
+      for ( TerminalSymbol ts : follow )
+        System.out.println ( ts );
 
-        follow = grammar.follow ( F );
-        System.out.println ( follow );
-      }
-      catch ( TerminalSymbolSetException exc )
-      {
-        exc.printStackTrace ();
-      }
+      follow = grammar.follow ( F );
+      System.out.println ( follow );
     }
     catch ( GrammarInvalidNonterminalException exc )
     {

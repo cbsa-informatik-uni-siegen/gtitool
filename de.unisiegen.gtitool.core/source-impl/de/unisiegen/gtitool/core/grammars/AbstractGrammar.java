@@ -30,7 +30,6 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalExc
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarNonterminalNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarRegularGrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -863,30 +862,6 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * checks if a set got changed
-   * 
-   * @return true, if one of the follow sets got changed
-   */
-  private boolean followSetsModified ()
-  {
-    for ( TerminalSymbolSet tss : this.followSets.values () )
-      if ( tss.isModified () )
-        return true;
-    return false;
-  }
-
-
-  /**
-   * resets the modified field in all follow sets
-   */
-  private void resetFollowSetsModified ()
-  {
-    for ( TerminalSymbolSet tss : this.followSets.values () )
-      tss.resetModify ();
-  }
-
-
-  /**
    * extracts the rest of the {@link ProductionWord} right after the
    * {@link NonterminalSymbol} {@code ns}
    * 
@@ -933,14 +908,14 @@ public abstract class AbstractGrammar implements Grammar
    * calculates follow sets for each NonterminalSymbol
    * 
    * @throws GrammarInvalidNonterminalException
-   * @throws TerminalSymbolSetException
    */
   private final void calculateAllFollowSets ()
-      throws GrammarInvalidNonterminalException, TerminalSymbolSetException
+      throws GrammarInvalidNonterminalException
   {
+    boolean modified;
     do
     {
-      resetFollowSetsModified ();
+      modified = false;
       for ( NonterminalSymbol ns : this.nonterminalSymbolSet )
       {
         // case 1
@@ -957,15 +932,16 @@ public abstract class AbstractGrammar implements Grammar
 
           // case 2
           if ( rest.size () > 0 )
-            this.followSets.get ( ns ).addIfNonexistent ( first ( rest ) );
+            modified = this.followSets.get ( ns ).addIfNonexistent (
+                first ( rest ) );
           // case 3
           if ( rest.size () == 0 || first ( rest ).epsilon () )
-            this.followSets.get ( ns ).add (
+            modified = this.followSets.get ( ns ).addIfNonexistent (
                 this.followSets.get ( p.getNonterminalSymbol () ) );
         }
       }
     }
-    while ( followSetsModified () );
+    while ( modified );
   }
 
 
@@ -984,10 +960,9 @@ public abstract class AbstractGrammar implements Grammar
    * {@inheritDoc}
    * 
    * @throws GrammarInvalidNonterminalException
-   * @throws TerminalSymbolSetException
    */
   public final TerminalSymbolSet follow ( final NonterminalSymbol ns )
-      throws GrammarInvalidNonterminalException, TerminalSymbolSetException
+      throws GrammarInvalidNonterminalException
   {
     if ( this.followSets == null )
     {

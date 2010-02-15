@@ -13,6 +13,7 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
@@ -65,7 +66,7 @@ public class ParsingTableTest
     TerminalSymbol rparen = new DefaultTerminalSymbol ( ")" ); //$NON-NLS-1$
     TerminalSymbol plus = new DefaultTerminalSymbol ( "+" ); //$NON-NLS-1$
     TerminalSymbol multiplies = new DefaultTerminalSymbol ( "*" ); //$NON-NLS-1$
-    TerminalSymbol epsilon = new DefaultTerminalSymbol ("");
+    ProductionWord epsilon = new DefaultProductionWord();
 
     try
     {
@@ -90,7 +91,7 @@ public class ParsingTableTest
         new DefaultProductionWord ( plus, T, E_ ) ) );
     
     grammar.addProduction ( new DefaultProduction ( E_,
-        new DefaultProductionWord ( epsilon ) ) );
+        epsilon ) );
 
     grammar.addProduction ( new DefaultProduction ( T,
         new DefaultProductionWord ( F, T_ ) ) );
@@ -99,7 +100,7 @@ public class ParsingTableTest
         new DefaultProductionWord ( multiplies, F, T_ ) ) );
     
     grammar.addProduction ( new DefaultProduction ( T_,
-        new DefaultProductionWord ( epsilon ) ) );
+        epsilon ) );
 
     grammar.addProduction ( new DefaultProduction ( F,
         new DefaultProductionWord ( id ) ) );

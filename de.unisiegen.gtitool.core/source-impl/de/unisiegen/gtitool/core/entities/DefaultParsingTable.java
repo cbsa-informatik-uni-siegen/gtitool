@@ -74,37 +74,29 @@ public class DefaultParsingTable implements ParsingTable
   private void createParsingTable ( final CFG cfg )
       throws GrammarInvalidNonterminalException, TerminalSymbolSetException
   {
-    //TODO: implement
-//    this.parsingTable = new ArrayList < ArrayList < TreeSet < Production >> > ();
-//
-//    int i = 0; // row counter
-//    for ( NonterminalSymbol ns : this.nonterminals )
-//    {
-//      // create one row in our parsing table
-//      this.parsingTable.add ( new ArrayList < TreeSet < Production > > () );
-//
-//      // calculate first set for each production ns -> a
-//      ArrayList < Production > prods = cfg.getProductionForNonTerminal ( ns );
-//      ArrayList < FirstSet > fsProds = new ArrayList < FirstSet > ();
-//      for ( Production prod : prods )
-//        fsProds.add ( cfg.first ( prod.getProductionWord () ) );
-//
-//      // and calculate set of productions for entry parsingTable[ns,ts]
-//      for ( TerminalSymbol ts : this.terminals )
-//      {
-//        // create one column in our parsing table
-//        this.parsingTable.get ( i ).add ( new TreeSet < Production > () );
-//        int j = 0; // column counter
-//
-//        for ( Production p : prods )
-//          if ( cfg.first ( p.getProductionWord () ).contains ( ts )
-//              || ( cfg.first ( p.getProductionWord () ).epsilon () && cfg
-//                  .follow ( ns ).contains ( ts ) ) )
-//            this.parsingTable.get ( i ).get ( j ).add ( p );
-//
-//      }
-//      ++i;
-//    }
+    this.parsingTable = new ArrayList < ArrayList < TreeSet < Production >> > ();
+    
+    int col = 0;
+    for(NonterminalSymbol ns : this.nonterminals)
+    {
+      this.parsingTable.add ( new ArrayList < TreeSet<Production> > () );
+      
+      ArrayList<Production> ps = cfg.getProductionForNonTerminal ( ns );
+      System.err.println (ps);
+      
+      int row = 0;
+      for(TerminalSymbol ts : this.terminals)
+      {
+        this.parsingTable.get ( col ).add ( new TreeSet < Production > () );
+        for(Production p : ps)
+          if(cfg.first ( p.getProductionWord () ).contains ( ts ) ||
+              (cfg.first ( p.getProductionWord () ).epsilon () &&
+                  cfg.follow ( ns ).contains ( ts )))
+            this.parsingTable.get ( col ).get ( row ).add ( p );
+        ++row;
+      }
+      ++col;
+    }
   }
 
 

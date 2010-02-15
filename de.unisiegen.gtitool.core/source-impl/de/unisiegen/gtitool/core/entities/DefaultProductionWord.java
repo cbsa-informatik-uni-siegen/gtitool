@@ -506,7 +506,7 @@ public final class DefaultProductionWord implements ProductionWord
    * @see de.unisiegen.gtitool.core.entities.ProductionWord#epsilon()
    */
   public final boolean epsilon(){
-    return this.productionWordMemberList.isEmpty ();
+    return this.productionWordMemberList.size() == 0;
   }
   
   

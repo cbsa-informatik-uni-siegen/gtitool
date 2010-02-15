@@ -240,6 +240,24 @@ public class DefaultLRActionSet implements LRActionSet
   }
 
 
+  public String toString ()
+  {
+    return rep.toString ();
+  }
+
+
   private TreeSet < LRAction > rep = new TreeSet < LRAction > ();
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.LRActionSet#first()
+   */
+  public LRAction first ()
+  {
+    return this.rep.first ();
+  }
 
 }

@@ -14,5 +14,11 @@ public interface LR0Parser
   public boolean transit ( LRAction action );
 
 
+  public void autoTransit ();
+
+
   public void start ( Word word );
+
+
+  public boolean isWordAccepted ();
 }

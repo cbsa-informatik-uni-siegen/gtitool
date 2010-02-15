@@ -1854,11 +1854,12 @@ public abstract class AbstractMachine implements Machine
     }
   }
 
-  
-  public void setWord(Word newWord)
+
+  public void setWord ( Word newWord )
   {
     this.word = newWord;
   }
+
 
   /**
    * {@inheritDoc}
@@ -2807,9 +2808,13 @@ public abstract class AbstractMachine implements Machine
     if ( machineExceptionList.size () > 0 )
       throw new MachineValidationException ( machineExceptionList );
   }
-  
-  public State getCurrentState()
+
+
+  public State getCurrentState ()
   {
-    return this.stateList.get ( 0 );
+    for ( State state : this.stateList )
+      if ( state.isActive () )
+        return state;
+    throw new RuntimeException ( "No state active!" );
   }
 }

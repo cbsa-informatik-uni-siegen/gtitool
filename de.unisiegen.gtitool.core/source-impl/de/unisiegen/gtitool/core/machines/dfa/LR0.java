@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.LR0State;
+import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
@@ -110,6 +111,27 @@ public class LR0 extends AbstractMachine implements DFA
         }
       }
     }
+  }
+
+
+  public void nextSymbol ( ProductionWordMember symbol )
+  {
+    State state = null;
+    for ( State curState : this.getState () )
+      if ( curState.isActive () )
+        state = curState; // TODO: how can we get to the current active state
+    // with less overhead?
+
+    for ( Transition transition : this.getTransition () )
+      if ( transition.getStateBegin ().equals ( state )
+          && transition.getSymbol ().contains (
+              new DefaultSymbol ( symbol.toString () ) ) )
+      {
+        this.nextSymbol ( transition );
+        return;
+      }
+
+    System.err.println ( "OH NO TODO" );
   }
 
 

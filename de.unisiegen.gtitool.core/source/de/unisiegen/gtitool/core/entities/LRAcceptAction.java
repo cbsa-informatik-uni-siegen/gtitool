@@ -28,7 +28,16 @@ public class LRAcceptAction implements LRAction
    */
   public int compareTo ( LRAction o )
   {
-    return 0;
+    // AcceptActions are below everything
+    if ( o instanceof LRAcceptAction )
+      return 0;
+    return -1;
+  }
+
+
+  public String toString ()
+  {
+    return "Accept";
   }
 
 }

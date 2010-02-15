@@ -211,5 +211,11 @@ public class LR0ItemSet implements Entity < LR0ItemSet >, Storable, Modifyable,
   }
 
 
+  public String toString ()
+  {
+    return this.rep.toString ();
+  }
+
+
   private TreeSet < LR0Item > rep = new TreeSet < LR0Item > ();
 }

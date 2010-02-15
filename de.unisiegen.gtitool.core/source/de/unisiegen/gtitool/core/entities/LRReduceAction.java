@@ -7,6 +7,11 @@ package de.unisiegen.gtitool.core.entities;
 public class LRReduceAction implements LRAction
 {
 
+  /**
+   * TODO
+   * 
+   * @param production
+   */
   public LRReduceAction ( Production production )
   {
     this.production = production;
@@ -21,7 +26,7 @@ public class LRReduceAction implements LRAction
    */
   public Production getReduceAction ()
   {
-    return production;
+    return this.production;
   }
 
 
@@ -37,6 +42,9 @@ public class LRReduceAction implements LRAction
   }
 
 
+  /**
+   * The production associated with this reduce action
+   */
   private Production production;
 
 
@@ -49,6 +57,22 @@ public class LRReduceAction implements LRAction
    */
   public int compareTo ( LRAction o )
   {
-    return production.compareTo(o.getReduceAction());
+    // ReduceActions are above everything
+    if ( ! ( o instanceof LRReduceAction ) )
+      return 1;
+    return this.production.compareTo ( o.getReduceAction () );
+  }
+
+
+  /**
+   * Returns the string
+   * 
+   * @return The string
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString ()
+  {
+    return "Reduce: " + this.production.toString (); //$NON-NLS-1$
   }
 }

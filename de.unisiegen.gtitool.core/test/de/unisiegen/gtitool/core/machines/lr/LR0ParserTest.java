@@ -33,21 +33,20 @@ public class LR0ParserTest
       word.add ( new DefaultSymbol ( terminals.get ( "id" ).toString () ) );
       word.add ( new DefaultSymbol ( terminals.get ( "+" ).toString () ) );
       word.add ( new DefaultSymbol ( terminals.get ( "id" ).toString () ) );
-      
+
       parser.start ( word );
-      
-      if(parser.transit ( new LRShiftAction()) == false)
+
+      while ( !parser.isWordAccepted () )
       {
-        System.err.println ( "First shift failed" );
-        return;
+        parser.autoTransit ();
       }
-      
-      // TODO: use the right production
-      if(parser.transit ( new LRReduceAction(testGrammar.getProductionAt ( 0 ))) == false)
-      {
-        System.err.println ( "First reduce failed" );
-        return;
-      }
+      /*
+       * if(parser.transit ( new LRShiftAction()) == false) { System.err.println
+       * ( "First shift failed" ); return; } // TODO: use the right production
+       * if(parser.transit ( new LRReduceAction(testGrammar.getProductionAt ( 5
+       * ))) == false) { System.err.println ( "First reduce failed" ); return; }
+       */
+
     }
     catch ( AlphabetException e )
     {

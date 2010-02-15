@@ -15,6 +15,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
 public interface LRActionSet extends Entity < LRActionSet >, Storable,
     Modifyable, Iterable < LRAction >
 {
+
   /**
    * Appends the specified {@link State}s to the end of this {@link StateSet}.
    * 
@@ -39,8 +40,7 @@ public interface LRActionSet extends Entity < LRActionSet >, Storable,
   /**
    * Appends the specified {@link State}s to the end of this {@link StateSet}.
    * 
-   * @param actions The {@link State}s to be appended to this
-   *          {@link StateSet}.
+   * @param actions The {@link State}s to be appended to this {@link StateSet}.
    * @throws StateSetException If something with the {@link StateSet} is not
    *           correct.
    */
@@ -50,8 +50,8 @@ public interface LRActionSet extends Entity < LRActionSet >, Storable,
   /**
    * Returns true if this {@link StateSet} contains the specified {@link State}.
    * 
-   * @param action {@link State} whose presence in this
-   *          {@link StateSet} is to be tested.
+   * @param action {@link State} whose presence in this {@link StateSet} is to
+   *          be tested.
    * @return true if the specified {@link State} is present; false otherwise.
    */
   public boolean contains ( LRAction action );
@@ -65,6 +65,13 @@ public interface LRActionSet extends Entity < LRActionSet >, Storable,
   public TreeSet < LRAction > get ();
 
 
+  /**
+   * 
+   * TODO
+   *
+   * @return
+   */
+  public LRAction first ();
 
 
   /**

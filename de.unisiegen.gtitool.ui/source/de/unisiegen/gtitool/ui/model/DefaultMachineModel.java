@@ -24,6 +24,7 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
@@ -143,6 +144,12 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * A list of all {@link DefaultTransitionView}s
    */
   private final ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
+  
+  
+  /**
+   * the {@link Grammar}
+   */
+  private Grammar grammar = null;
 
 
   /**
@@ -329,6 +336,28 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     resetModify ();
   }
 
+  
+  /**
+   * sets the {@link Grammar}
+   *
+   * @param g the {@link Grammar}
+   */
+  public void setGrammar(final Grammar g)
+  {
+    this.grammar = g;
+  }
+  
+  
+  /**
+   * returns the {@link Grammar}
+   *
+   * @return the {@link Grammar}
+   */
+  public Grammar getGrammar()
+  {
+    return this.grammar;
+  }
+  
 
   /**
    * {@inheritDoc}

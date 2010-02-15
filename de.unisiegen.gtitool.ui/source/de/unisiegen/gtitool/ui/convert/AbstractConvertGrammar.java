@@ -213,6 +213,7 @@ public abstract class AbstractConvertGrammar implements Converter
   protected final void createMachinePanel ( Machine machine )
   {
     this.model = new DefaultMachineModel ( machine );
+    this.model.setGrammar ( this.grammar );
     this.newPanel = new MachinePanel ( this.mainWindowForm, this.model, null );
   }
 

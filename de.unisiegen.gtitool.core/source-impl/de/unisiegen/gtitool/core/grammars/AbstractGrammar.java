@@ -103,11 +103,12 @@ public abstract class AbstractGrammar implements Grammar
    */
   private NonterminalSymbol startSymbol;
 
+
   /**
    * calculated first sets (right side of a production)
    */
   private HashMap < NonterminalSymbol, FirstSet > firstSetR = null;
-  
+
 
   /**
    * calculated first sets
@@ -787,8 +788,8 @@ public abstract class AbstractGrammar implements Grammar
       throws GrammarInvalidNonterminalException
   {
     DefaultFirstSet firstSet = new DefaultFirstSet ();
-    
-    if(pw.epsilon ())
+
+    if ( pw.epsilon () )
       firstSet.epsilon ( true );
     /*
      * ProductionWord starts with a TerminalSymbol => we can derive a word from

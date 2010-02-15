@@ -1,18 +1,16 @@
 package de.unisiegen.gtitool.core.machines.pda;
 
 
-import java.util.TreeSet;
-
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
+import de.unisiegen.gtitool.core.entities.DefaultProductionSet;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
@@ -117,7 +115,8 @@ public class ParsingTableTest
       for ( NonterminalSymbol ns : grammar.getNonterminalSymbolSet () )
         for ( TerminalSymbol ts : grammar.getTerminalSymbolSet () )
         {
-          TreeSet < Production > prods = parsingTable.get ( ns, ts );
+          //TreeSet < Production > prods = parsingTable.get ( ns, ts );
+          DefaultProductionSet prods = parsingTable.get ( ns, ts );
           if ( prods.isEmpty () )
             System.out.println ( "M[" + ns.getName () + "," + ts.getName ()
                 + "] is empty" );

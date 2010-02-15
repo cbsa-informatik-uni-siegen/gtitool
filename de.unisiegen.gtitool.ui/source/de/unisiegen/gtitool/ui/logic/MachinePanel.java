@@ -63,6 +63,7 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
+import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
@@ -174,9 +175,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         public void run ()
         {
           if ( MachinePanel.this.machine.isNextSymbolAvailable () )
-          {
             handleWordNextStep ();
-          }
           else
           {
             MachinePanel.this.mainWindowForm.getLogic ().removeButtonState (
@@ -445,18 +444,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     if ( PreferenceManager.getInstance ().getWordModeItem ().equals (
         WordModeItem.LEFT ) )
-    {
       this.gui.wordPanelForm.styledWordParserPanel.setRightAlignment ( false );
-    }
     else if ( PreferenceManager.getInstance ().getWordModeItem ().equals (
         WordModeItem.RIGHT ) )
-    {
       this.gui.wordPanelForm.styledWordParserPanel.setRightAlignment ( true );
-    }
     else
-    {
       throw new RuntimeException ( "unsupported word mode" ); //$NON-NLS-1$
-    }
 
     PreferenceManager.getInstance ().addWordModeChangedListener (
         new WordModeChangedListener ()
@@ -465,19 +458,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           public void wordModeChanged ( WordModeItem newValue )
           {
             if ( newValue.equals ( WordModeItem.LEFT ) )
-            {
               MachinePanel.this.gui.wordPanelForm.styledWordParserPanel
                   .setRightAlignment ( false );
-            }
             else if ( newValue.equals ( WordModeItem.RIGHT ) )
-            {
               MachinePanel.this.gui.wordPanelForm.styledWordParserPanel
                   .setRightAlignment ( true );
-            }
             else
-            {
               throw new RuntimeException ( "unsupported word mode" ); //$NON-NLS-1$
-            }
 
             MachinePanel.this.gui.wordPanelForm.styledWordParserPanel.parse ();
           }
@@ -532,13 +519,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           Object object = MachinePanel.this.jGTIGraph.getSelectionCell ();
 
           if ( object instanceof DefaultStateView )
-          {
             deleteState ( ( DefaultStateView ) object );
-          }
           else if ( object instanceof DefaultTransitionView )
-          {
             deleteTransition ( ( DefaultTransitionView ) object );
-          }
         }
       }
     } );
@@ -845,9 +828,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         false, true, false, false );
     confirmDialog.show ();
     if ( confirmDialog.isConfirmed () )
-    {
       this.model.removeState ( state, true );
-    }
   }
 
 
@@ -887,19 +868,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
-    {
       for ( ModifyStatusChangedListener current : listeners )
-      {
         current.modifyStatusChanged ( true );
-      }
-    }
     else
     {
       boolean newModifyStatus = isModified ();
       for ( ModifyStatusChangedListener current : listeners )
-      {
         current.modifyStatusChanged ( newModifyStatus );
-      }
     }
   }
 
@@ -912,21 +887,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final Converter getConverter ( EntityType destination )
   {
     if ( this.machine.getMachineType ().equals ( MachineType.NFA ) )
-    {
       return new ConvertMachineDialog ( this.mainWindowForm, this );
-    }
     else if ( this.machine.getMachineType ().equals ( MachineType.ENFA ) )
-    {
       return new ConvertMachineDialog ( this.mainWindowForm, this );
-    }
     else if ( this.machine.getMachineType ().equals ( MachineType.DFA ) )
-    {
       return new ConvertMachineDialog ( this.mainWindowForm, this );
-    }
     else
-    {
       throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -1150,16 +1117,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     Symbol symbol;
     if ( column == Machine.EPSILON_COLUMN )
-    {
       symbol = new DefaultSymbol ();
-    }
     else
-    {
       symbol = this.machine.getAlphabet ().get ( column - 2 );
-    }
 
     for ( Transition currentTransition : this.machine.getTransition () )
-    {
       if ( currentTransition.contains ( symbol )
           && currentTransition.getStateBegin ().equals ( beginState ) )
       {
@@ -1170,7 +1132,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         }
         currentTransition.setActive ( true );
       }
-    }
 
     this.cellEditingMode = true;
     this.gui.jGTITableMachine.repaint ();
@@ -1214,18 +1175,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     JTable table;
     if ( event.getSource () == this.gui.jGTITableErrors.getSelectionModel () )
-    {
       table = this.gui.jGTITableErrors;
-    }
     else if ( event.getSource () == this.gui.jGTITableWarnings
         .getSelectionModel () )
-    {
       table = this.gui.jGTITableWarnings;
-    }
     else
-    {
       throw new IllegalArgumentException ( "wrong event source" ); //$NON-NLS-1$
-    }
 
     this.model.getJGTIGraph ().clearSelection ();
     clearHighlight ();
@@ -1275,7 +1230,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.machineMode = MachineMode.ENTER_WORD;
 
     if ( !this.machine.getMachineType ().equals ( MachineType.PDA ) )
-    {
       if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
           PDAModeItem.SHOW ) )
       {
@@ -1291,10 +1245,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
             .setEnabled ( false );
       }
       else
-      {
         throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
-      }
-    }
 
     setVisibleConsole ( false );
 
@@ -1330,13 +1281,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       public boolean accept ( File acceptedFile )
       {
         if ( acceptedFile.isDirectory () )
-        {
           return true;
-        }
-        if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\.png" ) ) //$NON-NLS-1$
-        {
+        if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\.png" ) )
           return true;
-        }
         return false;
       }
 
@@ -1356,9 +1303,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     if ( ( !saveDialog.isConfirmed () )
         || ( saveDialog.getSelectedFile () == null ) )
-    {
       return;
-    }
 
     if ( saveDialog.getSelectedFile ().exists () )
     {
@@ -1369,9 +1314,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           false, false );
       confirmDialog.show ();
       if ( confirmDialog.isNotConfirmed () )
-      {
         return;
-      }
     }
 
     String filename = saveDialog.getSelectedFile ().toString ().toLowerCase ()
@@ -1416,9 +1359,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final void handleHistory ()
   {
     if ( !this.machineMode.equals ( MachineMode.WORD_NAVIGATION ) )
-    {
       throw new RuntimeException ( "the word navigation is not in progress" ); //$NON-NLS-1$
-    }
 
     HistoryDialog historyDialog = new HistoryDialog ( this.mainWindowForm,
         this.machine, this );
@@ -1483,18 +1424,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
         transitionList.add ( transition );
         if ( transition.getStateBegin () == transition.getStateEnd () )
-        {
           for ( Transition current : transition.getStateBegin ()
               .getTransitionBegin () )
-          {
             if ( ( current.getStateBegin () == transition.getStateBegin () )
                 && ( current.getStateEnd () == transition.getStateEnd () )
                 && ( current != transition ) )
-            {
               transitionList.add ( current );
-            }
-          }
-        }
 
         highlightTransitionActive ( transitionList );
 
@@ -1565,12 +1500,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
         highlightTransitionActive ( state.getTransitionBegin () );
         for ( Transition currentTransition : state.getTransitionBegin () )
-        {
           for ( Symbol currentSymbol : currentTransition )
-          {
             symbolList.add ( currentSymbol );
-          }
-        }
         highlightSymbolActive ( symbolList );
       }
     }
@@ -1641,9 +1572,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final File handleSave ()
   {
     if ( this.file == null )
-    {
       return handleSaveAs ();
-    }
     try
     {
       Storage.getInstance ().store ( this.model, this.file );
@@ -1676,14 +1605,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         public boolean accept ( File acceptedFile )
         {
           if ( acceptedFile.isDirectory () )
-          {
             return true;
-          }
           if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
               + MachinePanel.this.machine.getMachineType ().getFileEnding () ) )
-          {
             return true;
-          }
           return false;
         }
 
@@ -1706,9 +1631,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
       if ( ( !saveDialog.isConfirmed () )
           || ( saveDialog.getSelectedFile () == null ) )
-      {
         return null;
-      }
 
       if ( saveDialog.getSelectedFile ().exists () )
       {
@@ -1719,9 +1642,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
             false );
         confirmDialog.show ();
         if ( confirmDialog.isNotConfirmed () )
-        {
           return null;
-        }
       }
 
       String filename = saveDialog.getSelectedFile ().toString ().matches (
@@ -1762,9 +1683,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       activeMouseAdapter = ActiveMouseAdapter.ADD_STATE;
     }
     else
-    {
       this.jGTIGraph.removeMouseListener ( this.addState );
-    }
   }
 
 
@@ -1793,9 +1712,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       activeMouseAdapter = ActiveMouseAdapter.ADD_FINAL_STATE;
     }
     else
-    {
       this.jGTIGraph.removeMouseListener ( this.addFinalState );
-    }
   }
 
 
@@ -1812,9 +1729,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       activeMouseAdapter = ActiveMouseAdapter.MOUSE;
     }
     else
-    {
       this.jGTIGraph.removeMouseListener ( this.normalMouse );
-    }
   }
 
 
@@ -1831,9 +1746,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       activeMouseAdapter = ActiveMouseAdapter.ADD_START_STATE;
     }
     else
-    {
       this.jGTIGraph.removeMouseListener ( this.addStartState );
-    }
   }
 
 
@@ -1852,25 +1765,17 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           .getMouseMotionListeners ();
 
       for ( MouseListener current : mouseListener )
-      {
         this.jGTIGraph.removeMouseListener ( current );
-      }
       for ( MouseMotionListener current : mouseMotionListener )
-      {
         this.jGTIGraph.removeMouseMotionListener ( current );
-      }
 
       this.jGTIGraph.addMouseListener ( this.addTransition );
       this.jGTIGraph.addMouseMotionListener ( this.transitionMove );
 
       for ( MouseListener current : mouseListener )
-      {
         this.jGTIGraph.addMouseListener ( current );
-      }
       for ( MouseMotionListener current : mouseMotionListener )
-      {
         this.jGTIGraph.addMouseMotionListener ( current );
-      }
 
       activeMouseAdapter = ActiveMouseAdapter.ADD_TRANSITION;
     }
@@ -1906,9 +1811,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       startAutoStepTimer ( false );
     }
     else
-    {
       cancelAutoStepTimer ();
-    }
 
     updateAcceptedState ();
 
@@ -1934,30 +1837,20 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         dialog.show ();
 
         if ( !dialog.isConfirmed () )
-        {
           return;
-        }
 
         if ( running )
-        {
           startAutoStepTimer ( true );
-        }
 
         this.machine.nextSymbol ( dialog.getChoosenTransition () );
       }
       else
-      {
         this.machine.nextSymbol ();
-      }
 
       ArrayList < State > activeStateList = new ArrayList < State > ();
       for ( State current : this.machine.getState () )
-      {
         if ( current.isActive () )
-        {
           activeStateList.add ( current );
-        }
-      }
 
       // update stack
       this.gui.wordPanelForm.styledStackParserPanel.setText ( this.machine
@@ -2106,9 +1999,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   private final void highlightStateActive ( ArrayList < State > states )
   {
     for ( State current : states )
-    {
       current.setActive ( true );
-    }
 
     performCellsChanged ();
   }
@@ -2122,9 +2013,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   private final void highlightStateError ( ArrayList < State > states )
   {
     for ( State current : states )
-    {
       current.setError ( true );
-    }
 
     performCellsChanged ();
   }
@@ -2138,9 +2027,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   private final void highlightSymbolActive ( ArrayList < Symbol > symbols )
   {
     for ( Symbol current : symbols )
-    {
       current.setActive ( true );
-    }
 
     performCellsChanged ();
   }
@@ -2154,9 +2041,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   private final void highlightSymbolError ( ArrayList < Symbol > symbols )
   {
     for ( Symbol current : symbols )
-    {
       current.setError ( true );
-    }
 
     performCellsChanged ();
   }
@@ -2178,9 +2063,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     }
 
     for ( Transition current : transitions )
-    {
       current.setActive ( true );
-    }
 
     performCellsChanged ();
   }
@@ -2202,9 +2085,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     }
 
     for ( Transition current : transitions )
-    {
       current.setError ( true );
-    }
 
     performCellsChanged ();
   }
@@ -2218,9 +2099,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.machine = this.model.getMachine ();
 
     if ( activeMouseAdapter == null )
-    {
       activeMouseAdapter = ActiveMouseAdapter.MOUSE;
-    }
     switch ( activeMouseAdapter )
     {
       case MOUSE :
@@ -2398,18 +2277,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
           PDAModeItem.SHOW ) )
-      {
         setVisiblePDATable ( true );
-      }
       else if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
           PDAModeItem.HIDE ) )
-      {
         setVisiblePDATable ( false );
-      }
       else
-      {
         throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
-      }
 
       PreferenceManager.getInstance ().addPDAModeChangedListener (
           new PDAModeChangedListener ()
@@ -2444,9 +2317,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
                     .setEnabled ( false );
               }
               else
-              {
                 throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
-              }
             }
           } );
     }
@@ -2529,7 +2400,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   private final void intitializeMouseAdapter ()
   {
     if ( ! ( this.machine instanceof DefaultTDP ) )
-    {
       // cancel dragging if mouse leaves jgraph area
       this.model.getJGTIGraph ().addMouseListener ( new MouseAdapter ()
       {
@@ -2541,7 +2411,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           cancelDraggingProgress ();
         }
       } );
-    }
 
     this.normalMouse = new MouseAdapter ()
     {
@@ -2554,14 +2423,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       public void mouseClicked ( MouseEvent event )
       {
         if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
-        {
           return;
-        }
 
         if ( event.getButton () == MouseEvent.BUTTON1 )
-        {
           openConfiguration ( event );
-        }
 
         // return if the pressed button is not the left mouse button
         if ( event.getButton () != MouseEvent.BUTTON3 )
@@ -2586,18 +2451,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       public void mouseClicked ( MouseEvent event )
       {
         if ( event.getButton () == MouseEvent.BUTTON2 )
-        {
           return;
-        }
         if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
-        {
           return;
-        }
 
         if ( event.getButton () == MouseEvent.BUTTON1 )
-        {
           updateSelected ( event );
-        }
 
         // if an popup menu is open close it and do nothing more
         if ( ( event.getButton () == MouseEvent.BUTTON1 )
@@ -2614,14 +2473,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
         // Open popup menu if left button was pressed
         if ( event.getButton () == MouseEvent.BUTTON3 )
-        {
           openPopupMenu ( event );
-        }
 
         if ( object != null )
-        {
           return;
-        }
 
         try
         {
@@ -2665,18 +2520,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       public void mouseClicked ( MouseEvent event )
       {
         if ( event.getButton () == MouseEvent.BUTTON2 )
-        {
           return;
-        }
         if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
-        {
           return;
-        }
 
         if ( event.getButton () == MouseEvent.BUTTON1 )
-        {
           updateSelected ( event );
-        }
 
         // if an popup menu is open close it and do nothing more
         if ( ( event.getButton () == MouseEvent.BUTTON1 )
@@ -2689,9 +2538,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         // Open popup menu if left button was pressed
         if ( ( event.getButton () == MouseEvent.BUTTON3 )
             && ( MachinePanel.this.firstState == null ) )
-        {
           openPopupMenu ( event );
-        }
 
         TransitionItem transitionItem = PreferenceManager.getInstance ()
             .getTransitionItem ();
@@ -2699,9 +2546,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         // if drag in progress return
         if ( MachinePanel.this.dragged
             || transitionItem.equals ( TransitionItem.DRAG_MODE ) )
-        {
           return;
-        }
 
         if ( MachinePanel.this.firstState == null )
         {
@@ -2711,24 +2556,18 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
                 event.getPoint ().x, event.getPoint ().y );
             if ( ( portView != null )
                 && ( portView.getParentView () instanceof StateView ) )
-            {
               MachinePanel.this.firstState = ( StateView ) portView
                   .getParentView ();
-            }
           }
           catch ( Exception e )
           {
             return;
           }
           if ( MachinePanel.this.firstState == null )
-          {
             return;
-          }
         }
         else
-        {
           addNewTransition ( event );
-        }
       }
 
 
@@ -2736,15 +2575,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       public void mouseReleased ( MouseEvent event )
       {
         if ( event.getButton () != MouseEvent.BUTTON1 )
-        {
           return;
-        }
 
         if ( !MachinePanel.this.dragged
             || ( MachinePanel.this.firstState == null ) )
-        {
           return;
-        }
 
         addNewTransition ( event );
       }
@@ -2758,14 +2593,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       public void mouseDragged ( MouseEvent event )
       {
         if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
-        {
           return;
-        }
         if ( PreferenceManager.getInstance ().getTransitionItem ().equals (
             TransitionItem.CLICK_MODE ) )
-        {
           return;
-        }
 
         if ( MachinePanel.this.firstState == null )
         {
@@ -2782,10 +2613,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
                 event.getPoint ().x, event.getPoint ().y );
             if ( ( portView != null )
                 && ( portView.getParentView () instanceof StateView ) )
-            {
               MachinePanel.this.firstState = ( StateView ) portView
                   .getParentView ();
-            }
           }
         }
         else
@@ -2808,10 +2637,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       public void mouseMoved ( MouseEvent event )
       {
         if ( MachinePanel.this.firstState != null )
-        {
           MachinePanel.this.jGTIGraph.setPaintedTransition (
               MachinePanel.this.firstState, event.getPoint () );
-        }
       }
     };
 
@@ -2827,18 +2654,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       public void mouseClicked ( MouseEvent event )
       {
         if ( event.getButton () == MouseEvent.BUTTON2 )
-        {
           return;
-        }
         if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
-        {
           return;
-        }
 
         if ( event.getButton () == MouseEvent.BUTTON1 )
-        {
           updateSelected ( event );
-        }
 
         // if an popup menu is open close it and do nothing more
         if ( ( event.getButton () == MouseEvent.BUTTON1 )
@@ -2855,14 +2676,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
         // Open popup menu if left button was pressed
         if ( event.getButton () == MouseEvent.BUTTON3 )
-        {
           openPopupMenu ( event );
-        }
 
         if ( object != null )
-        {
           return;
-        }
 
         try
         {
@@ -2912,18 +2729,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       public void mouseClicked ( MouseEvent event )
       {
         if ( event.getButton () == MouseEvent.BUTTON2 )
-        {
           return;
-        }
         if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
-        {
           return;
-        }
 
         if ( event.getButton () == MouseEvent.BUTTON1 )
-        {
           updateSelected ( event );
-        }
 
         // if an popup menu is open close it and do nothing more
         if ( ( event.getButton () == MouseEvent.BUTTON1 )
@@ -2940,14 +2751,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
         // Open popup menu if left button was pressed
         if ( event.getButton () == MouseEvent.BUTTON3 )
-        {
           openPopupMenu ( event );
-        }
 
         if ( object != null )
-        {
           return;
-        }
 
         try
         {
@@ -2996,16 +2803,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       public void mouseClicked ( MouseEvent event )
       {
         if ( event.getButton () != MouseEvent.BUTTON3 )
-        {
           return;
-        }
 
         if ( !MachinePanel.this.machineMode.equals ( MachineMode.ENTER_WORD )
             && !MachinePanel.this.machineMode
                 .equals ( MachineMode.WORD_NAVIGATION ) )
-        {
           return;
-        }
 
         // if an popup menu is open close it and do nothing more
         if ( ( event.getButton () == MouseEvent.BUTTON1 )
@@ -3021,10 +2824,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           MachinePanel.this.popup = createEnterWordModePopupMenu ();
 
           if ( MachinePanel.this.popup != null )
-          {
             MachinePanel.this.popup.show ( ( Component ) event.getSource (),
                 event.getX (), event.getY () );
-          }
           return;
         }
       }
@@ -3040,14 +2841,14 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     /*
      * initialize the parsing table
      */
-    this.gui.jGTITableMachine.setModel ( new PTTableModel() );
+    this.gui.jGTITableMachine.setModel ( new PTTableModel((CFG)this.model.getGrammar ()) );
     this.gui.jGTITableMachine.setColumnModel ( new PTTableColumnModel (
         this.machine.getAlphabet () ) );
     this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableMachine
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.gui.jGTITableMachine.setCellSelectionEnabled ( true );
-    this.gui.jGTITableMachine.setValueAt ( "test", 1, 1 );
+    
     //we don't need the pda stack operation table
     setVisiblePDATable ( false );
   }
@@ -3102,9 +2903,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       StateView stateView = ( StateView ) portView.getParentView ();
 
       if ( !stateView.isSelectionAllowed ( x, y, this.zoomFactor ) )
-      {
         return false;
-      }
     }
     return true;
   }
@@ -3150,9 +2949,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           .getFirstCellForLocation ( event.getPoint ().getX (), event
               .getPoint ().getY () );
       if ( cell == null )
-      {
         return;
-      }
       else if ( cell instanceof DefaultTransitionView )
       {
         DefaultTransitionView transitionView = ( DefaultTransitionView ) cell;
@@ -3170,9 +2967,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       else if ( cell instanceof DefaultStateView )
       {
         if ( !isSelectionAllowed ( event.getX (), event.getY () ) )
-        {
           return;
-        }
 
         DefaultStateView stateView = ( DefaultStateView ) cell;
 
@@ -3201,30 +2996,18 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         .getFirstCellForLocation ( event.getPoint ().getX (), event.getPoint ()
             .getY () );
     if ( object == null )
-    {
       MachinePanel.this.popup = createPopupMenu ();
-    }
     else if ( object instanceof DefaultTransitionView )
-    {
       MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
-    }
     else if ( object instanceof DefaultStateView )
-    {
       if ( isSelectionAllowed ( event.getX (), event.getY () ) )
-      {
         MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
-      }
       else
-      {
         MachinePanel.this.popup = createPopupMenu ();
-      }
-    }
 
     if ( MachinePanel.this.popup != null )
-    {
       MachinePanel.this.popup.show ( ( Component ) event.getSource (), event
           .getX (), event.getY () );
-    }
   }
 
 
@@ -3332,13 +3115,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         this.gui.jGTISplitPanePDATable.setDividerSize ( 3 );
       }
     }
-    else
+    else if ( this.gui.jGTISplitPanePDATable.getRightComponent () != null )
     {
-      if ( this.gui.jGTISplitPanePDATable.getRightComponent () != null )
-      {
-        this.gui.jGTISplitPanePDATable.setRightComponent ( null );
-        this.gui.jGTISplitPanePDATable.setDividerSize ( 0 );
-      }
+      this.gui.jGTISplitPanePDATable.setRightComponent ( null );
+      this.gui.jGTISplitPanePDATable.setDividerSize ( 0 );
     }
   }
 
@@ -3361,13 +3141,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
             .getWidth () - 220 );
       }
     }
-    else
+    else if ( this.gui.jGTISplitPaneTable.getRightComponent () != null )
     {
-      if ( this.gui.jGTISplitPaneTable.getRightComponent () != null )
-      {
-        this.gui.jGTISplitPaneTable.setRightComponent ( null );
-        this.gui.jGTISplitPaneTable.setDividerSize ( 0 );
-      }
+      this.gui.jGTISplitPaneTable.setRightComponent ( null );
+      this.gui.jGTISplitPaneTable.setDividerSize ( 0 );
     }
   }
 
@@ -3387,13 +3164,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         this.gui.jGTISplitPaneWord.setDividerSize ( 3 );
       }
     }
-    else
+    else if ( this.gui.jGTISplitPaneWord.getRightComponent () != null )
     {
-      if ( this.gui.jGTISplitPaneWord.getRightComponent () != null )
-      {
-        this.gui.jGTISplitPaneWord.setRightComponent ( null );
-        this.gui.jGTISplitPaneWord.setDividerSize ( 0 );
-      }
+      this.gui.jGTISplitPaneWord.setRightComponent ( null );
+      this.gui.jGTISplitPaneWord.setDividerSize ( 0 );
     }
   }
 
@@ -3445,38 +3219,27 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         if ( this.userInputNeeded )
         {
           if ( this.machine.getWord ().size () == 0 )
-          {
             this.gui.wordPanelForm.jGTILabelStatus
                 .setText ( Messages.getPrettyString (
                     "WordPanel.StatusAcceptedEmptyPDA", //$NON-NLS-1$
                     this.machine.getWord ().toPrettyString () ).toHTMLString () );
-          }
           else
-          {
             this.gui.wordPanelForm.jGTILabelStatus
                 .setText ( Messages.getPrettyString (
                     "WordPanel.StatusAcceptedPDA", //$NON-NLS-1$
                     this.machine.getWord ().toPrettyString () ).toHTMLString () );
-          }
         }
         // no user input
+        else if ( this.machine.getWord ().size () == 0 )
+          this.gui.wordPanelForm.jGTILabelStatus
+              .setText ( Messages.getPrettyString (
+                  "WordPanel.StatusAcceptedEmpty", //$NON-NLS-1$
+                  this.machine.getWord ().toPrettyString () ).toHTMLString () );
         else
-        {
-          if ( this.machine.getWord ().size () == 0 )
-          {
-            this.gui.wordPanelForm.jGTILabelStatus
-                .setText ( Messages.getPrettyString (
-                    "WordPanel.StatusAcceptedEmpty", //$NON-NLS-1$
-                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
-          }
-          else
-          {
-            this.gui.wordPanelForm.jGTILabelStatus
-                .setText ( Messages.getPrettyString (
-                    "WordPanel.StatusAccepted", //$NON-NLS-1$
-                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
-          }
-        }
+          this.gui.wordPanelForm.jGTILabelStatus
+              .setText ( Messages.getPrettyString (
+                  "WordPanel.StatusAccepted", //$NON-NLS-1$
+                  this.machine.getWord ().toPrettyString () ).toHTMLString () );
       }
       // word not accepted
       else
@@ -3488,38 +3251,27 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         if ( this.userInputNeeded )
         {
           if ( this.machine.getWord ().size () == 0 )
-          {
             this.gui.wordPanelForm.jGTILabelStatus
                 .setText ( Messages.getPrettyString (
                     "WordPanel.StatusNotAcceptedEmptyPDA", //$NON-NLS-1$
                     this.machine.getWord ().toPrettyString () ).toHTMLString () );
-          }
           else
-          {
             this.gui.wordPanelForm.jGTILabelStatus
                 .setText ( Messages.getPrettyString (
                     "WordPanel.StatusNotAcceptedPDA", //$NON-NLS-1$
                     this.machine.getWord ().toPrettyString () ).toHTMLString () );
-          }
         }
         // no user input
+        else if ( this.machine.getWord ().size () == 0 )
+          this.gui.wordPanelForm.jGTILabelStatus
+              .setText ( Messages.getPrettyString (
+                  "WordPanel.StatusNotAcceptedEmpty", //$NON-NLS-1$
+                  this.machine.getWord ().toPrettyString () ).toHTMLString () );
         else
-        {
-          if ( this.machine.getWord ().size () == 0 )
-          {
-            this.gui.wordPanelForm.jGTILabelStatus
-                .setText ( Messages.getPrettyString (
-                    "WordPanel.StatusNotAcceptedEmpty", //$NON-NLS-1$
-                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
-          }
-          else
-          {
-            this.gui.wordPanelForm.jGTILabelStatus
-                .setText ( Messages.getPrettyString (
-                    "WordPanel.StatusNotAccepted", //$NON-NLS-1$
-                    this.machine.getWord ().toPrettyString () ).toHTMLString () );
-          }
-        }
+          this.gui.wordPanelForm.jGTILabelStatus
+              .setText ( Messages.getPrettyString (
+                  "WordPanel.StatusNotAccepted", //$NON-NLS-1$
+                  this.machine.getWord ().toPrettyString () ).toHTMLString () );
       }
     }
     // no status
@@ -3549,12 +3301,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       {
         number = 0;
         for ( Transition currentTransition : current.getTransitionBegin () )
-        {
           if ( currentTransition.getStateEnd () == current )
-          {
             number++ ;
-          }
-        }
         if ( number >= 2 )
         {
           found = true;
@@ -3565,9 +3313,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       this.gui.jGTITableMachine.setEnabled ( !found );
     }
     else
-    {
       this.gui.jGTITableMachine.setEnabled ( false );
-    }
   }
 
 
@@ -3580,9 +3326,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     Object cell = this.jGTIGraph.getSelectionCell ();
 
     if ( cell == null )
-    {
       this.machine.clearSelectedTransition ();
-    }
     else if ( cell instanceof DefaultStateView )
     {
       DefaultStateView stateView = ( DefaultStateView ) cell;
@@ -3637,10 +3381,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       while ( nextCell != cell )
       {
         if ( nextCell instanceof DefaultTransitionView )
-        {
           transitionList.add ( ( ( DefaultTransitionView ) nextCell )
               .getTransition () );
-        }
         nextCell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
             .getNextCellForLocation ( nextCell, event.getPoint ().getX (),
                 event.getPoint ().getY () );

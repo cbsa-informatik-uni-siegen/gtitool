@@ -4,6 +4,9 @@ package de.unisiegen.gtitool.ui.model;
 import javax.swing.table.AbstractTableModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 
 
 /**
@@ -39,6 +42,28 @@ public final class PTTableModel extends AbstractTableModel
 
 
   /**
+   * allocates a new {@link PTTableModel}
+   * 
+   * @param cfg the grammar from which we're creating the parsing table
+   */
+  public PTTableModel ( final CFG cfg )
+  {
+    try
+    {
+      this.data = new DefaultParsingTable ( cfg );
+    }
+    catch ( GrammarInvalidNonterminalException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+    }
+  }
+
+
+  /**
    * @{inherit
    * @see javax.swing.table.AbstractTableModel#getColumnName(int)
    */
@@ -57,7 +82,7 @@ public final class PTTableModel extends AbstractTableModel
    */
   public int getColumnCount ()
   {
-    return 1;
+    return this.data.getColumnCount ();
   }
 
 
@@ -68,7 +93,7 @@ public final class PTTableModel extends AbstractTableModel
    */
   public int getRowCount ()
   {
-    return 1;
+    return this.data.getRowCount ();
   }
 
 
@@ -79,7 +104,6 @@ public final class PTTableModel extends AbstractTableModel
    */
   public Object getValueAt ( int arg0, int arg1 )
   {
-    return "test";
+    return this.data.get ( arg0, arg1 );
   }
-
 }

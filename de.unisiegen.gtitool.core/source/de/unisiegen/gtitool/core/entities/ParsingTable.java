@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import java.util.TreeSet;
-
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 
@@ -21,7 +19,7 @@ public interface ParsingTable extends Entity < ParsingTable >, Storable,
    * @param row the row
    * @return set of productions at (col,row)
    */
-  public TreeSet < Production > get ( int row, int col );
+  public DefaultProductionSet get ( int row, int col );
 
 
   /**
@@ -31,5 +29,21 @@ public interface ParsingTable extends Entity < ParsingTable >, Storable,
    * @param ns the {@link NonterminalSymbol} (the row identifier)
    * @return set of productions at (ts,ns)
    */
-  public TreeSet < Production > get ( NonterminalSymbol ns, TerminalSymbol ts );
+  public DefaultProductionSet get ( NonterminalSymbol ns, TerminalSymbol ts );
+
+
+  /**
+   * returns number of columns
+   * 
+   * @return number of columns
+   */
+  public int getColumnCount ();
+
+
+  /**
+   * returns number of rows
+   * 
+   * @return number of rows
+   */
+  public int getRowCount ();
 }

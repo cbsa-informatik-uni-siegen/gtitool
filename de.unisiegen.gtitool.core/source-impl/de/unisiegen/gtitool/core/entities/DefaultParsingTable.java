@@ -2,7 +2,6 @@ package de.unisiegen.gtitool.core.entities;
 
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
@@ -42,7 +41,7 @@ public class DefaultParsingTable implements ParsingTable
    * the parsing table entries: [TerminalSymbol][NonterminalSymbol] =
    * TreeSet<Production>
    */
-  private ArrayList < ArrayList < TreeSet < Production >>> parsingTable;
+  private ArrayList < ArrayList < DefaultProductionSet >> parsingTable;
 
 
   /**
@@ -65,6 +64,24 @@ public class DefaultParsingTable implements ParsingTable
 
 
   /**
+   * {@inheritDoc}
+   */
+  public int getColumnCount ()
+  {
+    return this.terminals.size ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public int getRowCount ()
+  {
+    return this.nonterminals.size ();
+  }
+
+
+  /**
    * creates the parsing table out of a context free grammar
    * 
    * @param cfg the {@link CFG} from which we're creating the parsing table
@@ -74,24 +91,23 @@ public class DefaultParsingTable implements ParsingTable
   private void createParsingTable ( final CFG cfg )
       throws GrammarInvalidNonterminalException, TerminalSymbolSetException
   {
-    this.parsingTable = new ArrayList < ArrayList < TreeSet < Production >> > ();
-    
+    this.parsingTable = new ArrayList < ArrayList < DefaultProductionSet > > ();
+
     int col = 0;
-    for(NonterminalSymbol ns : this.nonterminals)
+    for ( NonterminalSymbol ns : this.nonterminals )
     {
-      this.parsingTable.add ( new ArrayList < TreeSet<Production> > () );
-      
-      ArrayList<Production> ps = cfg.getProductionForNonTerminal ( ns );
-      System.err.println (ps);
-      
+      this.parsingTable.add ( new ArrayList < DefaultProductionSet > () );
+
+      ArrayList < Production > ps = cfg.getProductionForNonTerminal ( ns );
+
       int row = 0;
-      for(TerminalSymbol ts : this.terminals)
+      for ( TerminalSymbol ts : this.terminals )
       {
-        this.parsingTable.get ( col ).add ( new TreeSet < Production > () );
-        for(Production p : ps)
-          if(cfg.first ( p.getProductionWord () ).contains ( ts ) ||
-              (cfg.first ( p.getProductionWord () ).epsilon () &&
-                  cfg.follow ( ns ).contains ( ts )))
+        this.parsingTable.get ( col ).add ( new DefaultProductionSet () );
+        for ( Production p : ps )
+          if ( cfg.first ( p.getProductionWord () ).contains ( ts )
+              || ( cfg.first ( p.getProductionWord () ).epsilon () && cfg
+                  .follow ( ns ).contains ( ts ) ) )
             this.parsingTable.get ( col ).get ( row ).add ( p );
         ++row;
       }
@@ -105,7 +121,7 @@ public class DefaultParsingTable implements ParsingTable
    * 
    * @see de.unisiegen.gtitool.core.entities.ParsingTable#get(int, int)
    */
-  public TreeSet < Production > get ( int row, int col )
+  public DefaultProductionSet get ( int row, int col )
   {
     return this.parsingTable.get ( row ).get ( col );
   }
@@ -117,12 +133,12 @@ public class DefaultParsingTable implements ParsingTable
    * @see de.unisiegen.gtitool.core.entities.ParsingTable#get(de.unisiegen.gtitool.core.entities.NonterminalSymbol,
    *      de.unisiegen.gtitool.core.entities.TerminalSymbol)
    */
-  public TreeSet < Production > get ( NonterminalSymbol ns, TerminalSymbol ts )
+  public DefaultProductionSet get ( NonterminalSymbol ns, TerminalSymbol ts )
   {
     int col = getTerminalSymbolIndex ( ts );
     int row = getNonterminalSymbolIndex ( ns );
     if ( col == -1 || row == -1 )
-      return new TreeSet < Production > ();
+      return new DefaultProductionSet ();
     return get ( row, col );
   }
 

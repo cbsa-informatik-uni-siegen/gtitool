@@ -102,6 +102,12 @@ public interface NonterminalSymbolSet extends Entity < NonterminalSymbolSet >,
   public NonterminalSymbol get ( int index );
 
 
+  /**
+   * Returns the {@link NonterminalSymbol} with the given name.
+   *
+   * @param name The name
+   * @return The {@link NonterminalSymbol} with the given name
+   */
   public NonterminalSymbol get ( String name );
 
 

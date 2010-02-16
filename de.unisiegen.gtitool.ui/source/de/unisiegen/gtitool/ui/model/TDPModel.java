@@ -17,20 +17,6 @@ public class TDPModel extends AbstractTableModel
    */
   private static final long serialVersionUID = -6693897333759433432L;
 
-  /**
-   * the stack column
-   */
-  private final static int STACK_COLUMN = 0;
-  
-  /**
-   * the input column
-   */
-  private final static int INPUT_COLUMN = 1;
-  
-  /**
-   * the action column
-   */
-  private final static int ACTION_COLUMN = 2;
   
   /**
    * the column count

@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.model;
 import javax.swing.table.AbstractTableModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
@@ -36,6 +37,12 @@ public final class PTTableModel extends AbstractTableModel
 
 
   /**
+   * set of nonterminals (row description)
+   */
+  private NonterminalSymbolSet nonterminals;
+
+
+  /**
    * the underlying data object of the jtable
    */
   private DefaultParsingTable data;
@@ -51,6 +58,7 @@ public final class PTTableModel extends AbstractTableModel
     try
     {
       this.data = new DefaultParsingTable ( cfg );
+      this.nonterminals = cfg.getNonterminalSymbolSet ();
     }
     catch ( GrammarInvalidNonterminalException exc )
     {
@@ -64,7 +72,7 @@ public final class PTTableModel extends AbstractTableModel
 
 
   /**
-   * @{inherit
+   * @{inherit}
    * @see javax.swing.table.AbstractTableModel#getColumnName(int)
    */
   @Override
@@ -104,6 +112,9 @@ public final class PTTableModel extends AbstractTableModel
    */
   public Object getValueAt ( int arg0, int arg1 )
   {
-    return this.data.get ( arg0, arg1 );
+    if ( arg1 == NONTERMINAL_COLUMN )
+      return this.nonterminals.get ( arg0 );
+    // arg1 - 1 cause we have one column more (the nonterminal/row description)
+    return this.data.get ( arg0, arg1 - FIRST_TERMINAL_COLUMN );
   }
 }

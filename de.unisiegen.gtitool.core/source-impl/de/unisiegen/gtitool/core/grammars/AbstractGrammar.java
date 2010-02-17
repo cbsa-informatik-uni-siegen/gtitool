@@ -913,6 +913,15 @@ public abstract class AbstractGrammar implements Grammar
   }
 
 
+  private final boolean validateNonterminalSymbol ( final NonterminalSymbol ns )
+  {
+    for ( NonterminalSymbol other : this.nonterminalSymbolSet )
+      if ( other.equals ( ns ) )
+        return true;
+    return false;
+  }
+
+
   /**
    * calculates follow sets for each NonterminalSymbol
    * 
@@ -973,6 +982,9 @@ public abstract class AbstractGrammar implements Grammar
   public final TerminalSymbolSet follow ( final NonterminalSymbol ns )
       throws GrammarInvalidNonterminalException
   {
+    if ( !validateNonterminalSymbol ( ns ) )
+      throw new GrammarInvalidNonterminalException ( ns,
+          this.nonterminalSymbolSet );
     if ( this.followSets == null )
     {
       initFollowSets ();

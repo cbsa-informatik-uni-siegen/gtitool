@@ -49,7 +49,7 @@ public class ConvertToLR0 extends AbstractConvertGrammar
       throws AlphabetException
   {
     super ( mainWindowForm, grammar, convertGrammar ( grammar )
-        .makeAutomataAlphabet () );
+        .makeAutomatonAlphabet () );
 
     this.lr0Grammar = convertGrammar ( grammar );
 

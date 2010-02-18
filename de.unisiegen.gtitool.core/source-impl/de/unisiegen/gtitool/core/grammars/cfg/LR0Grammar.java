@@ -1,30 +1,13 @@
 package de.unisiegen.gtitool.core.grammars.cfg;
 
 
-import java.util.ArrayList;
-
-import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
-import de.unisiegen.gtitool.core.entities.DefaultSymbol;
-import de.unisiegen.gtitool.core.entities.DefaultTransition;
-import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
-import de.unisiegen.gtitool.core.entities.LR0State;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
-import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
-import de.unisiegen.gtitool.core.machines.dfa.LR0;
 
 
 /**

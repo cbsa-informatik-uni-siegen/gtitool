@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
 import java.awt.PopupMenu;
 import java.awt.Rectangle;
 import java.awt.event.FocusAdapter;
@@ -107,6 +108,9 @@ import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.style.StyledStateSetParserPanel;
 import de.unisiegen.gtitool.ui.style.editor.ParserTableCellEditor;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.AcceptedStatus;
+import de.unisiegen.gtitool.ui.swing.JGTIPanel;
+import de.unisiegen.gtitool.ui.swing.JGTIScrollPane;
+import de.unisiegen.gtitool.ui.swing.JGTITable;
 
 
 /**
@@ -2841,15 +2845,16 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     /*
      * initialize the parsing table
      */
-    this.gui.jGTITableMachine.setModel ( new PTTableModel((CFG)this.model.getGrammar ()) );
+    this.gui.jGTITableMachine.setModel ( new PTTableModel ( ( CFG ) this.model
+        .getGrammar () ) );
     this.gui.jGTITableMachine.setColumnModel ( new PTTableColumnModel (
         this.machine.getAlphabet () ) );
     this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableMachine
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.gui.jGTITableMachine.setCellSelectionEnabled ( true );
-    
-    //we don't need the pda stack operation table
+
+    // we don't need the pda stack operation table
     setVisiblePDATable ( false );
   }
 
@@ -2859,7 +2864,24 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   private final void initializeParsingTable ()
   {
+    JGTITable jGTIParsingTable = new JGTITable ();
+    JGTIPanel jGTIParsingTablePanel = new JGTIPanel ();
+    JGTIScrollPane jGTIParsingTablePanelScrollPane = new JGTIScrollPane ();
+    GridBagConstraints gridBagConstraints = new GridBagConstraints ();
 
+    jGTIParsingTablePanelScrollPane.setBorder ( null );
+
+    gridBagConstraints.fill = GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    jGTIParsingTablePanel.add ( jGTIParsingTablePanelScrollPane,
+        gridBagConstraints );
+    jGTIParsingTablePanelScrollPane.setViewportView ( jGTIParsingTable );
+
+    this.gui.jGTISplitPaneTable.setLeftComponent ( jGTIParsingTablePanel );
+
+    int loc = this.gui.getWidth () / 2;
+    this.gui.jGTISplitPaneTable.setDividerLocation ( loc );
   }
 
 
@@ -3231,14 +3253,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         }
         // no user input
         else if ( this.machine.getWord ().size () == 0 )
-          this.gui.wordPanelForm.jGTILabelStatus
-              .setText ( Messages.getPrettyString (
-                  "WordPanel.StatusAcceptedEmpty", //$NON-NLS-1$
+          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+              .getPrettyString ( "WordPanel.StatusAcceptedEmpty", //$NON-NLS-1$
                   this.machine.getWord ().toPrettyString () ).toHTMLString () );
         else
-          this.gui.wordPanelForm.jGTILabelStatus
-              .setText ( Messages.getPrettyString (
-                  "WordPanel.StatusAccepted", //$NON-NLS-1$
+          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+              .getPrettyString ( "WordPanel.StatusAccepted", //$NON-NLS-1$
                   this.machine.getWord ().toPrettyString () ).toHTMLString () );
       }
       // word not accepted
@@ -3263,14 +3283,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         }
         // no user input
         else if ( this.machine.getWord ().size () == 0 )
-          this.gui.wordPanelForm.jGTILabelStatus
-              .setText ( Messages.getPrettyString (
-                  "WordPanel.StatusNotAcceptedEmpty", //$NON-NLS-1$
+          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+              .getPrettyString ( "WordPanel.StatusNotAcceptedEmpty", //$NON-NLS-1$
                   this.machine.getWord ().toPrettyString () ).toHTMLString () );
         else
-          this.gui.wordPanelForm.jGTILabelStatus
-              .setText ( Messages.getPrettyString (
-                  "WordPanel.StatusNotAccepted", //$NON-NLS-1$
+          this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+              .getPrettyString ( "WordPanel.StatusNotAccepted", //$NON-NLS-1$
                   this.machine.getWord ().toPrettyString () ).toHTMLString () );
       }
     }

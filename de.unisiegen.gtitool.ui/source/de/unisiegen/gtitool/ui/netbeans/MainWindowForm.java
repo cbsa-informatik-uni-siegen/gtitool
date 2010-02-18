@@ -1208,6 +1208,9 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemConvertToPDA = new javax.swing.JMenuItem();
         jMenuItemConvertToRegex = new javax.swing.JMenuItem();
         jMenuItemConvertToLR0 = new javax.swing.JMenuItem();
+        jMenuItemConvertToLR1 = new javax.swing.JMenuItem();
+        jMenuItemConvertToLR0Parser = new javax.swing.JMenuItem();
+        jMenuItemConvertToLR1Parser = new javax.swing.JMenuItem();
         jMenuConvertToComplete = new javax.swing.JMenu();
         jMenuItemConvertToCompleteDFA = new javax.swing.JMenuItem();
         jMenuItemConvertToCompleteNFA = new javax.swing.JMenuItem();
@@ -1841,7 +1844,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuConvertTo.add(jMenuItemConvertToRegex);
 
-        jMenuItemConvertToLR0.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LR0").charAt(0));
+        jMenuItemConvertToLR0.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LR0Mnemonic").charAt(0));
         jMenuItemConvertToLR0.setText(bundle.getString("MainWindow.LR0")); // NOI18N
         jMenuItemConvertToLR0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1849,6 +1852,18 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
             }
         });
         jMenuConvertTo.add(jMenuItemConvertToLR0);
+
+        jMenuItemConvertToLR1.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LR1Mnemonic").charAt(0));
+        jMenuItemConvertToLR1.setText(bundle.getString("MainWindow.LR1")); // NOI18N
+        jMenuConvertTo.add(jMenuItemConvertToLR1);
+
+        jMenuItemConvertToLR0Parser.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LR0ParserMnemonic").charAt(0));
+        jMenuItemConvertToLR0Parser.setText(bundle.getString("MainWindow.LR0Parser")); // NOI18N
+        jMenuConvertTo.add(jMenuItemConvertToLR0Parser);
+
+        jMenuItemConvertToLR1Parser.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LR1ParserMnemonic").charAt(0));
+        jMenuItemConvertToLR1Parser.setText(bundle.getString("MainWindow.LR1Parser")); // NOI18N
+        jMenuConvertTo.add(jMenuItemConvertToLR1Parser);
 
         jMenuExecute.add(jMenuConvertTo);
 
@@ -2444,6 +2459,9 @@ private void jMenuItemConvertToLR0ActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JMenuItem jMenuItemConvertToDFA;
     private javax.swing.JMenuItem jMenuItemConvertToENFA;
     private javax.swing.JMenuItem jMenuItemConvertToLR0;
+    public javax.swing.JMenuItem jMenuItemConvertToLR0Parser;
+    public javax.swing.JMenuItem jMenuItemConvertToLR1;
+    public javax.swing.JMenuItem jMenuItemConvertToLR1Parser;
     private javax.swing.JMenuItem jMenuItemConvertToNFA;
     private javax.swing.JMenuItem jMenuItemConvertToNFACB;
     private javax.swing.JMenuItem jMenuItemConvertToPDA;

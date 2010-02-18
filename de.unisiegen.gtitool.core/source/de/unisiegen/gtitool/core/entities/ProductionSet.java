@@ -35,7 +35,7 @@ public interface ProductionSet extends Entity < Production >, Storable,
   /**
    * Adds the given {@link Production}s to the set
    * 
-   * @param p the {@link Production}s
+   * @param prods the {@link Production}s
    * @return true if one of the given {@link Production} was added
    */
   public boolean add ( final Production ... prods );

@@ -9,7 +9,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 
 import de.unisiegen.gtitool.core.grammars.Grammar;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -74,7 +74,7 @@ public final class OpenDialog implements LogicClass < OpenDialogForm >
         {
           return true;
         }
-        for ( String current : Machine.AVAILABLE_MACHINES )
+        for ( String current : StateMachine.AVAILABLE_MACHINES )
         {
           if ( file.getName ().toLowerCase ().matches (
               ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
@@ -105,16 +105,16 @@ public final class OpenDialog implements LogicClass < OpenDialogForm >
         StringBuilder result = new StringBuilder ();
         result.append ( Messages.getString ( "OpenDialog.FilterFiles" ) ); //$NON-NLS-1$
         result.append ( " (" ); //$NON-NLS-1$
-        for ( int i = 0 ; i < Machine.AVAILABLE_MACHINES.length ; i++ )
+        for ( int i = 0 ; i < StateMachine.AVAILABLE_MACHINES.length ; i++ )
         {
           result.append ( "*." ); //$NON-NLS-1$
-          result.append ( Machine.AVAILABLE_MACHINES [ i ].toLowerCase () );
-          if ( i != Machine.AVAILABLE_MACHINES.length - 1 )
+          result.append ( StateMachine.AVAILABLE_MACHINES [ i ].toLowerCase () );
+          if ( i != StateMachine.AVAILABLE_MACHINES.length - 1 )
           {
             result.append ( "; " ); //$NON-NLS-1$
           }
         }
-        if ( ( Machine.AVAILABLE_MACHINES.length > 0 )
+        if ( ( StateMachine.AVAILABLE_MACHINES.length > 0 )
             && ( Grammar.AVAILABLE_GRAMMARS.length > 0 ) )
         {
           result.append ( "; " ); //$NON-NLS-1$
@@ -146,7 +146,7 @@ public final class OpenDialog implements LogicClass < OpenDialogForm >
         {
           return true;
         }
-        for ( String current : Machine.AVAILABLE_MACHINES )
+        for ( String current : StateMachine.AVAILABLE_MACHINES )
         {
           if ( file.getName ().toLowerCase ().matches (
               ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
@@ -164,11 +164,11 @@ public final class OpenDialog implements LogicClass < OpenDialogForm >
         StringBuilder result = new StringBuilder ();
         result.append ( Messages.getString ( "OpenDialog.FilterFilesMachine" ) ); //$NON-NLS-1$
         result.append ( " (" ); //$NON-NLS-1$
-        for ( int i = 0 ; i < Machine.AVAILABLE_MACHINES.length ; i++ )
+        for ( int i = 0 ; i < StateMachine.AVAILABLE_MACHINES.length ; i++ )
         {
           result.append ( "*." ); //$NON-NLS-1$
-          result.append ( Machine.AVAILABLE_MACHINES [ i ].toLowerCase () );
-          if ( i != Machine.AVAILABLE_MACHINES.length - 1 )
+          result.append ( StateMachine.AVAILABLE_MACHINES [ i ].toLowerCase () );
+          if ( i != StateMachine.AVAILABLE_MACHINES.length - 1 )
           {
             result.append ( "; " ); //$NON-NLS-1$
           }

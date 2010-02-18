@@ -21,7 +21,7 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
@@ -123,7 +123,6 @@ public abstract class AbstractConvertGrammar implements Converter
    * @param mainWindowForm The {@link MainWindowForm}.
    * @param grammar The {@link Grammar}.
    * @param alphabet The {@link Alphabet}
-   * 
    */
   public AbstractConvertGrammar ( MainWindowForm mainWindowForm,
       Grammar grammar, Alphabet alphabet )
@@ -187,7 +186,7 @@ public abstract class AbstractConvertGrammar implements Converter
     performProductions ();
     addPanelToView ();
 
-    if(this.machineType != MachineType.TDP)
+    if ( this.machineType != MachineType.TDP )
       new LayoutManager ( this.model, this.newPanel.getRedoUndoHandler () )
           .doLayout ();
   }
@@ -200,7 +199,7 @@ public abstract class AbstractConvertGrammar implements Converter
 
 
   /**
-   * Create a new {@link Machine}.
+   * Create a new {@link StateMachine}.
    */
   protected abstract void createMachine ();
 
@@ -208,9 +207,9 @@ public abstract class AbstractConvertGrammar implements Converter
   /**
    * Create a new {@link MachinePanel}.
    * 
-   * @param machine The {@link Machine}.
+   * @param machine The {@link StateMachine}.
    */
-  protected final void createMachinePanel ( Machine machine )
+  protected final void createMachinePanel ( StateMachine machine )
   {
     this.model = new DefaultMachineModel ( machine );
     this.model.setGrammar ( this.grammar );

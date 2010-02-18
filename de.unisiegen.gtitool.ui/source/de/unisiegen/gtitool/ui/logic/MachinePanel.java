@@ -65,7 +65,7 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
@@ -195,7 +195,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * The {@link Machine} mode.
+   * The {@link StateMachine} mode.
    * 
    * @author Christian Fehler
    */
@@ -321,9 +321,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * The {@link Machine}.
+   * The {@link StateMachine}.
    */
-  protected Machine machine;
+  protected StateMachine machine;
 
 
   /**
@@ -958,11 +958,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Getter for the {@link Machine}
+   * Getter for the {@link StateMachine}
    * 
-   * @return the {@link Machine} of this panel
+   * @return the {@link StateMachine} of this panel
    */
-  public final Machine getMachine ()
+  public final StateMachine getMachine ()
   {
     return this.machine;
   }
@@ -1120,7 +1120,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     highlightStateActive ( stateList );
 
     Symbol symbol;
-    if ( column == Machine.EPSILON_COLUMN )
+    if ( column == StateMachine.EPSILON_COLUMN )
       symbol = new DefaultSymbol ();
     else
       symbol = this.machine.getAlphabet ().get ( column - 2 );
@@ -1203,7 +1203,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Handles the edit {@link Machine} event.
+   * Handles the edit {@link StateMachine} event.
    */
   public final void handleEditMachine ()
   {
@@ -2193,7 +2193,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Initializes the {@link Machine} table.
+   * Initializes the {@link StateMachine} table.
    */
   public final void initializeMachineTable ()
   {
@@ -2883,8 +2883,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     int loc = this.gui.getWidth () / 2;
     this.gui.jGTISplitPaneTable.setDividerLocation ( loc );
 
-//    jGTIParsingTable.setModel ( new TDPModel () );
-//    jGTIParsingTable.setColumnModel ( new TDPColumnModel () );
+    // jGTIParsingTable.setModel ( new TDPModel () );
+    // jGTIParsingTable.setColumnModel ( new TDPColumnModel () );
   }
 
 
@@ -3080,9 +3080,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Set the file for this {@link Machine Panel}.
+   * Set the file for this {@link StateMachine Panel}.
    * 
-   * @param file The file for this {@link Machine Panel}.
+   * @param file The file for this {@link StateMachine Panel}.
    */
   public final void setFileName ( File file )
   {
@@ -3308,7 +3308,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Updates the {@link Machine} table status.
+   * Updates the {@link StateMachine} table status.
    */
   public final void updateMachineTableStatus ()
   {

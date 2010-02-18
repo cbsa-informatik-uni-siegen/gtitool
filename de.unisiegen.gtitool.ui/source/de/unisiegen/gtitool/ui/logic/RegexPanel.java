@@ -243,22 +243,16 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     this.model = model;
     this.gui = new RegexPanelForm ( this );
     if ( this.model.getRegex ().getRegexNode () != null )
-    {
       this.gui.styledRegexParserPanel.setText ( this.model.getRegex ()
           .getRegexString () );
-    }
     else
-    {
       this.gui.styledRegexParserPanel.setText ( this.model
           .getInitialRegexString () );
-    }
     this.gui.jGTIPanelInfo.setVisible ( this.mainWindowForm
         .getJCheckBoxMenuItemRegexInfo ().getState () );
     if ( getRegex ().getRegexNode () != null )
-    {
       getRegex ().getRegexNode ().setShowPositions (
           this.gui.jGTIPanelInfo.isVisible () );
-    }
     initializeJGraph ();
 
     setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
@@ -393,17 +387,13 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       {
         boolean ok = true;
         for ( RegexException e : exc.getRegexException () )
-        {
           if ( e.getType ().equals ( ErrorType.ERROR ) )
           {
             ok = false;
             break;
           }
-        }
         if ( ok )
-        {
           changeRegex ( model.getRegex ().getRegexNode () );
-        }
       }
 
     }
@@ -469,14 +459,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       this.model.changeRegexNode ( newRegexNode,
           this.gui.styledRegexParserPanel.getText () );
       if ( !newRegexNode.isInCoreSyntax () )
-      {
         getMainWindow ().addButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
-      }
       else
-      {
         getMainWindow ()
             .removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
-      }
 
       getMainWindow ().addButtonState ( ButtonState.ENABLED_PRINT );
       getMainWindow ().addButtonState ( ButtonState.ENABLED_EXPORT_PICTURE );
@@ -486,10 +472,8 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           ButtonState.ENABLED_CONVERT_TO_SOURCE_REGEX );
 
       if ( this.model.getRegex ().getRegexNode () != null )
-      {
         this.model.getRegex ().getRegexNode ().setShowPositions (
             this.gui.jGTIPanelInfo.isVisible () );
-      }
       initializeJGraph ();
       this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
       this.model.createTree ();
@@ -537,19 +521,13 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
-    {
       for ( ModifyStatusChangedListener current : listeners )
-      {
         current.modifyStatusChanged ( true );
-      }
-    }
     else
     {
       boolean newModifyStatus = isModified ();
       for ( ModifyStatusChangedListener current : listeners )
-      {
         current.modifyStatusChanged ( newModifyStatus );
-      }
     }
   }
 
@@ -559,7 +537,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
    * 
    * @see EditorPanel#getConverter()
    */
-  public Converter getConverter (EntityType destination)
+  public Converter getConverter ( EntityType destination )
   {
     return new ConvertRegexToMachineDialog ( this.mainWindowForm, this );
   }
@@ -753,13 +731,9 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       public boolean accept ( File acceptedFile )
       {
         if ( acceptedFile.isDirectory () )
-        {
           return true;
-        }
-        if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\.png" ) ) //$NON-NLS-1$
-        {
+        if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\.png" ) )
           return true;
-        }
         return false;
       }
 
@@ -779,9 +753,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
     if ( ( !saveDialog.isConfirmed () )
         || ( saveDialog.getSelectedFile () == null ) )
-    {
       return;
-    }
 
     if ( saveDialog.getSelectedFile ().exists () )
     {
@@ -792,9 +764,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
           false, false );
       confirmDialog.show ();
       if ( confirmDialog.isNotConfirmed () )
-      {
         return;
-      }
     }
 
     String filename = saveDialog.getSelectedFile ().toString ().toLowerCase ()
@@ -856,9 +826,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public File handleSave ()
   {
     if ( this.file == null )
-    {
       return handleSaveAs ();
-    }
     try
     {
       this.model.setActualRegexString ( this.gui.styledRegexParserPanel
@@ -895,14 +863,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         public boolean accept ( File acceptedFile )
         {
           if ( acceptedFile.isDirectory () )
-          {
             return true;
-          }
           if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
               + RegexType.REGEX.getFileEnding () ) )
-          {
             return true;
-          }
           return false;
         }
 
@@ -923,9 +887,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
 
       if ( ( !saveDialog.isConfirmed () )
           || ( saveDialog.getSelectedFile () == null ) )
-      {
         return null;
-      }
 
       if ( saveDialog.getSelectedFile ().exists () )
       {
@@ -936,9 +898,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
             true, false, true, false, false );
         confirmDialog.show ();
         if ( confirmDialog.isNotConfirmed () )
-        {
           return null;
-        }
       }
 
       String filename = saveDialog.getSelectedFile ().toString ().matches (
@@ -1017,14 +977,10 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
         public boolean accept ( File acceptedFile )
         {
           if ( acceptedFile.isDirectory () )
-          {
             return true;
-          }
           if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
-              + "tex" ) ) //$NON-NLS-1$
-          {
+              + "tex" ) )
             return true;
-          }
           return false;
         }
 
@@ -1265,9 +1221,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public boolean isModified ()
   {
     if ( this.model.getInitialRegexString () == null )
-    {
       return true;
-    }
     return !this.model.getInitialRegexString ().equals (
         this.gui.styledRegexParserPanel.getText () )
         || this.model.getRegex ().getAlphabet ().isModified ()
@@ -1331,19 +1285,11 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
     TreeSet < Symbol > symbolsToAdd = new TreeSet < Symbol > ();
     TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
     for ( Symbol current : newAlphabet )
-    {
       if ( !oldAlphabet.contains ( current ) )
-      {
         symbolsToAdd.add ( current );
-      }
-    }
     for ( Symbol current : oldAlphabet )
-    {
       if ( !newAlphabet.contains ( current ) )
-      {
         symbolsToRemove.add ( current );
-      }
-    }
     try
     {
       oldAlphabet.add ( symbolsToAdd );
@@ -1521,25 +1467,17 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   public void updateRedoUndoButtons ()
   {
     if ( isUndoAble () )
-    {
       this.mainWindowForm.getLogic ()
           .addButtonState ( ButtonState.ENABLED_UNDO );
-    }
     else
-    {
       this.mainWindowForm.getLogic ().removeButtonState (
           ButtonState.ENABLED_UNDO );
-    }
     if ( isRedoAble () )
-    {
       this.mainWindowForm.getLogic ()
           .addButtonState ( ButtonState.ENABLED_REDO );
-    }
     else
-    {
       this.mainWindowForm.getLogic ().removeButtonState (
           ButtonState.ENABLED_REDO );
-    }
   }
 
 
@@ -1564,9 +1502,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       {
         firstpos += n.getPosition ();
         if ( node.firstPos ().indexOf ( n ) != node.firstPos ().size () - 1 )
-        {
           firstpos += "; "; //$NON-NLS-1$
-        }
       }
       firstpos += "}"; //$NON-NLS-1$
       this.gui.regexNodeInfoPanel.jGTITextAreaFirstpos.setText ( firstpos );
@@ -1575,9 +1511,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       {
         lastpos += n.getPosition ();
         if ( node.lastPos ().indexOf ( n ) != node.lastPos ().size () - 1 )
-        {
           lastpos += "; "; //$NON-NLS-1$
-        }
       }
       lastpos += "}"; //$NON-NLS-1$
       this.gui.regexNodeInfoPanel.jGTITextAreaLastpos.setText ( lastpos );
@@ -1599,9 +1533,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
               int p1 = o1.getFirst ().getPosition ()
                   - o2.getFirst ().getPosition ();
               if ( p1 != 0 )
-              {
                 return p1;
-              }
               return o1.getSecond ().getPosition ()
                   - o2.getSecond ().getPosition ();
             }
@@ -1610,9 +1542,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       for ( ObjectPair < LeafNode, LeafNode > pair : follow )
       {
         if ( !first )
-        {
           followpos += "; "; //$NON-NLS-1$
-        }
         followpos += "(" + pair.getFirst ().getPosition () + ", " //$NON-NLS-1$ //$NON-NLS-2$
             + pair.getSecond ().getPosition () + ")"; //$NON-NLS-1$
         first = false;
@@ -1644,9 +1574,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
   {
     ArrayList < RegexException > list = new ArrayList < RegexException > ();
     if ( this.gui.styledRegexParserPanel.parse () == null )
-    {
       list.add ( new RegexParseException () );
-    }
     try
     {
       getRegex ().validate ();
@@ -1656,9 +1584,7 @@ public final class RegexPanel implements LogicClass < RegexPanelForm >,
       list.addAll ( exc.getRegexException () );
     }
     if ( !list.isEmpty () )
-    {
       throw new RegexValidationException ( list );
-    }
   }
 
 }

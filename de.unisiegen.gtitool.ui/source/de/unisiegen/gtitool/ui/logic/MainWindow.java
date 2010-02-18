@@ -32,7 +32,7 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetE
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
@@ -373,7 +373,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
      * The regex info button state
      */
     ENABLED_REGEX_INFO,
-    
+
     /**
      * The createTDP button state
      */
@@ -558,7 +558,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
     removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
     removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
-    removeButtonState ( ButtonState.ENABLED_CREATE_TDP);
+    removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -1315,12 +1315,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_CREATE_RDP );
       this.gui.getJMenuItemCreateRDP ().setEnabled ( true );
     }
-    //create tdp
-    else if( ( buttonState.equals ( ButtonState.ENABLED_CREATE_TDP ))
-        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CREATE_TDP )))
+    // create tdp
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CREATE_TDP ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CREATE_TDP ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_CREATE_TDP );
-      this.gui.getJMenuItemCreateTDP().setEnabled(true);
+      this.gui.getJMenuItemCreateTDP ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REGEX_INFO ) ) )
@@ -1666,20 +1666,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
-          panel.getConverter (entityType).convert ( MachineType.DFA, entityType, false,
-              false );
+          panel.getConverter ( entityType ).convert ( MachineType.DFA,
+              entityType, false, false );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
-          panel.getConverter (entityType).convert ( MachineType.NFA, entityType, false,
-              false );
+          panel.getConverter ( entityType ).convert ( MachineType.NFA,
+              entityType, false, false );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
-          panel.getConverter (entityType).convert ( MachineType.ENFA, entityType, false,
-              cb );
+          panel.getConverter ( entityType ).convert ( MachineType.ENFA,
+              entityType, false, cb );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
-          panel.getConverter (entityType).convert ( MachineType.PDA, entityType, false,
-              false );
+          panel.getConverter ( entityType ).convert ( MachineType.PDA,
+              entityType, false, false );
         else
           throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
       }
@@ -1689,20 +1689,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         GrammarPanel grammarPanel = ( GrammarPanel ) panel;
         if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.RG ) )
-          panel.getConverter (entityType).convert ( GrammarType.RG, entityType, false,
-              false );
+          panel.getConverter ( entityType ).convert ( GrammarType.RG,
+              entityType, false, false );
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
-          panel.getConverter (entityType).convert ( GrammarType.CFG, entityType, false,
-              false );
+          panel.getConverter ( entityType ).convert ( GrammarType.CFG,
+              entityType, false, false );
         else
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
       }
       else if ( panel instanceof RegexPanel )
       {
         RegexPanel regexPanel = ( RegexPanel ) panel;
-        regexPanel.getConverter (entityType).convert ( RegexType.REGEX, entityType,
-            false, false );
+        regexPanel.getConverter ( entityType ).convert ( RegexType.REGEX,
+            entityType, false, false );
       }
       else
         throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
@@ -1730,20 +1730,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
-          panel.getConverter (entityType).convert ( MachineType.DFA, entityType, true,
-              false );
+          panel.getConverter ( entityType ).convert ( MachineType.DFA,
+              entityType, true, false );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
-          panel.getConverter (entityType).convert ( MachineType.NFA, entityType, true,
-              false );
+          panel.getConverter ( entityType ).convert ( MachineType.NFA,
+              entityType, true, false );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
-          panel.getConverter (entityType).convert ( MachineType.ENFA, entityType, true,
-              false );
+          panel.getConverter ( entityType ).convert ( MachineType.ENFA,
+              entityType, true, false );
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
-          panel.getConverter (entityType).convert ( MachineType.PDA, entityType, true,
-              false );
+          panel.getConverter ( entityType ).convert ( MachineType.PDA,
+              entityType, true, false );
         else
           throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
       }
@@ -1937,7 +1937,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handles the edit {@link Machine} event.
+   * Handles the edit {@link StateMachine} event.
    */
   public final void handleEditMachine ()
   {
@@ -2196,7 +2196,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handles the minimize {@link Machine} event.
+   * Handles the minimize {@link StateMachine} event.
    */
   public final void handleMinimize ()
   {
@@ -4197,7 +4197,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
       removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
       removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
-      removeButtonState ( ButtonState.ENABLED_CREATE_TDP);
+      removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
     }
     // MachinePanel
     else
@@ -4217,7 +4217,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
-        removeButtonState ( ButtonState.ENABLED_CREATE_TDP);
+        removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
@@ -4378,7 +4378,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
           removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
           removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
-          removeButtonState ( ButtonState.ENABLED_CREATE_TDP);
+          removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
@@ -4390,7 +4390,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CREATE_RDP );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
-          addButtonState ( ButtonState.ENABLED_CREATE_TDP);
+          addButtonState ( ButtonState.ENABLED_CREATE_TDP );
         }
         else
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
@@ -4488,7 +4488,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
-        removeButtonState ( ButtonState.ENABLED_CREATE_TDP);
+        removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
 
         if ( regexPanel.isUndoAble () )
           addButtonState ( ButtonState.ENABLED_UNDO );
@@ -5860,7 +5860,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_REGEX_INFO );
       this.gui.getJCheckBoxMenuItemRegexInfo ().setEnabled ( false );
     }
-    else if ( buttonState.equals ( ButtonState.ENABLED_CREATE_TDP ))
+    else if ( buttonState.equals ( ButtonState.ENABLED_CREATE_TDP ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_CREATE_TDP );
       this.gui.getJMenuItemCreateTDP ().setEnabled ( false );

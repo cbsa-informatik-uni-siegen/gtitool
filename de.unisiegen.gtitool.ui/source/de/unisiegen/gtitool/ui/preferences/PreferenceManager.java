@@ -369,9 +369,7 @@ public final class PreferenceManager extends
   public final static PreferenceManager getInstance ()
   {
     if ( preferenceManager == null )
-    {
       preferenceManager = new PreferenceManager ();
-    }
     return preferenceManager;
   }
 
@@ -436,9 +434,7 @@ public final class PreferenceManager extends
     PDAModeChangedListener [] listeners = this.listenerList
         .getListeners ( PDAModeChangedListener.class );
     for ( PDAModeChangedListener current : listeners )
-    {
       current.pdaModeChanged ( pdaModeItem );
-    }
   }
 
 
@@ -452,9 +448,7 @@ public final class PreferenceManager extends
     WordModeChangedListener [] listeners = this.listenerList
         .getListeners ( WordModeChangedListener.class );
     for ( WordModeChangedListener current : listeners )
-    {
       current.wordModeChanged ( wordModeItem );
-    }
   }
 
 
@@ -468,9 +462,7 @@ public final class PreferenceManager extends
     ZoomFactorChangedListener [] listeners = this.listenerList
         .getListeners ( ZoomFactorChangedListener.class );
     for ( ZoomFactorChangedListener current : listeners )
-    {
       current.zoomFactorChanged ( zoomFactorItem );
-    }
   }
 
 
@@ -565,33 +557,19 @@ public final class PreferenceManager extends
         DEFAULT_ENTITY_TYPE.toString () );
 
     if ( entityType.equals ( MachineType.DFA.toString () ) )
-    {
       return MachineType.DFA;
-    }
     else if ( entityType.equals ( MachineType.NFA.toString () ) )
-    {
       return MachineType.NFA;
-    }
     else if ( entityType.equals ( MachineType.ENFA.toString () ) )
-    {
       return MachineType.ENFA;
-    }
     else if ( entityType.equals ( MachineType.PDA.toString () ) )
-    {
       return MachineType.PDA;
-    }
     else if ( entityType.equals ( GrammarType.RG.toString () ) )
-    {
       return GrammarType.RG;
-    }
     else if ( entityType.equals ( GrammarType.CFG.toString () ) )
-    {
       return GrammarType.CFG;
-    }
     else if ( entityType.equals ( RegexType.REGEX.toString () ) )
-    {
       return RegexType.REGEX;
-    }
     return DEFAULT_ENTITY_TYPE;
   }
 
@@ -694,20 +672,14 @@ public final class PreferenceManager extends
           end );
 
       if ( file.equals ( end ) || editor.equals ( end ) )
-      {
         break;
-      }
 
-      if ( editor.equals ( "right" ) ) //$NON-NLS-1$
-      {
+      if ( editor.equals ( "right" ) )
         files.add ( new ObjectPair < File, ActiveEditor > ( new File ( file ),
             ActiveEditor.RIGHT_EDITOR ) );
-      }
       else
-      {
         files.add ( new ObjectPair < File, ActiveEditor > ( new File ( file ),
             ActiveEditor.LEFT_EDITOR ) );
-      }
 
       count++ ;
     }
@@ -744,9 +716,7 @@ public final class PreferenceManager extends
   {
     int port = this.preferences.getInt ( "Port", DEFAULT_PORT ); //$NON-NLS-1$
     if ( ( port < 0 ) || ( port > 65535 ) )
-    {
       port = DEFAULT_PORT;
-    }
     return port;
   }
 
@@ -828,9 +798,7 @@ public final class PreferenceManager extends
       String file = this.preferences.get ( "MainWindow.RecentlyUsedFiles" //$NON-NLS-1$
           + count, end );
       if ( file.equals ( end ) )
-      {
         break;
-      }
       files.add ( new File ( file ) );
       count++ ;
     }
@@ -1188,15 +1156,11 @@ public final class PreferenceManager extends
       String symbol = this.preferences.get ( "MainWindow.OpenedFiles" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
-      {
         break loop;
-      }
       count++ ;
     }
     for ( int i = 0 ; i < count ; i++ )
-    {
       this.preferences.remove ( "MainWindow.OpenedFiles" + i ); //$NON-NLS-1$
-    }
 
     // Set the new data
     for ( int i = 0 ; i < openedFilesItem.getFiles ().size () ; i++ )
@@ -1347,15 +1311,11 @@ public final class PreferenceManager extends
           "MainWindow.RecentlyUsedFiles" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
-      {
         break loop;
-      }
       count++ ;
     }
     for ( int i = 0 ; i < count ; i++ )
-    {
       this.preferences.remove ( "MainWindow.RecentlyUsedFiles" + i ); //$NON-NLS-1$
-    }
 
     // Set the new data
     for ( int i = 0 ; i < recentlyUsedFilesItem.getFiles ().size () ; i++ )

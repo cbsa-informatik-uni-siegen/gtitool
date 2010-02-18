@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
@@ -92,7 +92,7 @@ public final class StateConfigDialog implements
    * @param parent The parent {@link JFrame}.
    * @param machinePanel The {@link MachinePanel}.
    * @param state The {@link State}.
-   * @param model The {@link Machine}
+   * @param model The {@link StateMachine}
    */
   public StateConfigDialog ( JFrame parent, MachinePanel machinePanel,
       State state, DefaultMachineModel model )

@@ -39,7 +39,7 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
@@ -106,13 +106,9 @@ public final class ConvertMachineDialog implements
         public void run ()
         {
           if ( ConvertMachineDialog.this.endReached )
-          {
             handleStop ();
-          }
           else
-          {
             performNextStep ( true );
-          }
         }
       } );
     }
@@ -120,7 +116,7 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The convert {@link Machine} type enum.
+   * The convert {@link StateMachine} type enum.
    * 
    * @author Christian Fehler
    */
@@ -820,15 +816,15 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The converted {@link Machine}.
+   * The converted {@link StateMachine}.
    */
-  private Machine machineConverted;
+  private StateMachine machineConverted;
 
 
   /**
-   * The original {@link Machine}.
+   * The original {@link StateMachine}.
    */
-  private Machine machineOriginal;
+  private StateMachine machineOriginal;
 
 
   /**
@@ -903,13 +899,9 @@ public final class ConvertMachineDialog implements
         "allocate a new convert machine dialog" ); //$NON-NLS-1$
 
     if ( parent == null )
-    {
       throw new IllegalArgumentException ( "parent is null" );//$NON-NLS-1$
-    }
     if ( machinePanel == null )
-    {
       throw new IllegalArgumentException ( "machine panel is null" );//$NON-NLS-1$
-    }
 
     this.parent = parent;
     this.machinePanel = machinePanel;
@@ -937,13 +929,10 @@ public final class ConvertMachineDialog implements
   {
     ArrayList < State > nameList = new ArrayList < State > ();
     for ( State current : this.machineOriginal.getState () )
-    {
       nameList.add ( current );
-    }
 
     PowerSet < State > powerSet = new PowerSet < State > ( nameList );
     for ( Set < State > currentSet : powerSet )
-    {
       // the empty set state is added at last
       if ( currentSet.size () > 0 )
       {
@@ -952,24 +941,18 @@ public final class ConvertMachineDialog implements
         {
           State foundState = null;
           for ( State current : this.machineOriginal.getState () )
-          {
             if ( current.isStartState () )
             {
               foundState = current;
               break;
             }
-          }
 
           if ( foundState == null )
-          {
             throw new RuntimeException ( "no start state found" ); //$NON-NLS-1$
-          }
 
           if ( currentSet.iterator ().next ().getName ().equals (
               foundState.getName () ) )
-          {
             startState = true;
-          }
         }
 
         StringBuilder name = new StringBuilder ( "{" ); //$NON-NLS-1$
@@ -978,9 +961,7 @@ public final class ConvertMachineDialog implements
         for ( State currentState : currentSet )
         {
           if ( !first )
-          {
             name.append ( ", " ); //$NON-NLS-1$
-          }
           first = false;
 
           finalState = finalState || currentState.isFinalState ();
@@ -996,9 +977,7 @@ public final class ConvertMachineDialog implements
               name.toString (), startState, finalState );
 
           if ( startState )
-          {
             setCurrentActiveState ( newState, true );
-          }
 
           this.modelConverted.createStateView ( INITIAL_POSITION,
               INITIAL_POSITION, newState, false );
@@ -1010,7 +989,6 @@ public final class ConvertMachineDialog implements
           return;
         }
       }
-    }
     // empty set state
     try
     {
@@ -1042,66 +1020,34 @@ public final class ConvertMachineDialog implements
     ArrayList < Symbol > activeSymbolsConverted = new ArrayList < Symbol > ();
 
     for ( State current : this.machineOriginal.getState () )
-    {
       if ( current.isActive () )
-      {
         activeStatesOriginal.add ( current );
-      }
-    }
     for ( Transition current : this.machineOriginal.getTransition () )
-    {
       if ( current.isActive () )
-      {
         activeTransitionsOriginal.add ( current );
-      }
-    }
     for ( Transition currentTransition : this.machineOriginal.getTransition () )
-    {
       for ( Symbol currentSymbol : currentTransition )
-      {
         if ( currentSymbol.isActive () )
-        {
           activeSymbolsOriginal.add ( currentSymbol );
-        }
-      }
-    }
 
     if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
     {
       for ( State current : this.machineConverted.getState () )
-      {
         if ( current.isActive () )
-        {
           activeStatesConverted.add ( current );
-        }
-      }
       for ( Transition current : this.machineConverted.getTransition () )
-      {
         if ( current.isActive () )
-        {
           activeTransitionsConverted.add ( current );
-        }
-      }
       for ( Transition currentTransition : this.machineConverted
           .getTransition () )
-      {
         for ( Symbol currentSymbol : currentTransition )
-        {
           if ( currentSymbol.isActive () )
-          {
             activeSymbolsConverted.add ( currentSymbol );
-          }
-        }
-      }
     }
     RegexNode node = null;
     if ( this.modelRegexConverted != null )
-    {
       if ( this.modelRegexConverted.getRegex ().getRegexNode () != null )
-      {
         node = this.modelRegexConverted.getRegex ().getRegexNode ().clone ();
-      }
-    }
     this.stepItemList
         .add ( new StepItem ( this.step, this.currentActiveSymbol,
             this.currentActiveState, activeStatesOriginal,
@@ -1130,9 +1076,7 @@ public final class ConvertMachineDialog implements
   private final void clearStateHighlightConverted ()
   {
     for ( State currentState : this.machineConverted.getState () )
-    {
       currentState.setActive ( false );
-    }
   }
 
 
@@ -1142,9 +1086,7 @@ public final class ConvertMachineDialog implements
   private final void clearStateHighlightOriginal ()
   {
     for ( State currentState : this.machineOriginal.getState () )
-    {
       currentState.setActive ( false );
-    }
   }
 
 
@@ -1154,12 +1096,8 @@ public final class ConvertMachineDialog implements
   private final void clearSymbolHighlightConverted ()
   {
     for ( Transition currentTransition : this.machineConverted.getTransition () )
-    {
       for ( Symbol currentSymbol : currentTransition.getSymbol () )
-      {
         currentSymbol.setActive ( false );
-      }
-    }
   }
 
 
@@ -1169,12 +1107,8 @@ public final class ConvertMachineDialog implements
   private final void clearSymbolHighlightOriginal ()
   {
     for ( Transition currentTransition : this.machineOriginal.getTransition () )
-    {
       for ( Symbol currentSymbol : currentTransition.getSymbol () )
-      {
         currentSymbol.setActive ( false );
-      }
-    }
   }
 
 
@@ -1185,9 +1119,7 @@ public final class ConvertMachineDialog implements
   private final void clearTransitionHighlightConverted ()
   {
     for ( Transition currentTransition : this.machineConverted.getTransition () )
-    {
       currentTransition.setActive ( false );
-    }
   }
 
 
@@ -1198,9 +1130,7 @@ public final class ConvertMachineDialog implements
   private final void clearTransitionHighlightOriginal ()
   {
     for ( Transition currentTransition : this.machineOriginal.getTransition () )
-    {
       currentTransition.setActive ( false );
-    }
   }
 
 
@@ -1213,25 +1143,17 @@ public final class ConvertMachineDialog implements
       EntityType toEntityType, boolean complete, boolean cb )
   {
     if ( fromEntityType == null )
-    {
       throw new IllegalArgumentException ( "from entity type is null" );//$NON-NLS-1$
-    }
     if ( toEntityType == null )
-    {
       throw new IllegalArgumentException ( "to entity type is null" );//$NON-NLS-1$
-    }
 
     if ( fromEntityType.equals ( MachineType.NFA )
         && toEntityType.equals ( MachineType.DFA ) )
     {
       if ( complete )
-      {
         this.convertMachineType = ConvertMachineType.NFA_TO_DFA_COMPLETE;
-      }
       else
-      {
         this.convertMachineType = ConvertMachineType.NFA_TO_DFA;
-      }
     }
     else if ( fromEntityType.equals ( MachineType.ENFA )
         && toEntityType.equals ( MachineType.NFA ) )
@@ -1239,48 +1161,29 @@ public final class ConvertMachineDialog implements
       if ( cb )
       {
         if ( complete )
-        {
           this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_COMPLETE_CB;
-        }
         else
-        {
           this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_CB;
-        }
       }
+      else if ( complete )
+        this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_COMPLETE;
       else
-      {
-        if ( complete )
-        {
-          this.convertMachineType = ConvertMachineType.ENFA_TO_NFA_COMPLETE;
-        }
-        else
-        {
-          this.convertMachineType = ConvertMachineType.ENFA_TO_NFA;
-        }
-      }
+        this.convertMachineType = ConvertMachineType.ENFA_TO_NFA;
     }
     else if ( fromEntityType.equals ( MachineType.ENFA )
         && toEntityType.equals ( MachineType.DFA ) )
     {
       if ( complete )
-      {
         this.convertMachineType = ConvertMachineType.ENFA_TO_DFA_COMPLETE;
-      }
       else
-      {
         this.convertMachineType = ConvertMachineType.ENFA_TO_DFA;
-      }
     }
     else if ( fromEntityType.equals ( MachineType.DFA )
         && toEntityType.equals ( RegexType.REGEX ) )
-    {
       this.convertMachineType = ConvertMachineType.DFA_TO_REGEX;
-    }
     else
-    {
       throw new IllegalArgumentException ( "unsupported conversion from : " //$NON-NLS-1$
           + fromEntityType + " to " + toEntityType ); //$NON-NLS-1$
-    }
 
     this.gui = new ConvertMachineDialogForm ( this, this.parent );
 
@@ -1485,23 +1388,17 @@ public final class ConvertMachineDialog implements
       this.currentActiveSymbol = this.machineConverted.getAlphabet ().get ( 0 );
     }
     else
-    {
       this.step = Step.CALCULATE_NEW_LANGUAGE;
-    }
     this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGTIGraphConverted );
 
     if ( isComplete () )
-    {
       addPowerSetStates ();
-    }
 
     if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
     {
       // auto layout
       while ( !this.endReached )
-      {
         performNextStep ( false );
-      }
       new LayoutManager ( this.modelConverted, null ).doLayout ();
       for ( DefaultStateView current : this.modelConverted.getStateViewList () )
       {
@@ -1511,9 +1408,7 @@ public final class ConvertMachineDialog implements
             current.getPositionX (), current.getPositionY () + yOffset ) );
       }
       while ( !this.stepItemList.isEmpty () )
-      {
         performPreviousStep ( false );
-      }
     }
     setStatus ();
 
@@ -1530,23 +1425,15 @@ public final class ConvertMachineDialog implements
   private RegexNode createDisjunction ( ArrayList < Symbol > symbols )
   {
     if ( symbols.size () < 1 )
-    {
       return null;
-    }
     Symbol s = symbols.remove ( 0 );
     RegexNode r;
     if ( s.equals ( new DefaultSymbol () ) )
-    {
       r = new EpsilonNode ();
-    }
     else
-    {
       r = new TokenNode ( s.getName () );
-    }
     if ( symbols.size () == 0 )
-    {
       return r;
-    }
     return new DisjunctionNode ( createDisjunction ( symbols ), r );
   }
 
@@ -1562,36 +1449,24 @@ public final class ConvertMachineDialog implements
     RegexNode parentRegex = regex.getParentNodeForNode ( node );
 
     if ( parentRegex instanceof OneChildNode )
-    {
       eliminateNodeFromRegex ( parentRegex, regex );
-    }
     if ( parentRegex instanceof ConcatenationNode )
-    {
       eliminateNodeFromRegex ( parentRegex, regex );
-    }
     if ( parentRegex instanceof DisjunctionNode )
     {
       RegexNode r;
       if ( ( ( TwoChildNode ) parentRegex ).getRegex1 ().equals ( node ) )
-      {
         r = ( ( TwoChildNode ) parentRegex ).getRegex2 ();
-      }
       else
-      {
         r = ( ( TwoChildNode ) parentRegex ).getRegex1 ();
-      }
       RegexNode parentParent = regex.getParentNodeForNode ( parentRegex );
       if ( parentParent instanceof TwoChildNode )
       {
         TwoChildNode p = ( TwoChildNode ) parentParent;
         if ( p.getRegex1 ().equals ( parentRegex ) )
-        {
           p.setRegex1 ( r );
-        }
         else
-        {
           p.setRegex2 ( r );
-        }
       }
       else
       {
@@ -1613,13 +1488,9 @@ public final class ConvertMachineDialog implements
   {
     RegexNode regex = LKJ;
     if ( LKK == null )
-    {
       return null;
-    }
     if ( regex == null )
-    {
       return null;
-    }
     return new ConcatenationNode ( new KleeneNode ( LKK ), LKJ );
   }
 
@@ -1636,13 +1507,9 @@ public final class ConvertMachineDialog implements
   {
     RegexNode regex = generateRegex ( LKK, LKJ );
     if ( LIK == null )
-    {
       return null;
-    }
     if ( regex == null )
-    {
       return null;
-    }
     return new ConcatenationNode ( LIK, regex );
   }
 
@@ -1661,13 +1528,9 @@ public final class ConvertMachineDialog implements
   {
     RegexNode regex = generateRegex ( LIK, LKK, LKJ );
     if ( LIJ == null )
-    {
       return regex;
-    }
     if ( regex == null )
-    {
       return LIJ;
-    }
     return new DisjunctionNode ( LIJ, regex );
   }
 
@@ -1718,20 +1581,14 @@ public final class ConvertMachineDialog implements
   {
     ArrayList < Symbol > l1 = new ArrayList < Symbol > ();
     if ( s0.equals ( s1 ) )
-    {
       l1.add ( new DefaultSymbol () );
-    }
     for ( Transition t : this.machineOriginal.getTransition () )
-    {
       if ( t.getStateBegin ().equals ( s0 ) && t.getStateEnd ().equals ( s1 ) )
       {
         l1.addAll ( t.getSymbol () );
         for ( Symbol s : t.getSymbol () )
-        {
           s.setActive ( true );
-        }
       }
-    }
     return createDisjunction ( l1 );
   }
 
@@ -1853,19 +1710,13 @@ public final class ConvertMachineDialog implements
     }
 
     if ( this.algorithmWindow == null )
-    {
       this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
           this.gui.jGTIToggleButtonAlgorithm, this.convertMachineType
               .toString () );
-    }
     if ( show )
-    {
       this.algorithmWindow.show ();
-    }
     else
-    {
       this.algorithmWindow.dispose ();
-    }
   }
 
 
@@ -1903,9 +1754,7 @@ public final class ConvertMachineDialog implements
     PreferenceManager.getInstance ().setConvertMachineDialogPreferences (
         this.gui );
     if ( this.algorithmWindow != null )
-    {
       this.algorithmWindow.dispose ();
-    }
     this.gui.dispose ();
   }
 
@@ -1940,26 +1789,18 @@ public final class ConvertMachineDialog implements
     this.gui.setVisible ( false );
 
     while ( !this.endReached )
-    {
       performNextStep ( false );
-    }
 
     if ( !this.convertMachineType.equals ( ConvertMachineType.DFA_TO_REGEX ) )
-    {
       this.machinePanel.getMainWindow ().handleNew (
           this.modelConverted.getElement (), true );
-    }
     else
-    {
       this.machinePanel.getMainWindow ().handleNew (
           new DefaultRegexModel ( this.modelRegexConverted.getRegex () ) );
-    }
     PreferenceManager.getInstance ().setConvertMachineDialogPreferences (
         this.gui );
     if ( this.algorithmWindow != null )
-    {
       this.algorithmWindow.dispose ();
-    }
     this.gui.dispose ();
   }
 
@@ -2067,15 +1908,9 @@ public final class ConvertMachineDialog implements
           .parse ();
       ArrayList < State > powerStates = state.getPowerStates ();
       if ( powerStates != null )
-      {
         for ( State current : powerStates )
-        {
           if ( current.getName ().equals ( normalState.getName () ) )
-          {
             return true;
-          }
-        }
-      }
     }
     catch ( Exception exc )
     {
@@ -2094,9 +1929,7 @@ public final class ConvertMachineDialog implements
     logger.debug ( "performBeginStep", "handle begin step" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     while ( !this.stepItemList.isEmpty () )
-    {
       performPreviousStep ( false );
-    }
 
     setStatus ();
     updateGraph ();
@@ -2111,9 +1944,7 @@ public final class ConvertMachineDialog implements
     logger.debug ( "performEndStep", "handle nfa to dfa end step" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     while ( !this.endReached )
-    {
       performNextStep ( false );
-    }
 
     setStatus ();
     updateGraph ();
@@ -2134,23 +1965,17 @@ public final class ConvertMachineDialog implements
     {
       State startState = null;
       for ( State current : this.machineOriginal.getState () )
-      {
         if ( current.isStartState () )
         {
           startState = current;
           break;
         }
-      }
       if ( startState == null )
-      {
         throw new NullPointerException ( "no start state" ); //$NON-NLS-1$
-      }
 
       if ( manualStep )
-      {
         logger.debug ( "performNextStep", "perform next step: " + this.step //$NON-NLS-1$ //$NON-NLS-2$
             + ": " + startState.getName () ); //$NON-NLS-1$
-      }
 
       startState.setActive ( true );
 
@@ -2198,19 +2023,13 @@ public final class ConvertMachineDialog implements
     else if ( this.step.equals ( Step.ACTIVATE_START_CLOSURE_STATE ) )
     {
       if ( manualStep )
-      {
         logger.debug ( "performNextStep",//$NON-NLS-1$
             "perform next step: " + this.step );//$NON-NLS-1$
-      }
 
       ArrayList < State > activeStateList = new ArrayList < State > ();
       for ( State current : this.machineOriginal.getState () )
-      {
         if ( current.isActive () )
-        {
           activeStateList.add ( current );
-        }
-      }
       Collections.sort ( activeStateList );
 
       ArrayList < State > activeClosureStateList = new ArrayList < State > ();
@@ -2228,9 +2047,7 @@ public final class ConvertMachineDialog implements
           + " (", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeStateList.size () == 0 )
-      {
         prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
-      }
       else
       {
         prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
@@ -2238,9 +2055,7 @@ public final class ConvertMachineDialog implements
         for ( State current : activeStateList )
         {
           if ( !first )
-          {
             prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          }
           first = false;
           prettyString.add ( current );
         }
@@ -2250,9 +2065,7 @@ public final class ConvertMachineDialog implements
       prettyString.add ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeClosureStateList.size () == 0 )
-      {
         prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
-      }
       else
       {
         prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
@@ -2260,9 +2073,7 @@ public final class ConvertMachineDialog implements
         for ( State current : activeClosureStateList )
         {
           if ( !first )
-          {
             prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          }
           first = false;
           prettyString.add ( current );
         }
@@ -2271,21 +2082,15 @@ public final class ConvertMachineDialog implements
       addOutlineComment ( prettyString );
 
       if ( isComplete () )
-      {
         this.step = Step.ACTIVATE_SYMBOLS;
-      }
       else
-      {
         this.step = Step.ADD_START_STATE;
-      }
     }
     else if ( this.step.equals ( Step.ADD_START_STATE ) )
     {
       if ( manualStep )
-      {
         logger.debug ( "performNextStep",//$NON-NLS-1$
             "perform next step: " + this.step );//$NON-NLS-1$
-      }
       StringBuilder name = new StringBuilder ();
 
       boolean finalState = false;
@@ -2293,20 +2098,16 @@ public final class ConvertMachineDialog implements
       if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
       {
         for ( State currentState : this.machineOriginal.getState () )
-        {
           if ( currentState.isActive () )
           {
             notImportant = !currentState.isImportant ();
             if ( currentState.isFinalState () )
-            {
               finalState = true;
-            }
             name.append ( currentState.getName () );
             currentState.setActive ( false );
             break;
 
           }
-        }
 
       }
       else
@@ -2314,26 +2115,19 @@ public final class ConvertMachineDialog implements
         name.append ( "{" ); //$NON-NLS-1$
         boolean first = true;
         for ( State currentState : this.machineOriginal.getState () )
-        {
           if ( currentState.isActive () )
           {
             if ( currentState.isFinalState () )
-            {
               finalState = true;
-            }
             if ( !first )
-            {
               name.append ( ", " );//$NON-NLS-1$
-            }
             first = false;
             name.append ( currentState.getName () );
           }
-        }
         name.append ( "}" );//$NON-NLS-1$
       }
 
       if ( notImportant )
-      {
         try
         {
           State stateFound = new DefaultState ( name.toString () );
@@ -2345,17 +2139,13 @@ public final class ConvertMachineDialog implements
           addOutlineComment ( prettyString );
           boolean found = false;
           for ( State s : this.machineOriginal.getState () )
-          {
             if ( s.isActive () )
             {
               found = true;
               break;
             }
-          }
           if ( found )
-          {
             this.step = Step.ADD_START_STATE;
-          }
           else
           {
             setCurrentActiveState ( this.machineConverted.getState ( 0 ),
@@ -2367,19 +2157,15 @@ public final class ConvertMachineDialog implements
         {
           exc.printStackTrace ();
         }
-
-      }
       else
       {
         State stateFound = null;
         for ( State current : this.machineConverted.getState () )
-        {
           if ( current.getName ().equals ( name.toString () ) )
           {
             stateFound = current;
             break;
           }
-        }
 
         if ( stateFound == null )
         {
@@ -2404,9 +2190,7 @@ public final class ConvertMachineDialog implements
 
           Position position = getPosition ( newState );
           if ( position != null )
-          {
             newStateView.move ( position.getX (), position.getY () );
-          }
 
           // add to step item
           this.stepItemList.get ( this.stepItemList.size () - 1 )
@@ -2428,17 +2212,13 @@ public final class ConvertMachineDialog implements
         {
           boolean found = false;
           for ( State s : this.machineOriginal.getState () )
-          {
             if ( s.isActive () )
             {
               found = true;
               break;
             }
-          }
           if ( found )
-          {
             this.step = Step.ADD_START_STATE;
-          }
           else
           {
             setCurrentActiveState ( this.machineConverted.getState ( 0 ),
@@ -2447,28 +2227,22 @@ public final class ConvertMachineDialog implements
           }
         }
         else
-        {
           this.step = Step.ACTIVATE_SYMBOLS;
-        }
       }
     }
     else if ( this.step.equals ( Step.ACTIVATE_OLD_STATE ) )
     {
       if ( manualStep )
-      {
         logger.debug ( "performNextStep",//$NON-NLS-1$
             "perform next step: " + this.step );//$NON-NLS-1$
-      }
 
       ArrayList < State > activeStateList = new ArrayList < State > ();
       for ( State current : this.machineOriginal.getState () )
-      {
         if ( isStateMemberOfStateSet ( this.currentActiveState, current ) )
         {
           current.setActive ( true );
           activeStateList.add ( current );
         }
-      }
       Collections.sort ( activeStateList );
 
       this.currentActiveState.setActive ( true );
@@ -2479,9 +2253,7 @@ public final class ConvertMachineDialog implements
           .getString ( "ConvertMachineDialog.ActivateOldState" ) //$NON-NLS-1$
           + " ", Style.NONE ) ); //$NON-NLS-1$
       if ( activeStateList.size () == 0 )
-      {
         prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
-      }
       else
       {
         prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
@@ -2489,9 +2261,7 @@ public final class ConvertMachineDialog implements
         for ( State current : activeStateList )
         {
           if ( !first )
-          {
             prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          }
           first = false;
           prettyString.add ( current );
         }
@@ -2550,19 +2320,13 @@ public final class ConvertMachineDialog implements
     else if ( this.step.equals ( Step.ACTIVATE_OLD_CLOSURE_STATE ) )
     {
       if ( manualStep )
-      {
         logger.debug ( "performNextStep",//$NON-NLS-1$
             "perform next step: " + this.step );//$NON-NLS-1$
-      }
 
       ArrayList < State > activeStateList = new ArrayList < State > ();
       for ( State current : this.machineOriginal.getState () )
-      {
         if ( current.isActive () )
-        {
           activeStateList.add ( current );
-        }
-      }
       Collections.sort ( activeStateList );
 
       ArrayList < State > activeClosureStateList = new ArrayList < State > ();
@@ -2579,9 +2343,7 @@ public final class ConvertMachineDialog implements
           .getString ( "ConvertMachineDialog.ActivateOldClosureState" ) //$NON-NLS-1$
           + " (", Style.NONE ) ); //$NON-NLS-1$
       if ( activeStateList.size () == 0 )
-      {
         prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
-      }
       else
       {
         prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
@@ -2589,9 +2351,7 @@ public final class ConvertMachineDialog implements
         for ( State current : activeStateList )
         {
           if ( !first )
-          {
             prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          }
           first = false;
           prettyString.add ( current );
         }
@@ -2600,9 +2360,7 @@ public final class ConvertMachineDialog implements
       prettyString.add ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeClosureStateList.size () == 0 )
-      {
         prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
-      }
       else
       {
         prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
@@ -2610,9 +2368,7 @@ public final class ConvertMachineDialog implements
         for ( State current : activeClosureStateList )
         {
           if ( !first )
-          {
             prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          }
           first = false;
           prettyString.add ( current );
         }
@@ -2625,34 +2381,26 @@ public final class ConvertMachineDialog implements
     else if ( this.step.equals ( Step.ACTIVATE_SYMBOLS ) )
     {
       if ( manualStep )
-      {
         logger.debug ( "performNextStep",//$NON-NLS-1$
             "perform next step: " + this.step );//$NON-NLS-1$
-      }
 
       clearSymbolHighlightOriginal ();
 
       ArrayList < State > activeStateList = new ArrayList < State > ();
       for ( State currentState : this.machineOriginal.getState () )
-      {
         if ( currentState.isActive () )
         {
           activeStateList.add ( currentState );
           for ( Transition currentTransition : currentState
               .getTransitionBegin () )
-          {
             loopSymbol : for ( Symbol currentSymbol : currentTransition
                 .getSymbol () )
-            {
               if ( currentSymbol.equals ( this.currentActiveSymbol ) )
               {
                 currentSymbol.setActive ( true );
                 break loopSymbol;
               }
-            }
-          }
         }
-      }
       Collections.sort ( activeStateList );
 
       // outline
@@ -2661,9 +2409,7 @@ public final class ConvertMachineDialog implements
           .getString ( "ConvertMachineDialog.ActivateSymbols" ) //$NON-NLS-1$
           + " (", Style.NONE ) ); //$NON-NLS-1$
       if ( activeStateList.size () == 0 )
-      {
         prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
-      }
       else
       {
         prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
@@ -2671,9 +2417,7 @@ public final class ConvertMachineDialog implements
         for ( State current : activeStateList )
         {
           if ( !first )
-          {
             prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          }
           first = false;
           prettyString.add ( current );
         }
@@ -2689,33 +2433,23 @@ public final class ConvertMachineDialog implements
     else if ( this.step.equals ( Step.ACTIVATE_NEW_STATES ) )
     {
       if ( manualStep )
-      {
         logger.debug ( "performNextStep",//$NON-NLS-1$
             "perform next step: " + this.step );//$NON-NLS-1$
-      }
 
       ArrayList < Transition > transitionList = new ArrayList < Transition > ();
       for ( Transition currentTransition : this.machineOriginal
           .getTransition () )
-      {
         loopSymbol : for ( Symbol currentSymbol : currentTransition
             .getSymbol () )
-        {
           if ( currentSymbol.isActive () )
           {
             transitionList.add ( currentTransition );
             break loopSymbol;
           }
-        }
-      }
       ArrayList < State > oldActiveStateList = new ArrayList < State > ();
       for ( State current : this.machineOriginal.getState () )
-      {
         if ( current.isActive () )
-        {
           oldActiveStateList.add ( current );
-        }
-      }
       Collections.sort ( oldActiveStateList );
 
       clearStateHighlightOriginal ();
@@ -2725,25 +2459,19 @@ public final class ConvertMachineDialog implements
       if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
       {
         for ( Transition currentTransition : transitionList )
-        {
           for ( State s : Util.getClosure ( currentTransition.getStateEnd () ) )
-          {
             if ( s.isImportant () )
             {
               s.setActive ( true );
               newActiveStateList.add ( s );
             }
-          }
-        }
       }
       else
-      {
         for ( Transition currentTransition : transitionList )
         {
           currentTransition.getStateEnd ().setActive ( true );
           newActiveStateList.add ( currentTransition.getStateEnd () );
         }
-      }
       Collections.sort ( newActiveStateList );
 
       // outline
@@ -2752,9 +2480,7 @@ public final class ConvertMachineDialog implements
           .getString ( "ConvertMachineDialog.ActivateNewStates" )//$NON-NLS-1$
           + " (", Style.NONE ) );//$NON-NLS-1$
       if ( oldActiveStateList.size () == 0 )
-      {
         prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
-      }
       else
       {
         prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
@@ -2762,9 +2488,7 @@ public final class ConvertMachineDialog implements
         for ( State current : oldActiveStateList )
         {
           if ( !first )
-          {
             prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          }
           first = false;
           prettyString.add ( current );
         }
@@ -2775,9 +2499,7 @@ public final class ConvertMachineDialog implements
       prettyString.add ( this.currentActiveSymbol );
       prettyString.add ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
       if ( newActiveStateList.size () == 0 )
-      {
         prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
-      }
       else
       {
         prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
@@ -2785,9 +2507,7 @@ public final class ConvertMachineDialog implements
         for ( State current : newActiveStateList )
         {
           if ( !first )
-          {
             prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          }
           first = false;
           prettyString.add ( current );
         }
@@ -2847,19 +2567,13 @@ public final class ConvertMachineDialog implements
     else if ( this.step.equals ( Step.ACTIVATE_NEW_CLOSURE_STATES ) )
     {
       if ( manualStep )
-      {
         logger.debug ( "performNextStep",//$NON-NLS-1$
             "perform next step: " + this.step );//$NON-NLS-1$
-      }
 
       ArrayList < State > activeStateList = new ArrayList < State > ();
       for ( State current : this.machineOriginal.getState () )
-      {
         if ( current.isActive () )
-        {
           activeStateList.add ( current );
-        }
-      }
 
       ArrayList < State > activeClosureStateList = new ArrayList < State > ();
       for ( State current : Util.getClosure ( activeStateList ) )
@@ -2875,9 +2589,7 @@ public final class ConvertMachineDialog implements
           + " (", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeStateList.size () == 0 )
-      {
         prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
-      }
       else
       {
         prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
@@ -2885,9 +2597,7 @@ public final class ConvertMachineDialog implements
         for ( State current : activeStateList )
         {
           if ( !first )
-          {
             prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          }
           first = false;
           prettyString.add ( current );
         }
@@ -2897,9 +2607,7 @@ public final class ConvertMachineDialog implements
       prettyString.add ( new PrettyToken ( ") = ", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeClosureStateList.size () == 0 )
-      {
         prettyString.add ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
-      }
       else
       {
         prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
@@ -2907,9 +2615,7 @@ public final class ConvertMachineDialog implements
         for ( State current : activeClosureStateList )
         {
           if ( !first )
-          {
             prettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          }
           first = false;
           prettyString.add ( current );
         }
@@ -2922,10 +2628,8 @@ public final class ConvertMachineDialog implements
     else if ( this.step.equals ( Step.ADD_STATE_AND_TRANSITION ) )
     {
       if ( manualStep )
-      {
         logger.debug ( "performNextStep",//$NON-NLS-1$
             "perform next step: " + this.step );//$NON-NLS-1$
-      }
 
       StringBuilder name = new StringBuilder ();
       boolean finalState = false;
@@ -2934,7 +2638,6 @@ public final class ConvertMachineDialog implements
       if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA_CB ) )
       {
         for ( State currentState : this.machineOriginal.getState () )
-        {
           if ( currentState.isActive () )
           {
             if ( name.length () > 0 )
@@ -2947,37 +2650,30 @@ public final class ConvertMachineDialog implements
             finalState = finalState || currentState.isFinalState ();
             name.append ( currentState.getName () );
           }
-        }
       }
       else
       {
         name.append ( "{" ); //$NON-NLS-1$
         boolean first = true;
         for ( State currentState : this.machineOriginal.getState () )
-        {
           if ( currentState.isActive () )
           {
             emptySetStateFound = false;
 
             finalState = finalState || currentState.isFinalState ();
             if ( !first )
-            {
               name.append ( ", " );//$NON-NLS-1$
-            }
             first = false;
             name.append ( currentState.getName () );
           }
-        }
         name.append ( "}" );//$NON-NLS-1$
       }
 
       if ( emptySetStateFound )
       {
         if ( manualStep )
-        {
           logger.debug ( "performNextStep",//$NON-NLS-1$
               "empty set state found" );//$NON-NLS-1$
-        }
 
         switch ( this.convertMachineType )
         {
@@ -3028,13 +2724,11 @@ public final class ConvertMachineDialog implements
 
       State stateFound = null;
       for ( State current : this.machineConverted.getState () )
-      {
         if ( current.getName ().equals ( name.toString () ) )
         {
           stateFound = current;
           break;
         }
-      }
 
       State newState;
       DefaultStateView newStateView;
@@ -3059,9 +2753,7 @@ public final class ConvertMachineDialog implements
 
         Position position = getPosition ( newState );
         if ( position != null )
-        {
           newStateView.move ( position.getX (), position.getY () );
-        }
 
         // add to step item
         this.stepItemList.get ( this.stepItemList.size () - 1 )
@@ -3088,9 +2780,7 @@ public final class ConvertMachineDialog implements
           {
             ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
             for ( Symbol current : this.machineConverted.getAlphabet () )
-            {
               symbolList.add ( new DefaultSymbol ( current.getName () ) );
-            }
 
             transition = new DefaultTransition ( this.machineConverted
                 .getAlphabet (), this.machineConverted.getPushDownAlphabet (),
@@ -3118,13 +2808,11 @@ public final class ConvertMachineDialog implements
       Transition foundTransition = null;
 
       for ( Transition current : this.currentActiveState.getTransitionBegin () )
-      {
         if ( current.getStateEnd () == newState )
         {
           foundTransition = current;
           break;
         }
-      }
 
       if ( foundTransition == null )
       {
@@ -3204,21 +2892,15 @@ public final class ConvertMachineDialog implements
         addOutlineComment ( prettyString );
       }
       if ( moreAhead )
-      {
         this.step = Step.ADD_STATE_AND_TRANSITION;
-      }
       else
-      {
         this.step = Step.FINISH;
-      }
     }
     else if ( this.step.equals ( Step.FINISH ) )
     {
       if ( manualStep )
-      {
         logger.debug ( "performNextStep",//$NON-NLS-1$
             "perform next step: " + this.step );//$NON-NLS-1$
-      }
 
       clearStateHighlightOriginal ();
       clearStateHighlightConverted ();
@@ -3231,18 +2913,14 @@ public final class ConvertMachineDialog implements
       boolean useNextState = false;
       int index = -1;
       for ( int i = 0 ; i < this.machineConverted.getAlphabet ().size () ; i++ )
-      {
         if ( this.currentActiveSymbol == this.machineConverted.getAlphabet ()
             .get ( i ) )
         {
           index = i;
           if ( i == this.machineConverted.getAlphabet ().size () - 1 )
-          {
             useNextState = true;
-          }
           break;
         }
-      }
 
       if ( useNextState )
       {
@@ -3255,23 +2933,15 @@ public final class ConvertMachineDialog implements
         addOutlineComment ( prettyString );
 
         for ( int i = 0 ; i < this.machineConverted.getState ().size () ; i++ )
-        {
           if ( this.currentActiveState == this.machineConverted.getState ( i ) )
           {
             // the active state was the last state
             if ( i == this.machineConverted.getState ().size () - 1 )
-            {
               this.endReached = true;
-            }
-            // the next state is the empty set state, but this empty set state
-            // is the last
             else if ( ( this.emptySetState == this.machineConverted
                 .getState ( i + 1 ) )
                 && ( i == this.machineConverted.getState ().size () - 2 ) )
-            {
               this.endReached = true;
-            }
-            // the next state is the empty set state
             else if ( this.emptySetState == this.machineConverted
                 .getState ( i + 1 ) )
             {
@@ -3293,13 +2963,10 @@ public final class ConvertMachineDialog implements
             }
             // the normal next state
             else
-            {
               setCurrentActiveState ( this.machineConverted.getState ( i + 1 ),
                   manualStep );
-            }
             break;
           }
-        }
 
         this.currentActiveSymbol = this.machineConverted.getAlphabet ()
             .get ( 0 );
@@ -3332,13 +2999,9 @@ public final class ConvertMachineDialog implements
         for ( State s : this.modelOriginal.getMachine ().getState () )
         {
           if ( s.isStartState () )
-          {
             this.start = s;
-          }
           if ( s.isFinalState () )
-          {
             this.finals.add ( s );
-          }
         }
         State finState = this.finals.get ( this.finalsIndex );
         RegexNode newNode = getLK ( this.start, finState, this.k );
@@ -3368,13 +3031,9 @@ public final class ConvertMachineDialog implements
                 .getK () );
             newNode = tmp;
             if ( tmp != null )
-            {
               ( ( OneChildNode ) parentNode ).setRegex ( tmp );
-            }
             else
-            {
               eliminateNodeFromRegex ( uNode, node );
-            }
 
           }
           if ( parentNode instanceof TwoChildNode )
@@ -3386,18 +3045,12 @@ public final class ConvertMachineDialog implements
             if ( r != null )
             {
               if ( two.getRegex1 ().equals ( uNode ) )
-              {
                 two.setRegex1 ( r );
-              }
               else
-              {
                 two.setRegex2 ( r );
-              }
             }
             else
-            {
               eliminateNodeFromRegex ( uNode, node );
-            }
           }
           this.modelRegexConverted.getRegex ().setRegexNode ( node,
               node.toString () );
@@ -3405,28 +3058,21 @@ public final class ConvertMachineDialog implements
           uNode.getS0 ().setActive ( true );
           uNode.getS1 ().setActive ( true );
           for ( Transition t : this.machineOriginal.getTransition () )
-          {
             if ( t.getStateBegin ().equals ( uNode.getS0 () )
                 && t.getStateEnd ().equals ( uNode.getS1 () ) )
-            {
               t.setActive ( true );
-            }
-          }
 
           PrettyString string = new PrettyString ();
           PrettyString kString = new PrettyString ( new PrettyToken ( String
               .valueOf ( uNode.getK () ), Style.REGEX_SYMBOL ) );
           if ( newNode != null )
-          {
             string
                 .add ( Messages
                     .getPrettyString (
                         "ConvertMachineDialog.CreateLanguage", uNode.getS0 ().toPrettyString () //$NON-NLS-1$
                         , uNode.getS1 ().toPrettyString (), kString, newNode
                             .toPrettyString () ) );
-          }
           else
-          {
             string
                 .add ( Messages
                     .getPrettyString (
@@ -3434,7 +3080,6 @@ public final class ConvertMachineDialog implements
                         , uNode.getS1 ().toPrettyString (), kString,
                         new PrettyString ( new PrettyToken (
                             "\u2205", Style.KEYWORD ) ) ) ); //$NON-NLS-1$
-          }
           addOutlineComment ( string );
         }
         else
@@ -3444,13 +3089,9 @@ public final class ConvertMachineDialog implements
               this.finals.get ( this.finalsIndex ), this.k );
           RegexNode newNode;
           if ( n == null )
-          {
             newNode = node;
-          }
           else
-          {
             newNode = new DisjunctionNode ( node, n );
-          }
           this.modelRegexConverted.getRegex ().setRegexNode ( newNode,
               newNode.toString () );
 
@@ -3476,15 +3117,11 @@ public final class ConvertMachineDialog implements
             .getRegexNode ().getNextUnfinishedNode ();
         if ( ( this.finalsIndex + 1 >= this.finals.size () )
             && ( nextUnfishedNode == null ) )
-        {
           this.endReached = true;
-        }
       }
     }
     else
-    {
       throw new RuntimeException ( "unsupported step" ); //$NON-NLS-1$
-    }
 
     if ( manualStep )
     {
@@ -3503,10 +3140,8 @@ public final class ConvertMachineDialog implements
   private final void performPreviousStep ( boolean manualStep )
   {
     if ( manualStep )
-    {
       logger.debug ( "performPreviousStep",//$NON-NLS-1$
           "perform previous step" ); //$NON-NLS-1$
-    }
 
     StepItem stepItem = this.stepItemList
         .remove ( this.stepItemList.size () - 1 );
@@ -3521,43 +3156,27 @@ public final class ConvertMachineDialog implements
     clearSymbolHighlightOriginal ();
 
     for ( State current : stepItem.getActiveStatesOriginal () )
-    {
       current.setActive ( true );
-    }
     for ( State current : stepItem.getActiveStatesConverted () )
-    {
       current.setActive ( true );
-    }
     for ( Transition current : stepItem.getActiveTransitionsOriginal () )
-    {
       current.setActive ( true );
-    }
     for ( Transition current : stepItem.getActiveTransitionsConverted () )
-    {
       current.setActive ( true );
-    }
     for ( Symbol current : stepItem.getActiveSymbolsOriginal () )
-    {
       current.setActive ( true );
-    }
     for ( Symbol current : stepItem.getActiveSymbolsConverted () )
-    {
       current.setActive ( true );
-    }
     this.step = stepItem.getActiveStep ();
     setCurrentActiveState ( stepItem.getActiveState (), manualStep );
     this.currentActiveSymbol = stepItem.getActiveSymbol ();
 
     if ( stepItem.getAddedDefaultStateView () != null )
-    {
       this.modelConverted.removeState ( stepItem.getAddedDefaultStateView (),
           false );
-    }
     if ( stepItem.getAddedDefaultTransitionView () != null )
-    {
       this.modelConverted.removeTransition ( stepItem
           .getAddedDefaultTransitionView (), false );
-    }
     if ( stepItem.getAddedSymbol () != null )
     {
       Transition transition = stepItem.getAddedSymbol ().getFirst ();
@@ -3618,18 +3237,14 @@ public final class ConvertMachineDialog implements
   private final void setCurrentActiveState ( State state, boolean manualStep )
   {
     if ( manualStep )
-    {
       logger.debug ( "setCurrentActiveState", //$NON-NLS-1$
           "set the current active state to: " + Messages.QUOTE + state //$NON-NLS-1$
               + Messages.QUOTE );
-    }
 
     if ( ( state != null ) && ( state == this.emptySetState ) )
-    {
       throw new IllegalArgumentException (
           "active state is the empty set state: " //$NON-NLS-1$
               + state.getName () );
-    }
 
     this.currentActiveState = state;
   }
@@ -3718,9 +3333,7 @@ public final class ConvertMachineDialog implements
             .getRegex ().getRegexNode ().toPrettyString ().toString () );
       }
       else
-      {
         this.gui.styledRegexParserPanel.setText ( "" ); //$NON-NLS-1$
-      }
     }
     this.modelOriginal.getGraphModel ().cellsChanged (
         DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );

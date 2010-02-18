@@ -130,9 +130,7 @@ public final class TransitionDialog implements
     public final Object getElementAt ( int index )
     {
       if ( ( index < 0 ) || ( index >= this.list.size () ) )
-      {
         throw new IllegalArgumentException ( "index incorrect" ); //$NON-NLS-1$
-      }
       return this.list.get ( index );
     }
 
@@ -351,13 +349,11 @@ public final class TransitionDialog implements
     // find a transition
     Transition foundTransition = null;
     for ( Transition current : stateBegin.getTransitionBegin () )
-    {
       if ( current.getStateEnd () == stateEnd )
       {
         foundTransition = current;
         break;
       }
-    }
 
     // the transition will be added
     if ( foundTransition == null )
@@ -430,25 +426,19 @@ public final class TransitionDialog implements
     JGTIList selectedList = ( JGTIList ) event.getSource ();
     Symbol selected = ( Symbol ) selectedList.getSelectedValue ();
     if ( selected == null )
-    {
       return;
-    }
     if ( selectedList.equals ( this.gui.jGTIListAlphabet ) )
     {
       this.gui.jGTIListChangeOverSet.clearSelection ();
       this.gui.jGTIButtonMoveLeft.setEnabled ( false );
       if ( selectedList.getSelectedValues ().length > 0 )
-      {
         this.gui.jGTIButtonMoveRight.setEnabled ( true );
-      }
     }
     else
     {
       this.gui.jGTIListAlphabet.clearSelection ();
       if ( selectedList.getSelectedValues ().length > 0 )
-      {
         this.gui.jGTIButtonMoveLeft.setEnabled ( true );
-      }
       this.gui.jGTIButtonMoveRight.setEnabled ( false );
     }
   }
@@ -463,9 +453,7 @@ public final class TransitionDialog implements
         .getSelectedValues ();
     ArrayList < Symbol > removeList = new ArrayList < Symbol > ();
     for ( Object current : selectedValues )
-    {
       removeList.add ( ( Symbol ) current );
-    }
     removeFromChangeOver ( removeList );
   }
 
@@ -478,9 +466,7 @@ public final class TransitionDialog implements
     Object [] selectedValues = this.gui.jGTIListAlphabet.getSelectedValues ();
     ArrayList < Symbol > addList = new ArrayList < Symbol > ();
     for ( Object current : selectedValues )
-    {
       addList.add ( ( Symbol ) current );
-    }
     addToChangeOver ( addList );
   }
 
@@ -494,9 +480,7 @@ public final class TransitionDialog implements
     {
       ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
       for ( Symbol symbol : this.modelChangeOverSet )
-      {
         symbols.add ( symbol );
-      }
       this.transition = new DefaultTransition ( this.pushDownWordRead,
           this.pushDownWordWrite, symbols );
       this.transition.setAlphabet ( this.alphabet );
@@ -551,13 +535,9 @@ public final class TransitionDialog implements
     this.gui.setVisible ( false );
 
     if ( this.transition == null )
-    {
       handleNewTransition ();
-    }
     else
-    {
       handleUpdateTransition ();
-    }
     this.gui.dispose ();
     this.machinePanel.getJGTIGraph ().repaint ();
   }
@@ -576,9 +556,7 @@ public final class TransitionDialog implements
 
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
     for ( Symbol symbol : this.modelChangeOverSet )
-    {
       symbols.add ( symbol );
-    }
     try
     {
       this.transition.setPushDownWordRead ( this.pushDownWordRead );
@@ -695,9 +673,7 @@ public final class TransitionDialog implements
 
     this.modelAlphabet.add ( this.epsilonSymbol );
     for ( Symbol symbol : this.alphabet )
-    {
       this.modelAlphabet.add ( symbol );
-    }
 
     for ( Symbol symbol : symbols )
     {
@@ -729,14 +705,10 @@ public final class TransitionDialog implements
 
     // Set the push down read and write word
     if ( this.pushDownWordRead != null )
-    {
       this.gui.styledWordParserPanelRead.setText ( this.pushDownWordRead );
-    }
     this.gui.styledWordParserPanelRead.parse ();
     if ( this.pushDownWordWrite != null )
-    {
       this.gui.styledWordParserPanelWrite.setText ( this.pushDownWordWrite );
-    }
     this.gui.styledWordParserPanelWrite.parse ();
 
     /*
@@ -754,10 +726,8 @@ public final class TransitionDialog implements
               updateResultingTransition ();
             }
             else
-            {
               TransitionDialog.this.gui.styledTransitionParserPanel
                   .setText ( null );
-            }
             setButtonStatus ();
           }
         } );
@@ -773,10 +743,8 @@ public final class TransitionDialog implements
               updateResultingTransition ();
             }
             else
-            {
               TransitionDialog.this.gui.styledTransitionParserPanel
                   .setText ( null );
-            }
             setButtonStatus ();
           }
         } );
@@ -788,7 +756,6 @@ public final class TransitionDialog implements
 
     if ( !this.machinePanel.getMachine ().getMachineType ().equals (
         MachineType.PDA ) )
-    {
       if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
           PDAModeItem.SHOW ) )
       {
@@ -805,10 +772,7 @@ public final class TransitionDialog implements
         this.gui.styledAlphabetParserPanelPushDownAlphabet.setEnabled ( false );
       }
       else
-      {
         throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
-      }
-    }
 
     setButtonStatus ();
   }
@@ -843,9 +807,7 @@ public final class TransitionDialog implements
       Symbol symbol = ( Symbol ) rows.getSource ().getModel ().getElementAt (
           index );
       if ( !this.modelAlphabet.contains ( symbol ) )
-      {
         symbolList.add ( symbol );
-      }
     }
 
     removeFromChangeOver ( symbolList );
@@ -869,9 +831,7 @@ public final class TransitionDialog implements
       Symbol symbol = ( Symbol ) rows.getSource ().getModel ().getElementAt (
           index );
       if ( !this.modelChangeOverSet.contains ( symbol ) )
-      {
         symbolList.add ( symbol );
-      }
     }
     addToChangeOver ( symbolList );
   }
@@ -904,13 +864,9 @@ public final class TransitionDialog implements
     if ( ( this.gui.styledWordParserPanelRead.getParsedObject () == null )
         || ( this.gui.styledWordParserPanelWrite.getParsedObject () == null )
         || ( this.modelChangeOverSet.getSize () == 0 ) )
-    {
       this.gui.jGTIButtonOk.setEnabled ( false );
-    }
     else
-    {
       this.gui.jGTIButtonOk.setEnabled ( true );
-    }
   }
 
 
@@ -922,9 +878,7 @@ public final class TransitionDialog implements
   public final void setPushDownWordRead ( Word pushDownWordRead )
   {
     if ( pushDownWordRead == null )
-    {
       throw new NullPointerException ( "push down word read is null" ); //$NON-NLS-1$
-    }
     this.pushDownWordRead = pushDownWordRead;
   }
 
@@ -937,9 +891,7 @@ public final class TransitionDialog implements
   public final void setPushDownWordWrite ( Word pushDownWordWrite )
   {
     if ( pushDownWordWrite == null )
-    {
       throw new NullPointerException ( "push down word write is null" ); //$NON-NLS-1$
-    }
     this.pushDownWordWrite = pushDownWordWrite;
   }
 

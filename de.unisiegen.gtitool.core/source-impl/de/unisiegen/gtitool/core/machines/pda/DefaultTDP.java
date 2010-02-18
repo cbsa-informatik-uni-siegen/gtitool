@@ -5,7 +5,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -41,7 +41,7 @@ public class DefaultTDP extends DefaultPDA
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getTableColumnModel()
+   * @see StateMachine#getTableColumnModel()
    */
   @Override
   public TableColumnModel getTableColumnModel()

@@ -20,7 +20,7 @@ import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.grammars.rg.DefaultRG;
 import de.unisiegen.gtitool.core.i18n.Messages;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -48,7 +48,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * The {@link Machine} version.
+   * The {@link StateMachine} version.
    */
   private static final int GRAMMAR_VERSION = 734;
 
@@ -207,7 +207,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   * @see StateMachine#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )

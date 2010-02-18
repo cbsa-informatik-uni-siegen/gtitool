@@ -5,7 +5,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.LRAction;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Word;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 
 
 /**
@@ -23,7 +23,7 @@ public interface LRMachine
 
 
   /**
-   * Starts the {@link Machine} after a validation with the given {@link Word}.
+   * Starts the {@link StateMachine} after a validation with the given {@link Word}.
    * 
    * @param word The {@link Word} to start with.
    */

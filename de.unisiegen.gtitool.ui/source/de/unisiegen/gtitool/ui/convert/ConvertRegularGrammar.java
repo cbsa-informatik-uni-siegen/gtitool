@@ -17,7 +17,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlph
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.enfa.ENFA;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
@@ -67,7 +67,7 @@ public class ConvertRegularGrammar extends AbstractConvertGrammar
   @Override
   protected void createMachine ()
   {
-    Machine machine = new DefaultENFA ( getAlphabet (), getAlphabet (), false );
+    StateMachine machine = new DefaultENFA ( getAlphabet (), getAlphabet (), false );
     createMachinePanel ( machine );
   }
 

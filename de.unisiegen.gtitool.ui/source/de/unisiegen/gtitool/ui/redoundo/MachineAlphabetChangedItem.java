@@ -6,7 +6,7 @@ import java.util.TreeSet;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 
 
@@ -69,9 +69,9 @@ public final class MachineAlphabetChangedItem extends RedoUndoItem
 
 
   /**
-   * The {@link Machine}.
+   * The {@link StateMachine}.
    */
-  private Machine machine;
+  private StateMachine machine;
 
 
   /**
@@ -84,14 +84,14 @@ public final class MachineAlphabetChangedItem extends RedoUndoItem
    * Allocates a new {@link MachineAlphabetChangedItem}.
    * 
    * @param machinePanel The {@link MachinePanel}.
-   * @param machine The {@link Machine}.
+   * @param machine The {@link StateMachine}.
    * @param newAlphabet The new {@link Alphabet}.
    * @param newPushDownAlphabet The new push down {@link Alphabet}.
    * @param oldUsePushDown The old use push down alphabet value.
    * @param newUsePushDown The new use push down alphabet value.
    */
   public MachineAlphabetChangedItem ( MachinePanel machinePanel,
-      Machine machine, Alphabet newAlphabet, Alphabet newPushDownAlphabet,
+      StateMachine machine, Alphabet newAlphabet, Alphabet newPushDownAlphabet,
       boolean oldUsePushDown, boolean newUsePushDown )
   {
     super ();

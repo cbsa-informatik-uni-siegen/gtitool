@@ -412,7 +412,6 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
     if ( !this.machinePanel.getMachine ().getMachineType ().equals (
         MachineType.PDA ) )
-    {
       if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
           PDAModeItem.SHOW ) )
       {
@@ -420,14 +419,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       }
       else if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
           PDAModeItem.HIDE ) )
-      {
         this.gui.jGTIRadioButtonMachinePDATable.setVisible ( false );
-      }
       else
-      {
         throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
-      }
-    }
 
     initialize ();
   }
@@ -536,29 +530,19 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     {
       TableColumn tableColumn = this.tableColumnModel.getColumn ( i );
       if ( tableColumn.getMaxWidth () < Integer.MAX_VALUE )
-      {
         columnWidth [ i ] = tableColumn.getMaxWidth ();
-      }
       else
-      {
         columnWidth [ i ] = 0;
-      }
     }
 
     int sum = 0;
     for ( int element : columnWidth )
-    {
       sum += element;
-    }
 
     int variableColumns = 0;
     for ( int element : columnWidth )
-    {
       if ( element == 0 )
-      {
         variableColumns++ ;
-      }
-    }
 
     while ( ( sum + variableColumns * 50 ) > printWidth )
     {
@@ -572,12 +556,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
     int variableColumnsWidth = ( printWidth - sum ) / variableColumns;
     for ( int i = 0 ; i < columnWidth.length ; i++ )
-    {
       if ( columnWidth [ i ] == 0 )
-      {
         columnWidth [ i ] = variableColumnsWidth;
-      }
-    }
     return columnWidth;
   }
 
@@ -643,14 +623,10 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       int stringWidth = g.getFontMetrics ().stringWidth ( text );
 
       if ( HEADER_CENTERED )
-      {
         g.drawString ( text, x + ( columnWidth [ column ] - stringWidth ) / 2,
             y );
-      }
       else
-      {
         g.drawString ( text, x, y );
-      }
       x += columnWidth [ column ];
     }
   }
@@ -698,21 +674,13 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
             Font font = null;
 
             if ( !currentToken.isBold () && !currentToken.isItalic () )
-            {
               font = g.getFont ().deriveFont ( Font.PLAIN );
-            }
             else if ( currentToken.isBold () && currentToken.isItalic () )
-            {
               font = g.getFont ().deriveFont ( Font.BOLD | Font.ITALIC );
-            }
             else if ( currentToken.isBold () )
-            {
               font = g.getFont ().deriveFont ( Font.BOLD );
-            }
             else if ( currentToken.isItalic () )
-            {
               font = g.getFont ().deriveFont ( Font.ITALIC );
-            }
 
             g.setFont ( font );
             g.setColor ( currentToken.getColor () );
@@ -729,11 +697,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       }
 
       if ( performNormal )
-      {
         g
             .drawString (
                 value == null ? "" : value.toString (), x, y + ROW_HEIGHT - internOffset ); //$NON-NLS-1$
-      }
       x += columnWidth [ column ];
     }
   }
@@ -830,45 +796,25 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
     logger.debug ( "handlePrint", "printing" ); //$NON-NLS-1$ //$NON-NLS-2$
     if ( this.machinePanel != null )
-    {
       printMachinePanel ();
-    }
     else if ( this.grammarPanel != null )
-    {
       printGrammarPanel ();
-    }
     else if ( this.minimizeMachineDialog != null )
-    {
       printMinimizeMachineDialog ();
-    }
     else if ( this.convertMachineDialog != null )
-    {
       printConvertMachineDialog ();
-    }
     else if ( this.convertRegexToMachineDialog != null )
-    {
       printConvertRegexToMachineDialog ();
-    }
     else if ( this.convertGrammarDialog != null )
-    {
       printConvertGrammarDialog ();
-    }
     else if ( this.regexPanel != null )
-    {
       printRegexPanel ();
-    }
     else if ( this.historyDialog != null )
-    {
       printHistoryDialog ();
-    }
     else if ( this.reachableStatesDialog != null )
-    {
       printReachableStatesDialog ();
-    }
     else if ( this.textWindow != null )
-    {
       printTextWindow ();
-    }
 
     logger.debug ( "handlePrint", "printed" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
@@ -937,9 +883,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       throws PrinterException
   {
     if ( ( pageIndex < 0 ) || ( pageIndex >= this.pageCount ) )
-    {
       return NO_SUCH_PAGE;
-    }
     try
     {
       int [] columnWidth = calculateColumnWidth ();
@@ -970,9 +914,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         }
 
         if ( ( row % 2 ) == 0 )
-        {
           drawBackground ( g, y );
-        }
 
         drawIconAndText ( g, y, row, columnWidth );
 
@@ -1058,30 +1000,24 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     try
     {
       if ( this.gui.jGTIRadioButtonConvertMachineOriginalGraph.isSelected () )
-      {
         printJGraph ( this.convertMachineDialog.getModelOriginal ()
             .getJGTIGraph (), this.convertMachineDialog.getMachinePanel ()
             .getName ()
             + " " + Messages.getString ( "PrintDialog.Original" ) ); //$NON-NLS-1$//$NON-NLS-2$
-      }
       else if ( this.gui.jGTIRadioButtonConvertMachineConvertedGraph
           .isSelected () )
       {
         if ( this.convertMachineDialog.getConvertMachineType ().equals (
             ConvertMachineType.DFA_TO_REGEX ) )
-        {
           printJGraph ( this.convertMachineDialog.getModelRegexConverted ()
               .getJGTIGraph (), this.convertMachineDialog.getMachinePanel ()
               .getName ()
               + " " + Messages.getString ( "PrintDialog.Converted" ) ); //$NON-NLS-1$//$NON-NLS-2$
-        }
         else
-        {
           printJGraph ( this.convertMachineDialog.getModelConverted ()
               .getJGTIGraph (), this.convertMachineDialog.getMachinePanel ()
               .getName ()
               + " " + Messages.getString ( "PrintDialog.Converted" ) ); //$NON-NLS-1$//$NON-NLS-2$
-        }
       }
 
       else if ( this.gui.jGTIRadioButtonConvertMachineTable.isSelected () )
@@ -1120,21 +1056,16 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     try
     {
       if ( this.gui.jGTIRadioButtonConvertMachineOriginalGraph.isSelected () )
-      {
         printJGraph ( this.convertRegexToMachineDialog.getModelOriginal ()
             .getJGTIGraph (), this.convertRegexToMachineDialog.getRegexPanel ()
             .getName ()
             + " " + Messages.getString ( "PrintDialog.Original" ) ); //$NON-NLS-1$//$NON-NLS-2$
-      }
       else if ( this.gui.jGTIRadioButtonConvertMachineConvertedGraph
           .isSelected () )
-      {
         printJGraph ( this.convertRegexToMachineDialog.getModelConverted ()
             .getJGTIGraph (), this.convertRegexToMachineDialog.getRegexPanel ()
             .getName ()
             + " " + Messages.getString ( "PrintDialog.Converted" ) ); //$NON-NLS-1$//$NON-NLS-2$
-      }
-
       else if ( this.gui.jGTIRadioButtonConvertMachineTable.isSelected () )
       {
         this.tableModel = this.convertRegexToMachineDialog
@@ -1237,13 +1168,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       paper.setImageableArea ( 0, 0, paper.getWidth (), paper.getHeight () );
       pageFormat.setPaper ( paper );
       if ( this.gui.jGTIRadioButtonPortrait.isSelected () )
-      {
         pageFormat.setOrientation ( PageFormat.PORTRAIT );
-      }
       else
-      {
         pageFormat.setOrientation ( PageFormat.LANDSCAPE );
-      }
 
       job.setPrintService ( ( PrintService ) this.gui.jGTIComboBoxPrinter
           .getSelectedItem () );
@@ -1270,10 +1197,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     try
     {
       if ( this.gui.jGTIRadioButtonMachineGraph.isSelected () )
-      {
         printJGraph ( this.machinePanel.getJGTIGraph (), this.machinePanel
             .getName () );
-      }
       else if ( this.gui.jGTIRadioButtonMachinePDATable.isSelected () )
       {
         this.tableModel = this.machinePanel.getPDATableModel ();
@@ -1314,21 +1239,16 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     try
     {
       if ( this.gui.jGTIRadioButtonMinimizeMachineOriginalGraph.isSelected () )
-      {
         printJGraph ( this.minimizeMachineDialog.getModelOriginal ()
             .getJGTIGraph (), this.minimizeMachineDialog.getMachinePanel ()
             .getName ()
             + " " + Messages.getString ( "PrintDialog.Original" ) ); //$NON-NLS-1$//$NON-NLS-2$
-      }
       else if ( this.gui.jGTIRadioButtonMinimizeMachineMinimizedGraph
           .isSelected () )
-      {
         printJGraph ( this.minimizeMachineDialog.getModelMinimized ()
             .getJGTIGraph (), this.minimizeMachineDialog.getMachinePanel ()
             .getName ()
             + " " + Messages.getString ( "PrintDialog.Minimized" ) ); //$NON-NLS-1$//$NON-NLS-2$
-      }
-
       else if ( this.gui.jGTIRadioButtonMinimizeMachineTable.isSelected () )
       {
         this.tableModel = this.minimizeMachineDialog
@@ -1364,7 +1284,6 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     {
 
       if ( this.gui.jGTIRadioButtonReachableStatesGraph.isSelected () )
-      {
         printJGraph ( this.reachableStatesDialog.getModelOriginal ()
             .getJGTIGraph (), this.reachableStatesDialog.getMachinePanel ()
             .getName ()
@@ -1372,8 +1291,6 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
             + Messages.getString ( "PrintDialog.ReachableStates" ) //$NON-NLS-1$
             + " " //$NON-NLS-1$
             + Messages.getString ( "PrintDialog.Original" ) ); //$NON-NLS-1$
-      }
-
       else if ( this.gui.jGTIRadioButtonReachableStatesTable.isSelected () )
       {
         this.tableModel = this.reachableStatesDialog
@@ -1428,13 +1345,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     paper.setImageableArea ( 0, 0, paper.getWidth (), paper.getHeight () );
     pageFormat.setPaper ( paper );
     if ( this.gui.jGTIRadioButtonPortrait.isSelected () )
-    {
       pageFormat.setOrientation ( PageFormat.PORTRAIT );
-    }
     else
-    {
       pageFormat.setOrientation ( PageFormat.LANDSCAPE );
-    }
     this.pageWidth = ( int ) pageFormat.getWidth ();
     this.pageHeight = ( int ) pageFormat.getHeight ();
 
@@ -1468,13 +1381,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       paper.setImageableArea ( 0, 0, paper.getWidth (), paper.getHeight () );
       pageFormat.setPaper ( paper );
       if ( this.gui.jGTIRadioButtonPortrait.isSelected () )
-      {
         pageFormat.setOrientation ( PageFormat.PORTRAIT );
-      }
       else
-      {
         pageFormat.setOrientation ( PageFormat.LANDSCAPE );
-      }
 
       job.setPrintService ( ( PrintService ) this.gui.jGTIComboBoxPrinter
           .getSelectedItem () );
@@ -1502,25 +1411,20 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     this.gui.pack ();
     this.gui.setLocationRelativeTo ( this.parentFrame );
     if ( this.gui.jGTIComboBoxPrinter.getModel ().getSize () > 0 )
-    {
       this.gui.setVisible ( true );
+    else if ( this.parentFrame != null )
+    {
+      InfoDialog dialog = new InfoDialog ( this.parentFrame, Messages
+          .getString ( "PrintDialog.ErrorPrinterMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrinter" ) ); //$NON-NLS-1$
+      dialog.show ();
     }
     else
     {
-      if ( this.parentFrame != null )
-      {
-        InfoDialog dialog = new InfoDialog ( this.parentFrame, Messages
-            .getString ( "PrintDialog.ErrorPrinterMessage" ), Messages //$NON-NLS-1$
-            .getString ( "PrintDialog.ErrorPrinter" ) ); //$NON-NLS-1$
-        dialog.show ();
-      }
-      else
-      {
-        InfoDialog dialog = new InfoDialog ( this.parentDialog, Messages
-            .getString ( "PrintDialog.ErrorPrinterMessage" ), Messages //$NON-NLS-1$
-            .getString ( "PrintDialog.ErrorPrinter" ) ); //$NON-NLS-1$
-        dialog.show ();
-      }
+      InfoDialog dialog = new InfoDialog ( this.parentDialog, Messages
+          .getString ( "PrintDialog.ErrorPrinterMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrinter" ) ); //$NON-NLS-1$
+      dialog.show ();
     }
   }
 }

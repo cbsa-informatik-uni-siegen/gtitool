@@ -6,11 +6,11 @@ import java.util.EventListener;
 
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 
 
 /**
- * The listener interface for receiving {@link Machine} changes.
+ * The listener interface for receiving {@link StateMachine} changes.
  * 
  * @author Christian Fehler
  * @version $Id$

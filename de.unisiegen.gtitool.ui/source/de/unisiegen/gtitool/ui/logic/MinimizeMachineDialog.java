@@ -22,7 +22,7 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
@@ -121,9 +121,9 @@ public final class MinimizeMachineDialog implements
 
 
   /**
-   * The original {@link Machine}.
+   * The original {@link StateMachine}.
    */
-  private Machine machine;
+  private StateMachine machine;
 
 
   /**
@@ -274,7 +274,7 @@ public final class MinimizeMachineDialog implements
 
 
   /**
-   * Build the minimal {@link Machine}.
+   * Build the minimal {@link StateMachine}.
    */
   private void buildMinimalMachine ()
   {
@@ -327,7 +327,7 @@ public final class MinimizeMachineDialog implements
 
 
   /**
-   * Create the transitions of the {@link Machine}.
+   * Create the transitions of the {@link StateMachine}.
    */
   private void createTransitions ()
   {
@@ -746,7 +746,7 @@ public final class MinimizeMachineDialog implements
 
 
   /**
-   * Minimize the given {@link Machine}.
+   * Minimize the given {@link StateMachine}.
    */
   public final void minimize ()
   {

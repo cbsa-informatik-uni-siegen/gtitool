@@ -9,7 +9,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultRegexAlphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.regex.DefaultRegex;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -38,9 +38,9 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
 
 
   /**
-   * The {@link Machine} of this dialog.
+   * The {@link StateMachine} of this dialog.
    */
-  private Machine machine;
+  private StateMachine machine;
 
 
   /**
@@ -72,10 +72,10 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
    * 
    * @param parent The parent frame.
    * @param machinePanel The {@link MachinePanel}.
-   * @param machine The {@link Machine} of this dialog.
+   * @param machine The {@link StateMachine} of this dialog.
    */
   public AlphabetDialog ( JFrame parent, MachinePanel machinePanel,
-      Machine machine )
+      StateMachine machine )
   {
     this.parent = parent;
     this.machine = machine;
@@ -119,7 +119,6 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
         .setSelected ( this.machine.isUsePushDownAlphabet () );
 
     if ( !this.machine.getMachineType ().equals ( MachineType.PDA ) )
-    {
       if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
           PDAModeItem.SHOW ) )
       {
@@ -134,10 +133,7 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
             .setEnabled ( false );
       }
       else
-      {
         throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
-      }
-    }
 
   }
 
@@ -228,7 +224,6 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
           || !this.machine.getPushDownAlphabet ().equals (
               this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
                   .getParsedObject () ) )
-      {
         this.machinePanel.getRedoUndoHandler ().addItem (
             new MachineAlphabetChangedItem ( this.machinePanel, this.machine,
                 this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
@@ -237,7 +232,6 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
                     .getParsedObject (), this.machine.isUsePushDownAlphabet (),
                 this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
                     .isSelected () ) );
-      }
       performAlphabetChange ( this.machine.getAlphabet (),
           this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
               .getParsedObject () );
@@ -280,19 +274,11 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
     TreeSet < Symbol > symbolsToAdd = new TreeSet < Symbol > ();
     TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
     for ( Symbol current : newAlphabet )
-    {
       if ( !oldAlphabet.contains ( current ) )
-      {
         symbolsToAdd.add ( current );
-      }
-    }
     for ( Symbol current : oldAlphabet )
-    {
       if ( !newAlphabet.contains ( current ) )
-      {
         symbolsToRemove.add ( current );
-      }
-    }
     try
     {
       oldAlphabet.add ( symbolsToAdd );
@@ -317,26 +303,15 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
           .getParsedObject () == null )
           || ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
               .getParsedObject () == null ) )
-      {
         this.gui.jGTIButtonOk.setEnabled ( false );
-      }
       else
-      {
         this.gui.jGTIButtonOk.setEnabled ( true );
-      }
     }
+    else if ( this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
+        .getParsedObject () == null )
+      this.gui.jGTIButtonOk.setEnabled ( false );
     else
-    {
-      if ( this.gui.alphabetPanelForm.styledRegexAlphabetParserPanelInput
-          .getParsedObject () == null )
-      {
-        this.gui.jGTIButtonOk.setEnabled ( false );
-      }
-      else
-      {
-        this.gui.jGTIButtonOk.setEnabled ( true );
-      }
-    }
+      this.gui.jGTIButtonOk.setEnabled ( true );
   }
 
 

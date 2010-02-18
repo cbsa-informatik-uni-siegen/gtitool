@@ -1,7 +1,7 @@
 package de.unisiegen.gtitool.core.machines.pda;
 
 
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 
 
 /**
@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface PDA extends Machine
+public interface PDA extends StateMachine
 {
   // Do nothing
 }

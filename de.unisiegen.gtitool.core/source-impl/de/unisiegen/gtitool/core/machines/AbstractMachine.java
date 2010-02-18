@@ -74,7 +74,7 @@ import de.unisiegen.gtitool.logger.Logger;
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class AbstractMachine implements Machine
+public abstract class AbstractMachine implements StateMachine
 {
 
   /**
@@ -91,17 +91,17 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Returns the {@link Machine} with the given {@link Machine} type.
+   * Returns the {@link StateMachine} with the given {@link StateMachine} type.
    * 
-   * @param machineType The {@link Machine} type.
+   * @param machineType The {@link StateMachine} type.
    * @param alphabet The {@link Alphabet}.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          {@link Transition}.
    * @param usePushDownAlphabet The use push down {@link Alphabet}.
-   * @return The {@link Machine} with the given {@link Machine} type.
-   * @throws StoreException If the {@link Machine} type is unknown.
+   * @return The {@link StateMachine} with the given {@link StateMachine} type.
+   * @throws StoreException If the {@link StateMachine} type is unknown.
    */
-  public static final Machine createMachine ( String machineType,
+  public static final StateMachine createMachine ( String machineType,
       Alphabet alphabet, Alphabet pushDownAlphabet, boolean usePushDownAlphabet )
       throws StoreException
   {
@@ -350,7 +350,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addMachineChangedListener(MachineChangedListener)
+   * @see StateMachine#addMachineChangedListener(MachineChangedListener)
    */
   public final void addMachineChangedListener ( MachineChangedListener listener )
   {
@@ -361,7 +361,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   * @see StateMachine#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -373,7 +373,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addState(Iterable)
+   * @see StateMachine#addState(Iterable)
    */
   public final void addState ( Iterable < State > states )
   {
@@ -389,7 +389,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addState(State)
+   * @see StateMachine#addState(State)
    */
   public final void addState ( State state )
   {
@@ -432,7 +432,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addState(State[])
+   * @see StateMachine#addState(State[])
    */
   public final void addState ( State ... states )
   {
@@ -459,7 +459,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addTransition(Iterable)
+   * @see StateMachine#addTransition(Iterable)
    */
   public final void addTransition ( Iterable < Transition > transitions )
   {
@@ -475,7 +475,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addTransition(Transition)
+   * @see StateMachine#addTransition(Transition)
    */
   public final void addTransition ( Transition transition )
   {
@@ -514,7 +514,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addTransition(Transition[])
+   * @see StateMachine#addTransition(Transition[])
    */
   public final void addTransition ( Transition ... transitions )
   {
@@ -772,7 +772,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#clearSelectedTransition()
+   * @see StateMachine#clearSelectedTransition()
    */
   public final void clearSelectedTransition ()
   {
@@ -986,7 +986,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getAcceptedWords(int)
+   * @see StateMachine#getAcceptedWords(int)
    */
   public final ArrayList < Word > getAcceptedWords ( int maxLength )
   {
@@ -1029,7 +1029,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getAlphabet()
+   * @see StateMachine#getAlphabet()
    */
   public final Alphabet getAlphabet ()
   {
@@ -1078,7 +1078,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getMachineType()
+   * @see StateMachine#getMachineType()
    */
   public abstract MachineType getMachineType ();
 
@@ -1086,7 +1086,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getNextStateName()
+   * @see StateMachine#getNextStateName()
    */
   public final String getNextStateName ()
   {
@@ -1105,7 +1105,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getNotReachableStates()
+   * @see StateMachine#getNotReachableStates()
    */
   public final ArrayList < State > getNotReachableStates ()
   {
@@ -1122,7 +1122,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getNotRemoveableSymbolsFromAlphabet()
+   * @see StateMachine#getNotRemoveableSymbolsFromAlphabet()
    */
   public final TreeSet < Symbol > getNotRemoveableSymbolsFromAlphabet ()
   {
@@ -1138,7 +1138,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getNotRemoveableSymbolsFromPushDownAlphabet()
+   * @see StateMachine#getNotRemoveableSymbolsFromPushDownAlphabet()
    */
   public final TreeSet < Symbol > getNotRemoveableSymbolsFromPushDownAlphabet ()
   {
@@ -1157,7 +1157,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getPossibleTransitions()
+   * @see StateMachine#getPossibleTransitions()
    */
   public final ArrayList < Transition > getPossibleTransitions ()
   {
@@ -1229,7 +1229,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getPushDownAlphabet()
+   * @see StateMachine#getPushDownAlphabet()
    */
   public final Alphabet getPushDownAlphabet ()
   {
@@ -1240,7 +1240,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getReachableStates()
+   * @see StateMachine#getReachableStates()
    */
   public final ArrayList < State > getReachableStates ()
   {
@@ -1271,7 +1271,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getReadedSymbols()
+   * @see StateMachine#getReadedSymbols()
    */
   public final ArrayList < Symbol > getReadedSymbols ()
       throws WordFinishedException, WordResetedException
@@ -1294,7 +1294,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getStack()
+   * @see StateMachine#getStack()
    */
   public final Stack getStack ()
   {
@@ -1305,7 +1305,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getState()
+   * @see StateMachine#getState()
    */
   public final ArrayList < State > getState ()
   {
@@ -1316,7 +1316,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getState(int)
+   * @see StateMachine#getState(int)
    */
   public final State getState ( int index )
   {
@@ -1327,7 +1327,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getTableColumnModel()
+   * @see StateMachine#getTableColumnModel()
    */
   public TableColumnModel getTableColumnModel ()
   {
@@ -1365,7 +1365,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getTransition()
+   * @see StateMachine#getTransition()
    */
   public final ArrayList < Transition > getTransition ()
   {
@@ -1376,7 +1376,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getTransition(int)
+   * @see StateMachine#getTransition(int)
    */
   public final Transition getTransition ( int index )
   {
@@ -1539,7 +1539,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#getWord()
+   * @see StateMachine#getWord()
    */
   public final Word getWord ()
   {
@@ -1562,7 +1562,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#isEveryStateUnique()
+   * @see StateMachine#isEveryStateUnique()
    */
   public final boolean isEveryStateUnique ()
   {
@@ -1634,7 +1634,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#isNextSymbolAvailable()
+   * @see StateMachine#isNextSymbolAvailable()
    */
   public final boolean isNextSymbolAvailable ()
   {
@@ -1677,7 +1677,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#isPreviousSymbolAvailable()
+   * @see StateMachine#isPreviousSymbolAvailable()
    */
   public final boolean isPreviousSymbolAvailable ()
   {
@@ -1691,7 +1691,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#isUsePushDownAlphabet()
+   * @see StateMachine#isUsePushDownAlphabet()
    */
   public final boolean isUsePushDownAlphabet ()
   {
@@ -1702,7 +1702,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#isUserInputNeeded()
+   * @see StateMachine#isUserInputNeeded()
    */
   public final boolean isUserInputNeeded ()
   {
@@ -1715,7 +1715,7 @@ public abstract class AbstractMachine implements Machine
   /**
    *{@inheritDoc}
    * 
-   * @see Machine#isWordAccepted()
+   * @see StateMachine#isWordAccepted()
    */
   public final boolean isWordAccepted ()
   {
@@ -1733,7 +1733,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#isWordAccepted(Word)
+   * @see StateMachine#isWordAccepted(Word)
    */
   public final boolean isWordAccepted ( Word testWord )
   {
@@ -1864,7 +1864,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#nextSymbol()
+   * @see StateMachine#nextSymbol()
    */
   public final void nextSymbol ()
   {
@@ -2028,7 +2028,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#nextSymbol(Transition)
+   * @see StateMachine#nextSymbol(Transition)
    */
   public void nextSymbol ( Transition transition )
   {
@@ -2105,7 +2105,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#previousSymbol()
+   * @see StateMachine#previousSymbol()
    */
   public final void previousSymbol ()
   {
@@ -2148,7 +2148,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeMachineChangedListener(MachineChangedListener)
+   * @see StateMachine#removeMachineChangedListener(MachineChangedListener)
    */
   public final void removeMachineChangedListener (
       MachineChangedListener listener )
@@ -2160,7 +2160,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   * @see StateMachine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -2172,7 +2172,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeState(java.lang.Iterable)
+   * @see StateMachine#removeState(java.lang.Iterable)
    */
   public final void removeState ( Iterable < State > states )
   {
@@ -2188,7 +2188,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeState(State)
+   * @see StateMachine#removeState(State)
    */
   public final void removeState ( State state )
   {
@@ -2207,7 +2207,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeState(State[])
+   * @see StateMachine#removeState(State[])
    */
   public final void removeState ( State ... states )
   {
@@ -2223,7 +2223,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeSymbol(Symbol)
+   * @see StateMachine#removeSymbol(Symbol)
    */
   public final void removeSymbol ( Symbol symbol )
   {
@@ -2245,7 +2245,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeTransition(java.lang.Iterable)
+   * @see StateMachine#removeTransition(java.lang.Iterable)
    */
   public final void removeTransition ( Iterable < Transition > transitions )
   {
@@ -2261,7 +2261,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeTransition(Transition)
+   * @see StateMachine#removeTransition(Transition)
    */
   public final void removeTransition ( Transition transition )
   {
@@ -2286,7 +2286,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeTransition(Transition[])
+   * @see StateMachine#removeTransition(Transition[])
    */
   public final void removeTransition ( Transition ... transitions )
   {
@@ -2339,7 +2339,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#setSelectedState(State)
+   * @see StateMachine#setSelectedState(State)
    */
   public final void setSelectedState ( State state )
   {
@@ -2363,7 +2363,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#setSelectedTransition(ArrayList)
+   * @see StateMachine#setSelectedTransition(ArrayList)
    */
   public final void setSelectedTransition (
       ArrayList < Transition > transitionList )
@@ -2440,7 +2440,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#setUsePushDownAlphabet(boolean)
+   * @see StateMachine#setUsePushDownAlphabet(boolean)
    */
   public final void setUsePushDownAlphabet ( boolean usePushDownAlphabet )
   {
@@ -2724,7 +2724,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#start(Word)
+   * @see StateMachine#start(Word)
    */
   public final void start ( Word startWord )
   {
@@ -2747,7 +2747,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#stop
+   * @see StateMachine#stop
    */
   public final void stop ()
   {
@@ -2765,7 +2765,7 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#validate()
+   * @see StateMachine#validate()
    */
   public final void validate () throws MachineValidationException
   {

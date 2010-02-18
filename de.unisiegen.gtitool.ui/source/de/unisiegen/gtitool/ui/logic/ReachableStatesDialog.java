@@ -21,7 +21,7 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -421,9 +421,9 @@ public final class ReachableStatesDialog implements
 
 
   /**
-   * The original {@link Machine}.
+   * The original {@link StateMachine}.
    */
-  private Machine machineOriginal;
+  private StateMachine machineOriginal;
 
 
   /**
@@ -433,9 +433,9 @@ public final class ReachableStatesDialog implements
 
 
   /**
-   * The result {@link Machine}.
+   * The result {@link StateMachine}.
    */
-  private Machine machineResult;
+  private StateMachine machineResult;
 
 
   /**

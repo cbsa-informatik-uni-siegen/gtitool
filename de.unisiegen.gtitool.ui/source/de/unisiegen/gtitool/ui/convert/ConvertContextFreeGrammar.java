@@ -16,7 +16,7 @@ import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
@@ -74,7 +74,7 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
   @Override
   protected void createMachine ()
   {
-    Machine machine = new DefaultPDA ( getAlphabet (), getPushDownAlphabet (),
+    StateMachine machine = new DefaultPDA ( getAlphabet (), getPushDownAlphabet (),
         true );
     createMachinePanel ( machine );
 

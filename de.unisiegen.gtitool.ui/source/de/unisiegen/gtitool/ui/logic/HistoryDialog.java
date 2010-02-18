@@ -15,7 +15,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Transition.TransitionType;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.history.HistoryPath;
 import de.unisiegen.gtitool.ui.history.HistoryPathPart;
@@ -78,9 +78,9 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
 
   /**
-   * The {@link Machine}.
+   * The {@link StateMachine}.
    */
-  private Machine machine;
+  private StateMachine machine;
 
 
   /**
@@ -111,10 +111,10 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
    * Allocates a new {@link HistoryDialog}.
    * 
    * @param parent The parent {@link JFrame}.
-   * @param machine The {@link Machine}.
+   * @param machine The {@link StateMachine}.
    * @param machinePanel The {@link MachinePanel}.
    */
-  public HistoryDialog ( JFrame parent, Machine machine,
+  public HistoryDialog ( JFrame parent, StateMachine machine,
       MachinePanel machinePanel )
   {
     logger.debug ( "HistoryDialog", "allocate a new history dialog" ); //$NON-NLS-1$ //$NON-NLS-2$

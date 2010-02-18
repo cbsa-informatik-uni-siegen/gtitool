@@ -9,7 +9,7 @@ import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.grammars.rg.DefaultRG;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
@@ -126,9 +126,9 @@ public final class NewDialog implements LogicClass < NewDialogForm >
 
 
   /**
-   * Returns the {@link Machine} choice.
+   * Returns the {@link StateMachine} choice.
    * 
-   * @return The {@link Machine} choice.
+   * @return The {@link StateMachine} choice.
    */
   public final Choice getMachineChoice ()
   {
@@ -155,18 +155,12 @@ public final class NewDialog implements LogicClass < NewDialogForm >
   {
     if ( this.newDialogChoice.getUserChoice ().equals (
         NewDialogChoice.Choice.MACHINE ) )
-    {
       this.machineChoice.getGUI ().setVisible ( true );
-    }
     else if ( this.newDialogChoice.getUserChoice ().equals (
         NewDialogChoice.Choice.GRAMMAR ) )
-    {
       this.grammarChoice.getGUI ().setVisible ( true );
-    }
     else
-    {
       this.newDialogChoice.getGUI ().setVisible ( true );
-    }
     this.newDialogAlphabet.getGUI ().setVisible ( false );
     this.newDialogTerminal.getGUI ().setVisible ( false );
 
@@ -318,18 +312,12 @@ public final class NewDialog implements LogicClass < NewDialogForm >
     this.newDialogAlphabet.changeGui ();
     if ( this.newDialogChoice.getUserChoice ().equals (
         NewDialogChoice.Choice.MACHINE ) )
-    {
       this.machineChoice.getGUI ().setVisible ( true );
-    }
     else if ( this.newDialogChoice.getUserChoice ().equals (
         NewDialogChoice.Choice.GRAMMAR ) )
-    {
       this.grammarChoice.getGUI ().setVisible ( true );
-    }
     else
-    {
       this.newDialogAlphabet.getGUI ().setVisible ( true );
-    }
     this.newDialogChoice.getGUI ().setVisible ( false );
   }
 
@@ -427,13 +415,9 @@ public final class NewDialog implements LogicClass < NewDialogForm >
           .setSelected ( true );
     }
     else if ( entityType.equals ( RegexType.REGEX ) )
-    {
       this.newDialogChoice.getGUI ().jGTIRadioButtonRegex.setSelected ( true );
-    }
     else
-    {
       throw new RuntimeException ( "unsupported entity type" ); //$NON-NLS-1$
-    }
   }
 
 

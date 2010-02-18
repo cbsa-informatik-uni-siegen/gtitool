@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 
 
 /**
- * An abstract adapter class for receiving {@link Machine} changes.
+ * An abstract adapter class for receiving {@link StateMachine} changes.
  * 
  * @author Christian Fehler
  * @version $Id$

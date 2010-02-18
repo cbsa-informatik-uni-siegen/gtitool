@@ -27,7 +27,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.listener.MachineChangedListener;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
@@ -58,7 +58,7 @@ import de.unisiegen.gtitool.ui.redoundo.TransitionRemovedItem;
 
 
 /**
- * The Model for the {@link Machine}s
+ * The Model for the {@link StateMachine}s
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
@@ -69,7 +69,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 {
 
   /**
-   * The {@link Machine} version.
+   * The {@link StateMachine} version.
    */
   private static final int MACHINE_VERSION = 1018;
 
@@ -93,9 +93,9 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * The {@link Machine}
+   * The {@link StateMachine}
    */
-  private final Machine machine;
+  private final StateMachine machine;
 
 
   /**
@@ -317,9 +317,9 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   /**
    * Allocate a new {@link DefaultMachineModel}.
    * 
-   * @param machine The {@link Machine}.
+   * @param machine The {@link StateMachine}.
    */
-  public DefaultMachineModel ( Machine machine )
+  public DefaultMachineModel ( StateMachine machine )
   {
     this.machine = machine;
     
@@ -462,8 +462,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    *          created via the new {@link DefaultTransitionView}.
    * @param createUndoStep Flag signals if an undo step should be created.
    * @param addToMachine Flag which signals if the {@link Transition} should be
-   *          added to the {@link Machine}. The default value should be true,
-   *          only if the {@link Machine} has added the {@link Transition}
+   *          added to the {@link StateMachine}. The default value should be true,
+   *          only if the {@link StateMachine} has added the {@link Transition}
    *          before, it should be false.
    * @return The new created {@link DefaultTransitionView}.
    */
@@ -587,11 +587,11 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * Get the {@link Machine} of this model
+   * Get the {@link StateMachine} of this model
    * 
-   * @return the {@link Machine}
+   * @return the {@link StateMachine}
    */
-  public final Machine getMachine ()
+  public final StateMachine getMachine ()
   {
     return this.machine;
   }

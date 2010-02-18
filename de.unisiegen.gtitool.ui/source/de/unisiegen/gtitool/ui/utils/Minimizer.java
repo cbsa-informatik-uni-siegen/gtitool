@@ -10,7 +10,7 @@ import org.jgraph.graph.DefaultGraphModel;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -23,7 +23,7 @@ import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 
 
 /**
- * Minimize a given {@link Machine}.
+ * Minimize a given {@link StateMachine}.
  * 
  * @author Benjamin Mies
  * @version $Id$
@@ -335,7 +335,7 @@ public class Minimizer
 
 
   /**
-   * Minimize the given {@link Machine}.
+   * Minimize the given {@link StateMachine}.
    */
   public void initialize ()
   {

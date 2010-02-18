@@ -7,7 +7,7 @@ import de.unisiegen.gtitool.core.entities.Word;
 
 
 /**
- * The test class of the {@link Machine}.
+ * The test class of the {@link StateMachine}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -35,7 +35,7 @@ public abstract class MachineTest
   }
 
 
-  public static void start ( Machine machine, Word word )
+  public static void start ( StateMachine machine, Word word )
   {
 
     machine.start ( word );

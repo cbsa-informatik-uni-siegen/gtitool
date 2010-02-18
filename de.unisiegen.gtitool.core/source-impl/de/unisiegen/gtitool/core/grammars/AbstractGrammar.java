@@ -31,7 +31,7 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarNonterminalNotReachab
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarRegularGrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 
 
@@ -168,7 +168,7 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   * @see StateMachine#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -616,7 +616,7 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   * @see StateMachine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )

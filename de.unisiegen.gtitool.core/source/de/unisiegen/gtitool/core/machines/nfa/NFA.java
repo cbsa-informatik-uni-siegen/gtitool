@@ -1,7 +1,7 @@
 package de.unisiegen.gtitool.core.machines.nfa;
 
 
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 
 
 /**
@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface NFA extends Machine
+public interface NFA extends StateMachine
 {
   // Do nothing
 }

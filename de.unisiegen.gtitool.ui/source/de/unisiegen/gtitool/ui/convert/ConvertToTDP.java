@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.ui.convert;
 
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
-import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
@@ -36,7 +36,7 @@ public class ConvertToTDP extends ConvertContextFreeGrammar
   @Override
   protected void createMachine ()
   {
-    Machine machine = new DefaultTDP ( getAlphabet (), getPushDownAlphabet (),
+    StateMachine machine = new DefaultTDP ( getAlphabet (), getPushDownAlphabet (),
         true );
     createMachinePanel ( machine );
   }

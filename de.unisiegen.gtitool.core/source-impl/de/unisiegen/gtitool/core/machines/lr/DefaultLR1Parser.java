@@ -2,12 +2,11 @@ package de.unisiegen.gtitool.core.machines.lr;
 
 
 import de.unisiegen.gtitool.core.entities.DefaultLRActionSet;
-import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
-import de.unisiegen.gtitool.core.entities.LR0Item;
-import de.unisiegen.gtitool.core.entities.LR0ItemSet;
-import de.unisiegen.gtitool.core.entities.LR0State;
+import de.unisiegen.gtitool.core.entities.LR1Item;
+import de.unisiegen.gtitool.core.entities.LR1ItemSet;
+import de.unisiegen.gtitool.core.entities.LR1State;
 import de.unisiegen.gtitool.core.entities.LRAcceptAction;
 import de.unisiegen.gtitool.core.entities.LRAction;
 import de.unisiegen.gtitool.core.entities.LRActionSet;
@@ -19,15 +18,15 @@ import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
-import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
-import de.unisiegen.gtitool.core.machines.dfa.LR0;
+import de.unisiegen.gtitool.core.machines.dfa.LR1;
 
 
 /**
  * TODO
  */
-public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
+public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
 {
 
   /**
@@ -38,11 +37,11 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * @param usePushDownAlphabet
    * @param validationElements
    */
-  public DefaultLR0Parser ( LR0Grammar grammar ) throws AlphabetException
+  public DefaultLR1Parser ( LR1Grammar grammar ) throws AlphabetException
   {
     this.grammar = grammar;
 
-    this.lr0Automaton = new LR0 ( grammar );
+    this.lr1Automaton = new LR1 ( grammar );
   }
 
 
@@ -68,23 +67,23 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
         {
           for ( ; unwind < action.getReduceAction ().getProductionWord ()
               .size () ; ++unwind )
-            this.lr0Automaton.previousSymbol ();
+            this.lr1Automaton.previousSymbol ();
         }
         catch ( RuntimeException e )
         {
           for ( int i = 0 ; i < unwind ; ++i )
-            this.lr0Automaton.nextSymbol ();
+            this.lr1Automaton.nextSymbol ();
           return false;
         }
-        this.lr0Automaton.nextSymbol ( action.getReduceAction ()
+        this.lr1Automaton.nextSymbol ( action.getReduceAction ()
             .getNonterminalSymbol () );
         break;
       case SHIFT :
-        this.lr0Automaton.nextSymbol ( this.currentTerminal () );
-        this.nextSymbol ();
+        this.lr1Automaton.nextSymbol ( this.currentTerminal () );
+        nextSymbol();
         break;
       case ACCEPT :
-        this.accept ();
+        this.accept();
         break;
     }
 
@@ -114,13 +113,13 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   }
 
 
-  private LR0ItemSet currentItems ()
+  private LR1ItemSet currentItems ()
   {
-    State state = this.lr0Automaton.getCurrentState ();
+    State state = this.lr1Automaton.getCurrentState ();
 
-    LR0State lr0state = ( LR0State ) state;
+    LR1State lr1state = ( LR1State ) state;
 
-    return lr0state.getLR0Items ();
+    return lr1state.getLR1Items ();
   }
 
 
@@ -131,13 +130,13 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * @param symbol - The current terminal symbol
    * @return The actions set
    */
-  public LRActionSet actions ( LR0ItemSet items, TerminalSymbol symbol )
+  public LRActionSet actions ( LR1ItemSet items, TerminalSymbol symbol )
   {
     LRActionSet ret = new DefaultLRActionSet ();
 
     try
     {
-      for ( LR0Item item : items )
+      for ( LR1Item item : items )
       {
         if ( item.dotIsAtEnd () )
         {
@@ -173,12 +172,13 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   public void start ( Word word )
   {
     super.start ( word );
-    this.lr0Automaton.start ( new DefaultWord () );
+    this.lr1Automaton.start ( new DefaultWord () );
   }
 
 
-  private LR0Grammar grammar;
+  private LR1Grammar grammar;
 
 
-  private LR0 lr0Automaton;
+  private LR1 lr1Automaton;
+
 }

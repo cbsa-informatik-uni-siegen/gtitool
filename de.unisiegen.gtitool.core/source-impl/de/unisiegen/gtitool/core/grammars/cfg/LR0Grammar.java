@@ -128,25 +128,4 @@ public class LR0Grammar extends ExtendedGrammar
 
     return ret;
   }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @throws AlphabetException
-   */
-
-  public Alphabet makeAutomatonAlphabet () throws AlphabetException
-  {
-    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-
-    for ( TerminalSymbol symbol : this.getTerminalSymbolSet () )
-      symbols.add ( new DefaultSymbol ( symbol.toString () ) );
-
-    for ( NonterminalSymbol symbol : this.getNonterminalSymbolSet () )
-      symbols.add ( new DefaultSymbol ( symbol.toString () ) );
-
-    return new DefaultAlphabet ( symbols );
-  }
 }

@@ -49,5 +49,20 @@ public interface LRMachine
   public boolean isWordAccepted ( Word testWord );
 
 
+  /**
+   * 
+   * Try to automatically use the next transition
+   *
+   */
+  public void autoTransit ();
+
+
+  /**
+   * 
+   * Try to transit using LRAction transition
+   *
+   * @param transition
+   * @return true if the transit could be done
+   */
   public boolean transit ( LRAction transition );
 }

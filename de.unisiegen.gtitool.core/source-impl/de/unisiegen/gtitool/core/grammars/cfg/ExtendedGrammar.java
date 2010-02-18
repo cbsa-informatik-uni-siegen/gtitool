@@ -1,13 +1,21 @@
 package de.unisiegen.gtitool.core.grammars.cfg;
 
 
+import java.util.ArrayList;
+
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
 
 
@@ -17,6 +25,13 @@ import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
 public class ExtendedGrammar extends AbstractGrammar implements CFG
 {
 
+  /**
+   * TODO
+   * 
+   * @param nonterminalSymbolSet
+   * @param terminalSymbolSet
+   * @param startSymbol
+   */
   public ExtendedGrammar ( NonterminalSymbolSet nonterminalSymbolSet,
       TerminalSymbolSet terminalSymbolSet, NonterminalSymbol startSymbol )
   {
@@ -51,6 +66,20 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
   public Production getStartProduction ()
   {
     return this.startProduction;
+  }
+
+
+  public Alphabet makeAutomatonAlphabet () throws AlphabetException
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+
+    for ( TerminalSymbol symbol : this.getTerminalSymbolSet () )
+      symbols.add ( new DefaultSymbol ( symbol.toString () ) );
+
+    for ( NonterminalSymbol symbol : this.getNonterminalSymbolSet () )
+      symbols.add ( new DefaultSymbol ( symbol.toString () ) );
+
+    return new DefaultAlphabet ( symbols );
   }
 
 

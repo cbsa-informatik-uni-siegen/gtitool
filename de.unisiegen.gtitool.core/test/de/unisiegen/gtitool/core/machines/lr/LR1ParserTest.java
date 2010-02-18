@@ -3,28 +3,26 @@ package de.unisiegen.gtitool.core.machines.lr;
 
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
-import de.unisiegen.gtitool.core.entities.LRReduceAction;
-import de.unisiegen.gtitool.core.entities.LRShiftAction;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.grammars.LR0Test;
-import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 
 
 /**
  * TODO
  */
-public class LR0ParserTest
+public class LR1ParserTest
 {
 
   public static void main ( String [] args )
   {
-    LR0Grammar testGrammar = LR0Test.testGrammar ();
+    LR1Grammar testGrammar = new LR1Grammar ( LR0Test.testGrammar () );
 
     try
     {
-      LR0Parser parser = new DefaultLR0Parser ( testGrammar );
+      LR1Parser parser = new DefaultLR1Parser ( testGrammar );
 
       Word word = new DefaultWord ();
 

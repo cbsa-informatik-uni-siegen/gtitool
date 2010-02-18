@@ -28,6 +28,13 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalExc
 public class LR1Grammar extends ExtendedGrammar
 {
 
+  public LR1Grammar ( LR0Grammar lr0Grammar )
+  {
+    super ( lr0Grammar.getNonterminalSymbolSet (), lr0Grammar
+        .getTerminalSymbolSet (), lr0Grammar.getStartSymbol () );
+  }
+
+
   public LR1Grammar ( NonterminalSymbolSet nonterminalSymbolSet,
       TerminalSymbolSet terminalSymbolSet, NonterminalSymbol startSymbol )
   {
@@ -35,21 +42,12 @@ public class LR1Grammar extends ExtendedGrammar
   }
 
 
-  public TerminalSymbol endMarker ()
-  {
-    // where to
-    // get the
-    // constant
-    // for $?
-    return new DefaultTerminalSymbol ( "$" );
-  }
-
-
   public LR1ItemSet startClosure ()
   {
     LR1ItemSet ret = new LR1ItemSet ();
     ret.add ( new LR1Item ( getStartProduction ().getNonterminalSymbol (),
-        getStartProduction ().getProductionWord (), 0, endMarker () ) );
+        getStartProduction ().getProductionWord (), 0,
+        DefaultTerminalSymbol.EndMarker ) );
     return ret;
   }
 
@@ -84,11 +82,8 @@ public class LR1Grammar extends ExtendedGrammar
           {
             firstElements = super.first ( remainingPart );
 
-            System.out.println ( "FIRST: " + remainingPart.toString () );
-
             for ( TerminalSymbol symbol : firstElements )
             {
-              System.out.println ( "\t" + symbol );
               final LR1Item newProduction = new LR1Item ( production
                   .getNonterminalSymbol (), production.getProductionWord (), 0,
                   symbol );
@@ -114,7 +109,8 @@ public class LR1Grammar extends ExtendedGrammar
   {
     LR1ItemSet ret = new LR1ItemSet ();
     ret.add ( new LR1Item ( this.getStartProduction ().getNonterminalSymbol (),
-        this.getStartProduction ().getProductionWord (), 0, endMarker () ) );
+        this.getStartProduction ().getProductionWord (), 0,
+        DefaultTerminalSymbol.EndMarker ) );
     return ret;
   }
 
@@ -131,17 +127,4 @@ public class LR1Grammar extends ExtendedGrammar
     return ret;
   }
 
-
-  public Alphabet makeAutomatonAlphabet () throws AlphabetException
-  {
-    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-
-    for ( TerminalSymbol symbol : this.getTerminalSymbolSet () )
-      symbols.add ( new DefaultSymbol ( symbol.toString () ) );
-
-    for ( NonterminalSymbol symbol : this.getNonterminalSymbolSet () )
-      symbols.add ( new DefaultSymbol ( symbol.toString () ) );
-
-    return new DefaultAlphabet ( symbols );
-  }
 }

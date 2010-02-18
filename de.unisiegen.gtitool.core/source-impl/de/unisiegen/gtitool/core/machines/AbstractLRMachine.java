@@ -2,7 +2,9 @@ package de.unisiegen.gtitool.core.machines;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.LRAction;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.machines.lr.LRMachine;
 
@@ -46,7 +48,7 @@ public class AbstractLRMachine implements LRMachine
    */
   public boolean isWordAccepted ( Word testWord )
   {
-    return false;
+    return this.wordAccepted;
   }
 
 
@@ -58,6 +60,9 @@ public class AbstractLRMachine implements LRMachine
    */
   public void start ( Word word )
   {
+    this.word = word;
+    this.wordIndex = 0;
+    this.wordAccepted = false;
   }
 
 
@@ -73,4 +78,37 @@ public class AbstractLRMachine implements LRMachine
     return false;
   }
 
+
+  protected TerminalSymbol currentTerminal ()
+  {
+    return this.wordIndex < this.word.size () ? new DefaultTerminalSymbol (
+        this.word.get ( this.wordIndex ).toString () ) : null;
+  }
+
+
+  public void autoTransit ()
+  {
+
+  }
+
+
+  protected void nextSymbol ()
+  {
+    ++this.wordIndex;
+  }
+
+
+  protected void accept ()
+  {
+    this.wordAccepted = true;
+  }
+
+
+  private Word word;
+
+
+  private int wordIndex;
+
+
+  private boolean wordAccepted;
 }

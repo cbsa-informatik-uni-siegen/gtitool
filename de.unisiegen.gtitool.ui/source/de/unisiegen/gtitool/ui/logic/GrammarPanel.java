@@ -44,6 +44,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.convert.ConvertContextFreeGrammar;
 import de.unisiegen.gtitool.ui.convert.ConvertRegularGrammar;
 import de.unisiegen.gtitool.ui.convert.ConvertToLR0;
+import de.unisiegen.gtitool.ui.convert.ConvertToLR1;
 import de.unisiegen.gtitool.ui.convert.ConvertToTDP;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
@@ -377,23 +378,25 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   public Converter getConverter ( EntityType destination )
   {
     if ( destination instanceof MachineType )
-      switch ( ( MachineType ) destination )
+      try
       {
-        case LR0 :
-          try
-          {
+        switch ( ( MachineType ) destination )
+        {
+          case LR0 :
             return new ConvertToLR0 ( this.mainWindowForm, this.grammar );
-          }
-          catch ( AlphabetException e )
-          {
-            e.printStackTrace ();
-            System.exit ( 1 );
-          }
-          break;
-        case TDP :
-          return new ConvertToTDP ( this.mainWindowForm, this.grammar );
-        default :
-          break;
+          case LR1 :
+            return new ConvertToLR1 ( this.mainWindowForm, this.grammar );
+          case TDP :
+            return new ConvertToTDP ( this.mainWindowForm, this.grammar );
+          case PDA:
+          case NFA:
+            break;
+        }
+      }
+      catch ( AlphabetException e )
+      {
+        e.printStackTrace ();
+        System.exit ( 1 );
       }
 
     // old cases

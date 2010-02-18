@@ -3,16 +3,22 @@ package de.unisiegen.gtitool.core.grammars.cfg;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.LR1Item;
+import de.unisiegen.gtitool.core.entities.LR1ItemSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 
 
@@ -29,30 +35,35 @@ public class LR1Grammar extends ExtendedGrammar
   }
 
 
-  public ArrayList < LR1Item > startClosure ()
+  public TerminalSymbol endMarker ()
   {
-    ArrayList < LR1Item > ret = new ArrayList < LR1Item > ();
-    ret.add ( new LR1Item ( getStartProduction ().getNonterminalSymbol (),
-        getStartProduction ().getProductionWord (), 0,
-        new DefaultTerminalSymbol ( "$" ) ) ); // TODO:
     // where to
     // get the
     // constant
     // for $?
+    return new DefaultTerminalSymbol ( "$" );
+  }
+
+
+  public LR1ItemSet startClosure ()
+  {
+    LR1ItemSet ret = new LR1ItemSet ();
+    ret.add ( new LR1Item ( getStartProduction ().getNonterminalSymbol (),
+        getStartProduction ().getProductionWord (), 0, endMarker () ) );
     return ret;
   }
 
 
-  public ArrayList < LR1Item > closure ( ArrayList < LR1Item > items )
+  public LR1ItemSet closure ( LR1ItemSet items )
   {
-    ArrayList < LR1Item > ret = new ArrayList < LR1Item > ( items );
+    LR1ItemSet ret = new LR1ItemSet ( items );
 
     for ( int oldSize = ret.size (), newSize = 0 ; newSize != oldSize ; newSize = ret
         .size () )
     {
       oldSize = ret.size ();
 
-      ArrayList < LR1Item > currentItems = new ArrayList < LR1Item > ( ret );
+      LR1ItemSet currentItems = new LR1ItemSet ( ret );
       for ( LR1Item item : currentItems )
       {
         if ( !item.dotPrecedesNonterminal () )
@@ -72,8 +83,8 @@ public class LR1Grammar extends ExtendedGrammar
           try
           {
             firstElements = super.first ( remainingPart );
-            
-            System.out.println ( "FIRST: " + remainingPart.toString() );
+
+            System.out.println ( "FIRST: " + remainingPart.toString () );
 
             for ( TerminalSymbol symbol : firstElements )
             {
@@ -88,7 +99,7 @@ public class LR1Grammar extends ExtendedGrammar
           }
           catch ( GrammarInvalidNonterminalException exc )
           {
-            exc.printStackTrace();
+            exc.printStackTrace ();
             return null;
           }
         }
@@ -99,10 +110,18 @@ public class LR1Grammar extends ExtendedGrammar
   }
 
 
-  public ArrayList < LR1Item > move ( ArrayList < LR1Item > items,
-      ProductionWordMember productionWord )
+  public LR1ItemSet startProduction ()
   {
-    ArrayList < LR1Item > ret = new ArrayList < LR1Item > ();
+    LR1ItemSet ret = new LR1ItemSet ();
+    ret.add ( new LR1Item ( this.getStartProduction ().getNonterminalSymbol (),
+        this.getStartProduction ().getProductionWord (), 0, endMarker () ) );
+    return ret;
+  }
+
+
+  public LR1ItemSet move ( LR1ItemSet items, ProductionWordMember productionWord )
+  {
+    LR1ItemSet ret = new LR1ItemSet ();
 
     for ( LR1Item item : items )
       if ( item.getProductionWord ().get ( item.getDotPosition () ).equals (
@@ -110,5 +129,19 @@ public class LR1Grammar extends ExtendedGrammar
         ret.add ( item.incDot () );
 
     return ret;
+  }
+
+
+  public Alphabet makeAutomatonAlphabet () throws AlphabetException
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+
+    for ( TerminalSymbol symbol : this.getTerminalSymbolSet () )
+      symbols.add ( new DefaultSymbol ( symbol.toString () ) );
+
+    for ( NonterminalSymbol symbol : this.getNonterminalSymbolSet () )
+      symbols.add ( new DefaultSymbol ( symbol.toString () ) );
+
+    return new DefaultAlphabet ( symbols );
   }
 }

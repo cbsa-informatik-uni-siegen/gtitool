@@ -17,6 +17,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
@@ -67,15 +68,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
         {
           for ( ; unwind < action.getReduceAction ().getProductionWord ()
               .size () ; ++unwind )
-          {
             this.lr0Automaton.previousSymbol ();
-            /*
-             * Word newWord = new DefaultWord (); for ( int i = 0 ; i <
-             * this.lr0Automaton.getWord ().size () - 1 ; ++i ) newWord.add (
-             * this.lr0Automaton.getWord ().get ( i ) );
-             * this.lr0Automaton.setWord ( newWord );
-             */
-          }
         }
         catch ( RuntimeException e )
         {
@@ -83,39 +76,19 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
             this.lr0Automaton.nextSymbol ();
           return false;
         }
-        /*
-         * appendWord ( action.getReduceAction ().getNonterminalSymbol ()
-         * .toString () ); this.lr0Automaton.nextSymbol ();
-         */
         this.lr0Automaton.nextSymbol ( action.getReduceAction ()
             .getNonterminalSymbol () );
         break;
       case SHIFT :
-        /* appendWord ( this.word.get ( this.wordIndex ).toString () ); */
         this.lr0Automaton.nextSymbol ( this.currentTerminal () );
         ++this.wordIndex;
-        // this.lr0Automaton.nextSymbol ();
         break;
       case ACCEPT :
         this.wordAccepted = true;
-        // this.lr0Automaton.nextSymbol ();
-        // TODO
         break;
     }
 
     return true;
-  }
-
-
-  private void appendWord ( String toAppend )
-  {
-    Word oldWord = new DefaultWord ( this.lr0Automaton.getWord () );
-
-    oldWord.add ( new DefaultSymbol ( toAppend ) );
-
-    this.lr0Automaton.setWord ( oldWord );
-    // this.lr0Automaton.setWord ( new DefaultWord ( new DefaultSymbol (
-    // action.getReduceAction ().getNonterminalSymbol ().toString () ) ) );
   }
 
 
@@ -165,7 +138,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * @param symbol - The current terminal symbol
    * @return The actions set
    */
-  private static LRActionSet actions ( LR0ItemSet items, TerminalSymbol symbol )
+  public LRActionSet actions ( LR0ItemSet items, TerminalSymbol symbol )
   {
     LRActionSet ret = new DefaultLRActionSet ();
 
@@ -180,7 +153,8 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
             if ( symbol == null )
               ret.add ( new LRAcceptAction () );
           }
-          else
+          else if ( this.grammar.follow ( item.getNonterminalSymbol () )
+              .contains ( symbol ) )
             ret.add ( new LRReduceAction ( item ) );
         }
         else if ( item.dotPrecedesTerminal ()
@@ -193,6 +167,11 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
       e.printStackTrace ();
       System.exit ( 1 );
     }
+    catch ( GrammarInvalidNonterminalException exc )
+    {
+      exc.printStackTrace();
+      System.exit ( 1 );
+    }
 
     return ret;
   }
@@ -203,7 +182,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
     this.wordAccepted = false;
     this.word = word;
     this.wordIndex = 0;
-    this.lr0Automaton.start ( new DefaultWord () );// word );
+    this.lr0Automaton.start ( new DefaultWord () );
   }
 
 

@@ -31,7 +31,7 @@ public class LR0ParserTest
       TerminalSymbolSet terminals = testGrammar.getTerminalSymbolSet ();
 
       word.add ( new DefaultSymbol ( terminals.get ( "id" ).toString () ) );
-      word.add ( new DefaultSymbol ( terminals.get ( "+" ).toString () ) );
+      word.add ( new DefaultSymbol ( terminals.get ( "*" ).toString () ) );
       word.add ( new DefaultSymbol ( terminals.get ( "id" ).toString () ) );
 
       parser.start ( word );

@@ -8,9 +8,9 @@ import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
-import de.unisiegen.gtitool.core.entities.LR0Item;
-import de.unisiegen.gtitool.core.entities.LR0ItemSet;
-import de.unisiegen.gtitool.core.entities.LR0State;
+import de.unisiegen.gtitool.core.entities.LR1Item;
+import de.unisiegen.gtitool.core.entities.LR1ItemSet;
+import de.unisiegen.gtitool.core.entities.LR1State;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -18,17 +18,17 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
-import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 
 
 /**
  * TODO
  */
-public class LR0 extends AbstractMachine implements DFA
+public class LR1 extends AbstractMachine implements DFA
 {
 
-  public LR0 ( LR0Grammar grammar ) throws AlphabetException
+  public LR1 ( LR1Grammar grammar ) throws AlphabetException
   {
     super ( grammar.makeAutomatonAlphabet (), new DefaultAlphabet (), false,
         ValidationElement.FINAL_STATE, ValidationElement.STATE_NAME,
@@ -38,7 +38,7 @@ public class LR0 extends AbstractMachine implements DFA
 
     try
     {
-      LR0State startState = new LR0State ( alphabet, true, grammar
+      LR1State startState = new LR1State ( alphabet, true, grammar
           .closure ( grammar.startProduction () ) );
 
       addState ( startState );
@@ -57,24 +57,24 @@ public class LR0 extends AbstractMachine implements DFA
 
       for ( State baseState : oldStates )
       {
-        LR0State currentState = ( LR0State ) baseState;
-        LR0ItemSet currentItemSet = currentState.getLR0Items ();
+        LR1State currentState = ( LR1State ) baseState;
+        LR1ItemSet currentItemSet = currentState.getLR1Items ();
 
-        for ( LR0Item item : currentItemSet )
+        for ( LR1Item item : currentItemSet )
         {
           if ( item.dotIsAtEnd () )
             continue;
 
-          LR0ItemSet newItemSet = grammar.closure ( grammar.move (
+          LR1ItemSet newItemSet = grammar.closure ( grammar.move (
               currentItemSet, item.getProductionWordMemberAfterDot () ) );
           try
           {
-            LR0State newState = new LR0State ( alphabet, false, newItemSet );
+            LR1State newState = new LR1State ( alphabet, false, newItemSet );
 
             if ( !getState ().contains ( newState ) )
               addState ( newState );
             else
-              newState = ( LR0State ) getState ().get (
+              newState = ( LR1State ) getState ().get (
                   getState ().indexOf ( newState ) );
 
             Transition newTransition = new DefaultTransition ( alphabet,

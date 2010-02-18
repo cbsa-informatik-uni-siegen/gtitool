@@ -137,7 +137,7 @@ public class LR0Grammar extends ExtendedGrammar
    * @throws AlphabetException
    */
 
-  public Alphabet makeAutomataAlphabet () throws AlphabetException
+  public Alphabet makeAutomatonAlphabet () throws AlphabetException
   {
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
 

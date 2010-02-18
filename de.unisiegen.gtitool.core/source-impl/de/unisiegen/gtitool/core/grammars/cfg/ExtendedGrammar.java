@@ -9,7 +9,6 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
-import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 
 
 /**

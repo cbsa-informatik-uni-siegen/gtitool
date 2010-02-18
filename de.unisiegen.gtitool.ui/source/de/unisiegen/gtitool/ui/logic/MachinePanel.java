@@ -89,6 +89,8 @@ import de.unisiegen.gtitool.ui.model.PDATableColumnModel;
 import de.unisiegen.gtitool.ui.model.PDATableModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
 import de.unisiegen.gtitool.ui.model.PTTableModel;
+import de.unisiegen.gtitool.ui.model.TDPColumnModel;
+import de.unisiegen.gtitool.ui.model.TDPModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinePanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
@@ -2882,6 +2884,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     int loc = this.gui.getWidth () / 2;
     this.gui.jGTISplitPaneTable.setDividerLocation ( loc );
+
+    jGTIParsingTable.setModel ( new TDPModel () );
+    jGTIParsingTable.setColumnModel ( new TDPColumnModel () );
   }
 
 

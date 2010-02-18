@@ -1,5 +1,6 @@
 package de.unisiegen.gtitool.ui.model;
 
+
 import javax.swing.table.AbstractTableModel;
 
 
@@ -7,7 +8,6 @@ import javax.swing.table.AbstractTableModel;
  * the table model for the table (parser movements)
  * 
  * @author Christian Uhrhan
- *
  */
 public class TDPModel extends AbstractTableModel
 {
@@ -17,11 +17,18 @@ public class TDPModel extends AbstractTableModel
    */
   private static final long serialVersionUID = -6693897333759433432L;
 
-  
+
   /**
    * the column count
    */
   private final static int COLUMN_COUNT = 3;
+
+
+  public TDPModel ()
+  {
+
+  }
+
 
   /**
    * {@inheritDoc}
@@ -36,7 +43,7 @@ public class TDPModel extends AbstractTableModel
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @see javax.swing.table.TableModel#getRowCount()
    */
@@ -48,7 +55,7 @@ public class TDPModel extends AbstractTableModel
 
   /**
    * TODO
-   *
+   * 
    * @param arg0
    * @param arg1
    * @return

@@ -1855,14 +1855,29 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuItemConvertToLR1.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LR1Mnemonic").charAt(0));
         jMenuItemConvertToLR1.setText(bundle.getString("MainWindow.LR1")); // NOI18N
+        jMenuItemConvertToLR1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToLR1ActionPerformed(evt);
+            }
+        });
         jMenuConvertTo.add(jMenuItemConvertToLR1);
 
         jMenuItemConvertToLR0Parser.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LR0ParserMnemonic").charAt(0));
         jMenuItemConvertToLR0Parser.setText(bundle.getString("MainWindow.LR0Parser")); // NOI18N
+        jMenuItemConvertToLR0Parser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToLR0ParserActionPerformed(evt);
+            }
+        });
         jMenuConvertTo.add(jMenuItemConvertToLR0Parser);
 
         jMenuItemConvertToLR1Parser.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.LR1ParserMnemonic").charAt(0));
         jMenuItemConvertToLR1Parser.setText(bundle.getString("MainWindow.LR1Parser")); // NOI18N
+        jMenuItemConvertToLR1Parser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToLR1ParserActionPerformed(evt);
+            }
+        });
         jMenuConvertTo.add(jMenuItemConvertToLR1Parser);
 
         jMenuExecute.add(jMenuConvertTo);
@@ -2406,6 +2421,18 @@ private void jMenuItemCreateTDPActionPerformed(java.awt.event.ActionEvent evt) {
 private void jMenuItemConvertToLR0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToLR0ActionPerformed
     this.logic.handleConvertTo(MachineType.LR0, true);
 }//GEN-LAST:event_jMenuItemConvertToLR0ActionPerformed
+
+private void jMenuItemConvertToLR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToLR1ActionPerformed
+    this.logic.handleConvertTo(MachineType.LR1, true);
+}//GEN-LAST:event_jMenuItemConvertToLR1ActionPerformed
+
+private void jMenuItemConvertToLR0ParserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToLR0ParserActionPerformed
+    this.logic.handleConvertTo(MachineType.LR0Parser, true);
+}//GEN-LAST:event_jMenuItemConvertToLR0ParserActionPerformed
+
+private void jMenuItemConvertToLR1ParserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToLR1ParserActionPerformed
+    this.logic.handleConvertTo(MachineType.LR1Parser, true);
+}//GEN-LAST:event_jMenuItemConvertToLR1ParserActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;

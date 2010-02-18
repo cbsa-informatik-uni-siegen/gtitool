@@ -21,8 +21,11 @@ import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
 import de.unisiegen.gtitool.core.machines.dfa.LR0;
+import de.unisiegen.gtitool.core.machines.dfa.LR1;
 import de.unisiegen.gtitool.core.machines.enfa.ENFA;
 import de.unisiegen.gtitool.core.machines.listener.MachineChangedListener;
+import de.unisiegen.gtitool.core.machines.lr.LR0Parser;
+import de.unisiegen.gtitool.core.machines.lr.LR1Parser;
 import de.unisiegen.gtitool.core.machines.nfa.NFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
@@ -65,12 +68,27 @@ public interface Machine extends InputEntity, Serializable, TableModel,
      * The {@link PDA} machine type.
      */
     PDA,
-    
+
     /**
      * The {@link LR0} machine type.
      */
     LR0,
-    
+
+    /**
+     * The {@link LR1} machine type.
+     */
+    LR1,
+
+    /**
+     * The {@link LR0Parser} machine type.
+     */
+    LR0Parser,
+
+    /**
+     * The {@link LR1Parser} machine type.
+     */
+    LR1Parser,
+
     /**
      * The {@link DefaultTDP} machine type.
      */
@@ -200,7 +218,8 @@ public interface Machine extends InputEntity, Serializable, TableModel,
    * The count of special columns.
    */
   public static final int SPECIAL_COLUMN_COUNT = 2;
-  
+
+
   /**
    * The index of the {@link NonterminalSymbol} column
    */

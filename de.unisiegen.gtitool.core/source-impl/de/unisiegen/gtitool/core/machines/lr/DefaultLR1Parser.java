@@ -158,11 +158,6 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
       e.printStackTrace ();
       System.exit ( 1 );
     }
-    catch ( GrammarInvalidNonterminalException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
 
     return ret;
   }

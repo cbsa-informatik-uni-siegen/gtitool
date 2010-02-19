@@ -80,10 +80,10 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
         break;
       case SHIFT :
         this.lr1Automaton.nextSymbol ( this.currentTerminal () );
-        nextSymbol();
+        nextSymbol ();
         break;
       case ACCEPT :
-        this.accept();
+        this.accept ();
         break;
     }
 
@@ -145,8 +145,7 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
             if ( symbol == null )
               ret.add ( new LRAcceptAction () );
           }
-          else if ( this.grammar.follow ( item.getNonterminalSymbol () )
-              .contains ( symbol ) )
+          else if ( item.getLookAhead ().equals ( symbol ) )
             ret.add ( new LRReduceAction ( item ) );
         }
         else if ( item.dotPrecedesTerminal ()

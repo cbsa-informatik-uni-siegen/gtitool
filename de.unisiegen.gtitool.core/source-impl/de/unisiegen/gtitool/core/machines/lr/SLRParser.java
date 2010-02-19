@@ -1,30 +1,29 @@
 package de.unisiegen.gtitool.core.machines.lr;
 
 
-import de.unisiegen.gtitool.core.entities.LR0ItemSet;
-import de.unisiegen.gtitool.core.entities.LRActionSet;
+import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
-import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
+import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 
 
 /**
  * TODO
  */
-public class SLRParser extends AbstractLRMachine implements LR0Parser
+public class SLRParser extends DefaultLR0Parser
 {
 
-  /**
-   * TODO
-   * 
-   * @param items
-   * @param symbol
-   * @return
-   * @see de.unisiegen.gtitool.core.machines.lr.LR0Parser#actions(de.unisiegen.gtitool.core.entities.LR0ItemSet,
-   *      de.unisiegen.gtitool.core.entities.TerminalSymbol)
-   */
-  public LRActionSet actions ( LR0ItemSet items, TerminalSymbol symbol )
+  public SLRParser ( LR0Grammar grammar ) throws AlphabetException
   {
-    return null;
+    super ( grammar );
   }
 
+
+  protected boolean followCondition ( LR0Item item, TerminalSymbol symbol )
+      throws GrammarInvalidNonterminalException
+  {
+    return this.getGrammar ().follow ( item.getNonterminalSymbol () ).contains (
+        symbol );
+  }
 }

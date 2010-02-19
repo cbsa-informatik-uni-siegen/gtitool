@@ -24,14 +24,19 @@ import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 public class LR0Test
 {
 
+  /**
+   * The test grammar for arithmetic expressions containing +, * and (, )
+   *
+   * @return The grammar
+   */
   public static LR0Grammar testGrammar ()
   {
-    NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" );
+    NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" ); //$NON-NLS-1$
 
     NonterminalSymbolSet nonterminalSet = new DefaultNonterminalSymbolSet ();
 
-    NonterminalSymbol T = new DefaultNonterminalSymbol ( "T" );
-    NonterminalSymbol F = new DefaultNonterminalSymbol ( "F" );
+    NonterminalSymbol T = new DefaultNonterminalSymbol ( "T" ); //$NON-NLS-1$
+    NonterminalSymbol F = new DefaultNonterminalSymbol ( "F" ); //$NON-NLS-1$
 
     try
     {
@@ -47,11 +52,11 @@ public class LR0Test
 
     TerminalSymbolSet terminalSet = new DefaultTerminalSymbolSet ();
 
-    TerminalSymbol id = new DefaultTerminalSymbol ( "id" );
-    TerminalSymbol lparen = new DefaultTerminalSymbol ( "(" );
-    TerminalSymbol rparen = new DefaultTerminalSymbol ( ")" );
-    TerminalSymbol plus = new DefaultTerminalSymbol ( "+" );
-    TerminalSymbol multiplies = new DefaultTerminalSymbol ( "*" );
+    TerminalSymbol id = new DefaultTerminalSymbol ( "id" ); //$NON-NLS-1$
+    TerminalSymbol lparen = new DefaultTerminalSymbol ( "(" ); //$NON-NLS-1$
+    TerminalSymbol rparen = new DefaultTerminalSymbol ( ")" ); //$NON-NLS-1$
+    TerminalSymbol plus = new DefaultTerminalSymbol ( "+" ); //$NON-NLS-1$
+    TerminalSymbol multiplies = new DefaultTerminalSymbol ( "*" ); //$NON-NLS-1$
 
     try
     {
@@ -102,46 +107,46 @@ public class LR0Test
 
     LR0ItemSet closure0 = grammar.closure ( grammar.startProduction () );
 
-    System.out.println ( "closure(start())" );
+    System.out.println ( "closure(start())" ); //$NON-NLS-1$
     for ( LR0Item item : closure0 )
       System.out.println ( item.toString () );
 
     LR0ItemSet move0E = grammar.move ( closure0, grammar
-        .getNonterminalSymbolSet ().get ( "E" ) );
+        .getNonterminalSymbolSet ().get ( "E" ) ); //$NON-NLS-1$
 
-    System.out.println ( "move(0, E)" );
+    System.out.println ( "move(0, E)" ); //$NON-NLS-1$
     for ( LR0Item item : move0E )
       System.out.println ( item.toString () );
 
     LR0ItemSet closure1 = grammar.closure ( move0E );
 
-    System.out.println ( "closure(move(0, E)) = 1" );
+    System.out.println ( "closure(move(0, E)) = 1" ); //$NON-NLS-1$
     for ( LR0Item item : closure1 )
       System.out.println ( item.toString () );
 
     LR0ItemSet move0T = grammar.move ( closure0, grammar
-        .getNonterminalSymbolSet ().get ( "T" ) );
+        .getNonterminalSymbolSet ().get ( "T" ) ); //$NON-NLS-1$
 
-    System.out.println ( "move(0, T)" );
+    System.out.println ( "move(0, T)" ); //$NON-NLS-1$
     for ( LR0Item item : move0T )
       System.out.println ( item.toString () );
 
     LR0ItemSet closure2 = grammar.closure ( move0T );
 
-    System.out.println ( "closure(move(0, T)) = 2" );
+    System.out.println ( "closure(move(0, T)) = 2" ); //$NON-NLS-1$
     for ( LR0Item item : closure2 )
       System.out.println ( item.toString () );
 
     LR0ItemSet move0lparen = grammar.move ( closure0, grammar
-        .getTerminalSymbolSet ().get ( "(" ) );
+        .getTerminalSymbolSet ().get ( "(" ) ); //$NON-NLS-1$
 
-    System.out.println ( "move(0, ()" );
+    System.out.println ( "move(0, ()" ); //$NON-NLS-1$
     for ( LR0Item item : move0lparen )
       System.out.println ( item.toString () );
 
     LR0ItemSet closure3 = grammar.closure ( move0lparen );
 
-    System.out.println ( "closure(move(0, ()) = 3" );
+    System.out.println ( "closure(move(0, ()) = 3" ); //$NON-NLS-1$
     for ( LR0Item item : closure3 )
       System.out.println ( item.toString () );
   }

@@ -2,8 +2,6 @@ package de.unisiegen.gtitool.core.machines.lr;
 
 
 import de.unisiegen.gtitool.core.entities.DefaultLRActionSet;
-import de.unisiegen.gtitool.core.entities.DefaultSymbol;
-import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
@@ -114,11 +112,16 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   }
 
 
+  /**
+   * The current LR0ItemSet pointed to by the LR0 automaton
+   * 
+   * @return the lr0 item set
+   */
   private LR0ItemSet currentItems ()
   {
-    State state = this.lr0Automaton.getCurrentState ();
+    final State state = this.lr0Automaton.getCurrentState ();
 
-    LR0State lr0state = ( LR0State ) state;
+    final LR0State lr0state = ( LR0State ) state;
 
     return lr0state.getLR0Items ();
   }
@@ -146,8 +149,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
             if ( symbol == null )
               ret.add ( new LRAcceptAction () );
           }
-          else if ( this.grammar.follow ( item.getNonterminalSymbol () )
-              .contains ( symbol ) )
+          else if ( this.followCondition ( item, symbol ) )
             ret.add ( new LRReduceAction ( item ) );
         }
         else if ( item.dotPrecedesTerminal ()
@@ -170,10 +172,32 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   }
 
 
+  /**
+   * Calculates if the current reduce action should be allowed
+   * 
+   * @param item - The current lr0 item
+   * @param symbol - The current terminal symbol lookahead
+   * @return if the current reduce action should be allowed
+   * @throws GrammarInvalidNonterminalException
+   */
+  @SuppressWarnings ( "unused" )
+  protected boolean followCondition ( LR0Item item, TerminalSymbol symbol )
+      throws GrammarInvalidNonterminalException
+  {
+    return true;
+  }
+
+
   public void start ( Word word )
   {
     super.start ( word );
     this.lr0Automaton.start ( new DefaultWord () );
+  }
+
+
+  protected LR0Grammar getGrammar ()
+  {
+    return this.grammar;
   }
 
 

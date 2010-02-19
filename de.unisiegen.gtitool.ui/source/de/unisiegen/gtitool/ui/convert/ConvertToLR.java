@@ -27,27 +27,14 @@ public abstract class ConvertToLR extends AbstractConvertGrammar
    * 
    * @param mainWindowForm
    * @param grammar
+   * @param alphabet
    */
-  public ConvertToLR ( MainWindowForm mainWindowForm, Grammar grammar,
-      Alphabet alphabet )
+  public ConvertToLR ( final MainWindowForm mainWindowForm,
+      final Grammar grammar, final Alphabet alphabet )
   {
     super ( mainWindowForm, grammar, alphabet );
 
     this.setPushDownAlphabet ( new DefaultAlphabet () );
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammar#performProductions()
-   */
-  private void createTransition ( Word read, Word write,
-      DefaultStateView source, DefaultStateView target, Symbol symbol )
-  {
-    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-    symbols.add ( symbol );
-    createTransition ( read, write, source, target, symbols );
   }
 
 

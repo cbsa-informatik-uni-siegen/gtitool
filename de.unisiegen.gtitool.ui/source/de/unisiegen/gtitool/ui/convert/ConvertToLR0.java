@@ -63,6 +63,7 @@ public class ConvertToLR0 extends ConvertToLR
   }
 
 
+  @Override
   protected AbstractMachine getMachine ()
   {
     return this.machine;

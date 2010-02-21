@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.grammars.Grammar;
-import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
@@ -69,5 +69,5 @@ public abstract class ConvertToLR extends AbstractConvertGrammar
    * 
    * @return The current machine
    */
-  protected abstract AbstractMachine getMachine ();
+  protected abstract AbstractStateMachine getMachine ();
 }

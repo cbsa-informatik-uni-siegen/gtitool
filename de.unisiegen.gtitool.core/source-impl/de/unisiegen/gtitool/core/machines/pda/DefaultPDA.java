@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.machines.pda;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 
 
 /**
@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.machines.AbstractMachine;
  * @author Christian Fehler
  * @version $Id$
  */
-public class DefaultPDA extends AbstractMachine implements PDA
+public class DefaultPDA extends AbstractStateMachine implements PDA
 {
 
   /**
@@ -42,7 +42,7 @@ public class DefaultPDA extends AbstractMachine implements PDA
   /**
    * {@inheritDoc}
    * 
-   * @see AbstractMachine#getMachineType()
+   * @see AbstractStateMachine#getMachineType()
    */
   @Override
   public final MachineType getMachineType ()

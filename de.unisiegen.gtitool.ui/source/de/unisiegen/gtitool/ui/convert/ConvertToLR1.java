@@ -5,7 +5,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
-import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.machines.dfa.LR1;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
@@ -55,7 +55,7 @@ public class ConvertToLR1 extends ConvertToLR
    * @see de.unisiegen.gtitool.ui.convert.ConvertToLR#getMachine()
    */
   @Override
-  protected AbstractMachine getMachine ()
+  protected AbstractStateMachine getMachine ()
   {
     return this.machine;
   }

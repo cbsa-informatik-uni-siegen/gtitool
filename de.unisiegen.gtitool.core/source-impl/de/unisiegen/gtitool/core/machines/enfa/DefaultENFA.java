@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.machines.enfa;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 
 
 /**
@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.machines.AbstractMachine;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultENFA extends AbstractMachine implements ENFA
+public final class DefaultENFA extends AbstractStateMachine implements ENFA
 {
 
   /**
@@ -43,7 +43,7 @@ public final class DefaultENFA extends AbstractMachine implements ENFA
   /**
    * {@inheritDoc}
    * 
-   * @see AbstractMachine#getMachineType()
+   * @see AbstractStateMachine#getMachineType()
    */
   @Override
   public final MachineType getMachineType ()

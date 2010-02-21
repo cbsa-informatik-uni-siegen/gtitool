@@ -69,12 +69,12 @@ import de.unisiegen.gtitool.logger.Logger;
 
 
 /**
- * The abstract class for all machines.
+ * The abstract class for all state machines.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class AbstractMachine implements StateMachine
+public abstract class AbstractStateMachine implements StateMachine
 {
 
   /**
@@ -87,7 +87,7 @@ public abstract class AbstractMachine implements StateMachine
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger
-      .getLogger ( AbstractMachine.class );
+      .getLogger ( AbstractStateMachine.class );
 
 
   /**
@@ -121,25 +121,25 @@ public abstract class AbstractMachine implements StateMachine
 
 
   /**
-   * The {@link Alphabet} of this {@link AbstractMachine}.
+   * The {@link Alphabet} of this {@link AbstractStateMachine}.
    */
   private final Alphabet alphabet;
 
 
   /**
-   * The push down {@link Alphabet} of this {@link AbstractMachine}.
+   * The push down {@link Alphabet} of this {@link AbstractStateMachine}.
    */
   private final Alphabet pushDownAlphabet;
 
 
   /**
-   * The use push down {@link Alphabet} of this {@link AbstractMachine}.
+   * The use push down {@link Alphabet} of this {@link AbstractStateMachine}.
    */
   private boolean usePushDownAlphabet;
 
 
   /**
-   * The initial use push down {@link Alphabet} of this {@link AbstractMachine}.
+   * The initial use push down {@link Alphabet} of this {@link AbstractStateMachine}.
    */
   private boolean initialUsePushDownAlphabet;
 
@@ -157,7 +157,7 @@ public abstract class AbstractMachine implements StateMachine
 
 
   /**
-   * The history of this {@link AbstractMachine}.
+   * The history of this {@link AbstractStateMachine}.
    */
   private final ArrayList < HistoryItem > history;
 
@@ -242,16 +242,16 @@ public abstract class AbstractMachine implements StateMachine
 
 
   /**
-   * Allocates a new {@link AbstractMachine}.
+   * Allocates a new {@link AbstractStateMachine}.
    * 
-   * @param alphabet The {@link Alphabet} of this {@link AbstractMachine}.
+   * @param alphabet The {@link Alphabet} of this {@link AbstractStateMachine}.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          {@link AbstractMachine}.
+   *          {@link AbstractStateMachine}.
    * @param usePushDownAlphabet The use push down {@link Alphabet}.
    * @param validationElements The validation elements which indicates which
    *          validation elements should be checked during a validation.
    */
-  public AbstractMachine ( Alphabet alphabet, Alphabet pushDownAlphabet,
+  public AbstractStateMachine ( Alphabet alphabet, Alphabet pushDownAlphabet,
       boolean usePushDownAlphabet, ValidationElement ... validationElements )
   {
     // alphabet
@@ -761,7 +761,7 @@ public abstract class AbstractMachine implements StateMachine
 
 
   /**
-   * Clears the history of this {@link AbstractMachine}.
+   * Clears the history of this {@link AbstractStateMachine}.
    */
   private final void clearHistory ()
   {

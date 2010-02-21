@@ -30,7 +30,7 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalExc
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarNonterminalNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarRegularGrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
-import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 
@@ -734,7 +734,7 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * Validates that everything in the {@link AbstractMachine} is correct.
+   * Validates that everything in the {@link AbstractStateMachine} is correct.
    * 
    * @throws GrammarValidationException If the validation fails.
    */

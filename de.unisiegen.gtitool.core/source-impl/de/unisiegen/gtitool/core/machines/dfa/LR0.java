@@ -19,13 +19,13 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
-import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 
 
 /**
  * TODO
  */
-public class LR0 extends AbstractMachine implements DFA
+public class LR0 extends AbstractStateMachine implements DFA
 {
 
   public LR0 ( LR0Grammar grammar ) throws AlphabetException
@@ -139,7 +139,7 @@ public class LR0 extends AbstractMachine implements DFA
    * TODO
    * 
    * @return
-   * @see de.unisiegen.gtitool.core.machines.AbstractMachine#getMachineType()
+   * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#getMachineType()
    */
   @Override
   public MachineType getMachineType ()

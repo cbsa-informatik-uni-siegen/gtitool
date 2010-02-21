@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.machines.dfa;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 
 
 /**
@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.machines.AbstractMachine;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultDFA extends AbstractMachine implements DFA
+public final class DefaultDFA extends AbstractStateMachine implements DFA
 {
 
   /**
@@ -44,7 +44,7 @@ public final class DefaultDFA extends AbstractMachine implements DFA
   /**
    * {@inheritDoc}
    * 
-   * @see AbstractMachine#getMachineType()
+   * @see AbstractStateMachine#getMachineType()
    */
   @Override
   public final MachineType getMachineType ()

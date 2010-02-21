@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.machines.nfa;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 
 
 /**
@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.machines.AbstractMachine;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultNFA extends AbstractMachine implements NFA
+public final class DefaultNFA extends AbstractStateMachine implements NFA
 {
 
   /**
@@ -43,7 +43,7 @@ public final class DefaultNFA extends AbstractMachine implements NFA
   /**
    * {@inheritDoc}
    * 
-   * @see AbstractMachine#getMachineType()
+   * @see AbstractStateMachine#getMachineType()
    */
   @Override
   public final MachineType getMachineType ()

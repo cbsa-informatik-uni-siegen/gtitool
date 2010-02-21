@@ -26,7 +26,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.i18n.Messages;
-import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.listener.MachineChangedListener;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
@@ -240,7 +240,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     // initialize this model elements
-    this.machine = AbstractMachine.createMachine ( machineType, alphabet,
+    this.machine = AbstractStateMachine.createMachine ( machineType, alphabet,
         pushDownAlphabet, usePushDownAlphabet );
     
     if(!(this.machine instanceof DefaultTDP))

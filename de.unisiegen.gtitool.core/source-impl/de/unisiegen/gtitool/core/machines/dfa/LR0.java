@@ -31,9 +31,10 @@ public class LR0 extends AbstractLR
    */
   private static final long serialVersionUID = 1L;
 
+
   /**
    * TODO
-   *
+   * 
    * @param grammar
    * @throws AlphabetException
    */
@@ -120,4 +121,16 @@ public class LR0 extends AbstractLR
     }
   }
 
+
+  /**
+   * Returns the machine's type
+   * 
+   * @return The machine's type
+   * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#getMachineType()
+   */
+  @Override
+  public MachineType getMachineType ()
+  {
+    return MachineType.LR0;
+  }
 }

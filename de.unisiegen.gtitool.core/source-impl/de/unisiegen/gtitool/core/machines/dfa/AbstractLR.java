@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 /**
  * TODO
  */
-public class AbstractLR extends AbstractStateMachine implements DFA
+public abstract class AbstractLR extends AbstractStateMachine implements DFA
 {
 
   /**
@@ -77,14 +77,11 @@ public class AbstractLR extends AbstractStateMachine implements DFA
 
 
   /**
-   * Returns the machine's type
+   * The machine's type
    * 
    * @return The machine's type
    * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#getMachineType()
    */
   @Override
-  public MachineType getMachineType ()
-  {
-    return MachineType.DFA;
-  }
+  public abstract MachineType getMachineType ();
 }

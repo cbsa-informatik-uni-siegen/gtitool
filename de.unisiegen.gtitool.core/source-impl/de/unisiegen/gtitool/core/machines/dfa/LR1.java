@@ -166,4 +166,17 @@ public class LR1 extends AbstractLR
     }
     return ret;
   }
+
+
+  /**
+   * Returns the machine's type
+   * 
+   * @return The machine's type
+   * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#getMachineType()
+   */
+  @Override
+  public MachineType getMachineType ()
+  {
+    return MachineType.LR1;
+  }
 }

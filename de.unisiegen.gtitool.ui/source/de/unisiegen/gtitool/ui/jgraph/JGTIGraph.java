@@ -22,7 +22,7 @@ import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 
 
 /**
@@ -83,9 +83,9 @@ public class JGTIGraph extends JGraph implements Printable
 
 
   /**
-   * The {@link DefaultMachineModel}.
+   * The {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel defaultMachineModel = null;
+  private DefaultStateMachineModel defaultMachineModel = null;
 
 
   /**
@@ -159,10 +159,10 @@ public class JGTIGraph extends JGraph implements Printable
   /**
    * Allocates a new {@link JGTIGraph}.
    * 
-   * @param defaultMachineModel The {@link DefaultMachineModel}.
+   * @param defaultMachineModel The {@link DefaultStateMachineModel}.
    * @param defaultGraphModel The {@link DefaultGraphModel}.
    */
-  public JGTIGraph ( DefaultMachineModel defaultMachineModel,
+  public JGTIGraph ( DefaultStateMachineModel defaultMachineModel,
       DefaultGraphModel defaultGraphModel )
   {
     this ( defaultGraphModel );

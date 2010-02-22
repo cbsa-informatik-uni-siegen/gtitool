@@ -9,7 +9,7 @@ import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.StateConfigDialogForm;
 import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
@@ -57,9 +57,9 @@ public final class StateConfigDialog implements
 
 
   /**
-   * The {@link DefaultMachineModel}
+   * The {@link DefaultStateMachineModel}
    */
-  private DefaultMachineModel model;
+  private DefaultStateMachineModel model;
 
 
   /**
@@ -95,7 +95,7 @@ public final class StateConfigDialog implements
    * @param model The {@link StateMachine}
    */
   public StateConfigDialog ( JFrame parent, MachinePanel machinePanel,
-      State state, DefaultMachineModel model )
+      State state, DefaultStateMachineModel model )
   {
     logger.debug ( "StateConfigDialog", "allocate a new new state name dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;

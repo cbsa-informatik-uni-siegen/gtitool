@@ -17,7 +17,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.MinimizeMachineDialog;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.redoundo.MultiItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 
@@ -120,9 +120,9 @@ public class Minimizer
 
 
   /**
-   * The {@link DefaultMachineModel}.
+   * The {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel model;
+  private DefaultStateMachineModel model;
 
 
   /**
@@ -158,10 +158,10 @@ public class Minimizer
   /**
    * Allocate a new {@link Minimizer}.
    * 
-   * @param model The {@link DefaultMachineModel}.
+   * @param model The {@link DefaultStateMachineModel}.
    * @param dialog The {@link MinimizeMachineDialog}.
    */
-  public Minimizer ( DefaultMachineModel model, MinimizeMachineDialog dialog )
+  public Minimizer ( DefaultStateMachineModel model, MinimizeMachineDialog dialog )
   {
     this.model = model;
     this.dialog = dialog;

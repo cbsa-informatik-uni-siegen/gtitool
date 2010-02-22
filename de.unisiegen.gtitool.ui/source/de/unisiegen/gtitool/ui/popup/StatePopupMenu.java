@@ -17,7 +17,7 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.StateConfigDialog;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
 
 
@@ -45,7 +45,7 @@ public final class StatePopupMenu extends JPopupMenu
   /**
    * DefaultMachineModel {@link GraphModel}
    */
-  protected DefaultMachineModel model;
+  protected DefaultStateMachineModel model;
 
 
   /**
@@ -93,7 +93,7 @@ public final class StatePopupMenu extends JPopupMenu
    * @param state the state to open the popup menu
    */
   public StatePopupMenu ( JFrame parent, MachinePanel machinePanel,
-      DefaultMachineModel model, DefaultStateView state )
+      DefaultStateMachineModel model, DefaultStateView state )
   {
     this.parent = parent;
     this.machinePanel = machinePanel;

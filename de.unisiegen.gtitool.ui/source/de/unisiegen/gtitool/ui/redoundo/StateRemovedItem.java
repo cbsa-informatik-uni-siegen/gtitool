@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 
 
 /**
@@ -19,9 +19,9 @@ public final class StateRemovedItem extends RedoUndoItem
 {
 
   /**
-   * The {@link DefaultMachineModel}.
+   * The {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel model;
+  private DefaultStateMachineModel model;
 
 
   /**
@@ -39,11 +39,11 @@ public final class StateRemovedItem extends RedoUndoItem
   /**
    * Allocates a new {@link StateRemovedItem}.
    * 
-   * @param model The {@link DefaultMachineModel}.
+   * @param model The {@link DefaultStateMachineModel}.
    * @param stateView The {@link DefaultStateView}.
    * @param transitions The {@link DefaultTransitionView}.
    */
-  public StateRemovedItem ( DefaultMachineModel model,
+  public StateRemovedItem ( DefaultStateMachineModel model,
       DefaultStateView stateView,
       ArrayList < DefaultTransitionView > transitions )
   {

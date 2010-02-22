@@ -83,7 +83,7 @@ import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.PDATableColumnModel;
 import de.unisiegen.gtitool.ui.model.PDATableModel;
@@ -333,9 +333,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * The {@link DefaultMachineModel}.
+   * The {@link DefaultStateMachineModel}.
    */
-  protected DefaultMachineModel model;
+  protected DefaultStateMachineModel model;
 
 
   /**
@@ -409,11 +409,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * Create a new Machine Panel Object
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
-   * @param model The {@link DefaultMachineModel} of this panel.
+   * @param model The {@link DefaultStateMachineModel} of this panel.
    * @param file The {@link File} of this {@link MachinePanel}.
    */
   public MachinePanel ( MainWindowForm mainWindowForm,
-      DefaultMachineModel model, File file )
+      DefaultStateMachineModel model, File file )
   {
     this.mainWindowForm = mainWindowForm;
     this.model = model;
@@ -1026,12 +1026,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Returns the {@link DefaultMachineModel}.
+   * Returns the {@link DefaultStateMachineModel}.
    * 
-   * @return The {@link DefaultMachineModel}.
+   * @return The {@link DefaultStateMachineModel}.
    * @see #model
    */
-  public final DefaultMachineModel getModel ()
+  public final DefaultStateMachineModel getModel ()
   {
     return this.model;
   }

@@ -64,7 +64,7 @@ import de.unisiegen.gtitool.ui.redoundo.TransitionRemovedItem;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultMachineModel implements DefaultModel, Storable,
+public final class DefaultStateMachineModel implements DefaultModel, Storable,
     Modifyable
 {
 
@@ -153,7 +153,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * Allocates a new {@link DefaultMachineModel}.
+   * Allocates a new {@link DefaultStateMachineModel}.
    * 
    * @param element The {@link Element}.
    * @param overwrittenMachineType The overwritten machine type which is used
@@ -168,7 +168,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * @throws TransitionException If something with the {@link DefaultTransition}
    *           is not correct.
    */
-  public DefaultMachineModel ( Element element, String overwrittenMachineType )
+  public DefaultStateMachineModel ( Element element, String overwrittenMachineType )
       throws StoreException, StateException, AlphabetException,
       TransitionException, TransitionSymbolOnlyOneTimeException
   {
@@ -315,11 +315,11 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * Allocate a new {@link DefaultMachineModel}.
+   * Allocate a new {@link DefaultStateMachineModel}.
    * 
    * @param machine The {@link StateMachine}.
    */
-  public DefaultMachineModel ( StateMachine machine )
+  public DefaultStateMachineModel ( StateMachine machine )
   {
     this.machine = machine;
     
@@ -720,7 +720,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
           @Override
           public void colorChanged ()
           {
-            DefaultMachineModel.this.jGTIGraph.repaint ();
+            DefaultStateMachineModel.this.jGTIGraph.repaint ();
           }
         } );
 
@@ -745,15 +745,15 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
       public void startEditing ()
       {
-        DefaultMachineModel.this.multiItem = new MultiItem ();
+        DefaultStateMachineModel.this.multiItem = new MultiItem ();
       }
 
 
       public void stopEditing ()
       {
-        if ( DefaultMachineModel.this.redoUndoHandler != null )
-          DefaultMachineModel.this.redoUndoHandler
-              .addItem ( DefaultMachineModel.this.multiItem );
+        if ( DefaultStateMachineModel.this.redoUndoHandler != null )
+          DefaultStateMachineModel.this.redoUndoHandler
+              .addItem ( DefaultStateMachineModel.this.multiItem );
       }
 
 
@@ -766,7 +766,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
         TransitionChangedItem item = new TransitionChangedItem ( transition,
             transition.getPushDownWordRead (), transition
                 .getPushDownWordWrite (), oldSymbols );
-        DefaultMachineModel.this.multiItem.addItem ( item );
+        DefaultStateMachineModel.this.multiItem.addItem ( item );
       }
 
 
@@ -779,7 +779,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
         TransitionChangedItem item = new TransitionChangedItem ( transition,
             transition.getPushDownWordRead (), transition
                 .getPushDownWordWrite (), oldSymbols );
-        DefaultMachineModel.this.multiItem.addItem ( item );
+        DefaultStateMachineModel.this.multiItem.addItem ( item );
       }
 
 
@@ -790,9 +790,9 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
             getStateViewForState ( newTransition.getStateEnd () ), false,
             false, false );
         TransitionAddedItem item = new TransitionAddedItem (
-            DefaultMachineModel.this,
+            DefaultStateMachineModel.this,
             getTransitionViewForTransition ( newTransition ), null );
-        DefaultMachineModel.this.multiItem.addItem ( item );
+        DefaultStateMachineModel.this.multiItem.addItem ( item );
       }
 
 
@@ -801,8 +801,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
         DefaultTransitionView transitionView = getTransitionViewForTransition ( transition );
         removeTransition ( transitionView, false );
         RedoUndoItem item = new TransitionRemovedItem (
-            DefaultMachineModel.this, transitionView );
-        DefaultMachineModel.this.multiItem.addItem ( item );
+            DefaultStateMachineModel.this, transitionView );
+        DefaultStateMachineModel.this.multiItem.addItem ( item );
       }
     };
     this.machine.addMachineChangedListener ( this.machineChangedListener );
@@ -844,12 +844,12 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       public void statePositionChanged ( DefaultStateView stateView,
           double oldX, double oldY, double newX, double newY )
       {
-        if ( ( DefaultMachineModel.this.redoUndoHandler != null )
+        if ( ( DefaultStateMachineModel.this.redoUndoHandler != null )
             && ( ( oldX != newX ) || ( oldY != newY ) ) )
         {
-          RedoUndoItem item = new StateMovedItem ( DefaultMachineModel.this,
+          RedoUndoItem item = new StateMovedItem ( DefaultStateMachineModel.this,
               stateView, oldX, oldY, newX, newY );
-          DefaultMachineModel.this.redoUndoHandler.addItem ( item );
+          DefaultStateMachineModel.this.redoUndoHandler.addItem ( item );
         }
       }
 

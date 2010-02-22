@@ -31,7 +31,7 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.ReachableStatesTableColumnModel;
 import de.unisiegen.gtitool.ui.model.ReachableStatesTableModel;
 import de.unisiegen.gtitool.ui.netbeans.ReachableStatesDialogForm;
@@ -439,15 +439,15 @@ public final class ReachableStatesDialog implements
 
 
   /**
-   * The original {@link DefaultMachineModel}.
+   * The original {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel modelOriginal;
+  private DefaultStateMachineModel modelOriginal;
 
 
   /**
-   * The result {@link DefaultMachineModel}.
+   * The result {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel modelResult;
+  private DefaultStateMachineModel modelResult;
 
 
   /**
@@ -747,7 +747,7 @@ public final class ReachableStatesDialog implements
    * @return The modelOriginal.
    * @see #modelOriginal
    */
-  public DefaultMachineModel getModelOriginal ()
+  public DefaultStateMachineModel getModelOriginal ()
   {
     return this.modelOriginal;
   }
@@ -1326,9 +1326,9 @@ public final class ReachableStatesDialog implements
 
     try
     {
-      this.modelOriginal = new DefaultMachineModel ( this.machinePanel
+      this.modelOriginal = new DefaultStateMachineModel ( this.machinePanel
           .getModel ().getElement (), null );
-      this.modelResult = new DefaultMachineModel ( this.machinePanel
+      this.modelResult = new DefaultStateMachineModel ( this.machinePanel
           .getModel ().getElement (), null );
     }
     catch ( TransitionSymbolOnlyOneTimeException exc )

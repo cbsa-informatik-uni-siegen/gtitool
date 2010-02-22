@@ -5,7 +5,7 @@ import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 
 
 /**
@@ -18,9 +18,9 @@ public final class StateMovedItem extends RedoUndoItem
 {
 
   /**
-   * The {@link DefaultMachineModel}.
+   * The {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel model;
+  private DefaultStateMachineModel model;
 
 
   /**
@@ -56,14 +56,14 @@ public final class StateMovedItem extends RedoUndoItem
   /**
    * Allocates a new {@link StateMovedItem}.
    * 
-   * @param model The {@link DefaultMachineModel}.
+   * @param model The {@link DefaultStateMachineModel}.
    * @param stateView The {@link DefaultStateView}.
    * @param oldX The old x value.
    * @param oldY The old y value.
    * @param newX The new x value.
    * @param newY The new y value.
    */
-  public StateMovedItem ( DefaultMachineModel model,
+  public StateMovedItem ( DefaultStateMachineModel model,
       DefaultStateView stateView, double oldX, double oldY, double newX,
       double newY )
   {

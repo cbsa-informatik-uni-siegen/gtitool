@@ -32,7 +32,7 @@ import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRende
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
@@ -269,9 +269,9 @@ public final class TransitionDialog implements
 
 
   /**
-   * The {@link DefaultMachineModel}.
+   * The {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel model;
+  private DefaultStateMachineModel model;
 
 
   /**
@@ -327,7 +327,7 @@ public final class TransitionDialog implements
    * 
    * @param parent The parent frame.
    * @param machinePanel The {@link MachinePanel}.
-   * @param model The {@link DefaultMachineModel}.
+   * @param model The {@link DefaultStateMachineModel}.
    * @param alphabet The {@link Alphabet} available for the {@link Transition}.
    * @param pushDownAlphabet The push down {@link Alphabet} available for the
    *          {@link Transition}.
@@ -341,7 +341,7 @@ public final class TransitionDialog implements
    * @param zoomFactor The zoom factor of the {@link MachinePanel}.
    */
   public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
-      DefaultMachineModel model, Alphabet alphabet, Alphabet pushDownAlphabet,
+      DefaultStateMachineModel model, Alphabet alphabet, Alphabet pushDownAlphabet,
       State stateBegin, State stateEnd, Word pushDownWordRead,
       Word pushDownWordWrite, TreeSet < Symbol > symbols, double x, double y,
       double zoomFactor )

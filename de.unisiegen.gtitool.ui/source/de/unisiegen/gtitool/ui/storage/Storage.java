@@ -28,7 +28,7 @@ import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 
 
@@ -143,7 +143,7 @@ public final class Storage
 
       if ( element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
       {
-        return new DefaultMachineModel ( element, null );
+        return new DefaultStateMachineModel ( element, null );
       }
       if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
       {

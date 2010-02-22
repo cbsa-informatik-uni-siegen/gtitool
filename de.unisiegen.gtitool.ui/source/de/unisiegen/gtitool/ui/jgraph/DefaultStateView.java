@@ -20,7 +20,7 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.redoundo.StatePositionChangedListener;
 
 
@@ -90,9 +90,9 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * The {@link DefaultMachineModel}
+   * The {@link DefaultStateMachineModel}
    */
-  private DefaultMachineModel machineModel;
+  private DefaultStateMachineModel machineModel;
 
 
   /**
@@ -134,11 +134,11 @@ public final class DefaultStateView extends DefaultGraphCell implements
   /**
    * Creates a new {@link DefaultStateView}.
    * 
-   * @param machineModel The {@link DefaultMachineModel}.
+   * @param machineModel The {@link DefaultStateMachineModel}.
    * @param graphModel The {@link DefaultGraphModel}.
    * @param state The {@link State} represented by this view.
    */
-  public DefaultStateView ( DefaultMachineModel machineModel,
+  public DefaultStateView ( DefaultStateMachineModel machineModel,
       DefaultGraphModel graphModel, State state )
   {
     super ( state );
@@ -347,12 +347,12 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * Returns the {@link DefaultMachineModel}.
+   * Returns the {@link DefaultStateMachineModel}.
    * 
-   * @return The {@link DefaultMachineModel}.
+   * @return The {@link DefaultStateMachineModel}.
    * @see #machineModel
    */
-  public DefaultMachineModel getMachineModel ()
+  public DefaultStateMachineModel getMachineModel ()
   {
     return this.machineModel;
   }

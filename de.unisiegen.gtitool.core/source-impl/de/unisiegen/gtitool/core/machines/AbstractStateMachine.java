@@ -53,7 +53,6 @@ import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.listener.MachineChangedListener;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
-import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
@@ -113,8 +112,6 @@ public abstract class AbstractStateMachine implements StateMachine
       return new DefaultENFA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
     if ( machineType.equals ( ( "PDA" ) ) ) //$NON-NLS-1$
       return new DefaultPDA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
-    if ( machineType.equals ( ( "TDP" ) ) ) //$NON-NLS-1$
-      return new DefaultTDP ( alphabet, pushDownAlphabet, usePushDownAlphabet );
     throw new StoreException ( Messages
         .getString ( "StoreException.WrongMachineType" ) ); //$NON-NLS-1$
   }

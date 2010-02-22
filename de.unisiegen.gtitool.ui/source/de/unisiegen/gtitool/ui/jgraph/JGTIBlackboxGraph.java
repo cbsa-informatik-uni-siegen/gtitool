@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 
 
 /**
@@ -54,7 +54,7 @@ public class JGTIBlackboxGraph extends JGTIGraph
    * @param defaultMachineModel
    * @param defaultGraphModel
    */
-  public JGTIBlackboxGraph ( DefaultMachineModel defaultMachineModel,
+  public JGTIBlackboxGraph ( DefaultStateMachineModel defaultMachineModel,
       DefaultGraphModel defaultGraphModel )
   {
     super ( defaultMachineModel, defaultGraphModel );

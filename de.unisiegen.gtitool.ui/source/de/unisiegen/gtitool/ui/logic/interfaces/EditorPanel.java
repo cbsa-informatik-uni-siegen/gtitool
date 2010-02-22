@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 
 
@@ -65,9 +65,9 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
 
 
   /**
-   * Returns the {@link DefaultMachineModel}
+   * Returns the {@link DefaultStateMachineModel}
    * 
-   * @return the {@link DefaultMachineModel}
+   * @return the {@link DefaultStateMachineModel}
    */
   public DefaultModel getModel ();
 

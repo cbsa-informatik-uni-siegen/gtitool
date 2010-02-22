@@ -65,7 +65,7 @@ import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.ConvertRegexToMachineDialogForm;
@@ -866,13 +866,13 @@ public class ConvertRegexToMachineDialog implements
 
 
   /**
-   * The converted {@link DefaultMachineModel}.
+   * The converted {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel modelConverted;
+  private DefaultStateMachineModel modelConverted;
 
 
   /**
-   * The original {@link DefaultMachineModel}.
+   * The original {@link DefaultStateMachineModel}.
    */
   private DefaultRegexModel modelOriginal;
 
@@ -1022,7 +1022,7 @@ public class ConvertRegexToMachineDialog implements
           .toCoreSyntax ( false ).toString () );
       this.regexNode = this.defaultRegex.getRegexNode ();
       this.regexNode.setShowPositions ( false );
-      this.modelConverted = new DefaultMachineModel ( new DefaultENFA ( a, a,
+      this.modelConverted = new DefaultStateMachineModel ( new DefaultENFA ( a, a,
           false ) );
       this.gui
           .setTitle ( Messages
@@ -1035,7 +1035,7 @@ public class ConvertRegexToMachineDialog implements
       if ( this.entityType.equals ( MachineType.DFA ) )
       {
         this.convertType = ConvertRegexType.REGEX_TO_DFA;
-        this.modelConverted = new DefaultMachineModel ( new DefaultDFA ( a, a,
+        this.modelConverted = new DefaultStateMachineModel ( new DefaultDFA ( a, a,
             false ) );
         this.gui
             .setTitle ( Messages
@@ -1045,7 +1045,7 @@ public class ConvertRegexToMachineDialog implements
       else
       {
         this.convertType = ConvertRegexType.REGEX_TO_NFA;
-        this.modelConverted = new DefaultMachineModel ( new DefaultNFA ( a, a,
+        this.modelConverted = new DefaultStateMachineModel ( new DefaultNFA ( a, a,
             false ) );
         this.gui
             .setTitle ( Messages
@@ -1181,7 +1181,7 @@ public class ConvertRegexToMachineDialog implements
    * @return The modelConverted.
    * @see #modelConverted
    */
-  public DefaultMachineModel getModelConverted ()
+  public DefaultStateMachineModel getModelConverted ()
   {
     return this.modelConverted;
   }

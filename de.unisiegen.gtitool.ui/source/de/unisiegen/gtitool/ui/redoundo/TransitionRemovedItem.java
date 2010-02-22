@@ -3,7 +3,7 @@ package de.unisiegen.gtitool.ui.redoundo;
 
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 
 
 /**
@@ -16,9 +16,9 @@ public final class TransitionRemovedItem extends RedoUndoItem
 {
 
   /**
-   * The {@link DefaultMachineModel}.
+   * The {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel model;
+  private DefaultStateMachineModel model;
 
 
   /**
@@ -30,10 +30,10 @@ public final class TransitionRemovedItem extends RedoUndoItem
   /**
    * Allocates a new {@link TransitionRemovedItem}.
    * 
-   * @param model The {@link DefaultMachineModel}.
+   * @param model The {@link DefaultStateMachineModel}.
    * @param transitionView The {@link DefaultTransitionView}.
    */
-  public TransitionRemovedItem ( DefaultMachineModel model,
+  public TransitionRemovedItem ( DefaultStateMachineModel model,
       DefaultTransitionView transitionView )
   {
     super ();

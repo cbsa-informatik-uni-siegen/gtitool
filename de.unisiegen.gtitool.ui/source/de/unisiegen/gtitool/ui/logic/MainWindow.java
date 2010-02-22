@@ -48,7 +48,7 @@ import de.unisiegen.gtitool.ui.logic.MachinePanel.MachineMode;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
@@ -1850,7 +1850,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     try
     {
-      DefaultMachineModel model = new DefaultMachineModel (
+      DefaultStateMachineModel model = new DefaultStateMachineModel (
           this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
               .getSelectedEditorPanel ().getModel ().getElement (), machineType
               .toString () );
@@ -2281,10 +2281,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( defaultModel != null )
     {
       EditorPanel newEditorPanel;
-      if ( defaultModel instanceof DefaultMachineModel )
+      if ( defaultModel instanceof DefaultStateMachineModel )
       {
         newEditorPanel = new MachinePanel ( this.gui,
-            ( DefaultMachineModel ) defaultModel, null );
+            ( DefaultStateMachineModel ) defaultModel, null );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
         addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
       }
@@ -2353,10 +2353,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       if ( element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
       {
-        defaultModel = new DefaultMachineModel ( element, null );
+        defaultModel = new DefaultStateMachineModel ( element, null );
 
         if ( autoLayout )
-          new LayoutManager ( ( DefaultMachineModel ) defaultModel, null )
+          new LayoutManager ( ( DefaultStateMachineModel ) defaultModel, null )
               .doLayout ();
       }
       else if ( element.getName ().equals ( "GrammarModel" ) )
@@ -5592,9 +5592,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       DefaultModel element = ( DefaultModel ) Storage.getInstance ().load (
           file );
 
-      if ( element instanceof DefaultMachineModel )
+      if ( element instanceof DefaultStateMachineModel )
       {
-        DefaultMachineModel model = ( DefaultMachineModel ) element;
+        DefaultStateMachineModel model = ( DefaultStateMachineModel ) element;
         EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
 
         jGTIEditorPanelTabbedPane.addEditorPanel ( newEditorPanel );

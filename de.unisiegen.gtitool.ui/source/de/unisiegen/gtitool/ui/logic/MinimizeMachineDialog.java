@@ -32,7 +32,7 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.MinimizeMachineTableModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.MinimizeMachineDialogForm;
@@ -151,15 +151,15 @@ public final class MinimizeMachineDialog implements
 
 
   /**
-   * The new created {@link DefaultMachineModel}.
+   * The new created {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel modelMinimized;
+  private DefaultStateMachineModel modelMinimized;
 
 
   /**
-   * The original {@link DefaultMachineModel}.
+   * The original {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel modelOriginal;
+  private DefaultStateMachineModel modelOriginal;
 
 
   /**
@@ -213,7 +213,7 @@ public final class MinimizeMachineDialog implements
 
     try
     {
-      this.modelOriginal = new DefaultMachineModel ( this.machinePanel
+      this.modelOriginal = new DefaultStateMachineModel ( this.machinePanel
           .getModel ().getElement (), null );
       this.minimizeMachineTableModel = new MinimizeMachineTableModel ();
       this.minimizer = new Minimizer ( this.modelOriginal, this );
@@ -279,7 +279,7 @@ public final class MinimizeMachineDialog implements
   private void buildMinimalMachine ()
   {
     this.states.clear ();
-    this.modelMinimized = new DefaultMachineModel ( new DefaultDFA (
+    this.modelMinimized = new DefaultStateMachineModel ( new DefaultDFA (
         this.machine.getAlphabet (), this.machine.getPushDownAlphabet (),
         this.machine.isUsePushDownAlphabet () ) );
 
@@ -414,7 +414,7 @@ public final class MinimizeMachineDialog implements
    * @return The modelMinimized.
    * @see #modelMinimized
    */
-  public DefaultMachineModel getModelMinimized ()
+  public DefaultStateMachineModel getModelMinimized ()
   {
     return this.modelMinimized;
   }
@@ -426,7 +426,7 @@ public final class MinimizeMachineDialog implements
    * @return The modelOriginal.
    * @see #modelOriginal
    */
-  public DefaultMachineModel getModelOriginal ()
+  public DefaultStateMachineModel getModelOriginal ()
   {
     return this.modelOriginal;
   }

@@ -21,6 +21,7 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -28,7 +29,7 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
@@ -73,9 +74,9 @@ public abstract class AbstractConvertGrammar implements Converter
 
 
   /**
-   * The new {@link DefaultMachineModel}.
+   * The new {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel model;
+  private DefaultStateMachineModel model;
 
 
   /**
@@ -209,9 +210,10 @@ public abstract class AbstractConvertGrammar implements Converter
    * 
    * @param machine The {@link StateMachine}.
    */
-  protected final void createMachinePanel ( StateMachine machine )
+  protected final void createMachinePanel ( Machine machine )
   {
-    this.model = new DefaultMachineModel ( machine );
+    if(machine instanceof StateMachine)
+      this.model = new DefaultStateMachineModel ( (StateMachine)machine );
     this.model.setGrammar ( this.grammar );
     this.newPanel = new MachinePanel ( this.mainWindowForm, this.model, null );
   }
@@ -327,7 +329,7 @@ public abstract class AbstractConvertGrammar implements Converter
    * @return The {@link DefaultGrammarModel}.
    * @see #model
    */
-  public final DefaultMachineModel getModel ()
+  public final DefaultStateMachineModel getModel ()
   {
     return this.model;
   }

@@ -21,7 +21,7 @@ import de.unisiegen.gtitool.ui.logic.NewDialogMachineChoice.Choice;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
@@ -188,7 +188,7 @@ public final class NewDialog implements LogicClass < NewDialogForm >
           NewDialogMachineChoice.Choice.DFA ) )
       {
         this.newPanel = new MachinePanel ( this.mainWindowForm,
-            new DefaultMachineModel ( new DefaultDFA ( this.newDialogAlphabet
+            new DefaultStateMachineModel ( new DefaultDFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
 
@@ -201,7 +201,7 @@ public final class NewDialog implements LogicClass < NewDialogForm >
           NewDialogMachineChoice.Choice.NFA ) )
       {
         this.newPanel = new MachinePanel ( this.mainWindowForm,
-            new DefaultMachineModel ( new DefaultNFA ( this.newDialogAlphabet
+            new DefaultStateMachineModel ( new DefaultNFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
 
@@ -214,7 +214,7 @@ public final class NewDialog implements LogicClass < NewDialogForm >
           NewDialogMachineChoice.Choice.ENFA ) )
       {
         this.newPanel = new MachinePanel ( this.mainWindowForm,
-            new DefaultMachineModel ( new DefaultENFA ( this.newDialogAlphabet
+            new DefaultStateMachineModel ( new DefaultENFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
 
@@ -227,7 +227,7 @@ public final class NewDialog implements LogicClass < NewDialogForm >
           NewDialogMachineChoice.Choice.PDA ) )
       {
         this.newPanel = new MachinePanel ( this.mainWindowForm,
-            new DefaultMachineModel ( new DefaultPDA ( this.newDialogAlphabet
+            new DefaultStateMachineModel ( new DefaultPDA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
 

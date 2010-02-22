@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.redoundo.MultiItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.redoundo.StateMovedItem;
@@ -44,9 +44,9 @@ public final class LayoutManager
 
 
   /**
-   * The {@link DefaultMachineModel}.
+   * The {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel model;
+  private DefaultStateMachineModel model;
 
 
   /**
@@ -76,10 +76,10 @@ public final class LayoutManager
   /**
    * Allocates a new {@link LayoutManager}.
    * 
-   * @param model The {@link DefaultMachineModel}.
+   * @param model The {@link DefaultStateMachineModel}.
    * @param redoUndoHandler The {@link RedoUndoHandler}.
    */
-  public LayoutManager ( DefaultMachineModel model,
+  public LayoutManager ( DefaultStateMachineModel model,
       RedoUndoHandler redoUndoHandler )
   {
     this.model = model;

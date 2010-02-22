@@ -65,7 +65,7 @@ import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -834,15 +834,15 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The converted {@link DefaultMachineModel}.
+   * The converted {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel modelConverted;
+  private DefaultStateMachineModel modelConverted;
 
 
   /**
-   * The original {@link DefaultMachineModel}.
+   * The original {@link DefaultStateMachineModel}.
    */
-  private DefaultMachineModel modelOriginal;
+  private DefaultStateMachineModel modelOriginal;
 
 
   /**
@@ -1202,7 +1202,7 @@ public final class ConvertMachineDialog implements
 
     try
     {
-      this.modelOriginal = new DefaultMachineModel ( this.machinePanel
+      this.modelOriginal = new DefaultStateMachineModel ( this.machinePanel
           .getModel ().getElement (), null );
     }
     catch ( TransitionSymbolOnlyOneTimeException exc )
@@ -1244,7 +1244,7 @@ public final class ConvertMachineDialog implements
     {
       case NFA_TO_DFA :
       {
-        this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
+        this.modelConverted = new DefaultStateMachineModel ( new DefaultDFA (
             this.machineOriginal.getAlphabet (), this.machineOriginal
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
@@ -1256,7 +1256,7 @@ public final class ConvertMachineDialog implements
       }
       case NFA_TO_DFA_COMPLETE :
       {
-        this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
+        this.modelConverted = new DefaultStateMachineModel ( new DefaultDFA (
             this.machineOriginal.getAlphabet (), this.machineOriginal
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
@@ -1269,7 +1269,7 @@ public final class ConvertMachineDialog implements
       }
       case ENFA_TO_NFA :
       {
-        this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
+        this.modelConverted = new DefaultStateMachineModel ( new DefaultNFA (
             this.machineOriginal.getAlphabet (), this.machineOriginal
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
@@ -1281,7 +1281,7 @@ public final class ConvertMachineDialog implements
       }
       case ENFA_TO_NFA_COMPLETE :
       {
-        this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
+        this.modelConverted = new DefaultStateMachineModel ( new DefaultNFA (
             this.machineOriginal.getAlphabet (), this.machineOriginal
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
@@ -1294,7 +1294,7 @@ public final class ConvertMachineDialog implements
       }
       case ENFA_TO_NFA_CB :
       {
-        this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
+        this.modelConverted = new DefaultStateMachineModel ( new DefaultNFA (
             this.machineOriginal.getAlphabet (), this.machineOriginal
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
@@ -1307,7 +1307,7 @@ public final class ConvertMachineDialog implements
       }
       case ENFA_TO_NFA_COMPLETE_CB :
       {
-        this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
+        this.modelConverted = new DefaultStateMachineModel ( new DefaultNFA (
             this.machineOriginal.getAlphabet (), this.machineOriginal
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
@@ -1320,7 +1320,7 @@ public final class ConvertMachineDialog implements
       }
       case ENFA_TO_DFA :
       {
-        this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
+        this.modelConverted = new DefaultStateMachineModel ( new DefaultDFA (
             this.machineOriginal.getAlphabet (), this.machineOriginal
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
@@ -1332,7 +1332,7 @@ public final class ConvertMachineDialog implements
       }
       case ENFA_TO_DFA_COMPLETE :
       {
-        this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
+        this.modelConverted = new DefaultStateMachineModel ( new DefaultDFA (
             this.machineOriginal.getAlphabet (), this.machineOriginal
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
@@ -1345,7 +1345,7 @@ public final class ConvertMachineDialog implements
       }
       case DFA_TO_REGEX :
       {
-        this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
+        this.modelConverted = new DefaultStateMachineModel ( new DefaultDFA (
             this.machineOriginal.getAlphabet (), this.machineOriginal
                 .getPushDownAlphabet (), this.machineOriginal
                 .isUsePushDownAlphabet () ) );
@@ -1640,7 +1640,7 @@ public final class ConvertMachineDialog implements
    * @return The modelConverted.
    * @see #modelConverted
    */
-  public DefaultMachineModel getModelConverted ()
+  public DefaultStateMachineModel getModelConverted ()
   {
     return this.modelConverted;
   }
@@ -1652,7 +1652,7 @@ public final class ConvertMachineDialog implements
    * @return The modelOriginal.
    * @see #modelOriginal
    */
-  public DefaultMachineModel getModelOriginal ()
+  public DefaultStateMachineModel getModelOriginal ()
   {
     return this.modelOriginal;
   }

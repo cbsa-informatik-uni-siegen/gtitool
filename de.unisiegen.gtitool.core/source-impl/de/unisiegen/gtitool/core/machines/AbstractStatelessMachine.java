@@ -2,7 +2,9 @@ package de.unisiegen.gtitool.core.machines;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -24,12 +26,27 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
   private Alphabet alphabet;
 
 
+  /**
+   * the input word
+   */
   private Word word;
+  
+  
+  /**
+   * the stack
+   */
+  private Stack stack;
 
 
+  /**
+   * actual input position
+   */
   private int wordIndex;
 
 
+  /**
+   * word is accepted
+   */
   private boolean wordAccepted;
 
 
@@ -61,9 +78,15 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
     if ( alphabet == null )
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     this.alphabet = alphabet;
+    this.stack = new DefaultStack();
   }
 
 
+  /**
+   * actual input terminal
+   *
+   * @return The actual {@link TerminalSymbol}
+   */
   protected TerminalSymbol currentTerminal ()
   {
     return this.wordIndex < this.word.size () ? new DefaultTerminalSymbol (
@@ -72,9 +95,9 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
 
 
   /**
-   * TODO
+   * gets the {@link Alphabet}
    * 
-   * @return
+   * @return the {@link Alphabet}
    */
   public Alphabet getAlphabet ()
   {
@@ -83,10 +106,9 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
 
 
   /**
-   * TODO
+   * gets the accept-status
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#isWordAccepted()
+   * @return The accept-status
    */
   public boolean isWordAccepted ()
   {
@@ -95,12 +117,11 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
 
 
   /**
-   * TODO
+   * Sets the Start input {@link Word}
    * 
-   * @param word
-   * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#start(de.unisiegen.gtitool.core.entities.Word)
-   */
-  public void start ( Word word )
+   * @param word the input {@link Word}
+  */
+  public void start ( final Word word )
   {
     this.word = word;
     this.wordIndex = 0;
@@ -108,12 +129,20 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
   }
 
 
+  /**
+   * increment current input position
+   *
+   */
   protected void nextSymbol ()
   {
     ++this.wordIndex;
   }
 
 
+  /**
+   * accept the input
+   *
+   */
   protected void accept ()
   {
     this.wordAccepted = true;

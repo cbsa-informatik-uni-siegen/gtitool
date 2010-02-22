@@ -19,7 +19,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 /**
  * TODO
  */
-public abstract class ConvertToLR extends AbstractConvertGrammar
+public abstract class ConvertToLR extends AbstractConvertGrammarStateMachine
 {
 
   /**
@@ -41,7 +41,7 @@ public abstract class ConvertToLR extends AbstractConvertGrammar
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammar#performProductions()
+   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammarStateMachine#performProductions()
    */
   @Override
   protected void performProductions ()

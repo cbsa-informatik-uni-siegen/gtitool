@@ -31,7 +31,7 @@ public class ConvertToTDP extends ConvertContextFreeGrammar
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammar#createMachine()
+   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammarStateMachine#createMachine()
    */
   @Override
   protected void createMachine ()

@@ -30,7 +30,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class ConvertRegularGrammar extends AbstractConvertGrammar
+public class ConvertRegularGrammar extends AbstractConvertGrammarStateMachine
 {
 
   /**
@@ -62,7 +62,7 @@ public class ConvertRegularGrammar extends AbstractConvertGrammar
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammar#createMachine()
+   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammarStateMachine#createMachine()
    */
   @Override
   protected void createMachine ()

@@ -30,7 +30,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
  * @version $Id: ConvertContextFreeGrammar.java 910 2008-05-16 00:31:21Z fehler
  *          $
  */
-public class ConvertContextFreeGrammar extends AbstractConvertGrammar
+public class ConvertContextFreeGrammar extends AbstractConvertGrammarStateMachine
 {
 
   /**
@@ -69,7 +69,7 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammar#createMachine()
+   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammarStateMachine#createMachine()
    */
   @Override
   protected void createMachine ()
@@ -103,7 +103,7 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammar#performProductions()
+   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammarStateMachine#performProductions()
    */
   @Override
   protected void performProductions ()

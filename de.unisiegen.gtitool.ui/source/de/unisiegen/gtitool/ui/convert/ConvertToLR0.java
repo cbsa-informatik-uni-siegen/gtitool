@@ -45,7 +45,7 @@ public class ConvertToLR0 extends ConvertToLR
   /**
    * TODO
    * 
-   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammar#createMachine()
+   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammarStateMachine#createMachine()
    */
   @Override
   protected void createMachine ()

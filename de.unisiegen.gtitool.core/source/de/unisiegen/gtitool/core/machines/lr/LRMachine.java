@@ -5,6 +5,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.LRAction;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 
 
@@ -23,7 +24,8 @@ public interface LRMachine
 
 
   /**
-   * Starts the {@link StateMachine} after a validation with the given {@link Word}.
+   * Starts the {@link StateMachine} after a validation with the given
+   * {@link Word}.
    * 
    * @param word The {@link Word} to start with.
    */
@@ -41,26 +43,15 @@ public interface LRMachine
 
 
   /**
-   * Returns true if the given {@link Word} is accepted, otherwise false.
-   * 
-   * @param testWord The {@link Word} to test.
-   * @return True if the given {@link Word} is accepted, otherwise false.
-   */
-  public boolean isWordAccepted ( Word testWord );
-
-
-  /**
-   * 
    * Try to automatically use the next transition
-   *
+   * @throws MachineAmbigiousActionException 
    */
-  public void autoTransit ();
+  public void autoTransit () throws MachineAmbigiousActionException;
 
 
   /**
-   * 
    * Try to transit using LRAction transition
-   *
+   * 
    * @param transition
    * @return true if the transit could be done
    */

@@ -6,6 +6,7 @@ import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.LR0Test;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 
@@ -38,12 +39,15 @@ public class LR1ParserTest
       {
         parser.autoTransit ();
       }
-
     }
     catch ( AlphabetException e )
     {
       e.printStackTrace ();
       System.exit ( 1 );
+    }
+    catch ( MachineAmbigiousActionException exc )
+    {
+      exc.printStackTrace ();
     }
   }
 }

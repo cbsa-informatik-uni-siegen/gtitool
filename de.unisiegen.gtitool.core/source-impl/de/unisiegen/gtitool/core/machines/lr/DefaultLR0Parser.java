@@ -17,6 +17,7 @@ import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.machines.dfa.LR0;
@@ -36,8 +37,9 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * @param usePushDownAlphabet
    * @param validationElements
    */
-  public DefaultLR0Parser ( LR0Grammar grammar ) throws AlphabetException
+  public DefaultLR0Parser ( final LR0Grammar grammar ) throws AlphabetException
   {
+    super ( grammar.makeAutomatonAlphabet () );
     this.grammar = grammar;
 
     this.lr0Automaton = new LR0 ( grammar );
@@ -90,23 +92,19 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   }
 
 
-  public void autoTransit ()
+  public void autoTransit () throws MachineAmbigiousActionException
   {
     LRActionSet possibleActions = actions ( currentItems (), currentTerminal () );
 
     System.out.println ( possibleActions );
 
     if ( possibleActions.size () != 1 )
-    {
-      System.err.println ( "Multiple actions!" );
-      System.exit ( 1 );// TODO
-      // TODO throw
-    }
+      throw new MachineAmbigiousActionException ();
 
-    // System.out.println ( possibleActions );
     if ( transit ( possibleActions.first () ) == false )
     {
-      System.err.println ( "Testtest" );
+      // shouldn't happen
+      System.err.println ( "Internal parser error" );
       System.exit ( 1 );
     }
   }
@@ -188,7 +186,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   }
 
 
-  public void start ( Word word )
+  public void start ( final Word word )
   {
     super.start ( word );
     this.lr0Automaton.start ( new DefaultWord () );

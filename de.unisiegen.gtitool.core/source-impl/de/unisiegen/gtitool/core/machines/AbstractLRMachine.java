@@ -6,24 +6,25 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.LRAction;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.machines.lr.LRMachine;
 
 
 /**
  * TODO
  */
-public class AbstractLRMachine implements LRMachine
+public class AbstractLRMachine extends AbstractStatelessMachine implements
+    LRMachine
 {
 
   /**
    * TODO
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#getAlphabet()
+   * @param alphabet
    */
-  public Alphabet getAlphabet ()
+  public AbstractLRMachine ( final Alphabet alphabet )
   {
-    return null;
+    super ( alphabet );
   }
 
 
@@ -34,19 +35,6 @@ public class AbstractLRMachine implements LRMachine
    * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#isWordAccepted()
    */
   public boolean isWordAccepted ()
-  {
-    return false;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param testWord
-   * @return
-   * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#isWordAccepted(de.unisiegen.gtitool.core.entities.Word)
-   */
-  public boolean isWordAccepted ( Word testWord )
   {
     return this.wordAccepted;
   }
@@ -73,7 +61,7 @@ public class AbstractLRMachine implements LRMachine
    * @return
    * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#transit(de.unisiegen.gtitool.core.entities.LRAction)
    */
-  public boolean transit ( LRAction transition )
+  public boolean transit ( final LRAction transition )
   {
     return false;
   }
@@ -86,7 +74,7 @@ public class AbstractLRMachine implements LRMachine
   }
 
 
-  public void autoTransit ()
+  public void autoTransit () throws MachineAmbigiousActionException
   {
 
   }

@@ -2,7 +2,6 @@ package de.unisiegen.gtitool.core.machines.lr;
 
 
 import de.unisiegen.gtitool.core.entities.DefaultLRActionSet;
-import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR1Item;
 import de.unisiegen.gtitool.core.entities.LR1ItemSet;
@@ -16,7 +15,6 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
@@ -32,13 +30,12 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
   /**
    * TODO
    * 
-   * @param alphabet
-   * @param pushDownAlphabet
-   * @param usePushDownAlphabet
-   * @param validationElements
+   * @param grammar - The grammar to parse
+   * @throws AlphabetException
    */
-  public DefaultLR1Parser ( LR1Grammar grammar ) throws AlphabetException
+  public DefaultLR1Parser ( final LR1Grammar grammar ) throws AlphabetException
   {
+    super ( grammar.makeAutomatonAlphabet () );
     this.grammar = grammar;
 
     this.lr1Automaton = new LR1 ( grammar );

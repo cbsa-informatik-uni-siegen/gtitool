@@ -27,6 +27,12 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
 
   /**
    * TODO
+   */
+  private static final long serialVersionUID = 1L;
+
+
+  /**
+   * TODO
    * 
    * @param nonterminalSymbolSet
    * @param terminalSymbolSet
@@ -63,12 +69,23 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
   }
 
 
+  /**
+   * TODO
+   *
+   * @return
+   */
   public Production getStartProduction ()
   {
     return this.startProduction;
   }
 
 
+  /**
+   * TODO
+   *
+   * @return
+   * @throws AlphabetException
+   */
   public Alphabet makeAutomatonAlphabet () throws AlphabetException
   {
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();

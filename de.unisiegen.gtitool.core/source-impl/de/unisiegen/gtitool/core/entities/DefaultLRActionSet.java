@@ -62,10 +62,10 @@ public class DefaultLRActionSet implements LRActionSet
 
 
   /**
-   * TODO
+   * Check if the action is an element of this set
    * 
    * @param action
-   * @return
+   * @return if the element is found
    * @see de.unisiegen.gtitool.core.entities.LRActionSet#contains(de.unisiegen.gtitool.core.entities.LRAction)
    */
   public boolean contains ( LRAction action )
@@ -75,9 +75,9 @@ public class DefaultLRActionSet implements LRActionSet
 
 
   /**
-   * TODO
+   * Get the underlying tree set
    * 
-   * @return
+   * @return the underlying tree set
    * @see de.unisiegen.gtitool.core.entities.LRActionSet#get()
    */
   public TreeSet < LRAction > get ()
@@ -94,7 +94,7 @@ public class DefaultLRActionSet implements LRActionSet
    */
   public int size ()
   {
-    return rep.size ();
+    return this.rep.size ();
   }
 
 
@@ -242,10 +242,13 @@ public class DefaultLRActionSet implements LRActionSet
 
   public String toString ()
   {
-    return rep.toString ();
+    return this.rep.toString ();
   }
 
 
+  /**
+   * TODO
+   */
   private TreeSet < LRAction > rep = new TreeSet < LRAction > ();
 
 

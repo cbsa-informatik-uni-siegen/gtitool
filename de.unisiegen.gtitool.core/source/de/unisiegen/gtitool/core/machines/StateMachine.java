@@ -201,9 +201,9 @@ public interface StateMachine extends Machine, InputEntity, Serializable,
 
 
   /**
-   * Returns the {@link MachineType}.
+   * Returns the {@link Machine.MachineType}.
    * 
-   * @return The {@link MachineType}.
+   * @return The {@link Machine.MachineType}.
    */
   public MachineType getMachineType ();
 

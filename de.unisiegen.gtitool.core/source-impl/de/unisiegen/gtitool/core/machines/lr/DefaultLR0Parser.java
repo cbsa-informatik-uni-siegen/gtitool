@@ -31,11 +31,8 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
 
   /**
    * TODO
-   * 
-   * @param alphabet
-   * @param pushDownAlphabet
-   * @param usePushDownAlphabet
-   * @param validationElements
+   * @param grammar 
+   * @throws AlphabetException 
    */
   public DefaultLR0Parser ( final LR0Grammar grammar ) throws AlphabetException
   {
@@ -92,11 +89,16 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   }
 
 
+  /**
+   * TODO
+   * 
+   * @throws MachineAmbigiousActionException
+   * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#autoTransit()
+   */
+  @Override
   public void autoTransit () throws MachineAmbigiousActionException
   {
     LRActionSet possibleActions = actions ( currentItems (), currentTerminal () );
-
-    System.out.println ( possibleActions );
 
     if ( possibleActions.size () != 1 )
       throw new MachineAmbigiousActionException ();
@@ -104,7 +106,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
     if ( transit ( possibleActions.first () ) == false )
     {
       // shouldn't happen
-      System.err.println ( "Internal parser error" );
+      System.err.println ( "Internal parser error" ); //$NON-NLS-1$
       System.exit ( 1 );
     }
   }
@@ -186,6 +188,13 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   }
 
 
+  /**
+   * TODO
+   *
+   * @param word
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#start(de.unisiegen.gtitool.core.entities.Word)
+   */
+  @Override
   public void start ( final Word word )
   {
     super.start ( word );
@@ -193,14 +202,25 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   }
 
 
+  /**
+   * The parser's associated grammar
+   *
+   * @return the grammar
+   */
   protected LR0Grammar getGrammar ()
   {
     return this.grammar;
   }
 
 
+  /**
+   * The associated grammar
+   */
   private LR0Grammar grammar;
 
 
+  /**
+   * The LR0 automaton
+   */
   private LR0 lr0Automaton;
 }

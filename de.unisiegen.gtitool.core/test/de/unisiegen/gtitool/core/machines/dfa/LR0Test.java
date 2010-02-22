@@ -18,23 +18,28 @@ import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 
 
 /**
- * TODO
+ * Test the LR0 automaton
  *
  */
 public class LR0Test
 {
-  public static void main ( String [] arguments )
+  /**
+   * main method
+   *
+   * @param arguments
+   */
+  public static void main ( final String [] arguments )
   {
-    NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" );
+    NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" ); //$NON-NLS-1$
 
     NonterminalSymbolSet nonterminalSet = new DefaultNonterminalSymbolSet ();
 
-    NonterminalSymbol T = new DefaultNonterminalSymbol ( "T" );
-    NonterminalSymbol F = new DefaultNonterminalSymbol ( "F" );
+    NonterminalSymbol T = new DefaultNonterminalSymbol ( "T" ); //$NON-NLS-1$
+    NonterminalSymbol F = new DefaultNonterminalSymbol ( "F" ); //$NON-NLS-1$
 
     try
     {
-      nonterminalSet.add ( E ); // ??
+      nonterminalSet.add ( E );
       nonterminalSet.add ( T );
       nonterminalSet.add ( F );
     }
@@ -45,11 +50,11 @@ public class LR0Test
 
     TerminalSymbolSet terminalSet = new DefaultTerminalSymbolSet ();
 
-    TerminalSymbol id = new DefaultTerminalSymbol ( "id" );
-    TerminalSymbol lparen = new DefaultTerminalSymbol ( "(" );
-    TerminalSymbol rparen = new DefaultTerminalSymbol ( ")" );
-    TerminalSymbol plus = new DefaultTerminalSymbol ( "+" );
-    TerminalSymbol multiplies = new DefaultTerminalSymbol ( "*" );
+    TerminalSymbol id = new DefaultTerminalSymbol ( "id" ); //$NON-NLS-1$
+    TerminalSymbol lparen = new DefaultTerminalSymbol ( "(" ); //$NON-NLS-1$
+    TerminalSymbol rparen = new DefaultTerminalSymbol ( ")" ); //$NON-NLS-1$
+    TerminalSymbol plus = new DefaultTerminalSymbol ( "+" ); //$NON-NLS-1$
+    TerminalSymbol multiplies = new DefaultTerminalSymbol ( "*" ); //$NON-NLS-1$
 
     try
     {

@@ -9,17 +9,22 @@ package de.unisiegen.gtitool.core.entities;
 public interface LRAction extends Comparable<LRAction>
 {
 
+  /**
+   * The LR action to do
+   *
+   */
   public enum TransitionType
   {
     /**
-     * TODO
+     * Shift the next character onto the stack
      */
-    SHIFT, /**
-     * TODO
+    SHIFT,
+    /**
+     * Reduce the current symbols on the top of the stack
      */
     REDUCE,
     /**
-     * TODO
+     * Accept the whole input
      */
     ACCEPT
   }

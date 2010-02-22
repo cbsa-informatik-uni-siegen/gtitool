@@ -20,6 +20,9 @@ public final class GrammarInvalidNonterminalException extends GrammarException
   private static final long serialVersionUID = -4178590258354628604L;
 
 
+  /**
+   * The invalid nonterminal
+   */
   private final NonterminalSymbol nonterminalSymbol;
 
 

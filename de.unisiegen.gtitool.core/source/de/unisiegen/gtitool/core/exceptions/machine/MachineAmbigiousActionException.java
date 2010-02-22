@@ -13,9 +13,9 @@ public final class MachineAmbigiousActionException extends MachineException
   private static final long serialVersionUID = 1L;
 
   /**
-   * TODO
+   * The error type
    * 
-   * @return
+   * @return the error type
    * @see de.unisiegen.gtitool.core.exceptions.CoreException#getType()
    */
   @Override

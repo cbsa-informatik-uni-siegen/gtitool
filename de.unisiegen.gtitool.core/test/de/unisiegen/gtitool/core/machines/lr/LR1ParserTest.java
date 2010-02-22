@@ -12,12 +12,17 @@ import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 
 
 /**
- * TODO
+ * Test the LR1 parser
  */
 public class LR1ParserTest
 {
 
-  public static void main ( String [] args )
+  /**
+   * main method
+   * 
+   * @param args
+   */
+  public static void main ( final String [] args )
   {
     LR1Grammar testGrammar = new LR1Grammar ( LR0Test.testGrammar () );
 
@@ -29,9 +34,9 @@ public class LR1ParserTest
 
       TerminalSymbolSet terminals = testGrammar.getTerminalSymbolSet ();
 
-      word.add ( new DefaultSymbol ( terminals.get ( "id" ).toString () ) );
-      word.add ( new DefaultSymbol ( terminals.get ( "*" ).toString () ) );
-      word.add ( new DefaultSymbol ( terminals.get ( "id" ).toString () ) );
+      word.add ( new DefaultSymbol ( terminals.get ( "id" ).toString () ) ); //$NON-NLS-1$
+      word.add ( new DefaultSymbol ( terminals.get ( "*" ).toString () ) ); //$NON-NLS-1$
+      word.add ( new DefaultSymbol ( terminals.get ( "id" ).toString () ) ); //$NON-NLS-1$
 
       parser.start ( word );
 

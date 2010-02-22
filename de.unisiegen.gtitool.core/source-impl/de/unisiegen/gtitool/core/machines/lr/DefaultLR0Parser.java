@@ -31,8 +31,9 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
 
   /**
    * TODO
-   * @param grammar 
-   * @throws AlphabetException 
+   * 
+   * @param grammar
+   * @throws AlphabetException
    */
   public DefaultLR0Parser ( final LR0Grammar grammar ) throws AlphabetException
   {
@@ -98,17 +99,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   @Override
   public void autoTransit () throws MachineAmbigiousActionException
   {
-    LRActionSet possibleActions = actions ( currentItems (), currentTerminal () );
-
-    if ( possibleActions.size () != 1 )
-      throw new MachineAmbigiousActionException ();
-
-    if ( transit ( possibleActions.first () ) == false )
-    {
-      // shouldn't happen
-      System.err.println ( "Internal parser error" ); //$NON-NLS-1$
-      System.exit ( 1 );
-    }
+    this.assertTransit ( actions ( currentItems (), currentTerminal () ) );
   }
 
 
@@ -190,7 +181,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
 
   /**
    * TODO
-   *
+   * 
    * @param word
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#start(de.unisiegen.gtitool.core.entities.Word)
    */
@@ -204,7 +195,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
 
   /**
    * The parser's associated grammar
-   *
+   * 
    * @return the grammar
    */
   protected LR0Grammar getGrammar ()

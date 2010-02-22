@@ -16,6 +16,7 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.machines.dfa.LR1;
@@ -104,33 +105,29 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
   }
 
 
-  public void autoTransit ()
+  /**
+   * TODO
+   *
+   * @throws MachineAmbigiousActionException
+   * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#autoTransit()
+   */
+  @Override
+  public void autoTransit () throws MachineAmbigiousActionException
   {
-    LRActionSet possibleActions = actions ( currentItems (), currentTerminal () );
-
-    System.out.println ( possibleActions );
-
-    if ( possibleActions.size () != 1 )
-    {
-      System.err.println ( "Multiple actions!" );
-      System.exit ( 1 );// TODO
-      // TODO throw
-    }
-
-    // System.out.println ( possibleActions );
-    if ( transit ( possibleActions.first () ) == false )
-    {
-      System.err.println ( "Testtest" );
-      System.exit ( 1 );
-    }
+    this.assertTransit ( actions ( currentItems (), currentTerminal () ) );
   }
 
 
+  /**
+   * Get the current LR1 items
+   * 
+   * @return The items
+   */
   private LR1ItemSet currentItems ()
   {
-    State state = this.lr1Automaton.getCurrentState ();
+    final State state = this.lr1Automaton.getCurrentState ();
 
-    LR1State lr1state = ( LR1State ) state;
+    final LR1State lr1state = ( LR1State ) state;
 
     return lr1state.getLR1Items ();
   }
@@ -176,6 +173,13 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param word
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#start(de.unisiegen.gtitool.core.entities.Word)
+   */
+  @Override
   public void start ( Word word )
   {
     super.start ( word );
@@ -183,9 +187,26 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
   }
 
 
+  /**
+   * The parser's associated grammar
+   * 
+   * @return the grammar
+   */
+  protected LR1Grammar getGrammar ()
+  {
+    return this.grammar;
+  }
+
+
+  /**
+   * TODO
+   */
   private LR1Grammar grammar;
 
 
+  /**
+   * TODO
+   */
   private LR1 lr1Automaton;
 
 }

@@ -67,6 +67,11 @@ public interface Machine
     LR1Parser,
 
     /**
+     * The LALR1Parser machine type.
+     */
+    LALR1Parser,
+
+    /**
      * The {@link DefaultTDP} machine type.
      */
     TDP;

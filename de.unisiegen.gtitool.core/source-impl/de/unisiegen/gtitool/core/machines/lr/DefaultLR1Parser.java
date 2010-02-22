@@ -43,6 +43,22 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
 
 
   /**
+   * @param lr1 - The LR1 parser to use (can be used to use an LALR1 automaton)
+   * @param grammar
+   * @throws AlphabetException
+   */
+  public DefaultLR1Parser ( final LR1 lr1, final LR1Grammar grammar )
+      throws AlphabetException
+  {
+    super ( grammar.makeAutomatonAlphabet () );
+
+    this.grammar = grammar;
+
+    this.lr1Automaton = lr1;
+  }
+
+
+  /**
    * TODO
    * 
    * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#transit(de.unisiegen.gtitool.core.entities.LRAction)

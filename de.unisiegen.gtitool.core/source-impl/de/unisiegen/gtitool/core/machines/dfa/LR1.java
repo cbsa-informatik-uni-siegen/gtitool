@@ -28,11 +28,21 @@ import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 public class LR1 extends AbstractStateMachine implements DFA
 {
 
+  /**
+   * TODO
+   */
+  private static final long serialVersionUID = 1L;
+
+
+  /**
+   * TODO
+   *
+   * @param grammar
+   * @throws AlphabetException
+   */
   public LR1 ( LR1Grammar grammar ) throws AlphabetException
   {
-    super ( grammar.makeAutomatonAlphabet (), new DefaultAlphabet (), false,
-        ValidationElement.FINAL_STATE, ValidationElement.STATE_NAME,
-        ValidationElement.SYMBOL_ONLY_ONE_TIME );
+    this ( grammar.makeAutomatonAlphabet () );
 
     Alphabet alphabet = this.getAlphabet ();
 
@@ -111,6 +121,29 @@ public class LR1 extends AbstractStateMachine implements DFA
         }
       }
     }
+  }
+
+
+  /**
+   * TODO
+   *
+   * @param alphabet
+   */
+  private LR1 ( final Alphabet alphabet )
+  {
+    super ( alphabet, new DefaultAlphabet (), false,
+        ValidationElement.FINAL_STATE, ValidationElement.STATE_NAME,
+        ValidationElement.SYMBOL_ONLY_ONE_TIME );
+  }
+
+
+  public LR1 toLALR1 ()
+  {
+    LR1 ret = new LR1 ( this.getAlphabet () );
+    
+    //for(State state : this.getState())
+      //if((LR1State)state).getLR0Items()
+    return ret;
   }
 
 

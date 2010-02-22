@@ -62,10 +62,10 @@ import de.unisiegen.gtitool.ui.redoundo.TransitionRemovedItem;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: DefaultStateMachineModel.java 1661 2010-02-22 11:45:46Z uhrhan
+ *          $
  */
-public final class DefaultStateMachineModel implements DefaultModel, Storable,
-    Modifyable
+public final class DefaultStateMachineModel implements DefaultModel, Modifyable
 {
 
   /**
@@ -144,8 +144,8 @@ public final class DefaultStateMachineModel implements DefaultModel, Storable,
    * A list of all {@link DefaultTransitionView}s
    */
   private final ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
-  
-  
+
+
   /**
    * the {@link Grammar}
    */
@@ -168,9 +168,10 @@ public final class DefaultStateMachineModel implements DefaultModel, Storable,
    * @throws TransitionException If something with the {@link DefaultTransition}
    *           is not correct.
    */
-  public DefaultStateMachineModel ( Element element, String overwrittenMachineType )
-      throws StoreException, StateException, AlphabetException,
-      TransitionException, TransitionSymbolOnlyOneTimeException
+  public DefaultStateMachineModel ( Element element,
+      String overwrittenMachineType ) throws StoreException, StateException,
+      AlphabetException, TransitionException,
+      TransitionSymbolOnlyOneTimeException
   {
     this.pdaTableModel = new PDATableModel ();
 
@@ -242,8 +243,8 @@ public final class DefaultStateMachineModel implements DefaultModel, Storable,
     // initialize this model elements
     this.machine = AbstractStateMachine.createMachine ( machineType, alphabet,
         pushDownAlphabet, usePushDownAlphabet );
-    
-    if(!(this.machine instanceof DefaultTDP))
+
+    if ( ! ( this.machine instanceof DefaultTDP ) )
     {
       initializeModifyStatusChangedListener ();
       initializeStatePositionChangedListener ();
@@ -322,8 +323,8 @@ public final class DefaultStateMachineModel implements DefaultModel, Storable,
   public DefaultStateMachineModel ( StateMachine machine )
   {
     this.machine = machine;
-    
-    if(!(machine instanceof DefaultTDP))
+
+    if ( ! ( machine instanceof DefaultTDP ) )
     {
       this.pdaTableModel = new PDATableModel ();
       initializeModifyStatusChangedListener ();
@@ -331,33 +332,33 @@ public final class DefaultStateMachineModel implements DefaultModel, Storable,
       initializeGraph ();
     }
     initializeMachineChangedListener ();
-    
+
     // Reset modify
     resetModify ();
   }
 
-  
+
   /**
    * sets the {@link Grammar}
-   *
+   * 
    * @param g the {@link Grammar}
    */
-  public void setGrammar(final Grammar g)
+  public void setGrammar ( final Grammar g )
   {
     this.grammar = g;
   }
-  
-  
+
+
   /**
    * returns the {@link Grammar}
-   *
+   * 
    * @return the {@link Grammar}
    */
-  public Grammar getGrammar()
+  public Grammar getGrammar ()
   {
     return this.grammar;
   }
-  
+
 
   /**
    * {@inheritDoc}
@@ -462,9 +463,9 @@ public final class DefaultStateMachineModel implements DefaultModel, Storable,
    *          created via the new {@link DefaultTransitionView}.
    * @param createUndoStep Flag signals if an undo step should be created.
    * @param addToMachine Flag which signals if the {@link Transition} should be
-   *          added to the {@link StateMachine}. The default value should be true,
-   *          only if the {@link StateMachine} has added the {@link Transition}
-   *          before, it should be false.
+   *          added to the {@link StateMachine}. The default value should be
+   *          true, only if the {@link StateMachine} has added the
+   *          {@link Transition} before, it should be false.
    * @return The new created {@link DefaultTransitionView}.
    */
   public final DefaultTransitionView createTransitionView (
@@ -847,8 +848,8 @@ public final class DefaultStateMachineModel implements DefaultModel, Storable,
         if ( ( DefaultStateMachineModel.this.redoUndoHandler != null )
             && ( ( oldX != newX ) || ( oldY != newY ) ) )
         {
-          RedoUndoItem item = new StateMovedItem ( DefaultStateMachineModel.this,
-              stateView, oldX, oldY, newX, newY );
+          RedoUndoItem item = new StateMovedItem (
+              DefaultStateMachineModel.this, stateView, oldX, oldY, newX, newY );
           DefaultStateMachineModel.this.redoUndoHandler.addItem ( item );
         }
       }

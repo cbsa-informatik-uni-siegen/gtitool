@@ -3,7 +3,7 @@ package de.unisiegen.gtitool.ui.model;
 
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.StateMachine;
-import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
@@ -14,13 +14,7 @@ import de.unisiegen.gtitool.core.storage.Element;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface DefaultModel
+public interface DefaultModel extends Storable
 {
-
-  /**
-   * Returns the {@link Element}.
-   * 
-   * @return the {@link Element}.
-   */
-  public Element getElement ();
+  // Do nothing
 }

@@ -11,7 +11,6 @@ import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.LR0State;
-import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
@@ -19,20 +18,28 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
-import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 
 
 /**
  * TODO
  */
-public class LR0 extends AbstractStateMachine implements DFA
+public class LR0 extends AbstractLR
 {
 
-  public LR0 ( LR0Grammar grammar ) throws AlphabetException
+  /**
+   * TODO
+   */
+  private static final long serialVersionUID = 1L;
+
+  /**
+   * TODO
+   *
+   * @param grammar
+   * @throws AlphabetException
+   */
+  public LR0 ( final LR0Grammar grammar ) throws AlphabetException
   {
-    super ( grammar.makeAutomatonAlphabet (), new DefaultAlphabet (), false,
-        ValidationElement.FINAL_STATE, ValidationElement.STATE_NAME,
-        ValidationElement.SYMBOL_ONLY_ONE_TIME );
+    super ( grammar.makeAutomatonAlphabet () );
 
     Alphabet alphabet = this.getAlphabet ();
 
@@ -113,37 +120,4 @@ public class LR0 extends AbstractStateMachine implements DFA
     }
   }
 
-
-  public void nextSymbol ( ProductionWordMember symbol )
-  {
-    State state = null;
-    for ( State curState : this.getState () )
-      if ( curState.isActive () )
-        state = curState; // TODO: how can we get to the current active state
-    // with less overhead?
-
-    for ( Transition transition : this.getTransition () )
-      if ( transition.getStateBegin ().equals ( state )
-          && transition.getSymbol ().contains (
-              new DefaultSymbol ( symbol.toString () ) ) )
-      {
-        this.nextSymbol ( transition );
-        return;
-      }
-
-    System.err.println ( "OH NO TODO" );
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#getMachineType()
-   */
-  @Override
-  public MachineType getMachineType ()
-  {
-    return MachineType.DFA;
-  }
 }

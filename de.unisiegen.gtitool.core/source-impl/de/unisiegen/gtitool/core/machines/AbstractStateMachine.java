@@ -136,7 +136,8 @@ public abstract class AbstractStateMachine implements StateMachine
 
 
   /**
-   * The initial use push down {@link Alphabet} of this {@link AbstractStateMachine}.
+   * The initial use push down {@link Alphabet} of this
+   * {@link AbstractStateMachine}.
    */
   private boolean initialUsePushDownAlphabet;
 
@@ -2807,11 +2808,25 @@ public abstract class AbstractStateMachine implements StateMachine
   }
 
 
+  /**
+   * Returns the current active state
+   * 
+   * @return The current active state or throws
+   */
   public State getCurrentState ()
   {
+    State ret = null;
     for ( State state : this.stateList )
       if ( state.isActive () )
-        return state;
-    throw new RuntimeException ( "No state active!" );
+      {
+        if ( ret != null )
+          throw new RuntimeException ( "Multiple states active!" ); //$NON-NLS-1$
+
+        ret = state;
+      }
+    if ( ret == null )
+      throw new RuntimeException ( "No state active!" ); //$NON-NLS-1$
+    return ret;
+
   }
 }

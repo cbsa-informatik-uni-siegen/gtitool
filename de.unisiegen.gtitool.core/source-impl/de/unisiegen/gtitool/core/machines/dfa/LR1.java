@@ -12,7 +12,6 @@ import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.LR1Item;
 import de.unisiegen.gtitool.core.entities.LR1ItemSet;
 import de.unisiegen.gtitool.core.entities.LR1State;
-import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
@@ -20,13 +19,12 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
-import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 
 
 /**
  * TODO
  */
-public class LR1 extends AbstractStateMachine implements DFA
+public class LR1 extends AbstractLR
 {
 
   /**
@@ -41,7 +39,7 @@ public class LR1 extends AbstractStateMachine implements DFA
    * @param grammar
    * @throws AlphabetException
    */
-  public LR1 ( LR1Grammar grammar ) throws AlphabetException
+  public LR1 ( final LR1Grammar grammar ) throws AlphabetException
   {
     this ( grammar.makeAutomatonAlphabet () );
 
@@ -132,15 +130,13 @@ public class LR1 extends AbstractStateMachine implements DFA
    */
   private LR1 ( final Alphabet alphabet )
   {
-    super ( alphabet, new DefaultAlphabet (), false,
-        ValidationElement.FINAL_STATE, ValidationElement.STATE_NAME,
-        ValidationElement.SYMBOL_ONLY_ONE_TIME );
+    super ( alphabet );
   }
 
 
   /**
    * Try to convert this automaton to an equivalent LALR1 automaton
-   *
+   * 
    * @return the new automaton
    * @throws StateException
    */
@@ -169,39 +165,5 @@ public class LR1 extends AbstractStateMachine implements DFA
           resultItems ) );
     }
     return ret;
-  }
-
-
-  public void nextSymbol ( ProductionWordMember symbol )
-  {
-    State state = null;
-    for ( State curState : this.getState () )
-      if ( curState.isActive () )
-        state = curState; // TODO: how can we get to the current active state
-    // with less overhead?
-
-    for ( Transition transition : this.getTransition () )
-      if ( transition.getStateBegin ().equals ( state )
-          && transition.getSymbol ().contains (
-              new DefaultSymbol ( symbol.toString () ) ) )
-      {
-        this.nextSymbol ( transition );
-        return;
-      }
-
-    System.err.println ( "OH NO TODO" );
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#getMachineType()
-   */
-  @Override
-  public MachineType getMachineType ()
-  {
-    return MachineType.DFA;
   }
 }

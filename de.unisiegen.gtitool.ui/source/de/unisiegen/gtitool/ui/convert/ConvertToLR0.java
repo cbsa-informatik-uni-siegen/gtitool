@@ -20,6 +20,7 @@ public class ConvertToLR0 extends ConvertToLR
    * TODO
    * 
    * @param grammar
+   * @return The lr0 grammar
    */
   private static LR0Grammar convertGrammar ( Grammar grammar )
   {
@@ -32,8 +33,15 @@ public class ConvertToLR0 extends ConvertToLR
   }
 
 
-  public ConvertToLR0 ( MainWindowForm mainWindowForm, Grammar grammar )
-      throws AlphabetException
+  /**
+   * TODO
+   * 
+   * @param mainWindowForm - The main window to display the result on
+   * @param grammar - The grammar to convert to an LR0 automaton
+   * @throws AlphabetException
+   */
+  public ConvertToLR0 ( final MainWindowForm mainWindowForm,
+      final Grammar grammar ) throws AlphabetException
   {
     super ( mainWindowForm, grammar, convertGrammar ( grammar )
         .makeAutomatonAlphabet () );
@@ -63,6 +71,12 @@ public class ConvertToLR0 extends ConvertToLR
   }
 
 
+  /**
+   * TODO
+   *
+   * @return the machine
+   * @see de.unisiegen.gtitool.ui.convert.ConvertToLR#getMachine()
+   */
   @Override
   protected AbstractStateMachine getMachine ()
   {

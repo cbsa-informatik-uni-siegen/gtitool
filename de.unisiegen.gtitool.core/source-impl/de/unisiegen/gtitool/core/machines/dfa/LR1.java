@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
+import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.LR1Item;
 import de.unisiegen.gtitool.core.entities.LR1ItemSet;
 import de.unisiegen.gtitool.core.entities.LR1State;
@@ -36,7 +37,7 @@ public class LR1 extends AbstractStateMachine implements DFA
 
   /**
    * TODO
-   *
+   * 
    * @param grammar
    * @throws AlphabetException
    */
@@ -126,7 +127,7 @@ public class LR1 extends AbstractStateMachine implements DFA
 
   /**
    * TODO
-   *
+   * 
    * @param alphabet
    */
   private LR1 ( final Alphabet alphabet )
@@ -137,12 +138,36 @@ public class LR1 extends AbstractStateMachine implements DFA
   }
 
 
-  public LR1 toLALR1 ()
+  /**
+   * Try to convert this automaton to an equivalent LALR1 automaton
+   *
+   * @return the new automaton
+   * @throws StateException
+   */
+  public LR1 toLALR1 () throws StateException
   {
     LR1 ret = new LR1 ( this.getAlphabet () );
-    
-    //for(State state : this.getState())
-      //if((LR1State)state).getLR0Items()
+
+    for ( int index = 0 ; index < this.getState ().size () ; ++index )
+    {
+      final LR1State state = ( LR1State ) this.getState ( index );
+
+      final LR0ItemSet lr0part = state.getLR0Part ();
+
+      LR1ItemSet resultItems = new LR1ItemSet ();
+
+      for ( int inner = index ; inner < this.getState ().size () ; ++inner )
+      {
+        final LR1State otherState = ( LR1State ) this.getState ( inner );
+
+        if ( otherState.getLR0Part ().equals ( lr0part ) )
+          resultItems.add ( otherState.getLR1Items () );
+      }
+
+      // TODO: which of these are start states?
+      ret.addState ( new LR1State ( this.getAlphabet (), state.isStartState (),
+          resultItems ) );
+    }
     return ret;
   }
 

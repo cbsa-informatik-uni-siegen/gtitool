@@ -30,6 +30,22 @@ public class LR1State extends DefaultState
   }
 
 
+  /**
+   * Get the LR0ItemSet of this LR1 State
+   * 
+   * @return
+   */
+  public LR0ItemSet getLR0Part ()
+  {
+    LR0ItemSet ret = new LR0ItemSet ();
+    for ( LR1Item item : this.getLR1Items () )
+      ret.add ( new LR0Item ( item.getNonterminalSymbol (), item
+          .getProductionWord (), item.getDotPosition () ) );
+
+    return ret;
+  }
+
+
   private static String makeStateString ( LR1ItemSet items )
   {
     String ret = "";

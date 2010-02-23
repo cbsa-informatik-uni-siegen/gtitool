@@ -828,9 +828,9 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link StateMachinePanel}.
    */
-  private MachinePanel machinePanel;
+  private StateMachinePanel machinePanel;
 
 
   /**
@@ -891,9 +891,9 @@ public final class ConvertMachineDialog implements
    * Allocates a new {@link ConvertMachineDialog}.
    * 
    * @param parent The parent {@link JFrame}.
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    */
-  public ConvertMachineDialog ( JFrame parent, MachinePanel machinePanel )
+  public ConvertMachineDialog ( JFrame parent, StateMachinePanel machinePanel )
   {
     logger.debug ( "ConvertMachineDialog", //$NON-NLS-1$
         "allocate a new convert machine dialog" ); //$NON-NLS-1$
@@ -1628,7 +1628,7 @@ public final class ConvertMachineDialog implements
    * @return The machinePanel.
    * @see #machinePanel
    */
-  public MachinePanel getMachinePanel ()
+  public StateMachinePanel getMachinePanel ()
   {
     return this.machinePanel;
   }

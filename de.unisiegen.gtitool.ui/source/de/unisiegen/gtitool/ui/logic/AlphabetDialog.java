@@ -44,9 +44,9 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link StateMachinePanel}.
    */
-  private MachinePanel machinePanel;
+  private StateMachinePanel machinePanel;
 
 
   /**
@@ -71,10 +71,10 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
    * Create a new {@link AlphabetDialog}
    * 
    * @param parent The parent frame.
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    * @param machine The {@link StateMachine} of this dialog.
    */
-  public AlphabetDialog ( JFrame parent, MachinePanel machinePanel,
+  public AlphabetDialog ( JFrame parent, StateMachinePanel machinePanel,
       StateMachine machine )
   {
     this.parent = parent;

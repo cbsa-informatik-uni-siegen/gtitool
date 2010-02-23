@@ -263,9 +263,9 @@ public final class TransitionDialog implements
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link StateMachinePanel}.
    */
-  private MachinePanel machinePanel;
+  private StateMachinePanel machinePanel;
 
 
   /**
@@ -287,7 +287,7 @@ public final class TransitionDialog implements
 
 
   /**
-   * The zoom factor of the {@link MachinePanel}.
+   * The zoom factor of the {@link StateMachinePanel}.
    */
   private double zoomFactor;
 
@@ -303,13 +303,13 @@ public final class TransitionDialog implements
    * config case.
    * 
    * @param parent The parent frame.
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    * @param alphabet The {@link Alphabet} available for the {@link Transition}.
    * @param pushDownAlphabet The push down {@link Alphabet} available for the
    *          {@link Transition}.
    * @param transition The {@link Transition}.
    */
-  public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
+  public TransitionDialog ( JFrame parent, StateMachinePanel machinePanel,
       Alphabet alphabet, Alphabet pushDownAlphabet, Transition transition )
   {
     init ( parent, machinePanel, alphabet, pushDownAlphabet, transition
@@ -326,7 +326,7 @@ public final class TransitionDialog implements
    * add case.
    * 
    * @param parent The parent frame.
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    * @param model The {@link DefaultStateMachineModel}.
    * @param alphabet The {@link Alphabet} available for the {@link Transition}.
    * @param pushDownAlphabet The push down {@link Alphabet} available for the
@@ -338,9 +338,9 @@ public final class TransitionDialog implements
    * @param symbols The Symbols of the {@link Transition}.
    * @param x The x value of the new {@link DefaultStateView}.
    * @param y The y value of the new {@link DefaultStateView}.
-   * @param zoomFactor The zoom factor of the {@link MachinePanel}.
+   * @param zoomFactor The zoom factor of the {@link StateMachinePanel}.
    */
-  public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
+  public TransitionDialog ( JFrame parent, StateMachinePanel machinePanel,
       DefaultStateMachineModel model, Alphabet alphabet, Alphabet pushDownAlphabet,
       State stateBegin, State stateEnd, Word pushDownWordRead,
       Word pushDownWordWrite, TreeSet < Symbol > symbols, double x, double y,
@@ -587,7 +587,7 @@ public final class TransitionDialog implements
    * Initializes the {@link TransitionDialog}.
    * 
    * @param initParent The parent frame.
-   * @param initMachinePanel The {@link MachinePanel}.
+   * @param initMachinePanel The {@link StateMachinePanel}.
    * @param initAlphabet The {@link Alphabet} available for the
    *          {@link Transition}.
    * @param initPushDownAlphabet The push down {@link Alphabet} available for
@@ -599,7 +599,7 @@ public final class TransitionDialog implements
    * @param initPushDownWordWrite The push down word to write.
    * @param symbols The Symbols of the {@link Transition}.
    */
-  private final void init ( JFrame initParent, MachinePanel initMachinePanel,
+  private final void init ( JFrame initParent, StateMachinePanel initMachinePanel,
       Alphabet initAlphabet, Alphabet initPushDownAlphabet,
       State initStateBegin, State initStateEnd, Word initPushDownWordRead,
       Word initPushDownWordWrite, TreeSet < Symbol > symbols )

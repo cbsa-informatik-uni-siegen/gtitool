@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.logic.StateMachinePanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
@@ -53,7 +54,7 @@ public abstract class AbstractConvertGrammar implements Converter
 
   /**
    * Allocates a new {@link AbstractConvertGrammar}
-   *
+   * 
    * @param mwf the {@link MainWindowForm}
    * @param grammar the {@link Grammar}
    */
@@ -67,7 +68,7 @@ public abstract class AbstractConvertGrammar implements Converter
 
   /**
    * Allocates a new {@link AbstractConvertGrammar}
-   *
+   * 
    * @param mainWindowForm the {@link MainWindowForm}
    * @param grammar the {@link Grammar}
    * @param alphabet the {@link Alphabet}
@@ -88,8 +89,10 @@ public abstract class AbstractConvertGrammar implements Converter
    *      de.unisiegen.gtitool.core.entities.InputEntity.EntityType, boolean,
    *      boolean)
    */
-  public void convert ( @SuppressWarnings ( "unused" ) EntityType fromEntityType, EntityType toEntityType,
- @SuppressWarnings ( "unused" ) boolean complete, @SuppressWarnings ( "unused" ) boolean cb )
+  public void convert (
+      @SuppressWarnings ( "unused" ) EntityType fromEntityType,
+      EntityType toEntityType, @SuppressWarnings ( "unused" ) boolean complete,
+      @SuppressWarnings ( "unused" ) boolean cb )
   {
     if ( ! ( toEntityType instanceof MachineType ) )
       throw new IllegalArgumentException ( "unsopported to entity type: " //$NON-NLS-1$
@@ -115,7 +118,7 @@ public abstract class AbstractConvertGrammar implements Converter
 
   /**
    * set a new alphabet
-   *
+   * 
    * @param alphabet the {@link Alphabet}
    */
   protected final void setAlphabet ( final Alphabet alphabet )
@@ -142,26 +145,20 @@ public abstract class AbstractConvertGrammar implements Converter
    * @return The newPanel.
    * @see #newPanel
    */
-  public final MachinePanel getNewPanel ()
-  {
-    return this.newPanel;
-  }
+  public abstract MachinePanel getNewPanel ();
 
 
   /**
-   * sets the {@link MachinePanel}
-   *
-   * @param panel the {@link MachinePanel}
+   * sets the {@link StateMachinePanel}
+   * 
+   * @param panel the {@link StateMachinePanel}
    */
-  protected final void setNewPanel ( final MachinePanel panel )
-  {
-    this.newPanel = panel;
-  }
+  protected abstract void setNewPanel ( final MachinePanel panel );
 
 
   /**
    * retrieves the {@link MachineType}
-   *
+   * 
    * @return the {@link MachineType}
    */
   protected MachineType getMachineType ()
@@ -172,7 +169,7 @@ public abstract class AbstractConvertGrammar implements Converter
 
   /**
    * retrieves the {@link MainWindowForm}
-   *
+   * 
    * @return the {@link MainWindowForm}
    */
   protected MainWindowForm getMainWindowForm ()
@@ -188,15 +185,15 @@ public abstract class AbstractConvertGrammar implements Converter
 
 
   /**
-   * create a new {@link MachinePanel}
-   *
+   * create a new {@link StateMachinePanel}
+   * 
    * @param machine the {@link Machine}
    */
   protected abstract void createMachinePanel ( Machine machine );
 
 
   /**
-   * Add the new {@link MachinePanel} to the {@link MainWindowForm}.
+   * Add the new {@link StateMachinePanel} to the {@link MainWindowForm}.
    */
   protected final void addPanelToView ()
   {
@@ -219,12 +216,12 @@ public abstract class AbstractConvertGrammar implements Converter
           + this.machineType.toString ();
     }
 
-    this.newPanel.setName ( name );
+    getNewPanel ().setName ( name );
     this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
-        .addEditorPanel ( this.newPanel );
-    this.newPanel.addModifyStatusChangedListener ( this.mainWindowForm
-        .getLogic ().getModifyStatusChangedListener () );
+        .addEditorPanel ( getNewPanel () );
+    getNewPanel ().addModifyStatusChangedListener (
+        this.mainWindowForm.getLogic ().getModifyStatusChangedListener () );
     this.mainWindowForm.getJGTIMainSplitPane ().getJGTIEditorPanelTabbedPane ()
-        .setSelectedEditorPanel ( this.newPanel );
+        .setSelectedEditorPanel ( getNewPanel () );
   }
 }

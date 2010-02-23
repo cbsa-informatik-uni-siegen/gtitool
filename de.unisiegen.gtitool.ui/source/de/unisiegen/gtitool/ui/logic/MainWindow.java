@@ -48,9 +48,9 @@ import de.unisiegen.gtitool.ui.logic.MachinePanel.MachineMode;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
-import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
+import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu.TabPopupMenuType;
@@ -1398,9 +1398,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( panel instanceof MachinePanel )
+    if ( panel instanceof StateMachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) panel;
+      StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
       new LayoutManager ( machinePanel.getModel (), machinePanel
           .getRedoUndoHandler () ).doLayout ();
     }
@@ -1660,9 +1660,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // if there are no validation errors perform the action
     if ( handleValidate ( false ) )
       // MachinePanel
-      if ( panel instanceof MachinePanel )
+      if ( panel instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) panel;
+        StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
@@ -1724,9 +1724,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // if there are no validation errors perform the action
     if ( handleValidate ( false ) )
       // MachinePanel
-      if ( panel instanceof MachinePanel )
+      if ( panel instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) panel;
+        StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
@@ -1854,7 +1854,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
               .getSelectedEditorPanel ().getModel ().getElement (), machineType
               .toString () );
-      EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, null );
+      EditorPanel newEditorPanel = new StateMachinePanel ( this.gui, model,
+          null );
 
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;
@@ -1946,10 +1947,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    if ( ! ( panel instanceof StateMachinePanel ) )
       throw new IllegalArgumentException ( "unsupported panel" ); //$NON-NLS-1$
 
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
     machinePanel.handleEditMachine ();
 
     addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
@@ -2049,10 +2050,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
-    if ( ! ( panel instanceof MachinePanel ) )
+    if ( ! ( panel instanceof StateMachinePanel ) )
       throw new IllegalArgumentException ( "unsupported panel" ); //$NON-NLS-1$
 
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
 
     // if there are no validation errors perform the action
     if ( handleValidate ( false ) )
@@ -2091,9 +2092,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    if ( ! ( panel instanceof StateMachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
 
     boolean selected = this.gui.getJGTIToolBarToggleButtonEnterWord ()
         .isSelected ();
@@ -2146,9 +2147,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void handleExportPicture ()
   {
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel () instanceof MachinePanel )
+        .getSelectedEditorPanel () instanceof StateMachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
+      StateMachinePanel machinePanel = ( StateMachinePanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       machinePanel.handleExportPicture ();
     }
@@ -2172,9 +2173,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void handleHistory ()
   {
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel () instanceof MachinePanel )
+        .getSelectedEditorPanel () instanceof StateMachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
+      StateMachinePanel machinePanel = ( StateMachinePanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       machinePanel.handleHistory ();
     }
@@ -2202,12 +2203,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( panel instanceof MachinePanel )
+    if ( panel instanceof StateMachinePanel )
     {
       // if there are no validation errors perform the action
       if ( handleValidate ( false ) )
       {
-        MachinePanel machinePanel = ( MachinePanel ) panel;
+        StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
         MinimizeMachineDialog dialog = new MinimizeMachineDialog ( this.gui,
             machinePanel );
         dialog.minimize ();
@@ -2283,7 +2284,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       EditorPanel newEditorPanel;
       if ( defaultModel instanceof DefaultStateMachineModel )
       {
-        newEditorPanel = new MachinePanel ( this.gui,
+        newEditorPanel = new StateMachinePanel ( this.gui,
             ( DefaultStateMachineModel ) defaultModel, null );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
         addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
@@ -2452,9 +2453,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void handlePrint ()
   {
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel () instanceof MachinePanel )
+        .getSelectedEditorPanel () instanceof StateMachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
+      StateMachinePanel machinePanel = ( StateMachinePanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       PrintDialog printDialog = new PrintDialog ( this.gui, machinePanel );
       printDialog.show ();
@@ -2651,12 +2652,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void handleReachableStates ()
   {
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel () instanceof MachinePanel )
+        .getSelectedEditorPanel () instanceof StateMachinePanel )
     {
       // if there are no validation errors perform the action
       if ( handleValidate ( false ) )
       {
-        MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
+        StateMachinePanel machinePanel = ( StateMachinePanel ) this.jGTIMainSplitPane
             .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
         machinePanel.handleReachableStates ();
       }
@@ -2789,9 +2790,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void handleReorderStateNames ()
   {
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel () instanceof MachinePanel )
+        .getSelectedEditorPanel () instanceof StateMachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
+      StateMachinePanel machinePanel = ( StateMachinePanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       machinePanel.handleReorderStateNames ();
     }
@@ -2941,9 +2942,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         return;
       }
       if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
-          .getSelectedEditorPanel () instanceof MachinePanel )
+          .getSelectedEditorPanel () instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) this.gui
+        StateMachinePanel machinePanel = ( StateMachinePanel ) this.gui
             .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
 
         if ( machinePanel.getJTabbedPaneConsole () == event.getSource () )
@@ -2962,9 +2963,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
       if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
-          .getSelectedEditorPanel () instanceof MachinePanel )
+          .getSelectedEditorPanel () instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) this.gui
+        StateMachinePanel machinePanel = ( StateMachinePanel ) this.gui
             .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
 
         if ( machinePanel.getJTabbedPaneConsole () == event.getSource () )
@@ -3070,9 +3071,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( event.getSource () instanceof JGTIGraph )
     {
       if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
-          .getSelectedEditorPanel () instanceof MachinePanel )
+          .getSelectedEditorPanel () instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) this.gui
+        StateMachinePanel machinePanel = ( StateMachinePanel ) this.gui
             .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
 
         if ( machinePanel.getJGTIGraph () == event.getSource () )
@@ -3089,9 +3090,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
       if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
-          .getSelectedEditorPanel () instanceof MachinePanel )
+          .getSelectedEditorPanel () instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) this.gui
+        StateMachinePanel machinePanel = ( StateMachinePanel ) this.gui
             .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
 
         if ( machinePanel.getJGTIGraph () == event.getSource () )
@@ -3149,9 +3150,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( event.getSource () instanceof JGTITable )
     {
       if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
-          .getSelectedEditorPanel () instanceof MachinePanel )
+          .getSelectedEditorPanel () instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) this.gui
+        StateMachinePanel machinePanel = ( StateMachinePanel ) this.gui
             .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
 
         if ( ( machinePanel.getGUI ().jGTITableMachine == event.getSource () )
@@ -3174,9 +3175,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
       if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
-          .getSelectedEditorPanel () instanceof MachinePanel )
+          .getSelectedEditorPanel () instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) this.gui
+        StateMachinePanel machinePanel = ( StateMachinePanel ) this.gui
             .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
 
         if ( ( machinePanel.getGUI ().jGTITableMachine == event.getSource () )
@@ -3292,9 +3293,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( event.getSource () instanceof JScrollBar )
     {
       if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
-          .getSelectedEditorPanel () instanceof MachinePanel )
+          .getSelectedEditorPanel () instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) this.gui
+        StateMachinePanel machinePanel = ( StateMachinePanel ) this.gui
             .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
 
         if ( ( machinePanel.getGUI ().jGTIScrollPaneErrors
@@ -3332,9 +3333,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
       if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
-          .getSelectedEditorPanel () instanceof MachinePanel )
+          .getSelectedEditorPanel () instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) this.gui
+        StateMachinePanel machinePanel = ( StateMachinePanel ) this.gui
             .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
 
         if ( ( machinePanel.getGUI ().jGTIScrollPaneErrors
@@ -3544,9 +3545,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( event.getSource () instanceof JTableHeader )
     {
       if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
-          .getSelectedEditorPanel () instanceof MachinePanel )
+          .getSelectedEditorPanel () instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) this.gui
+        StateMachinePanel machinePanel = ( StateMachinePanel ) this.gui
             .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
 
         if ( ( machinePanel.getGUI ().jGTITableMachine.getTableHeader () == event
@@ -3572,9 +3573,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
       if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
-          .getSelectedEditorPanel () instanceof MachinePanel )
+          .getSelectedEditorPanel () instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) this.gui
+        StateMachinePanel machinePanel = ( StateMachinePanel ) this.gui
             .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
 
         if ( ( machinePanel.getGUI ().jGTITableMachine.getTableHeader () == event
@@ -4146,9 +4147,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // stop the auto step
     removeButtonState ( ButtonState.SELECTED_AUTO_STEP );
     for ( EditorPanel current : this.jGTIMainSplitPane )
-      if ( current instanceof MachinePanel )
+      if ( current instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) current;
+        StateMachinePanel machinePanel = ( StateMachinePanel ) current;
         machinePanel.cancelAutoStepTimer ();
       }
 
@@ -4202,9 +4203,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // MachinePanel
     else
     {
-      if ( panel instanceof MachinePanel )
+      if ( panel instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) panel;
+        StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
 
         addButtonState ( ButtonState.VISIBLE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
@@ -4519,9 +4520,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
-    if ( panel instanceof MachinePanel )
+    if ( panel instanceof StateMachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) panel;
+      StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
       boolean state = this.gui.getJCheckBoxMenuItemTable ().isSelected ();
       if ( PreferenceManager.getInstance ().getVisibleTable () != state )
       {
@@ -4583,9 +4584,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     for ( EditorPanel panel : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane () )
-      if ( panel instanceof MachinePanel )
+      if ( panel instanceof StateMachinePanel )
       {
-        MachinePanel machinePanel = ( MachinePanel ) panel;
+        StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
         machinePanel.handleToolbarAddState ( state );
       }
   }
@@ -4600,9 +4601,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     for ( EditorPanel panel : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane () )
-      if ( ( panel instanceof MachinePanel ) )
+      if ( ( panel instanceof StateMachinePanel ) )
       {
-        MachinePanel machinePanel = ( MachinePanel ) panel;
+        StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
         machinePanel.handleToolbarEnd ( state );
       }
   }
@@ -4617,9 +4618,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     for ( EditorPanel panel : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane () )
-      if ( ( panel instanceof MachinePanel ) )
+      if ( ( panel instanceof StateMachinePanel ) )
       {
-        MachinePanel machinePanel = ( MachinePanel ) panel;
+        StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
         machinePanel.handleToolbarMouse ( state );
       }
   }
@@ -4634,9 +4635,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     for ( EditorPanel panel : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane () )
-      if ( ( panel instanceof MachinePanel ) )
+      if ( ( panel instanceof StateMachinePanel ) )
       {
-        MachinePanel machinePanel = ( MachinePanel ) panel;
+        StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
         machinePanel.handleToolbarStart ( state );
       }
   }
@@ -4651,9 +4652,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     for ( EditorPanel panel : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane () )
-      if ( ( panel instanceof MachinePanel ) )
+      if ( ( panel instanceof StateMachinePanel ) )
       {
-        MachinePanel machinePanel = ( MachinePanel ) panel;
+        StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
 
         machinePanel.handleToolbarTransition ( state );
       }
@@ -4696,9 +4697,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     int errorCount = 0;
     int warningCount = 0;
 
-    if ( panel instanceof MachinePanel )
+    if ( panel instanceof StateMachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) panel;
+      StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
       try
       {
         panel.clearValidationMessages ();
@@ -4788,7 +4789,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     String mwErrorWarningCount3 = "MainWindow."; //$NON-NLS-1$
     String mwNoErrorNoWarning = "MainWindow."; //$NON-NLS-1$
     String mwNoErrorNoWarningCount = "MainWindow."; //$NON-NLS-1$
-    if ( panel instanceof MachinePanel )
+    if ( panel instanceof StateMachinePanel )
     {
       titleErrorString = "MachinePanel.Error"; //$NON-NLS-1$
       titleWarningString = "MachinePanel.Warning"; //$NON-NLS-1$
@@ -4977,9 +4978,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( panel instanceof MachinePanel )
+    if ( panel instanceof StateMachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) panel;
+      StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
       machinePanel.handleWordAutoStep ( event );
     }
   }
@@ -4992,10 +4993,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    if ( ! ( panel instanceof StateMachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
 
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
     machinePanel.handleWordNextStep ();
   }
 
@@ -5007,10 +5008,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    if ( ! ( panel instanceof StateMachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
 
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
     machinePanel.handleWordPreviousStep ();
   }
 
@@ -5022,9 +5023,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    if ( ! ( panel instanceof StateMachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
 
     if ( machinePanel.handleWordStart () )
       addButtonState ( ButtonState.ENABLED_HISTORY );
@@ -5038,9 +5039,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    if ( ! ( panel instanceof StateMachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
 
     addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
     removeButtonState ( ButtonState.ENABLED_HISTORY );
@@ -5595,7 +5596,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       if ( element instanceof DefaultStateMachineModel )
       {
         DefaultStateMachineModel model = ( DefaultStateMachineModel ) element;
-        EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
+        EditorPanel newEditorPanel = new StateMachinePanel ( this.gui, model,
+            file );
 
         jGTIEditorPanelTabbedPane.addEditorPanel ( newEditorPanel );
         newEditorPanel
@@ -6048,7 +6050,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    if ( ! ( panel instanceof StateMachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
 
     if ( this.gui.getJGTIToolBarToggleButtonAutoStep ().isSelected () )
@@ -6057,7 +6059,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       return;
     }
 
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
     boolean nextAvailable = machinePanel.getMachine ().isNextSymbolAvailable ();
     boolean previousAvailable = machinePanel.getMachine ()
         .isPreviousSymbolAvailable ();

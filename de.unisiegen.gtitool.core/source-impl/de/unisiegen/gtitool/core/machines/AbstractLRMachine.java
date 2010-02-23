@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.machines;
 
 
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.LRAction;
 import de.unisiegen.gtitool.core.entities.LRActionSet;
@@ -11,8 +14,8 @@ import de.unisiegen.gtitool.core.machines.lr.LRMachine;
 /**
  * TODO
  */
-public abstract class AbstractLRMachine extends AbstractStatelessMachine
-    implements LRMachine
+public abstract class AbstractLRMachine extends AbstractStatelessMachine implements
+    LRMachine
 {
 
   /**
@@ -65,4 +68,36 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
       System.exit ( 1 );
     }
   }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.machines.StatelessMachine#getTableModel()
+   */
+  public TableModel getTableModel ()
+  {
+    return null;
+  }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.machines.Machine#getTableColumnModel()
+   */
+  public TableColumnModel getTableColumnModel ()
+  {
+    return null;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.Machine#getMachineType()
+   */
+  public abstract MachineType getMachineType ();
 }

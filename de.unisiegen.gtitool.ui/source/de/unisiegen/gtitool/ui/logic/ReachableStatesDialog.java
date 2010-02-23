@@ -427,9 +427,9 @@ public final class ReachableStatesDialog implements
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link StateMachinePanel}.
    */
-  private MachinePanel machinePanel;
+  private StateMachinePanel machinePanel;
 
 
   /**
@@ -490,9 +490,9 @@ public final class ReachableStatesDialog implements
    * Allocates a new {@link ReachableStatesDialog}.
    * 
    * @param parent The parent {@link JFrame}.
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    */
-  public ReachableStatesDialog ( JFrame parent, MachinePanel machinePanel )
+  public ReachableStatesDialog ( JFrame parent, StateMachinePanel machinePanel )
   {
     logger.debug ( "ReachableStatesDialog", //$NON-NLS-1$
         "allocate a new reachable states dialog" ); //$NON-NLS-1$
@@ -730,12 +730,12 @@ public final class ReachableStatesDialog implements
 
 
   /**
-   * Returns the {@link MachinePanel}.
+   * Returns the {@link StateMachinePanel}.
    * 
-   * @return The {@link MachinePanel}.
+   * @return The {@link StateMachinePanel}.
    * @see #machinePanel
    */
-  public MachinePanel getMachinePanel ()
+  public StateMachinePanel getMachinePanel ()
   {
     return this.machinePanel;
   }

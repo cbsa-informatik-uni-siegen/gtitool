@@ -16,7 +16,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
 import de.unisiegen.gtitool.core.entities.Entity;
-import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.logic.StateMachinePanel;
 import de.unisiegen.gtitool.ui.logic.MachinePanel.MachineMode;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
@@ -101,9 +101,7 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
     public final boolean isCellEditable ( EventObject event )
     {
       if ( event instanceof MouseEvent )
-      {
         return ( ( MouseEvent ) event ).getClickCount () >= 2;
-      }
       return true;
     }
 
@@ -176,18 +174,18 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link StateMachinePanel}.
    */
-  private MachinePanel machinePanel = null;
+  private StateMachinePanel machinePanel = null;
 
 
   /**
    * Allocates a new {@link ParserTableCellEditor}.
    * 
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    * @param styledParserPanel The {@link StyledParserPanel}.
    */
-  public ParserTableCellEditor ( MachinePanel machinePanel,
+  public ParserTableCellEditor ( StateMachinePanel machinePanel,
       StyledParserPanel < E > styledParserPanel )
   {
     this.machinePanel = machinePanel;
@@ -279,9 +277,7 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
     this.delegate.setValue ( value );
 
     if ( this.machinePanel != null )
-    {
       this.machinePanel.handleCellEditorStartCellEditing ( row, column );
-    }
     return this.styledParserPanel;
   }
 

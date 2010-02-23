@@ -93,17 +93,16 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
             .getNonterminalSymbol () );
         break;
       case SHIFT :
-        this.lr1Automaton.nextSymbol ( this.currentTerminal () );
+        this.lr1Automaton.nextSymbol ( currentTerminal () );
         nextSymbol ();
         break;
       case ACCEPT :
-        this.accept ();
+        accept ();
         break;
     }
 
     return true;
   }
-
 
   /**
    * TODO
@@ -147,7 +146,6 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
     try
     {
       for ( LR1Item item : items )
-      {
         if ( item.dotIsAtEnd () )
         {
           if ( item.getNonterminalSymbol ().isStart () )
@@ -161,7 +159,6 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
         else if ( item.dotPrecedesTerminal ()
             && item.getProductionWordMemberAfterDot ().equals ( symbol ) )
           ret.add ( new LRShiftAction () );
-      }
     }
     catch ( LRActionSetException e )
     {
@@ -184,6 +181,18 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
   {
     super.start ( word );
     this.lr1Automaton.start ( new DefaultWord () );
+  }
+  
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.Machine#getMachineType()
+   */
+  @Override
+  public MachineType getMachineType ()
+  {
+    return MachineType.LR1Parser;
   }
 
 

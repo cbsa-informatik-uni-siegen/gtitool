@@ -96,9 +96,9 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link StateMachinePanel}.
    */
-  private MachinePanel machinePanel;
+  private StateMachinePanel machinePanel;
 
 
   /**
@@ -112,10 +112,10 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
    * 
    * @param parent The parent {@link JFrame}.
    * @param machine The {@link StateMachine}.
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    */
   public HistoryDialog ( JFrame parent, StateMachine machine,
-      MachinePanel machinePanel )
+      StateMachinePanel machinePanel )
   {
     logger.debug ( "HistoryDialog", "allocate a new history dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -435,7 +435,7 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
    * @return The machinePanel.
    * @see #machinePanel
    */
-  public MachinePanel getMachinePanel ()
+  public StateMachinePanel getMachinePanel ()
   {
     return this.machinePanel;
   }

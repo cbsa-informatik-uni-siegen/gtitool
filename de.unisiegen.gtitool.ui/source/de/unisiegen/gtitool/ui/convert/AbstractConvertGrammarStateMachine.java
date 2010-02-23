@@ -24,6 +24,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.logic.StateMachinePanel;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
@@ -34,7 +35,8 @@ import de.unisiegen.gtitool.ui.utils.LayoutManager;
  * Convert the grammar to a machine.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: AbstractConvertGrammarStateMachine.java 1663 2010-02-22
+ *          13:30:05Z uhrhan $
  */
 public abstract class AbstractConvertGrammarStateMachine extends
     AbstractConvertGrammar
@@ -56,6 +58,12 @@ public abstract class AbstractConvertGrammarStateMachine extends
    * Used for the position of the graph.
    */
   private int position = 100;
+
+
+  /**
+   * The {@link StateMachinePanel}
+   */
+  private StateMachinePanel panel;
 
 
   /**
@@ -82,6 +90,30 @@ public abstract class AbstractConvertGrammarStateMachine extends
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammar#getNewPanel()
+   */
+  @Override
+  public final MachinePanel getNewPanel ()
+  {
+    return this.panel;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammar#setNewPanel(de.unisiegen.gtitool.ui.logic.MachinePanel)
+   */
+  @Override
+  protected final void setNewPanel ( final MachinePanel panel )
+  {
+    this.panel = ( StateMachinePanel ) panel;
   }
 
 
@@ -117,7 +149,7 @@ public abstract class AbstractConvertGrammarStateMachine extends
 
 
   /**
-   * Create a new {@link MachinePanel}.
+   * Create a new {@link StateMachinePanel}.
    * 
    * @param machine The {@link StateMachine}.
    */
@@ -126,7 +158,8 @@ public abstract class AbstractConvertGrammarStateMachine extends
   {
     this.model = new DefaultStateMachineModel ( ( StateMachine ) machine );
     this.model.setGrammar ( getGrammar () );
-    setNewPanel ( new MachinePanel ( getMainWindowForm (), this.model, null ) );
+    setNewPanel ( new StateMachinePanel ( getMainWindowForm (), this.model,
+        null ) );
   }
 
 

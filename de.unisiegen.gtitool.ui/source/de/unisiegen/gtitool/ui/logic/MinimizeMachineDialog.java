@@ -127,9 +127,9 @@ public final class MinimizeMachineDialog implements
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link StateMachinePanel}.
    */
-  private MachinePanel machinePanel;
+  private StateMachinePanel machinePanel;
 
 
   /**
@@ -196,10 +196,10 @@ public final class MinimizeMachineDialog implements
    * Allocates a new {@link MinimizeMachineDialog}.
    * 
    * @param mainWindowForm The parent {@link MainWindowForm}.
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    */
   public MinimizeMachineDialog ( MainWindowForm mainWindowForm,
-      MachinePanel machinePanel )
+      StateMachinePanel machinePanel )
   {
     logger.debug ( "MinimizeMachineDialog", //$NON-NLS-1$
         "allocate a new minimize machine dialog" ); //$NON-NLS-1$
@@ -390,7 +390,7 @@ public final class MinimizeMachineDialog implements
    * @return The machinePanel.
    * @see #machinePanel
    */
-  public MachinePanel getMachinePanel ()
+  public StateMachinePanel getMachinePanel ()
   {
     return this.machinePanel;
   }

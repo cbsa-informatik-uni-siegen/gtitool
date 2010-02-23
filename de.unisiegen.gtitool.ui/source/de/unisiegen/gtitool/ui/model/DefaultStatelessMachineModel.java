@@ -2,10 +2,9 @@ package de.unisiegen.gtitool.ui.model;
 
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
 import de.unisiegen.gtitool.core.storage.Element;
-import de.unisiegen.gtitool.core.storage.Modifyable;
-import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
@@ -13,24 +12,48 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * 
  * @author Christian Uhrhan, Philipp Reh
  */
-public class DefaultStatelessMachineModel implements DefaultModel, Storable,
-    Modifyable
+public class DefaultStatelessMachineModel extends DefaultMachineModel
 {
 
   /**
-   * the machine
+   * the {@link StatelessMachine}
    */
   private StatelessMachine machine;
 
 
   /**
+   * the {@link Grammar}
+   */
+  private Grammar grammar;
+
+
+  /**
    * Allocates a new {@link DefaultStatelessMachineModel}
-   *
+   * 
    * @param machine the {@link StatelessMachine}
    */
   public DefaultStatelessMachineModel ( final StatelessMachine machine )
   {
     this.machine = machine;
+  }
+
+
+  public void setGrammar ( final Grammar grammar )
+  {
+    this.grammar = grammar;
+  }
+
+
+  public Grammar getGrammar ()
+  {
+    return this.grammar;
+  }
+
+
+  @Override
+  public StatelessMachine getMachine ()
+  {
+    return this.machine;
   }
 
 
@@ -40,6 +63,7 @@ public class DefaultStatelessMachineModel implements DefaultModel, Storable,
    * @return
    * @see de.unisiegen.gtitool.ui.model.DefaultModel#getElement()
    */
+  @Override
   public Element getElement ()
   {
     return null;

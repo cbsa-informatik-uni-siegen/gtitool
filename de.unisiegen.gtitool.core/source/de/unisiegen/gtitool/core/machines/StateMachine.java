@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -193,22 +192,6 @@ public interface StateMachine extends Machine, InputEntity, Serializable,
 
 
   /**
-   * Returns the {@link Alphabet}.
-   * 
-   * @return The {@link Alphabet}.
-   */
-  public Alphabet getAlphabet ();
-
-
-  /**
-   * Returns the {@link Machine.MachineType}.
-   * 
-   * @return The {@link Machine.MachineType}.
-   */
-  public MachineType getMachineType ();
-
-
-  /**
    * Returns the next {@link State} name.
    * 
    * @return The next {@link State} name.
@@ -304,14 +287,6 @@ public interface StateMachine extends Machine, InputEntity, Serializable,
    * @return The {@link State} list.
    */
   public State getState ( int index );
-
-
-  /**
-   * Returns the {@link TableColumnModel}.
-   * 
-   * @return The {@link TableColumnModel}.
-   */
-  public TableColumnModel getTableColumnModel ();
 
 
   /**

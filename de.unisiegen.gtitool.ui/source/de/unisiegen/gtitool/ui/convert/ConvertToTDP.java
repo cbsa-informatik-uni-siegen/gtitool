@@ -13,7 +13,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
  * 
  * @author Christian Uhrhan
  */
-public class ConvertToTDP extends ConvertContextFreeGrammar
+public class ConvertToTDP extends AbstractConvertGrammarStatelessMachine
 {
 
   /**

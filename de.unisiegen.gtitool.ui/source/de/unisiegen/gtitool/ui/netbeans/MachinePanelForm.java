@@ -1,8 +1,8 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import javax.swing.JPanel;
 
-import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
@@ -29,7 +29,7 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
     /**
      * Allocates a new {@link MachinePanelForm}.
      * 
-     * @param logic The {@link MachinePanel}.
+     * @param logic The {@link StateMachinePanel}.
      */
     public MachinePanelForm(MachinePanel logic) {
         this.logic = logic;

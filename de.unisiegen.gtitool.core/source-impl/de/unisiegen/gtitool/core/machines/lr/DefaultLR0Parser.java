@@ -78,11 +78,11 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
             .getNonterminalSymbol () );
         break;
       case SHIFT :
-        this.lr0Automaton.nextSymbol ( this.currentTerminal () );
-        this.nextSymbol ();
+        this.lr0Automaton.nextSymbol ( currentTerminal () );
+        nextSymbol ();
         break;
       case ACCEPT :
-        this.accept ();
+        accept ();
         break;
     }
 
@@ -132,7 +132,6 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
     try
     {
       for ( LR0Item item : items )
-      {
         if ( item.dotIsAtEnd () )
         {
           if ( item.getNonterminalSymbol ().isStart () )
@@ -140,13 +139,12 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
             if ( symbol == null )
               ret.add ( new LRAcceptAction () );
           }
-          else if ( this.followCondition ( item, symbol ) )
+          else if ( followCondition ( item, symbol ) )
             ret.add ( new LRReduceAction ( item ) );
         }
         else if ( item.dotPrecedesTerminal ()
             && item.getProductionWordMemberAfterDot ().equals ( symbol ) )
           ret.add ( new LRShiftAction () );
-      }
     }
     catch ( LRActionSetException e )
     {
@@ -201,6 +199,18 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   protected LR0Grammar getGrammar ()
   {
     return this.grammar;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.Machine#getMachineType()
+   */
+  @Override
+  public MachineType getMachineType ()
+  {
+    return MachineType.LR0Parser;
   }
 
 

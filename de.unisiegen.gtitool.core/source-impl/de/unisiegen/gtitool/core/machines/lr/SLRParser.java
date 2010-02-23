@@ -20,10 +20,22 @@ public class SLRParser extends DefaultLR0Parser
   }
 
 
+  @Override
   protected boolean followCondition ( LR0Item item, TerminalSymbol symbol )
       throws GrammarInvalidNonterminalException
   {
-    return this.getGrammar ().follow ( item.getNonterminalSymbol () ).contains (
+    return getGrammar ().follow ( item.getNonterminalSymbol () ).contains (
         symbol );
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.Machine#getMachineType()
+   */
+  @Override
+  public MachineType getMachineType ()
+  {
+    return MachineType.LR0Parser;
   }
 }

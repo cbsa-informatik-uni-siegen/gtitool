@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.machines;
 
 
+import javax.swing.table.TableModel;
+
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
@@ -37,4 +39,12 @@ public interface StatelessMachine extends Machine
    * @throws MachineAmbigiousActionException
    */
   public void autoTransit () throws MachineAmbigiousActionException;
+
+
+  /**
+   * creates the table model
+   *
+   * @return the {@link TableModel}
+   */
+  public TableModel getTableModel ();
 }

@@ -15,7 +15,7 @@ import org.jgraph.graph.GraphModel;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
-import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.logic.StateMachinePanel;
 import de.unisiegen.gtitool.ui.logic.StateConfigDialog;
 import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
@@ -79,20 +79,20 @@ public final class StatePopupMenu extends JPopupMenu
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link StateMachinePanel}.
    */
-  protected MachinePanel machinePanel;
+  protected StateMachinePanel machinePanel;
 
 
   /**
    * Allocates a new {@link StatePopupMenu}.
    * 
    * @param parent The parent {@link JFrame}.
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    * @param model the model containing the state
    * @param state the state to open the popup menu
    */
-  public StatePopupMenu ( JFrame parent, MachinePanel machinePanel,
+  public StatePopupMenu ( JFrame parent, StateMachinePanel machinePanel,
       DefaultStateMachineModel model, DefaultStateView state )
   {
     this.parent = parent;

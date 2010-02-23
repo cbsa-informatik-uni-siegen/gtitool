@@ -7,7 +7,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.machines.StateMachine;
-import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.logic.StateMachinePanel;
 
 
 /**
@@ -75,22 +75,22 @@ public final class MachineAlphabetChangedItem extends RedoUndoItem
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link StateMachinePanel}.
    */
-  private MachinePanel machinePanel;
+  private StateMachinePanel machinePanel;
 
 
   /**
    * Allocates a new {@link MachineAlphabetChangedItem}.
    * 
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    * @param machine The {@link StateMachine}.
    * @param newAlphabet The new {@link Alphabet}.
    * @param newPushDownAlphabet The new push down {@link Alphabet}.
    * @param oldUsePushDown The old use push down alphabet value.
    * @param newUsePushDown The new use push down alphabet value.
    */
-  public MachineAlphabetChangedItem ( MachinePanel machinePanel,
+  public MachineAlphabetChangedItem ( StateMachinePanel machinePanel,
       StateMachine machine, Alphabet newAlphabet, Alphabet newPushDownAlphabet,
       boolean oldUsePushDown, boolean newUsePushDown )
   {

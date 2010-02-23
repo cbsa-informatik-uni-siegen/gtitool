@@ -182,9 +182,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link StateMachinePanel}.
    */
-  private MachinePanel machinePanel;
+  private StateMachinePanel machinePanel;
 
 
   /**
@@ -398,9 +398,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * Allocates a new {@link PrintDialog}.
    * 
    * @param parent The parentFrame {@link JFrame}.
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    */
-  public PrintDialog ( JFrame parent, MachinePanel machinePanel )
+  public PrintDialog ( JFrame parent, StateMachinePanel machinePanel )
   {
     logger.debug ( "PrintDialog", "allocate a new print dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parentFrame = parent;
@@ -1190,7 +1190,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
-   * Handles print {@link MachinePanel}.
+   * Handles print {@link StateMachinePanel}.
    */
   private final void printMachinePanel ()
   {

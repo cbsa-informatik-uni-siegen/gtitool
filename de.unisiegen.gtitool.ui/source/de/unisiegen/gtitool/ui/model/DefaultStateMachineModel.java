@@ -65,7 +65,7 @@ import de.unisiegen.gtitool.ui.redoundo.TransitionRemovedItem;
  * @version $Id: DefaultStateMachineModel.java 1661 2010-02-22 11:45:46Z uhrhan
  *          $
  */
-public final class DefaultStateMachineModel implements DefaultModel, Modifyable
+public final class DefaultStateMachineModel extends DefaultMachineModel
 {
 
   /**
@@ -543,6 +543,7 @@ public final class DefaultStateMachineModel implements DefaultModel, Modifyable
    * 
    * @see Storable#getElement()
    */
+  @Override
   public final Element getElement ()
   {
     Element newElement = new Element ( "MachineModel" ); //$NON-NLS-1$
@@ -592,6 +593,7 @@ public final class DefaultStateMachineModel implements DefaultModel, Modifyable
    * 
    * @return the {@link StateMachine}
    */
+  @Override
   public final StateMachine getMachine ()
   {
     return this.machine;

@@ -11,7 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import de.unisiegen.gtitool.ui.i18n.Messages;
-import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.logic.StateMachinePanel;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
@@ -37,9 +37,9 @@ public final class DefaultPopupMenu extends JPopupMenu
 
 
   /**
-   * The {@link MachinePanel}
+   * The {@link StateMachinePanel}
    */
-  protected MachinePanel panel;
+  protected StateMachinePanel panel;
 
 
   /**
@@ -84,7 +84,7 @@ public final class DefaultPopupMenu extends JPopupMenu
    * @param panel The machine panel.
    * @param factor The actual zoom factor.
    */
-  public DefaultPopupMenu ( MachinePanel panel, int factor )
+  public DefaultPopupMenu ( StateMachinePanel panel, int factor )
   {
     this.factor = factor;
     this.panel = panel;
@@ -98,7 +98,7 @@ public final class DefaultPopupMenu extends JPopupMenu
    * @return The panel.
    * @see #panel
    */
-  public MachinePanel getPanel ()
+  public StateMachinePanel getPanel ()
   {
     return this.panel;
   }

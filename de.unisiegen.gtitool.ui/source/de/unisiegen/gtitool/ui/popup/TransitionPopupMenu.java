@@ -15,6 +15,7 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.logic.StateMachinePanel;
 import de.unisiegen.gtitool.ui.logic.TransitionDialog;
 import de.unisiegen.gtitool.ui.netbeans.MachinePanelForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -120,8 +121,8 @@ public final class TransitionPopupMenu extends JPopupMenu
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
-        TransitionPopupMenu.this.parent.getLogic ().deleteTransition (
-            TransitionPopupMenu.this.transition );
+        ( ( StateMachinePanel ) TransitionPopupMenu.this.parent.getLogic () )
+            .deleteTransition ( TransitionPopupMenu.this.transition );
       }
     } );
     add ( this.delete );
@@ -139,12 +140,12 @@ public final class TransitionPopupMenu extends JPopupMenu
         JFrame window = ( JFrame ) SwingUtilities
             .getWindowAncestor ( TransitionPopupMenu.this.parent );
         TransitionDialog transitionDialog = new TransitionDialog ( window,
-            TransitionPopupMenu.this.parent.getLogic (),
+            (StateMachinePanel)TransitionPopupMenu.this.parent.getLogic (),
             TransitionPopupMenu.this.alphabet,
             TransitionPopupMenu.this.pushDownAlphabet,
             TransitionPopupMenu.this.transition.getTransition () );
         transitionDialog.show ();
-        TransitionPopupMenu.this.parent.getLogic ().performCellsChanged ();
+        ((StateMachinePanel)TransitionPopupMenu.this.parent.getLogic ()).performCellsChanged ();
       }
     } );
     add ( this.config );

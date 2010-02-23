@@ -63,9 +63,9 @@ public final class StateConfigDialog implements
 
 
   /**
-   * The {@link MachinePanel}.
+   * The {@link StateMachinePanel}.
    */
-  private MachinePanel machinePanel;
+  private StateMachinePanel machinePanel;
 
 
   /**
@@ -90,11 +90,11 @@ public final class StateConfigDialog implements
    * Allocates a new {@link StateConfigDialog}.
    * 
    * @param parent The parent {@link JFrame}.
-   * @param machinePanel The {@link MachinePanel}.
+   * @param machinePanel The {@link StateMachinePanel}.
    * @param state The {@link State}.
    * @param model The {@link StateMachine}
    */
-  public StateConfigDialog ( JFrame parent, MachinePanel machinePanel,
+  public StateConfigDialog ( JFrame parent, StateMachinePanel machinePanel,
       State state, DefaultStateMachineModel model )
   {
     logger.debug ( "StateConfigDialog", "allocate a new new state name dialog" ); //$NON-NLS-1$ //$NON-NLS-2$

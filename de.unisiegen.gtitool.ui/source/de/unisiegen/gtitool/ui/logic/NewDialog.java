@@ -187,7 +187,7 @@ public final class NewDialog implements LogicClass < NewDialogForm >
       if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.DFA ) )
       {
-        this.newPanel = new MachinePanel ( this.mainWindowForm,
+        this.newPanel = new StateMachinePanel ( this.mainWindowForm,
             new DefaultStateMachineModel ( new DefaultDFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
@@ -200,7 +200,7 @@ public final class NewDialog implements LogicClass < NewDialogForm >
       else if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.NFA ) )
       {
-        this.newPanel = new MachinePanel ( this.mainWindowForm,
+        this.newPanel = new StateMachinePanel ( this.mainWindowForm,
             new DefaultStateMachineModel ( new DefaultNFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
@@ -213,7 +213,7 @@ public final class NewDialog implements LogicClass < NewDialogForm >
       else if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.ENFA ) )
       {
-        this.newPanel = new MachinePanel ( this.mainWindowForm,
+        this.newPanel = new StateMachinePanel ( this.mainWindowForm,
             new DefaultStateMachineModel ( new DefaultENFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
@@ -226,7 +226,7 @@ public final class NewDialog implements LogicClass < NewDialogForm >
       else if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.PDA ) )
       {
-        this.newPanel = new MachinePanel ( this.mainWindowForm,
+        this.newPanel = new StateMachinePanel ( this.mainWindowForm,
             new DefaultStateMachineModel ( new DefaultPDA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );

@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.machines;
 
 
+import javax.swing.table.TableColumnModel;
+
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
 import de.unisiegen.gtitool.core.machines.dfa.LR0;
@@ -137,4 +140,28 @@ public interface Machine
       throw new IllegalArgumentException ( "unsupported machine type" ); //$NON-NLS-1$
     }
   }
+
+
+  /**
+   * retrieves the {@link Alphabet}
+   * 
+   * @return the {@link Alphabet}
+   */
+  public Alphabet getAlphabet ();
+
+
+  /**
+   * Returns the {@link TableColumnModel}.
+   * 
+   * @return The {@link TableColumnModel}.
+   */
+  public TableColumnModel getTableColumnModel ();
+
+
+  /**
+   * Returns the {@link Machine.MachineType}.
+   * 
+   * @return The {@link Machine.MachineType}.
+   */
+  public MachineType getMachineType ();
 }

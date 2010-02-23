@@ -200,7 +200,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_NAVIGATION_START,
 
     /**
-     * The navigation stop enabled button state.
+     * The navigation stopDFA enabled button state.
      */
     ENABLED_NAVIGATION_STOP,
 
@@ -2359,9 +2359,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           new LayoutManager ( ( DefaultStateMachineModel ) defaultModel, null )
               .doLayout ();
       }
-      else if ( element.getName ().equals ( "GrammarModel" ) )
+      else if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
         defaultModel = new DefaultGrammarModel ( element, null );
-      else if ( element.getName ().equals ( "RegexModel" ) )
+      else if ( element.getName ().equals ( "RegexModel" ) ) //$NON-NLS-1$
         defaultModel = new DefaultRegexModel ( element, true );
       else
         throw new IllegalArgumentException ( "unsupported model" ); //$NON-NLS-1$
@@ -4219,8 +4219,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
 
-        if ( machinePanel.getMachine ().getMachineType ().equals (
-            MachineType.DFA ) )
+        final MachineType machineType = machinePanel.getMachine ()
+            .getMachineType ();
+        if ( machineType.equals ( MachineType.DFA )
+            || machineType.equals ( MachineType.LR0 )
+            || machineType.equals ( MachineType.LR1 ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
@@ -4236,24 +4239,21 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
           }
         }
-        else if ( machinePanel.getMachine ().getMachineType ().equals (
-            MachineType.NFA ) )
+        else if ( machineType.equals ( MachineType.NFA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
           removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         }
-        else if ( machinePanel.getMachine ().getMachineType ().equals (
-            MachineType.ENFA ) )
+        else if ( machineType.equals ( MachineType.ENFA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
           removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         }
-        else if ( machinePanel.getMachine ().getMachineType ().equals (
-            MachineType.PDA ) )
+        else if ( machineType.equals ( MachineType.PDA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );

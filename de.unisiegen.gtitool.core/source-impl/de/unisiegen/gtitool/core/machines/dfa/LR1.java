@@ -41,7 +41,7 @@ public class LR1 extends AbstractLR
    */
   public LR1 ( final LR1Grammar grammar ) throws AlphabetException
   {
-    this ( grammar.makeAutomatonAlphabet () );
+    this ( grammar.getAlphabet () );
 
     Alphabet alphabet = this.getAlphabet ();
 

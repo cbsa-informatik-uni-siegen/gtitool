@@ -10,9 +10,12 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.FirstSet;
@@ -21,9 +24,11 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarDuplicateProductionException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
@@ -992,4 +997,15 @@ public abstract class AbstractGrammar implements Grammar
     }
     return this.followSets.get ( ns );
   }// end follow
+
+
+  public Alphabet getAlphabet () throws AlphabetException
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+
+    for ( TerminalSymbol symbol : this.getTerminalSymbolSet () )
+      symbols.add ( new DefaultSymbol ( symbol.toString () ) );
+
+    return new DefaultAlphabet ( symbols );
+  }
 }

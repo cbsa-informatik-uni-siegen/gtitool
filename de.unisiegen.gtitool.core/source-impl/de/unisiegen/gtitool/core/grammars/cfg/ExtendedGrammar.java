@@ -86,7 +86,7 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
    * @return
    * @throws AlphabetException
    */
-  public Alphabet makeAutomatonAlphabet () throws AlphabetException
+  public Alphabet getAlphabet () throws AlphabetException
   {
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
 

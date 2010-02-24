@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.InputEntity;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
@@ -15,6 +16,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
@@ -289,4 +291,13 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
    */
   public TerminalSymbolSet follow ( final NonterminalSymbol p )
       throws GrammarInvalidNonterminalException, TerminalSymbolSetException;
+  
+  /**
+   * 
+   * Creates an Alphabet out of the grammar's Terminals
+   *
+   * @return the alphabet
+   * @throws AlphabetException 
+   */
+  public Alphabet getAlphabet() throws AlphabetException;
 }

@@ -36,7 +36,7 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
    */
   public DefaultLR1Parser ( final LR1Grammar grammar ) throws AlphabetException
   {
-    super ( grammar.makeAutomatonAlphabet () );
+    super ( grammar.getAlphabet () );
     this.grammar = grammar;
 
     this.lr1Automaton = new LR1 ( grammar );
@@ -51,7 +51,7 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
   public DefaultLR1Parser ( final LR1 lr1, final LR1Grammar grammar )
       throws AlphabetException
   {
-    super ( grammar.makeAutomatonAlphabet () );
+    super ( grammar.getAlphabet () );
 
     this.grammar = grammar;
 

@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.convert;
 
 
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.Machine;
@@ -21,8 +22,10 @@ public class ConvertToTDP extends AbstractConvertGrammarStatelessMachine
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
    * @param grammar The {@link Grammar}.
+   * @throws AlphabetException
    */
   public ConvertToTDP ( MainWindowForm mainWindowForm, Grammar grammar )
+      throws AlphabetException
   {
     super ( mainWindowForm, grammar );
   }

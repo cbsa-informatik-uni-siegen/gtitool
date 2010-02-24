@@ -1,22 +1,28 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseEvent;
+import java.awt.GridBagConstraints;
 import java.io.File;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultStatelessMachineModel;
+import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
+import de.unisiegen.gtitool.ui.model.PTTableModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
+import de.unisiegen.gtitool.ui.swing.JGTIPanel;
+import de.unisiegen.gtitool.ui.swing.JGTIScrollPane;
+import de.unisiegen.gtitool.ui.swing.JGTITable;
 
 
 /**
@@ -50,6 +56,9 @@ public class StatelessMachinePanel extends MachinePanel
     super ( mainWindowForm, file, model );
     this.model = model;
     this.machine = this.model.getMachine ();
+
+    initializeParsingTable ();
+    initializeStatelessMachineTable ();
   }
 
 
@@ -65,13 +74,52 @@ public class StatelessMachinePanel extends MachinePanel
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#fireModifyStatusChanged(boolean)
+   * Initializes the TDP action table
    */
-  @Override
-  protected void fireModifyStatusChanged ( boolean forceModify )
+  private final void initializeParsingTable ()
   {
+    /*
+     * initialize the parsing table
+     */
+    this.gui.jGTITableMachine.setModel ( new PTTableModel ( ( CFG ) this.model
+        .getGrammar () ) );
+    this.gui.jGTITableMachine.setColumnModel ( new PTTableColumnModel (
+        this.machine.getAlphabet () ) );
+    this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableMachine
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.gui.jGTITableMachine.setCellSelectionEnabled ( true );
+
+    // we don't need the pda stack operation table
+    setVisiblePDATable ( false );
+  }
+
+
+  /**
+   * Initializes the parsing table
+   */
+  private final void initializeStatelessMachineTable ()
+  {
+    JGTITable jGTIStatelessMachineTable = new JGTITable ();
+    JGTIPanel jGTIStatelessMachineTablePanel = new JGTIPanel ();
+    JGTIScrollPane jGTIStatelessMachineTablePanelScrollPane = new JGTIScrollPane ();
+    GridBagConstraints gridBagConstraints = new GridBagConstraints ();
+
+    jGTIStatelessMachineTablePanelScrollPane.setBorder ( null );
+
+    gridBagConstraints.fill = GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    jGTIStatelessMachineTablePanel.add (
+        jGTIStatelessMachineTablePanelScrollPane, gridBagConstraints );
+    jGTIStatelessMachineTablePanelScrollPane
+        .setViewportView ( jGTIStatelessMachineTable );
+
+    this.gui.jGTISplitPaneTable
+        .setLeftComponent ( jGTIStatelessMachineTablePanel );
+
+    int loc = this.gui.getWidth () / 2;
+    this.gui.jGTISplitPaneTable.setDividerLocation ( loc );
   }
 
 
@@ -294,10 +342,10 @@ public class StatelessMachinePanel extends MachinePanel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleConsoleTableFocusLost(java.awt.event.FocusEvent)
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleMachinePDATableFocusLost()
    */
   @Override
-  public void handleConsoleTableFocusLost ( FocusEvent evt )
+  protected void onHandleMachinePDATableFocusLost ()
   {
   }
 
@@ -305,54 +353,32 @@ public class StatelessMachinePanel extends MachinePanel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleConsoleTableMouseExited(java.awt.event.MouseEvent)
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleMachinePDATableMouseExited()
    */
   @Override
-  public void handleConsoleTableMouseExited ( MouseEvent evt )
+  protected void onHandleMachinePDATableMouseExited ()
   {
   }
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleMachinePDATableFocusLost(java.awt.event.FocusEvent)
+   * TODO
+   *
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleMachineTableFocusLost()
    */
   @Override
-  public void handleMachinePDATableFocusLost ( FocusEvent evt )
+  protected void onHandleMachineTableFocusLost ()
   {
   }
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleMachinePDATableMouseExited(java.awt.event.MouseEvent)
+   * TODO
+   *
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleMachineTableMouseExited()
    */
   @Override
-  public void handleMachinePDATableMouseExited ( MouseEvent evt )
-  {
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleMachineTableFocusLost(java.awt.event.FocusEvent)
-   */
-  @Override
-  public void handleMachineTableFocusLost ( FocusEvent evt )
-  {
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleMachineTableMouseExited(java.awt.event.MouseEvent)
-   */
-  @Override
-  public void handleMachineTableMouseExited ( MouseEvent evt )
+  protected void onHandleMachineTableMouseExited ()
   {
   }
 

@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
 import java.awt.PopupMenu;
 import java.awt.Rectangle;
 import java.awt.event.FocusAdapter;
@@ -33,7 +32,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
@@ -61,7 +59,6 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
-import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
@@ -82,8 +79,6 @@ import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.PDATableColumnModel;
 import de.unisiegen.gtitool.ui.model.PDATableModel;
-import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
-import de.unisiegen.gtitool.ui.model.PTTableModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
 import de.unisiegen.gtitool.ui.popup.EnterWordModePopupMenu;
@@ -98,9 +93,6 @@ import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
 import de.unisiegen.gtitool.ui.style.StyledStateSetParserPanel;
 import de.unisiegen.gtitool.ui.style.editor.ParserTableCellEditor;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.AcceptedStatus;
-import de.unisiegen.gtitool.ui.swing.JGTIPanel;
-import de.unisiegen.gtitool.ui.swing.JGTIScrollPane;
-import de.unisiegen.gtitool.ui.swing.JGTITable;
 
 
 /**
@@ -182,18 +174,6 @@ public final class StateMachinePanel extends MachinePanel
 
 
   /**
-   * Flag that indicates if a cell is edited.
-   */
-  protected boolean cellEditingMode = false;
-
-
-  /**
-   * Signals if drag in progress.
-   */
-  protected boolean dragged;
-
-
-  /**
    * The {@link MouseAdapter} for the enter word mode.
    */
   private MouseAdapter enterWordModeMouse;
@@ -215,12 +195,6 @@ public final class StateMachinePanel extends MachinePanel
    * The {@link DefaultGraphModel} for this graph.
    */
   private DefaultGraphModel graphModel;
-
-
-  /**
-   * The {@link EventListenerList}.
-   */
-  private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -299,24 +273,16 @@ public final class StateMachinePanel extends MachinePanel
     this.model.setRedoUndoHandler ( this.redoUndoHandler );
     this.machine = this.model.getMachine ();
 
-    if ( ! ( model.getMachine () instanceof DefaultTDP ) )
-    {
-      this.gui.wordPanelForm.setPushDownAlphabet ( getMachine ()
-          .getPushDownAlphabet () );
-      intitializeMouseAdapter ();
-      initializeGraph ();
-      initializeMachineTable ();
-      initializePDATable ();
-      initializeSecondView ();
+    this.gui.wordPanelForm.setPushDownAlphabet ( getMachine ()
+        .getPushDownAlphabet () );
+    intitializeMouseAdapter ();
+    initializeGraph ();
+    initializeMachineTable ();
+    initializePDATable ();
+    initializeSecondView ();
 
-      addListener ();
-      addGraphListener ();
-    }
-    else
-    {
-      initializeTDPTable ();
-      initializeParsingTable ();
-    }
+    addListener ();
+    addGraphListener ();
 
     // update the machine table status
     updateMachineTableStatus ();
@@ -328,12 +294,11 @@ public final class StateMachinePanel extends MachinePanel
 
   /**
    * {@inheritDoc}
-   * 
    */
   @Override
   protected final void setupModelMachine ( final DefaultMachineModel model )
   {
-    this.model = (DefaultStateMachineModel)model;
+    this.model = ( DefaultStateMachineModel ) model;
     this.machine = this.model.getMachine ();
   }
 
@@ -679,17 +644,7 @@ public final class StateMachinePanel extends MachinePanel
     // is needed if a cell is deleted
     updateSelected ();
 
-    ModifyStatusChangedListener [] listeners = this.listenerList
-        .getListeners ( ModifyStatusChangedListener.class );
-    if ( forceModify )
-      for ( ModifyStatusChangedListener current : listeners )
-        current.modifyStatusChanged ( true );
-    else
-    {
-      boolean newModifyStatus = isModified ();
-      for ( ModifyStatusChangedListener current : listeners )
-        current.modifyStatusChanged ( newModifyStatus );
-    }
+    super.fireModifyStatusChanged ( forceModify );
   }
 
 
@@ -843,11 +798,9 @@ public final class StateMachinePanel extends MachinePanel
    * @param event The {@link FocusEvent}.
    */
   @Override
-  public final void handleConsoleTableFocusLost (
-      @SuppressWarnings ( "unused" ) FocusEvent event )
+  public final void handleConsoleTableFocusLost ( FocusEvent event )
   {
-    this.gui.jGTITableErrors.clearSelection ();
-    this.gui.jGTITableWarnings.clearSelection ();
+    super.handleConsoleTableFocusLost ( event );
     clearHighlight ();
   }
 
@@ -858,11 +811,9 @@ public final class StateMachinePanel extends MachinePanel
    * @param event The {@link MouseEvent}.
    */
   @Override
-  public final void handleConsoleTableMouseExited (
-      @SuppressWarnings ( "unused" ) MouseEvent event )
+  public final void handleConsoleTableMouseExited ( MouseEvent event )
   {
-    this.gui.jGTITableErrors.clearSelection ();
-    this.gui.jGTITableWarnings.clearSelection ();
+    super.handleConsoleTableMouseExited ( event );
     clearHighlight ();
   }
 
@@ -1068,38 +1019,26 @@ public final class StateMachinePanel extends MachinePanel
 
 
   /**
-   * Handles the focus lost event on the machine pda table.
+   * {@inheritDoc}
    * 
-   * @param event The {@link FocusEvent}.
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleMachinePDATableMouseExited()
    */
   @Override
-  public final void handleMachinePDATableFocusLost (
-      @SuppressWarnings ( "unused" ) FocusEvent event )
+  protected void onHandleMachinePDATableMouseExited ()
   {
-    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
-        && !this.cellEditingMode )
-    {
-      this.gui.jGTITableMachinePDA.clearSelection ();
-      clearHighlight ();
-    }
+    clearHighlight ();
   }
 
 
   /**
-   * Handles the mouse exited event on the machine pda table.
+   * {@inheritDoc}
    * 
-   * @param event The {@link MouseEvent}.
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleMachinePDATableFocusLost()
    */
   @Override
-  public final void handleMachinePDATableMouseExited (
-      @SuppressWarnings ( "unused" ) MouseEvent event )
+  protected void onHandleMachinePDATableFocusLost ()
   {
-    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
-        && !this.cellEditingMode )
-    {
-      this.gui.jGTITableMachinePDA.clearSelection ();
-      clearHighlight ();
-    }
+    clearHighlight ();
   }
 
 
@@ -1145,38 +1084,22 @@ public final class StateMachinePanel extends MachinePanel
 
 
   /**
-   * Handles the focus lost event on the machine table.
-   * 
-   * @param event The {@link FocusEvent}.
+   * {@inheritDoc}
    */
   @Override
-  public final void handleMachineTableFocusLost (
-      @SuppressWarnings ( "unused" ) FocusEvent event )
+  public final void onHandleMachineTableFocusLost ()
   {
-    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
-        && !this.cellEditingMode )
-    {
-      this.gui.jGTITableMachine.clearSelection ();
-      clearHighlight ();
-    }
+    clearHighlight ();
   }
 
 
   /**
-   * Handles the mouse exited event on the machine table.
-   * 
-   * @param event The {@link MouseEvent}.
+   * {@inheritDoc}
    */
   @Override
-  public final void handleMachineTableMouseExited (
-      @SuppressWarnings ( "unused" ) MouseEvent event )
+  public final void onHandleMachineTableMouseExited ()
   {
-    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
-        && !this.cellEditingMode )
-    {
-      this.gui.jGTITableMachine.clearSelection ();
-      clearHighlight ();
-    }
+    clearHighlight ();
   }
 
 
@@ -2399,54 +2322,6 @@ public final class StateMachinePanel extends MachinePanel
         }
       }
     };
-  }
-
-
-  /**
-   * Initializes the TDP action table
-   */
-  private final void initializeTDPTable ()
-  {
-    /*
-     * initialize the parsing table
-     */
-    this.gui.jGTITableMachine.setModel ( new PTTableModel ( ( CFG ) this.model
-        .getGrammar () ) );
-    this.gui.jGTITableMachine.setColumnModel ( new PTTableColumnModel (
-        this.machine.getAlphabet () ) );
-    this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTITableMachine
-        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jGTITableMachine.setCellSelectionEnabled ( true );
-
-    // we don't need the pda stack operation table
-    setVisiblePDATable ( false );
-  }
-
-
-  /**
-   * Initializes the parsing table
-   */
-  private final void initializeParsingTable ()
-  {
-    JGTITable jGTIParsingTable = new JGTITable ();
-    JGTIPanel jGTIParsingTablePanel = new JGTIPanel ();
-    JGTIScrollPane jGTIParsingTablePanelScrollPane = new JGTIScrollPane ();
-    GridBagConstraints gridBagConstraints = new GridBagConstraints ();
-
-    jGTIParsingTablePanelScrollPane.setBorder ( null );
-
-    gridBagConstraints.fill = GridBagConstraints.BOTH;
-    gridBagConstraints.weightx = 1.0;
-    gridBagConstraints.weighty = 1.0;
-    jGTIParsingTablePanel.add ( jGTIParsingTablePanelScrollPane,
-        gridBagConstraints );
-    jGTIParsingTablePanelScrollPane.setViewportView ( jGTIParsingTable );
-
-    this.gui.jGTISplitPaneTable.setLeftComponent ( jGTIParsingTablePanel );
-
-    int loc = this.gui.getWidth () / 2;
-    this.gui.jGTISplitPaneTable.setDividerLocation ( loc );
   }
 
 

@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.convert;
 
 
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
@@ -34,11 +35,12 @@ public abstract class AbstractConvertGrammarStatelessMachine extends
    * 
    * @param mwf the {@link MainWindowForm}
    * @param grammar the {@link Grammar}
+   * @throws AlphabetException 
    */
   public AbstractConvertGrammarStatelessMachine ( MainWindowForm mwf,
-      Grammar grammar )
+      Grammar grammar ) throws AlphabetException
   {
-    super ( mwf, grammar );
+    super ( mwf, grammar, grammar.getAlphabet () );
   }
 
 

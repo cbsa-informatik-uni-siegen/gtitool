@@ -4203,9 +4203,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // MachinePanel
     else
     {
-      if ( panel instanceof StateMachinePanel )
+      // TODO: add extra case for StatelessMachine???
+      // if ( panel instanceof StateMachinePanel )
+      if ( panel instanceof MachinePanel )
       {
-        StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
+        // StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
+        MachinePanel machinePanel = ( MachinePanel ) panel;
 
         addButtonState ( ButtonState.VISIBLE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
@@ -4254,7 +4257,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
           removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         }
-        else if ( machineType.equals ( MachineType.PDA ) )
+        else if ( machineType.equals ( MachineType.PDA )
+            || machineType.equals ( MachineType.TDP ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );

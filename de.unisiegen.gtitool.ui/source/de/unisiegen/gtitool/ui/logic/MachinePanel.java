@@ -8,12 +8,14 @@ import java.io.File;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableColumnModel;
 
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
@@ -129,6 +131,18 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * Flag that indicates if a cell is edited.
+   */
+  protected boolean cellEditingMode = false;
+
+
+  /**
+   * Signals if drag in progress.
+   */
+  protected boolean dragged;
+
+
+  /**
    * The {@link File} for this {@link StateMachinePanel}.
    */
   private File file;
@@ -138,6 +152,12 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
    * The name of this {@link StateMachinePanel}.
    */
   private String name = null;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  protected EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -227,6 +247,46 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
   abstract protected void setupModelMachine ( final DefaultMachineModel model );
 
 
+  abstract protected void onHandleMachinePDATableMouseExited ();
+
+
+  abstract protected void onHandleMachinePDATableFocusLost ();
+
+
+  /**
+   * Handles the focus lost event on the machine pda table.
+   * 
+   * @param event The {@link FocusEvent}.
+   */
+  public void handleMachinePDATableFocusLost (
+      @SuppressWarnings ( "unused" ) FocusEvent event )
+  {
+    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+        && !this.cellEditingMode )
+    {
+      this.gui.jGTITableMachinePDA.clearSelection ();
+      onHandleMachinePDATableFocusLost ();
+    }
+  }
+
+
+  /**
+   * Handles the mouse exited event on the machine pda table.
+   * 
+   * @param event The {@link MouseEvent}.
+   */
+  public void handleMachinePDATableMouseExited (
+      @SuppressWarnings ( "unused" ) MouseEvent event )
+  {
+    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+        && !this.cellEditingMode )
+    {
+      this.gui.jGTITableMachinePDA.clearSelection ();
+      onHandleMachinePDATableMouseExited ();
+    }
+  }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -301,19 +361,17 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * handles the mouse exited event of the pda table
-   * 
-   * @param evt the {@link FocusEvent}
+   * handles additional actions that are taken when the mouse exists the machine
+   * table
    */
-  abstract public void handleMachinePDATableMouseExited ( MouseEvent evt );
+  protected abstract void onHandleMachineTableMouseExited ();
 
 
   /**
-   * handles the focus lost event of the pda table
-   * 
-   * @param evt the {@link FocusEvent}
+   * handles additional actions that are taken when the machine table looses the
+   * focus
    */
-  abstract public void handleMachinePDATableFocusLost ( FocusEvent evt );
+  protected abstract void onHandleMachineTableFocusLost ();
 
 
   /**
@@ -321,7 +379,16 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param evt the {@link FocusEvent}
    */
-  abstract public void handleMachineTableMouseExited ( MouseEvent evt );
+  public void handleMachineTableMouseExited (
+      @SuppressWarnings ( "unused" ) final MouseEvent evt )
+  {
+    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+        && !this.cellEditingMode )
+    {
+      this.gui.jGTITableMachine.clearSelection ();
+      onHandleMachineTableMouseExited ();
+    }
+  }
 
 
   /**
@@ -329,7 +396,16 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param evt the {@link FocusEvent}
    */
-  abstract public void handleMachineTableFocusLost ( FocusEvent evt );
+  public void handleMachineTableFocusLost (
+      @SuppressWarnings ( "unused" ) final FocusEvent evt )
+  {
+    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+        && !this.cellEditingMode )
+    {
+      this.gui.jGTITableMachine.clearSelection ();
+      onHandleMachineTableFocusLost ();
+    }
+  }
 
 
   /**
@@ -337,7 +413,12 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param evt the {@link FocusEvent}
    */
-  abstract public void handleConsoleTableFocusLost ( FocusEvent evt );
+  public void handleConsoleTableFocusLost (
+      @SuppressWarnings ( "unused" ) final FocusEvent evt )
+  {
+    this.gui.jGTITableErrors.clearSelection ();
+    this.gui.jGTITableWarnings.clearSelection ();
+  }
 
 
   /**
@@ -345,7 +426,12 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param evt the {@link FocusEvent}
    */
-  abstract public void handleConsoleTableMouseExited ( MouseEvent evt );
+  public void handleConsoleTableMouseExited (
+      @SuppressWarnings ( "unused" ) final MouseEvent evt )
+  {
+    this.gui.jGTITableErrors.clearSelection ();
+    this.gui.jGTITableWarnings.clearSelection ();
+  }
 
 
   /**
@@ -764,5 +850,18 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param forceModify True if the modify is forced, otherwise false.
    */
-  protected abstract void fireModifyStatusChanged ( boolean forceModify );
+  protected void fireModifyStatusChanged ( boolean forceModify )
+  {
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    if ( forceModify )
+      for ( ModifyStatusChangedListener current : listeners )
+        current.modifyStatusChanged ( true );
+    else
+    {
+      boolean newModifyStatus = isModified ();
+      for ( ModifyStatusChangedListener current : listeners )
+        current.modifyStatusChanged ( newModifyStatus );
+    }
+  }
 }

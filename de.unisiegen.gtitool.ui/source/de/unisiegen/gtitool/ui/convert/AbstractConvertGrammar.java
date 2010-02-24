@@ -11,7 +11,6 @@ import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
-import de.unisiegen.gtitool.ui.logic.StateMachinePanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 

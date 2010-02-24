@@ -35,8 +35,7 @@ public class ConvertToLR1 extends ConvertToLR
   public ConvertToLR1 ( MainWindowForm mainWindowForm, Grammar grammar )
       throws AlphabetException
   {
-    super ( mainWindowForm, grammar, convertGrammar ( grammar )
-        .makeAutomatonAlphabet () );
+    super ( mainWindowForm, grammar, convertGrammar ( grammar ).getAlphabet () );
 
     this.lr1Grammar = convertGrammar ( grammar );
   }

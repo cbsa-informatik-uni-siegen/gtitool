@@ -96,11 +96,11 @@ public class BlackboxView extends VertexView
       int height = 0;
       int width = 0;
 
-      height += StateView.getHeight ( bview.getStartState ().getState () );
+      height += StateView.staticGetHeight ( bview.getStartState ().getState () );
       height += 2 * this.Y_SPACE;
 
       width += 4 * this.X_SPACE;
-      width += 2 * StateView.getWidth ( bview.getStartState ().getState () );
+      width += 2 * StateView.staticGetWidth ( bview.getStartState ().getState () );
 
       FontMetrics metrics = g.getFontMetrics ();
 

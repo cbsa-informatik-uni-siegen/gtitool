@@ -44,7 +44,7 @@ public class ConvertToLR0 extends ConvertToLR
       final Grammar grammar ) throws AlphabetException
   {
     super ( mainWindowForm, grammar, convertGrammar ( grammar )
-        .makeAutomatonAlphabet () );
+        .getAlphabet () );
 
     this.lr0Grammar = convertGrammar ( grammar );
   }

@@ -283,8 +283,8 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
             state.setPushDownAlphabet ( pushDownAlphabet );
           }
 
-        double newX = x + StateView.getWidth ( state ) / 2;
-        double newY = y + StateView.getHeight ( state ) / 2;
+        double newX = x + StateView.staticGetWidth ( state ) / 2;
+        double newY = y + StateView.staticGetHeight ( state ) / 2;
         createStateView ( newX, newY, state, false, true );
       }
       else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
@@ -401,17 +401,17 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
     String viewClass = StateView.class.getName ();
 
     // check position of the new state
-    double xPosition = x < ( StateView.getWidth ( state ) / 2 ) ? ( StateView
-        .getWidth ( state ) / 2 ) : x;
-    double yPostition = y < ( StateView.getHeight ( state ) / 2 ) ? ( StateView
-        .getHeight ( state ) / 2 ) : y;
+    double xPosition = x < ( StateView.staticGetWidth ( state ) / 2 ) ? ( StateView
+        .staticGetWidth ( state ) / 2 ) : x;
+    double yPostition = y < ( StateView.staticGetHeight ( state ) / 2 ) ? ( StateView
+        .staticGetHeight ( state ) / 2 ) : y;
 
     // Set bounds
     GraphConstants.setBounds ( stateView.getAttributes (),
         new Rectangle2D.Double ( xPosition
-            - ( StateView.getWidth ( state ) / 2 ), yPostition
-            - ( StateView.getHeight ( state ) / 2 ), StateView
-            .getWidth ( state ), StateView.getHeight ( state ) ) );
+            - ( StateView.staticGetWidth ( state ) / 2 ), yPostition
+            - ( StateView.staticGetHeight ( state ) / 2 ), StateView
+            .staticGetWidth ( state ), StateView.staticGetHeight ( state ) ) );
 
     // set the view class (indirection for the renderer and the editor)
     GPCellViewFactory.setViewClass ( stateView.getAttributes (), viewClass );
@@ -527,8 +527,8 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
     // change from normal state name to power state name
     for ( DefaultStateView current : this.stateViewList )
     {
-      double newWidth = StateView.getWidth ( current.getState () );
-      double newHeight = StateView.getHeight ( current.getState () );
+      double newWidth = StateView.staticGetWidth ( current.getState () );
+      double newHeight = StateView.staticGetHeight ( current.getState () );
       if ( ( current.getWidth () != newWidth )
           || ( current.getHeight () != newHeight ) )
         GraphConstants.setBounds ( current.getAttributes (),

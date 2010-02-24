@@ -40,7 +40,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * @author Christian Fehler
  * @version $Id:StateView.java 910 2008-05-16 00:31:21Z fehler $
  */
-public final class StateView extends VertexView
+public class StateView extends VertexView
 {
 
   /**
@@ -218,11 +218,11 @@ public final class StateView extends VertexView
 
     /**
      * {@inheritDoc}
-     * 
+     * c
      * @see VertexRenderer#paint(Graphics)
      */
     @Override
-    public final void paint ( Graphics g )
+    public void paint ( Graphics g )
     {
       State state = null;
       DefaultStateView defaultStateView = null;
@@ -242,6 +242,7 @@ public final class StateView extends VertexView
 
       Graphics2D g2 = ( Graphics2D ) g;
       Dimension d = getSize ();
+
       boolean tmp = this.selected;
       if ( super.isOpaque () )
       {
@@ -608,7 +609,7 @@ public final class StateView extends VertexView
    * @param state The {@link State}.
    * @return The height.
    */
-  public static final int getHeight ( State state )
+  public static final int staticGetHeight ( State state )
   {
     int width = 70;
 
@@ -619,6 +620,17 @@ public final class StateView extends VertexView
 
     return width;
   }
+  
+  /**
+   * getHeight forwards to staticGetHeight so it can be overridden
+   *
+   * @param state
+   * @return the height
+   */
+  public int getHeight(State state)
+  {
+    return staticGetHeight(state);
+  }
 
 
   /**
@@ -627,7 +639,18 @@ public final class StateView extends VertexView
    * @param state The {@link State}.
    * @return The width.
    */
-  public static final int getWidth ( State state )
+  public int getWidth ( State state )
+  {
+    return staticGetWidth(state);
+  }
+  
+  /**
+   * TODO
+   *
+   * @param state
+   * @return
+   */
+  public static final int staticGetWidth(State state)
   {
     int width = 70;
     if ( state.isPowerState () )

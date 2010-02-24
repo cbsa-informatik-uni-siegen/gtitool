@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.jgraph;
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.event.EventListenerList;
@@ -102,15 +103,15 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * The puplished x position.
+   * The published x position.
    */
-  private double puplishedXPosition = POSITION_NOT_DEFINED;
+  private double publishedXPosition = POSITION_NOT_DEFINED;
 
 
   /**
-   * The puplished y position.
+   * The published y position.
    */
-  private double puplishedYPosition = POSITION_NOT_DEFINED;
+  private double publishedYPosition = POSITION_NOT_DEFINED;
 
 
   /**
@@ -203,6 +204,9 @@ public final class DefaultStateView extends DefaultGraphCell implements
       }
     } );
 
+    GraphConstants
+        .setSize ( this.getAttributes (), new Dimension ( 1000, 1000 ) );
+
     // Reset modify
     resetModify ();
   }
@@ -269,10 +273,10 @@ public final class DefaultStateView extends DefaultGraphCell implements
         .getListeners ( ModifyStatusChangedListener.class );
     double x = getPositionX ();
     double y = getPositionY ();
-    if ( ( this.puplishedXPosition != x ) || ( this.puplishedYPosition != y ) )
+    if ( ( this.publishedXPosition != x ) || ( this.publishedYPosition != y ) )
     {
-      this.puplishedXPosition = x;
-      this.puplishedYPosition = y;
+      this.publishedXPosition = x;
+      this.publishedYPosition = y;
       boolean newModifyStatus = isModified ();
       for ( ModifyStatusChangedListener current : listeners )
       {

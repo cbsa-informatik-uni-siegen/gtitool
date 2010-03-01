@@ -19,6 +19,8 @@ import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultStatelessMachineModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
 import de.unisiegen.gtitool.ui.model.PTTableModel;
+import de.unisiegen.gtitool.ui.model.StatelessMachineColumnModel;
+import de.unisiegen.gtitool.ui.model.StatelessMachineTableModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.swing.JGTIPanel;
 import de.unisiegen.gtitool.ui.swing.JGTIScrollPane;
@@ -104,9 +106,15 @@ public class StatelessMachinePanel extends MachinePanel
     JGTIPanel jGTIStatelessMachineTablePanel = new JGTIPanel ();
     JGTIScrollPane jGTIStatelessMachineTablePanelScrollPane = new JGTIScrollPane ();
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
+    
+    //setup the machine table
+    jGTIStatelessMachineTable.setModel ( new StatelessMachineTableModel() );
+    jGTIStatelessMachineTable.setColumnModel ( new StatelessMachineColumnModel() );
+    jGTIStatelessMachineTable.getTableHeader ().setReorderingAllowed ( false );
+    jGTIStatelessMachineTable.setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
 
+    //setup scrollpane + viewport
     jGTIStatelessMachineTablePanelScrollPane.setBorder ( null );
-
     gridBagConstraints.fill = GridBagConstraints.BOTH;
     gridBagConstraints.weightx = 1.0;
     gridBagConstraints.weighty = 1.0;
@@ -118,7 +126,7 @@ public class StatelessMachinePanel extends MachinePanel
     this.gui.jGTISplitPaneTable
         .setLeftComponent ( jGTIStatelessMachineTablePanel );
 
-    int loc = this.gui.getWidth () / 2;
+    int loc = getMainWindowForm().getWidth () / 2;
     this.gui.jGTISplitPaneTable.setDividerLocation ( loc );
   }
 

@@ -4,6 +4,9 @@ package de.unisiegen.gtitool.ui.model;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableHeaderCellRenderer;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -47,22 +50,31 @@ public class StatelessMachineColumnModel extends DefaultTableColumnModel
   public StatelessMachineColumnModel ()
   {
     TableColumn symbolColumn = new TableColumn ( INPUT_COLUMN );
-    symbolColumn.setHeaderValue ( Messages
-        .getString ( "TDPColumnModel.InputColumn" ) ); //$NON-NLS-1$
+    symbolColumn
+        .setHeaderValue ( new PrettyString (
+            new PrettyToken (
+                Messages.getString ( "StatelessMachineColumnModel.InputColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
     symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     addColumn ( symbolColumn );
 
     symbolColumn = new TableColumn ( STACK_COLUMN );
-    symbolColumn.setHeaderValue ( Messages.getString ( "Stack" ) ); //$NON-NLS-1$
+    symbolColumn
+        .setHeaderValue ( new PrettyString (
+            new PrettyToken (
+                Messages.getString ( "StatelessMachineColumnModel.StackColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
     symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     addColumn ( symbolColumn );
 
     symbolColumn = new TableColumn ( ACTION_COLUMN );
-    symbolColumn.setHeaderValue ( Messages.getString ( "Aktion" ) ); //$NON-NLS-1$
+    symbolColumn
+        .setHeaderValue ( new PrettyString (
+            new PrettyToken (
+                Messages
+                    .getString ( "StatelessMachineColumnModel.ActionColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
     symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );

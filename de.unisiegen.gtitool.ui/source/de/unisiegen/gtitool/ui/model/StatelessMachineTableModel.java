@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
@@ -172,8 +173,10 @@ public class StatelessMachineTableModel extends AbstractTableModel
         return this.inputData.get ( rowIndex );
       case StatelessMachineTableModel.STACK_COLUMN :
         return this.stackData.get ( rowIndex );
+      case StatelessMachineTableModel.ACTION_COLUMN:
+        return new PrettyString ();
     }
-    return ""; //$NON-NLS-1$
+    return new PrettyString();
   }
 
 }

@@ -168,12 +168,6 @@ public final class StateMachinePanel extends MachinePanel
 
 
   /**
-   * The {@link Timer} of the auto step mode.
-   */
-  private Timer autoStepTimer = null;
-
-
-  /**
    * The {@link MouseAdapter} for the enter word mode.
    */
   private MouseAdapter enterWordModeMouse;
@@ -249,13 +243,6 @@ public final class StateMachinePanel extends MachinePanel
    * The {@link PDATableColumnModel}.
    */
   private PDATableColumnModel pdaTableColumnModel = new PDATableColumnModel ();
-
-
-  /**
-   * Flag that indicates if the user input was needed during the navigation so
-   * far.
-   */
-  private boolean userInputNeeded = false;
 
 
   /**
@@ -472,23 +459,6 @@ public final class StateMachinePanel extends MachinePanel
       }
     }
     cancelDraggingProgress ();
-  }
-
-
-  /**
-   * Cancels the auto step {@link Timer}.
-   * 
-   * @return Returns true if the timer was canceled, otherwise false.
-   */
-  public final boolean cancelAutoStepTimer ()
-  {
-    if ( this.autoStepTimer != null )
-    {
-      this.autoStepTimer.cancel ();
-      this.autoStepTimer = null;
-      return true;
-    }
-    return false;
   }
 
 
@@ -879,7 +849,7 @@ public final class StateMachinePanel extends MachinePanel
   public final void handleEnterWord ()
   {
     clearHighlight ();
-    
+
     super.handleEnterWord ();
 
     this.jGTIGraph.clearSelection ();
@@ -1503,33 +1473,15 @@ public final class StateMachinePanel extends MachinePanel
   /**
    * Handle Stop Action in the Word Enter Mode
    */
+  @Override
   public final void handleWordStop ()
   {
-    cancelAutoStepTimer ();
-
-    this.machineMode = MachineMode.ENTER_WORD;
-    this.userInputNeeded = false;
+    super.handleWordStop ();
     clearHighlight ();
 
-    this.machine.stop ();
-
-    this.gui.wordPanelForm.styledStackParserPanel.setText ( this.machine
-        .getStack () );
-
-    this.mainWindowForm.getLogic ().removeButtonState (
-        ButtonState.SELECTED_AUTO_STEP );
-    this.mainWindowForm.getLogic ().addButtonState (
-        ButtonState.ENABLED_NAVIGATION_START );
     performCellsChanged ();
 
     updateAcceptedState ();
-
-    this.gui.wordPanelForm.styledWordParserPanel
-        .setHighlightedParseableEntity ();
-    this.gui.wordPanelForm.styledWordParserPanel.setEditable ( true );
-    this.gui.wordPanelForm.styledAlphabetParserPanelInput.setCopyable ( true );
-    this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
-        .setCopyable ( true );
   }
 
 

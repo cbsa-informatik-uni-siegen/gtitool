@@ -33,6 +33,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.machines.StateMachine;
+import de.unisiegen.gtitool.core.machines.StatelessMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
@@ -2075,19 +2076,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
     // if there are no validation errors perform the action
-    if (panel instanceof StateMachinePanel && handleValidate ( false ) )
+    if ( panel instanceof StateMachinePanel && handleValidate ( false ) )
     {
       machinePanel.handleEnterWord ();
-
-      handleEnterWordStateMachine();
+      handleEnterWordStateMachine ();
     }
-    else if(panel instanceof StatelessMachinePanel)
-      handleEnterWordStatelessMachine();
+    else if ( panel instanceof StatelessMachinePanel )
+    {
+      machinePanel.handleEnterWord ();
+      handleEnterWordStatelessMachine ();
+    }
     else
       removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
   }
-  
-  private final void handleEnterWordStateMachine()
+
+
+  /**
+   * Handles the enter {@link Word} event for the {@link StateMachine}
+   */
+  private final void handleEnterWordStateMachine ()
   {
     addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
     addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
@@ -2108,25 +2115,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_UNDO );
     removeButtonState ( ButtonState.ENABLED_REDO );
   }
-  
-  private final void handleEnterWordStatelessMachine()
+
+
+  /**
+   * Handles the enter {@link Word} event for the {@link StatelessMachine}
+   */
+  private final void handleEnterWordStatelessMachine ()
   {
     addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
     addButtonState ( ButtonState.SELECTED_ENTER_WORD );
 
-    removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
-    removeButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
     removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
-    removeButtonState ( ButtonState.ENABLED_VALIDATE );
-    removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
-    removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
-    removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
-    removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
-    removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
-    removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
-    removeButtonState ( ButtonState.ENABLED_MINIMIZE );
-    removeButtonState ( ButtonState.ENABLED_UNDO );
-    removeButtonState ( ButtonState.ENABLED_REDO );
   }
 
 
@@ -2138,7 +2137,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel) )
+    if ( ! ( panel instanceof MachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
     MachinePanel machinePanel = ( MachinePanel ) panel;
 

@@ -4,6 +4,8 @@ package de.unisiegen.gtitool.core.machines;
 import javax.swing.table.TableColumnModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.Stack;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
 import de.unisiegen.gtitool.core.machines.dfa.LR0;
@@ -164,4 +166,17 @@ public interface Machine
    * @return The {@link Machine.MachineType}.
    */
   public MachineType getMachineType ();
+  
+  /**
+   * Starts the {@link StateMachine} after a validation with the given
+   * {@link Word}.
+   * 
+   * @param word The {@link Word} to start with.
+   */
+  public void start ( Word word );
+  
+  
+  public void stop();
+  
+  public Stack getStack ();
 }

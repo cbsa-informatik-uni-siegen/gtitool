@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Timer;
 
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -23,6 +24,7 @@ import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.i18n.Messages;
+import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
@@ -183,6 +185,19 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * The {@link Timer} of the auto step mode.
+   */
+  protected Timer autoStepTimer = null;
+  
+  
+  /**
+   * Flag that indicates if the user input was needed during the navigation so
+   * far.
+   */
+  protected boolean userInputNeeded = false;
+
+
+  /**
    * Allocates a new {@link MachinePanel}
    * 
    * @param mainWindowForm the {@link MainWindowForm}
@@ -239,8 +254,25 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
         .getWidth () - 220 );
     this.gui.jGTISplitPanePDATable.setDividerLocation ( 0.5 );
   }
-  
-  
+
+
+  /**
+   * Cancels the auto step {@link Timer}.
+   * 
+   * @return Returns true if the timer was canceled, otherwise false.
+   */
+  public final boolean cancelAutoStepTimer ()
+  {
+    if ( this.autoStepTimer != null )
+    {
+      this.autoStepTimer.cancel ();
+      this.autoStepTimer = null;
+      return true;
+    }
+    return false;
+  }
+
+
   /**
    * Handles the enter {@link Word} event.
    */
@@ -248,7 +280,8 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     this.machineMode = MachineMode.ENTER_WORD;
 
-    if ( !(getMachine().getMachineType ().equals ( MachineType.PDA )) || getMachine().getMachineType ().equals ( MachineType.TDP ) )
+    if ( ! ( getMachine ().getMachineType ().equals ( MachineType.PDA ) )
+        || getMachine ().getMachineType ().equals ( MachineType.TDP ) )
       if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
           PDAModeItem.SHOW ) )
       {
@@ -269,6 +302,35 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
     setVisibleConsole ( false );
     setWordConsole ( true );
     this.gui.wordPanelForm.requestFocus ();
+  }
+
+
+  /**
+   * Handle Stop Action in the Word Enter Mode
+   */
+  public void handleWordStop ()
+  {
+    cancelAutoStepTimer ();
+
+    this.machineMode = MachineMode.ENTER_WORD;
+    this.userInputNeeded = false;
+
+    getMachine ().stop ();
+
+    this.gui.wordPanelForm.styledStackParserPanel.setText ( this.getMachine ()
+        .getStack () );
+
+    this.mainWindowForm.getLogic ().removeButtonState (
+        ButtonState.SELECTED_AUTO_STEP );
+    this.mainWindowForm.getLogic ().addButtonState (
+        ButtonState.ENABLED_NAVIGATION_START );
+
+    this.gui.wordPanelForm.styledWordParserPanel
+        .setHighlightedParseableEntity ();
+    this.gui.wordPanelForm.styledWordParserPanel.setEditable ( true );
+    this.gui.wordPanelForm.styledAlphabetParserPanelInput.setCopyable ( true );
+    this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
+        .setCopyable ( true );
   }
 
 

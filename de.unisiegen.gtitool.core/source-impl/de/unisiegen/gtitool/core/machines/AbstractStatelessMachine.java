@@ -30,8 +30,8 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * the input word
    */
   private Word word;
-  
-  
+
+
   /**
    * the stack
    */
@@ -78,13 +78,13 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
     if ( alphabet == null )
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     this.alphabet = alphabet;
-    this.stack = new DefaultStack();
+    this.stack = new DefaultStack ();
   }
 
 
   /**
    * actual input terminal
-   *
+   * 
    * @return The actual {@link TerminalSymbol}
    */
   protected TerminalSymbol currentTerminal ()
@@ -120,7 +120,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * Sets the Start input {@link Word}
    * 
    * @param word the input {@link Word}
-  */
+   */
   public void start ( final Word word )
   {
     this.word = word;
@@ -131,7 +131,6 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
 
   /**
    * increment current input position
-   *
    */
   protected void nextSymbol ()
   {
@@ -141,10 +140,20 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
 
   /**
    * accept the input
-   *
    */
   protected void accept ()
   {
     this.wordAccepted = true;
+  }
+
+
+  public final Stack getStack ()
+  {
+    return this.stack;
+  }
+  
+  public final void stop()
+  {
+    //TODO: implement
   }
 }

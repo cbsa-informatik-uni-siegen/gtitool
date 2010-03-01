@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -16,8 +17,8 @@ import de.unisiegen.gtitool.core.storage.Storable;
 /**
  * TODO
  */
-public class LR1ItemSet implements Entity < LR1ItemSet >, Storable, Modifyable,
-    Iterable < LR1Item >
+public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
+    Modifyable, Iterable < LR1Item >
 {
 
   public LR1ItemSet ()
@@ -66,12 +67,6 @@ public class LR1ItemSet implements Entity < LR1ItemSet >, Storable, Modifyable,
   public TreeSet < LR1Item > get ()
   {
     return this.rep;
-  }
-
-
-  public final Iterator < LR1Item > iterator ()
-  {
-    return this.rep.iterator ();
   }
 
 
@@ -218,4 +213,33 @@ public class LR1ItemSet implements Entity < LR1ItemSet >, Storable, Modifyable,
 
 
   private TreeSet < LR1Item > rep = new TreeSet < LR1Item > ();
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.LRItemSet#stringEntries()
+   */
+  public ArrayList < String > stringEntries ()
+  {
+    ArrayList < String > ret = new ArrayList < String > ();
+
+    for ( LR1Item item : this.rep )
+      ret.add ( item.toString () );
+
+    return ret;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see java.lang.Iterable#iterator()
+   */
+  public Iterator < LR1Item > iterator ()
+  {
+    return this.rep.iterator ();
+  }
 }

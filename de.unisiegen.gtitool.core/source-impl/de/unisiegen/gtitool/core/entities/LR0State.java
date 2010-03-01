@@ -10,17 +10,22 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 /**
  * TODO
  */
-public class LR0State extends DefaultState
+public class LR0State extends LRState
 {
 
-  public LR0State ( Alphabet alphabet, boolean startState, LR0ItemSet lr0Items )
-      throws StateException
+  /**
+   * TODO
+   */
+  private static final long serialVersionUID = 1L;
+
+
+  public LR0State ( final Alphabet alphabet, final boolean startState,
+      final LR0ItemSet lr0Items ) throws StateException
   {
-    super ( alphabet, new DefaultAlphabet (), makeStateString ( lr0Items ),
-        startState, true );
+    super ( alphabet, makeStateString ( lr0Items ), startState );
 
     this.lr0Items = lr0Items;
-    this.setId ( this.hashCode () );
+
   }
 
 
@@ -47,10 +52,18 @@ public class LR0State extends DefaultState
 
     return ret;
   }
-  
-  public int hashCode()
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.LRState#getItems()
+   */
+  @Override
+  public LRItemSet getItems ()
   {
-    return this.toString ().hashCode ();
+    return this.lr0Items;
   }
 
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * TODO
  */
-public class LR1Item extends LR0Item
+public class LR1Item extends LRItem
 {
 
   public LR1Item ( NonterminalSymbol nonterminalSymbol,

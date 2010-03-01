@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 /**
  * TODO
  */
-public class LR1State extends DefaultState
+public class LR1State extends LRState
 {
 
   /**
@@ -21,7 +21,7 @@ public class LR1State extends DefaultState
 
   /**
    * TODO
-   *
+   * 
    * @param alphabet
    * @param startState
    * @param lr1Items
@@ -30,17 +30,15 @@ public class LR1State extends DefaultState
   public LR1State ( Alphabet alphabet, boolean startState, LR1ItemSet lr1Items )
       throws StateException
   {
-    super ( alphabet, new DefaultAlphabet (), makeStateString ( lr1Items ),
-        startState, true );
+    super ( alphabet, makeStateString ( lr1Items ), startState );
 
     this.lr1Items = lr1Items;
-    this.setId ( this.hashCode () );
   }
 
 
   /**
    * TODO
-   *
+   * 
    * @return
    */
   public LR1ItemSet getLR1Items ()
@@ -57,7 +55,7 @@ public class LR1State extends DefaultState
   public LR0ItemSet getLR0Part ()
   {
     LR0ItemSet ret = new LR0ItemSet ();
-    for ( LR1Item item : this.getLR1Items () )
+    for ( LRItem item : this.lr1Items )
       ret.add ( new LR0Item ( item.getNonterminalSymbol (), item
           .getProductionWord (), item.getDotPosition () ) );
 
@@ -67,7 +65,7 @@ public class LR1State extends DefaultState
 
   /**
    * TODO
-   *
+   * 
    * @param items
    * @return
    */
@@ -91,15 +89,15 @@ public class LR1State extends DefaultState
 
 
   /**
-   * The hash code
-   *
-   * @return Return the string's has code
-   * @see de.unisiegen.gtitool.core.entities.DefaultState#hashCode()
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.LRState#getItems()
    */
   @Override
-  public int hashCode ()
+  public LRItemSet getItems ()
   {
-    return this.toString ().hashCode ();
+    return this.lr1Items;
   }
 
 

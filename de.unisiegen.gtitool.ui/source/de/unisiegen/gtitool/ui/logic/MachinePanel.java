@@ -19,6 +19,7 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -31,6 +32,7 @@ import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinePanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.preferences.item.WordModeItem;
 import de.unisiegen.gtitool.ui.preferences.listener.WordModeChangedListener;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
@@ -236,6 +238,37 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
     this.gui.jGTISplitPaneTable.setDividerLocation ( this.mainWindowForm
         .getWidth () - 220 );
     this.gui.jGTISplitPanePDATable.setDividerLocation ( 0.5 );
+  }
+  
+  
+  /**
+   * Handles the enter {@link Word} event.
+   */
+  public void handleEnterWord ()
+  {
+    this.machineMode = MachineMode.ENTER_WORD;
+
+    if ( !(getMachine().getMachineType ().equals ( MachineType.PDA )) || getMachine().getMachineType ().equals ( MachineType.TDP ) )
+      if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.SHOW ) )
+      {
+        // do nothing
+      }
+      else if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.HIDE ) )
+      {
+        this.gui.wordPanelForm.jGTILabelStack.setEnabled ( false );
+        this.gui.wordPanelForm.styledStackParserPanel.setEnabled ( false );
+        this.gui.wordPanelForm.jGTILabelPushDownAlphabet.setEnabled ( false );
+        this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
+            .setEnabled ( false );
+      }
+      else
+        throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
+
+    setVisibleConsole ( false );
+    setWordConsole ( true );
+    this.gui.wordPanelForm.requestFocus ();
   }
 
 

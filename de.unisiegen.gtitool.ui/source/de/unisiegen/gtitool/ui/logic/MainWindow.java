@@ -405,9 +405,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     SELECTED_ENTER_WORD,
 
     /**
-     * The machine visible button state.
+     * The state machine visible button state.
      */
-    VISIBLE_MACHINE,
+    VISIBLE_STATE_MACHINE,
+
+    /**
+     * The stateless machine visible button state
+     */
+    VISIBLE_STATELESS_MACHINE,
 
     /**
      * The grammar visible button state.
@@ -547,7 +552,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
     removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
-    removeButtonState ( ButtonState.VISIBLE_MACHINE );
+    removeButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
     removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
     removeButtonState ( ButtonState.VISIBLE_REGEX );
     removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
@@ -1362,10 +1367,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarToggleButtonEnterWord ().setSelected ( true );
     }
     // visible
-    else if ( ( buttonState.equals ( ButtonState.VISIBLE_MACHINE ) )
-        && ( !this.buttonStateList.contains ( ButtonState.VISIBLE_MACHINE ) ) )
+    else if ( ( buttonState.equals ( ButtonState.VISIBLE_STATE_MACHINE ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.VISIBLE_STATE_MACHINE ) ) )
     {
-      this.buttonStateList.add ( ButtonState.VISIBLE_MACHINE );
+      this.buttonStateList.add ( ButtonState.VISIBLE_STATE_MACHINE );
       this.gui.getJSeparatorNavigation ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( true );
@@ -1373,6 +1379,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( true );
+      this.gui.getJGTIToolBarButtonStart ().setVisible ( true );
+      this.gui.getJGTIToolBarButtonPreviousStep ().setVisible ( true );
+      this.gui.getJGTIToolBarButtonNextStep ().setVisible ( true );
+      this.gui.getJGTIToolBarToggleButtonAutoStep ().setVisible ( true );
+      this.gui.getJGTIToolBarButtonStop ().setVisible ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.VISIBLE_STATELESS_MACHINE ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.VISIBLE_STATELESS_MACHINE ) ) )
+    {
+      this.gui.getJGTIToolBarButtonEditDocument ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( true );
+      this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( true );
       this.gui.getJGTIToolBarButtonStart ().setVisible ( true );
       this.gui.getJGTIToolBarButtonPreviousStep ().setVisible ( true );
       this.gui.getJGTIToolBarButtonNextStep ().setVisible ( true );
@@ -2050,37 +2069,64 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
-    if ( ! ( panel instanceof StateMachinePanel ) )
+    if ( ! ( panel instanceof MachinePanel ) )
       throw new IllegalArgumentException ( "unsupported panel" ); //$NON-NLS-1$
 
-    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
+    MachinePanel machinePanel = ( MachinePanel ) panel;
 
     // if there are no validation errors perform the action
-    if ( handleValidate ( false ) )
+    if (panel instanceof StateMachinePanel && handleValidate ( false ) )
     {
       machinePanel.handleEnterWord ();
 
-      addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
-      addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
-      addButtonState ( ButtonState.SELECTED_ENTER_WORD );
-
-      removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
-      removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
-      removeButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
-      removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
-      removeButtonState ( ButtonState.ENABLED_VALIDATE );
-      removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
-      removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
-      removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
-      removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
-      removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
-      removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
-      removeButtonState ( ButtonState.ENABLED_MINIMIZE );
-      removeButtonState ( ButtonState.ENABLED_UNDO );
-      removeButtonState ( ButtonState.ENABLED_REDO );
+      handleEnterWordStateMachine();
     }
+    else if(panel instanceof StatelessMachinePanel)
+      handleEnterWordStatelessMachine();
     else
       removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
+  }
+  
+  private final void handleEnterWordStateMachine()
+  {
+    addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
+    addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
+    addButtonState ( ButtonState.SELECTED_ENTER_WORD );
+
+    removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+    removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+    removeButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+    removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
+    removeButtonState ( ButtonState.ENABLED_VALIDATE );
+    removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
+    removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+    removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+    removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
+    removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+    removeButtonState ( ButtonState.ENABLED_UNDO );
+    removeButtonState ( ButtonState.ENABLED_REDO );
+  }
+  
+  private final void handleEnterWordStatelessMachine()
+  {
+    addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
+    addButtonState ( ButtonState.SELECTED_ENTER_WORD );
+
+    removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+    removeButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+    removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
+    removeButtonState ( ButtonState.ENABLED_VALIDATE );
+    removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
+    removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+    removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+    removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
+    removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+    removeButtonState ( ButtonState.ENABLED_UNDO );
+    removeButtonState ( ButtonState.ENABLED_REDO );
   }
 
 
@@ -2092,9 +2138,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof StateMachinePanel ) )
+    if ( ! ( panel instanceof MachinePanel) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
+    MachinePanel machinePanel = ( MachinePanel ) panel;
 
     boolean selected = this.gui.getJGTIToolBarToggleButtonEnterWord ()
         .isSelected ();
@@ -4178,7 +4224,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_UNDO );
       removeButtonState ( ButtonState.ENABLED_REDO );
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
-      removeButtonState ( ButtonState.VISIBLE_MACHINE );
+      removeButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
       removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
       removeButtonState ( ButtonState.VISIBLE_REGEX );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
@@ -4203,14 +4249,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // MachinePanel
     else
     {
-      // TODO: add extra case for StatelessMachine???
-      // if ( panel instanceof StateMachinePanel )
-      if ( panel instanceof MachinePanel )
+      if ( panel instanceof StateMachinePanel )
       {
-        // StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
         MachinePanel machinePanel = ( MachinePanel ) panel;
 
-        addButtonState ( ButtonState.VISIBLE_MACHINE );
+        addButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         removeButtonState ( ButtonState.VISIBLE_REGEX );
         removeButtonState ( ButtonState.ENABLED_TO_LATEX );
@@ -4257,8 +4300,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
           removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
         }
-        else if ( machineType.equals ( MachineType.PDA )
-            || machineType.equals ( MachineType.TDP ) )
+        else if ( machineType.equals ( MachineType.PDA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
@@ -4367,7 +4409,58 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
         else
           throw new RuntimeException ( "unsupported machine mode" ); //$NON-NLS-1$
-      }
+      }// end if panel is StateMachinePanel
+      else if ( panel instanceof StatelessMachinePanel )
+      {
+        // TODO: finish implementation
+        MachinePanel machinePanel = ( MachinePanel ) panel;
+
+        addButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
+        removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
+        removeButtonState ( ButtonState.VISIBLE_REGEX );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+        removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+        removeButtonState ( ButtonState.ENABLED_VALIDATE );
+        removeButtonState ( ButtonState.ENABLED_TO_LATEX );
+        removeButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
+        removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
+        removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
+        removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+        removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
+        removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+
+        // word navigation mode
+        if ( machinePanel.getMachineMode ().equals (
+            MachineMode.WORD_NAVIGATION ) )
+        {
+          addButtonState ( ButtonState.ENABLED_HISTORY );
+
+          removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+          removeButtonState ( ButtonState.ENABLED_VALIDATE );
+          removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
+          removeButtonState ( ButtonState.ENABLED_UNDO );
+          removeButtonState ( ButtonState.ENABLED_REDO );
+
+          addButtonState ( ButtonState.SELECTED_ENTER_WORD );
+
+          updateWordNavigationStates ();
+        }
+        // word enter mode
+        else if ( machinePanel.getMachineMode ().equals (
+            MachineMode.ENTER_WORD ) )
+        {
+          removeButtonState ( ButtonState.ENABLED_HISTORY );
+          removeButtonState ( ButtonState.ENABLED_VALIDATE );
+          removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
+          removeButtonState ( ButtonState.ENABLED_UNDO );
+          removeButtonState ( ButtonState.ENABLED_REDO );
+
+          addButtonState ( ButtonState.SELECTED_ENTER_WORD );
+          addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
+        }
+      }// end if panel is StatelessMachinePanel
       // GrammarPanel
       else if ( panel instanceof GrammarPanel )
       {
@@ -4403,7 +4496,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
             .isSelected () );
 
-        removeButtonState ( ButtonState.VISIBLE_MACHINE );
+        removeButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
         addButtonState ( ButtonState.VISIBLE_GRAMMAR );
         removeButtonState ( ButtonState.VISIBLE_REGEX );
 
@@ -4460,7 +4553,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
         addButtonState ( ButtonState.ENABLED_REGEX_INFO );
 
-        removeButtonState ( ButtonState.VISIBLE_MACHINE );
+        removeButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         addButtonState ( ButtonState.VISIBLE_REGEX );
 
@@ -5978,9 +6071,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarToggleButtonEnterWord ().setSelected ( false );
     }
     // visible
-    else if ( buttonState.equals ( ButtonState.VISIBLE_MACHINE ) )
+    else if ( buttonState.equals ( ButtonState.VISIBLE_STATE_MACHINE ) )
     {
-      this.buttonStateList.remove ( ButtonState.VISIBLE_MACHINE );
+      this.buttonStateList.remove ( ButtonState.VISIBLE_STATE_MACHINE );
       this.gui.getJSeparatorNavigation ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( false );
@@ -5988,6 +6081,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( false );
+      this.gui.getJGTIToolBarButtonStart ().setVisible ( false );
+      this.gui.getJGTIToolBarButtonPreviousStep ().setVisible ( false );
+      this.gui.getJGTIToolBarButtonNextStep ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonAutoStep ().setVisible ( false );
+      this.gui.getJGTIToolBarButtonStop ().setVisible ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.VISIBLE_STATELESS_MACHINE ) )
+    {
+      this.buttonStateList.remove ( ButtonState.VISIBLE_STATELESS_MACHINE );
+      this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( false );
       this.gui.getJGTIToolBarButtonStart ().setVisible ( false );
       this.gui.getJGTIToolBarButtonPreviousStep ().setVisible ( false );
       this.gui.getJGTIToolBarButtonNextStep ().setVisible ( false );

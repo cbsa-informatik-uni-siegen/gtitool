@@ -875,37 +875,16 @@ public final class StateMachinePanel extends MachinePanel
   /**
    * Handles the enter {@link Word} event.
    */
+  @Override
   public final void handleEnterWord ()
   {
     clearHighlight ();
-    this.machineMode = MachineMode.ENTER_WORD;
-
-    if ( !this.machine.getMachineType ().equals ( MachineType.PDA ) )
-      if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
-          PDAModeItem.SHOW ) )
-      {
-        // do nothing
-      }
-      else if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
-          PDAModeItem.HIDE ) )
-      {
-        this.gui.wordPanelForm.jGTILabelStack.setEnabled ( false );
-        this.gui.wordPanelForm.styledStackParserPanel.setEnabled ( false );
-        this.gui.wordPanelForm.jGTILabelPushDownAlphabet.setEnabled ( false );
-        this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
-            .setEnabled ( false );
-      }
-      else
-        throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
-
-    setVisibleConsole ( false );
+    
+    super.handleEnterWord ();
 
     this.jGTIGraph.clearSelection ();
     this.jGTIGraph.setEnabled ( false );
     this.jGTIGraph.addMouseListener ( this.enterWordModeMouse );
-
-    setWordConsole ( true );
-    this.gui.wordPanelForm.requestFocus ();
   }
 
 

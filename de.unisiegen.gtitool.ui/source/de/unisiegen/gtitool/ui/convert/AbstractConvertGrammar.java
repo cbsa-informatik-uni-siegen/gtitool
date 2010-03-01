@@ -148,9 +148,9 @@ public abstract class AbstractConvertGrammar implements Converter
 
 
   /**
-   * sets the {@link StateMachinePanel}
+   * sets the {@link MachinePanel}
    * 
-   * @param panel the {@link StateMachinePanel}
+   * @param panel the {@link MachinePanel}
    */
   protected abstract void setNewPanel ( final MachinePanel panel );
 
@@ -184,7 +184,7 @@ public abstract class AbstractConvertGrammar implements Converter
 
 
   /**
-   * create a new {@link StateMachinePanel}
+   * create a new {@link MachinePanel}
    * 
    * @param machine the {@link Machine}
    */
@@ -192,7 +192,7 @@ public abstract class AbstractConvertGrammar implements Converter
 
 
   /**
-   * Add the new {@link StateMachinePanel} to the {@link MainWindowForm}.
+   * Add the new {@link MachinePanel} to the {@link MainWindowForm}.
    */
   protected final void addPanelToView ()
   {

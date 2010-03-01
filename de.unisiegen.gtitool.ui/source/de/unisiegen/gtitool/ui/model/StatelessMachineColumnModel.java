@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
  * 
  * @author Christian Uhrhan
  */
-public class TDPColumnModel extends DefaultTableColumnModel
+public class StatelessMachineColumnModel extends DefaultTableColumnModel
 {
 
   /**
@@ -42,9 +42,9 @@ public class TDPColumnModel extends DefaultTableColumnModel
 
 
   /**
-   * Allocates a new {@link TDPColumnModel}
+   * Allocates a new {@link StatelessMachineColumnModel}
    */
-  public TDPColumnModel ()
+  public StatelessMachineColumnModel ()
   {
     TableColumn symbolColumn = new TableColumn ( INPUT_COLUMN );
     symbolColumn.setHeaderValue ( Messages

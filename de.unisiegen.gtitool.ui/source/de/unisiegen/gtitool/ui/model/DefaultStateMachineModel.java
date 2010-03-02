@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.model;
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.TreeSet;
@@ -11,6 +12,7 @@ import javax.swing.event.EventListenerList;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
+import org.jgraph.graph.VertexView;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
@@ -44,6 +46,7 @@ import de.unisiegen.gtitool.ui.jgraph.JGTIBlackboxGraph;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.jgraph.JGraphpadParallelSplineRouter;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
+import de.unisiegen.gtitool.ui.jgraph.ViewBase;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.MultiItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
@@ -283,9 +286,7 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
             state.setPushDownAlphabet ( pushDownAlphabet );
           }
 
-        double newX = x + StateView.staticGetWidth ( state ) / 2;
-        double newY = y + StateView.staticGetHeight ( state ) / 2;
-        createStateView ( newX, newY, state, false, true );
+        createStateView ( x, y, state, false, true, true );
       }
       else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
           && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
@@ -375,7 +376,7 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
   public final DefaultStateView createStateView ( double x, double y,
       State state, boolean createUndoStep )
   {
-    return this.createStateView ( x, y, state, createUndoStep, true );
+    return this.createStateView ( x, y, state, createUndoStep, true, false );
   }
 
 
@@ -387,31 +388,40 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
    * @param state The state represented via this view.
    * @return The new created {@link DefaultStateView}.
    * @param createUndoStep Flag signals if an undo step should be created.
+   * @param addStateToMachine Tells whether the state should be added to the
+   *          current machine
+   * @param center Tells whether the state should be centered
    */
   @SuppressWarnings ( "unchecked" )
   public final DefaultStateView createStateView ( double x, double y,
-      State state, boolean createUndoStep, boolean addStateToMachine )
+      State state, boolean createUndoStep, boolean addStateToMachine,
+      boolean center )
   {
     if ( addStateToMachine )
       this.machine.addState ( state );
 
-    DefaultStateView stateView = new DefaultStateView ( this, this.graphModel,
-        state );
+    final DefaultStateView stateView = new DefaultStateView ( this,
+        this.graphModel, state );
 
-    String viewClass = StateView.class.getName ();
+    final String viewClass = StateView.class.getName ();
+
+    final Dimension dim = getViewDimension ( stateView );
+
+    int width = dim.width, height = dim.height;
 
     // check position of the new state
-    double xPosition = x < ( StateView.staticGetWidth ( state ) / 2 ) ? ( StateView
-        .staticGetWidth ( state ) / 2 ) : x;
-    double yPostition = y < ( StateView.staticGetHeight ( state ) / 2 ) ? ( StateView
-        .staticGetHeight ( state ) / 2 ) : y;
+    double xPosition = x < ( width / 2 ) ? ( width / 2 ) : x;
+    double yPosition = y < ( height / 2 ) ? ( height / 2 ) : y;
 
+    if ( center )
+    {
+      xPosition += width / 2;
+      yPosition += height / 2;
+    }
     // Set bounds
     GraphConstants.setBounds ( stateView.getAttributes (),
-        new Rectangle2D.Double ( xPosition
-            - ( StateView.staticGetWidth ( state ) / 2 ), yPostition
-            - ( StateView.staticGetHeight ( state ) / 2 ), StateView
-            .staticGetWidth ( state ), StateView.staticGetHeight ( state ) ) );
+        new Rectangle2D.Double ( xPosition - ( width / 2 ), yPosition
+            - ( height / 2 ), width, height ) );
 
     // set the view class (indirection for the renderer and the editor)
     GPCellViewFactory.setViewClass ( stateView.getAttributes (), viewClass );
@@ -450,6 +460,25 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
     }
 
     return stateView;
+  }
+
+
+  private static Dimension getViewDimension ( DefaultStateView view )
+  {
+    final VertexView layoutView = GPCellViewFactory
+        .staticCreateVertexView ( view );
+
+    final State state = view.getState ();
+
+    if ( layoutView instanceof ViewBase )
+    {
+      ViewBase base = ( ViewBase ) layoutView;
+
+      return new Dimension ( base.getWidth ( state ), base.getHeight ( state ) );
+    }
+
+    return new Dimension ( StateView.staticWidth ( state ), StateView
+        .staticHeight ( state ) );
   }
 
 
@@ -527,8 +556,10 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
     // change from normal state name to power state name
     for ( DefaultStateView current : this.stateViewList )
     {
-      double newWidth = StateView.staticGetWidth ( current.getState () );
-      double newHeight = StateView.staticGetHeight ( current.getState () );
+      Dimension dim = getViewDimension ( current );
+
+      double newWidth = dim.width;
+      double newHeight = dim.height;
       if ( ( current.getWidth () != newWidth )
           || ( current.getHeight () != newHeight ) )
         GraphConstants.setBounds ( current.getAttributes (),

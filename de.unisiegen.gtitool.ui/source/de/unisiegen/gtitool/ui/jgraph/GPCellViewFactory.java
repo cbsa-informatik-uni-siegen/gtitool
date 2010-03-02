@@ -7,6 +7,8 @@ import org.jgraph.graph.DefaultCellViewFactory;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.VertexView;
 
+import de.unisiegen.gtitool.core.entities.LRState;
+
 
 /**
  * A default view factory for a JGraph. This simple factory associate a given
@@ -56,6 +58,13 @@ public class GPCellViewFactory extends DefaultCellViewFactory
   {
     try
     {
+      // TODO: where do we put this?
+      if ( value instanceof DefaultStateView
+          && ( ( DefaultStateView ) value ).getState () instanceof LRState )
+      {
+        return new LRStateView ( value );
+      }
+
       DefaultGraphCell cell = ( DefaultGraphCell ) value;
       String viewClass = ( String ) cell.getAttributes ().get ( VIEW_CLASS_KEY );
 
@@ -69,5 +78,11 @@ public class GPCellViewFactory extends DefaultCellViewFactory
       // Nothing to do here
     }
     return super.createVertexView ( value );
+  }
+
+
+  public static VertexView staticCreateVertexView ( final Object value )
+  {
+    return ( new GPCellViewFactory () ).createVertexView ( value );
   }
 }

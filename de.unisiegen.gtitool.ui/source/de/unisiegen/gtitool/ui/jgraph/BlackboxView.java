@@ -15,7 +15,7 @@ import org.jgraph.graph.VertexView;
 /**
  * {@link VertexView} for BlackBox in the Regex -> ENFA Converter
  */
-public class BlackboxView extends VertexView
+public class BlackboxView extends StateView//ViewBase
 {
 
   /**
@@ -96,11 +96,13 @@ public class BlackboxView extends VertexView
       int height = 0;
       int width = 0;
 
-      height += StateView.staticGetHeight ( bview.getStartState ().getState () );
+      final StateView stateview = new StateView ( bview );
+
+      height += stateview.getHeight ( bview.getStartState ().getState () );
       height += 2 * this.Y_SPACE;
 
       width += 4 * this.X_SPACE;
-      width += 2 * StateView.staticGetWidth ( bview.getStartState ().getState () );
+      width += 2 * stateview.getWidth ( bview.getStartState ().getState () );
 
       FontMetrics metrics = g.getFontMetrics ();
 

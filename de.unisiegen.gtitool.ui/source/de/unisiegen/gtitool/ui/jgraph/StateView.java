@@ -40,7 +40,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * @author Christian Fehler
  * @version $Id:StateView.java 910 2008-05-16 00:31:21Z fehler $
  */
-public class StateView extends VertexView
+public class StateView extends ViewBase
 {
 
   /**
@@ -207,7 +207,7 @@ public class StateView extends VertexView
      * @see JComponent#getPreferredSize()
      */
     @Override
-    public final Dimension getPreferredSize ()
+    public Dimension getPreferredSize ()
     {
       Dimension d = super.getPreferredSize ();
       d.width += d.width / 8;
@@ -217,8 +217,8 @@ public class StateView extends VertexView
 
 
     /**
-     * {@inheritDoc}
-     * c
+     * {@inheritDoc} c
+     * 
      * @see VertexRenderer#paint(Graphics)
      */
     @Override
@@ -604,12 +604,18 @@ public class StateView extends VertexView
 
 
   /**
-   * Returns the height.
+   * getHeight forwards to staticGetHeight so it can be overridden
    * 
-   * @param state The {@link State}.
-   * @return The height.
+   * @param state
+   * @return the height
    */
-  public static final int staticGetHeight ( State state )
+  public int getHeight ( State state )
+  {
+    return staticHeight ( state );
+  }
+
+
+  public static int staticHeight ( State state )
   {
     int width = 70;
 
@@ -620,17 +626,6 @@ public class StateView extends VertexView
 
     return width;
   }
-  
-  /**
-   * getHeight forwards to staticGetHeight so it can be overridden
-   *
-   * @param state
-   * @return the height
-   */
-  public int getHeight(State state)
-  {
-    return staticGetHeight(state);
-  }
 
 
   /**
@@ -639,18 +634,14 @@ public class StateView extends VertexView
    * @param state The {@link State}.
    * @return The width.
    */
+  @Override
   public int getWidth ( State state )
   {
-    return staticGetWidth(state);
+    return staticWidth ( state );
   }
-  
-  /**
-   * TODO
-   *
-   * @param state
-   * @return
-   */
-  public static final int staticGetWidth(State state)
+
+
+  public static int staticWidth ( State state )
   {
     int width = 70;
     if ( state.isPowerState () )
@@ -918,7 +909,7 @@ public class StateView extends VertexView
    * @see VertexView#getRenderer()
    */
   @Override
-  public final CellViewRenderer getRenderer ()
+  public CellViewRenderer getRenderer ()
   {
     return this.ellipseRenderer;
   }

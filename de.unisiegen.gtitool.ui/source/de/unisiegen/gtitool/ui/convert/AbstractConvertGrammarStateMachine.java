@@ -204,7 +204,7 @@ public abstract class AbstractConvertGrammarStateMachine extends
   protected final DefaultStateView createStateViewFromState ( final State state )
   {
     DefaultStateView stateView = this.model.createStateView ( this.position,
-        this.position, state, false, false );
+        this.position, state, false, false, false );
     this.position += 50;
     return stateView;
   }

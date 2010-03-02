@@ -188,8 +188,8 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
    * The {@link Timer} of the auto step mode.
    */
   protected Timer autoStepTimer = null;
-  
-  
+
+
   /**
    * Flag that indicates if the user input was needed during the navigation so
    * far.
@@ -280,8 +280,7 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     this.machineMode = MachineMode.ENTER_WORD;
 
-    if ( ! ( getMachine ().getMachineType ().equals ( MachineType.PDA ) )
-        || getMachine ().getMachineType ().equals ( MachineType.TDP ) )
+    if ( ! ( getMachine ().getMachineType ().equals ( MachineType.PDA ) ) )
       if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
           PDAModeItem.SHOW ) )
       {
@@ -302,6 +301,40 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
     setVisibleConsole ( false );
     setWordConsole ( true );
     this.gui.wordPanelForm.requestFocus ();
+  }
+
+
+  /**
+   * Handles the word start action in the word enter mode.
+   * 
+   * @return true if started else false
+   */
+  public boolean handleWordStart ()
+  {
+    if ( this.gui.wordPanelForm.styledWordParserPanel.getParsedObject () == null )
+    {
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, Messages
+          .getString ( "MachinePanel.WordModeNoWordEntered" ), Messages //$NON-NLS-1$
+          .getString ( "MachinePanel.WordModeError" ) ); //$NON-NLS-1$
+      infoDialog.show ();
+      return false;
+    }
+
+    this.machineMode = MachineMode.WORD_NAVIGATION;
+    this.userInputNeeded = false;
+    this.gui.wordPanelForm.styledWordParserPanel.setEditable ( false );
+    this.gui.wordPanelForm.styledAlphabetParserPanelInput.setCopyable ( false );
+    this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
+        .setCopyable ( false );
+
+    getMachine ().start (
+        this.gui.wordPanelForm.styledWordParserPanel.getParsedObject () );
+
+    this.gui.wordPanelForm.styledStackParserPanel.setText ( getMachine ()
+        .getStack () );
+
+    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
+    return true;
   }
 
 
@@ -331,6 +364,20 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
     this.gui.wordPanelForm.styledAlphabetParserPanelInput.setCopyable ( true );
     this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
         .setCopyable ( true );
+  }
+
+
+  /**
+   * Handles the {@link Machine} event.
+   */
+  public void handleEditMachine ()
+  {
+    setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
+        .isSelected () );
+
+    this.machineMode = MachineMode.EDIT_MACHINE;
+
+    setWordConsole ( false );
   }
 
 

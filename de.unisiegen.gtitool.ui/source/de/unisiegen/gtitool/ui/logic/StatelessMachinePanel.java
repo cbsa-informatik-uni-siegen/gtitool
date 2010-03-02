@@ -14,7 +14,6 @@ import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
 import de.unisiegen.gtitool.ui.convert.Converter;
-import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultStatelessMachineModel;
@@ -107,14 +106,16 @@ public class StatelessMachinePanel extends MachinePanel
     JGTIPanel jGTIStatelessMachineTablePanel = new JGTIPanel ();
     JGTIScrollPane jGTIStatelessMachineTablePanelScrollPane = new JGTIScrollPane ();
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
-    
-    //setup the machine table
-    jGTIStatelessMachineTable.setModel ( new StatelessMachineTableModel() );
-    jGTIStatelessMachineTable.setColumnModel ( new StatelessMachineColumnModel() );
-    jGTIStatelessMachineTable.getTableHeader ().setReorderingAllowed ( false );
-    jGTIStatelessMachineTable.setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
 
-    //setup scrollpane + viewport
+    // setup the machine table
+    jGTIStatelessMachineTable.setModel ( new StatelessMachineTableModel () );
+    jGTIStatelessMachineTable
+        .setColumnModel ( new StatelessMachineColumnModel () );
+    jGTIStatelessMachineTable.getTableHeader ().setReorderingAllowed ( false );
+    jGTIStatelessMachineTable
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+
+    // setup scrollpane + viewport
     jGTIStatelessMachineTablePanelScrollPane.setBorder ( null );
     gridBagConstraints.fill = GridBagConstraints.BOTH;
     gridBagConstraints.weightx = 1.0;
@@ -127,7 +128,7 @@ public class StatelessMachinePanel extends MachinePanel
     this.gui.jGTISplitPaneTable
         .setLeftComponent ( jGTIStatelessMachineTablePanel );
 
-    int loc = getMainWindowForm().getWidth () / 2;
+    int loc = getMainWindowForm ().getWidth () / 2;
     this.gui.jGTISplitPaneTable.setDividerLocation ( loc );
   }
 
@@ -230,6 +231,39 @@ public class StatelessMachinePanel extends MachinePanel
   public JTabbedPane getJTabbedPaneConsole ()
   {
     return null;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleEnterWord()
+   */
+  @Override
+  public void handleEnterWord ()
+  {
+    this.gui.wordPanelForm.jGTILabelStack.setVisible ( false );
+    this.gui.wordPanelForm.styledStackParserPanel.setVisible ( false );
+    this.gui.wordPanelForm.jGTILabelPushDownAlphabet.setVisible ( false );
+    this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
+        .setVisible ( false );
+    super.handleEnterWord ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleEditMachine()
+   */
+  @Override
+  public void handleEditMachine ()
+  {
+    super.handleEditMachine ();
+    this.gui.wordPanelForm.jGTILabelStack.setVisible ( true );
+    this.gui.wordPanelForm.styledStackParserPanel.setVisible ( true );
+    this.gui.wordPanelForm.jGTILabelPushDownAlphabet.setVisible ( true );
+    this.gui.wordPanelForm.styledAlphabetParserPanelPushDown.setVisible ( true );
   }
 
 
@@ -372,7 +406,7 @@ public class StatelessMachinePanel extends MachinePanel
 
   /**
    * TODO
-   *
+   * 
    * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleMachineTableFocusLost()
    */
   @Override
@@ -383,7 +417,7 @@ public class StatelessMachinePanel extends MachinePanel
 
   /**
    * TODO
-   *
+   * 
    * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleMachineTableMouseExited()
    */
   @Override

@@ -32,6 +32,7 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetE
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
@@ -1958,18 +1959,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handles the edit {@link StateMachine} event.
+   * handle the {@link StateMachine} event
+   * 
+   * @param panel the {@link MachinePanel}
    */
-  public final void handleEditMachine ()
+  private final void handleEditMachineStateMachine ( final MachinePanel panel )
   {
-    logger.debug ( "handleEditMachine", //$NON-NLS-1$
-        "handle edit machine" ); //$NON-NLS-1$
-
-    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof StateMachinePanel ) )
-      throw new IllegalArgumentException ( "unsupported panel" ); //$NON-NLS-1$
-
     StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
     machinePanel.handleEditMachine ();
 
@@ -2003,6 +1998,40 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_REDO );
     else
       removeButtonState ( ButtonState.ENABLED_REDO );
+  }
+
+
+  /**
+   * handle the edit {@link StatelessMachine} event
+   * 
+   * @param panel the {@link MachinePanel}
+   */
+  private final void handleEditMachineStatelessMachine (
+      final MachinePanel panel )
+  {
+    StatelessMachinePanel smp = ( StatelessMachinePanel ) panel;
+    smp.handleEditMachine ();
+    addButtonState ( ButtonState.ENABLED_ENTER_WORD );
+  }
+
+
+  /**
+   * Handles the edit {@link Machine} event.
+   */
+  public final void handleEditMachine ()
+  {
+    logger.debug ( "handleEditMachine", //$NON-NLS-1$
+        "handle edit machine" ); //$NON-NLS-1$
+
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( ! ( panel instanceof MachinePanel ) )
+      throw new IllegalArgumentException ( "unsupported panel" ); //$NON-NLS-1$
+
+    if ( panel instanceof StateMachinePanel )
+      handleEditMachineStateMachine ( ( MachinePanel ) panel );
+    else if ( panel instanceof StatelessMachinePanel )
+      handleEditMachineStatelessMachine ( ( MachinePanel ) panel );
   }
 
 
@@ -5119,11 +5148,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof StateMachinePanel ) )
+    if ( ! ( panel instanceof MachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
-
-    if ( machinePanel.handleWordStart () )
+    
+    MachinePanel machinePanel = (MachinePanel)panel;
+    boolean startState = machinePanel.handleWordStart();
+    if ( panel instanceof StateMachinePanel && startState )
       addButtonState ( ButtonState.ENABLED_HISTORY );
   }
 

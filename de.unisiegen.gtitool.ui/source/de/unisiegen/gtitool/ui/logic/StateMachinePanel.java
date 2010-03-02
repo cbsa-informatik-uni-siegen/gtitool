@@ -826,15 +826,10 @@ public final class StateMachinePanel extends MachinePanel
   {
     handleWordStop ();
 
-    setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
-        .isSelected () );
-
-    this.machineMode = MachineMode.EDIT_MACHINE;
+    super.handleEditMachine ();
 
     this.jGTIGraph.setEnabled ( true );
     this.jGTIGraph.removeMouseListener ( this.enterWordModeMouse );
-
-    setWordConsole ( false );
 
     clearHighlight ();
 
@@ -1431,42 +1426,19 @@ public final class StateMachinePanel extends MachinePanel
 
 
   /**
-   * Handles the word start action in the word enter mode.
-   * 
-   * @return true if started else false
+   * {@inheritDoc}
    */
+  @Override
   public final boolean handleWordStart ()
   {
-    if ( this.gui.wordPanelForm.styledWordParserPanel.getParsedObject () == null )
-    {
-      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, Messages
-          .getString ( "MachinePanel.WordModeNoWordEntered" ), Messages //$NON-NLS-1$
-          .getString ( "MachinePanel.WordModeError" ) ); //$NON-NLS-1$
-      infoDialog.show ();
-      return false;
-    }
-
-    this.machineMode = MachineMode.WORD_NAVIGATION;
-    this.userInputNeeded = false;
     clearHighlight ();
+    boolean startState = super.handleWordStart ();
 
-    this.gui.wordPanelForm.styledWordParserPanel.setEditable ( false );
-    this.gui.wordPanelForm.styledAlphabetParserPanelInput.setCopyable ( false );
-    this.gui.wordPanelForm.styledAlphabetParserPanelPushDown
-        .setCopyable ( false );
-
-    this.machine.start ( this.gui.wordPanelForm.styledWordParserPanel
-        .getParsedObject () );
-
-    this.gui.wordPanelForm.styledStackParserPanel.setText ( this.machine
-        .getStack () );
-
-    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
     performCellsChanged ();
 
     updateAcceptedState ();
 
-    return true;
+    return startState;
   }
 
 
@@ -1476,8 +1448,8 @@ public final class StateMachinePanel extends MachinePanel
   @Override
   public final void handleWordStop ()
   {
-    super.handleWordStop ();
     clearHighlight ();
+    super.handleWordStop ();
 
     performCellsChanged ();
 

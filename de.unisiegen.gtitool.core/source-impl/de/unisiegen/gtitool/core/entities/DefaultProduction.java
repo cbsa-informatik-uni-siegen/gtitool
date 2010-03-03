@@ -559,7 +559,7 @@ public class DefaultProduction implements Production
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ()
+  public PrettyString toPrettyString ()
   {
     if ( ( this.cachedPrettyString == null )
         || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )

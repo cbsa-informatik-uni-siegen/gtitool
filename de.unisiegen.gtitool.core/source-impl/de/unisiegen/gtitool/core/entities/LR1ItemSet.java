@@ -221,12 +221,12 @@ public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
    * @return
    * @see de.unisiegen.gtitool.core.entities.LRItemSet#stringEntries()
    */
-  public ArrayList < String > stringEntries ()
+  public ArrayList < PrettyString > stringEntries ()
   {
-    ArrayList < String > ret = new ArrayList < String > ();
+    ArrayList < PrettyString > ret = new ArrayList < PrettyString > ();
 
     for ( LR1Item item : this.rep )
-      ret.add ( item.toString () );
+      ret.add ( item.toPrettyString () );
 
     return ret;
   }

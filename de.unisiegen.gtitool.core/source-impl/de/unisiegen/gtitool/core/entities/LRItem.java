@@ -1,6 +1,11 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
+
+
 /**
  * An LRItem is like a production but contains a dot at the right side of it
  * (the ProductionWord). The dot is not part of the ProductionWord but saved in
@@ -103,6 +108,13 @@ public class LRItem extends DefaultProduction
   }
 
 
+  @Override
+  public PrettyString toPrettyString ()
+  {
+    return new PrettyString ( new PrettyToken ( toString (), Style.NONE ) );
+  }
+
+
   /**
    * TODO
    * 
@@ -158,6 +170,7 @@ public class LRItem extends DefaultProduction
   {
     return ( NonterminalSymbol ) getProductionWordMemberAfterDot ();
   }
+
 
   /**
    * The dot's position in the ProductionWord. 0 means, the point is at the

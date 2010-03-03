@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+
 
 /**
  * TODO
@@ -15,5 +17,5 @@ public interface LRItemSet
    * 
    * @return the strings
    */
-  public ArrayList < String > stringEntries ();
+  public ArrayList < PrettyString > stringEntries ();
 }

@@ -5118,10 +5118,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof StateMachinePanel ) )
+    if ( ! ( panel instanceof MachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
 
-    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
+    MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleWordNextStep ();
   }
 
@@ -5133,10 +5133,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof StateMachinePanel ) )
+    if ( ! ( panel instanceof MachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
 
-    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
+    MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleWordPreviousStep ();
   }
 
@@ -5150,9 +5150,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    
-    MachinePanel machinePanel = (MachinePanel)panel;
-    boolean startState = machinePanel.handleWordStart();
+
+    MachinePanel machinePanel = ( MachinePanel ) panel;
+    boolean startState = machinePanel.handleWordStart ();
     if ( panel instanceof StateMachinePanel && startState )
       addButtonState ( ButtonState.ENABLED_HISTORY );
   }
@@ -5165,12 +5165,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof StateMachinePanel ) )
+    if ( ! ( panel instanceof MachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
+    MachinePanel machinePanel = ( StateMachinePanel ) panel;
 
     addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
-    removeButtonState ( ButtonState.ENABLED_HISTORY );
+    
+    if(panel instanceof StateMachinePanel)
+      removeButtonState ( ButtonState.ENABLED_HISTORY );
 
     machinePanel.handleWordStop ();
   }

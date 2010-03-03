@@ -1329,6 +1329,7 @@ public final class StateMachinePanel extends MachinePanel
   /**
    * Handles next step action in the word enter mode.
    */
+  @Override
   public final void handleWordNextStep ()
   {
     try

@@ -16,7 +16,7 @@ import de.unisiegen.gtitool.core.entities.Transition;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class HistoryItem
+public final class StateMachineHistoryItem
 {
 
   /**
@@ -50,7 +50,7 @@ public final class HistoryItem
 
 
   /**
-   * Allocates a new {@link HistoryItem}.
+   * Allocates a new {@link StateMachineHistoryItem}.
    * 
    * @param stateSet The {@link State} set.
    * @param transitionSet The {@link Transition} set.
@@ -58,7 +58,7 @@ public final class HistoryItem
    * @param oldStack The {@link Stack}.
    * @param nextWordStep Flag that indicates if a word next step was performed.
    */
-  public HistoryItem ( TreeSet < State > stateSet,
+  public StateMachineHistoryItem ( TreeSet < State > stateSet,
       TreeSet < Transition > transitionSet, ArrayList < Symbol > symbolList,
       Stack oldStack, boolean nextWordStep )
   {

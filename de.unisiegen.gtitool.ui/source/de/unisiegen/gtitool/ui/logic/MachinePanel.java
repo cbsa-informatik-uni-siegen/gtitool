@@ -336,6 +336,18 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
     this.mainWindowForm.getLogic ().updateWordNavigationStates ();
     return true;
   }
+  
+  
+  public void handleWordNextStep ()
+  {
+    
+  }
+  
+  
+  public void handleWordPreviousStep ()
+  {
+    
+  }
 
 
   /**

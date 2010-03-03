@@ -157,7 +157,7 @@ public abstract class AbstractStateMachine implements StateMachine
   /**
    * The history of this {@link AbstractStateMachine}.
    */
-  private final ArrayList < HistoryItem > history;
+  private final ArrayList < StateMachineHistoryItem > history;
 
 
   /**
@@ -284,7 +284,7 @@ public abstract class AbstractStateMachine implements StateMachine
     this.stack = new DefaultStack ();
 
     // history
-    this.history = new ArrayList < HistoryItem > ();
+    this.history = new ArrayList < StateMachineHistoryItem > ();
 
     // cached value list
     this.cachedValueList = new ArrayList < ObjectTriple < Integer, Integer, Object >> ();
@@ -1892,7 +1892,7 @@ public abstract class AbstractStateMachine implements StateMachine
             oldActiveSymbolList.add ( currentSymbol );
       }
 
-    HistoryItem historyItem = new HistoryItem ( oldActiveStateSet,
+    StateMachineHistoryItem historyItem = new StateMachineHistoryItem ( oldActiveStateSet,
         oldActiveTransitionSet, oldActiveSymbolList, oldStack, false );
     this.history.add ( historyItem );
 
@@ -2056,7 +2056,7 @@ public abstract class AbstractStateMachine implements StateMachine
             oldActiveSymbolList.add ( currentSymbol );
       }
 
-    HistoryItem historyItem = new HistoryItem ( oldActiveStateSet,
+    StateMachineHistoryItem historyItem = new StateMachineHistoryItem ( oldActiveStateSet,
         oldActiveTransitionSet, oldActiveSymbolList, oldStack, false );
     this.history.add ( historyItem );
 
@@ -2115,7 +2115,7 @@ public abstract class AbstractStateMachine implements StateMachine
     clearActiveSymbol ();
     this.stack.clear ();
 
-    HistoryItem historyItem = this.history.remove ( this.history.size () - 1 );
+    StateMachineHistoryItem historyItem = this.history.remove ( this.history.size () - 1 );
 
     ArrayList < Symbol > historyStackSymbolList = historyItem.getStack ().peak (
         historyItem.getStack ().size () );

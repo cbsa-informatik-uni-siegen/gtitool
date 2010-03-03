@@ -48,6 +48,12 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * word is accepted
    */
   private boolean wordAccepted;
+  
+  
+  /**
+   * the history {@link java.util.Stack}
+   */
+  private java.util.Stack<StatelessMachineHistoryItem> history;
 
 
   /**

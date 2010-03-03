@@ -113,6 +113,83 @@ public class StateView extends ViewBase
 
 
     /**
+     * TODO
+     * 
+     * @param state
+     * @param defaultStateView
+     * @return
+     */
+    protected Color stateBackgroundColor ( final State state,
+        final DefaultStateView defaultStateView )
+    {
+      // overwritten color
+      if ( defaultStateView.getOverwrittenColor () != null )
+        return defaultStateView.getOverwrittenColor ();
+
+      // error
+      if ( state.isError () )
+        return this.preferenceStateError;
+
+      // active
+      if ( state.isActive () )
+        return this.preferenceStateActive;
+
+      // start
+      if ( state.isStartState () )
+        return this.preferenceStateStart;
+
+      // final
+      if ( state.isFinalState () )
+        return this.preferenceStateFinal;
+
+      // normal
+      return this.preferenceStateBackground;
+    }
+
+
+    protected Font stateFont ( PrettyToken currentToken, Graphics g )
+    {
+      if ( currentToken.isBold () && currentToken.isItalic () )
+        return g.getFont ().deriveFont ( Font.BOLD | Font.ITALIC );
+      if ( currentToken.isBold () )
+        return g.getFont ().deriveFont ( Font.BOLD );
+      if ( currentToken.isItalic () )
+        return g.getFont ().deriveFont ( Font.ITALIC );
+
+      return g.getFont ().deriveFont ( Font.PLAIN );
+    }
+
+
+    protected Color stateColor ( State state )
+    {
+      if ( this.selected )
+        return this.preferenceStateSelected;
+      if ( state.isStartState () )
+        return this.preferenceTransition;
+
+      return Color.black;
+    }
+
+
+    protected void drawStartArrow ( Graphics g, State state, int offsetY )
+    {
+      if ( !state.isStartState () )
+        return;
+
+      g.setFont ( getFont ().deriveFont ( Font.BOLD ) );
+      g.setColor ( this.preferenceTransition );
+
+      g.drawLine ( 0, offsetY + 35, START_OFFSET, offsetY + 35 );
+
+      for ( int i = 0 ; i < 5 ; ++i )
+        g.drawLine ( START_OFFSET - ( i + 2 ), offsetY + 34 - i, START_OFFSET
+            - ( i + 2 ), offsetY + 36 + i );
+
+      g.drawString ( "Start", 10, offsetY + 30 ); //$NON-NLS-1$
+    }
+
+
+    /**
      * Allocates a new {@link JGraphEllipseRenderer}.
      * 
      * @param stateView The {@link StateView}.
@@ -246,37 +323,7 @@ public class StateView extends ViewBase
       boolean tmp = this.selected;
       if ( super.isOpaque () )
       {
-        Color background = null;
-        // overwritten color
-        if ( defaultStateView.getOverwrittenColor () != null )
-        {
-          background = defaultStateView.getOverwrittenColor ();
-        }
-        // error
-        else if ( state.isError () )
-        {
-          background = this.preferenceStateError;
-        }
-        // active
-        else if ( state.isActive () )
-        {
-          background = this.preferenceStateActive;
-        }
-        // start
-        else if ( state.isStartState () )
-        {
-          background = this.preferenceStateStart;
-        }
-        // final
-        else if ( state.isFinalState () )
-        {
-          background = this.preferenceStateFinal;
-        }
-        // normal
-        else
-        {
-          background = this.preferenceStateBackground;
-        }
+        final Color background = stateBackgroundColor ( state, defaultStateView );
 
         g.setColor ( background );
 
@@ -390,24 +437,7 @@ public class StateView extends ViewBase
 
         for ( PrettyToken currentToken : prettyString )
         {
-          Font font = null;
-
-          if ( !currentToken.isBold () && !currentToken.isItalic () )
-          {
-            font = g.getFont ().deriveFont ( Font.PLAIN );
-          }
-          else if ( currentToken.isBold () && currentToken.isItalic () )
-          {
-            font = g.getFont ().deriveFont ( Font.BOLD | Font.ITALIC );
-          }
-          else if ( currentToken.isBold () )
-          {
-            font = g.getFont ().deriveFont ( Font.BOLD );
-          }
-          else if ( currentToken.isItalic () )
-          {
-            font = g.getFont ().deriveFont ( Font.ITALIC );
-          }
+          Font font = stateFont ( currentToken, g );
 
           g.setFont ( font );
           g.setColor ( currentToken.getColor () );
@@ -475,26 +505,7 @@ public class StateView extends ViewBase
           }
         }
       }
-      if ( state.isStartState () )
-      {
-        g.setFont ( getFont ().deriveFont ( Font.BOLD ) );
-        g.setColor ( this.preferenceTransition );
-
-        g.drawLine ( 0, offsetY + 35, START_OFFSET, offsetY + 35 );
-
-        g.drawLine ( START_OFFSET - 2, offsetY + 34, START_OFFSET - 2,
-            offsetY + 36 );
-        g.drawLine ( START_OFFSET - 3, offsetY + 33, START_OFFSET - 3,
-            offsetY + 37 );
-        g.drawLine ( START_OFFSET - 4, offsetY + 32, START_OFFSET - 4,
-            offsetY + 38 );
-        g.drawLine ( START_OFFSET - 5, offsetY + 31, START_OFFSET - 5,
-            offsetY + 39 );
-        g.drawLine ( START_OFFSET - 6, offsetY + 30, START_OFFSET - 6,
-            offsetY + 40 );
-
-        g.drawString ( "Start", 10, offsetY + 30 ); //$NON-NLS-1$
-      }
+      drawStartArrow ( g, state, offsetY );
     }
   }
 

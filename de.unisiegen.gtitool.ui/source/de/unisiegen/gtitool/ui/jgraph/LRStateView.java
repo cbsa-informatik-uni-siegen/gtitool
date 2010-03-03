@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.jgraph;
 
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -13,6 +12,8 @@ import org.jgraph.graph.VertexRenderer;
 
 import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 
 
 /**
@@ -60,24 +61,38 @@ public class LRStateView extends StateView
     @Override
     public void paint ( final Graphics g )
     {
-      g.setColor ( Color.BLACK );
       final Dimension d = staticDimension ( this.lrstateview.getState () );
       g.setFont ( getFont () );
       g.setClip ( null );
-      g.drawRoundRect ( 0, 0, d.width - 1, d.height - 1, 30, 30 );
 
-      int y = 15;
+      final LRState state = this.lrstateview.getState ();
 
-      final ArrayList < String > strings = this.lrstateview.getState ()
-          .getItems ().stringEntries ();
+      g.setColor ( stateColor ( state ) );
 
-      for ( String string : strings )
+      final int offsetx = state.isStartState () ? START_OFFSET : 0;
+
+      g.drawRoundRect ( offsetx, 0, d.width - 1, d.height - 1, 30, 30 );
+
+      int xStart = 15 + offsetx, y = 15, x = xStart;
+
+      final ArrayList < PrettyString > strings = state.getItems ()
+          .stringEntries ();
+
+      for ( PrettyString string : strings )
       {
-        final Dimension dim = getStringBounds ( string );
-        g.drawString ( string, 15, y + dim.height / 2 );
+        final Dimension dim = getStringBounds ( string.toString () );
+        for ( PrettyToken token : string )
+        {
+          g.setFont ( super.stateFont ( token, g ) );
+          g.setColor ( token.getColor () );
+          g.drawString ( token.toString (), x, y + dim.height / 2 );
+          x += dim.width;
+        }
+        x = xStart;
         y += dim.height;
       }
 
+      drawStartArrow ( g, state, 0 );
     }
   }
 
@@ -91,9 +106,9 @@ public class LRStateView extends StateView
   public static Dimension staticDimension ( final LRState state )
   {
     Dimension ret = new Dimension ( 20, 20 ); // minimum size
-    for ( String entry : state.getItems ().stringEntries () )
+    for ( PrettyString entry : state.getItems ().stringEntries () )
     {
-      final Dimension bounds = getStringBounds ( entry );
+      final Dimension bounds = getStringBounds ( entry.toString () );
       ret.width = Math.max ( bounds.width, ret.width );
       ret.height += bounds.height;
     }
@@ -102,13 +117,28 @@ public class LRStateView extends StateView
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param state
+   * @return
+   * @see de.unisiegen.gtitool.ui.jgraph.StateView#getWidth(de.unisiegen.gtitool.core.entities.State)
+   */
   @Override
   public int getWidth ( State state )
   {
-    return staticDimension ( ( LRState ) state ).width;
+    final int extraWidth = state.isStartState () ? START_OFFSET : 0;
+    return staticDimension ( ( LRState ) state ).width + extraWidth;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param state
+   * @return
+   * @see de.unisiegen.gtitool.ui.jgraph.StateView#getHeight(de.unisiegen.gtitool.core.entities.State)
+   */
   @Override
   public int getHeight ( State state )
   {
@@ -145,7 +175,7 @@ public class LRStateView extends StateView
   /**
    * TODO
    */
-  private static Font font = new Font ( "Dialog", Font.PLAIN, 20 );
+  private static Font font = new Font ( "Dialog", Font.PLAIN, 20 ); //$NON-NLS-1$
 
 
   /**

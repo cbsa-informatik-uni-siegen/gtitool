@@ -63,21 +63,20 @@ public interface ProductionSet extends Entity < Production >, Storable,
    * @return true if the {@link Production} was found
    */
   public boolean contains ( final Production p );
-  
-  
+
+
   /**
-   * 
    * Returns the size of the set
-   *
+   * 
    * @return the size of the set
    */
-  public int size();
-  
-  
+  public int size ();
+
+
   /**
    * Returns whether the set is empty or not
    * 
    * @return true if the set is empty, false otherwise
    */
-  public boolean isEmpty();
+  public boolean isEmpty ();
 }

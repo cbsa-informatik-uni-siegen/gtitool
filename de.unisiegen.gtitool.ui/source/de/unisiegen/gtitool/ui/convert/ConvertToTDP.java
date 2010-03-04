@@ -2,7 +2,8 @@ package de.unisiegen.gtitool.ui.convert;
 
 
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
@@ -21,13 +22,13 @@ public class ConvertToTDP extends AbstractConvertGrammarStatelessMachine
    * Allocate a new {@link ConvertToTDP}.
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
-   * @param grammar The {@link Grammar}.
+   * @param cfg The {@link CFG}.
    * @throws AlphabetException
    */
-  public ConvertToTDP ( MainWindowForm mainWindowForm, Grammar grammar )
+  public ConvertToTDP ( MainWindowForm mainWindowForm, CFG cfg )
       throws AlphabetException
   {
-    super ( mainWindowForm, grammar );
+    super ( mainWindowForm, cfg );
   }
 
 
@@ -39,7 +40,26 @@ public class ConvertToTDP extends AbstractConvertGrammarStatelessMachine
   @Override
   protected void createMachine ()
   {
-    Machine machine = new DefaultTDP ( getAlphabet () );
-    createMachinePanel ( machine );
+    Machine machine;
+    try
+    {
+      machine = new DefaultTDP ( (CFG)getGrammar() );
+      createMachinePanel ( machine );
+    }
+    catch ( GrammarInvalidNonterminalException exc )
+    {
+      exc.printStackTrace();
+      System.exit ( 1 );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace();
+      System.exit ( 1 );
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace();
+      System.exit ( 1 );
+    }
   }
 }

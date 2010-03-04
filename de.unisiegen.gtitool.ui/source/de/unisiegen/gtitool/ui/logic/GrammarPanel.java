@@ -35,6 +35,7 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
@@ -393,7 +394,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
           case LR1Parser :
             return new ConvertToLR1Parser ( this.mainWindowForm, this.grammar );
           case TDP :
-            return new ConvertToTDP ( this.mainWindowForm, this.grammar );
+            return new ConvertToTDP ( this.mainWindowForm, ( CFG ) this.grammar );
           case PDA :
           case NFA :
             break;

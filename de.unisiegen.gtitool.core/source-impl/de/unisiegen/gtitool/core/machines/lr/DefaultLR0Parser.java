@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.machines.lr;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.entities.DefaultLRActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR0Item;
@@ -11,6 +13,7 @@ import de.unisiegen.gtitool.core.entities.LRAction;
 import de.unisiegen.gtitool.core.entities.LRActionSet;
 import de.unisiegen.gtitool.core.entities.LRReduceAction;
 import de.unisiegen.gtitool.core.entities.LRShiftAction;
+import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
@@ -224,4 +227,17 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * The LR0 automaton
    */
   private LR0 lr0Automaton;
+
+
+  /**
+   * TODO
+   *
+   * @return
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getPossibleReductions()
+   */
+  @Override
+  protected ArrayList < Production > getPossibleReductions ()
+  {
+    return null;
+  }
 }

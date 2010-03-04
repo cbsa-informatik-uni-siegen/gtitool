@@ -1,11 +1,20 @@
 package de.unisiegen.gtitool.core.machines.pda;
 
 
+import java.util.ArrayList;
+
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
+import de.unisiegen.gtitool.core.entities.ParsingTable;
+import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.AbstractStatelessMachine;
 
 
@@ -24,13 +33,38 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
 
 
   /**
+   * the {@link CFG} for this push down automaton
+   */
+  private CFG cfg;
+
+
+  /**
+   * the {@link ParsingTable} for this top down parser
+   */
+  private ParsingTable parsingTable;
+
+
+  /**
    * Allocates a new {@link PDA}.
    * 
-   * @param alphabet The {@link Alphabet} of this {@link PDA}.
+   * @param cfg The {@link CFG} of this {@link PDA}.
+   * @throws AlphabetException
+   * @throws TerminalSymbolSetException 
+   * @throws GrammarInvalidNonterminalException 
    */
-  public DefaultTDP ( Alphabet alphabet )
+  public DefaultTDP ( CFG cfg ) throws AlphabetException, GrammarInvalidNonterminalException, TerminalSymbolSetException
   {
-    super ( alphabet );
+    super ( cfg.getAlphabet () );
+    this.cfg = cfg;
+    this.parsingTable = new DefaultParsingTable ( this.cfg );
+  }
+
+
+  protected ArrayList < Production > getPossibleReductions ()
+  {
+    ArrayList < Production > prods = new ArrayList < Production > ();
+
+    return prods;
   }
 
 

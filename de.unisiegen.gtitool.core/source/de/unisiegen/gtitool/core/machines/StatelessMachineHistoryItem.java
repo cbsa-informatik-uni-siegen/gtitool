@@ -24,12 +24,6 @@ public final class StatelessMachineHistoryItem
 
 
   /**
-   * the parsing index
-   */
-  private int wordIndex;
-
-
-  /**
    * the accept status
    */
   private boolean wordAccepted;
@@ -44,11 +38,10 @@ public final class StatelessMachineHistoryItem
    * @param wordAccepted the actual accepted status
    */
   public StatelessMachineHistoryItem ( final Word input, final Stack stack,
-      final int wordIndex, final boolean wordAccepted )
+      final boolean wordAccepted )
   {
     this.input = input;
     this.stack = stack;
-    this.wordIndex = wordIndex;
     this.wordAccepted = wordAccepted;
   }
 
@@ -72,17 +65,6 @@ public final class StatelessMachineHistoryItem
   public Stack getStack ()
   {
     return this.stack;
-  }
-
-
-  /**
-   * retrieves the parsing index
-   * 
-   * @return the parsing index
-   */
-  public int getWordIndex ()
-  {
-    return this.wordIndex;
   }
 
 

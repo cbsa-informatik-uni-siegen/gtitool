@@ -1,12 +1,10 @@
 package de.unisiegen.gtitool.core.machines;
 
 
-import java.util.ArrayList;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
-import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.LRActionSet;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
@@ -119,11 +117,10 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * 
    * @return The actual {@link TerminalSymbol}
    */
-  // TODO: remove this.wordIndex
   protected TerminalSymbol currentTerminal ()
   {
-    return this.wordIndex < this.word.size () ? new DefaultTerminalSymbol (
-        this.word.get ( this.wordIndex ).toString () ) : null;
+    return new DefaultTerminalSymbol ( this.word.get ( this.wordIndex )
+        .toString () );
   }
 
 
@@ -238,5 +235,5 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * 
    * @return set of available productions for reduction
    */
-  abstract protected ArrayList < Production > getPossibleReductions ();
+  abstract protected LRActionSet getPossibleActions ();
 }

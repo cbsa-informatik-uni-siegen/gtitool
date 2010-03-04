@@ -1,19 +1,17 @@
 package de.unisiegen.gtitool.core.machines.pda;
 
 
-import java.util.ArrayList;
-
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.entities.DefaultLRActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
+import de.unisiegen.gtitool.core.entities.LRActionSet;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
-import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
-import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.AbstractStatelessMachine;
 
@@ -49,10 +47,11 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
    * 
    * @param cfg The {@link CFG} of this {@link PDA}.
    * @throws AlphabetException
-   * @throws TerminalSymbolSetException 
-   * @throws GrammarInvalidNonterminalException 
+   * @throws TerminalSymbolSetException
+   * @throws GrammarInvalidNonterminalException
    */
-  public DefaultTDP ( CFG cfg ) throws AlphabetException, GrammarInvalidNonterminalException, TerminalSymbolSetException
+  public DefaultTDP ( CFG cfg ) throws AlphabetException,
+      GrammarInvalidNonterminalException, TerminalSymbolSetException
   {
     super ( cfg.getAlphabet () );
     this.cfg = cfg;
@@ -60,11 +59,18 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   }
 
 
-  protected ArrayList < Production > getPossibleReductions ()
+  /**
+   * 
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getPossibleActions()
+   */
+  @Override
+  protected LRActionSet getPossibleActions ()
   {
-    ArrayList < Production > prods = new ArrayList < Production > ();
+    LRActionSet actions = new DefaultLRActionSet ();
 
-    return prods;
+    return actions;
   }
 
 

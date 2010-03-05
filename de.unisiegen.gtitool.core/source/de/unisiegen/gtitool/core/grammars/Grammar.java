@@ -13,6 +13,7 @@ import de.unisiegen.gtitool.core.entities.InputEntity;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
@@ -176,7 +177,7 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
    * 
    * @return all {@link Production}s of this grammar.
    */
-  public ArrayList < Production > getProduction ();
+  public ProductionSet getProduction ();
 
 
   /**
@@ -194,8 +195,7 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
    * @param s The non terminal symbol
    * @return all {@link Production}s for a given non terminal of this grammar.
    */
-  public ArrayList < Production > getProductionForNonTerminal (
-      NonterminalSymbol s );
+  public ProductionSet getProductionForNonTerminal ( NonterminalSymbol s );
 
 
   /**
@@ -235,7 +235,7 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
    * 
    * @param productions The new {@link Production}s.
    */
-  public void setProductions ( ArrayList < Production > productions );
+  public void setProductions ( ProductionSet productions );
 
 
   /**
@@ -267,9 +267,10 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
    * @return the set of symbols the Production can begin with
    * @throws GrammarInvalidNonterminalException
    */
-  public FirstSet first( final ProductionWord pw)
-    throws GrammarInvalidNonterminalException;
-  
+  public FirstSet first ( final ProductionWord pw )
+      throws GrammarInvalidNonterminalException;
+
+
   /**
    * calculates the first set
    * 
@@ -291,13 +292,13 @@ public interface Grammar extends InputEntity, Serializable, TableModel,
    */
   public TerminalSymbolSet follow ( final NonterminalSymbol p )
       throws GrammarInvalidNonterminalException, TerminalSymbolSetException;
-  
+
+
   /**
-   * 
    * Creates an Alphabet out of the grammar's Terminals
-   *
+   * 
    * @return the alphabet
-   * @throws AlphabetException 
+   * @throws AlphabetException
    */
-  public Alphabet getAlphabet() throws AlphabetException;
+  public Alphabet getAlphabet () throws AlphabetException;
 }

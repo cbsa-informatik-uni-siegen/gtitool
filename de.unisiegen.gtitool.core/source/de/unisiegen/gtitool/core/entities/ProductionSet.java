@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 
@@ -10,7 +13,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * 
  * @author Christian Uhrhan
  */
-public interface ProductionSet extends Entity < Production >, Storable,
+public interface ProductionSet extends Entity < ProductionSet >, Storable,
     Modifyable, Iterable < Production >
 {
 
@@ -42,6 +45,45 @@ public interface ProductionSet extends Entity < Production >, Storable,
 
 
   /**
+   * TODO
+   * 
+   * @param index
+   * @param prod
+   * @return
+   */
+  public boolean add ( int index, Production prod );
+
+
+  /**
+   * TODO
+   * 
+   * @param index
+   * @param set
+   * @return
+   */
+  public boolean add ( int index, ProductionSet set );
+
+
+  /**
+   * TODO
+   * 
+   * @param index
+   * @param productions
+   * @return
+   */
+  public boolean add ( final int index,
+      final ArrayList < Production > productions );
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   */
+  public Collection < Production > getRep ();
+
+
+  /**
    * Removes all Productions from the set
    */
   public void clear ();
@@ -54,6 +96,24 @@ public interface ProductionSet extends Entity < Production >, Storable,
    * @return true if the {@link Production} was removed
    */
   public boolean remove ( final Production p );
+
+
+  /**
+   * TODO
+   * 
+   * @param p
+   * @return
+   */
+  public boolean remove ( final Production ... p );
+
+
+  /**
+   * TODO
+   * 
+   * @param p
+   * @return
+   */
+  public boolean remove ( final Iterable < Production > p );
 
 
   /**
@@ -79,4 +139,21 @@ public interface ProductionSet extends Entity < Production >, Storable,
    * @return true if the set is empty, false otherwise
    */
   public boolean isEmpty ();
+
+
+  /**
+   * Returns the ith element
+   * 
+   * @param index The index
+   * @return The element
+   */
+  public Production get ( int index );
+
+
+  /**
+   * Removes the ith element
+   * 
+   * @param index The index
+   */
+  public void remove ( int index );
 }

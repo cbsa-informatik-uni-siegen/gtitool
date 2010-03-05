@@ -98,7 +98,7 @@ public class DefaultParsingTable implements ParsingTable
     {
       this.parsingTable.add ( new ArrayList < DefaultProductionSet > () );
 
-      ArrayList < Production > ps = cfg.getProductionForNonTerminal ( ns );
+      ProductionSet ps = cfg.getProductionForNonTerminal ( ns );
 
       int row = 0;
       for ( TerminalSymbol ts : this.terminals )

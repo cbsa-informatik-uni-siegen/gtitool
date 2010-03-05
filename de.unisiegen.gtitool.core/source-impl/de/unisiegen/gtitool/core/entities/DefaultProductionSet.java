@@ -1,8 +1,9 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 import javax.swing.event.EventListenerList;
 
@@ -31,7 +32,7 @@ public class DefaultProductionSet implements ProductionSet
   /**
    * the {@link Production}s
    */
-  private TreeSet < Production > prods = null;
+  private ArrayList < Production > prods = new ArrayList < Production > ();
 
 
   /**
@@ -57,7 +58,24 @@ public class DefaultProductionSet implements ProductionSet
    */
   public DefaultProductionSet ()
   {
-    this.prods = new TreeSet < Production > ();
+    // /
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ProductionSet#add(de.unisiegen.gtitool.core.entities.Production)
+   */
+  public boolean add ( Production p )
+  {
+    for ( Production old : this.prods )
+      if ( old.equals ( p ) )
+        return false;
+
+    if ( this.prods.add ( p ) )
+      fireChanged ();
+    return this.modified;
   }
 
 
@@ -76,19 +94,13 @@ public class DefaultProductionSet implements ProductionSet
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.entities.ProductionSet#add(de.unisiegen.gtitool.core.entities.Production)
+   * Updates all listeners
    */
-  public boolean add ( Production p )
+  private void fireChanged ()
   {
-    if ( this.prods.add ( p ) )
-    {
-      fireModifyStatusChanged ();
-      fireProductionSetChanged ();
-      firePrettyStringChanged ();
-    }
-    return this.modified;
+    fireModifyStatusChanged ();
+    fireProductionSetChanged ();
+    firePrettyStringChanged ();
   }
 
 
@@ -97,9 +109,9 @@ public class DefaultProductionSet implements ProductionSet
    * 
    * @see de.unisiegen.gtitool.core.entities.ProductionSet#add(java.lang.Iterable)
    */
-  public boolean add ( Iterable < Production > prods )
+  public boolean add ( Iterable < Production > nprods )
   {
-    for ( Production p : prods )
+    for ( Production p : nprods )
       add ( p );
     return this.modified;
   }
@@ -110,9 +122,59 @@ public class DefaultProductionSet implements ProductionSet
    * 
    * @see de.unisiegen.gtitool.core.entities.ProductionSet#add(de.unisiegen.gtitool.core.entities.Production[])
    */
-  public boolean add ( final Production ... prods )
+  public boolean add ( final Production ... nprods )
   {
-    return add ( prods );
+    return add ( nprods );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ProductionSet#add(int,
+   *      de.unisiegen.gtitool.core.entities.Production)
+   */
+  public boolean add ( int index, Production production )
+  {
+    this.prods.add ( index, production );
+
+    fireChanged ();
+
+    return this.modified;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @return
+   */
+  public boolean add ( final int index,
+      final ArrayList < Production > productions )
+  {
+    this.prods.addAll ( index, productions );
+
+    fireChanged ();
+
+    return this.modified;
+  }
+
+
+  public boolean add ( int index, ProductionSet set )
+  {
+    return add ( index, ( ArrayList < Production > ) set.getRep () );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.ProductionSet#getRep()
+   */
+  public Collection < Production > getRep ()
+  {
+    return this.prods;
   }
 
 
@@ -364,22 +426,14 @@ public class DefaultProductionSet implements ProductionSet
   /**
    * {@inheritDoc}
    * 
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
-  public int compareTo ( Production o )
-  {
-    return 0;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
    */
   public Element getElement ()
   {
-    return null;
+    Element newElement = new Element ( "ProductionSet" ); //$NON-NLS-1$
+    for ( Production current : this.prods )
+      newElement.addElement ( current );
+    return newElement;
   }
 
 
@@ -414,4 +468,81 @@ public class DefaultProductionSet implements ProductionSet
   {
     return this.prods.iterator ();
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ProductionSet#get(int)
+   */
+  public Production get ( final int index )
+  {
+    return this.prods.get ( index );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ProductionSet#remove(int)
+   */
+  public void remove ( final int index )
+  {
+    remove ( get ( index ) );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param p
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.ProductionSet#remove(de.unisiegen.gtitool.core.entities.Production[])
+   */
+  public boolean remove ( Production ... p )
+  {
+    return remove ( p );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param p
+   * @return
+   * @see de.unisiegen.gtitool.core.entities.ProductionSet#remove(java.lang.Iterable)
+   */
+  public boolean remove ( Iterable < Production > p )
+  {
+    boolean ret = false;
+    for ( Production prod : p )
+      ret = ret || remove ( prod );
+    return ret;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param o
+   * @return
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo ( ProductionSet o )
+  {
+    if ( this.size () < o.size () )
+      return -1;
+    if ( this.size () > o.size () )
+      return 1;
+    for ( int i = 0 ; i < this.size () ; ++i )
+    {
+      final int comp = this.get ( i ).compareTo ( o.get ( i ) );
+
+      if ( comp != 0 )
+        return comp;
+    }
+
+    return 0;
+  }
+
 }

@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultProductionSet;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
@@ -22,6 +23,7 @@ import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -37,7 +39,9 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarRegularGrammarExcepti
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
 import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
+import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
+import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
@@ -46,7 +50,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class AbstractGrammar implements Grammar
+public abstract class AbstractGrammar implements Grammar, Storable
 {
 
   /**
@@ -76,13 +80,13 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * List containing all {@link Production}s.
    */
-  private ArrayList < Production > productions = new ArrayList < Production > ();
+  private ProductionSet productions = new DefaultProductionSet ();
 
 
   /**
    * List containing all {@link Production}s until last save.
    */
-  private final ArrayList < Production > initialProductions = new ArrayList < Production > ();
+  private final ProductionSet initialProductions = new DefaultProductionSet ();
 
 
   /**
@@ -456,7 +460,7 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see Grammar#getProduction()
    */
-  public ArrayList < Production > getProduction ()
+  public ProductionSet getProduction ()
   {
     return this.productions;
   }
@@ -467,10 +471,9 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see Grammar#getProductionForNonTerminal(NonterminalSymbol)
    */
-  public ArrayList < Production > getProductionForNonTerminal (
-      NonterminalSymbol s )
+  public ProductionSet getProductionForNonTerminal ( NonterminalSymbol s )
   {
-    ArrayList < Production > prod = new ArrayList < Production > ();
+    ProductionSet prod = new DefaultProductionSet ();
     for ( Production p : this.productions )
       if ( p.getNonterminalSymbol ().equals ( s ) )
         prod.add ( p );
@@ -662,7 +665,7 @@ public abstract class AbstractGrammar implements Grammar
   public final void resetModify ()
   {
     this.initialProductions.clear ();
-    this.initialProductions.addAll ( this.productions );
+    this.initialProductions.add ( this.productions );
 
     this.nonterminalSymbolSet.resetModify ();
     this.terminalSymbolSet.resetModify ();
@@ -681,7 +684,7 @@ public abstract class AbstractGrammar implements Grammar
    * @see #productions
    * @see Production
    */
-  public void setProductions ( ArrayList < Production > productions )
+  public void setProductions ( ProductionSet productions )
   {
     this.productions = productions;
   }
@@ -849,7 +852,7 @@ public abstract class AbstractGrammar implements Grammar
   {
     for ( NonterminalSymbol ns : this.nonterminalSymbolSet )
     {
-      ArrayList < Production > prods = getProductionForNonTerminal ( ns );
+      ProductionSet prods = getProductionForNonTerminal ( ns );
       DefaultFirstSet fs = new DefaultFirstSet ();
       for ( Production p : prods )
         fs.add ( first ( p.getProductionWord () ) );
@@ -907,10 +910,10 @@ public abstract class AbstractGrammar implements Grammar
    * @return set of {@link Production}s containing the {@link NonterminalSymbol}
    *         {@code ns}
    */
-  private final ArrayList < Production > getProductionContainingNonterminal (
+  private final ProductionSet getProductionContainingNonterminal (
       final NonterminalSymbol ns )
   {
-    ArrayList < Production > result = new ArrayList < Production > ();
+    ProductionSet result = new DefaultProductionSet ();
     for ( Production p : this.productions )
       if ( p.getProductionWord ().contains ( ns ) )
         result.add ( p );
@@ -947,7 +950,7 @@ public abstract class AbstractGrammar implements Grammar
               DefaultTerminalSymbol.EndMarker );
 
         // case 2 and 3
-        ArrayList < Production > prods = getProductionContainingNonterminal ( ns );
+        ProductionSet prods = getProductionContainingNonterminal ( ns );
         for ( Production p : prods )
         {
           ProductionWord rest = getProductionWordAfter ( ns, p
@@ -1007,5 +1010,31 @@ public abstract class AbstractGrammar implements Grammar
       symbols.add ( new DefaultSymbol ( symbol.toString () ) );
 
     return new DefaultAlphabet ( symbols );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
+   */
+  public Element getElement ()
+  {
+    Element newElement = new Element ( "AbstractGrammar" ); //$NON-NLS-1$
+    try
+    {
+      newElement.addElement ( this.getAlphabet ().getElement () );
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+
+    newElement.addElement ( this.getTerminalSymbolSet ().getElement () );
+    newElement.addElement ( this.getNonterminalSymbolSet ().getElement () );
+    newElement.addElement ( this.getProduction () );
+    newElement.addElement ( this.getStartSymbol ().getElement () );
+    return newElement;
   }
 }

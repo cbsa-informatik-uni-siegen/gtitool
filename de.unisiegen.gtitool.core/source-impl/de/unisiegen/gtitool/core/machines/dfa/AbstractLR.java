@@ -9,6 +9,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
+import de.unisiegen.gtitool.core.storage.Element;
 
 
 /**

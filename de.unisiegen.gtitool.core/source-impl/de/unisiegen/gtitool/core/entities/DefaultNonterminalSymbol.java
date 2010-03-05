@@ -138,6 +138,17 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
+   * Allocates a new {@link DefaultNonterminalSymbol}
+   * 
+   * @param symbol the {@link Symbol}
+   */
+  public DefaultNonterminalSymbol ( final Symbol symbol )
+  {
+    this ( symbol.toString () );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)

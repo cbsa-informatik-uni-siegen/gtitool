@@ -171,7 +171,8 @@ public interface Machine extends Storable
    * @return The {@link Machine.MachineType}.
    */
   public MachineType getMachineType ();
-  
+
+
   /**
    * Starts the {@link StateMachine} after a validation with the given
    * {@link Word}.
@@ -179,9 +180,26 @@ public interface Machine extends Storable
    * @param word The {@link Word} to start with.
    */
   public void start ( Word word );
-  
-  
-  public void stop();
-  
+
+
+  /**
+   * stops this {@link Machine}
+   */
+  public void stop ();
+
+
+  /**
+   * returns the {@link Stack}
+   * 
+   * @return the {@link Stack}
+   */
   public Stack getStack ();
+
+
+  /**
+   * returns the input {@link Word}
+   * 
+   * @return the input {@link Word}
+   */
+  public Word getWord ();
 }

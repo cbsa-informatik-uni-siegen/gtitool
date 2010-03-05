@@ -38,12 +38,4 @@ public interface StatelessMachine extends Machine
    * @return the {@link TableModel}
    */
   public TableModel getTableModel ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.Machine#getStack()
-   */
-  public Stack getStack ();
 }

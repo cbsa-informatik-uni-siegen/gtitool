@@ -51,6 +51,22 @@ public interface Word extends Entity < Word >, Storable, Iterable < Symbol >
    */
   public boolean contains ( Symbol symbol );
 
+  
+  /**
+   * Returns the current position
+   *
+   * @return the current position
+   */
+  public int getCurrentPosition();
+  
+  
+  /**
+   * Returns the current {@link Symbol}
+   *
+   * @return the current {@link Symbol}
+   */
+  public Symbol getCurrentSymbol();
+  
 
   /**
    * Returns the {@link Symbol}s.

@@ -30,14 +30,13 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * The serial verion uid.
    */
   private static final long serialVersionUID = -5069749430451559892L;
-  
-  
+
+
   /**
    * defines the endmarker of a word
    */
-  public static final DefaultTerminalSymbol EndMarker =
-    new DefaultTerminalSymbol (
-      "$"); //$NON-NLS-1$
+  public static final DefaultTerminalSymbol EndMarker = new DefaultTerminalSymbol (
+      "$" ); //$NON-NLS-1$
 
 
   /**
@@ -120,6 +119,17 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   public DefaultTerminalSymbol ( String name )
   {
     setName ( name );
+  }
+
+
+  /**
+   * Allocates a new {@link DefaultTerminalSymbol}
+   *
+   * @param symbol The {@link Symbol}
+   */
+  public DefaultTerminalSymbol ( final Symbol symbol )
+  {
+    this ( symbol.toString () );
   }
 
 

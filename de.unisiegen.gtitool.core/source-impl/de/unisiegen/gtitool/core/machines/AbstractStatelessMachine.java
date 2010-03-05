@@ -10,6 +10,7 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
+import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
@@ -215,6 +216,12 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
   {
     return this.stack;
   }
+  
+  
+  public final Word getWord()
+  {
+    return this.word;
+  }
 
 
   /**
@@ -241,6 +248,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * returns the number of possible reductions
    * 
    * @return set of available productions for reduction
+   * @throws LRActionSetException
    */
-  abstract protected LRActionSet getPossibleActions ();
+  abstract protected LRActionSet getPossibleActions () throws LRActionSetException;
 }

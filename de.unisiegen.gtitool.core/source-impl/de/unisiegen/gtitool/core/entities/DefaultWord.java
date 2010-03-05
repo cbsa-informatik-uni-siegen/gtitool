@@ -565,4 +565,26 @@ public final class DefaultWord implements Word
     }
     return result.toString ();
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Word#getCurrentPosition()
+   */
+  public int getCurrentPosition ()
+  {
+    return this.currentPosition;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Word#getCurrentSymbol()
+   */
+  public Symbol getCurrentSymbol ()
+  {
+    return get(this.currentPosition);
+  }
 }

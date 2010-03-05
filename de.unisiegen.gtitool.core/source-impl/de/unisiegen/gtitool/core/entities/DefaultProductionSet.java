@@ -58,7 +58,7 @@ public class DefaultProductionSet implements ProductionSet
    */
   public DefaultProductionSet ()
   {
-    // /
+    // do nothing
   }
 
 

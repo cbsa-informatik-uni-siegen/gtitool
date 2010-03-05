@@ -202,7 +202,8 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
    * 
    * @return the grammar
    */
-  protected LR1Grammar getGrammar ()
+  @Override
+  public LR1Grammar getGrammar ()
   {
     return this.grammar;
   }

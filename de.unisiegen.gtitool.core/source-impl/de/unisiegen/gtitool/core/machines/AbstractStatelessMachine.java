@@ -16,6 +16,7 @@ import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
+import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
@@ -227,6 +228,12 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
     this.stack.clear ();
     this.history.clear ();
     this.wordAccepted = false;
+  }
+
+
+  public Element getElement ()
+  {
+    return null; // TODO
   }
 
 

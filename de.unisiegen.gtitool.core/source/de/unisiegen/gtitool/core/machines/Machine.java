@@ -16,12 +16,13 @@ import de.unisiegen.gtitool.core.machines.lr.LR1Parser;
 import de.unisiegen.gtitool.core.machines.nfa.NFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
+import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
  * The interface for all machines
  */
-public interface Machine
+public interface Machine extends Storable
 {
 
   /**
@@ -129,6 +130,10 @@ public interface Machine
         case LR0Parser :
         {
           return "LR0Parser"; //$NON-NLS-1$
+        }
+        case LALR1Parser:
+        {
+          return "LALR1Parser"; //$NON-NLS-1$
         }
         case LR1Parser :
         {

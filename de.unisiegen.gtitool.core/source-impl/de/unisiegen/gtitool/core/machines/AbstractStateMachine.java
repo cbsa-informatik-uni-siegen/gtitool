@@ -59,6 +59,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableHeaderCellRenderer;
+import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.core.util.ObjectPair;
@@ -2828,5 +2829,10 @@ public abstract class AbstractStateMachine implements StateMachine
       throw new RuntimeException ( "No state active!" ); //$NON-NLS-1$
     return ret;
 
+  }
+  
+  public Element getElement()
+  {
+    return null; // TODO
   }
 }

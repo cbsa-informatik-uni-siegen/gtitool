@@ -8,10 +8,12 @@ import javax.swing.event.EventListenerList;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
+import de.unisiegen.gtitool.core.entities.DefaultProductionSet;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
@@ -225,8 +227,8 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
   public final void addProduction ( Production production,
       boolean createUndoStep )
   {
-    ArrayList < Production > productions = new ArrayList < Production > ();
-    productions.addAll ( this.grammar.getProduction () );
+    ProductionSet productions = new DefaultProductionSet();
+    productions.add ( this.grammar.getProduction () );
     this.grammar.addProduction ( production );
 
     if ( createUndoStep )

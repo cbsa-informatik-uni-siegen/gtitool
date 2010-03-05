@@ -3,7 +3,9 @@ package de.unisiegen.gtitool.ui.redoundo;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.DefaultProductionSet;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 
 
@@ -26,13 +28,13 @@ public final class ProductionsListChangedItem extends RedoUndoItem
   /**
    * Old list with {@link Production}s.
    */
-  private ArrayList < Production > oldProductions;
+  private ProductionSet oldProductions;
 
 
   /**
    * New list with {@link Production}s.
    */
-  private ArrayList < Production > newProductions;
+  private ProductionSet newProductions;
 
 
   /**
@@ -42,14 +44,14 @@ public final class ProductionsListChangedItem extends RedoUndoItem
    * @param oldProductions Old list with {@link Production}s.
    */
   public ProductionsListChangedItem ( Grammar grammar,
-      ArrayList < Production > oldProductions )
+      ProductionSet oldProductions )
   {
     super ();
     this.grammar = grammar;
     this.oldProductions = oldProductions;
 
-    this.newProductions = new ArrayList < Production > ();
-    this.newProductions.addAll ( this.grammar.getProduction () );
+    this.newProductions = new DefaultProductionSet ();
+    this.newProductions.add ( this.grammar.getProduction () );
   }
 
 

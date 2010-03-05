@@ -26,8 +26,10 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.entities.DefaultProductionSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
@@ -671,8 +673,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       confirmDialog.show ();
       if ( confirmDialog.isConfirmed () )
       {
-        ArrayList < Production > oldProductions = new ArrayList < Production > ();
-        oldProductions.addAll ( this.grammar.getProduction () );
+        ProductionSet oldProductions = new DefaultProductionSet ();
+        oldProductions.add ( this.grammar.getProduction () );
 
         int number = 0;
         for ( int index : rows )
@@ -1238,19 +1240,19 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       @SuppressWarnings ( "unused" ) JGTITable jGTITable,
       JGTITableModelRows rows, int targetIndex )
   {
-    ArrayList < Production > oldProductions = new ArrayList < Production > ();
-    oldProductions.addAll ( this.grammar.getProduction () );
+    ProductionSet oldProductions = new DefaultProductionSet ();
+    oldProductions.add ( this.grammar.getProduction () );
 
-    ArrayList < Production > productions = new ArrayList < Production > ();
+    ProductionSet productions = new DefaultProductionSet ();
 
-    int [] indeces = rows.getRowIndices ();
+    int [] indices = rows.getRowIndices ();
 
     int newTargetIndex = targetIndex;
 
-    if ( ( indeces.length > 0 ) && ( indeces [ 0 ] < targetIndex ) )
+    if ( ( indices.length > 0 ) && ( indices [ 0 ] < targetIndex ) )
       newTargetIndex++ ;
 
-    for ( int index : indeces )
+    for ( int index : indices )
     {
       productions.add ( this.grammar.getProductionAt ( index ) );
 
@@ -1258,15 +1260,15 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         newTargetIndex-- ;
     }
 
-    for ( int i = indeces.length - 1 ; i > -1 ; i-- )
-      this.grammar.getProduction ().remove ( indeces [ i ] );
+    for ( int i = indices.length - 1 ; i > -1 ; i-- )
+      this.grammar.getProduction ().remove ( indices [ i ] );
 
     newTargetIndex = Math.min ( newTargetIndex, this.grammar.getRowCount () );
 
-    this.grammar.getProduction ().addAll ( newTargetIndex, productions );
+    this.grammar.getProduction ().add ( newTargetIndex, productions );
 
     this.gui.jGTITableGrammar.getSelectionModel ().setSelectionInterval (
-        newTargetIndex, newTargetIndex + indeces.length - 1 );
+        newTargetIndex, newTargetIndex + indices.length - 1 );
 
     fireModifyStatusChanged ( false );
 

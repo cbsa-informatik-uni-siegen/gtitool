@@ -243,9 +243,13 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
     if ( ( !foundAlphabet ) || ( !foundPushDownAlphabet ) )
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
-    // initialize this model elements
-    this.machine = AbstractStateMachine.createMachine ( machineType, alphabet,
-        pushDownAlphabet, usePushDownAlphabet );
+
+    //if ( machineType.equals ( "LR0" ) )
+    //  this.machine = LR0.createMachine ( machineType, alphabet );
+    //else
+      // initialize this model elements
+      this.machine = AbstractStateMachine.createMachine ( machineType,
+          alphabet, pushDownAlphabet, usePushDownAlphabet );
 
     if ( ! ( this.machine instanceof DefaultTDP ) )
     {

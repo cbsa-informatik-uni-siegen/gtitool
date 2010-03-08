@@ -7,14 +7,17 @@ import javax.swing.table.TableModel;
 import de.unisiegen.gtitool.core.entities.DefaultLRActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.LRAcceptAction;
+import de.unisiegen.gtitool.core.entities.LRAction;
 import de.unisiegen.gtitool.core.entities.LRActionSet;
 import de.unisiegen.gtitool.core.entities.LRReduceAction;
 import de.unisiegen.gtitool.core.entities.LRShiftAction;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionSet;
+import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
@@ -71,7 +74,6 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   /**
    * {@inheritDoc}
    * 
-   * @throws LRActionSetException
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getPossibleActions()
    */
   @Override
@@ -108,6 +110,52 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
    */
   public void autoTransit () throws MachineAmbigiousActionException
   {
+    try
+    {
+      this.assertTransit ( getPossibleActions () );
+    }
+    catch ( LRActionSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#transit(de.unisiegen.gtitool.core.entities.LRAction)
+   */
+  @Override
+  public boolean transit ( final LRAction action )
+  {
+    switch ( action.getTransitionType () )
+    {
+      case SHIFT :
+        /*
+         * shift in our case means: the push down automaton takes the actual
+         * input symbol and stack symbol and cancles each other out
+         */
+        nextSymbol ();
+        getStack ().pop ();
+        break;
+      case REDUCE :
+        /*
+         * replace the left side of the production corresponding to the actual
+         * nonterminal on the stack with its right side
+         */
+        createHistoryEntry ();
+        getStack ().pop ();
+        ProductionWord pw = action.getReduceAction ().getProductionWord ();
+        for ( int i = pw.size () ; i < 0 ; --i )
+          getStack ().push ( new DefaultSymbol ( pw.get ( i ).getName () ) );
+        break;
+      case ACCEPT :
+        accept ();
+        break;
+    }
+    return true;
   }
 
 

@@ -45,10 +45,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
 
 
   /**
-   * TODO
-   * 
-   * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#transit(de.unisiegen.gtitool.core.entities.LRAction)
-   * @return true if the transition could be made
+   * {@inheritDoc}
    */
   @Override
   public boolean transit ( LRAction action )

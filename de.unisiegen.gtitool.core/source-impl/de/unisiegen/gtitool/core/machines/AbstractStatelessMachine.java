@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.machines;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.LRAction;
 import de.unisiegen.gtitool.core.entities.LRActionSet;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
@@ -11,6 +12,7 @@ import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
@@ -48,12 +50,6 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
 
 
   /**
-   * actual input position
-   */
-  private int wordIndex;
-
-
-  /**
    * word is accepted
    */
   private boolean wordAccepted;
@@ -76,8 +72,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * @throws AlphabetException
    * @throws GrammarInvalidNonterminalException
    */
-  // TODO: change type of argument alphabet to Grammar and add creation of
-  // LR0/1Parser
+  // TODO: add creation of LR0/1Parser
   public static final StatelessMachine createMachine ( String machineType,
       Grammar grammar ) throws StoreException,
       GrammarInvalidNonterminalException, AlphabetException,
@@ -121,8 +116,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   protected TerminalSymbol currentTerminal ()
   {
-    return new DefaultTerminalSymbol ( this.word.get ( this.wordIndex )
-        .toString () );
+    return new DefaultTerminalSymbol ( this.word.getCurrentSymbol () );
   }
 
 
@@ -151,12 +145,36 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
 
 
   /**
+   * creates a new history entry
+   */
+  protected void createHistoryEntry ()
+  {
+    this.history.add ( new StatelessMachineHistoryItem ( this.word, this.stack,
+        this.wordAccepted ) );
+  }
+
+
+  /**
+   * restores the last history entry (goes one step back)
+   */
+  protected void restoreHistoryEntry ()
+  {
+    if ( this.history.isEmpty () )
+      throw new RuntimeException ( "history is empty" ); //$NON-NLS-1$
+    final StatelessMachineHistoryItem historyItem = this.history.pop ();
+
+    this.word = historyItem.getWord ();
+    this.stack = historyItem.getStack ();
+    this.wordAccepted = historyItem.getWordAccepted ();
+  }
+
+
+  /**
    * increment current input position
    */
   public void nextSymbol ()
   {
-    this.history.add ( new StatelessMachineHistoryItem ( this.word, this.stack,
-        this.wordAccepted ) );
+    createHistoryEntry ();
     try
     {
       this.word.nextSymbol ();
@@ -174,13 +192,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public void previousSymbol ()
   {
-    if ( this.history.isEmpty () )
-      throw new RuntimeException ( "history is empty" ); //$NON-NLS-1$
-    final StatelessMachineHistoryItem historyItem = this.history.pop ();
-
-    this.word = historyItem.getWord ();
-    this.stack = historyItem.getStack ();
-    this.wordAccepted = historyItem.getWordAccepted ();
+    restoreHistoryEntry ();
   }
 
 
@@ -203,6 +215,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public void accept ()
   {
+    createHistoryEntry();
     this.wordAccepted = true;
   }
 
@@ -216,9 +229,15 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
   {
     return this.stack;
   }
-  
-  
-  public final Word getWord()
+
+
+  /**
+   * returns the current input {@link Word}
+   * 
+   * @return the current input {@link Word}
+   * @see de.unisiegen.gtitool.core.machines.Machine#getWord()
+   */
+  public final Word getWord ()
   {
     return this.word;
   }
@@ -238,6 +257,11 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
+   */
   public Element getElement ()
   {
     return null; // TODO
@@ -250,5 +274,37 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * @return set of available productions for reduction
    * @throws LRActionSetException
    */
-  abstract protected LRActionSet getPossibleActions () throws LRActionSetException;
+  abstract protected LRActionSet getPossibleActions ()
+      throws LRActionSetException;
+
+
+  /**
+   * carry out a {@link LRAction}
+   * 
+   * @param transition the {@link LRAction}
+   * @return true if the action could be performed successfully
+   */
+  public abstract boolean transit ( final LRAction transition );
+
+
+  /**
+   * Tries to use a transition from possibleActions. Also asserts that the
+   * transition is valid.
+   * 
+   * @param possibleActions
+   * @throws MachineAmbigiousActionException if the action set's size is not 1
+   */
+  protected void assertTransit ( final LRActionSet possibleActions )
+      throws MachineAmbigiousActionException
+  {
+    if ( possibleActions.size () != 1 )
+      throw new MachineAmbigiousActionException ();
+
+    if ( transit ( possibleActions.first () ) == false )
+    {
+      // shouldn't happen
+      System.err.println ( "Internal parser error" ); //$NON-NLS-1$
+      System.exit ( 1 );
+    }
+  }
 }

@@ -6,16 +6,16 @@ import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR1Item;
 import de.unisiegen.gtitool.core.entities.LR1ItemSet;
 import de.unisiegen.gtitool.core.entities.LR1State;
-import de.unisiegen.gtitool.core.entities.LRAcceptAction;
-import de.unisiegen.gtitool.core.entities.LRAction;
-import de.unisiegen.gtitool.core.entities.LRActionSet;
-import de.unisiegen.gtitool.core.entities.LRReduceAction;
-import de.unisiegen.gtitool.core.entities.LRShiftAction;
+import de.unisiegen.gtitool.core.entities.AcceptAction;
+import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.ActionSet;
+import de.unisiegen.gtitool.core.entities.ReduceAction;
+import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
+import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
@@ -62,13 +62,13 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
   /**
    * TODO
    * 
-   * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#transit(de.unisiegen.gtitool.core.entities.LRAction)
+   * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#transit(de.unisiegen.gtitool.core.entities.Action)
    * @return true if the transition could be made
    */
   @Override
-  public boolean transit ( LRAction action )
+  public boolean transit ( Action action )
   {
-    LRActionSet possibleActions = actions ( currentItems (), currentTerminal () );
+    ActionSet possibleActions = actions ( currentItems (), currentTerminal () );
 
     if ( !possibleActions.contains ( action ) )
       return false;
@@ -140,9 +140,9 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
    * @param symbol - The current terminal symbol
    * @return The actions set
    */
-  public LRActionSet actions ( LR1ItemSet items, TerminalSymbol symbol )
+  public ActionSet actions ( LR1ItemSet items, TerminalSymbol symbol )
   {
-    LRActionSet ret = new DefaultLRActionSet ();
+    ActionSet ret = new DefaultLRActionSet ();
 
     try
     {
@@ -152,16 +152,16 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
           if ( item.getNonterminalSymbol ().isStart () )
           {
             if ( symbol == null )
-              ret.add ( new LRAcceptAction () );
+              ret.add ( new AcceptAction () );
           }
           else if ( item.getLookAhead ().equals ( symbol ) )
-            ret.add ( new LRReduceAction ( item ) );
+            ret.add ( new ReduceAction ( item ) );
         }
         else if ( item.dotPrecedesTerminal ()
             && item.getProductionWordMemberAfterDot ().equals ( symbol ) )
-          ret.add ( new LRShiftAction () );
+          ret.add ( new ShiftAction () );
     }
-    catch ( LRActionSetException e )
+    catch ( ActionSetException e )
     {
       e.printStackTrace ();
       System.exit ( 1 );
@@ -227,9 +227,9 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getPossibleActions()
    */
   @Override
-  protected LRActionSet getPossibleActions ()
+  protected ActionSet getPossibleActions ()
   {
-    LRActionSet actions = new DefaultLRActionSet ();
+    ActionSet actions = new DefaultLRActionSet ();
 
     return actions;
   }

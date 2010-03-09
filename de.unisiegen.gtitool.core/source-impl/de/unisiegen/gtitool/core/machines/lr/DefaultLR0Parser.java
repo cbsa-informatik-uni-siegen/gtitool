@@ -6,17 +6,17 @@ import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.LR0State;
-import de.unisiegen.gtitool.core.entities.LRAcceptAction;
-import de.unisiegen.gtitool.core.entities.LRAction;
-import de.unisiegen.gtitool.core.entities.LRActionSet;
-import de.unisiegen.gtitool.core.entities.LRReduceAction;
-import de.unisiegen.gtitool.core.entities.LRShiftAction;
+import de.unisiegen.gtitool.core.entities.AcceptAction;
+import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.ActionSet;
+import de.unisiegen.gtitool.core.entities.ReduceAction;
+import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
-import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
+import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
@@ -48,9 +48,9 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * {@inheritDoc}
    */
   @Override
-  public boolean transit ( LRAction action )
+  public boolean transit ( Action action )
   {
-    LRActionSet possibleActions = actions ( currentItems (), currentTerminal () );
+    ActionSet possibleActions = actions ( currentItems (), currentTerminal () );
 
     if ( !possibleActions.contains ( action ) )
       return false;
@@ -122,9 +122,9 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * @param symbol - The current terminal symbol
    * @return The actions set
    */
-  public LRActionSet actions ( LR0ItemSet items, TerminalSymbol symbol )
+  public ActionSet actions ( LR0ItemSet items, TerminalSymbol symbol )
   {
-    LRActionSet ret = new DefaultLRActionSet ();
+    ActionSet ret = new DefaultLRActionSet ();
 
     try
     {
@@ -134,16 +134,16 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
           if ( item.getNonterminalSymbol ().isStart () )
           {
             if ( symbol == null )
-              ret.add ( new LRAcceptAction () );
+              ret.add ( new AcceptAction () );
           }
           else if ( followCondition ( item, symbol ) )
-            ret.add ( new LRReduceAction ( item ) );
+            ret.add ( new ReduceAction ( item ) );
         }
         else if ( item.dotPrecedesTerminal ()
             && item.getProductionWordMemberAfterDot ().equals ( symbol ) )
-          ret.add ( new LRShiftAction () );
+          ret.add ( new ShiftAction () );
     }
-    catch ( LRActionSetException e )
+    catch ( ActionSetException e )
     {
       e.printStackTrace ();
       System.exit ( 1 );
@@ -230,9 +230,9 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getPossibleActions()
    */
   @Override
-  protected LRActionSet getPossibleActions ()
+  protected ActionSet getPossibleActions ()
   {
-    LRActionSet actions = new DefaultLRActionSet ();
+    ActionSet actions = new DefaultLRActionSet ();
 
     return actions;
   }

@@ -4,18 +4,18 @@ package de.unisiegen.gtitool.core.entities;
 /**
  * The LR Accept action
  */
-public class LRAcceptAction implements LRAction
+public class AcceptAction implements Action
 {
 
   /**
    * The transition type
    * 
    * @return ACCEPT
-   * @see de.unisiegen.gtitool.core.entities.LRAction#getTransitionType()
+   * @see de.unisiegen.gtitool.core.entities.Action#getTransitionType()
    */
   public TransitionType getTransitionType ()
   {
-    return LRAction.TransitionType.ACCEPT;
+    return Action.TransitionType.ACCEPT;
   }
 
 
@@ -23,7 +23,7 @@ public class LRAcceptAction implements LRAction
    * The reduce action
    * 
    * @return null (nothing to reduce)
-   * @see de.unisiegen.gtitool.core.entities.LRAction#getReduceAction()
+   * @see de.unisiegen.gtitool.core.entities.Action#getReduceAction()
    */
   public Production getReduceAction ()
   {
@@ -32,25 +32,22 @@ public class LRAcceptAction implements LRAction
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param o
-   * @return
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
-  public int compareTo ( final LRAction o )
+  public int compareTo ( final Action o )
   {
     // AcceptActions are below everything
-    if ( o instanceof LRAcceptAction )
+    if ( o instanceof AcceptAction )
       return 0;
     return -1;
   }
 
 
   /**
-   * The name
+   * {@inheritDoc}
    * 
-   * @return the name
    * @see java.lang.Object#toString()
    */
   @Override

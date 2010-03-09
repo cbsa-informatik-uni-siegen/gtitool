@@ -4,14 +4,14 @@ package de.unisiegen.gtitool.core.machines;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
-import de.unisiegen.gtitool.core.entities.LRAction;
-import de.unisiegen.gtitool.core.entities.LRActionSet;
+import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
-import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
+import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
@@ -273,19 +273,19 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * returns the number of possible reductions
    * 
    * @return set of available productions for reduction
-   * @throws LRActionSetException
+   * @throws ActionSetException
    */
-  abstract protected LRActionSet getPossibleActions ()
-      throws LRActionSetException;
+  abstract protected ActionSet getPossibleActions ()
+      throws ActionSetException;
 
 
   /**
-   * carry out a {@link LRAction}
+   * carry out a {@link Action}
    * 
-   * @param transition the {@link LRAction}
+   * @param transition the {@link Action}
    * @return true if the action could be performed successfully
    */
-  public abstract boolean transit ( final LRAction transition );
+  public abstract boolean transit ( final Action transition );
 
 
   /**
@@ -295,7 +295,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * @param possibleActions
    * @throws MachineAmbigiousActionException if the action set's size is not 1
    */
-  protected void assertTransit ( final LRActionSet possibleActions )
+  protected void assertTransit ( final ActionSet possibleActions )
       throws MachineAmbigiousActionException
   {
     if ( possibleActions.size () != 1 )

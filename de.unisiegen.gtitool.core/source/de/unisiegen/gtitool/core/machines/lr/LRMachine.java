@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.machines.lr;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.LRAction;
+import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
@@ -55,5 +55,5 @@ public interface LRMachine
    * @param transition
    * @return true if the transit could be done
    */
-  public boolean transit ( LRAction transition );
+  public boolean transit ( Action transition );
 }

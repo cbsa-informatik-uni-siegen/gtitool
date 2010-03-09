@@ -5,7 +5,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.LRAction;
+import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
 import de.unisiegen.gtitool.core.machines.lr.LRMachine;
@@ -33,7 +33,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   /**
    * {@inheritDoc}
    **/
-  public abstract boolean transit ( final LRAction transition );
+  public abstract boolean transit ( final Action transition );
 
 
   /**

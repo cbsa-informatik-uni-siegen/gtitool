@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
-import de.unisiegen.gtitool.core.exceptions.lractionset.LRActionSetException;
+import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.Element;
@@ -15,19 +15,19 @@ import de.unisiegen.gtitool.core.storage.Element;
 /**
  * TODO
  */
-public class DefaultLRActionSet implements LRActionSet
+public class DefaultLRActionSet implements ActionSet
 {
 
   /**
    * TODO
    * 
    * @param actions
-   * @throws LRActionSetException
-   * @see de.unisiegen.gtitool.core.entities.LRActionSet#add(java.lang.Iterable)
+   * @throws ActionSetException
+   * @see de.unisiegen.gtitool.core.entities.ActionSet#add(java.lang.Iterable)
    */
-  public void add ( Iterable < LRAction > actions ) throws LRActionSetException
+  public void add ( Iterable < Action > actions ) throws ActionSetException
   {
-    Iterator < LRAction > iter = actions.iterator ();
+    Iterator < Action > iter = actions.iterator ();
 
     while ( iter.hasNext () )
       this.rep.add ( iter.next () );
@@ -38,10 +38,10 @@ public class DefaultLRActionSet implements LRActionSet
    * TODO
    * 
    * @param actions
-   * @throws LRActionSetException
-   * @see de.unisiegen.gtitool.core.entities.LRActionSet#add(de.unisiegen.gtitool.core.entities.LRAction)
+   * @throws ActionSetException
+   * @see de.unisiegen.gtitool.core.entities.ActionSet#add(de.unisiegen.gtitool.core.entities.Action)
    */
-  public void add ( LRAction action ) throws LRActionSetException
+  public void add ( Action action ) throws ActionSetException
   {
     this.rep.add ( action );
   }
@@ -51,12 +51,12 @@ public class DefaultLRActionSet implements LRActionSet
    * TODO
    * 
    * @param actions
-   * @throws LRActionSetException
-   * @see de.unisiegen.gtitool.core.entities.LRActionSet#add(de.unisiegen.gtitool.core.entities.LRAction[])
+   * @throws ActionSetException
+   * @see de.unisiegen.gtitool.core.entities.ActionSet#add(de.unisiegen.gtitool.core.entities.Action[])
    */
-  public void add ( LRAction ... actions )
+  public void add ( Action ... actions )
   {
-    for ( LRAction action : actions )
+    for ( Action action : actions )
       this.rep.add ( action );
   }
 
@@ -66,9 +66,9 @@ public class DefaultLRActionSet implements LRActionSet
    * 
    * @param action
    * @return if the element is found
-   * @see de.unisiegen.gtitool.core.entities.LRActionSet#contains(de.unisiegen.gtitool.core.entities.LRAction)
+   * @see de.unisiegen.gtitool.core.entities.ActionSet#contains(de.unisiegen.gtitool.core.entities.Action)
    */
-  public boolean contains ( LRAction action )
+  public boolean contains ( Action action )
   {
     return this.rep.contains ( action );
   }
@@ -78,9 +78,9 @@ public class DefaultLRActionSet implements LRActionSet
    * Get the underlying tree set
    * 
    * @return the underlying tree set
-   * @see de.unisiegen.gtitool.core.entities.LRActionSet#get()
+   * @see de.unisiegen.gtitool.core.entities.ActionSet#get()
    */
-  public TreeSet < LRAction > get ()
+  public TreeSet < Action > get ()
   {
     return this.rep;
   }
@@ -90,7 +90,7 @@ public class DefaultLRActionSet implements LRActionSet
    * TODO
    * 
    * @return
-   * @see de.unisiegen.gtitool.core.entities.LRActionSet#size()
+   * @see de.unisiegen.gtitool.core.entities.ActionSet#size()
    */
   public int size ()
   {
@@ -164,7 +164,7 @@ public class DefaultLRActionSet implements LRActionSet
    * @return
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
-  public int compareTo ( LRActionSet o )
+  public int compareTo ( ActionSet o )
   {
     return 0;
   }
@@ -234,7 +234,7 @@ public class DefaultLRActionSet implements LRActionSet
    * @return
    * @see java.lang.Iterable#iterator()
    */
-  public Iterator < LRAction > iterator ()
+  public Iterator < Action > iterator ()
   {
     return this.rep.iterator ();
   }
@@ -249,16 +249,16 @@ public class DefaultLRActionSet implements LRActionSet
   /**
    * TODO
    */
-  private TreeSet < LRAction > rep = new TreeSet < LRAction > ();
+  private TreeSet < Action > rep = new TreeSet < Action > ();
 
 
   /**
    * TODO
    * 
    * @return
-   * @see de.unisiegen.gtitool.core.entities.LRActionSet#first()
+   * @see de.unisiegen.gtitool.core.entities.ActionSet#first()
    */
-  public LRAction first ()
+  public Action first ()
   {
     return this.rep.first ();
   }

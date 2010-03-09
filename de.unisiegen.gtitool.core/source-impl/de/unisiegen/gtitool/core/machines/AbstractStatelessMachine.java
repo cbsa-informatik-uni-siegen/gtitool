@@ -1,11 +1,14 @@
 package de.unisiegen.gtitool.core.machines;
 
 
+import de.unisiegen.gtitool.core.entities.AcceptAction;
+import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
-import de.unisiegen.gtitool.core.entities.Action;
-import de.unisiegen.gtitool.core.entities.ActionSet;
+import de.unisiegen.gtitool.core.entities.ReplaceAction;
+import de.unisiegen.gtitool.core.entities.ShiftActionBase;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
@@ -15,6 +18,7 @@ import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
+import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -174,7 +178,6 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public void nextSymbol ()
   {
-    createHistoryEntry ();
     try
     {
       this.word.nextSymbol ();
@@ -192,7 +195,15 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public void previousSymbol ()
   {
-    restoreHistoryEntry ();
+    try
+    {
+      this.word.previousSymbol ();
+    }
+    catch ( WordResetedException exc )
+    {
+      exc.printStackTrace();
+      System.exit ( 1 );
+    }
   }
 
 
@@ -215,7 +226,6 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public void accept ()
   {
-    createHistoryEntry();
     this.wordAccepted = true;
   }
 
@@ -264,8 +274,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public Element getElement ()
   {
-    System.err.println("IMPLEMENT ME!"); //$NON-NLS-1$
-    return null; // TODO
+    throw new RuntimeException ( "not yet implemented" ); //$NON-NLS-1$
   }
 
 
@@ -275,8 +284,40 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * @return set of available productions for reduction
    * @throws ActionSetException
    */
-  abstract protected ActionSet getPossibleActions ()
-      throws ActionSetException;
+  abstract protected ActionSet getPossibleActions () throws ActionSetException;
+
+
+  /**
+   * handles the specific {@link ShiftActionBase}
+   * 
+   * @param action The {@link Action}
+   */
+  protected void onShift ( final Action action )
+  {
+    // empty here
+  }
+
+
+  /**
+   * handles the specific {@link ReplaceAction}
+   * 
+   * @param action The {@link Action}
+   */
+  protected void onReduce ( final Action action )
+  {
+    // empty here
+  }
+
+
+  /**
+   * handles the {@link AcceptAction}
+   * 
+   * @param action The {@link Action}
+   */
+  protected void onAccept ( final Action action )
+  {
+    accept();
+  }
 
 
   /**
@@ -285,7 +326,25 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * @param transition the {@link Action}
    * @return true if the action could be performed successfully
    */
-  public abstract boolean transit ( final Action transition );
+  public boolean transit ( final Action transition )
+  {
+    createHistoryEntry ();
+    switch ( transition.getTransitionType () )
+    {
+      case SHIFT :
+      case CANCLE :
+        onShift ( transition );
+        break;
+      case REDUCE :
+      case REVERSEREDUCE :
+        onReduce ( transition );
+        break;
+      case ACCEPT :
+        onAccept ( transition );
+        break;
+    }
+    return true;
+  }
 
 
   /**

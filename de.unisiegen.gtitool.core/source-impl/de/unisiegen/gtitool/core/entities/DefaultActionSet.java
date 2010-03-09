@@ -13,16 +13,20 @@ import de.unisiegen.gtitool.core.storage.Element;
 
 
 /**
- * TODO
+ * Implementation of {@link ActionSet}
  */
-public class DefaultLRActionSet implements ActionSet
+public class DefaultActionSet implements ActionSet
 {
 
   /**
-   * TODO
+   * The generated serial
+   */
+  private static final long serialVersionUID = -7941701750133085926L;
+
+
+  /**
+   * {@inheritDoc}
    * 
-   * @param actions
-   * @throws ActionSetException
    * @see de.unisiegen.gtitool.core.entities.ActionSet#add(java.lang.Iterable)
    */
   public void add ( Iterable < Action > actions ) throws ActionSetException
@@ -35,10 +39,8 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param actions
-   * @throws ActionSetException
    * @see de.unisiegen.gtitool.core.entities.ActionSet#add(de.unisiegen.gtitool.core.entities.Action)
    */
   public void add ( Action action ) throws ActionSetException
@@ -48,10 +50,8 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param actions
-   * @throws ActionSetException
    * @see de.unisiegen.gtitool.core.entities.ActionSet#add(de.unisiegen.gtitool.core.entities.Action[])
    */
   public void add ( Action ... actions )
@@ -62,10 +62,8 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * Check if the action is an element of this set
+   * {@inheritDoc}
    * 
-   * @param action
-   * @return if the element is found
    * @see de.unisiegen.gtitool.core.entities.ActionSet#contains(de.unisiegen.gtitool.core.entities.Action)
    */
   public boolean contains ( Action action )
@@ -75,9 +73,8 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * Get the underlying tree set
+   * {@inheritDoc}
    * 
-   * @return the underlying tree set
    * @see de.unisiegen.gtitool.core.entities.ActionSet#get()
    */
   public TreeSet < Action > get ()
@@ -87,9 +84,8 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.ActionSet#size()
    */
   public int size ()
@@ -99,9 +95,8 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.Entity#getParserOffset()
    */
   public ParserOffset getParserOffset ()
@@ -111,44 +106,43 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param parserOffset
    * @see de.unisiegen.gtitool.core.entities.Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
    */
   public void setParserOffset ( ParserOffset parserOffset )
   {
+    throw new RuntimeException ( "not yet implemented" ); //$NON-NLS-1$
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
    * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
    */
   public void addPrettyStringChangedListener (
       PrettyStringChangedListener listener )
   {
+    throw new RuntimeException ( "not yet implemented" ); //$NON-NLS-1$
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
    * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
    */
   public void removePrettyStringChangedListener (
       PrettyStringChangedListener listener )
   {
+    throw new RuntimeException ( "not yet implemented" ); //$NON-NLS-1$
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
    */
   public PrettyString toPrettyString ()
@@ -158,10 +152,8 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param o
-   * @return
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   public int compareTo ( ActionSet o )
@@ -171,9 +163,8 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
    */
   public Element getElement ()
@@ -183,21 +174,20 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
    * @see de.unisiegen.gtitool.core.storage.Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
    */
   public void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
+    throw new RuntimeException ( "not yet implemented" ); //$NON-NLS-1$
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.core.storage.Modifyable#isModified()
    */
   public boolean isModified ()
@@ -207,31 +197,31 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
    * @see de.unisiegen.gtitool.core.storage.Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
    */
   public void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
+    throw new RuntimeException ( "not yet implemented" ); //$NON-NLS-1$
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.storage.Modifyable#resetModify()
    */
   public void resetModify ()
   {
+    throw new RuntimeException ( "not yet implemented" ); //$NON-NLS-1$
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see java.lang.Iterable#iterator()
    */
   public Iterator < Action > iterator ()
@@ -240,6 +230,12 @@ public class DefaultLRActionSet implements ActionSet
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
   public String toString ()
   {
     return this.rep.toString ();
@@ -247,15 +243,14 @@ public class DefaultLRActionSet implements ActionSet
 
 
   /**
-   * TODO
+   * The {@link Action}-{@link TreeSet}
    */
   private TreeSet < Action > rep = new TreeSet < Action > ();
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.ActionSet#first()
    */
   public Action first ()

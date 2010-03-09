@@ -40,10 +40,7 @@ public abstract class ReplaceAction implements Action
    * 
    * @see de.unisiegen.gtitool.core.entities.Action#getTransitionType()
    */
-  public TransitionType getTransitionType ()
-  {
-    return null;
-  }
+  abstract public TransitionType getTransitionType ();
 
 
   /**

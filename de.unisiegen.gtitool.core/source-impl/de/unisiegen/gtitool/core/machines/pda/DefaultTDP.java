@@ -4,20 +4,20 @@ package de.unisiegen.gtitool.core.machines.pda;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import de.unisiegen.gtitool.core.entities.DefaultLRActionSet;
+import de.unisiegen.gtitool.core.entities.AcceptAction;
+import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.ActionSet;
+import de.unisiegen.gtitool.core.entities.CancleOutAction;
+import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
-import de.unisiegen.gtitool.core.entities.AcceptAction;
-import de.unisiegen.gtitool.core.entities.Action;
-import de.unisiegen.gtitool.core.entities.ActionSet;
-import de.unisiegen.gtitool.core.entities.ReduceAction;
-import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
+import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
@@ -79,7 +79,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   @Override
   protected ActionSet getPossibleActions () throws ActionSetException
   {
-    ActionSet actions = new DefaultLRActionSet ();
+    ActionSet actions = new DefaultActionSet ();
     Symbol inputSymbol = getWord ().getCurrentSymbol ();
     Symbol stackSymbol = getStack ().peak ();
 
@@ -97,7 +97,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
     else
     {
       if ( inputSymbol.equals ( stackSymbol ) )
-        actions.add ( new ShiftAction () );
+        actions.add ( new CancleOutAction () );
     }
     return actions;
   }
@@ -125,37 +125,36 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#transit(de.unisiegen.gtitool.core.entities.Action)
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onShift(de.unisiegen.gtitool.core.entities.Action)
    */
   @Override
-  public boolean transit ( final Action action )
+  protected void onShift ( @SuppressWarnings ( "unused" ) final Action action )
   {
-    switch ( action.getTransitionType () )
-    {
-      case SHIFT :
-        /*
-         * shift in our case means: the push down automaton takes the actual
-         * input symbol and stack symbol and cancles each other out
-         */
-        nextSymbol ();
-        getStack ().pop ();
-        break;
-      case REDUCE :
-        /*
-         * replace the left side of the production corresponding to the actual
-         * nonterminal on the stack with its right side
-         */
-        createHistoryEntry ();
-        getStack ().pop ();
-        ProductionWord pw = action.getReduceAction ().getProductionWord ();
-        for ( int i = pw.size () ; i < 0 ; --i )
-          getStack ().push ( new DefaultSymbol ( pw.get ( i ).getName () ) );
-        break;
-      case ACCEPT :
-        accept ();
-        break;
-    }
-    return true;
+    /*
+     * shift in our case means: the push down automaton takes the actual input
+     * symbol and stack symbol and cancles each other out
+     */
+    nextSymbol ();
+    getStack ().pop ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onReduce(de.unisiegen.gtitool.core.entities.Action)
+   */
+  @Override
+  protected void onReduce ( final Action action )
+  {
+    /*
+     * replace the left side of the production corresponding to the actual
+     * nonterminal on the stack with its right side
+     */
+    getStack ().pop ();
+    ProductionWord pw = action.getReduceAction ().getProductionWord ();
+    for ( int i = pw.size () ; i < 0 ; --i )
+      getStack ().push ( new DefaultSymbol ( pw.get ( i ).getName () ) );
   }
 
 

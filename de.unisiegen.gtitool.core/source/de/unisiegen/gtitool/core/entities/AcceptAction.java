@@ -27,7 +27,8 @@ public class AcceptAction implements Action
    */
   public Production getReduceAction ()
   {
-    return null;
+    throw new RuntimeException (
+        "accept action cannot be used as a reduce action"); //$NON-NLS-1$
   }
 
 

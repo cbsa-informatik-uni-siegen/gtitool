@@ -1,7 +1,7 @@
 package de.unisiegen.gtitool.core.machines.lr;
 
 
-import de.unisiegen.gtitool.core.entities.DefaultLRActionSet;
+import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR1Item;
 import de.unisiegen.gtitool.core.entities.LR1ItemSet;
@@ -142,7 +142,7 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
    */
   public ActionSet actions ( LR1ItemSet items, TerminalSymbol symbol )
   {
-    ActionSet ret = new DefaultLRActionSet ();
+    ActionSet ret = new DefaultActionSet ();
 
     try
     {
@@ -229,7 +229,7 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
   @Override
   protected ActionSet getPossibleActions ()
   {
-    ActionSet actions = new DefaultLRActionSet ();
+    ActionSet actions = new DefaultActionSet ();
 
     return actions;
   }

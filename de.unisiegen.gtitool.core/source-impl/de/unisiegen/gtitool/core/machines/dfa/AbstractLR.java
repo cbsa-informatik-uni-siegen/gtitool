@@ -1,13 +1,14 @@
 package de.unisiegen.gtitool.core.machines.dfa;
 
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
 import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.storage.Element;
 
@@ -27,13 +28,17 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
   /**
    * TODO
    * 
-   * @param alphabet
+   * @param grammar
+   * @throws AlphabetException
    */
-  protected AbstractLR ( final Alphabet alphabet )
+  protected AbstractLR ( final ExtendedGrammar grammar )
+      throws AlphabetException
   {
-    super ( alphabet, new DefaultAlphabet (), false,
+    super ( grammar.getAlphabet (), new DefaultAlphabet (), false,
         ValidationElement.FINAL_STATE, ValidationElement.STATE_NAME,
         ValidationElement.SYMBOL_ONLY_ONE_TIME );
+
+    this.grammar = grammar;
   }
 
 
@@ -77,6 +82,18 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
   }
 
 
+  public Element getElement ()
+  {
+    return this.grammar.getElement ();
+  }
+
+
+  public ExtendedGrammar getGrammar ()
+  {
+    return this.grammar;
+  }
+
+
   /**
    * The machine's type
    * 
@@ -85,4 +102,7 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
    */
   @Override
   public abstract MachineType getMachineType ();
+
+
+  private ExtendedGrammar grammar;
 }

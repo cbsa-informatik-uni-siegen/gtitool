@@ -117,6 +117,21 @@ public final class Element implements Serializable
 
 
   /**
+   * Searches for a given element by name
+   * 
+   * @param searchName The name
+   * @return The element, if found, null otherwise
+   */
+  public final Element getElementByName ( final String searchName )
+  {
+    for ( Element element : this.elementList )
+      if ( element.getName ().equals ( searchName ) )
+        return element;
+    return null;
+  }
+
+
+  /**
    * Returns the attribute with the given index.
    * 
    * @param index The index to return.

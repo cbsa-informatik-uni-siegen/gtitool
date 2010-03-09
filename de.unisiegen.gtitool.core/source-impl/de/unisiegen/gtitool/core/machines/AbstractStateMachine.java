@@ -1893,8 +1893,9 @@ public abstract class AbstractStateMachine implements StateMachine
             oldActiveSymbolList.add ( currentSymbol );
       }
 
-    StateMachineHistoryItem historyItem = new StateMachineHistoryItem ( oldActiveStateSet,
-        oldActiveTransitionSet, oldActiveSymbolList, oldStack, false );
+    StateMachineHistoryItem historyItem = new StateMachineHistoryItem (
+        oldActiveStateSet, oldActiveTransitionSet, oldActiveSymbolList,
+        oldStack, false );
     this.history.add ( historyItem );
 
     clearActiveState ();
@@ -2057,8 +2058,9 @@ public abstract class AbstractStateMachine implements StateMachine
             oldActiveSymbolList.add ( currentSymbol );
       }
 
-    StateMachineHistoryItem historyItem = new StateMachineHistoryItem ( oldActiveStateSet,
-        oldActiveTransitionSet, oldActiveSymbolList, oldStack, false );
+    StateMachineHistoryItem historyItem = new StateMachineHistoryItem (
+        oldActiveStateSet, oldActiveTransitionSet, oldActiveSymbolList,
+        oldStack, false );
     this.history.add ( historyItem );
 
     clearActiveState ();
@@ -2116,7 +2118,8 @@ public abstract class AbstractStateMachine implements StateMachine
     clearActiveSymbol ();
     this.stack.clear ();
 
-    StateMachineHistoryItem historyItem = this.history.remove ( this.history.size () - 1 );
+    StateMachineHistoryItem historyItem = this.history.remove ( this.history
+        .size () - 1 );
 
     ArrayList < Symbol > historyStackSymbolList = historyItem.getStack ().peak (
         historyItem.getStack ().size () );
@@ -2830,8 +2833,9 @@ public abstract class AbstractStateMachine implements StateMachine
     return ret;
 
   }
-  
-  public Element getElement()
+
+
+  public Element getElement ()
   {
     return null; // TODO
   }

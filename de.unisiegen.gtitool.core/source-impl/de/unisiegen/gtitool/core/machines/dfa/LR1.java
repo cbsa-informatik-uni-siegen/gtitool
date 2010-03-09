@@ -41,7 +41,9 @@ public class LR1 extends AbstractLR
    */
   public LR1 ( final LR1Grammar grammar ) throws AlphabetException
   {
-    this ( grammar.getAlphabet () );
+    super ( grammar );
+
+    this.grammar = grammar;
 
     Alphabet alphabet = this.getAlphabet ();
 
@@ -124,25 +126,15 @@ public class LR1 extends AbstractLR
 
 
   /**
-   * TODO
-   * 
-   * @param alphabet
-   */
-  private LR1 ( final Alphabet alphabet )
-  {
-    super ( alphabet );
-  }
-
-
-  /**
    * Try to convert this automaton to an equivalent LALR1 automaton
    * 
    * @return the new automaton
    * @throws StateException
+   * @throws AlphabetException
    */
-  public LR1 toLALR1 () throws StateException
+  public LR1 toLALR1 () throws StateException, AlphabetException
   {
-    LR1 ret = new LR1 ( this.getAlphabet () );
+    LR1 ret = new LR1 ( this.grammar );
 
     for ( int index = 0 ; index < this.getState ().size () ; ++index )
     {
@@ -179,4 +171,10 @@ public class LR1 extends AbstractLR
   {
     return MachineType.LR1;
   }
+
+
+  /**
+   * The grammar
+   */
+  private LR1Grammar grammar;
 }

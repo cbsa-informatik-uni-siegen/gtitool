@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProductionSet;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
@@ -37,11 +38,14 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalExc
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarNonterminalNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarRegularGrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -171,6 +175,24 @@ public abstract class AbstractGrammar implements Grammar, Storable
 
     // reset modify
     resetModify ();
+  }
+
+
+  public AbstractGrammar ( final Element element,
+      final ValidationElement ... validationElements )
+      throws NonterminalSymbolSetException, TerminalSymbolSetException,
+      StoreException
+  {
+    this ( new DefaultNonterminalSymbolSet ( element
+        .getElementByName ( "NonterminalSymbolSet" ) ), //$NON-NLS-1$
+        new DefaultTerminalSymbolSet ( element
+            .getElementByName ( "TerminalSymbolSet" ) ), //$NON-NLS-1$
+        new DefaultNonterminalSymbol ( element
+            .getElementByName ( "StartSymbol" ).getElement ( 0 ) ), //$NON-NLS-1$
+        validationElements );
+
+    this.setProductions ( new DefaultProductionSet ( element
+        .getElementByName ( "ProductionSet" ) ) ); //$NON-NLS-1$
   }
 
 
@@ -1015,12 +1037,12 @@ public abstract class AbstractGrammar implements Grammar, Storable
 
   /**
    * {@inheritDoc}
-   *
+   * 
    * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
    */
   public Element getElement ()
   {
-    Element newElement = new Element ( "AbstractGrammar" ); //$NON-NLS-1$
+    final Element newElement = new Element ( "Grammar" ); //$NON-NLS-1$
     try
     {
       newElement.addElement ( this.getAlphabet ().getElement () );
@@ -1034,7 +1056,11 @@ public abstract class AbstractGrammar implements Grammar, Storable
     newElement.addElement ( this.getTerminalSymbolSet ().getElement () );
     newElement.addElement ( this.getNonterminalSymbolSet ().getElement () );
     newElement.addElement ( this.getProduction () );
-    newElement.addElement ( this.getStartSymbol ().getElement () );
+    {
+      final Element element = new Element ( "StartSymbol" ); //$NON-NLS-1$
+      element.addElement ( this.getStartSymbol () );
+      newElement.addElement ( element );
+    }
     return newElement;
   }
 }

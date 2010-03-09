@@ -264,6 +264,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public Element getElement ()
   {
+    System.err.println("IMPLEMENT ME!"); //$NON-NLS-1$
     return null; // TODO
   }
 

@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.grammars.Grammar;
 
 
 /**
@@ -34,6 +35,17 @@ public class LR0Grammar extends ExtendedGrammar
       TerminalSymbolSet terminalSymbolSet, NonterminalSymbol startSymbol )
   {
     super ( nonterminalSymbolSet, terminalSymbolSet, startSymbol );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param grammar
+   */
+  public LR0Grammar ( final Grammar grammar )
+  {
+    super ( grammar );
   }
 
 

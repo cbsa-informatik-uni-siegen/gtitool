@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.core.machines;
 
 import javax.swing.table.TableModel;
 
-import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 
@@ -24,6 +23,8 @@ public interface StatelessMachine extends Machine
   public boolean isWordAccepted ();
 
 
+  //public void transit(Action);
+  
   /**
    * Try to automatically use the next transition
    * 

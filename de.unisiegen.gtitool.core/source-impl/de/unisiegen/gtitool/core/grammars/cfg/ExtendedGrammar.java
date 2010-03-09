@@ -16,7 +16,12 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
+import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -38,8 +43,9 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
    * @param terminalSymbolSet
    * @param startSymbol
    */
-  public ExtendedGrammar ( NonterminalSymbolSet nonterminalSymbolSet,
-      TerminalSymbolSet terminalSymbolSet, NonterminalSymbol startSymbol )
+  public ExtendedGrammar ( final NonterminalSymbolSet nonterminalSymbolSet,
+      final TerminalSymbolSet terminalSymbolSet,
+      final NonterminalSymbol startSymbol )
   {
     super ( nonterminalSymbolSet, terminalSymbolSet, startSymbol,
         ValidationElement.DUPLICATE_PRODUCTION,
@@ -57,6 +63,47 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
   }
 
 
+  protected ExtendedGrammar ( final Grammar grammar )
+  {
+    super ( grammar.getNonterminalSymbolSet (),
+        grammar.getTerminalSymbolSet (), grammar.getStartSymbol (),
+        ValidationElement.DUPLICATE_PRODUCTION,
+        ValidationElement.NONTERMINAL_NOT_REACHABLE ); // TODO!
+
+    for ( Production prod : grammar.getProduction () )
+    { 
+      this.addProduction ( prod );
+      
+      if(prod.getNonterminalSymbol().equals ( this.getStartSymbol() ))
+      {
+        if(this.startProduction != null)
+        {
+          System.err.println("Multiple start productions!"); //$NON-NLS-1$
+          System.exit ( 1 );
+        }
+        this.startProduction = prod;
+      }
+    }
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param element
+   * @throws NonterminalSymbolSetException
+   * @throws TerminalSymbolSetException
+   * @throws StoreException
+   */
+  public ExtendedGrammar ( final Element element )
+      throws NonterminalSymbolSetException, TerminalSymbolSetException,
+      StoreException
+  {
+    super ( element, ValidationElement.DUPLICATE_PRODUCTION,
+        ValidationElement.NONTERMINAL_NOT_REACHABLE ); // TODO:
+  }
+
+
   /**
    * TODO
    * 
@@ -71,7 +118,7 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
 
   /**
    * TODO
-   *
+   * 
    * @return
    */
   public Production getStartProduction ()
@@ -82,7 +129,7 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
 
   /**
    * TODO
-   *
+   * 
    * @return
    * @throws AlphabetException
    */
@@ -100,5 +147,5 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
   }
 
 
-  private DefaultProduction startProduction;
+  private Production startProduction;
 }

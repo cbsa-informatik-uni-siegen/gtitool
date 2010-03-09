@@ -15,6 +15,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -90,6 +91,19 @@ public class DefaultProductionSet implements ProductionSet
       throw new NullPointerException ( "prods is null" ); //$NON-NLS-1$
     add ( prods );
     this.modified = false;
+  }
+
+
+  /**
+   * Construct a DefaultProductionSet from an XML node
+   * 
+   * @param element
+   * @throws StoreException
+   */
+  public DefaultProductionSet ( final Element element ) throws StoreException
+  {
+    for ( Element prod : element.getElement () )
+      add ( new DefaultProduction ( prod ) );
   }
 
 

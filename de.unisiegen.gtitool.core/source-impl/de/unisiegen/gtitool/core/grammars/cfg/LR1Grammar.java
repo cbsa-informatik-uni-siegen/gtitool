@@ -1,11 +1,6 @@
 package de.unisiegen.gtitool.core.grammars.cfg;
 
 
-import java.util.ArrayList;
-
-import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
-import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.LR1Item;
@@ -15,11 +10,10 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
-import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
+import de.unisiegen.gtitool.core.grammars.Grammar;
 
 
 /**
@@ -28,10 +22,10 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalExc
 public class LR1Grammar extends ExtendedGrammar
 {
 
-  public LR1Grammar ( LR0Grammar lr0Grammar )
+  public LR1Grammar ( Grammar grammar )
   {
-    super ( lr0Grammar.getNonterminalSymbolSet (), lr0Grammar
-        .getTerminalSymbolSet (), lr0Grammar.getStartSymbol () );
+    super ( grammar.getNonterminalSymbolSet (),
+        grammar.getTerminalSymbolSet (), grammar.getStartSymbol () );
   }
 
 

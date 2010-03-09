@@ -40,7 +40,7 @@ public class LR0 extends AbstractLR
    */
   public LR0 ( final LR0Grammar grammar ) throws AlphabetException
   {
-    super ( grammar.getAlphabet () );
+    super ( grammar );
 
     Alphabet alphabet = this.getAlphabet ();
 

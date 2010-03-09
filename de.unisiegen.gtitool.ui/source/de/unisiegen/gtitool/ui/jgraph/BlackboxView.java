@@ -15,7 +15,7 @@ import org.jgraph.graph.VertexView;
 /**
  * {@link VertexView} for BlackBox in the Regex -> ENFA Converter
  */
-public class BlackboxView extends StateView//ViewBase
+public class BlackboxView extends StateView
 {
 
   /**

@@ -27,9 +27,14 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
+import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
+import de.unisiegen.gtitool.core.machines.dfa.LR0;
+import de.unisiegen.gtitool.core.machines.dfa.LR1;
 import de.unisiegen.gtitool.core.machines.listener.MachineChangedListener;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
@@ -222,6 +227,8 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
     // Element
     Alphabet alphabet = null;
     Alphabet pushDownAlphabet = null;
+    Grammar loadedGrammar = null;
+
     boolean foundAlphabet = false;
     boolean foundPushDownAlphabet = false;
     for ( Element current : element.getElement () )
@@ -236,6 +243,16 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
         pushDownAlphabet = new DefaultAlphabet ( current );
         foundPushDownAlphabet = true;
       }
+      else if ( current.getName ().equals ( "Grammar" ) ) //$NON-NLS-1$
+        try
+        {
+          loadedGrammar = new ExtendedGrammar ( current );
+        }
+        catch ( Exception e )
+        {
+          e.printStackTrace ();
+        }
+
       else if ( ( !current.getName ().equals ( "StateView" ) ) //$NON-NLS-1$
           && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
         throw new StoreException ( Messages
@@ -244,9 +261,18 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
 
-    //if ( machineType.equals ( "LR0" ) )
-    //  this.machine = LR0.createMachine ( machineType, alphabet );
-    //else
+    boolean lrAutomaton = false;
+    if ( machineType != null && machineType.equals ( "LR0" ) ) //$NON-NLS-1$
+    {
+      this.machine = new LR0 ( new LR0Grammar ( loadedGrammar ) );
+      lrAutomaton = true;
+    }
+    else if ( machineType != null && machineType.equals ( "LR1" ) ) //$NON-NLS-1$
+    {
+      this.machine = new LR1 ( new LR1Grammar ( loadedGrammar ) );
+      lrAutomaton = true;
+    }
+    else
       // initialize this model elements
       this.machine = AbstractStateMachine.createMachine ( machineType,
           alphabet, pushDownAlphabet, usePushDownAlphabet );
@@ -290,12 +316,33 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
             state.setPushDownAlphabet ( pushDownAlphabet );
           }
 
-        createStateView ( x, y, state, false, true, true );
+        if ( state == null )
+          continue;
+
+        if ( lrAutomaton )
+        {
+          State foundState = null;
+          for ( State automatonState : this.machine.getState () )
+            if ( automatonState.getName ().equals ( state.getName () ) )
+            {
+              foundState = automatonState;
+              break;
+            }
+
+          if ( foundState == null )
+            throw new RuntimeException ( "State not found!" ); //$NON-NLS-1$
+
+          createStateView ( x, y, foundState, false, false, false );
+        }
+        else
+          createStateView ( x, y, state, false, true, true );
       }
-      else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
-          && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
-        throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
+    /*
+     * else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$ &&
+     * ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$ throw
+     * new StoreException ( Messages .getString (
+     * "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
+     */
 
     // Load the transitions
     for ( Element current : element.getElement () )
@@ -308,12 +355,15 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
         DefaultStateView source = getStateById ( transition.getStateBeginId () );
         DefaultStateView target = getStateById ( transition.getStateEndId () );
 
-        createTransitionView ( transition, source, target, false, false, true );
+        createTransitionView ( transition, source, target, false, false,
+            !lrAutomaton );
       }
-      else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
-          && ( !current.getName ().equals ( "StateView" ) ) ) //$NON-NLS-1$
-        throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
+    /*
+     * else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$ &&
+     * ( !current.getName ().equals ( "StateView" ) ) ) //$NON-NLS-1$ throw new
+     * StoreException ( Messages .getString ( "StoreException.AdditionalElement"
+     * ) ); //$NON-NLS-1$
+     */
 
     // Reset modify
     resetModify ();
@@ -377,6 +427,15 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param x
+   * @param y
+   * @param state
+   * @param createUndoStep
+   * @return
+   */
   public final DefaultStateView createStateView ( double x, double y,
       State state, boolean createUndoStep )
   {
@@ -467,6 +526,12 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param view
+   * @return
+   */
   private static Dimension getViewDimension ( DefaultStateView view )
   {
     final VertexView layoutView = GPCellViewFactory
@@ -597,6 +662,11 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
       newElement.addElement ( stateView.getElement () );
     for ( DefaultTransitionView transitionView : this.transitionViewList )
       newElement.addElement ( transitionView.getElement () );
+
+    Element machineElement = this.getMachine ().getElement ();
+    if ( machineElement != null )
+      newElement.addElement ( machineElement );
+
     return newElement;
   }
 

@@ -193,6 +193,7 @@ public final class Storage
       else
       {
         exception = exc;
+        exception.printStackTrace ();
       }
 
       if ( exception instanceof StoreException )

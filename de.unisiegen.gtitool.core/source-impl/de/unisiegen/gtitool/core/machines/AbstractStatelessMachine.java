@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.machines;
 
 
+import javax.swing.table.TableColumnModel;
+
 import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
@@ -202,7 +204,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
     }
     catch ( WordResetedException exc )
     {
-      exc.printStackTrace();
+      exc.printStackTrace ();
       System.exit ( 1 );
     }
   }
@@ -320,7 +322,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   protected boolean onAccept ( final Action action )
   {
-    accept();
+    accept ();
     return true;
   }
 
@@ -368,5 +370,17 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
       System.err.println ( "Internal parser error" ); //$NON-NLS-1$
       System.exit ( 1 );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.Machine#getTableColumnModel()
+   */
+  public TableColumnModel getTableColumnModel ()
+  {
+    throw new RuntimeException (
+        "getTableColumnModel is not implemented for StatelessMachine's" ); //$NON-NLS-1$
   }
 }

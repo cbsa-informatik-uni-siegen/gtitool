@@ -1,9 +1,6 @@
 package de.unisiegen.gtitool.core.machines;
 
 
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
@@ -12,14 +9,14 @@ import de.unisiegen.gtitool.core.storage.Element;
 
 
 /**
- * TODO
+ * Represents an {@link AbstractLRMachine}
  */
 public abstract class AbstractLRMachine extends AbstractStatelessMachine
     implements LRMachine
 {
 
   /**
-   * TODO
+   * Allocates a new {@link AbstractLRMachine}
    * 
    * @param alphabet
    */
@@ -29,46 +26,17 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   }
 
 
-  
-
-
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @throws MachineAmbigiousActionException
    * @see de.unisiegen.gtitool.core.machines.StatelessMachine#autoTransit()
    */
   public abstract void autoTransit () throws MachineAmbigiousActionException;
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.machines.StatelessMachine#getTableModel()
-   */
-  public TableModel getTableModel ()
-  {
-    return null;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.machines.Machine#getTableColumnModel()
-   */
-  public TableColumnModel getTableColumnModel ()
-  {
-    return null;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getElement()
    */
   @Override

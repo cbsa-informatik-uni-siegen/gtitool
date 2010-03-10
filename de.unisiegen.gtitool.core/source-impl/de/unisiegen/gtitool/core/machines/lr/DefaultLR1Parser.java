@@ -44,8 +44,10 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
 
 
   /**
+   * Allocates a new {@link DefaultLR1Parser}
+   * 
    * @param lr1 - The LR1 parser to use (can be used to use an LALR1 automaton)
-   * @param grammar
+   * @param grammar The {@link LR1Grammar}
    * @throws AlphabetException
    */
   public DefaultLR1Parser ( final LR1 lr1, final LR1Grammar grammar )
@@ -57,36 +59,34 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
 
     this.lr1Automaton = lr1;
   }
-  
-  
+
+
   /**
-   * 
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onShift(de.unisiegen.gtitool.core.entities.Action)
    */
   @Override
-  protected boolean onShift(@SuppressWarnings ( "unused" ) final Action action)
+  protected boolean onShift ( @SuppressWarnings ( "unused" ) final Action action )
   {
     this.lr1Automaton.nextSymbol ( currentTerminal () );
     nextSymbol ();
     return true;
   }
-  
+
+
   /**
-   * 
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onReduce(de.unisiegen.gtitool.core.entities.Action)
    */
   @Override
-  protected boolean onReduce(final Action action)
+  protected boolean onReduce ( final Action action )
   {
     int unwind = 0;
     try
     {
-      for ( ; unwind < action.getReduceAction ().getProductionWord ()
-          .size () ; ++unwind )
+      for ( ; unwind < action.getReduceAction ().getProductionWord ().size () ; ++unwind )
         this.lr1Automaton.previousSymbol ();
     }
     catch ( RuntimeException e )

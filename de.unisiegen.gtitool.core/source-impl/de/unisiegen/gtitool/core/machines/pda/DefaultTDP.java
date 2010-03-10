@@ -1,9 +1,6 @@
 package de.unisiegen.gtitool.core.machines.pda;
 
 
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
-
 import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
@@ -17,7 +14,7 @@ import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
-import de.unisiegen.gtitool.core.entities.ReduceAction;
+import de.unisiegen.gtitool.core.entities.ReverseReduceAction;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
@@ -92,10 +89,11 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
       ProductionSet ps = this.parsingTable.get ( new DefaultNonterminalSymbol (
           stackSymbol ), new DefaultTerminalSymbol ( inputSymbol ) );
       for ( Production p : ps )
-        actions.add ( new ReduceAction ( p ) );
+        actions.add ( new ReverseReduceAction ( p ) );
     }
     else if ( inputSymbol.equals ( stackSymbol ) )
       actions.add ( new CancleOutAction () );
+
     return actions;
   }
 
@@ -154,28 +152,6 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
     for ( int i = pw.size () ; i < 0 ; --i )
       getStack ().push ( new DefaultSymbol ( pw.get ( i ).getName () ) );
     return true;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.StatelessMachine#getTableModel()
-   */
-  public TableModel getTableModel ()
-  {
-    return null;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.Machine#getTableColumnModel()
-   */
-  public TableColumnModel getTableColumnModel ()
-  {
-    return null;
   }
 
 

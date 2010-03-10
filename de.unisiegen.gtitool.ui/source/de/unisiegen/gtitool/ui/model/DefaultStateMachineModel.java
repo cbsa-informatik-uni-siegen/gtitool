@@ -355,6 +355,17 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
         DefaultStateView source = getStateById ( transition.getStateBeginId () );
         DefaultStateView target = getStateById ( transition.getStateEndId () );
 
+        if ( source == null )
+          throw new NullPointerException ( "source is null!" ); //$NON-NLS-1$
+        if ( target == null )
+          throw new NullPointerException ( "target is null!" ); //$NON-NLS-1$
+
+        if ( lrAutomaton )
+        {
+          transition.setStateBegin ( source.getState () );
+          transition.setStateEnd ( target.getState () );
+        }
+
         createTransitionView ( transition, source, target, false, false,
             !lrAutomaton );
       }

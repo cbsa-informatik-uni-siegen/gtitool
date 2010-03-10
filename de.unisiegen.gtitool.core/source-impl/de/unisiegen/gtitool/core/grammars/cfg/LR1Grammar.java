@@ -24,8 +24,7 @@ public class LR1Grammar extends ExtendedGrammar
 
   public LR1Grammar ( Grammar grammar )
   {
-    super ( grammar.getNonterminalSymbolSet (),
-        grammar.getTerminalSymbolSet (), grammar.getStartSymbol () );
+    super ( grammar );
   }
 
 

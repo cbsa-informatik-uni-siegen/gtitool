@@ -5,7 +5,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
 import de.unisiegen.gtitool.core.machines.lr.LRMachine;
@@ -30,10 +29,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   }
 
 
-  /**
-   * {@inheritDoc}
-   **/
-  public abstract boolean transit ( final Action transition );
+  
 
 
   /**
@@ -79,7 +75,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   public Element getElement ()
   {
     Element element = new Element ( "Grammar" ); //$NON-NLS-1$
-    element.addElement ( this.getGrammar ().getElement () );
+    element.addElement ( getGrammar ().getElement () );
     return element;
   }
 

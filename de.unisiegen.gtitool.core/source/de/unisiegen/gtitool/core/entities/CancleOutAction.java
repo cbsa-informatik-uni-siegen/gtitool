@@ -13,7 +13,7 @@ public class CancleOutAction extends ShiftActionBase
    */
   public TransitionType getTransitionType ()
   {
-    return Action.TransitionType.CANCLE;
+    return Action.TransitionType.CANCEL;
   }
   
   /**

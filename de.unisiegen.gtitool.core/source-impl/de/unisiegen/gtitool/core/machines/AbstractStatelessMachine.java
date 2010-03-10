@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.ReplaceAction;
+import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.ShiftActionBase;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
@@ -291,10 +292,11 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * handles the specific {@link ShiftActionBase}
    * 
    * @param action The {@link Action}
+   * @return true if the {@link ShiftAction} could be applied
    */
-  protected void onShift ( final Action action )
+  protected boolean onShift ( final Action action )
   {
-    // empty here
+    return true;
   }
 
 
@@ -302,10 +304,11 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * handles the specific {@link ReplaceAction}
    * 
    * @param action The {@link Action}
+   * @return true if the {@link ReplaceAction} could be applied
    */
-  protected void onReduce ( final Action action )
+  protected boolean onReduce ( final Action action )
   {
-    // empty here
+    return true;
   }
 
 
@@ -313,10 +316,12 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * handles the {@link AcceptAction}
    * 
    * @param action The {@link Action}
+   * @return true if accept could be applied
    */
-  protected void onAccept ( final Action action )
+  protected boolean onAccept ( final Action action )
   {
     accept();
+    return true;
   }
 
 
@@ -332,16 +337,13 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
     switch ( transition.getTransitionType () )
     {
       case SHIFT :
-      case CANCLE :
-        onShift ( transition );
-        break;
+      case CANCEL :
+        return onShift ( transition );
       case REDUCE :
       case REVERSEREDUCE :
-        onReduce ( transition );
-        break;
+        return onReduce ( transition );
       case ACCEPT :
-        onAccept ( transition );
-        break;
+        return onAccept ( transition );
     }
     return true;
   }

@@ -1,14 +1,14 @@
 package de.unisiegen.gtitool.core.machines.lr;
 
 
+import de.unisiegen.gtitool.core.entities.AcceptAction;
+import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.LR0State;
-import de.unisiegen.gtitool.core.entities.AcceptAction;
-import de.unisiegen.gtitool.core.entities.Action;
-import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.State;
@@ -24,15 +24,15 @@ import de.unisiegen.gtitool.core.machines.dfa.LR0;
 
 
 /**
- * TODO
+ * The {@link DefaultLR0Parser}
  */
 public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
 {
 
   /**
-   * TODO
+   * Allocates a new {@link DefaultLR0Parser}
    * 
-   * @param grammar
+   * @param grammar The {@link LR0Grammar}
    * @throws AlphabetException
    */
   public DefaultLR0Parser ( final LR0Grammar grammar ) throws AlphabetException
@@ -41,6 +41,46 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
     this.grammar = grammar;
 
     this.lr0Automaton = new LR0 ( grammar );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onShift(de.unisiegen.gtitool.core.entities.Action)
+   */
+  @Override
+  protected boolean onShift ( @SuppressWarnings ( "unused" ) final Action action )
+  {
+    this.lr0Automaton.nextSymbol ( currentTerminal () );
+    nextSymbol ();
+    return true;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onReduce(de.unisiegen.gtitool.core.entities.Action)
+   */
+  @Override
+  protected boolean onReduce ( final Action action )
+  {
+    int unwind = 0;
+    try
+    {
+      for ( ; unwind < action.getReduceAction ().getProductionWord ().size () ; ++unwind )
+        this.lr0Automaton.previousSymbol ();
+    }
+    catch ( RuntimeException e )
+    {
+      for ( int i = 0 ; i < unwind ; ++i )
+        this.lr0Automaton.nextSymbol ();
+      return false;
+    }
+    this.lr0Automaton.nextSymbol ( action.getReduceAction ()
+        .getNonterminalSymbol () );
+    return true;
   }
 
 
@@ -55,48 +95,19 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
     if ( !possibleActions.contains ( action ) )
       return false;
 
-    switch ( action.getTransitionType () )
-    {
-      case REDUCE :
-        int unwind = 0;
-        try
-        {
-          for ( ; unwind < action.getReduceAction ().getProductionWord ()
-              .size () ; ++unwind )
-            this.lr0Automaton.previousSymbol ();
-        }
-        catch ( RuntimeException e )
-        {
-          for ( int i = 0 ; i < unwind ; ++i )
-            this.lr0Automaton.nextSymbol ();
-          return false;
-        }
-        this.lr0Automaton.nextSymbol ( action.getReduceAction ()
-            .getNonterminalSymbol () );
-        break;
-      case SHIFT :
-        this.lr0Automaton.nextSymbol ( currentTerminal () );
-        nextSymbol ();
-        break;
-      case ACCEPT :
-        accept ();
-        break;
-    }
-
-    return true;
+    return super.transit ( action );
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @throws MachineAmbigiousActionException
    * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#autoTransit()
    */
   @Override
   public void autoTransit () throws MachineAmbigiousActionException
   {
-    this.assertTransit ( actions ( currentItems (), currentTerminal () ) );
+    assertTransit ( actions ( currentItems (), currentTerminal () ) );
   }
 
 
@@ -175,9 +186,8 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param word
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#start(de.unisiegen.gtitool.core.entities.Word)
    */
   @Override

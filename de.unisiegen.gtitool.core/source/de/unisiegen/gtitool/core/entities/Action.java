@@ -19,7 +19,7 @@ public interface Action extends Comparable < Action >
     /**
      * Cancle out the input character with the character on the top of the stack
      */
-    CANCLE,
+    CANCEL,
     /**
      * Reduce the current symbols on the top of the stack
      */

@@ -1,14 +1,14 @@
 package de.unisiegen.gtitool.core.machines.lr;
 
 
+import de.unisiegen.gtitool.core.entities.AcceptAction;
+import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR1Item;
 import de.unisiegen.gtitool.core.entities.LR1ItemSet;
 import de.unisiegen.gtitool.core.entities.LR1State;
-import de.unisiegen.gtitool.core.entities.AcceptAction;
-import de.unisiegen.gtitool.core.entities.Action;
-import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.State;
@@ -23,15 +23,15 @@ import de.unisiegen.gtitool.core.machines.dfa.LR1;
 
 
 /**
- * TODO
+ * The {@link DefaultLR1Parser}
  */
 public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
 {
 
   /**
-   * TODO
+   * Allocates a new {@link DefaultLR1Parser}
    * 
-   * @param grammar - The grammar to parse
+   * @param grammar - The {@link LR1Grammar} to parse
    * @throws AlphabetException
    */
   public DefaultLR1Parser ( final LR1Grammar grammar ) throws AlphabetException
@@ -57,13 +57,54 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
 
     this.lr1Automaton = lr1;
   }
+  
+  
+  /**
+   * 
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onShift(de.unisiegen.gtitool.core.entities.Action)
+   */
+  @Override
+  protected boolean onShift(@SuppressWarnings ( "unused" ) final Action action)
+  {
+    this.lr1Automaton.nextSymbol ( currentTerminal () );
+    nextSymbol ();
+    return true;
+  }
+  
+  /**
+   * 
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onReduce(de.unisiegen.gtitool.core.entities.Action)
+   */
+  @Override
+  protected boolean onReduce(final Action action)
+  {
+    int unwind = 0;
+    try
+    {
+      for ( ; unwind < action.getReduceAction ().getProductionWord ()
+          .size () ; ++unwind )
+        this.lr1Automaton.previousSymbol ();
+    }
+    catch ( RuntimeException e )
+    {
+      for ( int i = 0 ; i < unwind ; ++i )
+        this.lr1Automaton.nextSymbol ();
+      return false;
+    }
+    this.lr1Automaton.nextSymbol ( action.getReduceAction ()
+        .getNonterminalSymbol () );
+    return true;
+  }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#transit(de.unisiegen.gtitool.core.entities.Action)
-   * @return true if the transition could be made
    */
   @Override
   public boolean transit ( Action action )
@@ -73,48 +114,19 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
     if ( !possibleActions.contains ( action ) )
       return false;
 
-    switch ( action.getTransitionType () )
-    {
-      case REDUCE :
-        int unwind = 0;
-        try
-        {
-          for ( ; unwind < action.getReduceAction ().getProductionWord ()
-              .size () ; ++unwind )
-            this.lr1Automaton.previousSymbol ();
-        }
-        catch ( RuntimeException e )
-        {
-          for ( int i = 0 ; i < unwind ; ++i )
-            this.lr1Automaton.nextSymbol ();
-          return false;
-        }
-        this.lr1Automaton.nextSymbol ( action.getReduceAction ()
-            .getNonterminalSymbol () );
-        break;
-      case SHIFT :
-        this.lr1Automaton.nextSymbol ( currentTerminal () );
-        nextSymbol ();
-        break;
-      case ACCEPT :
-        accept ();
-        break;
-    }
-
-    return true;
+    return super.transit ( action );
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @throws MachineAmbigiousActionException
    * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#autoTransit()
    */
   @Override
   public void autoTransit () throws MachineAmbigiousActionException
   {
-    this.assertTransit ( actions ( currentItems (), currentTerminal () ) );
+    assertTransit ( actions ( currentItems (), currentTerminal () ) );
   }
 
 
@@ -172,9 +184,8 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param word
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#start(de.unisiegen.gtitool.core.entities.Word)
    */
   @Override
@@ -210,13 +221,13 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
 
 
   /**
-   * TODO
+   * The {@link LR1Grammar}
    */
   private LR1Grammar grammar;
 
 
   /**
-   * TODO
+   * The {@link LR1} automaton
    */
   private LR1 lr1Automaton;
 

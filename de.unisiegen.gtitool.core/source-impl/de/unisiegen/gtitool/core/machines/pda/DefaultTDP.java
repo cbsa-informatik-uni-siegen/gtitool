@@ -94,11 +94,8 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
       for ( Production p : ps )
         actions.add ( new ReduceAction ( p ) );
     }
-    else
-    {
-      if ( inputSymbol.equals ( stackSymbol ) )
-        actions.add ( new CancleOutAction () );
-    }
+    else if ( inputSymbol.equals ( stackSymbol ) )
+      actions.add ( new CancleOutAction () );
     return actions;
   }
 
@@ -112,7 +109,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   {
     try
     {
-      this.assertTransit ( getPossibleActions () );
+      assertTransit ( getPossibleActions () );
     }
     catch ( ActionSetException exc )
     {
@@ -128,7 +125,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onShift(de.unisiegen.gtitool.core.entities.Action)
    */
   @Override
-  protected void onShift ( @SuppressWarnings ( "unused" ) final Action action )
+  protected boolean onShift ( @SuppressWarnings ( "unused" ) final Action action )
   {
     /*
      * shift in our case means: the push down automaton takes the actual input
@@ -136,6 +133,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
      */
     nextSymbol ();
     getStack ().pop ();
+    return true;
   }
 
 
@@ -145,7 +143,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onReduce(de.unisiegen.gtitool.core.entities.Action)
    */
   @Override
-  protected void onReduce ( final Action action )
+  protected boolean onReduce ( final Action action )
   {
     /*
      * replace the left side of the production corresponding to the actual
@@ -155,6 +153,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
     ProductionWord pw = action.getReduceAction ().getProductionWord ();
     for ( int i = pw.size () ; i < 0 ; --i )
       getStack ().push ( new DefaultSymbol ( pw.get ( i ).getName () ) );
+    return true;
   }
 
 

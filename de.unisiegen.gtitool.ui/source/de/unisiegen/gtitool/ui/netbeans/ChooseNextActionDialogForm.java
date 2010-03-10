@@ -11,11 +11,14 @@
 
 package de.unisiegen.gtitool.ui.netbeans;
 
+import de.unisiegen.gtitool.ui.logic.ChooseNextActionDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
+
 /**
  *
  * @author christian
  */
-public class ChooseNextActionDialogForm extends javax.swing.JDialog {
+public class ChooseNextActionDialogForm extends javax.swing.JDialog implements GUIClass <ChooseNextActionDialog> {
 
     /** Creates new form ChooseNextActionDialogForm */
     public ChooseNextActionDialogForm(java.awt.Frame parent, boolean modal) {
@@ -35,6 +38,8 @@ public class ChooseNextActionDialogForm extends javax.swing.JDialog {
 
         jGTILabel1 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jGTIListActionList = new de.unisiegen.gtitool.ui.swing.JGTIList();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
@@ -53,6 +58,15 @@ public class ChooseNextActionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jGTILabel1, gridBagConstraints);
+
+        jScrollPane1.setViewportView(jGTIListActionList);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jGTIPanel1.add(jScrollPane1, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -105,7 +119,14 @@ public class ChooseNextActionDialogForm extends javax.swing.JDialog {
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabel1;
+    public de.unisiegen.gtitool.ui.swing.JGTIList jGTIListActionList;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+    private ChooseNextActionDialog logic;
+
+    public ChooseNextActionDialog getLogic() {
+        return this.logic;
+    }
 
 }

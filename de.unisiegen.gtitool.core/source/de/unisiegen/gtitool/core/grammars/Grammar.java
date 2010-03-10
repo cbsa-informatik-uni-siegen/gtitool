@@ -24,6 +24,7 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetE
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
 import de.unisiegen.gtitool.core.storage.Modifyable;
+import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
@@ -33,7 +34,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
  * @version $Id$
  */
 public interface Grammar extends InputEntity, Serializable, TableModel,
-    Modifyable
+    Modifyable, Storable
 {
 
   /**

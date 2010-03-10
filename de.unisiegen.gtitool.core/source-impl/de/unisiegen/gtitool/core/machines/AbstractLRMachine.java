@@ -36,8 +36,6 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
   /**
    * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getElement()
    */
   @Override
   public Element getElement ()
@@ -49,10 +47,11 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
 
   /**
-   * TODO
+   * Returns the ExtendedGrammar
    * 
-   * @return
+   * @return the grammar
    */
+  @Override
   public abstract ExtendedGrammar getGrammar ();
 
 

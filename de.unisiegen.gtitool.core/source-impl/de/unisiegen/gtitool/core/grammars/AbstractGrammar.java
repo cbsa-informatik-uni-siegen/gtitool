@@ -44,7 +44,6 @@ import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
-import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
@@ -54,7 +53,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class AbstractGrammar implements Grammar, Storable
+public abstract class AbstractGrammar implements Grammar
 {
 
   /**

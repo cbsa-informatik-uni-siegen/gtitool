@@ -164,4 +164,9 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   {
     return MachineType.TDP;
   }
+  
+  public CFG getGrammar()
+  {
+    return this.cfg;
+  }
 }

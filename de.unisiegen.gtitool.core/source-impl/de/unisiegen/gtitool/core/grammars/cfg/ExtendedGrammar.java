@@ -25,7 +25,8 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
- * TODO
+ * The class for grammars that are extended by an extra start production to
+ * implement LR parsers
  */
 public class ExtendedGrammar extends AbstractGrammar implements CFG
 {
@@ -51,10 +52,9 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
         ValidationElement.DUPLICATE_PRODUCTION,
         ValidationElement.NONTERMINAL_NOT_REACHABLE );
 
-    // TODO: find a unique symbol here!
     this.setStartSymbol ( new DefaultNonterminalSymbol ( startSymbol
         .toString ()
-        + "'" ) );
+        + "'" ) ); //$NON-NLS-1$
 
     this.startProduction = new DefaultProduction ( this.getStartSymbol (),
         new DefaultProductionWord ( startSymbol ) );
@@ -63,6 +63,11 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
   }
 
 
+  /**
+   * Create this extended grammar from an already constructed grammar
+   * 
+   * @param grammar
+   */
   protected ExtendedGrammar ( final Grammar grammar )
   {
     super ( grammar.getNonterminalSymbolSet (),
@@ -71,14 +76,14 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
         ValidationElement.NONTERMINAL_NOT_REACHABLE ); // TODO!
 
     for ( Production prod : grammar.getProduction () )
-    { 
+    {
       this.addProduction ( prod );
-      
-      if(prod.getNonterminalSymbol().equals ( this.getStartSymbol() ))
+
+      if ( prod.getNonterminalSymbol ().equals ( this.getStartSymbol () ) )
       {
-        if(this.startProduction != null)
+        if ( this.startProduction != null )
         {
-          System.err.println("Multiple start productions!"); //$NON-NLS-1$
+          System.err.println ( "Multiple start productions!" ); //$NON-NLS-1$
           System.exit ( 1 );
         }
         this.startProduction = prod;
@@ -133,6 +138,7 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
    * @return
    * @throws AlphabetException
    */
+  @Override
   public Alphabet getAlphabet () throws AlphabetException
   {
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
@@ -147,5 +153,8 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
   }
 
 
+  /**
+   * The extra start production
+   */
   private Production startProduction;
 }

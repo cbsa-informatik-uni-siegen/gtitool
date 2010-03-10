@@ -245,4 +245,14 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
     return actions;
   }
 
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.lr.LR1Parser#getLR1()
+   */
+  public LR1 getLR1 ()
+  {
+    return this.lr1Automaton;
+  }
 }

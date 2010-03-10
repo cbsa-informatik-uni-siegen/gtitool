@@ -143,7 +143,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * 
    * @param word the input {@link Word}
    */
-  public void start ( final Word word )
+  public void start ( @SuppressWarnings ( "hiding" ) final Word word )
   {
     this.word = word;
     this.word.start ();
@@ -277,7 +277,9 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public Element getElement ()
   {
-    throw new RuntimeException ( "not yet implemented" ); //$NON-NLS-1$
+    final Element element = new Element ( "Grammar" ); //$NON-NLS-1$
+    element.addElement ( this.getGrammar ().getElement () );
+    return element;
   }
 
 
@@ -288,6 +290,14 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * @throws ActionSetException
    */
   abstract protected ActionSet getPossibleActions () throws ActionSetException;
+
+
+  /**
+   * Returns the associated grammar
+   * 
+   * @return the grammar
+   */
+  public abstract Grammar getGrammar ();
 
 
   /**

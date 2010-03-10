@@ -86,6 +86,21 @@ public class DefaultActionSet implements ActionSet
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.entities.ActionSet#get(int)
+   */
+  public Action get ( final int index )
+  {
+    int idx = index;
+    Iterator < Action > action = iterator ();
+    while ( action.hasNext () && idx-- > 1 )
+      action.next ();
+    return action.next ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.gtitool.core.entities.ActionSet#size()
    */
   public int size ()

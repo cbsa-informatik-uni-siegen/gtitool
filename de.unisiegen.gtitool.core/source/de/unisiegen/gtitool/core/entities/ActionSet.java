@@ -67,6 +67,15 @@ public interface ActionSet extends Entity < ActionSet >, Storable, Modifyable,
 
 
   /**
+   * Returns the {@link Action} at Index {@code index}.
+   * 
+   * @param index The Index of the {@link Action} we want to return
+   * @return {@link Action} at Index {@code index}
+   */
+  public Action get ( int index );
+
+
+  /**
    * Returns the first {@link Action}
    * 
    * @return the first {@link Action}

@@ -107,11 +107,11 @@ public interface Word extends Entity < Word >, Storable, Iterable < Symbol >
 
 
   /**
-   * Returns true if this word is reseted, otherwise false.
+   * Returns true if this word is resetted, otherwise false.
    * 
-   * @return True if this word is reseted, otherwise false.
+   * @return True if this word is resetted, otherwise false.
    */
-  public boolean isReseted ();
+  public boolean isResetted ();
 
 
   /**

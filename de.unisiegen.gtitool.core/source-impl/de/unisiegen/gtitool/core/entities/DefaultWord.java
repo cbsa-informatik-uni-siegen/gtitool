@@ -109,33 +109,23 @@ public final class DefaultWord implements Word
     this ();
 
     // Check if the element is correct
-    if ( !element.getName ().equals ( "Word" ) ) //$NON-NLS-1$
-    {
+    if ( !element.getName ().equals ( "Word" ) )
       throw new IllegalArgumentException (
           "element " + Messages.QUOTE + element.getName () //$NON-NLS-1$
               + Messages.QUOTE + " is not a word" ); //$NON-NLS-1$
-    }
 
     // Element
     for ( Element current : element.getElement () )
-    {
-      if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
-      {
+      if ( current.getName ().equals ( "Symbol" ) )
         add ( new DefaultSymbol ( current ) );
-      }
       else
-      {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-      }
-    }
 
     // Attribute
     if ( element.getAttribute ().size () > 0 )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-    }
   }
 
 
@@ -150,9 +140,7 @@ public final class DefaultWord implements Word
 
     // Symbols
     if ( symbols == null )
-    {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
     add ( symbols );
   }
 
@@ -168,9 +156,7 @@ public final class DefaultWord implements Word
 
     // Symbols
     if ( symbols == null )
-    {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
     add ( symbols );
   }
 
@@ -183,13 +169,9 @@ public final class DefaultWord implements Word
   public final void add ( Iterable < Symbol > symbols )
   {
     if ( symbols == null )
-    {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
     for ( Symbol current : symbols )
-    {
       add ( current );
-    }
   }
 
 
@@ -202,9 +184,7 @@ public final class DefaultWord implements Word
   {
     // Symbol
     if ( symbol == null )
-    {
       throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
-    }
 
     symbol.addPrettyStringChangedListener ( this.prettyStringChangedListener );
 
@@ -222,13 +202,9 @@ public final class DefaultWord implements Word
   public final void add ( Symbol ... symbols )
   {
     if ( symbols == null )
-    {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
     for ( Symbol current : symbols )
-    {
       add ( current );
-    }
   }
 
 
@@ -264,15 +240,11 @@ public final class DefaultWord implements Word
     {
       int compare = firstList.get ( i ).compareTo ( secondList.get ( i ) );
       if ( compare != 0 )
-      {
         return compare;
-      }
     }
 
     if ( firstList.size () == secondList.size () )
-    {
       return 0;
-    }
 
     return firstList.size () < secondList.size () ? -1 : 1;
   }
@@ -316,9 +288,7 @@ public final class DefaultWord implements Word
     PrettyStringChangedListener [] listeners = this.listenerList
         .getListeners ( PrettyStringChangedListener.class );
     for ( PrettyStringChangedListener current : listeners )
-    {
       current.prettyStringChanged ();
-    }
   }
 
 
@@ -353,9 +323,7 @@ public final class DefaultWord implements Word
   {
     Element newElement = new Element ( "Word" ); //$NON-NLS-1$
     for ( Symbol current : this.symbolList )
-    {
       newElement.addElement ( current );
-    }
     return newElement;
   }
 
@@ -380,19 +348,13 @@ public final class DefaultWord implements Word
       throws WordFinishedException, WordResetedException
   {
     if ( this.currentPosition == START_INDEX )
-    {
       throw new WordResetedException ( this );
-    }
     if ( this.currentPosition >= this.symbolList.size () )
-    {
       throw new WordFinishedException ( this );
-    }
 
     ArrayList < Symbol > readedSymbols = new ArrayList < Symbol > ();
     for ( int i = 0 ; i <= this.currentPosition ; i++ )
-    {
       readedSymbols.add ( this.symbolList.get ( i ) );
-    }
     return readedSymbols;
   }
 
@@ -423,9 +385,9 @@ public final class DefaultWord implements Word
   /**
    * {@inheritDoc}
    * 
-   * @see Word#isReseted()
+   * @see Word#isResetted()
    */
-  public final boolean isReseted ()
+  public final boolean isResetted ()
   {
     return this.currentPosition == START_INDEX;
   }
@@ -450,14 +412,10 @@ public final class DefaultWord implements Word
   public final Symbol nextSymbol () throws WordFinishedException
   {
     if ( this.currentPosition == this.symbolList.size () - 1 )
-    {
       throw new WordFinishedException ( this );
-    }
     this.currentPosition++ ;
     if ( this.currentPosition >= this.symbolList.size () )
-    {
       throw new WordFinishedException ( this );
-    }
     return this.symbolList.get ( this.currentPosition );
   }
 
@@ -470,13 +428,9 @@ public final class DefaultWord implements Word
   public final Symbol previousSymbol () throws WordResetedException
   {
     if ( this.currentPosition == START_INDEX )
-    {
       throw new WordResetedException ( this );
-    }
     if ( this.currentPosition == START_INDEX )
-    {
       throw new WordResetedException ( this );
-    }
 
     Symbol symbol = this.symbolList.get ( this.currentPosition );
     this.currentPosition-- ;
@@ -541,9 +495,7 @@ public final class DefaultWord implements Word
     {
       this.cachedPrettyString = new PrettyString ();
       for ( Symbol current : this.symbolList )
-      {
         this.cachedPrettyString.add ( current );
-      }
     }
 
     return this.cachedPrettyString;
@@ -560,9 +512,7 @@ public final class DefaultWord implements Word
   {
     StringBuilder result = new StringBuilder ();
     for ( Symbol current : this.symbolList )
-    {
       result.append ( current.getName () );
-    }
     return result.toString ();
   }
 
@@ -574,7 +524,7 @@ public final class DefaultWord implements Word
    */
   public int getCurrentPosition ()
   {
-    return this.currentPosition;
+    return this.currentPosition + 1;
   }
 
 
@@ -585,6 +535,6 @@ public final class DefaultWord implements Word
    */
   public Symbol getCurrentSymbol ()
   {
-    return get(this.currentPosition);
+    return get(getCurrentPosition());
   }
 }

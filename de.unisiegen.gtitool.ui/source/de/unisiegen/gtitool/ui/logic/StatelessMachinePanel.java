@@ -10,6 +10,8 @@ import javax.swing.ListSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
@@ -264,6 +266,49 @@ public class StatelessMachinePanel extends MachinePanel
     this.gui.wordPanelForm.styledStackParserPanel.setVisible ( true );
     this.gui.wordPanelForm.jGTILabelPushDownAlphabet.setVisible ( true );
     this.gui.wordPanelForm.styledAlphabetParserPanelPushDown.setVisible ( true );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleWordNextStep()
+   */
+  @Override
+  public void handleWordNextStep ()
+  {
+    try
+    {
+      if ( !this.machine.isNextStepAmbigious () )
+        this.machine.autoTransit ();
+      else
+      {
+        // TODO: user input needed
+        // user have to help us how to resolve the conflict
+      }
+    }
+    catch ( MachineAmbigiousActionException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( ActionSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleWordPreviousStep()
+   */
+  @Override
+  public void handleWordPreviousStep ()
+  {
+
   }
 
 

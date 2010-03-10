@@ -1712,6 +1712,17 @@ public abstract class AbstractStateMachine implements StateMachine
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.Machine#isNextStepAmbigious()
+   */
+  public boolean isNextStepAmbigious ()
+  {
+    return isUserInputNeeded ();
+  }
+
+
+  /**
    *{@inheritDoc}
    * 
    * @see StateMachine#isWordAccepted()

@@ -217,7 +217,9 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public final boolean isWordAccepted ()
   {
-    if ( this.stack.peak ().equals ( DefaultTerminalSymbol.EndMarker )
+    boolean stackEmpty = this.stack.isEmpty ();
+    if ( stackEmpty && this.wordAccepted || !stackEmpty
+        && this.stack.peak ().equals ( DefaultTerminalSymbol.EndMarker )
         && this.word.equals ( DefaultTerminalSymbol.EndMarker ) )
       return true;
     return false;
@@ -278,7 +280,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
   public Element getElement ()
   {
     final Element element = new Element ( "Grammar" ); //$NON-NLS-1$
-    element.addElement ( this.getGrammar ().getElement () );
+    element.addElement ( getGrammar ().getElement () );
     return element;
   }
 
@@ -290,6 +292,17 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * @throws ActionSetException
    */
   abstract protected ActionSet getPossibleActions () throws ActionSetException;
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.Machine#isNextStepAmbigious()
+   */
+  public boolean isNextStepAmbigious () throws ActionSetException
+  {
+    return getPossibleActions ().size () >= 2;
+  }
 
 
   /**
@@ -306,7 +319,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * @param action The {@link Action}
    * @return true if the {@link ShiftAction} could be applied
    */
-  protected boolean onShift ( final Action action )
+  protected boolean onShift ( @SuppressWarnings ( "unused" ) final Action action )
   {
     return true;
   }
@@ -318,7 +331,8 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * @param action The {@link Action}
    * @return true if the {@link ReplaceAction} could be applied
    */
-  protected boolean onReduce ( final Action action )
+  protected boolean onReduce (
+      @SuppressWarnings ( "unused" ) final Action action )
   {
     return true;
   }
@@ -330,7 +344,8 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * @param action The {@link Action}
    * @return true if accept could be applied
    */
-  protected boolean onAccept ( final Action action )
+  protected boolean onAccept (
+      @SuppressWarnings ( "unused" ) final Action action )
   {
     accept ();
     return true;
@@ -380,6 +395,28 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
       System.err.println ( "Internal parser error" ); //$NON-NLS-1$
       System.exit ( 1 );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.Machine#isNextSymbolAvailable()
+   */
+  public boolean isNextSymbolAvailable ()
+  {
+    return !this.word.isFinished ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.Machine#isPreviousSymbolAvailable()
+   */
+  public boolean isPreviousSymbolAvailable ()
+  {
+    return !this.word.isResetted ();
   }
 
 

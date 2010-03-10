@@ -5167,14 +5167,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    MachinePanel machinePanel = ( StateMachinePanel ) panel;
 
     addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
     
     if(panel instanceof StateMachinePanel)
       removeButtonState ( ButtonState.ENABLED_HISTORY );
 
-    machinePanel.handleWordStop ();
+    ((MachinePanel)panel).handleWordStop ();
   }
 
 
@@ -6189,7 +6188,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof StateMachinePanel ) )
+    if ( ! ( panel instanceof MachinePanel ) )
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
 
     if ( this.gui.getJGTIToolBarToggleButtonAutoStep ().isSelected () )
@@ -6198,7 +6197,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       return;
     }
 
-    StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
+    MachinePanel machinePanel = ( MachinePanel ) panel;
     boolean nextAvailable = machinePanel.getMachine ().isNextSymbolAvailable ();
     boolean previousAvailable = machinePanel.getMachine ()
         .isPreviousSymbolAvailable ();

@@ -70,4 +70,12 @@ public interface Stack extends Entity < Stack >, Iterable < Symbol >
    * @return The number of {@link Symbol}s in this {@link Stack}.
    */
   public int size ();
+
+
+  /**
+   * Returns whether this {@link Stack} is empty or not
+   *
+   * @return true if the {@link Stack} is empty
+   */
+  public boolean isEmpty ();
 }

@@ -338,15 +338,25 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
   }
   
   
+  /**
+   * 
+   * Handles the next step
+   *
+   */
   public void handleWordNextStep ()
   {
-    
+    //Do nothing
   }
   
   
+  /**
+   * 
+   * Handles the previous step
+   *
+   */
   public void handleWordPreviousStep ()
   {
-    
+    //Do nothing
   }
 
 
@@ -362,7 +372,7 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
 
     getMachine ().stop ();
 
-    this.gui.wordPanelForm.styledStackParserPanel.setText ( this.getMachine ()
+    this.gui.wordPanelForm.styledStackParserPanel.setText ( getMachine ()
         .getStack () );
 
     this.mainWindowForm.getLogic ().removeButtonState (

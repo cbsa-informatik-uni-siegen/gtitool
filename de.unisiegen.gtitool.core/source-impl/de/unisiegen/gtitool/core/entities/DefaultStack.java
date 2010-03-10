@@ -99,10 +99,8 @@ public final class DefaultStack implements Stack
   public final void clear ()
   {
     for ( Symbol current : this.symbolList )
-    {
       current
           .removePrettyStringChangedListener ( this.prettyStringChangedListener );
-    }
 
     this.symbolList.clear ();
 
@@ -148,9 +146,7 @@ public final class DefaultStack implements Stack
     PrettyStringChangedListener [] listeners = this.listenerList
         .getListeners ( PrettyStringChangedListener.class );
     for ( PrettyStringChangedListener current : listeners )
-    {
       current.prettyStringChanged ();
-    }
   }
 
 
@@ -214,9 +210,7 @@ public final class DefaultStack implements Stack
     }
 
     for ( int i = 0 ; i < size ; i++ )
-    {
       result.add ( this.symbolList.get ( i ) );
-    }
     return result;
   }
 
@@ -248,9 +242,7 @@ public final class DefaultStack implements Stack
   {
     // Symbol
     if ( symbol == null )
-    {
       throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
-    }
 
     symbol.addPrettyStringChangedListener ( this.prettyStringChangedListener );
 
@@ -306,9 +298,7 @@ public final class DefaultStack implements Stack
     {
       this.cachedPrettyString = new PrettyString ();
       for ( Symbol current : this.symbolList )
-      {
         this.cachedPrettyString.add ( current );
-      }
     }
 
     return this.cachedPrettyString;
@@ -325,9 +315,18 @@ public final class DefaultStack implements Stack
   {
     StringBuilder result = new StringBuilder ();
     for ( Symbol current : this.symbolList )
-    {
       result.append ( current.getName () );
-    }
     return result.toString ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Stack#isEmpty()
+   */
+  public boolean isEmpty ()
+  {
+    return this.symbolList.isEmpty ();
   }
 }

@@ -38,18 +38,33 @@ public class DefaultStatelessMachineModel extends DefaultMachineModel
   }
 
 
+  /**
+   * Sets the {@link Grammar}
+   * 
+   * @param grammar The {@link Grammar}
+   */
   public void setGrammar ( final Grammar grammar )
   {
     this.grammar = grammar;
   }
 
 
+  /**
+   * Returns the {@link Grammar}
+   * 
+   * @return The {@link Grammar}
+   */
   public Grammar getGrammar ()
   {
     return this.grammar;
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.model.DefaultMachineModel#getMachine()
+   */
   @Override
   public StatelessMachine getMachine ()
   {
@@ -58,9 +73,8 @@ public class DefaultStatelessMachineModel extends DefaultMachineModel
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.ui.model.DefaultModel#getElement()
    */
   @Override
@@ -71,21 +85,20 @@ public class DefaultStatelessMachineModel extends DefaultMachineModel
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
    * @see de.unisiegen.gtitool.core.storage.Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
    */
   public void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
+    return;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.core.storage.Modifyable#isModified()
    */
   public boolean isModified ()
@@ -95,24 +108,25 @@ public class DefaultStatelessMachineModel extends DefaultMachineModel
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param listener
    * @see de.unisiegen.gtitool.core.storage.Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
    */
   public void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
+    return;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.storage.Modifyable#resetModify()
    */
   public void resetModify ()
   {
+    return;
   }
 
 }

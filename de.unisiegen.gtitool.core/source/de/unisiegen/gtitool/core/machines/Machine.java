@@ -7,6 +7,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
+import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
 import de.unisiegen.gtitool.core.machines.dfa.LR0;
 import de.unisiegen.gtitool.core.machines.dfa.LR1;
@@ -71,6 +72,11 @@ public interface Machine extends Storable
      * The {@link LR1Parser} machine type.
      */
     LR1Parser,
+    
+    /**
+     * The LALR1 machine type.
+     */
+    LALR1,
 
     /**
      * The LALR1Parser machine type.
@@ -131,7 +137,7 @@ public interface Machine extends Storable
         {
           return "LR0Parser"; //$NON-NLS-1$
         }
-        case LALR1Parser:
+        case LALR1Parser :
         {
           return "LALR1Parser"; //$NON-NLS-1$
         }
@@ -202,4 +208,29 @@ public interface Machine extends Storable
    * @return the input {@link Word}
    */
   public Word getWord ();
+
+
+  /**
+   * Returns if there is a next symbol available
+   * 
+   * @return true if there is a next symbol
+   */
+  public boolean isNextSymbolAvailable ();
+
+
+  /**
+   * Returns if there is a previous symbol available
+   * 
+   * @return true if there is a previous symbol
+   */
+  public boolean isPreviousSymbolAvailable ();
+
+
+  /**
+   * Checks whether the next machine step is ambigious
+   * 
+   * @return true if the next step is ambigious
+   * @throws ActionSetException
+   */
+  public boolean isNextStepAmbigious () throws ActionSetException;
 }

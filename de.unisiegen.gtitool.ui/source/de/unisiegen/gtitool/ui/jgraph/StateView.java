@@ -113,15 +113,16 @@ public class StateView extends ViewBase
 
 
     /**
-     * TODO
+     * Get the background color for a state
      * 
-     * @param state
-     * @param defaultStateView
-     * @return
+     * @param defaultStateView the state's view
+     * @return the color
      */
-    protected Color stateBackgroundColor ( final State state,
+    protected Color stateBackgroundColor (
         final DefaultStateView defaultStateView )
     {
+      final State state = defaultStateView.getState ();
+
       // overwritten color
       if ( defaultStateView.getOverwrittenColor () != null )
         return defaultStateView.getOverwrittenColor ();
@@ -147,6 +148,13 @@ public class StateView extends ViewBase
     }
 
 
+    /**
+     * Get the font to draw a state's name
+     * 
+     * @param currentToken The pretty token
+     * @param g The graphics object
+     * @return the font
+     */
     protected Font stateFont ( PrettyToken currentToken, Graphics g )
     {
       if ( currentToken.isBold () && currentToken.isItalic () )
@@ -160,19 +168,13 @@ public class StateView extends ViewBase
     }
 
 
-    protected Color stateColor ( State state )
-    {
-      if ( state.isActive () )
-        return this.preferenceStateActive;
-      if ( this.selected )
-        return this.preferenceStateSelected;
-      if ( state.isStartState () )
-        return this.preferenceTransition;
-
-      return Color.black;
-    }
-
-
+    /**
+     * Draw the start arrow if state is a start state to the left
+     * 
+     * @param g The graphics
+     * @param state
+     * @param offsetY
+     */
     protected void drawStartArrow ( Graphics g, State state, int offsetY )
     {
       if ( !state.isStartState () )
@@ -304,16 +306,10 @@ public class StateView extends ViewBase
     public void paint ( Graphics g )
     {
       State state = null;
-      DefaultStateView defaultStateView = null;
-      if ( this.stateView.getCell () instanceof DefaultStateView )
-      {
-        defaultStateView = ( DefaultStateView ) this.stateView.getCell ();
-        state = defaultStateView.getState ();
-      }
-      else
-      {
-        return;
-      }
+      DefaultStateView defaultStateView = getDefaultStateView ();
+
+      state = defaultStateView.getState ();
+
       int b = this.borderWidth;
 
       int offsetX = state.isStartState () ? START_OFFSET : 0;
@@ -325,7 +321,7 @@ public class StateView extends ViewBase
       boolean tmp = this.selected;
       if ( super.isOpaque () )
       {
-        final Color background = stateBackgroundColor ( state, defaultStateView );
+        final Color background = stateBackgroundColor ( defaultStateView );
 
         g.setColor ( background );
 
@@ -509,6 +505,17 @@ public class StateView extends ViewBase
       }
       drawStartArrow ( g, state, offsetY );
     }
+
+
+    /**
+     * Get the DefaultStateView
+     * 
+     * @return the view
+     */
+    public DefaultStateView getDefaultStateView ()
+    {
+      return ( DefaultStateView ) this.stateView.getCell ();
+    }
   }
 
 
@@ -622,13 +629,20 @@ public class StateView extends ViewBase
    * @param state
    * @return the height
    */
+  @Override
   public int getHeight ( State state )
   {
     return staticHeight ( state );
   }
 
 
-  public static int staticHeight ( State state )
+  /**
+   * Calculate a state's height
+   * 
+   * @param state
+   * @return The height
+   */
+  public static int staticHeight ( final State state )
   {
     int width = 70;
 
@@ -654,7 +668,14 @@ public class StateView extends ViewBase
   }
 
 
-  public static int staticWidth ( State state )
+  /**
+   * Calculate a state's width Start states will be wider because they need
+   * space for the "start arrow"
+   * 
+   * @param state
+   * @return The width
+   */
+  public static int staticWidth ( final State state )
   {
     int width = 70;
     if ( state.isPowerState () )

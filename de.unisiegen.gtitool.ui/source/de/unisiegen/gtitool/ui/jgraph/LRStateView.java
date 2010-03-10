@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.jgraph;
 
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -17,13 +18,14 @@ import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 
 
 /**
- * TODO
+ * A view for an LRState This view renders rounded rects and makes sure that
+ * there is enough space for all LR items
  */
 public class LRStateView extends StateView
 {
 
   /**
-   * TODO
+   * The renderer associated with this view
    */
   public static class JGraphEllipseRenderer extends
       StateView.JGraphEllipseRenderer
@@ -50,6 +52,25 @@ public class LRStateView extends StateView
     {
       super ( lrstateview );
       this.lrstateview = lrstateview;
+    }
+
+
+    /**
+     * Get the state's color
+     * 
+     * @param state
+     * @return The color
+     */
+    private Color stateColor ( final State state )
+    {
+      if ( state.isActive () )
+        return this.preferenceStateActive;
+      if ( this.selected )
+        return this.preferenceStateSelected;
+      if ( state.isStartState () )
+        return this.preferenceTransition;
+
+      return Color.black;
     }
 
 
@@ -98,14 +119,14 @@ public class LRStateView extends StateView
 
 
   /**
-   * TODO
+   * Calculate the dimension needed by a state
    * 
    * @param state
-   * @return
+   * @return the dimension
    */
   public static Dimension staticDimension ( final LRState state )
   {
-    Dimension ret = new Dimension ( 20, 20 ); // minimum size
+    final Dimension ret = new Dimension ( 20, 20 ); // minimum size
     for ( PrettyString entry : state.getItems ().stringEntries () )
     {
       final Dimension bounds = getStringBounds ( entry.toString () );
@@ -118,39 +139,35 @@ public class LRStateView extends StateView
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param state
-   * @return
    * @see de.unisiegen.gtitool.ui.jgraph.StateView#getWidth(de.unisiegen.gtitool.core.entities.State)
    */
   @Override
-  public int getWidth ( State state )
+  public int getWidth ( State nstate )
   {
-    final int extraWidth = state.isStartState () ? START_OFFSET : 0;
-    return staticDimension ( ( LRState ) state ).width + extraWidth;
+    final int extraWidth = nstate.isStartState () ? START_OFFSET : 0;
+    return staticDimension ( ( LRState ) nstate ).width + extraWidth;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param state
-   * @return
    * @see de.unisiegen.gtitool.ui.jgraph.StateView#getHeight(de.unisiegen.gtitool.core.entities.State)
    */
   @Override
-  public int getHeight ( State state )
+  public int getHeight ( State nstate )
   {
-    return staticDimension ( ( LRState ) state ).height;
+    return staticDimension ( ( LRState ) nstate ).height;
   }
 
 
   /**
-   * TODO
+   * Calculate the string bounds of the text
    * 
    * @param text
-   * @return
+   * @return the bounds
    */
   static Dimension getStringBounds ( final String text )
   {
@@ -162,9 +179,9 @@ public class LRStateView extends StateView
 
 
   /**
-   * TODO
+   * Get the font used by this view
    * 
-   * @return
+   * @return the font
    */
   public static Font getFont ()
   {
@@ -173,7 +190,7 @@ public class LRStateView extends StateView
 
 
   /**
-   * TODO
+   * The font used by this view
    */
   private static Font font = new Font ( "Dialog", Font.PLAIN, 20 ); //$NON-NLS-1$
 
@@ -200,9 +217,9 @@ public class LRStateView extends StateView
 
 
   /**
-   * TODO
+   * Get the associated state
    * 
-   * @return
+   * @return the state
    */
   public LRState getState ()
   {
@@ -210,5 +227,8 @@ public class LRStateView extends StateView
   }
 
 
+  /**
+   * The associated state
+   */
   private LRState state;
 }

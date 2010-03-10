@@ -162,6 +162,8 @@ public class StateView extends ViewBase
 
     protected Color stateColor ( State state )
     {
+      if ( state.isActive () )
+        return this.preferenceStateActive;
       if ( this.selected )
         return this.preferenceStateSelected;
       if ( state.isStartState () )

@@ -1,12 +1,11 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
-import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.ChooseNextActionDialogForm;
 
@@ -59,15 +58,12 @@ public final class ChooseNextActionDialog implements
 
     this.parent = parent;
     this.actions = actions;
-    this.gui = new ChooseNextActionDialogForm ( parent, true );
+    this.gui = new ChooseNextActionDialogForm ( this, parent );
 
-    JLabel entry;
+    DefaultListModel model = new DefaultListModel ();
     for ( Action a : this.actions )
-    {
-      entry = new JLabel ( a.getReduceAction ().toPrettyString ()
-          .toHTMLString () );
-      this.gui.jGTIListActionList.add ( entry );
-    }
+      model.addElement ( a.toPrettyString () );
+    this.gui.jGTIListActionList.setModel ( model );
   }
 
 
@@ -76,12 +72,12 @@ public final class ChooseNextActionDialog implements
    * 
    * @return The chosen {@link Action}
    */
-  public final Production getChosenAction ()
+  public final Action getChosenAction ()
   {
     if ( this.gui.jGTIListActionList.isSelectionEmpty () )
       throw new RuntimeException ( "No action was chosen." ); //$NON-NLS-1$
-    return this.actions.get ( this.gui.jGTIListActionList.getSelectedIndex () )
-        .getReduceAction ();
+    System.out.println(this.gui.jGTIListActionList.getSelectedIndex ());
+    return this.actions.get ( this.gui.jGTIListActionList.getSelectedIndex () );
   }
 
 

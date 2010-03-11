@@ -2,9 +2,9 @@ package de.unisiegen.gtitool.core.entities;
 
 
 /**
- * Represents the {@link CancleOutAction}
+ * Represents the {@link CancelOutAction}
  */
-public class CancleOutAction extends ShiftActionBase
+public class CancelOutAction extends ShiftActionBase
 {
   /**
    * {@inheritDoc}

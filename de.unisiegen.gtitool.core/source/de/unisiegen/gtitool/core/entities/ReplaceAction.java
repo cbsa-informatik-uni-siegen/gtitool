@@ -1,6 +1,12 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
+
+
 /**
  * Base class for {@link ReduceAction} and {@link ReverseReduceAction}
  */
@@ -54,6 +60,41 @@ public abstract class ReplaceAction implements Action
     if ( ! ( o instanceof ReduceAction ) )
       return 1;
     return this.production.compareTo ( o.getReduceAction () );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void addPrettyStringChangedListener (
+      @SuppressWarnings ( "unused" ) PrettyStringChangedListener listener )
+  {
+    // will never change
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void removePrettyStringChangedListener (
+      @SuppressWarnings ( "unused" ) PrettyStringChangedListener listener )
+  {
+    // Will never change
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
+   */
+  public PrettyString toPrettyString ()
+  {
+    return new PrettyString ( new PrettyToken ( toString (), Style.NONE ) );
   }
 
 }

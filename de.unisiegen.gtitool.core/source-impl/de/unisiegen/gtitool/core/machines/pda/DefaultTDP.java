@@ -4,7 +4,7 @@ package de.unisiegen.gtitool.core.machines.pda;
 import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
-import de.unisiegen.gtitool.core.entities.CancleOutAction;
+import de.unisiegen.gtitool.core.entities.CancelOutAction;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
@@ -92,7 +92,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
         actions.add ( new ReverseReduceAction ( p ) );
     }
     else if ( inputSymbol.equals ( stackSymbol ) )
-      actions.add ( new CancleOutAction () );
+      actions.add ( new CancelOutAction () );
 
     return actions;
   }

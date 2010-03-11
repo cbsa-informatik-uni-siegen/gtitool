@@ -91,7 +91,7 @@ public class DefaultActionSet implements ActionSet
   {
     int idx = index;
     Iterator < Action > action = iterator ();
-    while ( action.hasNext () && idx-- > 1 )
+    while ( action.hasNext () && idx-- >= 1 )
       action.next ();
     return action.next ();
   }

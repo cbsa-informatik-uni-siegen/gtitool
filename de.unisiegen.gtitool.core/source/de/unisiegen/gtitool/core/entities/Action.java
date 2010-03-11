@@ -1,10 +1,13 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+
+
 /**
  * Represents the next automaton action to be taken
  */
-public interface Action extends Comparable < Action >
+public interface Action extends Comparable < Action >, PrettyPrintable
 {
 
   /**

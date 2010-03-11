@@ -1,6 +1,12 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
+
+
 /**
  * The LR Accept action
  */
@@ -28,7 +34,7 @@ public class AcceptAction implements Action
   public Production getReduceAction ()
   {
     throw new RuntimeException (
-        "accept action cannot be used as a reduce action"); //$NON-NLS-1$
+        "accept action cannot be used as a reduce action" ); //$NON-NLS-1$
   }
 
 
@@ -55,6 +61,41 @@ public class AcceptAction implements Action
   public String toString ()
   {
     return "Accept"; //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#addPrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void addPrettyStringChangedListener (
+      @SuppressWarnings ( "unused" ) PrettyStringChangedListener listener )
+  {
+    // will never change
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#removePrettyStringChangedListener(de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener)
+   */
+  public void removePrettyStringChangedListener (
+      @SuppressWarnings ( "unused" ) PrettyStringChangedListener listener )
+  {
+    // Will never change
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
+   */
+  public PrettyString toPrettyString ()
+  {
+    return new PrettyString ( new PrettyToken ( toString (), Style.NONE ) );
   }
 
 }

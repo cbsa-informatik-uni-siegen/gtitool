@@ -21,8 +21,9 @@ import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 public class ChooseNextActionDialogForm extends javax.swing.JDialog implements GUIClass <ChooseNextActionDialog> {
 
     /** Creates new form ChooseNextActionDialogForm */
-    public ChooseNextActionDialogForm(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public ChooseNextActionDialogForm(ChooseNextActionDialog logic, java.awt.Frame parent) {
+        super(parent, true);
+        this.logic = logic;
         initComponents();
     }
 
@@ -36,36 +37,36 @@ public class ChooseNextActionDialogForm extends javax.swing.JDialog implements G
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jGTILabel1 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
-        jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jGTIListActionList = new de.unisiegen.gtitool.ui.swing.JGTIList();
-        jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
-        jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        this.jGTILabel1 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        this.jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        this.jScrollPane1 = new javax.swing.JScrollPane();
+        this.jGTIListActionList = new de.unisiegen.gtitool.ui.swing.JGTIList();
+        this.jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        this.jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("ChooseNextActionDialog.Title")); // NOI18N
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jGTILabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jGTILabel1.setText(bundle.getString("ChooseNextActionDialog.Header")); // NOI18N
-        jGTILabel1.setToolTipText("");
+        this.jGTILabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        this.jGTILabel1.setText(bundle.getString("ChooseNextActionDialog.Header")); // NOI18N
+        this.jGTILabel1.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        getContentPane().add(jGTILabel1, gridBagConstraints);
+        getContentPane().add(this.jGTILabel1, gridBagConstraints);
 
-        jScrollPane1.setViewportView(jGTIListActionList);
+        this.jScrollPane1.setViewportView(this.jGTIListActionList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jGTIPanel1.add(jScrollPane1, gridBagConstraints);
+        this.jGTIPanel1.add(this.jScrollPane1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -75,45 +76,46 @@ public class ChooseNextActionDialogForm extends javax.swing.JDialog implements G
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jGTIPanel1, gridBagConstraints);
+        getContentPane().add(this.jGTIPanel1, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ChooseNextActionDialog.OkMnemonic").charAt(0));
-        jGTIButtonOk.setText(bundle.getString("ChooseNextActionDialog.Ok")); // NOI18N
-        jGTIButtonOk.setToolTipText(bundle.getString("ChooseNextActionDialog.OkToolTip")); // NOI18N
+        this.jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ChooseNextActionDialog.OkMnemonic").charAt(0));
+        this.jGTIButtonOk.setText(bundle.getString("ChooseNextActionDialog.Ok")); // NOI18N
+        this.jGTIButtonOk.setToolTipText(bundle.getString("ChooseNextActionDialog.OkToolTip")); // NOI18N
+        this.jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIButtonOkActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
-        getContentPane().add(jGTIButtonOk, gridBagConstraints);
+        getContentPane().add(this.jGTIButtonOk, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ChooseNextActionDialog.CancelMnemonic").charAt(0));
-        jGTIButtonCancel.setText(bundle.getString("ChooseNextActionDialog.Cancel")); // NOI18N
-        jGTIButtonCancel.setToolTipText(bundle.getString("ChooseNextActionDialog.CancelToolTip")); // NOI18N
+        this.jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ChooseNextActionDialog.CancelMnemonic").charAt(0));
+        this.jGTIButtonCancel.setText(bundle.getString("ChooseNextActionDialog.Cancel")); // NOI18N
+        this.jGTIButtonCancel.setToolTipText(bundle.getString("ChooseNextActionDialog.CancelToolTip")); // NOI18N
+        this.jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIButtonCancelActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        getContentPane().add(jGTIButtonCancel, gridBagConstraints);
+        getContentPane().add(this.jGTIButtonCancel, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                ChooseNextActionDialogForm dialog = new ChooseNextActionDialogForm(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    private void jGTIButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonOkActionPerformed
+        this.logic.handleOk();
+    }//GEN-LAST:event_jGTIButtonOkActionPerformed
+
+    private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
+        this.logic.handleCancel();
+    }//GEN-LAST:event_jGTIButtonCancelActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;

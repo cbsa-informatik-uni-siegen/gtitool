@@ -726,7 +726,7 @@ public class StateView extends ViewBase
    * @see VertexView#getPerimeterPoint(EdgeView, Point2D, Point2D)
    */
   @Override
-  public final Point2D getPerimeterPoint ( EdgeView edge,
+  public Point2D getPerimeterPoint ( EdgeView edge,
       @SuppressWarnings ( "unused" ) Point2D source, Point2D p )
   {
     Rectangle2D r = getBounds ();

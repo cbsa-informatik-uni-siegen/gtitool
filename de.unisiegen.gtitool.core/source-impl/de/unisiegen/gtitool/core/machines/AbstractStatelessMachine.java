@@ -291,7 +291,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * @return set of available productions for reduction
    * @throws ActionSetException
    */
-  abstract protected ActionSet getPossibleActions () throws ActionSetException;
+  abstract public ActionSet getPossibleActions () throws ActionSetException;
 
 
   /**

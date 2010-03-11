@@ -74,7 +74,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getPossibleActions()
    */
   @Override
-  protected ActionSet getPossibleActions () throws ActionSetException
+  public ActionSet getPossibleActions () throws ActionSetException
   {
     ActionSet actions = new DefaultActionSet ();
     Symbol inputSymbol = getWord ().getCurrentSymbol ();
@@ -165,6 +165,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
     return MachineType.TDP;
   }
   
+  @Override
   public CFG getGrammar()
   {
     return this.cfg;

@@ -8,11 +8,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.machines.AbstractStatelessMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
 import de.unisiegen.gtitool.ui.convert.Converter;
@@ -281,11 +283,25 @@ public class StatelessMachinePanel extends MachinePanel
     {
       if ( !this.machine.isNextStepAmbigious () )
         this.machine.autoTransit ();
-      else
+      else if ( this.machine instanceof AbstractStatelessMachine )
       {
-        // TODO: user input needed
-        // user have to help us how to resolve the conflict
+        ActionSet actions = ( ( AbstractStatelessMachine ) this.machine )
+            .getPossibleActions ();
+        ChooseNextActionDialog cnad = new ChooseNextActionDialog (
+            this.mainWindowForm, actions );
+        cnad.show ();
+
+        if ( cnad.isConfirmed () )
+          ( ( AbstractStatelessMachine ) this.machine ).transit ( cnad
+              .getChosenAction () );
+        else
+          return;
+
+        performMachineTableChanged ();
       }
+      else
+        throw new RuntimeException (
+            "handleWordNextStep not defined for ambigious steps of instances other than AbstractStatelessMachine" ); //$NON-NLS-1$
     }
     catch ( MachineAmbigiousActionException exc )
     {
@@ -297,6 +313,8 @@ public class StatelessMachinePanel extends MachinePanel
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+
+    updateGUIAcceptStatus ();
   }
 
 
@@ -470,4 +488,21 @@ public class StatelessMachinePanel extends MachinePanel
   {
   }
 
+
+  /**
+   * Updates the gui machine table
+   */
+  public final void performMachineTableChanged ()
+  {
+    // TODO: implement
+  }
+
+
+  /**
+   * Updates the gui displayed accept status
+   */
+  public final void updateGUIAcceptStatus ()
+  {
+    // TODO: implement
+  }
 }

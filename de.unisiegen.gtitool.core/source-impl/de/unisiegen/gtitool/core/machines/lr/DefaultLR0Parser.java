@@ -240,7 +240,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getPossibleActions()
    */
   @Override
-  protected ActionSet getPossibleActions ()
+  public ActionSet getPossibleActions ()
   {
     ActionSet actions = new DefaultActionSet ();
 

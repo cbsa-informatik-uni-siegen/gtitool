@@ -283,6 +283,21 @@ public class StatelessMachinePanel extends MachinePanel
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleWordStart()
+   */
+  @Override
+  public boolean handleWordStart ()
+  {
+    boolean result = super.handleWordStart ();
+    if ( result )
+      performMachineTableChanged ( false, null );
+    return result;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleWordNextStep()
    */
   @Override
@@ -325,9 +340,7 @@ public class StatelessMachinePanel extends MachinePanel
             "handleWordNextStep not defined for ambigious steps of instances other than AbstractStatelessMachine" ); //$NON-NLS-1$
     }
 
-    StatelessMachineTableModel smtm = ( StatelessMachineTableModel ) this.jGTIStatelessMachineTable
-        .getModel ();
-    smtm.addRow ( this.machine.getStack (), this.machine.getWord (), action );
+    performMachineTableChanged ( false, action );
 
     updateGUIAcceptStatus ();
   }
@@ -343,9 +356,7 @@ public class StatelessMachinePanel extends MachinePanel
   {
     this.machine.backTransit ();
 
-    StatelessMachineTableModel smtm = ( StatelessMachineTableModel ) this.jGTIStatelessMachineTable
-        .getModel ();
-    smtm.removeLastRow ();
+    performMachineTableChanged ( true, null );
   }
 
 
@@ -511,9 +522,17 @@ public class StatelessMachinePanel extends MachinePanel
   /**
    * Updates the gui machine table
    */
-  public final void performMachineTableChanged ()
+  public final void performMachineTableChanged ( final boolean backStep,
+      final Action action )
   {
-    // TODO: implement
+    StatelessMachineTableModel smtm = ( StatelessMachineTableModel ) this.jGTIStatelessMachineTable
+        .getModel ();
+
+    if ( backStep )
+      smtm.removeLastRow ();
+    else
+      smtm.addRow ( this.machine.getStack (), this.machine.getWord (), action );
+    this.jGTIStatelessMachineTable.repaint ();
   }
 
 

@@ -16,6 +16,7 @@ import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ReverseReduceAction;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
@@ -65,6 +66,24 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
     super ( cfg.getAlphabet () );
     this.cfg = cfg;
     this.parsingTable = new DefaultParsingTable ( this.cfg );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#start(de.unisiegen.gtitool.core.entities.Word)
+   */
+  @Override
+  public final void start ( final Word word )
+  {
+    Symbol endMarkerSymbol = new DefaultSymbol (
+        DefaultTerminalSymbol.EndMarker.getName () );
+    word.add ( endMarkerSymbol );
+    super.start ( word );
+    getStack ().push ( endMarkerSymbol );
+    getStack ().push (
+        new DefaultSymbol ( this.cfg.getStartSymbol ().getName () ) );
   }
 
 
@@ -150,7 +169,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
      */
     getStack ().pop ();
     ProductionWord pw = action.getReduceAction ().getProductionWord ();
-    for ( int i = pw.size () ; i < 0 ; --i )
+    for ( int i = pw.size () - 1; i >= 0 ; --i )
       getStack ().push ( new DefaultSymbol ( pw.get ( i ).getName () ) );
     return true;
   }
@@ -165,9 +184,10 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   {
     return MachineType.TDP;
   }
-  
+
+
   @Override
-  public CFG getGrammar()
+  public CFG getGrammar ()
   {
     return this.cfg;
   }

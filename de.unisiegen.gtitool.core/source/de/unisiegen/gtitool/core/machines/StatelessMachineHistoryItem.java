@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.machines;
 
 
+import de.unisiegen.gtitool.core.entities.DefaultStack;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Word;
 
@@ -34,14 +36,13 @@ public final class StatelessMachineHistoryItem
    * 
    * @param input the {@link Word}
    * @param stack the {@link Stack}
-   * @param wordIndex the actual parsing index
    * @param wordAccepted the actual accepted status
    */
   public StatelessMachineHistoryItem ( final Word input, final Stack stack,
       final boolean wordAccepted )
   {
-    this.input = input;
-    this.stack = stack;
+    this.input = new DefaultWord ( input );
+    this.stack = new DefaultStack ( stack );
     this.wordAccepted = wordAccepted;
   }
 

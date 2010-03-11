@@ -80,6 +80,20 @@ public final class DefaultStack implements Stack
 
 
   /**
+   * The Copy-CTor
+   * 
+   * @param stack The {@link Stack}
+   */
+  public DefaultStack ( final Stack stack )
+  {
+    this ();
+    DefaultStack other = ( DefaultStack ) stack;
+    for ( Symbol s : other.symbolList )
+      this.symbolList.add ( new DefaultSymbol ( s ) );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see PrettyPrintable#addPrettyStringChangedListener(PrettyStringChangedListener)

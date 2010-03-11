@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.DefaultStack;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -87,9 +89,7 @@ public class StatelessMachineTableModel extends AbstractTableModel
       final Action action )
   {
     initialize ();
-    this.stackData.add ( stack );
-    this.inputData.add ( input );
-    this.actionData.add ( action );
+    addRow ( stack, input, action );
   }
 
 
@@ -114,8 +114,8 @@ public class StatelessMachineTableModel extends AbstractTableModel
   public final void addRow ( final Stack stack, final Word input,
       final Action action )
   {
-    this.stackData.add ( stack );
-    this.inputData.add ( input );
+    this.stackData.add ( new DefaultStack ( stack ) );
+    this.inputData.add ( new DefaultWord ( input ) );
     this.actionData.add ( action );
   }
 
@@ -191,7 +191,9 @@ public class StatelessMachineTableModel extends AbstractTableModel
       case StatelessMachineTableModel.STACK_COLUMN :
         return this.stackData.get ( rowIndex );
       case StatelessMachineTableModel.ACTION_COLUMN :
-        return this.actionData.get ( rowIndex );
+        Action action = this.actionData.get ( rowIndex );
+        if ( action != null )
+          return this.actionData.get ( rowIndex );
     }
     return new PrettyString ();
   }

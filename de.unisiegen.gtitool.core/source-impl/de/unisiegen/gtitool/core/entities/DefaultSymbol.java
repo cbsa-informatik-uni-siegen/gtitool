@@ -95,24 +95,19 @@ public final class DefaultSymbol implements Symbol
   public DefaultSymbol ( Element element ) throws StoreException
   {
     // Check if the element is correct
-    if ( !element.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
-    {
+    if ( !element.getName ().equals ( "Symbol" ) )
       throw new IllegalArgumentException (
           "element " + Messages.QUOTE + element.getName () //$NON-NLS-1$
               + Messages.QUOTE + " is not a symbol" ); //$NON-NLS-1$
-    }
 
     // Attribute
     boolean foundName = false;
     boolean foundEpsilon = false;
     for ( Attribute current : element.getAttribute () )
-    {
       if ( current.getName ().equals ( "name" ) ) //$NON-NLS-1$
       {
         if ( !this.epsilon )
-        {
           setName ( current.getValue () );
-        }
         foundName = true;
       }
       else if ( current.getName ().equals ( "epsilon" ) ) //$NON-NLS-1$
@@ -121,25 +116,18 @@ public final class DefaultSymbol implements Symbol
         foundEpsilon = true;
       }
       else
-      {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-      }
-    }
 
     // Not all attribute values found
     if ( !foundName || !foundEpsilon )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-    }
 
     // Element
     if ( element.getElement ().size () > 0 )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-    }
   }
 
 
@@ -151,6 +139,44 @@ public final class DefaultSymbol implements Symbol
   public DefaultSymbol ( String name )
   {
     setName ( name );
+  }
+
+
+  /**
+   * Copy-CTor
+   * 
+   * @param symbol The other {@link Symbol}
+   */
+  public DefaultSymbol ( final Symbol symbol )
+  {
+    DefaultSymbol other = ( DefaultSymbol ) symbol;
+
+    this.active = other.active;
+    this.epsilon = other.epsilon;
+    this.error = other.error;
+    this.name = new String ( other.name );
+  }
+
+
+  /**
+   * Allocates a new {@link DefaultSymbol}
+   * 
+   * @param ts The {@link TerminalSymbol}
+   */
+  public DefaultSymbol ( final TerminalSymbol ts )
+  {
+    this ( ts.getName () );
+  }
+
+
+  /**
+   * Allocates a new {@link DefaultSymbol}
+   * 
+   * @param ns The {@link NonterminalSymbol}
+   */
+  public DefaultSymbol ( final NonterminalSymbol ns )
+  {
+    this ( ns.getName () );
   }
 
 
@@ -176,23 +202,15 @@ public final class DefaultSymbol implements Symbol
     if ( !this.epsilon && !other.isEpsilon () )
     {
       if ( this.name.length () > other.getName ().length () )
-      {
         return -1;
-      }
       if ( this.name.length () < other.getName ().length () )
-      {
         return 1;
-      }
       return this.name.compareTo ( other.getName () );
     }
     if ( !this.epsilon && other.isEpsilon () )
-    {
       return 1;
-    }
     if ( this.epsilon && !other.isEpsilon () )
-    {
       return -1;
-    }
     return 0;
   }
 
@@ -210,14 +228,10 @@ public final class DefaultSymbol implements Symbol
       DefaultSymbol symbol = ( DefaultSymbol ) other;
 
       if ( this.epsilon != symbol.epsilon )
-      {
         return false;
-      }
 
       if ( this.epsilon && symbol.epsilon )
-      {
         return true;
-      }
 
       return this.name.equals ( symbol.name );
     }
@@ -235,9 +249,7 @@ public final class DefaultSymbol implements Symbol
     PrettyStringChangedListener [] listeners = this.listenerList
         .getListeners ( PrettyStringChangedListener.class );
     for ( PrettyStringChangedListener current : listeners )
-    {
       current.prettyStringChanged ();
-    }
   }
 
 
@@ -296,9 +308,7 @@ public final class DefaultSymbol implements Symbol
   public final int hashCode ()
   {
     if ( this.epsilon )
-    {
       return "epsilon".hashCode (); //$NON-NLS-1$
-    }
     return this.name.hashCode ();
   }
 
@@ -386,15 +396,11 @@ public final class DefaultSymbol implements Symbol
   private final void setName ( String name )
   {
     if ( this.epsilon )
-    {
       throw new RuntimeException (
           "this symbol is a epsilon symbol without a name" ); //$NON-NLS-1$
-    }
 
     if ( name == null )
-    {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
-    }
 
     if ( ( this.name == null ) || !this.name.equals ( name ) )
     {
@@ -430,39 +436,24 @@ public final class DefaultSymbol implements Symbol
       if ( this.epsilon )
       {
         if ( this.error )
-        {
           this.cachedPrettyString.add ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
               Style.SYMBOL_ERROR ) );
-        }
         else if ( this.active )
-        {
           this.cachedPrettyString.add ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
               Style.SYMBOL_ACTIVE ) );
-        }
         else
-        {
           this.cachedPrettyString.add ( new PrettyToken (
               "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-        }
       }
+      else if ( this.error )
+        this.cachedPrettyString.add ( new PrettyToken ( this.name,
+            Style.SYMBOL_ERROR ) );
+      else if ( this.active )
+        this.cachedPrettyString.add ( new PrettyToken ( this.name,
+            Style.SYMBOL_ACTIVE ) );
       else
-      {
-        if ( this.error )
-        {
-          this.cachedPrettyString.add ( new PrettyToken ( this.name,
-              Style.SYMBOL_ERROR ) );
-        }
-        else if ( this.active )
-        {
-          this.cachedPrettyString.add ( new PrettyToken ( this.name,
-              Style.SYMBOL_ACTIVE ) );
-        }
-        else
-        {
-          this.cachedPrettyString.add ( new PrettyToken ( this.name,
-              Style.SYMBOL ) );
-        }
-      }
+        this.cachedPrettyString
+            .add ( new PrettyToken ( this.name, Style.SYMBOL ) );
     }
 
     return this.cachedPrettyString;
@@ -478,9 +469,7 @@ public final class DefaultSymbol implements Symbol
   public final String toString ()
   {
     if ( this.epsilon )
-    {
       return "\u03B5"; //$NON-NLS-1$
-    }
     return this.name;
   }
 }

@@ -99,6 +99,21 @@ public final class DefaultWord implements Word
 
 
   /**
+   * The Copy-CTor
+   * 
+   * @param word The {@link Word}
+   */
+  public DefaultWord ( final Word word )
+  {
+    this ();
+    DefaultWord other = ( DefaultWord ) word;
+    for(Symbol s : other.symbolList)
+      this.symbolList.add ( new DefaultSymbol(s) );
+    this.currentPosition = other.currentPosition;
+  }
+
+
+  /**
    * Allocates a new {@link DefaultWord}.
    * 
    * @param element The {@link Element}.
@@ -535,6 +550,6 @@ public final class DefaultWord implements Word
    */
   public Symbol getCurrentSymbol ()
   {
-    return get(getCurrentPosition());
+    return get ( getCurrentPosition () );
   }
 }

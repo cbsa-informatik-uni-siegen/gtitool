@@ -320,17 +320,7 @@ public final class DefaultProductionWord implements ProductionWord
    */
   public final ProductionWordMember get ( int index )
   {
-    try
-    {
-      return this.productionWordMemberList.get ( index );
-    }
-    catch(IndexOutOfBoundsException e)
-    {
-      System.err.println(this);
-      e.printStackTrace();
-    }
-    System.exit ( 1 );
-    return null;
+    return this.productionWordMemberList.get ( index );
   }
 
 
@@ -509,26 +499,28 @@ public final class DefaultProductionWord implements ProductionWord
         result.append ( current.getName () );
     return result.toString ();
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.entities.ProductionWord#epsilon()
    */
-  public final boolean epsilon(){
-    return this.productionWordMemberList.size() == 0;
+  public final boolean epsilon ()
+  {
+    return this.productionWordMemberList.size () == 0;
   }
-  
-  
+
+
   /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.entities.ProductionWord#contains(de.unisiegen.gtitool.core.entities.ProductionWordMember)
    */
-  public boolean contains(ProductionWordMember pwm)
+  public boolean contains ( ProductionWordMember pwm )
   {
-    for(ProductionWordMember p : this.productionWordMemberList)
-      if(p.equals ( pwm ))
+    for ( ProductionWordMember p : this.productionWordMemberList )
+      if ( p.equals ( pwm ) )
         return true;
     return false;
   }

@@ -105,9 +105,9 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#autoTransit()
    */
   @Override
-  public void autoTransit () throws MachineAmbigiousActionException
+  public Action autoTransit () throws MachineAmbigiousActionException
   {
-    assertTransit ( actions ( currentItems (), currentTerminal () ) );
+    return assertTransit ( actions ( currentItems (), currentTerminal () ) );
   }
 
 

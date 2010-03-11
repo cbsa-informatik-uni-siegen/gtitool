@@ -381,9 +381,10 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    * transition is valid.
    * 
    * @param possibleActions
+   * @return The {@link Action} which was taken
    * @throws MachineAmbigiousActionException if the action set's size is not 1
    */
-  protected void assertTransit ( final ActionSet possibleActions )
+  protected Action assertTransit ( final ActionSet possibleActions )
       throws MachineAmbigiousActionException
   {
     if ( possibleActions.size () != 1 )
@@ -395,6 +396,19 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
       System.err.println ( "Internal parser error" ); //$NON-NLS-1$
       System.exit ( 1 );
     }
+
+    return possibleActions.first ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.StatelessMachine#backTransit()
+   */
+  public final void backTransit ()
+  {
+    restoreHistoryEntry ();
   }
 
 

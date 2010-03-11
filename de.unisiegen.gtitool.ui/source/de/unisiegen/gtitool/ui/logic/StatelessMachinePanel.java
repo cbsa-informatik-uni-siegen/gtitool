@@ -8,6 +8,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
@@ -47,6 +48,12 @@ public class StatelessMachinePanel extends MachinePanel
    * the {@link StatelessMachine}
    */
   private StatelessMachine machine;
+
+
+  /**
+   * the {@link JGTITable}
+   */
+  private JGTITable jGTIStatelessMachineTable;
 
 
   /**
@@ -106,17 +113,19 @@ public class StatelessMachinePanel extends MachinePanel
    */
   private final void initializeStatelessMachineTable ()
   {
-    JGTITable jGTIStatelessMachineTable = new JGTITable ();
+    this.jGTIStatelessMachineTable = new JGTITable ();
     JGTIPanel jGTIStatelessMachineTablePanel = new JGTIPanel ();
     JGTIScrollPane jGTIStatelessMachineTablePanelScrollPane = new JGTIScrollPane ();
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
 
     // setup the machine table
-    jGTIStatelessMachineTable.setModel ( new StatelessMachineTableModel () );
-    jGTIStatelessMachineTable
+    this.jGTIStatelessMachineTable
+        .setModel ( new StatelessMachineTableModel () );
+    this.jGTIStatelessMachineTable
         .setColumnModel ( new StatelessMachineColumnModel () );
-    jGTIStatelessMachineTable.getTableHeader ().setReorderingAllowed ( false );
-    jGTIStatelessMachineTable
+    this.jGTIStatelessMachineTable.getTableHeader ().setReorderingAllowed (
+        false );
+    this.jGTIStatelessMachineTable
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
 
     // setup scrollpane + viewport
@@ -127,7 +136,7 @@ public class StatelessMachinePanel extends MachinePanel
     jGTIStatelessMachineTablePanel.add (
         jGTIStatelessMachineTablePanelScrollPane, gridBagConstraints );
     jGTIStatelessMachineTablePanelScrollPane
-        .setViewportView ( jGTIStatelessMachineTable );
+        .setViewportView ( this.jGTIStatelessMachineTable );
 
     this.gui.jGTISplitPaneTable
         .setLeftComponent ( jGTIStatelessMachineTablePanel );
@@ -279,40 +288,46 @@ public class StatelessMachinePanel extends MachinePanel
   @Override
   public void handleWordNextStep ()
   {
+    Action action;
     try
     {
-      if ( !this.machine.isNextStepAmbigious () )
-        this.machine.autoTransit ();
-      else if ( this.machine instanceof AbstractStatelessMachine )
+      action = this.machine.autoTransit ();
+    }
+    catch ( MachineAmbigiousActionException exc )
+    {
+      if ( this.machine instanceof AbstractStatelessMachine )
       {
-        ActionSet actions = ( ( AbstractStatelessMachine ) this.machine )
-            .getPossibleActions ();
+        ActionSet actions = null;
+        try
+        {
+          actions = ( ( AbstractStatelessMachine ) this.machine )
+              .getPossibleActions ();
+        }
+        catch ( ActionSetException exc1 )
+        {
+          exc1.printStackTrace ();
+          System.exit ( 1 );
+        }
         ChooseNextActionDialog cnad = new ChooseNextActionDialog (
             this.mainWindowForm, actions );
         cnad.show ();
 
         if ( cnad.isConfirmed () )
-          ( ( AbstractStatelessMachine ) this.machine ).transit ( cnad
-              .getChosenAction () );
+        {
+          action = cnad.getChosenAction ();
+          ( ( AbstractStatelessMachine ) this.machine ).transit ( action );
+        }
         else
           return;
-
-        performMachineTableChanged ();
       }
       else
         throw new RuntimeException (
             "handleWordNextStep not defined for ambigious steps of instances other than AbstractStatelessMachine" ); //$NON-NLS-1$
     }
-    catch ( MachineAmbigiousActionException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-    catch ( ActionSetException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
+
+    StatelessMachineTableModel smtm = ( StatelessMachineTableModel ) this.jGTIStatelessMachineTable
+        .getModel ();
+    smtm.addRow ( this.machine.getStack (), this.machine.getWord (), action );
 
     updateGUIAcceptStatus ();
   }
@@ -326,7 +341,11 @@ public class StatelessMachinePanel extends MachinePanel
   @Override
   public void handleWordPreviousStep ()
   {
+    this.machine.backTransit ();
 
+    StatelessMachineTableModel smtm = ( StatelessMachineTableModel ) this.jGTIStatelessMachineTable
+        .getModel ();
+    smtm.removeLastRow ();
   }
 
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
+import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -61,6 +62,12 @@ public class StatelessMachineTableModel extends AbstractTableModel
 
 
   /**
+   * the {@link Action} data
+   */
+  private ArrayList < Action > actionData;
+
+
+  /**
    * allocates a new {@link StatelessMachineTableModel}
    */
   public StatelessMachineTableModel ()
@@ -74,12 +81,15 @@ public class StatelessMachineTableModel extends AbstractTableModel
    * 
    * @param stack the initial {@link Stack}
    * @param input the initial input {@link Word}
+   * @param action the initial {@link Action}
    */
-  public StatelessMachineTableModel ( final Stack stack, final Word input )
+  public StatelessMachineTableModel ( final Stack stack, final Word input,
+      final Action action )
   {
     initialize ();
     this.stackData.add ( stack );
     this.inputData.add ( input );
+    this.actionData.add ( action );
   }
 
 
@@ -90,6 +100,7 @@ public class StatelessMachineTableModel extends AbstractTableModel
   {
     this.stackData = new ArrayList < Stack > ();
     this.inputData = new ArrayList < Word > ();
+    this.actionData = new ArrayList < Action > ();
   }
 
 
@@ -98,11 +109,14 @@ public class StatelessMachineTableModel extends AbstractTableModel
    * 
    * @param stack the {@link Stack}
    * @param input the {@link Word}
+   * @param action the {@link Action}
    */
-  public final void addRow ( final Stack stack, final Word input )
+  public final void addRow ( final Stack stack, final Word input,
+      final Action action )
   {
     this.stackData.add ( stack );
     this.inputData.add ( input );
+    this.actionData.add ( action );
   }
 
 
@@ -115,6 +129,7 @@ public class StatelessMachineTableModel extends AbstractTableModel
   {
     this.stackData.remove ( rowIndex );
     this.inputData.remove ( rowIndex );
+    this.actionData.remove ( rowIndex );
   }
 
 
@@ -125,6 +140,7 @@ public class StatelessMachineTableModel extends AbstractTableModel
   {
     this.stackData.remove ( this.stackData.size () );
     this.inputData.remove ( this.inputData.size () );
+    this.actionData.remove ( this.actionData.size () );
   }
 
 
@@ -135,6 +151,7 @@ public class StatelessMachineTableModel extends AbstractTableModel
   {
     this.stackData.clear ();
     this.inputData.clear ();
+    this.actionData.clear ();
   }
 
 
@@ -173,10 +190,10 @@ public class StatelessMachineTableModel extends AbstractTableModel
         return this.inputData.get ( rowIndex );
       case StatelessMachineTableModel.STACK_COLUMN :
         return this.stackData.get ( rowIndex );
-      case StatelessMachineTableModel.ACTION_COLUMN:
-        return new PrettyString ();
+      case StatelessMachineTableModel.ACTION_COLUMN :
+        return this.actionData.get ( rowIndex );
     }
-    return new PrettyString();
+    return new PrettyString ();
   }
 
 }

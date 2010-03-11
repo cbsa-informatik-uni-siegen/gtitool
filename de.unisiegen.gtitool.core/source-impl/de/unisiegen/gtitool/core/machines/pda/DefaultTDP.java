@@ -103,17 +103,18 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
    * 
    * @see de.unisiegen.gtitool.core.machines.StatelessMachine#autoTransit()
    */
-  public void autoTransit () throws MachineAmbigiousActionException
+  public Action autoTransit () throws MachineAmbigiousActionException
   {
     try
     {
-      assertTransit ( getPossibleActions () );
+      return assertTransit ( getPossibleActions () );
     }
     catch ( ActionSetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+    return null;
   }
 
 

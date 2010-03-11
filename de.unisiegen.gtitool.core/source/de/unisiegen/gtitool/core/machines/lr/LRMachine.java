@@ -1,8 +1,8 @@
 package de.unisiegen.gtitool.core.machines.lr;
 
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
@@ -44,9 +44,10 @@ public interface LRMachine
 
   /**
    * Try to automatically use the next transition
-   * @throws MachineAmbigiousActionException 
+   * @return The {@link Action} that was taken
+   * @throws MachineAmbigiousActionException
    */
-  public void autoTransit () throws MachineAmbigiousActionException;
+  public Action autoTransit () throws MachineAmbigiousActionException;
 
 
   /**

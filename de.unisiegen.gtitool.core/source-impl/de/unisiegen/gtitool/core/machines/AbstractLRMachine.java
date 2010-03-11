@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.machines;
 
 
+import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
@@ -31,7 +32,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
    * 
    * @see de.unisiegen.gtitool.core.machines.StatelessMachine#autoTransit()
    */
-  public abstract void autoTransit () throws MachineAmbigiousActionException;
+  public abstract Action autoTransit () throws MachineAmbigiousActionException;
 
 
   /**

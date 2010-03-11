@@ -61,10 +61,12 @@ import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
+import de.unisiegen.gtitool.core.machines.dfa.LR1;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
+import de.unisiegen.gtitool.ui.convert.ConvertToLALR1;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -632,6 +634,10 @@ public final class StateMachinePanel extends MachinePanel
       return new ConvertMachineDialog ( this.mainWindowForm, this );
     else if ( this.machine.getMachineType ().equals ( MachineType.DFA ) )
       return new ConvertMachineDialog ( this.mainWindowForm, this );
+    else if ( this.machine.getMachineType ().equals ( MachineType.LR1 )
+        && destination instanceof MachineType
+        && ( ( MachineType ) destination ).equals ( MachineType.LALR1 ) )
+      return new ConvertToLALR1 ( this.mainWindowForm, (LR1)this.getMachine () );
     else
       throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
   }

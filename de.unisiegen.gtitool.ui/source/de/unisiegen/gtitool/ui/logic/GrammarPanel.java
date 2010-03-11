@@ -382,6 +382,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    */
   public Converter getConverter ( EntityType destination )
   {
+    
     if ( destination instanceof MachineType )
       try
       {
@@ -399,6 +400,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
             return new ConvertToTDP ( this.mainWindowForm, ( CFG ) this.grammar );
           case PDA :
           case NFA :
+          case LALR1:
+          case LALR1Parser:
             break;
         }
       }

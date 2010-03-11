@@ -1701,6 +1701,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             MachineType.PDA ) )
           panel.getConverter ( entityType ).convert ( MachineType.PDA,
               entityType, false, false );
+        else if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.LR1 ) )
+          panel.getConverter ( entityType ).convert ( MachineType.LR1,
+              MachineType.LALR1, false, false );
         else
           throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
       }
@@ -5169,11 +5173,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
 
     addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
-    
-    if(panel instanceof StateMachinePanel)
+
+    if ( panel instanceof StateMachinePanel )
       removeButtonState ( ButtonState.ENABLED_HISTORY );
 
-    ((MachinePanel)panel).handleWordStop ();
+    ( ( MachinePanel ) panel ).handleWordStop ();
   }
 
 

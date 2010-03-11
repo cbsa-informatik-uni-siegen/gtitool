@@ -160,8 +160,6 @@ public class DefaultProductionSet implements ProductionSet
 
   /**
    * {@inheritDoc}
-   * 
-   * @return
    */
   public boolean add ( final int index,
       final ArrayList < Production > productions )
@@ -174,6 +172,12 @@ public class DefaultProductionSet implements ProductionSet
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ProductionSet#add(int,
+   *      de.unisiegen.gtitool.core.entities.ProductionSet)
+   */
   public boolean add ( int index, ProductionSet set )
   {
     return add ( index, ( ArrayList < Production > ) set.getRep () );
@@ -181,9 +185,8 @@ public class DefaultProductionSet implements ProductionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.ProductionSet#getRep()
    */
   public Collection < Production > getRep ()
@@ -507,10 +510,8 @@ public class DefaultProductionSet implements ProductionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param p
-   * @return
    * @see de.unisiegen.gtitool.core.entities.ProductionSet#remove(de.unisiegen.gtitool.core.entities.Production[])
    */
   public boolean remove ( Production ... p )
@@ -520,10 +521,8 @@ public class DefaultProductionSet implements ProductionSet
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param p
-   * @return
    * @see de.unisiegen.gtitool.core.entities.ProductionSet#remove(java.lang.Iterable)
    */
   public boolean remove ( Iterable < Production > p )
@@ -536,10 +535,12 @@ public class DefaultProductionSet implements ProductionSet
 
 
   /**
-   * TODO
+   * Compares one set to another, forming a strict weak ordering
    * 
    * @param o
-   * @return
+   * @return Smaller sets are "before" larger sets, larger sets are "after"
+   *         smaller sets. Sets with the same size are compared element by
+   *         element.
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   public int compareTo ( ProductionSet o )

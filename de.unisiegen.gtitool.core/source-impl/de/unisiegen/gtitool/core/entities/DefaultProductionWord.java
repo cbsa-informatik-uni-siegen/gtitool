@@ -320,7 +320,17 @@ public final class DefaultProductionWord implements ProductionWord
    */
   public final ProductionWordMember get ( int index )
   {
-    return this.productionWordMemberList.get ( index );
+    try
+    {
+      return this.productionWordMemberList.get ( index );
+    }
+    catch(IndexOutOfBoundsException e)
+    {
+      System.err.println(this);
+      e.printStackTrace();
+    }
+    System.exit ( 1 );
+    return null;
   }
 
 

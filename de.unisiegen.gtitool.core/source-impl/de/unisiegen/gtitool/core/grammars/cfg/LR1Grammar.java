@@ -22,6 +22,12 @@ import de.unisiegen.gtitool.core.grammars.Grammar;
 public class LR1Grammar extends ExtendedGrammar
 {
 
+  /**
+   * TODO
+   */
+  private static final long serialVersionUID = 1L;
+
+
   public LR1Grammar ( Grammar grammar )
   {
     super ( grammar );
@@ -113,8 +119,9 @@ public class LR1Grammar extends ExtendedGrammar
     LR1ItemSet ret = new LR1ItemSet ();
 
     for ( LR1Item item : items )
-      if ( item.getProductionWord ().get ( item.getDotPosition () ).equals (
-          productionWord ) )
+      if ( !item.dotIsAtEnd ()
+          && item.getProductionWord ().get ( item.getDotPosition () ).equals (
+              productionWord ) )
         ret.add ( item.incDot () );
 
     return ret;

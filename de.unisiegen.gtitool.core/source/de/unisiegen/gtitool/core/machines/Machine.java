@@ -133,6 +133,10 @@ public interface Machine extends Storable
         {
           return "LR1"; //$NON-NLS-1$
         }
+        case LALR1:
+        {
+          return "LALR1"; //$NON-NLS-1$
+        }
         case LR0Parser :
         {
           return "LR0Parser"; //$NON-NLS-1$

@@ -6,7 +6,6 @@ import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
-import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.Element;
@@ -29,7 +28,7 @@ public class DefaultActionSet implements ActionSet
    * 
    * @see de.unisiegen.gtitool.core.entities.ActionSet#add(java.lang.Iterable)
    */
-  public void add ( Iterable < Action > actions ) throws ActionSetException
+  public void add ( Iterable < Action > actions )
   {
     Iterator < Action > iter = actions.iterator ();
 
@@ -43,7 +42,7 @@ public class DefaultActionSet implements ActionSet
    * 
    * @see de.unisiegen.gtitool.core.entities.ActionSet#add(de.unisiegen.gtitool.core.entities.Action)
    */
-  public void add ( Action action ) throws ActionSetException
+  public void add ( Action action )
   {
     this.rep.add ( action );
   }

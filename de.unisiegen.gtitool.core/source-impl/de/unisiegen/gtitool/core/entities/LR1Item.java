@@ -21,7 +21,7 @@ public class LR1Item extends LRItem
   public LR1Item incDot ()
   {
     return new LR1Item ( getNonterminalSymbol (), getProductionWord (),
-        getDotPosition () + 1, lookAhead );
+        getDotPosition () + 1, this.lookAhead );
   }
 
 

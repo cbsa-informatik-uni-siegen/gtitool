@@ -64,7 +64,7 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
 
 
   /**
-   * Create this extended grammar from an already constructed grammar
+   * Wrap an extended grammar from an already constructed grammar
    * 
    * @param grammar
    */
@@ -82,10 +82,9 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
       if ( prod.getNonterminalSymbol ().equals ( this.getStartSymbol () ) )
       {
         if ( this.startProduction != null )
-        {
-          System.err.println ( "Multiple start productions!" ); //$NON-NLS-1$
-          System.exit ( 1 );
-        }
+          throw new RuntimeException (
+              "Multiple start productions! Should not happen!" ); //$NON-NLS-1$
+
         this.startProduction = prod;
       }
     }
@@ -122,9 +121,9 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
 
 
   /**
-   * TODO
+   * Returns the new start production
    * 
-   * @return
+   * @return the start production
    */
   public Production getStartProduction ()
   {
@@ -133,9 +132,8 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @throws AlphabetException
    */
   @Override

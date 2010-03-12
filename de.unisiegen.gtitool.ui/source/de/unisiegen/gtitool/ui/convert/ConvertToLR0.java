@@ -43,8 +43,7 @@ public class ConvertToLR0 extends ConvertToLR
   public ConvertToLR0 ( final MainWindowForm mainWindowForm,
       final Grammar grammar ) throws AlphabetException
   {
-    super ( mainWindowForm, grammar, convertGrammar ( grammar )
-        .getAlphabet () );
+    super ( mainWindowForm, grammar, convertGrammar ( grammar ).getAlphabet () );
 
     this.lr0Grammar = convertGrammar ( grammar );
   }
@@ -73,7 +72,7 @@ public class ConvertToLR0 extends ConvertToLR
 
   /**
    * TODO
-   *
+   * 
    * @return the machine
    * @see de.unisiegen.gtitool.ui.convert.ConvertToLR#getMachine()
    */
@@ -84,8 +83,14 @@ public class ConvertToLR0 extends ConvertToLR
   }
 
 
+  /**
+   * The associated grammar
+   */
   private LR0Grammar lr0Grammar;
 
 
+  /**
+   * The associated machine
+   */
   private LR0 machine;
 }

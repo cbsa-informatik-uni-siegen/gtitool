@@ -33,7 +33,7 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
    * @author Christian Fehler
    */
   public final class GTIMouseHandler extends MouseAdapter implements
-      MouseMotionListener, Serializable
+      Serializable
   {
 
     /**
@@ -141,6 +141,7 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
      * 
      * @see MouseMotionListener#mouseDragged(MouseEvent)
      */
+    @Override
     public final void mouseDragged ( MouseEvent event )
     {
 
@@ -197,6 +198,7 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
      * 
      * @see MouseMotionListener#mouseMoved(MouseEvent)
      */
+    @Override
     public final void mouseMoved (
         @SuppressWarnings ( "unused" ) MouseEvent event )
     {

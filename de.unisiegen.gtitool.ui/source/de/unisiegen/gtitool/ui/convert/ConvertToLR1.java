@@ -11,17 +11,18 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
 /**
- * TODO
+ * The Grammar to LR1 conversion class
  */
 public class ConvertToLR1 extends ConvertToLR
 {
 
   /**
-   * TODO
+   * Converts a grammar to an LR1 grammar
    * 
    * @param grammar
+   * @return The grammar
    */
-  private static LR1Grammar convertGrammar ( Grammar grammar )
+  private static LR1Grammar convertGrammar ( final Grammar grammar )
   {
     LR1Grammar ret = new LR1Grammar ( grammar.getNonterminalSymbolSet (),
         grammar.getTerminalSymbolSet (), grammar.getStartSymbol () );
@@ -32,8 +33,15 @@ public class ConvertToLR1 extends ConvertToLR
   }
 
 
-  public ConvertToLR1 ( MainWindowForm mainWindowForm, Grammar grammar )
-      throws AlphabetException
+  /**
+   * Constructs a converted from the mainWindow and a grammar
+   * 
+   * @param mainWindowForm
+   * @param grammar
+   * @throws AlphabetException
+   */
+  public ConvertToLR1 ( final MainWindowForm mainWindowForm,
+      final Grammar grammar ) throws AlphabetException
   {
     super ( mainWindowForm, grammar, convertGrammar ( grammar ).getAlphabet () );
 
@@ -41,16 +49,21 @@ public class ConvertToLR1 extends ConvertToLR
   }
 
 
+  /**
+   * The associated grammar
+   */
   private LR1Grammar lr1Grammar;
 
 
+  /**
+   * The associated machine
+   */
   private LR1 machine;
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.ui.convert.ConvertToLR#getMachine()
    */
   @Override
@@ -61,7 +74,7 @@ public class ConvertToLR1 extends ConvertToLR
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammarStateMachine#createMachine()
    */

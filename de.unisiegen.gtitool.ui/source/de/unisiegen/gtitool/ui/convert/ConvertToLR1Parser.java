@@ -1,26 +1,63 @@
 package de.unisiegen.gtitool.ui.convert;
 
 
-import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
+import de.unisiegen.gtitool.core.machines.lr.DefaultLR1Parser;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
 /**
- * TODO
+ * Convert a grammar into an LR1 parser
  */
-public class ConvertToLR1Parser implements Converter
+public class ConvertToLR1Parser extends ConvertToLRParser
 {
 
-  public ConvertToLR1Parser ( MainWindowForm mainWindowForm, Grammar grammar )
+  /**
+   * Constructs a converted out of the mainWindowForm and a grammar
+   * 
+   * @param mainWindowForm
+   * @param grammar
+   * @throws AlphabetException
+   */
+  public ConvertToLR1Parser ( final MainWindowForm mainWindowForm,
+      final Grammar grammar ) throws AlphabetException
   {
-
+    super ( mainWindowForm, grammar );
   }
 
 
-  public void convert ( EntityType fromEntityType, EntityType toEntityType,
-      boolean complete, boolean cb )
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammar#createMachine()
+   */
+  @Override
+  protected void createMachine ()
   {
+    try
+    {
+      this.machine = new DefaultLR1Parser ( this.grammar );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
 
+    createMachinePanel ( this.machine );
   }
+
+
+  /**
+   * The associated grammar
+   */
+  private LR1Grammar grammar;
+
+
+  /**
+   * The associated machine
+   */
+  private DefaultLR1Parser machine;
 }

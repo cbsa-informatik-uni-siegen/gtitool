@@ -40,12 +40,6 @@ public abstract class AbstractConvertGrammar implements Converter
 
 
   /**
-   * The new {@link MachinePanel}.
-   */
-  private MachinePanel newPanel;
-
-
-  /**
    * The {@link Alphabet}.
    */
   private Alphabet alphabet;
@@ -142,7 +136,6 @@ public abstract class AbstractConvertGrammar implements Converter
    * Returns the newPanel.
    * 
    * @return The newPanel.
-   * @see #newPanel
    */
   public abstract MachinePanel getNewPanel ();
 

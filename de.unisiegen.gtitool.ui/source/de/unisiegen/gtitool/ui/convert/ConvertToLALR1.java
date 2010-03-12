@@ -9,11 +9,17 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
 /**
- * TODO
+ * Converts an LR1 automaton into an LALR1 automaton
  */
 public class ConvertToLALR1 extends ConvertToLR
 {
 
+  /**
+   * Creates a converter out of the mainWindow and an LR1 automaton
+   * 
+   * @param mainWindow
+   * @param lr1
+   */
   public ConvertToLALR1 ( final MainWindowForm mainWindow, final LR1 lr1 )
   {
     super ( mainWindow, lr1.getGrammar (), lr1.getAlphabet () );
@@ -21,14 +27,20 @@ public class ConvertToLALR1 extends ConvertToLR
   }
 
 
+  /**
+   * The source parser
+   */
   private LR1 source;
 
 
+  /**
+   * The resulting parser
+   */
   private LR1 result;
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.ui.convert.AbstractConvertGrammar#createMachine()
    */
@@ -53,9 +65,8 @@ public class ConvertToLALR1 extends ConvertToLR
 
 
   /**
-   * TODO
+   * {@inheritDoc} s
    * 
-   * @return
    * @see de.unisiegen.gtitool.ui.convert.ConvertToLR#getMachine()
    */
   @Override

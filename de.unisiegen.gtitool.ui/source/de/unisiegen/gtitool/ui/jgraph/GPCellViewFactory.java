@@ -81,6 +81,12 @@ public class GPCellViewFactory extends DefaultCellViewFactory
   }
 
 
+  /**
+   * A static factory that can create Views for a given Cell
+   * 
+   * @param value
+   * @return The view
+   */
   public static VertexView staticCreateVertexView ( final Object value )
   {
     return ( new GPCellViewFactory () ).createVertexView ( value );

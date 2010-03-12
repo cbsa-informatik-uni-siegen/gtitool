@@ -124,6 +124,7 @@ public class BlackboxView extends StateView
   /**
    * The {@link JGraphEllipseRenderer} for this view.
    */
+  @SuppressWarnings ( "hiding" )
   public transient VertexRenderer ellipseRenderer;
 
 

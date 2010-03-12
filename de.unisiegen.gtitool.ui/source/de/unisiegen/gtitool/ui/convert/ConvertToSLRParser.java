@@ -4,27 +4,27 @@ package de.unisiegen.gtitool.ui.convert;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
-import de.unisiegen.gtitool.core.machines.lr.DefaultLR0Parser;
+import de.unisiegen.gtitool.core.machines.lr.SLRParser;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
 /**
- * Converts a grammar into an LR0 Parser
+ * Converts a grammar into an SLR parser
  */
-public class ConvertToLR0Parser extends ConvertToLRParser
+public class ConvertToSLRParser extends ConvertToLRParser
 {
 
   /**
-   * Construct the converter out of the mainWindow and a grammar
+   * Constructs a converter to an SLR parser out of the mainWindow and a grammar
    * 
-   * @param mainWindowForm
+   * @param mwf
    * @param grammar
    * @throws AlphabetException
    */
-  public ConvertToLR0Parser ( final MainWindowForm mainWindowForm,
-      final Grammar grammar ) throws AlphabetException
+  public ConvertToSLRParser ( final MainWindowForm mwf, final Grammar grammar )
+      throws AlphabetException
   {
-    super ( mainWindowForm, grammar );
+    super ( mwf, grammar );
 
     this.grammar = new LR0Grammar ( grammar );
   }
@@ -40,7 +40,7 @@ public class ConvertToLR0Parser extends ConvertToLRParser
   {
     try
     {
-      this.machine = new DefaultLR0Parser ( this.grammar );
+      this.machine = new SLRParser ( this.grammar );
     }
     catch ( AlphabetException exc )
     {
@@ -61,5 +61,5 @@ public class ConvertToLR0Parser extends ConvertToLRParser
   /**
    * The associated machine
    */
-  private DefaultLR0Parser machine;
+  private SLRParser machine;
 }

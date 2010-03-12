@@ -93,11 +93,13 @@ public class LRStateView extends StateView
 
       g.setColor ( stateColor ( state ) );
 
-      final int offsetx = state.isStartState () ? START_OFFSET : 0;
+      final int offsetx = getOffsetX ( state );
 
-      g.drawRect ( offsetx, 0, d.width - 1, d.height - 1 );
+      final int offsety = getOffsetY ( state );
 
-      int xStart = 15 + offsetx, y = 15, x = xStart;
+      g.drawRect ( offsetx, offsety, d.width - 1, d.height - 1 );
+
+      int xStart = 15 + offsetx, y = 15 + offsety, x = xStart;
 
       final ArrayList < PrettyString > strings = state.getItems ()
           .stringEntries ();
@@ -162,7 +164,9 @@ public class LRStateView extends StateView
   @Override
   public int getHeight ( State nstate )
   {
-    return staticDimension ( ( LRState ) nstate ).height;
+    final int extraHeight = nstate.isLoopTransition () ? LOOP_TRANSITION_OFFSET
+        : 0;
+    return staticDimension ( ( LRState ) nstate ).height + extraHeight;
   }
 
 
@@ -230,16 +234,32 @@ public class LRStateView extends StateView
   }
 
 
+  /**
+   * The line helper class It is used to calculate intersections between lines
+   * and rectangles
+   */
   private class Line
   {
 
-    public Line ( Point2D start, Point2D dest )
+    /**
+     * Construct a line out of two points
+     * 
+     * @param start
+     * @param dest
+     */
+    public Line ( final Point2D start, final Point2D dest )
     {
       this.start = start;
       this.dest = dest;
     }
 
 
+    /**
+     * Calculate the intersection between two lines
+     * 
+     * @param other
+     * @return The intersection or null
+     */
     public Point2D intersection ( final Line other )
     {
       Point2D p4 = other.dest, p3 = other.start, p2 = this.dest, p1 = this.start;
@@ -270,9 +290,15 @@ public class LRStateView extends StateView
     }
 
 
+    /**
+     * The starting point
+     */
     private Point2D start;
 
 
+    /**
+     * The destination point
+     */
     private Point2D dest;
   }
 
@@ -297,6 +323,37 @@ public class LRStateView extends StateView
   }
 
 
+  /**
+   * Caculates the x offset of a state's rect
+   * 
+   * @param state
+   * @return The offset
+   */
+  static int getOffsetX ( final State state )
+  {
+    return state.isStartState () ? START_OFFSET : 0;
+  }
+
+
+  /**
+   * Calculates the y offset of a state's rect
+   * 
+   * @param state
+   * @return The offset
+   */
+  static int getOffsetY ( final State state )
+  {
+    return state.isLoopTransition () ? LOOP_TRANSITION_OFFSET : 0;
+  }
+
+
+  /**
+   * Calculates the intersection between a cell view and a point
+   * 
+   * @param cellSource
+   * @param p
+   * @return The intersection or null
+   */
   private Point2D calculateIntersection ( final CellView cellSource,
       final Point2D p )
   {
@@ -305,29 +362,27 @@ public class LRStateView extends StateView
     final Line testLine = new Line ( new Point2D.Double ( cellSource
         .getBounds ().getX (), cellSource.getBounds ().getY () ), p );
 
+    final double realX = myBounds.getX () + getOffsetX ( this.state );
+
+    final double realY = myBounds.getY () + getOffsetY ( this.state );
+
     ArrayList < Line > lines = new ArrayList < Line > ();
 
     // top
-    lines
-        .add ( new Line ( new Point2D.Double ( myBounds.getX (), myBounds
-            .getY () ), new Point2D.Double ( myBounds.getMaxX (), myBounds
-            .getY () ) ) );
+    lines.add ( new Line ( new Point2D.Double ( realX, realY ),
+        new Point2D.Double ( myBounds.getMaxX (), realY ) ) );
 
     // bottom
-    lines.add ( new Line ( new Point2D.Double ( myBounds.getX (), myBounds
-        .getMaxY () ), new Point2D.Double ( myBounds.getMaxX (), myBounds
-        .getMaxY () ) ) );
+    lines.add ( new Line ( new Point2D.Double ( realX, myBounds.getMaxY () ),
+        new Point2D.Double ( myBounds.getMaxX (), myBounds.getMaxY () ) ) );
 
     // left
-    lines
-        .add ( new Line ( new Point2D.Double ( myBounds.getX (), myBounds
-            .getY () ), new Point2D.Double ( myBounds.getX (), myBounds
-            .getMaxY () ) ) );
+    lines.add ( new Line ( new Point2D.Double ( realX, realY ),
+        new Point2D.Double ( realX, myBounds.getMaxY () ) ) );
 
     // right
-    lines.add ( new Line ( new Point2D.Double ( myBounds.getMaxX (), myBounds
-        .getY () ), new Point2D.Double ( myBounds.getMaxX (), myBounds
-        .getMaxY () ) ) );
+    lines.add ( new Line ( new Point2D.Double ( myBounds.getMaxX (), realY ),
+        new Point2D.Double ( myBounds.getMaxX (), myBounds.getMaxY () ) ) );
 
     // calculate the intersections with each side of the rectangle and take the
     // closest
@@ -356,6 +411,13 @@ public class LRStateView extends StateView
   }
 
 
+  /**
+   * Calculates the distance between two points using sqrt(x*x + y*y)
+   * 
+   * @param p1
+   * @param p2
+   * @return The distance
+   */
   private static double distance ( final Point2D p1, final Point2D p2 )
   {
     final double dx = p1.getX () - p2.getX ();

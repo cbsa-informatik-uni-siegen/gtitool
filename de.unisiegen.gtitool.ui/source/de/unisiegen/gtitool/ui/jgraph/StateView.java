@@ -644,14 +644,14 @@ public class StateView extends ViewBase
    */
   public static int staticHeight ( final State state )
   {
-    int width = 70;
+    int height = 70;
 
     if ( state.isLoopTransition () )
     {
-      width += LOOP_TRANSITION_OFFSET;
+      height += LOOP_TRANSITION_OFFSET;
     }
 
-    return width;
+    return height;
   }
 
 

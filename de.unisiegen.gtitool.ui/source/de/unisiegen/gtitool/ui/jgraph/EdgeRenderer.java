@@ -1094,6 +1094,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements
     if ( this.view.isLeaf () )
     {
       Shape edgeShape = this.view.getShape ();
+
       // Sideeffect: beginShape, lineShape, endShape
       if ( edgeShape != null )
       {
@@ -1317,6 +1318,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements
   protected void paintTransition ( Graphics g, Transition transition,
       Point2D p, boolean mainLabel )
   {
+
     PrettyString prettyString = transition.toPrettyString ();
     String string = prettyString.toString ();
 

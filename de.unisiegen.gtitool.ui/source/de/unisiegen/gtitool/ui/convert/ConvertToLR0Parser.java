@@ -26,7 +26,8 @@ public class ConvertToLR0Parser extends ConvertToLRParser
   {
     super ( mainWindowForm, grammar );
 
-    this.grammar = new LR0Grammar ( grammar );
+    this.grammar = new LR0Grammar ( grammar.getNonterminalSymbolSet (), grammar
+        .getTerminalSymbolSet (), grammar.getStartSymbol () );
   }
 
 

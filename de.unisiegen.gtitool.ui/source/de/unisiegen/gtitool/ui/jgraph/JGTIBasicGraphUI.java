@@ -141,7 +141,6 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
      * 
      * @see MouseMotionListener#mouseDragged(MouseEvent)
      */
-    @Override
     public final void mouseDragged ( MouseEvent event )
     {
 
@@ -198,7 +197,6 @@ public final class JGTIBasicGraphUI extends BasicGraphUI
      * 
      * @see MouseMotionListener#mouseMoved(MouseEvent)
      */
-    @Override
     public final void mouseMoved (
         @SuppressWarnings ( "unused" ) MouseEvent event )
     {

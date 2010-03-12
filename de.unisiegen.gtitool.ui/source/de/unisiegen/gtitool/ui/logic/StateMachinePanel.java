@@ -7,7 +7,6 @@ import java.awt.PopupMenu;
 import java.awt.Rectangle;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -19,8 +18,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
@@ -29,7 +26,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
@@ -107,43 +103,6 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.AcceptedStatus;
 public final class StateMachinePanel extends MachinePanel
 
 {
-
-  /**
-   * Do next step in word enter mode after a delay.
-   * 
-   * @author Benjamin Mies
-   */
-  protected final class AutoStepTimerTask extends TimerTask
-  {
-
-    /**
-     * Make next step after a delay.
-     * 
-     * @see TimerTask#run()
-     */
-    @Override
-    public final void run ()
-    {
-      SwingUtilities.invokeLater ( new Runnable ()
-      {
-
-        public void run ()
-        {
-          if ( StateMachinePanel.this.machine.isNextSymbolAvailable () )
-            handleWordNextStep ();
-          else
-          {
-            StateMachinePanel.this.mainWindowForm.getLogic ()
-                .removeButtonState ( ButtonState.SELECTED_AUTO_STEP );
-            StateMachinePanel.this.mainWindowForm.getLogic ()
-                .updateWordNavigationStates ();
-            cancelAutoStepTimer ();
-          }
-        }
-      } );
-    }
-  }
-
 
   /**
    * The {@link MouseAdapter} for the final icon in the toolbar.
@@ -625,8 +584,7 @@ public final class StateMachinePanel extends MachinePanel
    * 
    * @see EditorPanel#getConverter()
    */
-  public final Converter getConverter (
-      @SuppressWarnings ( "unused" ) EntityType destination )
+  public final Converter getConverter ( EntityType destination )
   {
     if ( this.machine.getMachineType ().equals ( MachineType.NFA ) )
       return new ConvertMachineDialog ( this.mainWindowForm, this );
@@ -637,7 +595,8 @@ public final class StateMachinePanel extends MachinePanel
     else if ( this.machine.getMachineType ().equals ( MachineType.LR1 )
         && destination instanceof MachineType
         && ( ( MachineType ) destination ).equals ( MachineType.LALR1 ) )
-      return new ConvertToLALR1 ( this.mainWindowForm, (LR1)this.getMachine () );
+      return new ConvertToLALR1 ( this.mainWindowForm, ( LR1 ) this
+          .getMachine () );
     else
       throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
   }
@@ -828,6 +787,7 @@ public final class StateMachinePanel extends MachinePanel
   /**
    * Handles the edit {@link StateMachine} event.
    */
+  @Override
   public final void handleEditMachine ()
   {
     handleWordStop ();
@@ -1312,27 +1272,6 @@ public final class StateMachinePanel extends MachinePanel
 
 
   /**
-   * Handle Auto Step Action in the Word Enter Mode
-   * 
-   * @param event
-   */
-  public final void handleWordAutoStep ( ItemEvent event )
-  {
-    if ( event.getStateChange () == ItemEvent.SELECTED )
-    {
-      cancelAutoStepTimer ();
-      startAutoStepTimer ( false );
-    }
-    else
-      cancelAutoStepTimer ();
-
-    updateAcceptedState ();
-
-    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
-  }
-
-
-  /**
    * Handles next step action in the word enter mode.
    */
   @Override
@@ -1401,6 +1340,7 @@ public final class StateMachinePanel extends MachinePanel
   /**
    * Handles previous step action in the word enter mode.
    */
+  @Override
   public final void handleWordPreviousStep ()
   {
     this.machine.previousSymbol ();
@@ -2440,26 +2380,10 @@ public final class StateMachinePanel extends MachinePanel
 
 
   /**
-   * Starts the auto step {@link Timer}.
-   * 
-   * @param delayed Flag that indicates that the timer should start after a
-   *          delay.
+   * {@inheritDoc}
    */
-
-  private final void startAutoStepTimer ( boolean delayed )
-  {
-    this.autoStepTimer = new Timer ();
-    int time = PreferenceManager.getInstance ().getAutoStepItem ()
-        .getAutoStepInterval ();
-    this.autoStepTimer.schedule ( new AutoStepTimerTask (), delayed ? time : 0,
-        time );
-  }
-
-
-  /**
-   * Updates the {@link AcceptedStatus}.
-   */
-  private final void updateAcceptedState ()
+  @Override
+  protected final void updateAcceptedState ()
   {
     if ( this.machineMode.equals ( MachineMode.WORD_NAVIGATION )
         && !this.machine.isNextSymbolAvailable () )
@@ -2651,6 +2575,27 @@ public final class StateMachinePanel extends MachinePanel
 
       StateMachinePanel.this.gui.jGTITableMachine.repaint ();
       StateMachinePanel.this.gui.jGTITableMachinePDA.repaint ();
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#autoStepTimerRun()
+   */
+  @Override
+  void autoStepTimerRun ()
+  {
+    if ( StateMachinePanel.this.machine.isNextSymbolAvailable () )
+      handleWordNextStep ();
+    else
+    {
+      StateMachinePanel.this.mainWindowForm.getLogic ().removeButtonState (
+          ButtonState.SELECTED_AUTO_STEP );
+      StateMachinePanel.this.mainWindowForm.getLogic ()
+          .updateWordNavigationStates ();
+      cancelAutoStepTimer ();
     }
   }
 }

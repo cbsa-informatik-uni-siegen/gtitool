@@ -138,9 +138,9 @@ public class StatelessMachineTableModel extends AbstractTableModel
    */
   public final void removeLastRow ()
   {
-    this.stackData.remove ( this.stackData.size () );
-    this.inputData.remove ( this.inputData.size () );
-    this.actionData.remove ( this.actionData.size () );
+    this.stackData.remove ( this.stackData.size () - 1 );
+    this.inputData.remove ( this.inputData.size () - 1 );
+    this.actionData.remove ( this.actionData.size () - 1 );
   }
 
 

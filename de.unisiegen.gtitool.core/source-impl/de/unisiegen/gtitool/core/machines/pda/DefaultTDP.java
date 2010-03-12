@@ -99,8 +99,10 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
     Symbol inputSymbol = getWord ().getCurrentSymbol ();
     Symbol stackSymbol = getStack ().peak ();
 
-    if ( inputSymbol.equals ( DefaultTerminalSymbol.EndMarker )
-        && stackSymbol.equals ( DefaultTerminalSymbol.EndMarker ) )
+    if ( inputSymbol.getName ().equals (
+        DefaultTerminalSymbol.EndMarker.getName () )
+        && stackSymbol.getName ().equals (
+            DefaultTerminalSymbol.EndMarker.getName () ) )
       actions.add ( new AcceptAction () );
     else if ( this.cfg.getNonterminalSymbolSet ().contains (
         new DefaultNonterminalSymbol ( stackSymbol ) ) )
@@ -111,7 +113,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
         actions.add ( new ReverseReduceAction ( p ) );
     }
     else if ( inputSymbol.equals ( stackSymbol ) )
-      actions.add ( new CancelOutAction () );
+      actions.add ( new CancelOutAction (inputSymbol) );
 
     return actions;
   }
@@ -195,5 +197,21 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   public CFG getGrammar ()
   {
     return this.cfg;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#isNextSymbolAvailable()
+   */
+  @Override
+  public boolean isNextSymbolAvailable ()
+  {
+    final boolean result = super.isNextSymbolAvailable ();
+    Symbol symbol = getStack().peak ();
+    return result
+        && !symbol.getName ().equals (
+            DefaultTerminalSymbol.EndMarker.getName () );
   }
 }

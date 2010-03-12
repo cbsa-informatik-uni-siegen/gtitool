@@ -430,7 +430,9 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public boolean isPreviousSymbolAvailable ()
   {
-    return !this.word.isResetted ();
+    if ( this.word == null )
+      return false;
+    return !this.history.isEmpty ();
   }
 
 

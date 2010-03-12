@@ -65,4 +65,13 @@ public interface Symbol extends Entity < Symbol >, Storable
    * @param error The error value to set.
    */
   public void setError ( boolean error );
+
+
+  /**
+   * Returns if the two Symbols are equal
+   * 
+   * @param other The other {@link Symbol}
+   * @return true if other equals this
+   */
+  //public boolean equals ( final Symbol other );
 }

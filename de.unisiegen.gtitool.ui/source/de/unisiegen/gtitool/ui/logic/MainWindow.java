@@ -4447,7 +4447,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         // TODO: finish implementation
         MachinePanel machinePanel = ( MachinePanel ) panel;
 
+        removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
+        removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
+
         addButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
+
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         removeButtonState ( ButtonState.VISIBLE_REGEX );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
@@ -4463,11 +4467,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
 
+        addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+
         // word navigation mode
         if ( machinePanel.getMachineMode ().equals (
             MachineMode.WORD_NAVIGATION ) )
         {
-          addButtonState ( ButtonState.ENABLED_HISTORY );
+          addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
 
           removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
           removeButtonState ( ButtonState.ENABLED_VALIDATE );

@@ -19,6 +19,8 @@ import de.unisiegen.gtitool.core.machines.AbstractStatelessMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
 import de.unisiegen.gtitool.ui.convert.Converter;
+import de.unisiegen.gtitool.ui.i18n.Messages;
+import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultStatelessMachineModel;
@@ -27,6 +29,7 @@ import de.unisiegen.gtitool.ui.model.PTTableModel;
 import de.unisiegen.gtitool.ui.model.StatelessMachineColumnModel;
 import de.unisiegen.gtitool.ui.model.StatelessMachineTableModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
+import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.AcceptedStatus;
 import de.unisiegen.gtitool.ui.swing.JGTIPanel;
 import de.unisiegen.gtitool.ui.swing.JGTIScrollPane;
 import de.unisiegen.gtitool.ui.swing.JGTITable;
@@ -34,9 +37,86 @@ import de.unisiegen.gtitool.ui.swing.JGTITable;
 
 /**
  * MachinePanel for the {@link StatelessMachine}s
+ * 
+ * @author Christian Uhrhan
  */
 public class StatelessMachinePanel extends MachinePanel
 {
+
+  /**
+   * Signals the machine action type
+   * 
+   * @author Christian Uhrhan
+   */
+  public enum MachineActionType implements EntityType
+  {
+    /**
+     * The machine action type 'start' (machine.start)
+     */
+    START,
+    /**
+     * The machine action type 'stepnext'
+     */
+    STEPNEXT,
+    /**
+     * The machine action type 'stepprevious'
+     */
+    STEPPREVIOUS,
+    /**
+     * The machine action type 'accept'
+     */
+    ACCEPT,
+    /**
+     * The machine action type 'stop'
+     */
+    STOP;
+
+    /**
+     * The file ending.
+     * 
+     * @return The file ending.
+     */
+    public final String getFileEnding ()
+    {
+      return toString ().toLowerCase ();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see Enum#toString()
+     */
+    @Override
+    public final String toString ()
+    {
+      switch ( this )
+      {
+        case START :
+        {
+          return "START"; //$NON-NLS-1$
+        }
+        case STEPNEXT :
+        {
+          return "STEPNEXT"; //$NON-NLS-1$
+        }
+        case STEPPREVIOUS :
+        {
+          return "STEPPREVIOUS"; //$NON-NLS-1$
+        }
+        case ACCEPT :
+        {
+          return "ACCEPT"; //$NON-NLS-1$
+        }
+        case STOP :
+        {
+          return "STOP"; //$NON-NLS-1$
+        }
+      }
+      throw new IllegalArgumentException ( "unsupported machine type" ); //$NON-NLS-1$
+    }
+  }
+
 
   /**
    * the {@link DefaultStatelessMachineModel}
@@ -178,6 +258,7 @@ public class StatelessMachinePanel extends MachinePanel
   @Override
   protected void handleMouseAdapter ()
   {
+    return;
   }
 
 
@@ -187,8 +268,9 @@ public class StatelessMachinePanel extends MachinePanel
    * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleToolbarEnd(boolean)
    */
   @Override
-  protected void handleToolbarEnd ( boolean state )
+  protected void handleToolbarEnd ( @SuppressWarnings ( "unused" ) boolean state )
   {
+    return;
   }
 
 
@@ -198,8 +280,10 @@ public class StatelessMachinePanel extends MachinePanel
    * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleToolbarStart(boolean)
    */
   @Override
-  protected void handleToolbarStart ( boolean state )
+  protected void handleToolbarStart (
+      @SuppressWarnings ( "unused" ) boolean state )
   {
+    return;
   }
 
 
@@ -211,6 +295,7 @@ public class StatelessMachinePanel extends MachinePanel
   @Override
   protected void onHandleConsoleTableValueChanged ()
   {
+    return;
   }
 
 
@@ -220,8 +305,10 @@ public class StatelessMachinePanel extends MachinePanel
    * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleConsoleTableValueChangedHighlight(javax.swing.JTable)
    */
   @Override
-  protected void onHandleConsoleTableValueChangedHighlight ( JTable table )
+  protected void onHandleConsoleTableValueChangedHighlight (
+      @SuppressWarnings ( "unused" ) JTable table )
   {
+    return;
   }
 
 
@@ -230,7 +317,8 @@ public class StatelessMachinePanel extends MachinePanel
    * 
    * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#getConverter(de.unisiegen.gtitool.core.entities.InputEntity.EntityType)
    */
-  public Converter getConverter ( EntityType destination )
+  public Converter getConverter (
+      @SuppressWarnings ( "unused" ) EntityType destination )
   {
     return null;
   }
@@ -290,8 +378,22 @@ public class StatelessMachinePanel extends MachinePanel
   {
     boolean result = super.handleWordStart ();
     if ( result )
-      performMachineTableChanged ( false, null );
+      performMachineTableChanged ( MachineActionType.START, null );
     return result;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#handleWordStop()
+   */
+  @Override
+  public final void handleWordStop ()
+  {
+    super.handleWordStop ();
+
+    performMachineTableChanged ( MachineActionType.STOP, null );
   }
 
 
@@ -340,9 +442,11 @@ public class StatelessMachinePanel extends MachinePanel
             "handleWordNextStep not defined for ambigious steps of instances other than AbstractStatelessMachine" ); //$NON-NLS-1$
     }
 
-    performMachineTableChanged ( false, action );
+    performMachineTableChanged ( MachineActionType.STEPNEXT, action );
 
-    updateGUIAcceptStatus ();
+    updateAcceptedState ();
+
+    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
   }
 
 
@@ -356,7 +460,9 @@ public class StatelessMachinePanel extends MachinePanel
   {
     this.machine.backTransit ();
 
-    performMachineTableChanged ( true, null );
+    performMachineTableChanged ( MachineActionType.STEPPREVIOUS, null );
+
+    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
   }
 
 
@@ -367,6 +473,7 @@ public class StatelessMachinePanel extends MachinePanel
    */
   public void handleExchange ()
   {
+    // do nothing
   }
 
 
@@ -377,6 +484,7 @@ public class StatelessMachinePanel extends MachinePanel
    */
   public void handleRedo ()
   {
+    // do nothing
   }
 
 
@@ -387,6 +495,7 @@ public class StatelessMachinePanel extends MachinePanel
    */
   public void handleToolbarEditDocument ()
   {
+    // do nothing
   }
 
 
@@ -397,6 +506,7 @@ public class StatelessMachinePanel extends MachinePanel
    */
   public void handleUndo ()
   {
+    // do nothing
   }
 
 
@@ -428,8 +538,9 @@ public class StatelessMachinePanel extends MachinePanel
    * @see de.unisiegen.gtitool.core.storage.Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
    */
   public void addModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
+      @SuppressWarnings ( "unused" ) ModifyStatusChangedListener listener )
   {
+    // do nothing
   }
 
 
@@ -450,8 +561,9 @@ public class StatelessMachinePanel extends MachinePanel
    * @see de.unisiegen.gtitool.core.storage.Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
    */
   public void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
+      @SuppressWarnings ( "unused" ) ModifyStatusChangedListener listener )
   {
+    // do nothing
   }
 
 
@@ -462,6 +574,7 @@ public class StatelessMachinePanel extends MachinePanel
    */
   public void resetModify ()
   {
+    // do nothing
   }
 
 
@@ -472,6 +585,7 @@ public class StatelessMachinePanel extends MachinePanel
    */
   public void languageChanged ()
   {
+    // do nothing
   }
 
 
@@ -483,6 +597,7 @@ public class StatelessMachinePanel extends MachinePanel
   @Override
   protected void onHandleMachinePDATableFocusLost ()
   {
+    // do nothing
   }
 
 
@@ -494,53 +609,111 @@ public class StatelessMachinePanel extends MachinePanel
   @Override
   protected void onHandleMachinePDATableMouseExited ()
   {
+    // do nothing
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleMachineTableFocusLost()
    */
   @Override
   protected void onHandleMachineTableFocusLost ()
   {
+    // do nothing
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleMachineTableMouseExited()
    */
   @Override
   protected void onHandleMachineTableMouseExited ()
   {
+    // do nothing
   }
 
 
   /**
    * Updates the gui machine table
+   * 
+   * @param actionType The {@link MachineActionType}
+   * @param action The {@link Action} is is going to take place
    */
-  public final void performMachineTableChanged ( final boolean backStep,
-      final Action action )
+  public final void performMachineTableChanged (
+      final MachineActionType actionType, final Action action )
   {
     StatelessMachineTableModel smtm = ( StatelessMachineTableModel ) this.jGTIStatelessMachineTable
         .getModel ();
 
-    if ( backStep )
-      smtm.removeLastRow ();
-    else
-      smtm.addRow ( this.machine.getStack (), this.machine.getWord (), action );
+    switch ( actionType )
+    {
+      case STEPPREVIOUS :
+        smtm.removeLastRow ();
+        break;
+      case START :
+      case STEPNEXT :
+      case ACCEPT :
+        smtm
+            .addRow ( this.machine.getStack (), this.machine.getWord (), action );
+        break;
+      case STOP :
+        break;
+    }
     this.jGTIStatelessMachineTable.repaint ();
   }
 
 
   /**
-   * Updates the gui displayed accept status
+   * {@inheritDoc}
    */
-  public final void updateGUIAcceptStatus ()
+  @Override
+  public final void updateAcceptedState ()
   {
-    // TODO: implement
+    if ( this.machineMode.equals ( MachineMode.WORD_NAVIGATION )
+        && !this.machine.isNextSymbolAvailable () )
+    {
+      // word accepted
+      if ( this.machine.isWordAccepted () )
+        this.gui.wordPanelForm.styledWordParserPanel
+            .setAcceptedStatus ( AcceptedStatus.ACCEPTED );
+      // word not accepted
+      else
+        this.gui.wordPanelForm.styledWordParserPanel
+            .setAcceptedStatus ( AcceptedStatus.NOT_ACCEPTED );
+    }
+    // no status
+    else
+    {
+      this.gui.wordPanelForm.styledWordParserPanel
+          .setAcceptedStatus ( AcceptedStatus.NONE );
+
+      this.gui.wordPanelForm.jGTILabelStatus.setText ( Messages
+          .getString ( "WordPanel.StatusEmpty" ) ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.MachinePanel#autoStepTimerRun()
+   */
+  @Override
+  void autoStepTimerRun ()
+  {
+    if ( StatelessMachinePanel.this.machine.isNextSymbolAvailable () )
+      handleWordNextStep ();
+    else
+    {
+      StatelessMachinePanel.this.mainWindowForm.getLogic ().removeButtonState (
+          ButtonState.SELECTED_AUTO_STEP );
+      StatelessMachinePanel.this.mainWindowForm.getLogic ()
+          .updateWordNavigationStates ();
+      cancelAutoStepTimer ();
+    }
   }
 }

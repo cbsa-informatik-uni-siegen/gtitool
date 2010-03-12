@@ -2,13 +2,16 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -39,6 +42,7 @@ import de.unisiegen.gtitool.ui.preferences.item.WordModeItem;
 import de.unisiegen.gtitool.ui.preferences.listener.WordModeChangedListener;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.AcceptedStatus;
 
 
 /**
@@ -101,6 +105,34 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
      * The word navigation mode.
      */
     WORD_NAVIGATION;
+  }
+
+
+  /**
+   * Do next step in word enter mode after a delay.
+   * 
+   * @author Benjamin Mies
+   */
+  protected final class AutoStepTimerTask extends TimerTask
+  {
+
+    /**
+     * Make next step after a delay.
+     * 
+     * @see TimerTask#run()
+     */
+    @Override
+    public final void run ()
+    {
+      SwingUtilities.invokeLater ( new Runnable ()
+      {
+
+        public void run ()
+        {
+          autoStepTimerRun ();
+        }
+      } );
+    }
   }
 
 
@@ -202,6 +234,7 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param mainWindowForm the {@link MainWindowForm}
    * @param file the {@link File}
+   * @param model the {@link DefaultMachineModel}
    */
   public MachinePanel ( final MainWindowForm mainWindowForm, final File file,
       final DefaultMachineModel model )
@@ -261,7 +294,7 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @return Returns true if the timer was canceled, otherwise false.
    */
-  public final boolean cancelAutoStepTimer ()
+  protected final boolean cancelAutoStepTimer ()
   {
     if ( this.autoStepTimer != null )
     {
@@ -270,6 +303,29 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
       return true;
     }
     return false;
+  }
+
+
+  /**
+   * Defines what should be done when the {@link AutoStepTimerTask} runs
+   */
+  abstract void autoStepTimerRun ();
+
+
+  /**
+   * Starts the auto step {@link Timer}.
+   * 
+   * @param delayed Flag that indicates that the timer should start after a
+   *          delay.
+   */
+
+  protected final void startAutoStepTimer ( boolean delayed )
+  {
+    this.autoStepTimer = new Timer ();
+    int time = PreferenceManager.getInstance ().getAutoStepItem ()
+        .getAutoStepInterval ();
+    this.autoStepTimer.schedule ( new AutoStepTimerTask (), delayed ? time : 0,
+        time );
   }
 
 
@@ -336,27 +392,23 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
     this.mainWindowForm.getLogic ().updateWordNavigationStates ();
     return true;
   }
-  
-  
+
+
   /**
-   * 
    * Handles the next step
-   *
    */
   public void handleWordNextStep ()
   {
-    //Do nothing
+    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
   }
-  
-  
+
+
   /**
-   * 
    * Handles the previous step
-   *
    */
   public void handleWordPreviousStep ()
   {
-    //Do nothing
+    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
   }
 
 
@@ -411,9 +463,15 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
   abstract protected void setupModelMachine ( final DefaultMachineModel model );
 
 
+  /**
+   * Handles the mouse exited event of the pda table
+   */
   abstract protected void onHandleMachinePDATableMouseExited ();
 
 
+  /**
+   * Handles the focus lost event of the pda table
+   */
   abstract protected void onHandleMachinePDATableFocusLost ();
 
 
@@ -506,6 +564,9 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
   protected abstract void handleToolbarEnd ( final boolean state );
 
 
+  /**
+   * Handles the mouse adapter
+   */
   protected abstract void handleMouseAdapter ();
 
 
@@ -1028,4 +1089,31 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
         current.modifyStatusChanged ( newModifyStatus );
     }
   }
+
+
+  /**
+   * Handle Auto Step Action in the Word Enter Mode
+   * 
+   * @param event
+   */
+  public final void handleWordAutoStep ( ItemEvent event )
+  {
+    if ( event.getStateChange () == ItemEvent.SELECTED )
+    {
+      cancelAutoStepTimer ();
+      startAutoStepTimer ( false );
+    }
+    else
+      cancelAutoStepTimer ();
+
+    updateAcceptedState ();
+
+    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
+  }
+
+
+  /**
+   * Updates the {@link AcceptedStatus}.
+   */
+  protected abstract void updateAcceptedState ();
 }

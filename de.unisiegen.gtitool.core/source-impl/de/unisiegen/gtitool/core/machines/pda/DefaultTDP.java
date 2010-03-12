@@ -169,7 +169,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
      */
     getStack ().pop ();
     ProductionWord pw = action.getReduceAction ().getProductionWord ();
-    for ( int i = pw.size () - 1; i >= 0 ; --i )
+    for ( int i = pw.size () - 1 ; i >= 0 ; --i )
       getStack ().push ( new DefaultSymbol ( pw.get ( i ).getName () ) );
     return true;
   }
@@ -186,6 +186,11 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   }
 
 
+  /**
+   * {@inheritDoc} s
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getGrammar()
+   */
   @Override
   public CFG getGrammar ()
   {

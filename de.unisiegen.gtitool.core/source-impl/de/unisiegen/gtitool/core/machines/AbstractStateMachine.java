@@ -1865,7 +1865,12 @@ public abstract class AbstractStateMachine implements StateMachine
   }
 
 
-  public void setWord ( Word newWord )
+  /**
+   * Sets the current word
+   * 
+   * @param newWord
+   */
+  public void setWord ( final Word newWord )
   {
     this.word = newWord;
   }
@@ -2846,6 +2851,11 @@ public abstract class AbstractStateMachine implements StateMachine
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
+   */
   public Element getElement ()
   {
     return null; // TODO

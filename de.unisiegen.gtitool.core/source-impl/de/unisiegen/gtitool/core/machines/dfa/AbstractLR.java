@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.core.storage.Element;
 
 
 /**
- * TODO
+ * The abstract base class for LR automata
  */
 public abstract class AbstractLR extends AbstractStateMachine implements DFA
 {
@@ -26,7 +26,7 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
 
 
   /**
-   * TODO
+   * Constructs an AbstractLR automaton from an extended grammar
    * 
    * @param grammar
    * @throws AlphabetException
@@ -82,12 +82,23 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#getElement()
+   */
+  @Override
   public Element getElement ()
   {
     return this.grammar.getElement ();
   }
 
 
+  /**
+   * Returns the associated grammar
+   * 
+   * @return the grammar
+   */
   public ExtendedGrammar getGrammar ()
   {
     return this.grammar;
@@ -104,5 +115,8 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
   public abstract MachineType getMachineType ();
 
 
+  /**
+   * The associated grammar
+   */
   private ExtendedGrammar grammar;
 }

@@ -191,9 +191,17 @@ public class StatelessMachineTableModel extends AbstractTableModel
       case StatelessMachineTableModel.STACK_COLUMN :
         return this.stackData.get ( rowIndex );
       case StatelessMachineTableModel.ACTION_COLUMN :
-        Action action = this.actionData.get ( rowIndex );
-        if ( action != null )
-          return this.actionData.get ( rowIndex );
+        //the action should be displayed in the row where it
+        //takes place and *not* a row after that
+        //but the action can only be determined after the user
+        //hits the 'next' button. (then the machine determine
+        //the action corresponding to its internal state)
+        if ( getRowCount () > rowIndex + 1 )
+        {
+          Action action = this.actionData.get ( rowIndex + 1 );
+          if ( action != null )
+            return action;
+        }
     }
     return new PrettyString ();
   }

@@ -1275,7 +1275,7 @@ public abstract class AbstractStateMachine implements StateMachine
   public final ArrayList < Symbol > getReadedSymbols ()
       throws WordFinishedException, WordResetedException
   {
-    return this.word.getReadedSymbols ();
+    return this.word.getReadSymbols ();
   }
 
 

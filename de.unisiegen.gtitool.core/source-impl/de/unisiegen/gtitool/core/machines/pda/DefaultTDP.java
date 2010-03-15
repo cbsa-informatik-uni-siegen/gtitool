@@ -189,7 +189,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
 
 
   /**
-   * {@inheritDoc} s
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getGrammar()
    */

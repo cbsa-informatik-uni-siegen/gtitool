@@ -4,8 +4,8 @@ package de.unisiegen.gtitool.ui.model;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -42,9 +42,9 @@ public class PTTableColumnModel extends DefaultTableColumnModel
   /**
    * Allocates a new {@link PTTableColumnModel}
    * 
-   * @param alphabet the alphabet we're using to produce the header
+   * @param terminals the alphabet we're using to produce the header
    */
-  public PTTableColumnModel ( final Alphabet alphabet )
+  public PTTableColumnModel ( final TerminalSymbolSet terminals )
   {
     /*
      * Nonterminal column
@@ -62,10 +62,10 @@ public class PTTableColumnModel extends DefaultTableColumnModel
     /*
      * TerminalSymbol columns
      */
-    for ( int i = 0 ; i < alphabet.size () ; i++ )
+    for ( int i = 0 ; i < terminals.size () ; i++ )
     {
       TableColumn symbolColumn = new TableColumn ( i + 1 );
-      symbolColumn.setHeaderValue ( alphabet.get ( i ) );
+      symbolColumn.setHeaderValue ( terminals.get ( i ) );
       symbolColumn
           .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
       symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );

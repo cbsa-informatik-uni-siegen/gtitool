@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
+import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.AbstractStatelessMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
@@ -177,7 +178,7 @@ public class StatelessMachinePanel extends MachinePanel
     this.gui.jGTITableMachine.setModel ( new PTTableModel ( ( CFG ) this.model
         .getGrammar () ) );
     this.gui.jGTITableMachine.setColumnModel ( new PTTableColumnModel (
-        this.machine.getAlphabet () ) );
+        this.model.getGrammar ().getTerminalSymbolSet () ) );
     this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableMachine
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
@@ -657,8 +658,16 @@ public class StatelessMachinePanel extends MachinePanel
       case START :
       case STEPNEXT :
       case ACCEPT :
-        smtm
-            .addRow ( this.machine.getStack (), this.machine.getWord (), action );
+        try
+        {
+          smtm.addRow ( this.machine.getStack (), this.machine.getWord ()
+              .getRemainingWord (), action );
+        }
+        catch ( WordFinishedException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
         break;
       case STOP :
         break;

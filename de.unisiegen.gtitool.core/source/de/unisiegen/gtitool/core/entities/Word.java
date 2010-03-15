@@ -51,22 +51,22 @@ public interface Word extends Entity < Word >, Storable, Iterable < Symbol >
    */
   public boolean contains ( Symbol symbol );
 
-  
+
   /**
    * Returns the current position
-   *
+   * 
    * @return the current position
    */
-  public int getCurrentPosition();
-  
-  
+  public int getCurrentPosition ();
+
+
   /**
    * Returns the current {@link Symbol}
-   *
+   * 
    * @return the current {@link Symbol}
    */
-  public Symbol getCurrentSymbol();
-  
+  public Symbol getCurrentSymbol ();
+
 
   /**
    * Returns the {@link Symbol}s.
@@ -86,16 +86,36 @@ public interface Word extends Entity < Word >, Storable, Iterable < Symbol >
 
 
   /**
-   * Returns the readed {@link Symbol}s.
+   * Returns the read {@link Symbol}s.
    * 
-   * @return The readed {@link Symbol}s.
+   * @return The read {@link Symbol}s.
    * @throws WordFinishedException If something with the {@link DefaultWord} is
    *           not correct.
    * @throws WordResetedException If something with the {@link DefaultWord} is
    *           not correct.
    */
-  public ArrayList < Symbol > getReadedSymbols () throws WordFinishedException,
+  public ArrayList < Symbol > getReadSymbols () throws WordFinishedException,
       WordResetedException;
+
+
+  /**
+   * Returns the remaining {@link Symbol}s
+   *
+   * @return The remaining {@link Symbol}s
+   * @throws WordFinishedException
+   * @throws WordResetedException
+   */
+  public ArrayList < Symbol > getRemainingSymbols ()
+      throws WordFinishedException, WordResetedException;
+
+
+  /**
+   * Returns the remaining {@link Word}
+   * 
+   * @return the remaining {@link Word}
+   * @throws WordFinishedException
+   */
+  public Word getRemainingWord () throws WordFinishedException;
 
 
   /**

@@ -5113,9 +5113,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( panel instanceof StateMachinePanel )
+    if ( panel instanceof MachinePanel )
     {
-      StateMachinePanel machinePanel = ( StateMachinePanel ) panel;
+      MachinePanel machinePanel = ( MachinePanel ) panel;
       machinePanel.handleWordAutoStep ( event );
     }
   }

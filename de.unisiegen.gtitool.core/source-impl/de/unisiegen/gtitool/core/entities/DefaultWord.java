@@ -107,8 +107,8 @@ public final class DefaultWord implements Word
   {
     this ();
     DefaultWord other = ( DefaultWord ) word;
-    for(Symbol s : other.symbolList)
-      this.symbolList.add ( new DefaultSymbol(s) );
+    for ( Symbol s : other.symbolList )
+      this.symbolList.add ( new DefaultSymbol ( s ) );
     this.currentPosition = other.currentPosition;
   }
 
@@ -357,9 +357,9 @@ public final class DefaultWord implements Word
   /**
    * {@inheritDoc}
    * 
-   * @see Word#getReadedSymbols()
+   * @see Word#getReadSymbols()
    */
-  public final ArrayList < Symbol > getReadedSymbols ()
+  public final ArrayList < Symbol > getReadSymbols ()
       throws WordFinishedException, WordResetedException
   {
     if ( this.currentPosition == START_INDEX )
@@ -367,10 +367,43 @@ public final class DefaultWord implements Word
     if ( this.currentPosition >= this.symbolList.size () )
       throw new WordFinishedException ( this );
 
-    ArrayList < Symbol > readedSymbols = new ArrayList < Symbol > ();
+    ArrayList < Symbol > readSymbols = new ArrayList < Symbol > ();
     for ( int i = 0 ; i <= this.currentPosition ; i++ )
-      readedSymbols.add ( this.symbolList.get ( i ) );
-    return readedSymbols;
+      readSymbols.add ( this.symbolList.get ( i ) );
+    return readSymbols;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @throws WordFinishedException
+   * @see de.unisiegen.gtitool.core.entities.Word#getRemainingSymbols()
+   */
+  public final ArrayList < Symbol > getRemainingSymbols ()
+      throws WordFinishedException
+  {
+    if ( this.currentPosition >= this.symbolList.size () )
+      throw new WordFinishedException ( this );
+    ArrayList < Symbol > remainingSymbols = new ArrayList < Symbol > ();
+    if ( this.currentPosition == START_INDEX )
+      remainingSymbols.addAll ( this.symbolList );
+    else
+      for ( int i = this.currentPosition + 1 ; i < this.symbolList.size () ; ++i )
+        remainingSymbols.add ( this.symbolList.get ( i ) );
+    return remainingSymbols;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @throws WordFinishedException
+   * @see de.unisiegen.gtitool.core.entities.Word#getRemainingWord()
+   */
+  public final Word getRemainingWord () throws WordFinishedException
+  {
+    return new DefaultWord ( getRemainingSymbols () );
   }
 
 

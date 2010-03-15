@@ -31,19 +31,8 @@ public class ConvertToTDP extends AbstractConvertGrammarStatelessMachine
   {
     super ( mainWindowForm, cfg );
 
-    // if the end marker is not part of our grammar
-    if ( !cfg.getTerminalSymbolSet ().contains (
-        DefaultTerminalSymbol.EndMarker ) )
-      try
-      {
-        // add it
-        cfg.getTerminalSymbolSet ().add ( DefaultTerminalSymbol.EndMarker );
-      }
-      catch ( TerminalSymbolSetException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
+    cfg.getTerminalSymbolSet ().addIfNonexistent (
+        DefaultTerminalSymbol.EndMarker );
   }
 
 

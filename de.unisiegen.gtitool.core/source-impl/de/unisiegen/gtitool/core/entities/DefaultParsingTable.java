@@ -93,25 +93,25 @@ public class DefaultParsingTable implements ParsingTable
   {
     this.parsingTable = new ArrayList < ArrayList < DefaultProductionSet > > ();
 
-    int col = 0;
+    int row = 0;
     for ( NonterminalSymbol ns : this.nonterminals )
     {
       this.parsingTable.add ( new ArrayList < DefaultProductionSet > () );
 
       ProductionSet ps = cfg.getProductionForNonTerminal ( ns );
 
-      int row = 0;
+      int col = 0;
       for ( TerminalSymbol ts : this.terminals )
       {
-        this.parsingTable.get ( col ).add ( new DefaultProductionSet () );
+        this.parsingTable.get ( row ).add ( new DefaultProductionSet () );
         for ( Production p : ps )
           if ( cfg.first ( p.getProductionWord () ).contains ( ts )
               || ( cfg.first ( p.getProductionWord () ).epsilon () && cfg
                   .follow ( ns ).contains ( ts ) ) )
-            this.parsingTable.get ( col ).get ( row ).add ( p );
-        ++row;
+            this.parsingTable.get ( row ).get ( col ).add ( p );
+        ++col;
       }
-      ++col;
+      ++row;
     }
   }
 

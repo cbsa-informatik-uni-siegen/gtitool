@@ -6,6 +6,7 @@ import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.grammars.Grammar;
@@ -31,10 +32,30 @@ public class LR0Grammar extends ExtendedGrammar
    * @param terminalSymbolSet
    * @param startSymbol
    */
-  public LR0Grammar ( NonterminalSymbolSet nonterminalSymbolSet,
-      TerminalSymbolSet terminalSymbolSet, NonterminalSymbol startSymbol )
+  public LR0Grammar ( final NonterminalSymbolSet nonterminalSymbolSet,
+      final TerminalSymbolSet terminalSymbolSet,
+      final NonterminalSymbol startSymbol )
   {
     super ( nonterminalSymbolSet, terminalSymbolSet, startSymbol );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param nonterminalSymbolSet
+   * @param terminalSymbolSet
+   * @param startSymbol
+   * @param productions
+   */
+  public LR0Grammar ( final NonterminalSymbolSet nonterminalSymbolSet,
+      final TerminalSymbolSet terminalSymbolSet,
+      final NonterminalSymbol startSymbol, final ProductionSet productions )
+  {
+    this ( nonterminalSymbolSet, terminalSymbolSet, startSymbol );
+
+    for ( Production production : productions )
+      this.addProduction ( production );
   }
 
 

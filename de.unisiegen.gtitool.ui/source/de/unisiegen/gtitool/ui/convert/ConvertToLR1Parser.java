@@ -27,7 +27,8 @@ public class ConvertToLR1Parser extends ConvertToLRParser
     super ( mainWindowForm, grammar );
 
     this.grammar = new LR1Grammar ( grammar.getNonterminalSymbolSet (), grammar
-        .getTerminalSymbolSet (), grammar.getStartSymbol () );
+        .getTerminalSymbolSet (), grammar.getStartSymbol (), grammar
+        .getProduction () );
   }
 
 

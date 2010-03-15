@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.convert;
 
 
-import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
@@ -24,12 +23,9 @@ public class ConvertToLR1 extends ConvertToLR
    */
   private static LR1Grammar convertGrammar ( final Grammar grammar )
   {
-    LR1Grammar ret = new LR1Grammar ( grammar.getNonterminalSymbolSet (),
-        grammar.getTerminalSymbolSet (), grammar.getStartSymbol () );
-
-    for ( Production prod : grammar.getProduction () )
-      ret.addProduction ( prod );
-    return ret;
+    return new LR1Grammar ( grammar.getNonterminalSymbolSet (), grammar
+        .getTerminalSymbolSet (), grammar.getStartSymbol (), grammar
+        .getProduction () );
   }
 
 

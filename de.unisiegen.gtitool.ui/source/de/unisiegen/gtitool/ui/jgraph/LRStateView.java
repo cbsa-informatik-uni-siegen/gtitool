@@ -87,7 +87,6 @@ public class LRStateView extends StateView
     {
       final Dimension d = staticDimension ( this.lrstateview.getState () );
       g.setFont ( getFont () );
-      g.setClip ( null );
 
       final LRState state = this.lrstateview.getState ();
 

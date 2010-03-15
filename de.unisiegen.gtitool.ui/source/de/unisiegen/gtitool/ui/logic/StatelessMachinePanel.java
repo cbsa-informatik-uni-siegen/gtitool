@@ -361,6 +361,7 @@ public class StatelessMachinePanel extends MachinePanel
   @Override
   public void handleEditMachine ()
   {
+    handleWordStop();
     super.handleEditMachine ();
     this.gui.wordPanelForm.jGTILabelStack.setVisible ( true );
     this.gui.wordPanelForm.styledStackParserPanel.setVisible ( true );

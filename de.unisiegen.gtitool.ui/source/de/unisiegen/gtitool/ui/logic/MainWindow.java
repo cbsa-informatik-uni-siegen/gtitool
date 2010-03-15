@@ -2015,6 +2015,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     StatelessMachinePanel smp = ( StatelessMachinePanel ) panel;
     smp.handleEditMachine ();
+    addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
     addButtonState ( ButtonState.ENABLED_ENTER_WORD );
   }
 
@@ -4496,7 +4497,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_REDO );
 
           addButtonState ( ButtonState.SELECTED_ENTER_WORD );
-          addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
+        }
+     // edit machine mode
+        else if ( machinePanel.getMachineMode ().equals (
+            MachineMode.EDIT_MACHINE ) )
+        {
+          removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
+          removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
+
+          addButtonState ( ButtonState.ENABLED_ENTER_WORD );
+
+          addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
         }
       }// end if panel is StatelessMachinePanel
       // GrammarPanel

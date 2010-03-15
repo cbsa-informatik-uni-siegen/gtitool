@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
@@ -115,6 +116,13 @@ public final class PTTableModel extends AbstractTableModel
     if ( arg1 == NONTERMINAL_COLUMN )
       return this.nonterminals.get ( arg0 );
     // arg1 - 1 cause we have one column more (the nonterminal/row description)
-    return this.data.get ( arg0, arg1 - FIRST_TERMINAL_COLUMN );
+    try
+    {
+      return this.data.get ( arg0, arg1 - FIRST_TERMINAL_COLUMN );
+    }
+    catch(Exception e)
+    {
+      return new PrettyString();
+    }
   }
 }

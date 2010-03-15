@@ -5,6 +5,7 @@ import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
@@ -20,6 +21,7 @@ import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
+import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
 import de.unisiegen.gtitool.core.machines.dfa.LR0;
 
 
@@ -41,46 +43,6 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
     this.grammar = grammar;
 
     this.lr0Automaton = new LR0 ( grammar );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onShift(de.unisiegen.gtitool.core.entities.Action)
-   */
-  @Override
-  protected boolean onShift ( @SuppressWarnings ( "unused" ) final Action action )
-  {
-    this.lr0Automaton.nextSymbol ( currentTerminal () );
-    nextSymbol ();
-    return true;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onReduce(de.unisiegen.gtitool.core.entities.Action)
-   */
-  @Override
-  protected boolean onReduce ( final Action action )
-  {
-    int unwind = 0;
-    try
-    {
-      for ( ; unwind < action.getReduceAction ().getProductionWord ().size () ; ++unwind )
-        this.lr0Automaton.previousSymbol ();
-    }
-    catch ( RuntimeException e )
-    {
-      for ( int i = 0 ; i < unwind ; ++i )
-        this.lr0Automaton.nextSymbol ();
-      return false;
-    }
-    this.lr0Automaton.nextSymbol ( action.getReduceAction ()
-        .getNonterminalSymbol () );
-    return true;
   }
 
 
@@ -133,7 +95,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
    * @param symbol - The current terminal symbol
    * @return The actions set
    */
-  public ActionSet actions ( LR0ItemSet items, TerminalSymbol symbol )
+  public ActionSet actions ( final LR0ItemSet items, final TerminalSymbol symbol )
   {
     ActionSet ret = new DefaultActionSet ();
 
@@ -144,7 +106,7 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
         {
           if ( item.getNonterminalSymbol ().isStart () )
           {
-            if ( symbol == null )
+            if ( symbol.equals ( DefaultTerminalSymbol.EndMarker ) )
               ret.add ( new AcceptAction () );
           }
           else if ( followCondition ( item, symbol ) )
@@ -182,19 +144,6 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
       throws GrammarInvalidNonterminalException
   {
     return true;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#start(de.unisiegen.gtitool.core.entities.Word)
-   */
-  @Override
-  public void start ( final Word word )
-  {
-    super.start ( word );
-    this.lr0Automaton.start ( new DefaultWord () );
   }
 
 
@@ -242,11 +191,18 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   @Override
   public ActionSet getPossibleActions ()
   {
-    ActionSet ret = actions ( currentItems (), currentTerminal () );
-    
-    return ret;
-    // ActionSet actions = new DefaultActionSet ();
+    return actions ( currentItems (), currentTerminal () );
+  }
 
-    // return actions;
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#getAutomaton()
+   */
+  @Override
+  protected AbstractLR getAutomaton ()
+  {
+    return this.lr0Automaton;
   }
 }

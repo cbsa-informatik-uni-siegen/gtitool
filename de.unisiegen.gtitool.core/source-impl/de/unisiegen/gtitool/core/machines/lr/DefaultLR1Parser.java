@@ -5,7 +5,7 @@ import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
-import de.unisiegen.gtitool.core.entities.DefaultWord;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.LR1Item;
 import de.unisiegen.gtitool.core.entities.LR1ItemSet;
 import de.unisiegen.gtitool.core.entities.LR1State;
@@ -13,12 +13,12 @@ import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
-import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
+import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
 import de.unisiegen.gtitool.core.machines.dfa.LR1;
 
 
@@ -58,46 +58,6 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
     this.grammar = grammar;
 
     this.lr1Automaton = lr1;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onShift(de.unisiegen.gtitool.core.entities.Action)
-   */
-  @Override
-  protected boolean onShift ( @SuppressWarnings ( "unused" ) final Action action )
-  {
-    this.lr1Automaton.nextSymbol ( currentTerminal () );
-    nextSymbol ();
-    return true;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onReduce(de.unisiegen.gtitool.core.entities.Action)
-   */
-  @Override
-  protected boolean onReduce ( final Action action )
-  {
-    int unwind = 0;
-    try
-    {
-      for ( ; unwind < action.getReduceAction ().getProductionWord ().size () ; ++unwind )
-        this.lr1Automaton.previousSymbol ();
-    }
-    catch ( RuntimeException e )
-    {
-      for ( int i = 0 ; i < unwind ; ++i )
-        this.lr1Automaton.nextSymbol ();
-      return false;
-    }
-    this.lr1Automaton.nextSymbol ( action.getReduceAction ()
-        .getNonterminalSymbol () );
-    return true;
   }
 
 
@@ -163,7 +123,7 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
         {
           if ( item.getNonterminalSymbol ().isStart () )
           {
-            if ( symbol == null )
+            if ( symbol.equals ( DefaultTerminalSymbol.EndMarker ) )
               ret.add ( new AcceptAction () );
           }
           else if ( item.getLookAhead ().equals ( symbol ) )
@@ -180,19 +140,6 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
     }
 
     return ret;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#start(de.unisiegen.gtitool.core.entities.Word)
-   */
-  @Override
-  public void start ( Word word )
-  {
-    super.start ( word );
-    this.lr1Automaton.start ( new DefaultWord () );
   }
 
 
@@ -243,6 +190,18 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
     ActionSet actions = new DefaultActionSet ();
 
     return actions;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#getAutomaton()
+   */
+  @Override
+  protected AbstractLR getAutomaton ()
+  {
+    return this.lr1Automaton;
   }
 
 

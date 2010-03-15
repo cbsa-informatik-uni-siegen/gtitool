@@ -57,7 +57,7 @@ public class LR1Grammar extends ExtendedGrammar
 
   /**
    * TODO
-   *
+   * 
    * @param nonterminalSymbolSet
    * @param terminalSymbolSet
    * @param startSymbol
@@ -138,7 +138,7 @@ public class LR1Grammar extends ExtendedGrammar
           catch ( GrammarInvalidNonterminalException exc )
           {
             exc.printStackTrace ();
-            return null;
+            System.exit ( 1 );
           }
         }
       }

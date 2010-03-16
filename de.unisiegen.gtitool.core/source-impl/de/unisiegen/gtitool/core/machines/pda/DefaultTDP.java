@@ -113,7 +113,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
         actions.add ( new ReverseReduceAction ( p ) );
     }
     else if ( inputSymbol.equals ( stackSymbol ) )
-      actions.add ( new CancelOutAction (inputSymbol) );
+      actions.add ( new CancelOutAction ( inputSymbol ) );
 
     return actions;
   }
@@ -209,7 +209,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   public boolean isNextSymbolAvailable ()
   {
     final boolean result = super.isNextSymbolAvailable ();
-    Symbol symbol = getStack().peak ();
+    Symbol symbol = getStack ().peak ();
     return result
         && !symbol.getName ().equals (
             DefaultTerminalSymbol.EndMarker.getName () );

@@ -455,6 +455,6 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
   public TableColumnModel getTableColumnModel ()
   {
     throw new RuntimeException (
-        "getTableColumnModel is not implemented for StatelessMachine's" ); //$NON-NLS-1$
+        "AbstractMachine.getTableColumnModel() not implemented!" ); //$NON-NLS-1$
   }
 }

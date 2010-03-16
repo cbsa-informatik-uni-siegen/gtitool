@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.model;
 
 
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -13,11 +12,11 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 
 
 /**
- * The {@link PTTableColumnModel}.
+ * The {@link TDPMachineColumnModel}.
  * 
  * @author Christian Uhrhan
  */
-public class StatelessMachineColumnModel extends DefaultTableColumnModel
+public class TDPMachineColumnModel extends StatelessMachineTableColumnModel
 {
 
   /**
@@ -45,9 +44,9 @@ public class StatelessMachineColumnModel extends DefaultTableColumnModel
 
 
   /**
-   * Allocates a new {@link StatelessMachineColumnModel}
+   * Allocates a new {@link TDPMachineColumnModel}
    */
-  public StatelessMachineColumnModel ()
+  public TDPMachineColumnModel ()
   {
     TableColumn symbolColumn = new TableColumn ( INPUT_COLUMN );
     symbolColumn

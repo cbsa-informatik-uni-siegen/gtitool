@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.machines.dfa.LR1;
 import de.unisiegen.gtitool.core.machines.enfa.ENFA;
 import de.unisiegen.gtitool.core.machines.lr.LR0Parser;
 import de.unisiegen.gtitool.core.machines.lr.LR1Parser;
+import de.unisiegen.gtitool.core.machines.lr.SLRParser;
 import de.unisiegen.gtitool.core.machines.nfa.NFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
@@ -57,6 +58,11 @@ public interface Machine extends Storable
      * The {@link LR0} machine type.
      */
     LR0,
+    
+    /**
+     * The {@link SLRParser} machine type
+     */
+    SLR,
 
     /**
      * The {@link LR1} machine type.

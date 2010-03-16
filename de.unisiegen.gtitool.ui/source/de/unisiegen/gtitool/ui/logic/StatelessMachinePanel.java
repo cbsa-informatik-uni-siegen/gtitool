@@ -16,19 +16,24 @@ import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.machines.AbstractStatelessMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
+import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultStatelessMachineModel;
+import de.unisiegen.gtitool.ui.model.LRMachineColumnModel;
+import de.unisiegen.gtitool.ui.model.LRMachineTableModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
 import de.unisiegen.gtitool.ui.model.PTTableModel;
-import de.unisiegen.gtitool.ui.model.StatelessMachineColumnModel;
 import de.unisiegen.gtitool.ui.model.StatelessMachineTableModel;
+import de.unisiegen.gtitool.ui.model.TDPMachineColumnModel;
+import de.unisiegen.gtitool.ui.model.TDPMachineTableModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.AcceptedStatus;
 import de.unisiegen.gtitool.ui.swing.JGTIPanel;
@@ -200,10 +205,18 @@ public class StatelessMachinePanel extends MachinePanel
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
 
     // setup the machine table
-    this.jGTIStatelessMachineTable
-        .setModel ( new StatelessMachineTableModel () );
-    this.jGTIStatelessMachineTable
-        .setColumnModel ( new StatelessMachineColumnModel () );
+    if ( this.machine instanceof DefaultTDP )
+    {
+      this.jGTIStatelessMachineTable.setModel ( new TDPMachineTableModel () );
+      this.jGTIStatelessMachineTable
+          .setColumnModel ( new TDPMachineColumnModel () );
+    }
+    else if ( this.machine instanceof AbstractLRMachine )
+    {
+      this.jGTIStatelessMachineTable.setModel ( new LRMachineTableModel () );
+      this.jGTIStatelessMachineTable
+          .setColumnModel ( new LRMachineColumnModel () );
+    }
     this.jGTIStatelessMachineTable.getTableHeader ().setReorderingAllowed (
         false );
     this.jGTIStatelessMachineTable
@@ -361,7 +374,7 @@ public class StatelessMachinePanel extends MachinePanel
   @Override
   public void handleEditMachine ()
   {
-    handleWordStop();
+    handleWordStop ();
     super.handleEditMachine ();
     this.gui.wordPanelForm.jGTILabelStack.setVisible ( true );
     this.gui.wordPanelForm.styledStackParserPanel.setVisible ( true );
@@ -648,6 +661,9 @@ public class StatelessMachinePanel extends MachinePanel
   public final void performMachineTableChanged (
       final MachineActionType actionType, final Action action )
   {
+    // TDPMachineTableModel smtm = ( TDPMachineTableModel )
+    // this.jGTIStatelessMachineTable
+    // .getModel ();
     StatelessMachineTableModel smtm = ( StatelessMachineTableModel ) this.jGTIStatelessMachineTable
         .getModel ();
 

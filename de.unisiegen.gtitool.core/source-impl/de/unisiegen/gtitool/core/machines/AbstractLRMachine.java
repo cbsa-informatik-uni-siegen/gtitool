@@ -12,6 +12,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
+import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
 import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
 import de.unisiegen.gtitool.core.machines.lr.LRMachine;
@@ -117,14 +118,34 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   }
 
 
-  public boolean isNextSymbolAvailable ()
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onAccept(de.unisiegen.gtitool.core.entities.Action)
+   */
+  @Override
+  protected boolean onAccept ( final Action action )
   {
-    return super.isNextSymbolAvailable ()
-        || ( getStack ().size () == 0 || !getStack ().peak ().getName ()
-            .equals ( this.getGrammar ().getStartSymbol ().getName () ) );
+    try
+    {
+      this.getWord ().nextSymbol ();
+      this.getStack ().clear ();
+    }
+    catch ( WordFinishedException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+
+    return super.onAccept ( action );
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#start(de.unisiegen.gtitool.core.entities.Word)
+   */
   @Override
   public final void start ( final Word word )
   {

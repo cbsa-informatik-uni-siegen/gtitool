@@ -177,6 +177,15 @@ public abstract class AbstractGrammar implements Grammar
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param element
+   * @param validationElements
+   * @throws NonterminalSymbolSetException
+   * @throws TerminalSymbolSetException
+   * @throws StoreException
+   */
   public AbstractGrammar ( final Element element,
       final ValidationElement ... validationElements )
       throws NonterminalSymbolSetException, TerminalSymbolSetException,

@@ -132,6 +132,21 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
 
 
   /**
+   * Get the real start symbol
+   * 
+   * @return the real start symbol
+   */
+  public NonterminalSymbol getRealStartSymbol ()
+  {
+    final String symbolName = this.getStartSymbol ().getName ();
+
+    final String newName = symbolName.substring ( 0, symbolName.length () - 1 );
+
+    return this.getNonterminalSymbolSet ().get ( newName );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @throws AlphabetException

@@ -29,7 +29,7 @@ public class LR1Item extends LRItem
   {
     ArrayList < ProductionWordMember > members = new ArrayList < ProductionWordMember > ();
 
-    for ( int i = getDotPosition () + 2 ; i < this.getProductionWord ().size () ; ++i )
+    for ( int i = getDotPosition () + 1 ; i < this.getProductionWord ().size () ; ++i )
       members.add ( this.getProductionWord ().get ( i ) );
 
     return new DefaultProductionWord ( members );

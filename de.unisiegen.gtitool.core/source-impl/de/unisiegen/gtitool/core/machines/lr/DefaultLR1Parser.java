@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.machines.lr;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
@@ -9,6 +11,7 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.LR1Item;
 import de.unisiegen.gtitool.core.entities.LR1ItemSet;
 import de.unisiegen.gtitool.core.entities.LR1State;
+import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.State;
@@ -20,6 +23,7 @@ import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
 import de.unisiegen.gtitool.core.machines.dfa.LR1;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
@@ -211,5 +215,49 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
   public LR1 getLR1 ()
   {
     return this.lr1Automaton;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#getTableCellStrings()
+   */
+  @Override
+  public ArrayList < ArrayList < PrettyString >> getTableCellStrings ()
+  {
+    final ArrayList < ArrayList < PrettyString >> ret = new ArrayList < ArrayList < PrettyString >> ();
+
+    for ( TerminalSymbol symbol : this.getGrammar ().getTerminalSymbolSet () )
+    {
+      final ArrayList < PrettyString > temp = new ArrayList < PrettyString > ();
+
+      for ( State state : this.lr1Automaton.getState () )
+      {
+        final LR1State lrState = ( LR1State ) state;
+
+        temp.add ( this.actions ( lrState.getLR1Items (), symbol )
+            .toPrettyString () );
+      }
+
+      ret.add ( temp );
+    }
+    return ret;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param state
+   * @param symbol
+   * @return
+   * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#actionPrettyString(de.unisiegen.gtitool.core.entities.LRState,
+   *      de.unisiegen.gtitool.core.entities.TerminalSymbol)
+   */
+  @Override
+  protected ActionSet actionSetBase ( LRState state, TerminalSymbol symbol )
+  {
+    return actions ( ( ( LR1State ) state ).getLR1Items (), symbol );
   }
 }

@@ -3,13 +3,15 @@ package de.unisiegen.gtitool.core.entities;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
- * TODO
+ * A base interface for the LRItemSet that knows how to represent its entities
+ * as PrettyStrings
  */
-public interface LRItemSet
+public interface LRItemSet extends PrettyPrintable
 {
 
   /**

@@ -4,10 +4,14 @@ package de.unisiegen.gtitool.core.machines;
 import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.LRItemSet;
+import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
@@ -16,6 +20,7 @@ import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
 import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
 import de.unisiegen.gtitool.core.machines.lr.LRMachine;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.Element;
 
 
@@ -168,6 +173,45 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   {
     this.getAutomaton ().stop ();
   }
+
+
+  public ArrayList < LRItemSet > getItems ()
+  {
+    final ArrayList < LRItemSet > ret = new ArrayList < LRItemSet > ();
+    for ( State state : this.getAutomaton ().getState () )
+    {
+      final LRState lrstate = ( LRState ) state;
+
+      ret.add ( lrstate.getItems () );
+    }
+
+    return ret;
+  }
+
+
+  /**
+   * @return
+   */
+  public ArrayList < ArrayList < PrettyString >> getTableCellStrings ()
+  {
+    final ArrayList < ArrayList < PrettyString >> ret = new ArrayList < ArrayList < PrettyString >> ();
+
+    for ( TerminalSymbol symbol : this.getGrammar ().getTerminalSymbolSet () )
+    {
+      final ArrayList < PrettyString > temp = new ArrayList < PrettyString > ();
+
+      for ( State state : this.getAutomaton ().getState () )
+        temp.add ( actionSetBase ( ( LRState ) state, symbol )
+            .toPrettyString () );
+
+      ret.add ( temp );
+    }
+    return ret;
+  }
+
+
+  protected abstract ActionSet actionSetBase ( LRState state,
+      TerminalSymbol symbol );
 
 
   /**

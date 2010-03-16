@@ -8,6 +8,8 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Element;
 
 
@@ -161,7 +163,20 @@ public class DefaultActionSet implements ActionSet
    */
   public PrettyString toPrettyString ()
   {
-    return null;
+    final PrettyString ret = new PrettyString ();
+
+    ret.add ( new PrettyToken ( "{", Style.NONE ) );
+
+    for ( int i = 0 ; i < size () ; ++i )
+    {
+      ret.add ( get ( i ).toPrettyString () );
+
+      if ( i < size () - 1 )
+        ret.add ( new PrettyToken ( ",", Style.NONE ) );
+    }
+
+    ret.add ( new PrettyToken ( "}", Style.NONE ) );
+    return ret;
   }
 
 
@@ -271,5 +286,4 @@ public class DefaultActionSet implements ActionSet
   {
     return this.rep.first ();
   }
-
 }

@@ -67,6 +67,7 @@ public final class PrettyStringComponent extends JLabel
   public PrettyStringComponent ( PrettyString prettyString )
   {
     super ();
+
     this.prettyString = prettyString;
     setBorder ( new EmptyBorder ( 1, 1, 1, 1 ) );
 

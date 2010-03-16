@@ -9,6 +9,7 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.LR0State;
+import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.State;
@@ -21,6 +22,7 @@ import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
 import de.unisiegen.gtitool.core.machines.dfa.LR0;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
@@ -203,4 +205,21 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   {
     return this.lr0Automaton;
   }
+
+
+  /**
+   * TODO
+   * 
+   * @param state
+   * @param symbol
+   * @return
+   * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#actionPrettyString(de.unisiegen.gtitool.core.entities.LRState,
+   *      de.unisiegen.gtitool.core.entities.TerminalSymbol)
+   */
+  @Override
+  protected ActionSet actionSetBase ( LRState state, TerminalSymbol symbol )
+  {
+    return actions ( ( ( LR0State ) state ).getLR0Items (), symbol );
+  }
+
 }

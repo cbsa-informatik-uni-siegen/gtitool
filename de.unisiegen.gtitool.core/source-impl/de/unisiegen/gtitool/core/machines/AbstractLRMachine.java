@@ -159,6 +159,18 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onStop()
+   */
+  @Override
+  protected void onStop ()
+  {
+    this.getAutomaton ().stop ();
+  }
+
+
+  /**
    * Returns the ExtendedGrammar
    * 
    * @return the grammar

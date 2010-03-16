@@ -269,6 +269,17 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
     this.stack.clear ();
     this.history.clear ();
     this.wordAccepted = false;
+
+    this.onStop ();
+  }
+
+
+  /**
+   * Can be overridden for a custom stop action
+   */
+  protected void onStop ()
+  {
+    // default: do nothing
   }
 
 

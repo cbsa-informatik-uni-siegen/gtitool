@@ -208,10 +208,11 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   @Override
   public boolean isNextSymbolAvailable ()
   {
-    final boolean result = super.isNextSymbolAvailable ();
-    Symbol symbol = getStack ().peak ();
-    return result
-        && !symbol.getName ().equals (
-            DefaultTerminalSymbol.EndMarker.getName () );
+//    final boolean result = super.isNextSymbolAvailable ();
+//    Symbol symbol = getStack ().peak ();
+//    return result
+//        && !symbol.getName ().equals (
+//            DefaultTerminalSymbol.EndMarker.getName () );
+    return !isWordAccepted ();
   }
 }

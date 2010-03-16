@@ -8,6 +8,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
@@ -457,7 +458,10 @@ public class StatelessMachinePanel extends MachinePanel
             "handleWordNextStep not defined for ambigious steps of instances other than AbstractStatelessMachine" ); //$NON-NLS-1$
     }
 
-    performMachineTableChanged ( MachineActionType.STEPNEXT, action );
+    if ( action instanceof AcceptAction )
+      performMachineTableChanged ( MachineActionType.ACCEPT, action );
+    else
+      performMachineTableChanged ( MachineActionType.STEPNEXT, action );
 
     updateAcceptedState ();
 
@@ -661,9 +665,6 @@ public class StatelessMachinePanel extends MachinePanel
   public final void performMachineTableChanged (
       final MachineActionType actionType, final Action action )
   {
-    // TDPMachineTableModel smtm = ( TDPMachineTableModel )
-    // this.jGTIStatelessMachineTable
-    // .getModel ();
     StatelessMachineTableModel smtm = ( StatelessMachineTableModel ) this.jGTIStatelessMachineTable
         .getModel ();
 
@@ -674,17 +675,23 @@ public class StatelessMachinePanel extends MachinePanel
         break;
       case START :
       case STEPNEXT :
-      case ACCEPT :
         try
         {
-          smtm.addRow ( this.machine.getStack (), this.machine.getWord ()
-              .getRemainingWord (), action );
+          if ( smtm instanceof TDPMachineTableModel )
+            smtm.addRow ( this.machine.getStack (), this.machine.getWord ()
+                .getRemainingWord (), action );
+          else
+            ( ( LRMachineTableModel ) smtm ).addRow ( this.machine.getStack (),
+                this.machine.getWord (), action, new Integer ( 0 ) );
         }
         catch ( WordFinishedException exc )
         {
           exc.printStackTrace ();
           System.exit ( 1 );
         }
+        break;
+      case ACCEPT :
+        smtm.accept ( ( AcceptAction ) action );
         break;
       case STOP :
         smtm.clearData ();

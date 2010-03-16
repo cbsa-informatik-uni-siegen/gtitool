@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
+import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
@@ -62,8 +63,7 @@ public abstract class StatelessMachineTableModel extends AbstractTableModel
    * @param input the {@link Word}
    * @param action the {@link Action}
    */
-  public void addRow ( final Stack stack, final Word input,
-      final Action action )
+  public void addRow ( final Stack stack, final Word input, final Action action )
   {
     this.stackData.add ( new DefaultStack ( stack ) );
     this.inputData.add ( new DefaultWord ( input ) );
@@ -92,6 +92,17 @@ public abstract class StatelessMachineTableModel extends AbstractTableModel
     this.stackData.remove ( this.stackData.size () - 1 );
     this.inputData.remove ( this.inputData.size () - 1 );
     this.actionData.remove ( this.actionData.size () - 1 );
+  }
+
+
+  /**
+   * Sets the accept action in the last table entry
+   * 
+   * @param action The {@link AcceptAction}
+   */
+  public void accept ( final AcceptAction action )
+  {
+    this.actionData.set ( this.actionData.size () - 1, action );
   }
 
 

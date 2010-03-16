@@ -217,12 +217,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public final boolean isWordAccepted ()
   {
-    boolean stackEmpty = this.stack.isEmpty ();
-    if ( stackEmpty && this.wordAccepted || !stackEmpty
-        && this.stack.peak ().equals ( DefaultTerminalSymbol.EndMarker )
-        && this.word.equals ( DefaultTerminalSymbol.EndMarker ) )
-      return true;
-    return false;
+    return this.wordAccepted;
   }
 
 
@@ -270,7 +265,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
     this.history.clear ();
     this.wordAccepted = false;
 
-    this.onStop ();
+    onStop ();
   }
 
 

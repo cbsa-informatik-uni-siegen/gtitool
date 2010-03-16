@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.model;
 
 
+import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
@@ -65,6 +66,17 @@ public class TDPMachineTableModel extends StatelessMachineTableModel
 
   /**
    * {@inheritDoc}
+   */
+  @Override
+  public void accept ( final AcceptAction action )
+  {
+    addRow ( this.stackData.get ( getRowCount () - 1), this.inputData
+        .get ( getRowCount () - 1), action );
+  }
+
+
+  /**
+   * {@inheritDoc}
    * 
    * @see javax.swing.table.TableModel#getValueAt(int, int)
    */
@@ -77,19 +89,10 @@ public class TDPMachineTableModel extends StatelessMachineTableModel
       case TDPMachineTableModel.STACK_COLUMN :
         return this.stackData.get ( rowIndex );
       case TDPMachineTableModel.ACTION_COLUMN :
-        // the action should be displayed in the row where it
-        // takes place and *not* a row after that
-        // but the action can only be determined after the user
-        // hits the 'next' button. (then the machine determine
-        // the action corresponding to its internal state)
-        if ( getRowCount () > rowIndex + 1 )
-        {
-          Action action = this.actionData.get ( rowIndex + 1 );
-          if ( action != null )
-            return action;
-        }
+        Action action = this.actionData.get ( rowIndex );
+        if ( action != null )
+          return action;
     }
     return new PrettyString ();
   }
-
 }

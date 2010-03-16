@@ -187,9 +187,7 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
   @Override
   public ActionSet getPossibleActions ()
   {
-    ActionSet actions = new DefaultActionSet ();
-
-    return actions;
+    return actions ( currentItems (), currentTerminal () );
   }
 
 

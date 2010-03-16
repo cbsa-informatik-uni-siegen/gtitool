@@ -72,7 +72,7 @@ public class ConvertToLALR1 extends ConvertToLR
   @Override
   protected AbstractStateMachine getMachine ()
   {
-    return this.source;
+    return this.result;
   }
 
 }

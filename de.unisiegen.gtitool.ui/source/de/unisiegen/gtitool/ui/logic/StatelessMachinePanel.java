@@ -30,6 +30,8 @@ import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultStatelessMachineModel;
 import de.unisiegen.gtitool.ui.model.LRMachineColumnModel;
 import de.unisiegen.gtitool.ui.model.LRMachineTableModel;
+import de.unisiegen.gtitool.ui.model.LRTableColumnModel;
+import de.unisiegen.gtitool.ui.model.LRTableModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
 import de.unisiegen.gtitool.ui.model.PTTableModel;
 import de.unisiegen.gtitool.ui.model.StatelessMachineTableModel;
@@ -157,7 +159,7 @@ public class StatelessMachinePanel extends MachinePanel
     this.model = model;
     this.machine = this.model.getMachine ();
 
-    initializeParsingTable ();
+    initializeMachineTable ();
     initializeStatelessMachineTable ();
   }
 
@@ -174,17 +176,29 @@ public class StatelessMachinePanel extends MachinePanel
 
 
   /**
-   * Initializes the TDP action table
+   * Initializes the machine action table
    */
-  private final void initializeParsingTable ()
+  private final void initializeMachineTable ()
   {
     /*
-     * initialize the parsing table
+     * initialize the machine table
      */
-    this.gui.jGTITableMachine.setModel ( new PTTableModel ( ( CFG ) this.model
-        .getGrammar () ) );
-    this.gui.jGTITableMachine.setColumnModel ( new PTTableColumnModel (
-        this.model.getGrammar ().getTerminalSymbolSet () ) );
+    if ( this.machine instanceof DefaultTDP )
+    {
+      this.gui.jGTITableMachine.setModel ( new PTTableModel (
+          ( CFG ) this.model.getGrammar () ) );
+      this.gui.jGTITableMachine.setColumnModel ( new PTTableColumnModel (
+          this.model.getGrammar ().getTerminalSymbolSet () ) );
+    }
+    else if ( this.machine instanceof AbstractLRMachine )
+    {
+      AbstractLRMachine lrMachine = ( AbstractLRMachine ) this.machine;
+      this.gui.jGTITableMachine.setModel ( new LRTableModel ( lrMachine
+          .getItems (), this.model.getGrammar ().getTerminalSymbolSet (),
+          lrMachine.getTableCellStrings () ) );
+      this.gui.jGTITableMachine.setColumnModel ( new LRTableColumnModel (
+          this.model.getGrammar ().getTerminalSymbolSet () ) );
+    }
     this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableMachine
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );

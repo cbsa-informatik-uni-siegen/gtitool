@@ -9,6 +9,8 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -117,18 +119,6 @@ public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
   }
 
 
-  /**
-   * TODO
-   * 
-   * @return
-   * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
-   */
-  public PrettyString toPrettyString ()
-  {
-    return null;
-  }
-
-
   public boolean equals ( LR1ItemSet o )
   {
     return this.rep.equals ( o.rep );
@@ -209,6 +199,12 @@ public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
   public String toString ()
   {
     return this.rep.toString ();
+  }
+
+
+  public PrettyString toPrettyString ()
+  {
+    return new PrettyString ( new PrettyToken ( toString (), Style.NONE ) );
   }
 
 

@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.core.entities;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
@@ -26,6 +25,12 @@ public class DefaultParsingTable implements ParsingTable
 
 
   /**
+   * the {@link CFG}
+   */
+  private final CFG cfg;
+
+
+  /**
    * the set of terminals
    */
   private final TerminalSymbolSet terminals;
@@ -44,6 +49,37 @@ public class DefaultParsingTable implements ParsingTable
   private ArrayList < ArrayList < DefaultProductionSet >> parsingTable;
 
 
+  // Data we need to create the {@link ParsingTable} step by step
+  /**
+   * the current {@link NonterminalSymbol} we're processing
+   */
+  private int currentNonterminalIndex;
+
+
+  /**
+   * the current {@link TerminalSymbol} we're processing
+   */
+  private int currentTerminalIndex;
+
+
+  /**
+   * the current {@link ProductionSet}
+   */
+  private ProductionSet currentProductionSet;
+
+
+  /**
+   * indicates whether there is a next {@link TerminalSymbol} to process
+   */
+  private boolean isTerminalSymbolNextStepAvailable;
+
+
+  /**
+   * indicates whether there is a next {@link NonterminalSymbol} to process
+   */
+  private boolean isNonterminalSymbolNextStepAvailable;
+
+
   /**
    * allocates a new {@link DefaultParsingTable}
    * 
@@ -57,9 +93,16 @@ public class DefaultParsingTable implements ParsingTable
     if ( cfg == null )
       throw new NullPointerException ( "cfg is null" ); //$NON-NLS-1$
 
+    this.cfg = cfg;
     this.terminals = cfg.getTerminalSymbolSet ();
     this.nonterminals = cfg.getNonterminalSymbolSet ();
-    createParsingTable ( cfg );
+    createParsingTable ();
+
+    this.currentNonterminalIndex = 0;
+    this.currentTerminalIndex = 0;
+    this.currentProductionSet = null;
+    this.isTerminalSymbolNextStepAvailable = false;
+    this.isNonterminalSymbolNextStepAvailable = false;
   }
 
 
@@ -82,14 +125,150 @@ public class DefaultParsingTable implements ParsingTable
 
 
   /**
-   * creates the parsing table out of a context free grammar
+   * starts creating the {@link ParsingTable} step by step
+   */
+  public void createParsingTableStart ()
+  {
+    this.parsingTable = new ArrayList < ArrayList < DefaultProductionSet >> ();
+    startNonterminalSymbolRound ();
+  }
+
+
+  /**
+   * Do the next step in creating the {@link ParsingTable} step by step
    * 
-   * @param cfg the {@link CFG} from which we're creating the parsing table
+   * @return true if there is a next step, false otherwise
    * @throws GrammarInvalidNonterminalException
    * @throws TerminalSymbolSetException
    */
-  private void createParsingTable ( final CFG cfg )
+  public boolean createParsingTableNextStep ()
       throws GrammarInvalidNonterminalException, TerminalSymbolSetException
+  {
+    if ( this.isTerminalSymbolNextStepAvailable )
+      this.isTerminalSymbolNextStepAvailable = terminalSymbolNext ();
+    else if ( this.isNonterminalSymbolNextStepAvailable )
+      this.isNonterminalSymbolNextStepAvailable = nonterminalSymbolNext ();
+    return !this.isTerminalSymbolNextStepAvailable
+        && !this.isNonterminalSymbolNextStepAvailable;
+  }
+
+
+  /**
+   * Start a new {@link NonterminalSymbol} round that means: we start the
+   * iteration through the list of {@link NonterminalSymbol}s
+   */
+  private void startNonterminalSymbolRound ()
+  {
+    this.currentNonterminalIndex = 0;
+    this.isNonterminalSymbolNextStepAvailable = true;
+    startTerminalSymbolRound ();
+  }
+
+
+  /**
+   * Proceed creating the {@link ParsingTable} with the next
+   * {@link NonterminalSymbol}
+   * 
+   * @return true if there is a next {@link NonterminalSymbol} to proceed with,
+   *         false otherwise
+   */
+  private boolean nonterminalSymbolNext ()
+  {
+    if ( this.currentNonterminalIndex == this.nonterminals.size () )
+      return false;
+    this.parsingTable.add ( new ArrayList < DefaultProductionSet > () );
+    this.currentProductionSet = this.cfg
+        .getProductionForNonTerminal ( this.nonterminals
+            .get ( this.currentNonterminalIndex ) );
+    ++this.currentNonterminalIndex;
+    return true;
+  }
+
+
+  /**
+   * Checks whether a {@link Production} is to be added as a
+   * {@link ParsingTable} entry
+   * 
+   * @param p The {@link Production}
+   * @return true if the specified {@link Production} is to be added to the
+   *         {@link ParsingTable}
+   * @throws GrammarInvalidNonterminalException
+   * @throws TerminalSymbolSetException
+   */
+  private ParsingTable.EntryCause isParsingTableEntry ( final Production p )
+      throws GrammarInvalidNonterminalException, TerminalSymbolSetException
+  {
+    NonterminalSymbol ns = this.nonterminals
+        .get ( this.currentNonterminalIndex );
+    TerminalSymbol ts = this.terminals.get ( this.currentTerminalIndex );
+
+    boolean tsInFirstProductionWord = this.cfg.first ( p.getProductionWord () )
+        .contains ( ts );
+    boolean productionWordDerivesToEpsilon = this.cfg.first (
+        p.getProductionWord () ).epsilon ();
+    boolean tsInFollowNS = this.cfg.follow ( ns ).contains ( ts );
+    // return tsInFirstProductionWord
+    // || ( productionWordDerivesToEpsilon && tsInFollowNS );
+    if ( tsInFirstProductionWord )
+      return ParsingTable.EntryCause.TERMINAL_IN_FIRSTSET;
+    else if ( productionWordDerivesToEpsilon && tsInFollowNS )
+      return ParsingTable.EntryCause.EPSILON_DERIVATION_AND_FOLLOWSET;
+    return ParsingTable.EntryCause.NOCAUSE;
+  }
+
+
+  /**
+   * Starts a new {@link TerminalSymbol} round that means: we start a new
+   * iteration through the list of {@link TerminalSymbol}s
+   */
+  private void startTerminalSymbolRound ()
+  {
+    this.currentTerminalIndex = 0;
+    this.isTerminalSymbolNextStepAvailable = true;
+    this.parsingTable.get ( this.currentNonterminalIndex ).add (
+        new DefaultProductionSet () );
+  }
+
+
+  /**
+   * Proceed creating the {@link ParsingTable} for the current
+   * {@link NonterminalSymbol} with the next {@link TerminalSymbol}
+   * 
+   * @return true if there is a next {@link TerminalSymbol} to proceed with,
+   *         false otherwise
+   * @throws GrammarInvalidNonterminalException
+   * @throws TerminalSymbolSetException
+   */
+  private boolean terminalSymbolNext ()
+      throws GrammarInvalidNonterminalException, TerminalSymbolSetException
+  {
+    if ( this.currentTerminalIndex == this.terminals.size () )
+      return false;
+    for ( Production p : this.currentProductionSet )
+    {
+      final ParsingTable.EntryCause cause = isParsingTableEntry ( p );
+      if ( cause == ParsingTable.EntryCause.NOCAUSE )
+        continue;
+      this.parsingTable.get ( this.currentNonterminalIndex ).get (
+          this.currentTerminalIndex ).add ( p );
+      //TODO: added fireParsingTableEntryAdded
+      // if ( isParsingTableEntry ( p ) )
+      // this.parsingTable.get ( this.currentNonterminalIndex ).get (
+      // this.currentTerminalIndex ).add ( p );
+    }
+    ++this.currentTerminalIndex;
+    return true;
+  }
+
+
+  /**
+   * creates the parsing table out of a context free grammar
+   * 
+   * @throws GrammarInvalidNonterminalException
+   * @throws TerminalSymbolSetException
+   */
+  private void createParsingTable () throws GrammarInvalidNonterminalException,
+      TerminalSymbolSetException
   {
     this.parsingTable = new ArrayList < ArrayList < DefaultProductionSet > > ();
 
@@ -98,15 +277,15 @@ public class DefaultParsingTable implements ParsingTable
     {
       this.parsingTable.add ( new ArrayList < DefaultProductionSet > () );
 
-      ProductionSet ps = cfg.getProductionForNonTerminal ( ns );
+      ProductionSet ps = this.cfg.getProductionForNonTerminal ( ns );
 
       int col = 0;
       for ( TerminalSymbol ts : this.terminals )
       {
         this.parsingTable.get ( row ).add ( new DefaultProductionSet () );
         for ( Production p : ps )
-          if ( cfg.first ( p.getProductionWord () ).contains ( ts )
-              || ( cfg.first ( p.getProductionWord () ).epsilon () && cfg
+          if ( this.cfg.first ( p.getProductionWord () ).contains ( ts )
+              || ( this.cfg.first ( p.getProductionWord () ).epsilon () && this.cfg
                   .follow ( ns ).contains ( ts ) ) )
             this.parsingTable.get ( row ).get ( col ).add ( p );
         ++col;
@@ -246,49 +425,6 @@ public class DefaultParsingTable implements ParsingTable
   public Element getElement ()
   {
     return null;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
-   */
-  public void addModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#isModified()
-   */
-  public boolean isModified ()
-  {
-    return false;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
-   */
-  public void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#resetModify()
-   */
-  public void resetModify ()
-  {
   }
 
 }

@@ -60,7 +60,6 @@ import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.dfa.LR1;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
-import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.ui.convert.ConvertToLALR1;
 import de.unisiegen.gtitool.ui.convert.Converter;
@@ -2229,20 +2228,6 @@ public final class StateMachinePanel extends MachinePanel
   public boolean isUndoAble ()
   {
     return this.redoUndoHandler.isUndoAble ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see LanguageChangedListener#languageChanged()
-   */
-  public final void languageChanged ()
-  {
-    this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
-        .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
-    this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
-        .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
   }
 
 

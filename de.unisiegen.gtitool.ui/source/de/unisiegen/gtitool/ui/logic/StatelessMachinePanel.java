@@ -614,17 +614,6 @@ public class StatelessMachinePanel extends MachinePanel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener#languageChanged()
-   */
-  public void languageChanged ()
-  {
-    // do nothing
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see de.unisiegen.gtitool.ui.logic.MachinePanel#onHandleMachinePDATableFocusLost()
    */
   @Override
@@ -696,7 +685,8 @@ public class StatelessMachinePanel extends MachinePanel
                 .getRemainingWord (), action );
           else
             ( ( LRMachineTableModel ) smtm ).addRow ( this.machine.getStack (),
-                this.machine.getWord ().getRemainingWord (), action, new Integer ( 0 ) );
+                this.machine.getWord ().getRemainingWord (), action,
+                new Integer ( 0 ) );
         }
         catch ( WordFinishedException exc )
         {

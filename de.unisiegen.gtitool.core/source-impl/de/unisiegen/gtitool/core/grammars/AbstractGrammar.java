@@ -178,7 +178,7 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * TODO
+   * Allocates a new {@link AbstractGrammar}
    * 
    * @param element
    * @param validationElements

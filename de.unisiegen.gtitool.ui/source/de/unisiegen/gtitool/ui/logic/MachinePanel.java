@@ -25,6 +25,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
+import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
@@ -1116,4 +1117,18 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
    * Updates the {@link AcceptedStatus}.
    */
   protected abstract void updateAcceptedState ();
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LanguageChangedListener#languageChanged()
+   */
+  public final void languageChanged ()
+  {
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
+        .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
+        .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
+  }
 }

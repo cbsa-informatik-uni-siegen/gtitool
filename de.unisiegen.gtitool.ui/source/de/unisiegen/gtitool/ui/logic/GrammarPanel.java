@@ -50,6 +50,7 @@ import de.unisiegen.gtitool.ui.convert.ConvertToLR0;
 import de.unisiegen.gtitool.ui.convert.ConvertToLR0Parser;
 import de.unisiegen.gtitool.ui.convert.ConvertToLR1;
 import de.unisiegen.gtitool.ui.convert.ConvertToLR1Parser;
+import de.unisiegen.gtitool.ui.convert.ConvertToSLRParser;
 import de.unisiegen.gtitool.ui.convert.ConvertToTDP;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
@@ -377,12 +378,10 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
   /**
    * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#getConverter()
    */
   public Converter getConverter ( EntityType destination )
   {
-    
+
     if ( destination instanceof MachineType )
       try
       {
@@ -398,10 +397,14 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
             return new ConvertToLR1Parser ( this.mainWindowForm, this.grammar );
           case TDP :
             return new ConvertToTDP ( this.mainWindowForm, ( CFG ) this.grammar );
+          case SLR :
+            return new ConvertToSLRParser ( this.mainWindowForm, this.grammar );
           case PDA :
           case NFA :
-          case LALR1:
-          case LALR1Parser:
+          case LALR1 :
+          case ENFA :
+          case DFA :
+          case LALR1Parser :
             break;
         }
       }

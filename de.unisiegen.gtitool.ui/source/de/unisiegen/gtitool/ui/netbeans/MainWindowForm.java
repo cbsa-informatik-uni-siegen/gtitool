@@ -1213,6 +1213,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemConvertToLR1Parser = new javax.swing.JMenuItem();
         jMenuItemConvertToLALR1 = new javax.swing.JMenuItem();
         jMenuItemConvertToLALR1Parser = new javax.swing.JMenuItem();
+        jMenuItemSLRParser = new javax.swing.JMenuItem();
         jMenuConvertToComplete = new javax.swing.JMenu();
         jMenuItemConvertToCompleteDFA = new javax.swing.JMenuItem();
         jMenuItemConvertToCompleteNFA = new javax.swing.JMenuItem();
@@ -1900,6 +1901,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuConvertTo.add(jMenuItemConvertToLALR1Parser);
 
+        jMenuItemSLRParser.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SLRParserMnemonic").charAt(0));
+        jMenuItemSLRParser.setText(bundle.getString("MainWindow.SLRParser")); // NOI18N
+        jMenuItemSLRParser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSLRParserActionPerformed(evt);
+            }
+        });
+        jMenuConvertTo.add(jMenuItemSLRParser);
+
         jMenuExecute.add(jMenuConvertTo);
 
         jMenuConvertToComplete.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConvertToCompleteMnemonic").charAt(0));
@@ -2461,6 +2471,10 @@ private void jMenuItemConvertToLALR1ActionPerformed(java.awt.event.ActionEvent e
 private void jMenuItemConvertToLALR1ParserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToLALR1ParserActionPerformed
     this.logic.handleConvertTo(MachineType.LALR1Parser, true);
 }//GEN-LAST:event_jMenuItemConvertToLALR1ParserActionPerformed
+
+private void jMenuItemSLRParserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSLRParserActionPerformed
+    this.logic.handleConvertTo(MachineType.SLR, true);
+}//GEN-LAST:event_jMenuItemSLRParserActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2549,6 +2563,7 @@ private void jMenuItemConvertToLALR1ParserActionPerformed(java.awt.event.ActionE
     private javax.swing.JMenuItem jMenuItemReachableStates;
     private javax.swing.JMenuItem jMenuItemRedo;
     private javax.swing.JMenuItem jMenuItemReorderStateNames;
+    public javax.swing.JMenuItem jMenuItemSLRParser;
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAll;
     private javax.swing.JMenuItem jMenuItemSaveAs;

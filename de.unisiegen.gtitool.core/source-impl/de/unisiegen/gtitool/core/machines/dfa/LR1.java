@@ -47,10 +47,14 @@ public class LR1 extends AbstractLR
 
     Alphabet alphabet = this.getAlphabet ();
 
+    int index = 0;
+
     try
     {
       LR1State startState = new LR1State ( alphabet, true, grammar
           .closure ( grammar.startProduction () ) );
+
+      startState.setIndex ( index++ );
 
       addState ( startState );
     }
@@ -83,7 +87,10 @@ public class LR1 extends AbstractLR
             LR1State newState = new LR1State ( alphabet, false, newItemSet );
 
             if ( !getState ().contains ( newState ) )
+            {
               addState ( newState );
+              newState.setIndex ( index++ );
+            }
             else
               newState = ( LR1State ) getState ().get (
                   getState ().indexOf ( newState ) );
@@ -162,6 +169,8 @@ public class LR1 extends AbstractLR
   {
     LR1 ret = new LR1 ( this.grammar, new DontConstructTheStates () );
 
+    int stateIndex = 0;
+
     for ( int index = 0 ; index < this.getState ().size () ; ++index )
     {
       final LR1State state = ( LR1State ) this.getState ( index );
@@ -181,6 +190,8 @@ public class LR1 extends AbstractLR
       // TODO: which of these are start states?
       ret.addState ( new LR1State ( this.getAlphabet (), state.isStartState (),
           resultItems ) );
+
+      // TODO: set the new index!
     }
     return ret;
   }

@@ -44,10 +44,14 @@ public class LR0 extends AbstractLR
 
     Alphabet alphabet = this.getAlphabet ();
 
+    int index = 0;
+
     try
     {
       LR0State startState = new LR0State ( alphabet, true, grammar
           .closure ( grammar.startProduction () ) );
+
+      startState.setIndex ( index++ );
 
       addState ( startState );
     }
@@ -80,7 +84,11 @@ public class LR0 extends AbstractLR
             LR0State newState = new LR0State ( alphabet, false, newItemSet );
 
             if ( !getState ().contains ( newState ) )
+            {
               addState ( newState );
+
+              newState.setIndex ( index++ );
+            }
             else
               newState = ( LR0State ) getState ().get (
                   getState ().indexOf ( newState ) );

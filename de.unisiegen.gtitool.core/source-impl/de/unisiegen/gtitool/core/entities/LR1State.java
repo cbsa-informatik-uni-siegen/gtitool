@@ -25,10 +25,11 @@ public class LR1State extends LRState
    * @param alphabet
    * @param startState
    * @param lr1Items
+   * @param index
    * @throws StateException
    */
-  public LR1State ( Alphabet alphabet, boolean startState, LR1ItemSet lr1Items )
-      throws StateException
+  public LR1State ( final Alphabet alphabet, final boolean startState,
+      final LR1ItemSet lr1Items ) throws StateException
   {
     super ( alphabet, makeStateString ( lr1Items ), startState );
 

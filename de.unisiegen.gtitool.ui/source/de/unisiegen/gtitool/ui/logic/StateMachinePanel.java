@@ -240,6 +240,23 @@ public final class StateMachinePanel extends MachinePanel
 
 
   /**
+   * Create a StacheMachinePanel and tell it if we want to show the stack
+   * 
+   * @param mainWindowForm
+   * @param model
+   * @param file
+   * @param showPDATable
+   */
+  public StateMachinePanel ( final MainWindowForm mainWindowForm,
+      final DefaultStateMachineModel model, final File file,
+      final boolean showPDATable )
+  {
+    this ( mainWindowForm, model, file );
+    setVisiblePDATable ( showPDATable );
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @Override

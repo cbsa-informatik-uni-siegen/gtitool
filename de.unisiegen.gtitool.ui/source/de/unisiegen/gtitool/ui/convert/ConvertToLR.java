@@ -10,7 +10,10 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
+import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.logic.StateMachinePanel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
@@ -59,6 +62,17 @@ public abstract class ConvertToLR extends AbstractConvertGrammarStateMachine
       this.getModel ().createTransitionView ( transition,
           stateViews.get ( transition.getStateBegin () ),
           stateViews.get ( transition.getStateEnd () ), true, false, false );
+  }
+  
+  /**
+   * Create a new {@link StateMachinePanel}.
+   * 
+   * @param machine The {@link StateMachine}.
+   */
+  @Override
+  protected void createMachinePanel ( Machine machine )
+  {
+    doCreateMachinePanel ( machine, false );
   }
 
 

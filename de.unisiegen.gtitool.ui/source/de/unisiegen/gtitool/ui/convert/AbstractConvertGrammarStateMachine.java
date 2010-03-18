@@ -154,12 +154,26 @@ public abstract class AbstractConvertGrammarStateMachine extends
    * @param machine The {@link StateMachine}.
    */
   @Override
-  protected final void createMachinePanel ( Machine machine )
+  protected void createMachinePanel ( final Machine machine )
+  {
+    doCreateMachinePanel ( machine, true );
+  }
+
+
+  /**
+   * Create a new {@link StateMachinePanel} and tell it if we want to show the
+   * Stack
+   * 
+   * @param machine
+   * @param showPDA - show the stack
+   */
+  protected void doCreateMachinePanel ( final Machine machine,
+      final boolean showPDA )
   {
     this.model = new DefaultStateMachineModel ( ( StateMachine ) machine );
     this.model.setGrammar ( getGrammar () );
     setNewPanel ( new StateMachinePanel ( getMainWindowForm (), this.model,
-        null ) );
+        null, showPDA ) );
   }
 
 

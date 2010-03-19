@@ -70,7 +70,6 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
-import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
@@ -597,8 +596,6 @@ public final class StateMachinePanel extends MachinePanel
 
   /**
    * {@inheritDoc}
-   * 
-   * @see EditorPanel#getConverter()
    */
   public final Converter getConverter ( EntityType destination )
   {

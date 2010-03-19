@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import de.unisiegen.gtitool.core.entities.LRItemSet;
+import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
@@ -29,11 +29,11 @@ public class LRTableModel extends AbstractTableModel
    * @param terminals
    * @param entries
    */
-  public LRTableModel ( final ArrayList < LRItemSet > items,
+  public LRTableModel ( final ArrayList < LRState > states,
       final TerminalSymbolSet terminals,
       final ArrayList < ArrayList < PrettyString > > entries )
   {
-    this.items = items;
+    this.states = states;
 
     this.terminals = terminals;
 
@@ -61,7 +61,7 @@ public class LRTableModel extends AbstractTableModel
    */
   public int getRowCount ()
   {
-    return this.items.size ();
+    return this.states.size ();
   }
 
 
@@ -72,8 +72,8 @@ public class LRTableModel extends AbstractTableModel
    */
   public Object getValueAt ( final int rowIndex, final int columnIndex )
   {
-    final PrettyString ret = columnIndex == 0 ? this.items.get ( rowIndex )
-        .toPrettyString () : this.entries.get ( columnIndex - 1 ).get (
+    final PrettyString ret = columnIndex == 0 ? this.states.get ( rowIndex )
+        .shortName () : this.entries.get ( columnIndex - 1 ).get (
         rowIndex );
 
     return ret;
@@ -83,7 +83,7 @@ public class LRTableModel extends AbstractTableModel
   /**
    * TODO
    */
-  private ArrayList < LRItemSet > items;
+  private ArrayList < LRState > states;
 
 
   /**

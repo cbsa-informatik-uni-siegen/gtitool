@@ -194,8 +194,8 @@ public class StatelessMachinePanel extends MachinePanel
     {
       AbstractLRMachine lrMachine = ( AbstractLRMachine ) this.machine;
       this.gui.jGTITableMachine.setModel ( new LRTableModel ( lrMachine
-          .getItems (), this.model.getGrammar ().getTerminalSymbolSet (),
-          lrMachine.getTableCellStrings () ) );
+          .getAutomaton ().getStates (), this.model.getGrammar ()
+          .getTerminalSymbolSet (), lrMachine.getTableCellStrings () ) );
       this.gui.jGTITableMachine.setColumnModel ( new LRTableColumnModel (
           this.model.getGrammar ().getTerminalSymbolSet () ) );
     }

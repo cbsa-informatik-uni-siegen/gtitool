@@ -298,6 +298,29 @@ public class StateView extends ViewBase
 
 
     /**
+     * Get the string to use for a given state
+     * 
+     * @param state
+     * @return the string
+     */
+    protected PrettyString getStateString ( final State state )
+    {
+      return state.toPrettyString ();
+    }
+
+
+    /**
+     * Tells whether we want to mark final states specially
+     * 
+     * @return if we show final states
+     */
+    protected boolean showFinalStates ()
+    {
+      return true;
+    }
+
+
+    /**
      * {@inheritDoc} c
      * 
      * @see VertexRenderer#paint(Graphics)
@@ -314,6 +337,9 @@ public class StateView extends ViewBase
 
       int offsetX = state.isStartState () ? START_OFFSET : 0;
       int offsetY = state.isLoopTransition () ? LOOP_TRANSITION_OFFSET : 0;
+
+      final boolean paintAsFinalState = state.isFinalState ()
+          && showFinalStates ();
 
       Graphics2D g2 = ( Graphics2D ) g;
       Dimension d = getSize ();
@@ -335,7 +361,7 @@ public class StateView extends ViewBase
         // final state
         if ( state.isPowerState () )
         {
-          if ( state.isFinalState () )
+          if ( paintAsFinalState )
           {
             g.fillRoundRect ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
                 - offsetX, d.height - b - 8 - offsetY, 50, 50 );
@@ -348,7 +374,7 @@ public class StateView extends ViewBase
         }
         else
         {
-          if ( state.isFinalState () )
+          if ( paintAsFinalState )
           {
             g.fillOval ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
                 - offsetX, d.height - b - 8 - offsetY );
@@ -378,7 +404,7 @@ public class StateView extends ViewBase
         PrettyString prettyString = new PrettyString ();
         prettyString.add ( state.toPrettyString () );
 
-        int insets = state.isFinalState () ? 20 : 10;
+        int insets = paintAsFinalState ? 20 : 10;
         // short version
         if ( ( metrics.stringWidth ( state.toString () ) + insets ) > ( d.width - offsetX ) )
         {
@@ -461,7 +487,7 @@ public class StateView extends ViewBase
         {
           g.drawRoundRect ( offsetX + b - 1, offsetY + b - 1, d.width - b
               - offsetX, d.height - b - offsetY, 50, 50 );
-          if ( state.isFinalState () )
+          if ( paintAsFinalState )
           {
             g.drawRoundRect ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
                 - offsetX, d.height - b - 8 - offsetY, 50, 50 );
@@ -471,7 +497,7 @@ public class StateView extends ViewBase
         {
           g.drawOval ( offsetX + b - 1, offsetY + b - 1, d.width - b - offsetX,
               d.height - b - offsetY );
-          if ( state.isFinalState () )
+          if ( paintAsFinalState )
           {
             g.drawOval ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
                 - offsetX, d.height - b - 8 - offsetY );
@@ -486,7 +512,7 @@ public class StateView extends ViewBase
         {
           g.drawRoundRect ( offsetX + b - 1, offsetY + b - 1, d.width - b
               - offsetX, d.height - b - offsetY, 50, 50 );
-          if ( state.isFinalState () )
+          if ( paintAsFinalState )
           {
             g.drawRoundRect ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
                 - offsetX, d.height - b - 8 - offsetY, 50, 50 );
@@ -496,7 +522,7 @@ public class StateView extends ViewBase
         {
           g.drawOval ( offsetX + b - 1, offsetY + b - 1, d.width - b - offsetX,
               d.height - b - offsetY );
-          if ( state.isFinalState () )
+          if ( paintAsFinalState )
           {
             g.drawOval ( offsetX + b + 3, offsetY + b + 3, d.width - b - 8
                 - offsetX, d.height - b - 8 - offsetY );

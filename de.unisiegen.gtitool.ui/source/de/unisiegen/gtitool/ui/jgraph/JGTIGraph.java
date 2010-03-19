@@ -20,6 +20,7 @@ import javax.swing.ToolTipManager;
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphModel;
 
+import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
@@ -184,11 +185,16 @@ public class JGTIGraph extends JGraph implements Printable
     {
       DefaultStateView defaultStateView = ( DefaultStateView ) cell;
       State state = defaultStateView.getState ();
-
+      
       // only if the short name is used
       if ( !state.isShortNameUsed () )
       {
         return null;
+      }
+
+      if ( state instanceof LRState )
+      {
+        return state.toPrettyString ().toHTMLString ();
       }
 
       // translate

@@ -1782,7 +1782,12 @@ public final class DefaultTransition implements Transition
   }
 
 
-  public boolean compareByStates ( Transition other )
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Transition#compareByStates(de.unisiegen.gtitool.core.entities.Transition)
+   */
+  public boolean compareByStates ( final Transition other )
   {
     if ( ! ( other instanceof DefaultTransition ) )
       return false;

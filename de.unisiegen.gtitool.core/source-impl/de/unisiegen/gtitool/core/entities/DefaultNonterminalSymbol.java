@@ -213,6 +213,7 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   {
     Element newElement = new Element ( "NonterminalSymbol" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "name", this.name ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "isStart", this.isStart () ) ); //$NON-NLS-1$
     return newElement;
   }
 

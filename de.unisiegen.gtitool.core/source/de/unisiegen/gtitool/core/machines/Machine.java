@@ -159,6 +159,10 @@ public interface Machine extends Storable
         {
           return "TDP"; //$NON-NLS-1$
         }
+        case SLR :
+        {
+          return "SLR"; //$NON-NLS-1$
+        }
       }
       throw new IllegalArgumentException ( "unsupported machine type" ); //$NON-NLS-1$
     }

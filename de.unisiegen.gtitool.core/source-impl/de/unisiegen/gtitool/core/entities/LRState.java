@@ -1,11 +1,10 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import javax.jws.soap.SOAPBinding.Style;
-
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 
 
 /**
@@ -41,16 +40,26 @@ public abstract class LRState extends DefaultState
   }
 
 
+  /**
+   * Returns the state's lr items
+   * 
+   * @return the items
+   */
   public abstract LRItemSet getItems ();
 
 
+  /**
+   * Set this state's index
+   * 
+   * @param index
+   */
   public void setIndex ( final int index )
   {
     this.index = index;
 
     try
     {
-      this.setName ( "I" + this.index );
+      this.setName ( strShortName () );
     }
     catch ( StateException e )
     {
@@ -61,32 +70,71 @@ public abstract class LRState extends DefaultState
   }
 
 
+  /**
+   * Get this state's index
+   * 
+   * @return the index
+   */
   public int getIndex ()
   {
     return this.index;
   }
 
 
-  public String shortName ()
+  /**
+   * Get a PrettyString version of the short name
+   * 
+   * @return the pretty string
+   */
+  public PrettyString shortName ()
   {
-    return "I" + this.index; //$NON-NLS-1$
+    return new PrettyString ( new PrettyToken ( strShortName (), Style.TOKEN ) );
   }
 
 
+  /**
+   * Get the short name (i.e. the number of the state)
+   * 
+   * @return the name
+   */
+  private String strShortName ()
+  {
+    return new Integer ( this.index ).toString ();
+  }
+
+
+  /**
+   * {@inheritDoc} Use the string's hash.
+   * 
+   * @see de.unisiegen.gtitool.core.entities.DefaultState#hashCode()
+   */
+  @Override
   public int hashCode ()
   {
     return this.toString ().hashCode ();
   }
 
 
-  public int compareTo ( State other )
+  /**
+   * Compare states by strings {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.DefaultState#compareTo(de.unisiegen.gtitool.core.entities.State)
+   */
+  @Override
+  public int compareTo ( final State other )
   {
     return this.stateName.compareTo ( ( ( LRState ) other ).stateName );
   }
 
 
+  /**
+   * The state's unique index, starts with 0
+   */
   private int index;
 
 
+  /**
+   * The state's name
+   */
   private String stateName;
 }

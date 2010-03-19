@@ -291,9 +291,11 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
    */
   public boolean addIfNonexistent ( Iterable < TerminalSymbol > terminalSymbols )
   {
+    if ( terminalSymbols == null )
+      return false;
     boolean modified = false;
     for ( TerminalSymbol ts : terminalSymbols )
-      if(addIfNonexistent ( ts ))
+      if ( addIfNonexistent ( ts ) )
         modified = true;
     return modified;
   }
@@ -314,7 +316,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     fireTerminalSymbolSetChanged ();
     fireModifyStatusChanged ();
     firePrettyStringChanged ();
-    
+
     return modified;
   }
 
@@ -326,7 +328,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   {
     boolean modified = false;
     for ( TerminalSymbol ts : terminalSymbols )
-      if(addIfNonexistent ( ts ))
+      if ( addIfNonexistent ( ts ) )
         modified = true;
     return modified;
   }

@@ -100,8 +100,7 @@ public class LRStateView extends StateView
 
       int xStart = 15 + offsetx, y = 15 + offsety, x = xStart;
 
-      final ArrayList < PrettyString > strings = state.getItems ()
-          .stringEntries ();
+      final ArrayList < PrettyString > strings = entriesWithShortName ( state );
 
       for ( PrettyString string : strings )
       {
@@ -131,7 +130,8 @@ public class LRStateView extends StateView
   public static Dimension staticDimension ( final LRState state )
   {
     final Dimension ret = new Dimension ( 20, 20 ); // minimum size
-    for ( PrettyString entry : state.getItems ().stringEntries () )
+
+    for ( PrettyString entry : entriesWithShortName ( state ) )
     {
       final Dimension bounds = getStringBounds ( entry.toString () );
       ret.width = Math.max ( bounds.width, ret.width );
@@ -139,6 +139,23 @@ public class LRStateView extends StateView
     }
 
     return ret;
+  }
+
+
+  /**
+   * Get the state strings with the state's short name
+   * 
+   * @param state
+   * @return the entries
+   */
+  static ArrayList < PrettyString > entriesWithShortName ( final LRState state )
+  {
+    final ArrayList < PrettyString > stateStrings = new ArrayList < PrettyString > ();
+
+    stateStrings.add ( state.shortName () );
+    stateStrings.addAll ( state.getItems ().stringEntries () );
+
+    return stateStrings;
   }
 
 

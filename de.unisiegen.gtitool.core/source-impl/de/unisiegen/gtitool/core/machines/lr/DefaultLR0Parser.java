@@ -22,7 +22,6 @@ import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
 import de.unisiegen.gtitool.core.machines.dfa.LR0;
-import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
@@ -208,13 +207,8 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param state
-   * @param symbol
-   * @return
-   * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#actionPrettyString(de.unisiegen.gtitool.core.entities.LRState,
-   *      de.unisiegen.gtitool.core.entities.TerminalSymbol)
    */
   @Override
   protected ActionSet actionSetBase ( LRState state, TerminalSymbol symbol )

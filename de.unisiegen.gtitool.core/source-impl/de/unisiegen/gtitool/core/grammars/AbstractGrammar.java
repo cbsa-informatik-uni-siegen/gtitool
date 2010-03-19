@@ -989,11 +989,13 @@ public abstract class AbstractGrammar implements Grammar
           // case 2
           if ( rest.size () > 0 )
             modified = this.followSets.get ( ns ).addIfNonexistent (
-                first ( rest ) );
+                first ( rest ) )
+                || modified;
           // case 3
           if ( rest.size () == 0 || first ( rest ).epsilon () )
             modified = this.followSets.get ( ns ).addIfNonexistent (
-                this.followSets.get ( p.getNonterminalSymbol () ) );
+                this.followSets.get ( p.getNonterminalSymbol () ) )
+                || modified;
         }
       }
     }
@@ -1064,11 +1066,6 @@ public abstract class AbstractGrammar implements Grammar
     newElement.addElement ( this.getTerminalSymbolSet ().getElement () );
     newElement.addElement ( this.getNonterminalSymbolSet ().getElement () );
     newElement.addElement ( this.getProduction () );
-    {
-      final Element element = new Element ( "StartSymbol" ); //$NON-NLS-1$
-      element.addElement ( this.getStartSymbol () );
-      newElement.addElement ( element );
-    }
     return newElement;
   }
 }

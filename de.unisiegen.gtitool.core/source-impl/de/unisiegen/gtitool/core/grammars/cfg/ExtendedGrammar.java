@@ -9,6 +9,7 @@ import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
@@ -55,6 +56,16 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
     this.setStartSymbol ( new DefaultNonterminalSymbol ( startSymbol
         .toString ()
         + "'" ) ); //$NON-NLS-1$
+
+    try
+    {
+      nonterminalSymbolSet.add ( this.getStartSymbol () );
+    }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
 
     this.startProduction = new DefaultProduction ( this.getStartSymbol (),
         new DefaultProductionWord ( startSymbol ) );

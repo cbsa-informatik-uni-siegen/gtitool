@@ -201,7 +201,7 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
    * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#getAutomaton()
    */
   @Override
-  protected AbstractLR getAutomaton ()
+  public AbstractLR getAutomaton ()
   {
     return this.lr1Automaton;
   }

@@ -1,8 +1,11 @@
 package de.unisiegen.gtitool.core.machines.dfa;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -113,6 +116,17 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
    */
   @Override
   public abstract MachineType getMachineType ();
+
+
+  public ArrayList < LRState > getStates ()
+  {
+    ArrayList < LRState > ret = new ArrayList < LRState > ();
+    
+    for ( State state : getState () )
+      ret.add ( ( LRState ) state );
+
+    return ret;
+  }
 
 
   /**

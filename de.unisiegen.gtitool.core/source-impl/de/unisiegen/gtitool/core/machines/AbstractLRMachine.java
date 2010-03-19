@@ -175,6 +175,11 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   }
 
 
+  /**
+   * Returns an Array of the LRItemSets
+   * 
+   * @return the sets
+   */
   public ArrayList < LRItemSet > getItems ()
   {
     final ArrayList < LRItemSet > ret = new ArrayList < LRItemSet > ();
@@ -228,7 +233,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
    * 
    * @return the automaton
    */
-  protected abstract AbstractLR getAutomaton ();
+  public abstract AbstractLR getAutomaton ();
 
 
   /**

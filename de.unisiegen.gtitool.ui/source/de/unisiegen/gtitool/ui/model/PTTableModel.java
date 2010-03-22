@@ -59,6 +59,7 @@ public final class PTTableModel extends AbstractTableModel
     try
     {
       this.data = new DefaultParsingTable ( cfg );
+      this.data.create ();
       this.nonterminals = cfg.getNonterminalSymbolSet ();
     }
     catch ( GrammarInvalidNonterminalException exc )

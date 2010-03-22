@@ -84,11 +84,8 @@ public class DefaultParsingTable implements ParsingTable
    * allocates a new {@link DefaultParsingTable}
    * 
    * @param cfg the CFG from which we're creating the parsing table
-   * @throws GrammarInvalidNonterminalException
-   * @throws TerminalSymbolSetException
    */
   public DefaultParsingTable ( final CFG cfg )
-      throws GrammarInvalidNonterminalException, TerminalSymbolSetException
   {
     if ( cfg == null )
       throw new NullPointerException ( "cfg is null" ); //$NON-NLS-1$
@@ -96,7 +93,7 @@ public class DefaultParsingTable implements ParsingTable
     this.cfg = cfg;
     this.terminals = cfg.getTerminalSymbolSet ();
     this.nonterminals = cfg.getNonterminalSymbolSet ();
-    createParsingTable ();
+    //createParsingTable ();
 
     this.currentNonterminalIndex = 0;
     this.currentTerminalIndex = 0;
@@ -125,7 +122,7 @@ public class DefaultParsingTable implements ParsingTable
 
 
   /**
-   * starts creating the {@link ParsingTable} step by step
+   * {@inheritDoc}
    */
   public void createParsingTableStart ()
   {
@@ -135,11 +132,7 @@ public class DefaultParsingTable implements ParsingTable
 
 
   /**
-   * Do the next step in creating the {@link ParsingTable} step by step
-   * 
-   * @return true if there is a next step, false otherwise
-   * @throws GrammarInvalidNonterminalException
-   * @throws TerminalSymbolSetException
+   * {@inheritDoc}
    */
   public boolean createParsingTableNextStep ()
       throws GrammarInvalidNonterminalException, TerminalSymbolSetException
@@ -150,6 +143,18 @@ public class DefaultParsingTable implements ParsingTable
       this.isNonterminalSymbolNextStepAvailable = nonterminalSymbolNext ();
     return !this.isTerminalSymbolNextStepAvailable
         && !this.isNonterminalSymbolNextStepAvailable;
+  }
+  
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ParsingTable#createParsingTablePreviousStep()
+   */
+  public boolean createParsingTablePreviousStep()
+  {
+    //TODO: implement
+    return false;
   }
 
 
@@ -207,8 +212,7 @@ public class DefaultParsingTable implements ParsingTable
     boolean productionWordDerivesToEpsilon = this.cfg.first (
         p.getProductionWord () ).epsilon ();
     boolean tsInFollowNS = this.cfg.follow ( ns ).contains ( ts );
-    // return tsInFirstProductionWord
-    // || ( productionWordDerivesToEpsilon && tsInFollowNS );
+    
     if ( tsInFirstProductionWord )
       return ParsingTable.EntryCause.TERMINAL_IN_FIRSTSET;
     else if ( productionWordDerivesToEpsilon && tsInFollowNS )
@@ -267,7 +271,7 @@ public class DefaultParsingTable implements ParsingTable
    * @throws GrammarInvalidNonterminalException
    * @throws TerminalSymbolSetException
    */
-  private void createParsingTable () throws GrammarInvalidNonterminalException,
+  public void create () throws GrammarInvalidNonterminalException,
       TerminalSymbolSetException
   {
     this.parsingTable = new ArrayList < ArrayList < DefaultProductionSet > > ();

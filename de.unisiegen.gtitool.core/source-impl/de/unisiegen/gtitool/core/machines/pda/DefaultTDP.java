@@ -66,6 +66,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
     super ( cfg.getAlphabet () );
     this.cfg = cfg;
     this.parsingTable = new DefaultParsingTable ( this.cfg );
+    this.parsingTable.create();
   }
 
 

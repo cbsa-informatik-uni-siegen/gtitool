@@ -2,6 +2,8 @@ package de.unisiegen.gtitool.core.entities;
 
 
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.storage.Storable;
 
 
@@ -31,8 +33,7 @@ public interface ParsingTable extends Entity < ParsingTable >, Storable
      * follow set of the current processed {@link NonterminalSymbol}
      */
     EPSILON_DERIVATION_AND_FOLLOWSET,
-    
-    
+
     /**
      * No add action takes place
      */
@@ -52,12 +53,22 @@ public interface ParsingTable extends Entity < ParsingTable >, Storable
           return "TERMINAL_IN_FIRSTSET"; //$NON-NLS-1$
         case EPSILON_DERIVATION_AND_FOLLOWSET :
           return "EPSILON_DERIVATION_AND_FOLLOWSET"; //$NON-NLS-1$
-        case NOCAUSE:
+        case NOCAUSE :
           return "NOCAUSE"; //$NON-NLS-1$
       }
       throw new IllegalArgumentException ( "unsupported machine type" ); //$NON-NLS-1$
     }
   }
+
+
+  /**
+   * creates the {@link ParsingTable}
+   * 
+   * @throws GrammarInvalidNonterminalException
+   * @throws TerminalSymbolSetException
+   */
+  public void create () throws GrammarInvalidNonterminalException,
+      TerminalSymbolSetException;
 
 
   /**
@@ -94,4 +105,32 @@ public interface ParsingTable extends Entity < ParsingTable >, Storable
    * @return number of rows
    */
   public int getRowCount ();
+
+
+  /*
+   * Methods for creating the parsing table stepwise
+   */
+  /**
+   * starts creating the {@link ParsingTable} step by step
+   */
+  public void createParsingTableStart ();
+
+
+  /**
+   * Do the next step in creating the {@link ParsingTable} step by step
+   * 
+   * @return true if there is a next step, false otherwise
+   * @throws GrammarInvalidNonterminalException
+   * @throws TerminalSymbolSetException
+   */
+  public boolean createParsingTableNextStep ()
+      throws GrammarInvalidNonterminalException, TerminalSymbolSetException;
+
+
+  /**
+   * Do the previous step in creating the {@link ParsingTable} step by step
+   * 
+   * @return true if there is still a previous step possible, false otherwise
+   */
+  public boolean createParsingTablePreviousStep ();
 }

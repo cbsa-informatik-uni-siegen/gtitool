@@ -109,6 +109,7 @@ public class ParsingTableTest
     try
     {
       DefaultParsingTable parsingTable = new DefaultParsingTable ( grammar );
+      parsingTable.create ();
       
       System.out.println(grammar.follow ( E_ ));
       

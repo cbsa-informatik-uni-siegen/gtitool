@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.convert;
 
 
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.lr.DefaultLR1Parser;
@@ -20,9 +21,11 @@ public class ConvertToLR1Parser extends ConvertToLRParser
    * @param mainWindowForm
    * @param grammar
    * @throws AlphabetException
+   * @throws NonterminalSymbolSetException
    */
   public ConvertToLR1Parser ( final MainWindowForm mainWindowForm,
-      final Grammar grammar ) throws AlphabetException
+      final Grammar grammar ) throws AlphabetException,
+      NonterminalSymbolSetException
   {
     super ( mainWindowForm, grammar );
 

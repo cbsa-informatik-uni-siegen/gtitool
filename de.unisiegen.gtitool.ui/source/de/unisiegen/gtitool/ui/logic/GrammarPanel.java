@@ -36,6 +36,7 @@ import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
@@ -411,7 +412,12 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       catch ( AlphabetException e )
       {
         e.printStackTrace ();
-        System.exit ( 1 );
+        return null;
+      }
+      catch ( NonterminalSymbolSetException exc )
+      {
+        exc.printStackTrace ();
+        return null;
       }
 
     // old cases

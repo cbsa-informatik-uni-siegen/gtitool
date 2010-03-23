@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.convert;
 
 
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
@@ -20,8 +21,10 @@ public class ConvertToLR0 extends ConvertToLR
    * 
    * @param grammar
    * @return The lr0 grammar
+   * @throws NonterminalSymbolSetException
    */
   private static LR0Grammar convertGrammar ( final Grammar grammar )
+      throws NonterminalSymbolSetException
   {
     return new LR0Grammar ( grammar.getNonterminalSymbolSet (), grammar
         .getTerminalSymbolSet (), grammar.getStartSymbol (), grammar
@@ -35,9 +38,11 @@ public class ConvertToLR0 extends ConvertToLR
    * @param mainWindowForm - The main window to display the result on
    * @param grammar - The grammar to convert to an LR0 automaton
    * @throws AlphabetException
+   * @throws NonterminalSymbolSetException
    */
   public ConvertToLR0 ( final MainWindowForm mainWindowForm,
-      final Grammar grammar ) throws AlphabetException
+      final Grammar grammar ) throws AlphabetException,
+      NonterminalSymbolSetException
   {
     super ( mainWindowForm, grammar, convertGrammar ( grammar ).getAlphabet () );
 

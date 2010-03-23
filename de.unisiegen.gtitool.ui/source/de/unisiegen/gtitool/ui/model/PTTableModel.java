@@ -5,6 +5,7 @@ import javax.swing.table.AbstractTableModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
@@ -74,7 +75,20 @@ public final class PTTableModel extends AbstractTableModel
 
 
   /**
-   * @{inherit}
+   * Allocates a new {@link PTTableModel}
+   *
+   * @param cfg The {@link CFG}
+   * @param pt The {@link ParsingTable}
+   */
+  public PTTableModel ( final CFG cfg, final ParsingTable pt )
+  {
+    this.nonterminals = cfg.getNonterminalSymbolSet ();
+    this.data = (DefaultParsingTable)pt;
+  }
+
+
+  /**
+   * @{inherit
    * @see javax.swing.table.AbstractTableModel#getColumnName(int)
    */
   @Override
@@ -121,9 +135,9 @@ public final class PTTableModel extends AbstractTableModel
     {
       return this.data.get ( arg0, arg1 - FIRST_TERMINAL_COLUMN );
     }
-    catch(Exception e)
+    catch ( Exception e )
     {
-      return new PrettyString();
+      return new PrettyString ();
     }
   }
 }

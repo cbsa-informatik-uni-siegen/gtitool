@@ -1,15 +1,32 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.util.ResourceBundle;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.ListSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
+import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.core.entities.ParsingTable.EntryCause;
+import de.unisiegen.gtitool.core.entities.listener.ParsingTableStepByStepListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
+import de.unisiegen.gtitool.ui.model.GrammarColumnModel;
+import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
+import de.unisiegen.gtitool.ui.model.PTTableModel;
 import de.unisiegen.gtitool.ui.netbeans.CreateParsingTableDialogForm;
+import de.unisiegen.gtitool.ui.swing.JGTIButton;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton;
 
 
@@ -79,6 +96,12 @@ public class CreateParsingTableDialog implements
 
 
   /**
+   * The {@link ResourceBundle}
+   */
+  private ResourceBundle bundle;
+
+
+  /**
    * Allocates a new {@link CreateParsingTableDialog}
    * 
    * @param parent
@@ -90,6 +113,91 @@ public class CreateParsingTableDialog implements
     this.cfg = cfg;
     this.parsingTable = new DefaultParsingTable ( this.cfg );
     this.gui = new CreateParsingTableDialogForm ( this.parent, this );
+
+    this.bundle = java.util.ResourceBundle
+        .getBundle ( "de/unisiegen/gtitool/ui/i18n/messages" ); //$NON-NLS-1$
+
+    // setup the displayed nonterminals,terminals and start symbol
+    this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.cfg
+        .getNonterminalSymbolSet () );
+    this.gui.styledStartNonterminalSymbolParserPanel.setText ( this.cfg
+        .getStartSymbol () );
+    this.gui.styledTerminalSymbolSetParserPanel.setText ( this.cfg
+        .getTerminalSymbolSet () );
+
+    // setup the grammar table
+    this.gui.jGTIGrammarTable.setModel ( this.cfg );
+    this.gui.jGTIGrammarTable.setColumnModel ( new GrammarColumnModel () );
+    this.gui.jGTIGrammarTable
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.gui.jGTIGrammarTable.getTableHeader ().setReorderingAllowed ( false );
+
+    // setup the parsing table model
+    this.gui.jGTIParsingTable.setModel ( new PTTableModel ( this.cfg,
+        this.parsingTable ) );
+    this.gui.jGTIParsingTable.setColumnModel ( new PTTableColumnModel (
+        this.cfg.getTerminalSymbolSet () ) );
+    this.gui.jGTIParsingTable.getTableHeader ().setReorderingAllowed ( false );
+
+    // setup the description table (outline)
+    DefaultListModel descriptionListmodel = new DefaultListModel ();
+    this.gui.jGTIDescriptionList.setModel ( descriptionListmodel );
+
+    // setup the ParsingTableStepByStepListener
+    this.parsingTable
+        .addParsingTableStepByStepListener ( new ParsingTableStepByStepListener ()
+        {
+
+          public void productionAddedAsEntry ( Production p, TerminalSymbol ts,
+              EntryCause cause )
+          {
+            addDescription ( p, ts, cause );
+          }
+        } );
+  }
+
+
+  /**
+   * Adds a new description line to the description list
+   * 
+   * @param p The {@link Production} that was added to the {@link ParsingTable}
+   * @param ts The current processed {@link TerminalSymbol}
+   * @param cause The {@link ParsingTable.EntryCause} which indicates why the
+   *          {@link Production} was added to the {@link ParsingTable}
+   */
+  void addDescription ( final Production p, final TerminalSymbol ts,
+      final EntryCause cause )
+  {
+    PrettyString description = new PrettyString ();
+    description.add ( new PrettyToken ( "Production ", Style.NONE ) ); //$NON-NLS-1$
+    description.add ( p );
+    description.add ( new PrettyToken ( " cause ", Style.NONE ) ); //$NON-NLS-1$
+
+    switch ( cause )
+    {
+      case EPSILON_DERIVATION_AND_FOLLOWSET :
+        description.add ( new PrettyToken ( "FIRST(", Style.NONE ) ); //$NON-NLS-1$
+        description.add ( p.getProductionWord () );
+        description.add ( new PrettyToken ( ") contains ", Style.NONE ) ); //$NON-NLS-1$
+        description.add ( new DefaultSymbol ( "epsilon" ) ); //$NON-NLS-1$
+        description.add ( new PrettyToken ( " and FOLLOW(", Style.NONE ) ); //$NON-NLS-1$
+        description.add ( p.getNonterminalSymbol () );
+        description.add ( new PrettyToken ( ") contains ", Style.NONE ) ); //$NON-NLS-1$
+        description.add ( ts );
+        break;
+      case NOCAUSE :
+        return;
+      case TERMINAL_IN_FIRSTSET :
+        description.add ( new PrettyToken ( "FIRST(", Style.NONE ) ); //$NON-NLS-1$
+        description.add ( p.getProductionWord () );
+        description.add ( new PrettyToken ( ") contains ", Style.NONE ) ); //$NON-NLS-1$
+        description.add ( ts );
+        break;
+    }
+
+    DefaultListModel model = ( DefaultListModel ) this.gui.jGTIDescriptionList
+        .getModel ();
+    model.addElement ( description );
   }
 
 
@@ -135,12 +243,41 @@ public class CreateParsingTableDialog implements
 
 
   /**
+   * Display the current processed {@link NonterminalSymbol} and
+   * {@link TerminalSymbol}
+   */
+  private void setCurrentSymbols ()
+  {
+    this.gui.jGTICurrentNonterminalLabel.setText ( this.bundle
+        .getString ( "CreateParsingTableDialog.CurrentNonterminal" ) //$NON-NLS-1$
+        + " " + this.parsingTable.getCurrentNonterminalSymbol () ); //$NON-NLS-1$
+    this.gui.jGTICurrentTerminalLabel.setText ( this.bundle
+        .getString ( "CreateParsingTableDialog.CurrentTerminal" ) //$NON-NLS-1$
+        + " " + this.parsingTable.getCurrentTerminalSymbol () ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Clears the displayed symbols which are currently processed
+   */
+  private void clearCurrentSymbols ()
+  {
+    this.gui.jGTICurrentNonterminalLabel.setText ( this.bundle
+        .getString ( "CreateParsingTableDialog.CurrentNonterminal" ) ); //$NON-NLS-1$
+    this.gui.jGTICurrentTerminalLabel.setText ( this.bundle
+        .getString ( "CreateParsingTableDialog.CurrentTerminal" ) ); //$NON-NLS-1$
+  }
+
+
+  /**
    * handles the {@link JGTIToolBarButton} start
    */
   public void handleStart ()
   {
     this.parsingTable.createParsingTableStart ();
     enableButton ( Action.START, false );
+
+    setCurrentSymbols ();
   }
 
 
@@ -153,6 +290,7 @@ public class CreateParsingTableDialog implements
     {
       boolean nextAvailable = this.parsingTable.createParsingTableNextStep ();
       enableButton ( Action.NEXT, nextAvailable );
+      setCurrentSymbols ();
     }
     catch ( GrammarInvalidNonterminalException exc )
     {
@@ -175,6 +313,7 @@ public class CreateParsingTableDialog implements
     boolean previousAvailable = this.parsingTable
         .createParsingTablePreviousStep ();
     enableButton ( Action.PREVIOUS, previousAvailable );
+    setCurrentSymbols ();
   }
 
 
@@ -188,6 +327,7 @@ public class CreateParsingTableDialog implements
     enableButton ( Action.PREVIOUS, false );
     enableButton ( Action.STOP, false );
     enableButton ( Action.AUTOSTEP, false );
+    clearCurrentSymbols ();
   }
 
 
@@ -199,4 +339,21 @@ public class CreateParsingTableDialog implements
 
   }
 
+
+  /**
+   * handles the {@link JGTIButton} button
+   */
+  public void handleOk ()
+  {
+    this.gui.setVisible ( false );
+  }
+
+
+  /**
+   * Show up the dialog
+   */
+  public void show ()
+  {
+    this.gui.setVisible ( true );
+  }
 }

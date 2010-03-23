@@ -2,7 +2,11 @@ package de.unisiegen.gtitool.core.entities;
 
 
 import java.util.ArrayList;
+import java.util.EventListener;
 
+import javax.swing.event.EventListenerList;
+
+import de.unisiegen.gtitool.core.entities.listener.ParsingTableStepByStepListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
@@ -81,6 +85,12 @@ public class DefaultParsingTable implements ParsingTable
 
 
   /**
+   * The {@link EventListener} list
+   */
+  private EventListenerList listenerList = new EventListenerList ();
+
+
+  /**
    * allocates a new {@link DefaultParsingTable}
    * 
    * @param cfg the CFG from which we're creating the parsing table
@@ -93,7 +103,6 @@ public class DefaultParsingTable implements ParsingTable
     this.cfg = cfg;
     this.terminals = cfg.getTerminalSymbolSet ();
     this.nonterminals = cfg.getNonterminalSymbolSet ();
-    //createParsingTable ();
 
     this.currentNonterminalIndex = 0;
     this.currentTerminalIndex = 0;
@@ -144,16 +153,16 @@ public class DefaultParsingTable implements ParsingTable
     return !this.isTerminalSymbolNextStepAvailable
         && !this.isNonterminalSymbolNextStepAvailable;
   }
-  
-  
+
+
   /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.entities.ParsingTable#createParsingTablePreviousStep()
    */
-  public boolean createParsingTablePreviousStep()
+  public boolean createParsingTablePreviousStep ()
   {
-    //TODO: implement
+    // TODO: implement
     return false;
   }
 
@@ -203,16 +212,15 @@ public class DefaultParsingTable implements ParsingTable
   private ParsingTable.EntryCause isParsingTableEntry ( final Production p )
       throws GrammarInvalidNonterminalException, TerminalSymbolSetException
   {
-    NonterminalSymbol ns = this.nonterminals
-        .get ( this.currentNonterminalIndex );
-    TerminalSymbol ts = this.terminals.get ( this.currentTerminalIndex );
+    NonterminalSymbol ns = getCurrentNonterminalSymbol ();
+    TerminalSymbol ts = getCurrentTerminalSymbol ();
 
     boolean tsInFirstProductionWord = this.cfg.first ( p.getProductionWord () )
         .contains ( ts );
     boolean productionWordDerivesToEpsilon = this.cfg.first (
         p.getProductionWord () ).epsilon ();
     boolean tsInFollowNS = this.cfg.follow ( ns ).contains ( ts );
-    
+
     if ( tsInFirstProductionWord )
       return ParsingTable.EntryCause.TERMINAL_IN_FIRSTSET;
     else if ( productionWordDerivesToEpsilon && tsInFollowNS )
@@ -255,10 +263,7 @@ public class DefaultParsingTable implements ParsingTable
         continue;
       this.parsingTable.get ( this.currentNonterminalIndex ).get (
           this.currentTerminalIndex ).add ( p );
-      //TODO: added fireParsingTableEntryAdded
-      // if ( isParsingTableEntry ( p ) )
-      // this.parsingTable.get ( this.currentNonterminalIndex ).get (
-      // this.currentTerminalIndex ).add ( p );
+      fireProductionAdded ( cause, p );
     }
     ++this.currentTerminalIndex;
     return true;
@@ -431,4 +436,53 @@ public class DefaultParsingTable implements ParsingTable
     return null;
   }
 
+
+  /**
+   * {@inheritDoc}
+   */
+  public NonterminalSymbol getCurrentNonterminalSymbol ()
+  {
+    return this.nonterminals.get ( this.currentNonterminalIndex );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public TerminalSymbol getCurrentTerminalSymbol ()
+  {
+    return this.terminals.get ( this.currentTerminalIndex );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ParsingTable#addParsingTableStepByStepListener(de.unisiegen.gtitool.core.entities.listener.ParsingTableStepByStepListener)
+   */
+  public void addParsingTableStepByStepListener (
+      final ParsingTableStepByStepListener listener )
+  {
+    this.listenerList.add ( ParsingTableStepByStepListener.class, listener );
+  }
+
+
+  /**
+   * Notifies all {@link ParsingTableStepByStepListener} that a new
+   * {@link Production} was added to the {@link ParsingTable}
+   * 
+   * @param cause The {@link ParsingTable.EntryCause} which indicates why the
+   *          {@link Production} was added
+   * @param production The {@link Production} that was added
+   */
+  private void fireProductionAdded ( final ParsingTable.EntryCause cause,
+      Production production )
+  {
+    ParsingTableStepByStepListener [] listener = this.listenerList
+        .getListeners ( ParsingTableStepByStepListener.class );
+    for ( ParsingTableStepByStepListener l : listener )
+      l
+          .productionAddedAsEntry ( production, getCurrentTerminalSymbol (),
+              cause );
+  }
 }

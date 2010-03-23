@@ -66,15 +66,15 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         jGTIPanel4 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTILabel4 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIScrollPane3 = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        jGTIDescriptionTable = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        jGTIDescriptionList = new de.unisiegen.gtitool.ui.swing.JGTIList();
         jGTILabel5 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
-        jGTIButton1 = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        jGTILabelTerminalSymbols.setText(bundle.getString("TerminalPanel.TerminalSymbols")); // NOI18N
+        jGTILabelTerminalSymbols.setText(bundle.getString("CreateParsingTableDialog.LabelTerminalSymbols")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -83,7 +83,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         jGTIPanel1.add(jGTILabelTerminalSymbols, gridBagConstraints);
 
-        jGTILabelStartSymbol.setText(bundle.getString("TerminalPanel.StartSymbol")); // NOI18N
+        jGTILabelStartSymbol.setText(bundle.getString("CreateParsingTableDialog.LabelStartSymbol")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -92,7 +92,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         jGTIPanel1.add(jGTILabelStartSymbol, gridBagConstraints);
 
-        jGTILabelNonterminalSymbols.setText(bundle.getString("TerminalPanel.NonterminalSymbols")); // NOI18N
+        jGTILabelNonterminalSymbols.setText(bundle.getString("CreateParsingTableDialog.LabelNonterminalSymbols")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -143,13 +143,13 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
 
         jGTIGrammarTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jGTIScrollPane1.setViewportView(jGTIGrammarTable);
@@ -251,7 +251,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jGTIToolBar, gridBagConstraints);
 
-        jGTICurrentNonterminalLabel.setText("Current Nonterminal:");
+        jGTICurrentNonterminalLabel.setText(bundle.getString("CreateParsingTableDialog.CurrentNonterminal")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -259,7 +259,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.weightx = 1.0;
         jGTIParsingTablePanel.add(jGTICurrentNonterminalLabel, gridBagConstraints);
 
-        jGTICurrentTerminalLabel.setText("Current Terminal:");
+        jGTICurrentTerminalLabel.setText(bundle.getString("CreateParsingTableDialog.CurrentTerminal")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -268,7 +268,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         jGTIParsingTablePanel.add(jGTICurrentTerminalLabel, gridBagConstraints);
 
         jGTILabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jGTILabel3.setText("Parsing Table");
+        jGTILabel3.setText(bundle.getString("CreateParsingTableDialog.LabelParsingTable")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -278,13 +278,13 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
 
         jGTIParsingTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jGTIScrollPane2.setViewportView(jGTIParsingTable);
@@ -306,7 +306,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         jGTIParsingTablePanel.add(jGTIPanel3, gridBagConstraints);
 
         jGTILabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jGTILabel4.setText("Description");
+        jGTILabel4.setText(bundle.getString("CreateParsingTableDialog.LabelDescription")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -314,18 +314,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.weightx = 1.0;
         jGTIPanel4.add(jGTILabel4, gridBagConstraints);
 
-        jGTIDescriptionTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jGTIScrollPane3.setViewportView(jGTIDescriptionTable);
+        jGTIScrollPane3.setViewportView(jGTIDescriptionList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -350,12 +339,17 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jGTIParsingTablePanel.add(jGTILabel5, gridBagConstraints);
 
-        jGTIButton1.setText("Ok");
+        jGTIButtonOk.setText("Ok");
+        jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIButtonOkActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jGTIParsingTablePanel.add(jGTIButton1, gridBagConstraints);
+        jGTIParsingTablePanel.add(jGTIButtonOk, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -388,11 +382,15 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         this.logic.handleStop();
 }//GEN-LAST:event_jGTIToolBarButtonStopActionPerformed
 
+    private void jGTIButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonOkActionPerformed
+        this.logic.handleOk();
+    }//GEN-LAST:event_jGTIButtonOkActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButton1;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTICurrentNonterminalLabel;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTICurrentTerminalLabel;
-    public de.unisiegen.gtitool.ui.swing.JGTITable jGTIDescriptionTable;
+    public de.unisiegen.gtitool.ui.swing.JGTIList jGTIDescriptionList;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIGrammarPanel;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIGrammarTable;
     private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabel3;
@@ -416,9 +414,9 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStart;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStop;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
-    private de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel;
-    private de.unisiegen.gtitool.ui.style.StyledStartNonterminalSymbolParserPanel styledStartNonterminalSymbolParserPanel;
-    private de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel styledTerminalSymbolSetParserPanel;
+    public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel;
+    public de.unisiegen.gtitool.ui.style.StyledStartNonterminalSymbolParserPanel styledStartNonterminalSymbolParserPanel;
+    public de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel styledTerminalSymbolSetParserPanel;
     // End of variables declaration//GEN-END:variables
     /**
      * {@inheritDoc}

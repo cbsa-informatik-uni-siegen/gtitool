@@ -1,7 +1,10 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import javax.swing.event.EventListenerList;
+
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
+import de.unisiegen.gtitool.core.entities.listener.ParsingTableStepByStepListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -133,4 +136,30 @@ public interface ParsingTable extends Entity < ParsingTable >, Storable
    * @return true if there is still a previous step possible, false otherwise
    */
   public boolean createParsingTablePreviousStep ();
+
+
+  /**
+   * Returns the current {@link NonterminalSymbol} used in the step by step mode
+   * 
+   * @return The current {@link NonterminalSymbol}
+   */
+  public NonterminalSymbol getCurrentNonterminalSymbol ();
+
+
+  /**
+   * Returns the current {@link TerminalSymbol} used in the step by step mode
+   * 
+   * @return The current {@link TerminalSymbol}
+   */
+  public TerminalSymbol getCurrentTerminalSymbol ();
+
+
+  /**
+   * Adds a {@link ParsingTableStepByStepListener} to the
+   * {@link EventListenerList}
+   * 
+   * @param listener The {@link ParsingTableStepByStepListener}
+   */
+  public void addParsingTableStepByStepListener (
+      final ParsingTableStepByStepListener listener );
 }

@@ -26,10 +26,13 @@ public class LR0Test
 
   /**
    * The test grammar for arithmetic expressions containing +, * and (, )
-   *
+   * 
    * @return The grammar
+   * @throws TerminalSymbolSetException
+   * @throws NonterminalSymbolSetException
    */
-  public static LR0Grammar testGrammar ()
+  public static LR0Grammar testGrammar () throws TerminalSymbolSetException,
+      NonterminalSymbolSetException
   {
     NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" ); //$NON-NLS-1$
 
@@ -58,19 +61,11 @@ public class LR0Test
     TerminalSymbol plus = new DefaultTerminalSymbol ( "+" ); //$NON-NLS-1$
     TerminalSymbol multiplies = new DefaultTerminalSymbol ( "*" ); //$NON-NLS-1$
 
-    try
-    {
-      terminalSet.add ( id );
-      terminalSet.add ( lparen );
-      terminalSet.add ( rparen );
-      terminalSet.add ( plus );
-      terminalSet.add ( multiplies );
-    }
-    catch ( TerminalSymbolSetException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
+    terminalSet.add ( id );
+    terminalSet.add ( lparen );
+    terminalSet.add ( rparen );
+    terminalSet.add ( plus );
+    terminalSet.add ( multiplies );
 
     LR0Grammar grammar = new LR0Grammar ( nonterminalSet, terminalSet, E );
 
@@ -103,7 +98,19 @@ public class LR0Test
    */
   public static void main ( String [] arguments )
   {
-    LR0Grammar grammar = testGrammar ();
+    LR0Grammar grammar;
+    try
+    {
+      grammar = testGrammar ();
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ();
+
+      System.exit ( 1 );
+
+      return;
+    }
 
     LR0ItemSet closure0 = grammar.closure ( grammar.startProduction () );
 

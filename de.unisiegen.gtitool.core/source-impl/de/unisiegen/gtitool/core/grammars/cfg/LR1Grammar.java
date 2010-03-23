@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 
 
@@ -46,10 +47,12 @@ public class LR1Grammar extends ExtendedGrammar
    * @param nonterminalSymbolSet
    * @param terminalSymbolSet
    * @param startSymbol
+   * @throws NonterminalSymbolSetException
    */
   public LR1Grammar ( final NonterminalSymbolSet nonterminalSymbolSet,
       final TerminalSymbolSet terminalSymbolSet,
       final NonterminalSymbol startSymbol )
+      throws NonterminalSymbolSetException
   {
     super ( nonterminalSymbolSet, terminalSymbolSet, startSymbol );
   }
@@ -62,10 +65,12 @@ public class LR1Grammar extends ExtendedGrammar
    * @param terminalSymbolSet
    * @param startSymbol
    * @param productions
+   * @throws NonterminalSymbolSetException
    */
   public LR1Grammar ( final NonterminalSymbolSet nonterminalSymbolSet,
       final TerminalSymbolSet terminalSymbolSet,
       final NonterminalSymbol startSymbol, final ProductionSet productions )
+      throws NonterminalSymbolSetException
   {
     this ( nonterminalSymbolSet, terminalSymbolSet, startSymbol );
 

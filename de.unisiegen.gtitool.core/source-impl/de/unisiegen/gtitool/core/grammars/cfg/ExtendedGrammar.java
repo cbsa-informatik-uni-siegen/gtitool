@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
-import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
@@ -44,28 +44,21 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
    * @param nonterminalSymbolSet
    * @param terminalSymbolSet
    * @param startSymbol
+   * @throws NonterminalSymbolSetException 
    */
   public ExtendedGrammar ( final NonterminalSymbolSet nonterminalSymbolSet,
       final TerminalSymbolSet terminalSymbolSet,
-      final NonterminalSymbol startSymbol )
+      final NonterminalSymbol startSymbol ) throws NonterminalSymbolSetException
   {
-    super ( nonterminalSymbolSet, terminalSymbolSet, startSymbol,
-        ValidationElement.DUPLICATE_PRODUCTION,
+    super ( new DefaultNonterminalSymbolSet ( nonterminalSymbolSet ),
+        terminalSymbolSet, startSymbol, ValidationElement.DUPLICATE_PRODUCTION,
         ValidationElement.NONTERMINAL_NOT_REACHABLE );
 
     this.setStartSymbol ( new DefaultNonterminalSymbol ( startSymbol
         .toString ()
         + "'" ) ); //$NON-NLS-1$
 
-    try
-    {
-      nonterminalSymbolSet.add ( this.getStartSymbol () );
-    }
-    catch ( NonterminalSymbolSetException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
+    this.getNonterminalSymbolSet ().add ( this.getStartSymbol () );
 
     this.startProduction = new DefaultProduction ( this.getStartSymbol (),
         new DefaultProductionWord ( startSymbol ) );

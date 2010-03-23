@@ -1,5 +1,6 @@
 package de.unisiegen.gtitool.core.machines.dfa;
 
+
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
@@ -19,16 +20,18 @@ import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 
 /**
  * Test the LR0 automaton
- *
  */
 public class LR0Test
 {
+
   /**
    * main method
-   *
+   * 
    * @param arguments
+   * @throws NonterminalSymbolSetException
    */
   public static void main ( final String [] arguments )
+      throws NonterminalSymbolSetException
   {
     NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" ); //$NON-NLS-1$
 
@@ -91,13 +94,13 @@ public class LR0Test
 
     try
     {
-      LR0 automaton = new LR0(grammar);
-      for(State state : automaton.getState())
-        System.out.println(state.toString());
+      LR0 automaton = new LR0 ( grammar );
+      for ( State state : automaton.getState () )
+        System.out.println ( state.toString () );
     }
-    catch(AlphabetException e)
+    catch ( AlphabetException e )
     {
-      e.printStackTrace();
+      e.printStackTrace ();
     }
 
   }

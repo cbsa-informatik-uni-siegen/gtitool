@@ -25,6 +25,7 @@ public class LR1Test
 {
 
   public static void main ( String [] arguments )
+      throws NonterminalSymbolSetException
   {
     NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" );
 

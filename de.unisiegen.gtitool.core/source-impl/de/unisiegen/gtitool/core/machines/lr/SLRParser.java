@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.core.machines.lr;
 
 
-import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
@@ -37,23 +36,7 @@ public class SLRParser extends DefaultLR0Parser
   protected boolean followCondition ( LR0Item item, TerminalSymbol symbol )
       throws GrammarInvalidNonterminalException
   {
-
-    LR0Grammar tempGrammar = new LR0Grammar ( getGrammar () );
-    tempGrammar.getTerminalSymbolSet ().addIfNonexistent (
-        DefaultTerminalSymbol.EndMarker );
-
-    System.out.println ( "nt: " + item.getNonterminalSymbol () + ", t: "
-        + symbol );
-
-    for ( TerminalSymbol foobar : tempGrammar.follow ( item
-        .getNonterminalSymbol () ) )
-    {
-      System.out.print ( foobar );
-      System.out.print ( ' ' );
-    }
-    System.out.println ( "\n" );
-
-    return tempGrammar.follow ( item.getNonterminalSymbol () ).contains (
+    return getGrammar ().follow ( item.getNonterminalSymbol () ).contains (
         symbol );
   }
 

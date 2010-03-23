@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.core.machines;
 
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
@@ -30,6 +31,60 @@ import de.unisiegen.gtitool.core.storage.Element;
 public abstract class AbstractLRMachine extends AbstractStatelessMachine
     implements LRMachine
 {
+
+  /**
+   * TODO
+   */
+  private class HistoryEntry
+  {
+
+    /**
+     * TODO
+     * 
+     * @param currentState
+     * @param stateMachineHistory
+     */
+    public HistoryEntry ( final StateMachineHistoryItem currentState,
+        final ArrayList < StateMachineHistoryItem > stateMachineHistory )
+    {
+      this.currentState = currentState;
+      this.stateMachineHistory = stateMachineHistory;
+    }
+
+
+    /**
+     * TODO
+     * 
+     * @return
+     */
+    public ArrayList < StateMachineHistoryItem > getMachineHistory ()
+    {
+      return this.stateMachineHistory;
+    }
+
+
+    public StateMachineHistoryItem getCurrentState ()
+    {
+      return this.currentState;
+    }
+
+
+    @Override
+    public String toString ()
+    {
+      return this.stateMachineHistory.toString ();
+    }
+
+
+    private StateMachineHistoryItem currentState;
+
+
+    /**
+     * TODO
+     */
+    private ArrayList < StateMachineHistoryItem > stateMachineHistory;
+  }
+
 
   /**
    * Allocates a new {@link AbstractLRMachine}
@@ -215,6 +270,47 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   }
 
 
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#createHistoryEntry()
+   */
+  @Override
+  protected void createHistoryEntry ()
+  {
+    super.createHistoryEntry ();
+
+    this.history.add ( new HistoryEntry ( this.getAutomaton ()
+        .makeCurrentHistoryItem (), new ArrayList < StateMachineHistoryItem > (
+        this.getAutomaton ().getHistory () ) ) );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#restoreHistoryEntry()
+   */
+  @Override
+  protected void restoreHistoryEntry ()
+  {
+    super.restoreHistoryEntry ();
+
+    final HistoryEntry entry = this.history.pop ();
+
+    this.getAutomaton ().setHistory ( entry.getMachineHistory () );
+
+    this.getAutomaton ().restoreHistoryItem ( entry.getCurrentState () );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param state
+   * @param symbol
+   * @return
+   */
   protected abstract ActionSet actionSetBase ( LRState state,
       TerminalSymbol symbol );
 
@@ -242,4 +338,11 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
    * @see de.unisiegen.gtitool.core.machines.Machine#getMachineType()
    */
   public abstract MachineType getMachineType ();
+
+
+  /**
+   * Saves the history of the automaton. This is necessary, because the history
+   * of the automaton is already used to do reduce steps.
+   */
+  private Stack < HistoryEntry > history = new Stack < HistoryEntry > ();
 }

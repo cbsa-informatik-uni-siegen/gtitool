@@ -158,7 +158,7 @@ public abstract class AbstractStateMachine implements StateMachine
   /**
    * The history of this {@link AbstractStateMachine}.
    */
-  private final ArrayList < StateMachineHistoryItem > history;
+  private ArrayList < StateMachineHistoryItem > history;
 
 
   /**
@@ -238,6 +238,28 @@ public abstract class AbstractStateMachine implements StateMachine
    * highlighting.
    */
   private final ArrayList < ObjectTriple < Integer, Integer, Object >> cachedValueList;
+
+
+  /**
+   * Gets the current history
+   * 
+   * @return the history
+   */
+  public ArrayList < StateMachineHistoryItem > getHistory ()
+  {
+    return this.history;
+  }
+
+
+  /**
+   * Sets the history
+   * 
+   * @param history
+   */
+  public void setHistory ( final ArrayList < StateMachineHistoryItem > history )
+  {
+    this.history = history;
+  }
 
 
   /**
@@ -1876,12 +1898,7 @@ public abstract class AbstractStateMachine implements StateMachine
   }
 
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see StateMachine#nextSymbol()
-   */
-  public final void nextSymbol ()
+  public StateMachineHistoryItem makeCurrentHistoryItem ()
   {
     ArrayList < State > activeStateList = new ArrayList < State > ();
     for ( State current : this.stateList )
@@ -1909,11 +1926,30 @@ public abstract class AbstractStateMachine implements StateMachine
             oldActiveSymbolList.add ( currentSymbol );
       }
 
-    StateMachineHistoryItem historyItem = new StateMachineHistoryItem (
-        oldActiveStateSet, oldActiveTransitionSet, oldActiveSymbolList,
-        oldStack, false );
+    return new StateMachineHistoryItem ( oldActiveStateSet,
+        oldActiveTransitionSet, oldActiveSymbolList, oldStack, false );
+  }
+
+
+  private TreeSet < State > pushCurrentState ()
+  {
+    final StateMachineHistoryItem historyItem = makeCurrentHistoryItem ();
     this.history.add ( historyItem );
 
+    return historyItem.getStateSet ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see StateMachine#nextSymbol()
+   */
+  public final void nextSymbol ()
+  {
+    TreeSet < State > oldActiveStateSet = pushCurrentState ();
+    StateMachineHistoryItem historyItem = this.history.get ( this.history
+        .size () - 1 );
     clearActiveState ();
     clearActiveTransition ();
     clearActiveSymbol ();
@@ -2120,22 +2156,17 @@ public abstract class AbstractStateMachine implements StateMachine
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see StateMachine#previousSymbol()
+   * TODO
+   *
+   * @param historyItem
    */
-  public final void previousSymbol ()
+  public final void restoreHistoryItem (
+      final StateMachineHistoryItem historyItem )
   {
-    if ( this.history.size () == 0 )
-      throw new RuntimeException ( "history is empty" ); //$NON-NLS-1$
-
     clearActiveState ();
     clearActiveTransition ();
     clearActiveSymbol ();
     this.stack.clear ();
-
-    StateMachineHistoryItem historyItem = this.history.remove ( this.history
-        .size () - 1 );
 
     ArrayList < Symbol > historyStackSymbolList = historyItem.getStack ().peak (
         historyItem.getStack ().size () );
@@ -2148,6 +2179,36 @@ public abstract class AbstractStateMachine implements StateMachine
       current.setActive ( true );
     for ( Symbol current : historyItem.getSymbolSet () )
       current.setActive ( true );
+  }
+
+
+  /**
+   * TODO
+   *
+   * @return
+   */
+  private final StateMachineHistoryItem restorePreviousHistoryItem ()
+  {
+    if ( this.history.size () == 0 )
+      throw new RuntimeException ( "history is empty" ); //$NON-NLS-1$
+
+    final StateMachineHistoryItem historyItem = this.history
+        .remove ( this.history.size () - 1 );
+
+    restoreHistoryItem ( historyItem );
+
+    return historyItem;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see StateMachine#previousSymbol()
+   */
+  public final void previousSymbol ()
+  {
+    final StateMachineHistoryItem historyItem = restorePreviousHistoryItem ();
 
     if ( historyItem.isNextWordStep () )
       try

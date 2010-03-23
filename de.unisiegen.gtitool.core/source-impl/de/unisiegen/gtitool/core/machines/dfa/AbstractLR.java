@@ -118,10 +118,15 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
   public abstract MachineType getMachineType ();
 
 
+  /**
+   * Get all LR states
+   * 
+   * @return the states
+   */
   public ArrayList < LRState > getStates ()
   {
     ArrayList < LRState > ret = new ArrayList < LRState > ();
-    
+
     for ( State state : getState () )
       ret.add ( ( LRState ) state );
 

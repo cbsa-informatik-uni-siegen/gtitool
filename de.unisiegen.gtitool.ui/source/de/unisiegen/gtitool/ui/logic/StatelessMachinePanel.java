@@ -75,6 +75,11 @@ public class StatelessMachinePanel extends MachinePanel
      * The machine action type 'accept'
      */
     ACCEPT,
+
+    /**
+     * The machine action type 'reject'
+     */
+    REJECT,
     /**
      * The machine action type 'stop'
      */
@@ -455,17 +460,26 @@ public class StatelessMachinePanel extends MachinePanel
           exc1.printStackTrace ();
           System.exit ( 1 );
         }
-        ChooseNextActionDialog cnad = new ChooseNextActionDialog (
-            this.mainWindowForm, actions );
-        cnad.show ();
 
-        if ( cnad.isConfirmed () )
+        try
         {
-          action = cnad.getChosenAction ();
-          ( ( AbstractStatelessMachine ) this.machine ).transit ( action );
+          ChooseNextActionDialog cnad = new ChooseNextActionDialog (
+              this.mainWindowForm, actions );
+          cnad.show ();
+
+          if ( cnad.isConfirmed () )
+          {
+            action = cnad.getChosenAction ();
+            ( ( AbstractStatelessMachine ) this.machine ).transit ( action );
+          }
+          else
+            return;
         }
-        else
+        catch ( IllegalArgumentException e )
+        {
+          performMachineTableChanged ( MachineActionType.REJECT, null );
           return;
+        }
       }
       else
         throw new RuntimeException (

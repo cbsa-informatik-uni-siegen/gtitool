@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.model;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Word;
@@ -61,6 +62,9 @@ public class LRMachineTableModel extends StatelessMachineTableModel
   private ArrayList < Integer > lrStateStackData;
 
 
+  private boolean isAccepted = false;
+
+
   /**
    * Allocates a new {@link LRMachineTableModel}
    */
@@ -106,8 +110,15 @@ public class LRMachineTableModel extends StatelessMachineTableModel
   @Override
   public final void removeLastRow ()
   {
-    super.removeLastRow ();
-    this.lrStateStackData.remove ( this.lrStateStackData.size () - 1 );
+    if ( this.isAccepted )
+      this.actionData.remove ( this.actionData.size () - 1 );
+    else
+    {
+      super.removeLastRow ();
+      this.lrStateStackData.remove ( this.lrStateStackData.size () - 1 );
+    }
+
+    this.isAccepted = false;
   }
 
 
@@ -130,6 +141,13 @@ public class LRMachineTableModel extends StatelessMachineTableModel
   public int getColumnCount ()
   {
     return LRMachineTableModel.COLUMN_COUNT;
+  }
+
+
+  public void accept ( final AcceptAction action )
+  {
+    this.actionData.add ( action );
+    this.isAccepted = true;
   }
 
 
@@ -161,6 +179,8 @@ public class LRMachineTableModel extends StatelessMachineTableModel
           if ( action != null )
             return action;
         }
+        else if ( this.isAccepted )
+          return this.actionData.get ( rowIndex + 1 );
     }
     return new PrettyString ();
   }

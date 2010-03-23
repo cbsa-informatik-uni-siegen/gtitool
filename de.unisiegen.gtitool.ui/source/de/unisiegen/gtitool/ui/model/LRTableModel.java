@@ -3,8 +3,7 @@ package de.unisiegen.gtitool.ui.model;
 
 import java.util.ArrayList;
 
-import javax.swing.table.AbstractTableModel;
-
+import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -13,7 +12,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
 /**
  * TODO
  */
-public class LRTableModel extends AbstractTableModel
+public class LRTableModel extends StatelessMachineTableModel
 {
 
   /**
@@ -73,8 +72,7 @@ public class LRTableModel extends AbstractTableModel
   public Object getValueAt ( final int rowIndex, final int columnIndex )
   {
     final PrettyString ret = columnIndex == 0 ? this.states.get ( rowIndex )
-        .shortName () : this.entries.get ( columnIndex - 1 ).get (
-        rowIndex );
+        .shortName () : this.entries.get ( columnIndex - 1 ).get ( rowIndex );
 
     return ret;
   }

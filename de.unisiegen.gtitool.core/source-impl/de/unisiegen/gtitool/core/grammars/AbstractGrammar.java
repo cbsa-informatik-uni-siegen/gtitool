@@ -1034,6 +1034,13 @@ public abstract class AbstractGrammar implements Grammar
   }// end follow
 
 
+  /**
+   * Creates an associated alphabet, suitable for automata
+   * 
+   * @return the alphabet
+   * @throws AlphabetException
+   * @see de.unisiegen.gtitool.core.grammars.Grammar#getAlphabet()
+   */
   public Alphabet getAlphabet () throws AlphabetException
   {
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();

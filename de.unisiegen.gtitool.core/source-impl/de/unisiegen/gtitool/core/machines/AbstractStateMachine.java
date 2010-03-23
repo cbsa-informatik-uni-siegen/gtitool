@@ -1361,13 +1361,16 @@ public abstract class AbstractStateMachine implements StateMachine
     stateColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     columnModel.addColumn ( stateColumn );
 
-    TableColumn epsilonColumn = new TableColumn ( EPSILON_COLUMN );
-    epsilonColumn.setHeaderValue ( new PrettyString ( new PrettyToken (
-        "\u03B5", Style.SYMBOL ) ) ); //$NON-NLS-1$
-    epsilonColumn
-        .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-    epsilonColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
-    columnModel.addColumn ( epsilonColumn );
+    if ( epsilonColumnNeeded () )
+    {
+      TableColumn epsilonColumn = new TableColumn ( EPSILON_COLUMN );
+      epsilonColumn.setHeaderValue ( new PrettyString ( new PrettyToken (
+          "\u03B5", Style.SYMBOL ) ) ); //$NON-NLS-1$
+      epsilonColumn
+          .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+      epsilonColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+      columnModel.addColumn ( epsilonColumn );
+    }
 
     for ( int i = 0 ; i < this.alphabet.size () ; i++ )
     {
@@ -1380,6 +1383,17 @@ public abstract class AbstractStateMachine implements StateMachine
     }
 
     return columnModel;
+  }
+
+
+  /**
+   * Tells if an epsilon column is needed
+   *
+   * @return the bool
+   */
+  public boolean epsilonColumnNeeded ()
+  {
+    return true;
   }
 
 
@@ -2157,7 +2171,7 @@ public abstract class AbstractStateMachine implements StateMachine
 
   /**
    * TODO
-   *
+   * 
    * @param historyItem
    */
   public final void restoreHistoryItem (
@@ -2184,7 +2198,7 @@ public abstract class AbstractStateMachine implements StateMachine
 
   /**
    * TODO
-   *
+   * 
    * @return
    */
   private final StateMachineHistoryItem restorePreviousHistoryItem ()

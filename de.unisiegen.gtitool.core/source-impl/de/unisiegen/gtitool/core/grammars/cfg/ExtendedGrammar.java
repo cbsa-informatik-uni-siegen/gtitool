@@ -44,11 +44,12 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
    * @param nonterminalSymbolSet
    * @param terminalSymbolSet
    * @param startSymbol
-   * @throws NonterminalSymbolSetException 
+   * @throws NonterminalSymbolSetException
    */
   public ExtendedGrammar ( final NonterminalSymbolSet nonterminalSymbolSet,
       final TerminalSymbolSet terminalSymbolSet,
-      final NonterminalSymbol startSymbol ) throws NonterminalSymbolSetException
+      final NonterminalSymbol startSymbol )
+      throws NonterminalSymbolSetException
   {
     super ( new DefaultNonterminalSymbolSet ( nonterminalSymbolSet ),
         terminalSymbolSet, startSymbol, ValidationElement.DUPLICATE_PRODUCTION,
@@ -165,6 +166,8 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
 
     for ( NonterminalSymbol symbol : this.getNonterminalSymbolSet () )
       symbols.add ( new DefaultSymbol ( symbol.toString () ) );
+
+    symbols.remove ( new DefaultSymbol ( this.getStartSymbol () ) );
 
     return new DefaultAlphabet ( symbols );
   }

@@ -109,6 +109,16 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
 
 
   /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean epsilonColumnNeeded ()
+  {
+    return false;
+  }
+
+
+  /**
    * The machine's type
    * 
    * @return The machine's type

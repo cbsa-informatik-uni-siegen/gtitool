@@ -24,7 +24,7 @@ public class LRTableModel extends StatelessMachineTableModel
   /**
    * TODO
    * 
-   * @param items
+   * @param states
    * @param terminals
    * @param entries
    */

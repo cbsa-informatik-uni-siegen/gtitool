@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.DefaultLRStateStack;
+import de.unisiegen.gtitool.core.entities.LRStateStack;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -59,9 +61,14 @@ public class LRMachineTableModel extends StatelessMachineTableModel
   /**
    * the lr state stack data
    */
-  private ArrayList < Integer > lrStateStackData;
+  private ArrayList < LRStateStack > lrStateStackData = new ArrayList < LRStateStack > ();
 
 
+  /**
+   * Special case when the word has been accepted, no additional row will be
+   * added, but "Accepted" will be put into the last row of the actions column
+   * When this is undone, no row may be removed, but "Accepted" is erased.
+   */
   private boolean isAccepted = false;
 
 
@@ -71,7 +78,6 @@ public class LRMachineTableModel extends StatelessMachineTableModel
   public LRMachineTableModel ()
   {
     super ();
-    this.lrStateStackData = new ArrayList < Integer > ();
   }
 
 
@@ -81,13 +87,14 @@ public class LRMachineTableModel extends StatelessMachineTableModel
    * @param stack the {@link Stack}
    * @param input the {@link Word}
    * @param action the {@link Action}
-   * @param lrState the lr state
+   * @param stateStack the state stack
    */
   public final void addRow ( final Stack stack, final Word input,
-      final Action action, final Integer lrState )
+      final Action action, final LRStateStack stateStack )
   {
     super.addRow ( stack, input, action );
-    this.lrStateStackData.add ( lrState );
+
+    this.lrStateStackData.add ( new DefaultLRStateStack ( stateStack ) );
   }
 
 
@@ -144,6 +151,13 @@ public class LRMachineTableModel extends StatelessMachineTableModel
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param action
+   * @see de.unisiegen.gtitool.ui.model.StatelessMachineTableModel#accept(de.unisiegen.gtitool.core.entities.AcceptAction)
+   */
+  @Override
   public void accept ( final AcceptAction action )
   {
     this.actionData.add ( action );

@@ -11,6 +11,7 @@ import javax.swing.ListSelectionModel;
 import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
+import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
@@ -698,9 +699,15 @@ public class StatelessMachinePanel extends MachinePanel
             smtm.addRow ( this.machine.getStack (), this.machine.getWord ()
                 .getRemainingWord (), action );
           else
-            ( ( LRMachineTableModel ) smtm ).addRow ( this.machine.getStack (),
-                this.machine.getWord ().getRemainingWord (), action,
-                new Integer ( 0 ) );
+          {
+            final LRMachineTableModel lrModel = ( LRMachineTableModel ) smtm;
+
+            final AbstractLRMachine lrMachine = ( AbstractLRMachine ) this.machine;
+
+            lrModel.addRow ( this.machine.getStack (), this.machine.getWord ()
+                .getRemainingWord (), action, lrMachine.getAutomaton ()
+                .getStateStack () );
+          }
         }
         catch ( WordFinishedException exc )
         {

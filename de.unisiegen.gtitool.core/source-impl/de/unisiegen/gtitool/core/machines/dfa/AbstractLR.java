@@ -4,8 +4,10 @@ package de.unisiegen.gtitool.core.machines.dfa;
 import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultLRStateStack;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.LRState;
+import de.unisiegen.gtitool.core.entities.LRStateStack;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -52,8 +54,24 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
    */
   public void nextSymbol ( final ProductionWordMember symbol )
   {
+    this.stateStack.push ( ( LRState ) this.getCurrentState () );
+
     this.nextSymbol ( this.getMatchingTransition ( this.getCurrentState (),
         new DefaultSymbol ( symbol.toString () ) ) );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#previousSymbol()
+   */
+  @Override
+  public void previousSymbol ()
+  {
+    this.stateStack.pop ();
+
+    super.previousSymbol ();
   }
 
 
@@ -145,7 +163,30 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
 
 
   /**
+   * Get the current state stack
+   * 
+   * @return the state stack
+   */
+  public LRStateStack getStateStack ()
+  {
+    return this.stateStack;
+  }
+
+
+  public void setStateStack ( final LRStateStack stateStack )
+  {
+    this.stateStack = stateStack;
+  }
+
+
+  /**
    * The associated grammar
    */
   private ExtendedGrammar grammar;
+
+
+  /**
+   * The state stack (just used for display)
+   */
+  private LRStateStack stateStack = new DefaultLRStateStack ();
 }

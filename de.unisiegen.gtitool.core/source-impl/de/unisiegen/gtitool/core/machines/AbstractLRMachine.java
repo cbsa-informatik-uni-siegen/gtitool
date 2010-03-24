@@ -7,10 +7,12 @@ import java.util.Stack;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultLRStateStack;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.LRItemSet;
 import de.unisiegen.gtitool.core.entities.LRState;
+import de.unisiegen.gtitool.core.entities.LRStateStack;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -43,12 +45,15 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
      * 
      * @param currentState
      * @param stateMachineHistory
+     * @param stateStack
      */
     public HistoryEntry ( final StateMachineHistoryItem currentState,
-        final ArrayList < StateMachineHistoryItem > stateMachineHistory )
+        final ArrayList < StateMachineHistoryItem > stateMachineHistory,
+        final LRStateStack stateStack )
     {
       this.currentState = currentState;
       this.stateMachineHistory = stateMachineHistory;
+      this.stateStack = stateStack;
     }
 
 
@@ -63,12 +68,34 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
     }
 
 
+    /**
+     * TODO
+     * 
+     * @return
+     */
     public StateMachineHistoryItem getCurrentState ()
     {
       return this.currentState;
     }
 
 
+    /**
+     * TODO
+     *
+     * @return
+     */
+    public LRStateStack getStateStack ()
+    {
+      return this.stateStack;
+    }
+
+
+    /**
+     * TODO
+     * 
+     * @return
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString ()
     {
@@ -76,6 +103,9 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
     }
 
 
+    /**
+     * TODO
+     */
     private StateMachineHistoryItem currentState;
 
 
@@ -83,6 +113,12 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
      * TODO
      */
     private ArrayList < StateMachineHistoryItem > stateMachineHistory;
+
+
+    /**
+     * TODO
+     */
+    private LRStateStack stateStack;
   }
 
 
@@ -282,7 +318,8 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
     this.history.add ( new HistoryEntry ( this.getAutomaton ()
         .makeCurrentHistoryItem (), new ArrayList < StateMachineHistoryItem > (
-        this.getAutomaton ().getHistory () ) ) );
+        this.getAutomaton ().getHistory () ), new DefaultLRStateStack ( this
+        .getAutomaton ().getStateStack () ) ) );
   }
 
 
@@ -301,6 +338,8 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
     this.getAutomaton ().setHistory ( entry.getMachineHistory () );
 
     this.getAutomaton ().restoreHistoryItem ( entry.getCurrentState () );
+
+    this.getAutomaton ().setStateStack ( entry.getStateStack () );
   }
 
 

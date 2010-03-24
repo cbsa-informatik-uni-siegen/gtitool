@@ -1388,7 +1388,7 @@ public abstract class AbstractStateMachine implements StateMachine
 
   /**
    * Tells if an epsilon column is needed
-   *
+   * 
    * @return the bool
    */
   public boolean epsilonColumnNeeded ()
@@ -1912,6 +1912,11 @@ public abstract class AbstractStateMachine implements StateMachine
   }
 
 
+  /**
+   * Creates the current history item
+   * 
+   * @return the item
+   */
   public StateMachineHistoryItem makeCurrentHistoryItem ()
   {
     ArrayList < State > activeStateList = new ArrayList < State > ();
@@ -2220,7 +2225,7 @@ public abstract class AbstractStateMachine implements StateMachine
    * 
    * @see StateMachine#previousSymbol()
    */
-  public final void previousSymbol ()
+  public void previousSymbol ()
   {
     final StateMachineHistoryItem historyItem = restorePreviousHistoryItem ();
 

@@ -47,7 +47,7 @@ public class ParsingTableTest
     try
     {
       nonterminalSet.add ( E );
-      nonterminalSet.add ( E_);
+      nonterminalSet.add ( E_ );
       nonterminalSet.add ( T );
       nonterminalSet.add ( T_ );
       nonterminalSet.add ( F );
@@ -64,7 +64,7 @@ public class ParsingTableTest
     TerminalSymbol rparen = new DefaultTerminalSymbol ( ")" ); //$NON-NLS-1$
     TerminalSymbol plus = new DefaultTerminalSymbol ( "+" ); //$NON-NLS-1$
     TerminalSymbol multiplies = new DefaultTerminalSymbol ( "*" ); //$NON-NLS-1$
-    ProductionWord epsilon = new DefaultProductionWord();
+    ProductionWord epsilon = new DefaultProductionWord ();
 
     try
     {
@@ -87,18 +87,16 @@ public class ParsingTableTest
 
     grammar.addProduction ( new DefaultProduction ( E_,
         new DefaultProductionWord ( plus, T, E_ ) ) );
-    
-    grammar.addProduction ( new DefaultProduction ( E_,
-        epsilon ) );
+
+    grammar.addProduction ( new DefaultProduction ( E_, epsilon ) );
 
     grammar.addProduction ( new DefaultProduction ( T,
         new DefaultProductionWord ( F, T_ ) ) );
 
     grammar.addProduction ( new DefaultProduction ( T_,
         new DefaultProductionWord ( multiplies, F, T_ ) ) );
-    
-    grammar.addProduction ( new DefaultProduction ( T_,
-        epsilon ) );
+
+    grammar.addProduction ( new DefaultProduction ( T_, epsilon ) );
 
     grammar.addProduction ( new DefaultProduction ( F,
         new DefaultProductionWord ( id ) ) );
@@ -110,21 +108,21 @@ public class ParsingTableTest
     {
       DefaultParsingTable parsingTable = new DefaultParsingTable ( grammar );
       parsingTable.create ();
-      
-      System.out.println(grammar.follow ( E_ ));
-      
-      for ( NonterminalSymbol ns : grammar.getNonterminalSymbolSet () )
-        for ( TerminalSymbol ts : grammar.getTerminalSymbolSet () )
-        {
-          //TreeSet < Production > prods = parsingTable.get ( ns, ts );
-          DefaultProductionSet prods = parsingTable.get ( ns, ts );
-          if ( prods.isEmpty () )
-            System.out.println ( "M[" + ns.getName () + "," + ts.getName ()
-                + "] is empty" );
-          else
-            System.out.println ( "M[" + ns.getName () + "," + ts.getName ()
-                + "] = " + prods.toString () );
-        }
+
+      System.out.println ( grammar.follow ( E_ ) );
+
+      printParsingTable ( parsingTable, grammar );
+
+      System.out
+          .println ( "----------------END ParsingTable.create Test---------------" );
+
+      parsingTable = new DefaultParsingTable ( grammar );
+      parsingTable.createParsingTableStart ();
+      while ( parsingTable.createParsingTableNextStep () )
+        System.out.print ( "." );
+      System.out.print ( "\n" );
+
+      printParsingTable ( parsingTable, grammar );
     }
     catch ( GrammarInvalidNonterminalException exc )
     {
@@ -134,5 +132,22 @@ public class ParsingTableTest
     {
       exc.printStackTrace ();
     }
+  }
+
+
+  private static void printParsingTable (
+      final DefaultParsingTable parsingTable, final DefaultCFG grammar )
+  {
+    for ( NonterminalSymbol ns : grammar.getNonterminalSymbolSet () )
+      for ( TerminalSymbol ts : grammar.getTerminalSymbolSet () )
+      {
+        DefaultProductionSet prods = parsingTable.get ( ns, ts );
+        if ( prods.isEmpty () )
+          System.out.println ( "M[" + ns.getName () + "," + ts.getName ()
+              + "] is empty" );
+        else
+          System.out.println ( "M[" + ns.getName () + "," + ts.getName ()
+              + "] = " + prods.toString () );
+      }
   }
 }

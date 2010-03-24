@@ -150,8 +150,8 @@ public class DefaultParsingTable implements ParsingTable
       this.isTerminalSymbolNextStepAvailable = terminalSymbolNext ();
     else if ( this.isNonterminalSymbolNextStepAvailable )
       this.isNonterminalSymbolNextStepAvailable = nonterminalSymbolNext ();
-    return !this.isTerminalSymbolNextStepAvailable
-        && !this.isNonterminalSymbolNextStepAvailable;
+    return this.isTerminalSymbolNextStepAvailable
+        || this.isNonterminalSymbolNextStepAvailable;
   }
 
 
@@ -175,6 +175,10 @@ public class DefaultParsingTable implements ParsingTable
   {
     this.currentNonterminalIndex = 0;
     this.isNonterminalSymbolNextStepAvailable = true;
+    this.parsingTable.add ( new ArrayList < DefaultProductionSet > () );
+    this.currentProductionSet = this.cfg
+        .getProductionForNonTerminal ( this.nonterminals
+            .get ( this.currentNonterminalIndex ) );
     startTerminalSymbolRound ();
   }
 
@@ -188,13 +192,14 @@ public class DefaultParsingTable implements ParsingTable
    */
   private boolean nonterminalSymbolNext ()
   {
+    ++this.currentNonterminalIndex;
     if ( this.currentNonterminalIndex == this.nonterminals.size () )
       return false;
     this.parsingTable.add ( new ArrayList < DefaultProductionSet > () );
     this.currentProductionSet = this.cfg
         .getProductionForNonTerminal ( this.nonterminals
             .get ( this.currentNonterminalIndex ) );
-    ++this.currentNonterminalIndex;
+    startTerminalSymbolRound ();
     return true;
   }
 
@@ -256,6 +261,8 @@ public class DefaultParsingTable implements ParsingTable
   {
     if ( this.currentTerminalIndex == this.terminals.size () )
       return false;
+    this.parsingTable.get ( this.currentNonterminalIndex ).add (
+        new DefaultProductionSet () );
     for ( Production p : this.currentProductionSet )
     {
       final ParsingTable.EntryCause cause = isParsingTableEntry ( p );

@@ -1119,6 +1119,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     public JMenuItem getJMenuItemCreateTDP() {
         return this.jMenuItemCreateTDP;
     }
+
+
+    /**
+     * Returns the jMenuItemCreateParsingTableStepwise
+     * @return The jMenuItemCreateParsingTableStepwise
+     */
+    public JMenuItem getJMenuItemCreateParsingTableStepwise() {
+        return this.jMenuItemCreateParsingTableStepwise;
+    }
     
 
     /** This method is called from within the constructor to
@@ -1236,6 +1245,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemLeftfactoring = new javax.swing.JMenuItem();
         jMenuItemCreateRDP = new javax.swing.JMenuItem();
         jMenuItemCreateTDP = new javax.swing.JMenuItem();
+        jMenuItemCreateParsingTableStepwise = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
@@ -2084,6 +2094,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
         jMenuExecute.add(jMenuItemCreateTDP);
 
+        jMenuItemCreateParsingTableStepwise.setText(bundle.getString("MainWindow.CreateParsingTableStepWise")); // NOI18N
+        jMenuItemCreateParsingTableStepwise.setToolTipText(bundle.getString("MainWindow.CreateParsingTableStepWiseMnemonic")); // NOI18N
+        jMenuItemCreateParsingTableStepwise.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCreateParsingTableStepwiseActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemCreateParsingTableStepwise);
+
         jMenuBarMain.add(jMenuExecute);
 
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
@@ -2475,6 +2494,10 @@ private void jMenuItemConvertToLALR1ParserActionPerformed(java.awt.event.ActionE
 private void jMenuItemSLRParserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSLRParserActionPerformed
     this.logic.handleConvertTo(MachineType.SLR, true);
 }//GEN-LAST:event_jMenuItemSLRParserActionPerformed
+
+private void jMenuItemCreateParsingTableStepwiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCreateParsingTableStepwiseActionPerformed
+    this.logic.handleCreateParsingTableStepwise();
+}//GEN-LAST:event_jMenuItemCreateParsingTableStepwiseActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
@@ -2537,6 +2560,7 @@ private void jMenuItemSLRParserActionPerformed(java.awt.event.ActionEvent evt) {
     private javax.swing.JMenuItem jMenuItemConvertToNFACB;
     private javax.swing.JMenuItem jMenuItemConvertToPDA;
     private javax.swing.JMenuItem jMenuItemConvertToRegex;
+    private javax.swing.JMenuItem jMenuItemCreateParsingTableStepwise;
     private javax.swing.JMenuItem jMenuItemCreateRDP;
     private javax.swing.JMenuItem jMenuItemCreateTDP;
     private javax.swing.JMenuItem jMenuItemDFA;

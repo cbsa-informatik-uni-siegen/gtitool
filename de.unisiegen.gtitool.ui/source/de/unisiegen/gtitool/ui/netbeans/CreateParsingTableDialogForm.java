@@ -67,7 +67,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         jGTILabel4 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIScrollPane3 = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIDescriptionList = new de.unisiegen.gtitool.ui.swing.JGTIList();
-        jGTILabel5 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTIStatusLabel = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -332,12 +332,12 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.weighty = 1.0;
         jGTIParsingTablePanel.add(jGTIPanel4, gridBagConstraints);
 
-        jGTILabel5.setText("Status:");
+        jGTIStatusLabel.setText(bundle.getString("CreateParsingTableDialog.LabelStatus")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jGTIParsingTablePanel.add(jGTILabel5, gridBagConstraints);
+        jGTIParsingTablePanel.add(jGTIStatusLabel, gridBagConstraints);
 
         jGTIButtonOk.setText("Ok");
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
@@ -395,7 +395,6 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIGrammarTable;
     private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabel3;
     private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabel4;
-    private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabel5;
     private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelNonterminalSymbols;
     private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelStartSymbol;
     private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelTerminalSymbols;
@@ -408,6 +407,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
     private de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPane1;
     private de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPane2;
     private de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPane3;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTIStatusLabel;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBar jGTIToolBar;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonNextStep;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonPreviousStep;

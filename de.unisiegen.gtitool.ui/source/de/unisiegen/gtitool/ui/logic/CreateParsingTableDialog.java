@@ -9,6 +9,7 @@ import javax.swing.ListSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.entities.Production;
@@ -106,11 +107,14 @@ public class CreateParsingTableDialog implements
    * 
    * @param parent
    * @param cfg
+   * @throws TerminalSymbolSetException
    */
   public CreateParsingTableDialog ( final JFrame parent, final CFG cfg )
+      throws TerminalSymbolSetException
   {
     this.parent = parent;
     this.cfg = cfg;
+    this.cfg.getTerminalSymbolSet ().add ( DefaultTerminalSymbol.EndMarker );
     this.parsingTable = new DefaultParsingTable ( this.cfg );
     this.gui = new CreateParsingTableDialogForm ( this.parent, this );
 
@@ -154,6 +158,8 @@ public class CreateParsingTableDialog implements
             addDescription ( p, ts, cause );
           }
         } );
+
+    updateStatus ();
   }
 
 
@@ -198,6 +204,8 @@ public class CreateParsingTableDialog implements
     DefaultListModel model = ( DefaultListModel ) this.gui.jGTIDescriptionList
         .getModel ();
     model.addElement ( description );
+
+    this.gui.jGTIParsingTable.repaint ();
   }
 
 
@@ -270,14 +278,45 @@ public class CreateParsingTableDialog implements
 
 
   /**
+   * Updates the word navigation buttons 'next' and 'previous'
+   */
+  private void updateWordNavigation ()
+  {
+    enableButton ( Action.NEXT, this.parsingTable.isNextStepAvailable () );
+    enableButton ( Action.PREVIOUS, this.parsingTable
+        .isPreviousStepAvailable () );
+  }
+
+
+  /**
    * handles the {@link JGTIToolBarButton} start
    */
   public void handleStart ()
   {
     this.parsingTable.createParsingTableStart ();
     enableButton ( Action.START, false );
+    enableButton ( Action.STOP, true );
 
     setCurrentSymbols ();
+    updateStatus ();
+    updateWordNavigation ();
+  }
+
+
+  /**
+   * updates the status label
+   */
+  private void updateStatus ()
+  {
+    final String status;
+    if ( this.parsingTable.isNextStepAvailable () )
+      status = this.bundle
+          .getString ( "CreateParsingTableDialog.LabelStatusUnfinished" ); //$NON-NLS-1$
+    else
+      status = this.bundle
+          .getString ( "CreateParsingTableDialog.LabelStatusFinished" ); //$NON-NLS-1$
+    this.gui.jGTIStatusLabel.setText ( this.bundle
+        .getString ( "CreateParsingTableDialog.LabelStatus" ) + status ); //$NON-NLS-1$
   }
 
 
@@ -288,9 +327,15 @@ public class CreateParsingTableDialog implements
   {
     try
     {
-      boolean nextAvailable = this.parsingTable.createParsingTableNextStep ();
-      enableButton ( Action.NEXT, nextAvailable );
+      this.parsingTable.createParsingTableNextStep ();
       setCurrentSymbols ();
+
+      if ( !this.parsingTable.isNextStepAvailable () )
+      {
+        enableButton ( Action.NEXT, false );
+        clearCurrentSymbols ();
+        updateStatus ();
+      }
     }
     catch ( GrammarInvalidNonterminalException exc )
     {
@@ -310,10 +355,11 @@ public class CreateParsingTableDialog implements
    */
   public void handlePrevious ()
   {
-    boolean previousAvailable = this.parsingTable
-        .createParsingTablePreviousStep ();
-    enableButton ( Action.PREVIOUS, previousAvailable );
+    this.parsingTable.createParsingTablePreviousStep ();
+    enableButton ( Action.PREVIOUS, this.parsingTable
+        .isPreviousStepAvailable () );
     setCurrentSymbols ();
+    updateStatus ();
   }
 
 
@@ -328,6 +374,9 @@ public class CreateParsingTableDialog implements
     enableButton ( Action.STOP, false );
     enableButton ( Action.AUTOSTEP, false );
     clearCurrentSymbols ();
+    this.parsingTable.clear ();
+    this.gui.jGTIParsingTable.repaint ();
+    this.gui.jGTIDescriptionList.removeAll ();
   }
 
 

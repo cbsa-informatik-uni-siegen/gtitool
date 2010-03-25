@@ -118,8 +118,11 @@ public class ParsingTableTest
 
       parsingTable = new DefaultParsingTable ( grammar );
       parsingTable.createParsingTableStart ();
-      while ( parsingTable.createParsingTableNextStep () )
+      while ( parsingTable.isNextStepAvailable () )
+      {
+        parsingTable.createParsingTableNextStep ();
         System.out.print ( "." );
+      }
       System.out.print ( "\n" );
 
       printParsingTable ( parsingTable, grammar );

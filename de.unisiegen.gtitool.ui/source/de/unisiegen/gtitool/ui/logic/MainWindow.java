@@ -382,6 +382,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_CREATE_TDP,
 
     /**
+     * The Create Parsing Table button state
+     */
+    ENABLED_CREATE_PT,
+
+    /**
      * The machine table selected button state.
      */
     SELECTED_MACHINE_TABLE,
@@ -566,6 +571,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
     removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
     removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+    removeButtonState ( ButtonState.ENABLED_CREATE_PT );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -1329,6 +1335,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_CREATE_TDP );
       this.gui.getJMenuItemCreateTDP ().setEnabled ( true );
     }
+    // create pt
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CREATE_PT ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CREATE_PT ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CREATE_PT );
+      this.gui.getJMenuItemCreateParsingTableStepwise ().setEnabled ( true );
+    }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REGEX_INFO ) ) )
     {
@@ -1788,6 +1801,23 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       gp.handleCreateRDP ();
+    }
+    else
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * handles the 'Create Parsing Table (Stepwise)' button pressed
+   */
+  public final void handleCreateParsingTableStepwise ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      final GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      gp.handleCreateParsingTableStepwise ();
     }
     else
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
@@ -4445,7 +4475,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }// end if panel is StateMachinePanel
       else if ( panel instanceof StatelessMachinePanel )
       {
-        // TODO: finish implementation
         MachinePanel machinePanel = ( MachinePanel ) panel;
 
         removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
@@ -4498,7 +4527,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
           addButtonState ( ButtonState.SELECTED_ENTER_WORD );
         }
-     // edit machine mode
+        // edit machine mode
         else if ( machinePanel.getMachineMode ().equals (
             MachineMode.EDIT_MACHINE ) )
         {
@@ -4526,6 +4555,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
           removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
           removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+          removeButtonState ( ButtonState.ENABLED_CREATE_PT );
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
@@ -4538,6 +4568,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
           addButtonState ( ButtonState.ENABLED_CREATE_TDP );
+          addButtonState ( ButtonState.ENABLED_CREATE_PT );
         }
         else
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
@@ -6014,6 +6045,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_CREATE_TDP );
       this.gui.getJMenuItemCreateTDP ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CREATE_PT ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CREATE_PT );
+      this.gui.getJMenuItemCreateParsingTableStepwise ().setEnabled ( true );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
     {

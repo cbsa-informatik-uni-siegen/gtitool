@@ -143,15 +143,27 @@ public class DefaultParsingTable implements ParsingTable
   /**
    * {@inheritDoc}
    */
-  public boolean createParsingTableNextStep ()
+  public void createParsingTableNextStep ()
       throws GrammarInvalidNonterminalException, TerminalSymbolSetException
   {
     if ( this.isTerminalSymbolNextStepAvailable )
       this.isTerminalSymbolNextStepAvailable = terminalSymbolNext ();
     else if ( this.isNonterminalSymbolNextStepAvailable )
+    {
       this.isNonterminalSymbolNextStepAvailable = nonterminalSymbolNext ();
-    return this.isTerminalSymbolNextStepAvailable
-        || this.isNonterminalSymbolNextStepAvailable;
+      this.isTerminalSymbolNextStepAvailable = terminalSymbolNext ();
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ParsingTable#isPreviousStepAvailable()
+   */
+  public boolean isPreviousStepAvailable ()
+  {
+    return this.currentTerminalIndex != 0 && this.currentNonterminalIndex != 0;
   }
 
 
@@ -160,10 +172,27 @@ public class DefaultParsingTable implements ParsingTable
    * 
    * @see de.unisiegen.gtitool.core.entities.ParsingTable#createParsingTablePreviousStep()
    */
-  public boolean createParsingTablePreviousStep ()
+  public void createParsingTablePreviousStep ()
   {
-    // TODO: implement
-    return false;
+    if ( !isPreviousStepAvailable () )
+      return;
+    // calculate indices of the last round (cause the indices are already
+    // incremented)
+    if ( this.currentTerminalIndex == 0 )
+    {
+      this.currentTerminalIndex = this.terminals.size () - 1;
+      this.isTerminalSymbolNextStepAvailable = false;
+    }
+    else
+      --this.currentTerminalIndex;
+    if ( this.currentNonterminalIndex > 0 )
+    {
+      --this.currentNonterminalIndex;
+      this.isNonterminalSymbolNextStepAvailable = true;
+    }
+    // delete the last round result from the parsing table
+    this.parsingTable.get ( this.currentNonterminalIndex ).remove (
+        this.currentTerminalIndex );
   }
 
 
@@ -192,15 +221,16 @@ public class DefaultParsingTable implements ParsingTable
    */
   private boolean nonterminalSymbolNext ()
   {
-    ++this.currentNonterminalIndex;
-    if ( this.currentNonterminalIndex == this.nonterminals.size () )
-      return false;
+    // ++this.currentNonterminalIndex;
+    boolean nextAvailable = true;
+    if ( this.currentNonterminalIndex + 1 == this.nonterminals.size () )
+      nextAvailable = false;
     this.parsingTable.add ( new ArrayList < DefaultProductionSet > () );
     this.currentProductionSet = this.cfg
         .getProductionForNonTerminal ( this.nonterminals
             .get ( this.currentNonterminalIndex ) );
     startTerminalSymbolRound ();
-    return true;
+    return nextAvailable;
   }
 
 
@@ -240,10 +270,22 @@ public class DefaultParsingTable implements ParsingTable
    */
   private void startTerminalSymbolRound ()
   {
-    this.currentTerminalIndex = 0;
+    // this.currentTerminalIndex = 0;
     this.isTerminalSymbolNextStepAvailable = true;
     this.parsingTable.get ( this.currentNonterminalIndex ).add (
         new DefaultProductionSet () );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ParsingTable#isNextStepAvailable()
+   */
+  public boolean isNextStepAvailable ()
+  {
+    return this.isTerminalSymbolNextStepAvailable
+        || this.isNonterminalSymbolNextStepAvailable;
   }
 
 
@@ -259,8 +301,10 @@ public class DefaultParsingTable implements ParsingTable
   private boolean terminalSymbolNext ()
       throws GrammarInvalidNonterminalException, TerminalSymbolSetException
   {
-    if ( this.currentTerminalIndex == this.terminals.size () )
-      return false;
+    boolean nextAvailable = true;
+    if ( this.currentTerminalIndex + 1 == this.terminals.size () )
+      nextAvailable = false;
+
     this.parsingTable.get ( this.currentNonterminalIndex ).add (
         new DefaultProductionSet () );
     for ( Production p : this.currentProductionSet )
@@ -272,8 +316,16 @@ public class DefaultParsingTable implements ParsingTable
           this.currentTerminalIndex ).add ( p );
       fireProductionAdded ( cause, p );
     }
-    ++this.currentTerminalIndex;
-    return true;
+
+    if ( nextAvailable )
+      ++this.currentTerminalIndex;
+    else
+    {
+      this.currentTerminalIndex = 0;
+      if ( this.currentNonterminalIndex + 1 < this.nonterminals.size () )
+        ++this.currentNonterminalIndex;
+    }
+    return nextAvailable;
   }
 
 
@@ -491,5 +543,18 @@ public class DefaultParsingTable implements ParsingTable
       l
           .productionAddedAsEntry ( production, getCurrentTerminalSymbol (),
               cause );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ParsingTable#clear()
+   */
+  public void clear ()
+  {
+    this.parsingTable.clear ();
+    this.currentTerminalIndex = 0;
+    this.currentNonterminalIndex = 0;
   }
 }

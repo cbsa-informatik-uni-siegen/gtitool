@@ -122,20 +122,17 @@ public interface ParsingTable extends Entity < ParsingTable >, Storable
   /**
    * Do the next step in creating the {@link ParsingTable} step by step
    * 
-   * @return true if there is a next step, false otherwise
    * @throws GrammarInvalidNonterminalException
    * @throws TerminalSymbolSetException
    */
-  public boolean createParsingTableNextStep ()
+  public void createParsingTableNextStep ()
       throws GrammarInvalidNonterminalException, TerminalSymbolSetException;
 
 
   /**
    * Do the previous step in creating the {@link ParsingTable} step by step
-   * 
-   * @return true if there is still a previous step possible, false otherwise
    */
-  public boolean createParsingTablePreviousStep ();
+  public void createParsingTablePreviousStep ();
 
 
   /**
@@ -162,4 +159,26 @@ public interface ParsingTable extends Entity < ParsingTable >, Storable
    */
   public void addParsingTableStepByStepListener (
       final ParsingTableStepByStepListener listener );
+
+
+  /**
+   * Returns whether a next Step is available or not
+   * 
+   * @return true if there is a next step available, false otherwise
+   */
+  public boolean isNextStepAvailable ();
+
+
+  /**
+   * Returns whether a previous step is available or not
+   * 
+   * @return true if there is a previous step available, false otherwise
+   */
+  public boolean isPreviousStepAvailable ();
+
+
+  /**
+   * clears the current parsing table entries
+   */
+  public void clear ();
 }

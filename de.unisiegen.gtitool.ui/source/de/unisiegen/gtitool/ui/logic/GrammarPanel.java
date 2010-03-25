@@ -37,6 +37,7 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
@@ -654,6 +655,26 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     TextWindow w = new TextWindow ( this.mainWindowForm,
         createRDP ( this.grammar ), false, null, getName () + "_RDP" ); //$NON-NLS-1$
     w.show ();
+  }
+
+
+  /**
+   * handles the 'Create Parsing Table (Stepwise)' button pressed
+   */
+  public final void handleCreateParsingTableStepwise ()
+  {
+    CreateParsingTableDialog cptd;
+    try
+    {
+      cptd = new CreateParsingTableDialog ( this.mainWindowForm,
+          ( CFG ) getGrammar () );
+      cptd.show ();
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 
 

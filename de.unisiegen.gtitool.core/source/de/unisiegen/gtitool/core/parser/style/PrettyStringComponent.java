@@ -51,6 +51,12 @@ public final class PrettyStringComponent extends JLabel
 
 
   /**
+   * The right vertical value
+   */
+  private boolean rightHorizontal = false;
+
+
+  /**
    * Initializes the {@link PrettyStringComponent}.
    */
   public PrettyStringComponent ()
@@ -99,9 +105,7 @@ public final class PrettyStringComponent extends JLabel
   {
     if ( this.prettyString.toString ().equals ( "" ) || //$NON-NLS-1$
         !this.prettyString.isShortVersion () )
-    {
       return null;
-    }
     return this.prettyString.toHTMLString ();
   }
 
@@ -155,9 +159,7 @@ public final class PrettyStringComponent extends JLabel
       PrettyToken lastPrettyToken = null;
       while ( ( !usedPrettyString.isEmpty () )
           && ( ( metrics.stringWidth ( usedPrettyString.toString () + dots ) ) > getWidth () ) )
-      {
         lastPrettyToken = usedPrettyString.removeLastPrettyToken ();
-      }
 
       if ( lastPrettyToken != null )
       {
@@ -173,9 +175,7 @@ public final class PrettyStringComponent extends JLabel
         }
 
         if ( addText.length () > 0 )
-        {
           addText = addText.substring ( 0, addText.length () - 1 );
-        }
 
         PrettyToken prettyToken = new PrettyToken ( addText, lastPrettyToken
             .getStyle () );
@@ -186,49 +186,38 @@ public final class PrettyStringComponent extends JLabel
 
       // if empty do not use the first space
       if ( usedPrettyString.isEmpty () )
-      {
         dots = "..."; //$NON-NLS-1$
-      }
 
       usedPrettyString.add ( new PrettyToken ( dots, Style.NONE ) );
     }
     else
-    {
       this.prettyString.setShortVersion ( false );
-    }
 
     int dx = 0;
     if ( this.centerHorizontal )
-    {
       dx = ( getWidth () - metrics.stringWidth ( usedPrettyString.toString () ) ) / 2;
-    }
+    else if ( this.rightHorizontal )
+      //substract 10 from total width to get better overview (we get a little
+      //distance between the text of this cell and the text of the cell
+      //next to the right)
+      dx = (getWidth () - 10) - metrics.stringWidth ( usedPrettyString.toString () );
 
     int y = getHeight () - 3;
     if ( this.centerVertical )
-    {
       y = y - ( ( getHeight () - metrics.getHeight () ) / 2 );
-    }
 
     for ( PrettyToken currentToken : usedPrettyString.getPrettyToken () )
     {
       Font font = null;
 
       if ( !currentToken.isBold () && !currentToken.isItalic () )
-      {
         font = FONT;
-      }
       else if ( currentToken.isBold () && currentToken.isItalic () )
-      {
         font = FONT.deriveFont ( Font.BOLD | Font.ITALIC );
-      }
       else if ( currentToken.isBold () )
-      {
         font = FONT.deriveFont ( Font.BOLD );
-      }
       else if ( currentToken.isItalic () )
-      {
         font = FONT.deriveFont ( Font.ITALIC );
-      }
 
       g.setFont ( font );
       g.setColor ( currentToken.getColor () );
@@ -263,6 +252,17 @@ public final class PrettyStringComponent extends JLabel
   public final void setCenterVertical ( boolean centerVertical )
   {
     this.centerVertical = centerVertical;
+  }
+
+
+  /**
+   * Sets the right vertical
+   * 
+   * @param rightHorizontal The right vertical to set
+   */
+  public final void setRightHorizontal ( boolean rightHorizontal )
+  {
+    this.rightHorizontal = rightHorizontal;
   }
 
 

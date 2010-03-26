@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.model;
 
 
-import javax.swing.SwingConstants;
 import javax.swing.table.TableColumn;
 
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -56,7 +55,9 @@ public class TDPMachineColumnModel extends StatelessMachineTableColumnModel
                 Messages.getString ( "StatelessMachineColumnModel.InputColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+    PrettyStringTableCellRenderer pstcr = new PrettyStringTableCellRenderer ();
+    pstcr.setRightHorizontal ( true );
+    symbolColumn.setCellRenderer ( pstcr );
     addColumn ( symbolColumn );
 
     symbolColumn = new TableColumn ( STACK_COLUMN );
@@ -66,8 +67,8 @@ public class TDPMachineColumnModel extends StatelessMachineTableColumnModel
                 Messages.getString ( "StatelessMachineColumnModel.StackColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-    PrettyStringTableCellRenderer pstcr = new PrettyStringTableCellRenderer ();
-    pstcr.setHorizontalTextPosition ( SwingConstants.RIGHT );
+    pstcr = new PrettyStringTableCellRenderer ();
+    pstcr.setRightHorizontal ( true );
     symbolColumn.setCellRenderer ( pstcr );
     addColumn ( symbolColumn );
 

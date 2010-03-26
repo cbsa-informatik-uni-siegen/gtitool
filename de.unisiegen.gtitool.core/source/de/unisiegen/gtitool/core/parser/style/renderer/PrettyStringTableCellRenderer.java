@@ -59,17 +59,11 @@ public final class PrettyStringTableCellRenderer extends
   {
     PrettyString prettyString = null;
     if ( value instanceof PrettyPrintable )
-    {
       prettyString = ( ( PrettyPrintable ) value ).toPrettyString ();
-    }
     else if ( value instanceof PrettyString )
-    {
       prettyString = ( PrettyString ) value;
-    }
     else
-    {
       throw new IllegalArgumentException ( "the value can not be renderer" ); //$NON-NLS-1$
-    }
 
     this.prettyStringComponent.setPrettyString ( prettyString );
 
@@ -90,5 +84,16 @@ public final class PrettyStringTableCellRenderer extends
     this.prettyStringComponent.setFont ( table.getFont () );
 
     return this.prettyStringComponent;
+  }
+  
+  /**
+   * 
+   * Sets the right horizontal
+   *
+   * @param rightHorizontal The right horizontal
+   */
+  public final void setRightHorizontal(final boolean rightHorizontal)
+  {
+    this.prettyStringComponent.setRightHorizontal ( rightHorizontal );
   }
 }

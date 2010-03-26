@@ -1,9 +1,13 @@
 package de.unisiegen.gtitool.core.grammars.cfg;
 
 
+import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.ParsingTable;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
@@ -48,7 +52,8 @@ public final class DefaultCFG extends AbstractGrammar implements CFG
    * @throws NonterminalSymbolSetException
    * @throws TerminalSymbolSetException
    */
-  public DefaultCFG ( final DefaultCFG other ) throws TerminalSymbolSetException, NonterminalSymbolSetException
+  public DefaultCFG ( final DefaultCFG other )
+      throws TerminalSymbolSetException, NonterminalSymbolSetException
   {
     super ( other );
   }
@@ -63,5 +68,23 @@ public final class DefaultCFG extends AbstractGrammar implements CFG
   public final GrammarType getGrammarType ()
   {
     return GrammarType.CFG;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * @throws TerminalSymbolSetException
+   * @throws GrammarInvalidNonterminalException
+   */
+  public final boolean isLL1 () throws GrammarInvalidNonterminalException, TerminalSymbolSetException
+  {
+    final ParsingTable pt = new DefaultParsingTable ( this );
+
+    pt.create ();
+    for ( NonterminalSymbol ns : getNonterminalSymbolSet () )
+      for ( TerminalSymbol ts : getTerminalSymbolSet () )
+        if ( pt.get ( ns, ts ).size () > 1 )
+          return false;
+    return true;
   }
 }

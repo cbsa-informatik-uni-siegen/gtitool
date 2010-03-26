@@ -12,5 +12,5 @@ import de.unisiegen.gtitool.core.grammars.Grammar;
  */
 public interface CFG extends Grammar
 {
-  // Do nothing
+  //Do nothing
 }

@@ -1422,6 +1422,20 @@ public abstract class AbstractStateMachine implements StateMachine
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.machines.StateMachine#hasTransition(de.unisiegen.gtitool.core.entities.Transition)
+   */
+  public boolean hasTransition ( final Transition transition )
+  {
+    for ( Transition nTransition : getTransition () )
+      if ( nTransition.compareByStates ( transition ) )
+        return true;
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see TableModel#getValueAt(int, int)
    */
   public final Object getValueAt ( int rowIndex, int columnIndex )

@@ -448,5 +448,11 @@ public interface Transition extends Entity < Transition >, Storable,
   public PrettyString toStackOperationPrettyString ();
 
 
+  /**
+   * Compares two transitions by their states
+   * 
+   * @param other
+   * @return true if both states are the same
+   */
   public boolean compareByStates ( Transition other );
 }

@@ -169,7 +169,7 @@ public class LR1 extends AbstractLR
   {
     LR1 ret = new LR1 ( this.grammar, new DontConstructTheStates () );
 
-    int stateIndex = 0;
+    int stateIndex = 1;
 
     for ( int index = 0 ; index < this.getState ().size () ; ++index )
     {
@@ -179,21 +179,80 @@ public class LR1 extends AbstractLR
 
       LR1ItemSet resultItems = new LR1ItemSet ();
 
-      for ( int inner = index ; inner < this.getState ().size () ; ++inner )
+      for ( int inner = 0 ; inner < this.getState ().size () ; ++inner )
       {
         final LR1State otherState = ( LR1State ) this.getState ( inner );
 
         if ( otherState.getLR0Part ().equals ( lr0part ) )
-          resultItems.add ( otherState.getLR1Items () );
+          resultItems.addIfNonExistant ( otherState.getLR1Items () );
       }
 
-      // TODO: which of these are start states?
-      ret.addState ( new LR1State ( this.getAlphabet (), state.isStartState (),
-          resultItems ) );
+      final LR1State newState = new LR1State ( this.getAlphabet (), state
+          .isStartState (), resultItems );
 
-      // TODO: set the new index!
+      if ( !ret.getState ().contains ( newState ) )
+      {
+        ret.addState ( newState );
+
+        newState.setIndex ( stateIndex++ );
+      }
     }
+
+    // add all transitions
+    for ( Transition transition : this.getTransition () )
+    {
+      final LR1State beginState = ( LR1State ) transition.getStateBegin ();
+
+      final LR1State endState = ( LR1State ) transition.getStateEnd ();
+
+      final LR1State realBeginState = getEqualLALRState ( ret.getState (),
+          beginState );
+
+      final LR1State realEndState = getEqualLALRState ( ret.getState (),
+          endState );
+
+      try
+      {
+        final Transition newTransition = new DefaultTransition ( transition
+            .getAlphabet (), transition.getPushDownAlphabet (), transition
+            .getPushDownWordRead (), transition.getPushDownWordWrite (),
+            realBeginState, realEndState, transition.getSymbol () );
+
+        if ( ret.hasTransition ( newTransition ) )
+          continue;
+        ret.addTransition ( newTransition );
+      }
+      catch ( TransitionSymbolNotInAlphabetException exc )
+      {
+        exc.printStackTrace ();
+      }
+      catch ( TransitionSymbolOnlyOneTimeException exc )
+      {
+        exc.printStackTrace ();
+      }
+    }
+
     return ret;
+  }
+
+
+  /**
+   * Find a state that contains the given state's LR0 part
+   * 
+   * @param states
+   * @param state
+   * @return the state or nul
+   */
+  static private LR1State getEqualLALRState ( final Iterable < State > states,
+      final LR1State state )
+  {
+    for ( State nState : states )
+    {
+      final LR1State lr1State = ( LR1State ) nState;
+      if ( lr1State.getLR0Part ().equals ( state.getLR0Part () ) )
+        return lr1State;
+    }
+    return null;
   }
 
 

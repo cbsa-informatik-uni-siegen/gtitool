@@ -307,6 +307,15 @@ public interface StateMachine extends Machine, InputEntity, Serializable,
 
 
   /**
+   * Checks if the transition is already present
+   * 
+   * @param transition
+   * @return if the transition is present
+   */
+  public boolean hasTransition ( Transition transition );
+
+
+  /**
    * Returns the {@link Word}.
    * 
    * @return The {@link Word}.

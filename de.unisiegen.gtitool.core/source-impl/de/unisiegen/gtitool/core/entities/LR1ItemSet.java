@@ -48,6 +48,28 @@ public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
   }
 
 
+  public boolean addIfNonExistant ( final LR1Item item )
+  {
+    if ( this.rep.contains ( item ) )
+      return false;
+
+    this.rep.add ( item );
+
+    return true;
+  }
+
+
+  public boolean addIfNonExistant ( final Iterable < LR1Item > items )
+  {
+    boolean ret = true;
+    
+    for(LR1Item item : items)
+      ret = this.addIfNonExistant ( item ) && ret;
+    
+    return ret;
+  }
+
+
   public void add ( LR1Item item )
   {
     this.rep.add ( item );

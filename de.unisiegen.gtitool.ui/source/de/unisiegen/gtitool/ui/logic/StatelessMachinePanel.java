@@ -11,7 +11,6 @@ import javax.swing.ListSelectionModel;
 import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
-import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
@@ -126,6 +125,10 @@ public class StatelessMachinePanel extends MachinePanel
         case STOP :
         {
           return "STOP"; //$NON-NLS-1$
+        }
+        case REJECT :
+        {
+          return "REJECT"; //$NON-NLS-1$
         }
       }
       throw new IllegalArgumentException ( "unsupported machine type" ); //$NON-NLS-1$
@@ -258,6 +261,8 @@ public class StatelessMachinePanel extends MachinePanel
 
     int loc = getMainWindowForm ().getWidth () / 2;
     this.gui.jGTISplitPaneTable.setDividerLocation ( loc );
+
+    this.gui.wordPanelForm.jGTILabelStatus.setVisible ( false );
   }
 
 

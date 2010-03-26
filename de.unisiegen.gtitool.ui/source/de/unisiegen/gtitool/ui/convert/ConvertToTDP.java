@@ -4,8 +4,10 @@ package de.unisiegen.gtitool.ui.convert;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
@@ -25,13 +27,16 @@ public class ConvertToTDP extends AbstractConvertGrammarStatelessMachine
    * @param mainWindowForm The {@link MainWindowForm}.
    * @param cfg The {@link CFG}.
    * @throws AlphabetException
+   * @throws NonterminalSymbolSetException
+   * @throws TerminalSymbolSetException
    */
   public ConvertToTDP ( MainWindowForm mainWindowForm, CFG cfg )
-      throws AlphabetException
+      throws AlphabetException, TerminalSymbolSetException,
+      NonterminalSymbolSetException
   {
-    super ( mainWindowForm, cfg );
+    super ( mainWindowForm, new DefaultCFG ( ( DefaultCFG ) cfg ) );
 
-    cfg.getTerminalSymbolSet ().addIfNonexistent (
+    getGrammar ().getTerminalSymbolSet ().addIfNonexistent (
         DefaultTerminalSymbol.EndMarker );
   }
 

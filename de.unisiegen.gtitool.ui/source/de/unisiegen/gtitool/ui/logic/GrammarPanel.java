@@ -420,6 +420,11 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         exc.printStackTrace ();
         return null;
       }
+      catch ( TerminalSymbolSetException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
 
     // old cases
     if ( this.grammar instanceof RG )

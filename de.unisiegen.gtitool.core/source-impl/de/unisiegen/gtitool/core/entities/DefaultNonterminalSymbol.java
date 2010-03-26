@@ -87,42 +87,32 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   public DefaultNonterminalSymbol ( Element element ) throws StoreException
   {
     // Check if the element is correct
-    if ( !element.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
-    {
+    if ( !element.getName ().equals ( "NonterminalSymbol" ) )
       throw new IllegalArgumentException (
           "element " + Messages.QUOTE + element.getName () //$NON-NLS-1$
               + Messages.QUOTE + " is not a nonterminal symbol" ); //$NON-NLS-1$
-    }
 
     // Attribute
     boolean foundName = false;
     for ( Attribute current : element.getAttribute () )
-    {
       if ( current.getName ().equals ( "name" ) ) //$NON-NLS-1$
       {
         setName ( current.getValue () );
         foundName = true;
       }
       else
-      {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-      }
-    }
 
     // Not all attribute values found
     if ( !foundName )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-    }
 
     // Element
     if ( element.getElement ().size () > 0 )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-    }
   }
 
 
@@ -145,6 +135,24 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   public DefaultNonterminalSymbol ( final Symbol symbol )
   {
     this ( symbol.toString () );
+  }
+  
+  
+  /**
+   * Copy constructor
+   *
+   * @param symbol The {@link NonterminalSymbol}
+   */
+  public DefaultNonterminalSymbol ( final DefaultNonterminalSymbol symbol )
+  {
+    if(symbol == null)
+      throw new NullPointerException("symbol is null"); //$NON-NLS-1$
+    
+    this.name = symbol.name;
+    this.start = symbol.start;
+    this.error = symbol.error;
+    this.highlighted = symbol.highlighted;
+    this.parserOffset = symbol.parserOffset.clone ();
   }
 
 
@@ -198,9 +206,7 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
     PrettyStringChangedListener [] listeners = this.listenerList
         .getListeners ( PrettyStringChangedListener.class );
     for ( PrettyStringChangedListener current : listeners )
-    {
       current.prettyStringChanged ();
-    }
   }
 
 
@@ -213,7 +219,7 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   {
     Element newElement = new Element ( "NonterminalSymbol" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "name", this.name ) ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "isStart", this.isStart () ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "isStart", isStart () ) ); //$NON-NLS-1$
     return newElement;
   }
 
@@ -333,9 +339,7 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   private final void setName ( String name )
   {
     if ( name == null )
-    {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
-    }
 
     if ( ( this.name == null ) || !this.name.equals ( name ) )
     {
@@ -384,25 +388,17 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
       this.cachedPrettyString = new PrettyString ();
 
       if ( this.error )
-      {
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.NONTERMINAL_SYMBOL_ERROR ) );
-      }
       else if ( this.start )
-      {
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.START_NONTERMINAL_SYMBOL ) );
-      }
       else if ( this.highlighted )
-      {
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.NONTERMINAL_SYMBOL_HIGHLIGHT ) );
-      }
       else
-      {
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.NONTERMINAL_SYMBOL ) );
-      }
     }
 
     return this.cachedPrettyString;

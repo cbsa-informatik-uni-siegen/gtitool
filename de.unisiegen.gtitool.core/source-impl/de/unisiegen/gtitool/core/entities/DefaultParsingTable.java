@@ -163,7 +163,7 @@ public class DefaultParsingTable implements ParsingTable
    */
   public boolean isPreviousStepAvailable ()
   {
-    return this.currentTerminalIndex != 0 && this.currentNonterminalIndex != 0;
+    return this.currentTerminalIndex != 0 || this.currentNonterminalIndex != 0;
   }
 
 
@@ -176,6 +176,7 @@ public class DefaultParsingTable implements ParsingTable
   {
     if ( !isPreviousStepAvailable () )
       return;
+
     // calculate indices of the last round (cause the indices are already
     // incremented)
     if ( this.currentTerminalIndex == 0 )
@@ -184,12 +185,21 @@ public class DefaultParsingTable implements ParsingTable
       this.isTerminalSymbolNextStepAvailable = false;
     }
     else
+    {
       --this.currentTerminalIndex;
-    if ( this.currentNonterminalIndex > 0 )
+      this.isTerminalSymbolNextStepAvailable = true;
+    }
+    if ( this.currentNonterminalIndex > 0
+        && !this.isTerminalSymbolNextStepAvailable )
     {
       --this.currentNonterminalIndex;
       this.isNonterminalSymbolNextStepAvailable = true;
     }
+    
+    if ( !this.parsingTable.get ( this.currentNonterminalIndex ).get (
+        this.currentTerminalIndex ).isEmpty () )
+      firePreviousStepRemoveEntry ();
+
     // delete the last round result from the parsing table
     this.parsingTable.get ( this.currentNonterminalIndex ).remove (
         this.currentTerminalIndex );
@@ -543,6 +553,19 @@ public class DefaultParsingTable implements ParsingTable
       l
           .productionAddedAsEntry ( production, getCurrentTerminalSymbol (),
               cause );
+  }
+
+
+  /**
+   * Notifies all {@link ParsingTableStepByStepListener} that there is a
+   * {@link ParsingTable} entry to be removed
+   */
+  private void firePreviousStepRemoveEntry ()
+  {
+    ParsingTableStepByStepListener [] listener = this.listenerList
+        .getListeners ( ParsingTableStepByStepListener.class );
+    for ( ParsingTableStepByStepListener l : listener )
+      l.previousStepRemoveEntry ();
   }
 
 

@@ -89,7 +89,7 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * List containing all {@link Production}s until last save.
    */
-  private final ProductionSet initialProductions = new DefaultProductionSet ();
+  private ProductionSet initialProductions = new DefaultProductionSet ();
 
 
   /**
@@ -199,8 +199,34 @@ public abstract class AbstractGrammar implements Grammar
             .getElementByName ( "StartSymbol" ).getElement ( 0 ) ), //$NON-NLS-1$
         validationElements );
 
-    this.setProductions ( new DefaultProductionSet ( element
+    setProductions ( new DefaultProductionSet ( element
         .getElementByName ( "ProductionSet" ) ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Copy constructor
+   * 
+   * @param other The {@link AbstractGrammar}
+   * @throws TerminalSymbolSetException
+   * @throws NonterminalSymbolSetException
+   */
+  public AbstractGrammar ( final AbstractGrammar other )
+      throws TerminalSymbolSetException, NonterminalSymbolSetException
+  {
+    this.initialProductions = new DefaultProductionSet (
+        other.initialProductions );
+    this.initialStartNonterminalSymbol = new DefaultNonterminalSymbol (
+        ( DefaultNonterminalSymbol ) other.getStartSymbol () );
+    this.terminalSymbolSet = new DefaultTerminalSymbolSet ( other
+        .getTerminalSymbolSet () );
+    this.nonterminalSymbolSet = new DefaultNonterminalSymbolSet ( other
+        .getNonterminalSymbolSet () );
+    this.validationElementList = other.validationElementList;
+    this.modifyStatusChangedListener = null;
+    this.startSymbol = new DefaultNonterminalSymbol (
+        ( DefaultNonterminalSymbol ) other.getStartSymbol () );
+    this.productions = new DefaultProductionSet ( other.productions );
   }
 
 
@@ -1045,7 +1071,7 @@ public abstract class AbstractGrammar implements Grammar
   {
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
 
-    for ( TerminalSymbol symbol : this.getTerminalSymbolSet () )
+    for ( TerminalSymbol symbol : getTerminalSymbolSet () )
       symbols.add ( new DefaultSymbol ( symbol.toString () ) );
 
     return new DefaultAlphabet ( symbols );
@@ -1062,7 +1088,7 @@ public abstract class AbstractGrammar implements Grammar
     final Element newElement = new Element ( "Grammar" ); //$NON-NLS-1$
     try
     {
-      newElement.addElement ( this.getAlphabet ().getElement () );
+      newElement.addElement ( getAlphabet ().getElement () );
     }
     catch ( AlphabetException e )
     {
@@ -1070,9 +1096,9 @@ public abstract class AbstractGrammar implements Grammar
       System.exit ( 1 );
     }
 
-    newElement.addElement ( this.getTerminalSymbolSet ().getElement () );
-    newElement.addElement ( this.getNonterminalSymbolSet ().getElement () );
-    newElement.addElement ( this.getProduction () );
+    newElement.addElement ( getTerminalSymbolSet ().getElement () );
+    newElement.addElement ( getNonterminalSymbolSet ().getElement () );
+    newElement.addElement ( getProduction () );
     return newElement;
   }
 }

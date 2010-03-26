@@ -4,6 +4,8 @@ package de.unisiegen.gtitool.core.grammars.cfg;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 
@@ -36,6 +38,19 @@ public final class DefaultCFG extends AbstractGrammar implements CFG
     super ( nonterminalSymbolSet, terminalSymbolSet, startSymbol,
         ValidationElement.DUPLICATE_PRODUCTION,
         ValidationElement.NONTERMINAL_NOT_REACHABLE );
+  }
+
+
+  /**
+   * Copy constructor
+   * 
+   * @param other The {@link DefaultCFG}
+   * @throws NonterminalSymbolSetException
+   * @throws TerminalSymbolSetException
+   */
+  public DefaultCFG ( final DefaultCFG other ) throws TerminalSymbolSetException, NonterminalSymbolSetException
+  {
+    super ( other );
   }
 
 

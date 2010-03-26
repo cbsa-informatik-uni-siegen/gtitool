@@ -28,4 +28,10 @@ public interface ParsingTableStepByStepListener extends EventListener
    */
   public void productionAddedAsEntry ( final Production p,
       final TerminalSymbol ts, final ParsingTable.EntryCause cause );
+
+
+  /**
+   * Invoked when an entry got removed during the previous step
+   */
+  public void previousStepRemoveEntry ();
 }

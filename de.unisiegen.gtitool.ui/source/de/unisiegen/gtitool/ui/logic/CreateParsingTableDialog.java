@@ -17,8 +17,10 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.ParsingTable.EntryCause;
 import de.unisiegen.gtitool.core.entities.listener.ParsingTableStepByStepListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -108,12 +110,13 @@ public class CreateParsingTableDialog implements
    * @param parent
    * @param cfg
    * @throws TerminalSymbolSetException
+   * @throws NonterminalSymbolSetException
    */
   public CreateParsingTableDialog ( final JFrame parent, final CFG cfg )
-      throws TerminalSymbolSetException
+      throws TerminalSymbolSetException, NonterminalSymbolSetException
   {
     this.parent = parent;
-    this.cfg = cfg;
+    this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
     this.cfg.getTerminalSymbolSet ().add ( DefaultTerminalSymbol.EndMarker );
     this.parsingTable = new DefaultParsingTable ( this.cfg );
     this.gui = new CreateParsingTableDialogForm ( this.parent, this );
@@ -156,6 +159,12 @@ public class CreateParsingTableDialog implements
               EntryCause cause )
           {
             addDescription ( p, ts, cause );
+          }
+
+
+          public void previousStepRemoveEntry ()
+          {
+            removeDescription ();
           }
         } );
 
@@ -205,6 +214,21 @@ public class CreateParsingTableDialog implements
         .getModel ();
     model.addElement ( description );
 
+    this.gui.jGTIParsingTable.repaint ();
+  }
+
+
+  /**
+   * Remove the last description row
+   */
+  void removeDescription ()
+  {
+    // remove the last description
+    final DefaultListModel model = ( DefaultListModel ) this.gui.jGTIDescriptionList
+        .getModel ();
+    model.remove ( model.size () - 1 );
+
+    // repaint the parsing table cause it was modified
     this.gui.jGTIParsingTable.repaint ();
   }
 
@@ -332,10 +356,12 @@ public class CreateParsingTableDialog implements
 
       if ( !this.parsingTable.isNextStepAvailable () )
       {
-        enableButton ( Action.NEXT, false );
+        // enableButton ( Action.NEXT, false );
         clearCurrentSymbols ();
         updateStatus ();
       }
+
+      updateWordNavigation ();
     }
     catch ( GrammarInvalidNonterminalException exc )
     {
@@ -376,7 +402,8 @@ public class CreateParsingTableDialog implements
     clearCurrentSymbols ();
     this.parsingTable.clear ();
     this.gui.jGTIParsingTable.repaint ();
-    this.gui.jGTIDescriptionList.removeAll ();
+    ( ( DefaultListModel ) this.gui.jGTIDescriptionList.getModel () )
+        .removeAllElements ();
   }
 
 

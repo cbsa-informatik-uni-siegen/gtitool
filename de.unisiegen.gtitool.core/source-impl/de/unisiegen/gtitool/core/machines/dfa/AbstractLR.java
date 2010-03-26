@@ -54,10 +54,19 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
    */
   public void nextSymbol ( final ProductionWordMember symbol )
   {
-    this.stateStack.push ( ( LRState ) this.getCurrentState () );
-
     this.nextSymbol ( this.getMatchingTransition ( this.getCurrentState (),
         new DefaultSymbol ( symbol.toString () ) ) );
+
+    pushCurrentStateToStack ();
+  }
+
+
+  /**
+   * Pushes the current state onto the state stack
+   */
+  private void pushCurrentStateToStack ()
+  {
+    this.stateStack.push ( ( LRState ) this.getCurrentState () );
   }
 
 
@@ -188,6 +197,18 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
   public void setStateStack ( final LRStateStack stateStack )
   {
     this.stateStack = stateStack;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#onStart()
+   */
+  @Override
+  protected void onStart ()
+  {
+    this.pushCurrentStateToStack ();
   }
 
 

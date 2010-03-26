@@ -2853,6 +2853,17 @@ public abstract class AbstractStateMachine implements StateMachine
     for ( State current : this.stateList )
       if ( current.isStartState () )
         current.setActive ( true );
+    
+    onStart();
+  }
+  
+  /**
+   * Does a custom start action
+   *
+   */
+  protected void onStart()
+  {
+    // do nothing
   }
 
 

@@ -69,7 +69,14 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
   @Override
   public void previousSymbol ()
   {
-    this.stateStack.pop ();
+    try
+    {
+      this.stateStack.pop ();
+    }
+    catch ( Exception e )
+    {
+      // The state stack may be empty when the automaton is run "alone"
+    }
 
     super.previousSymbol ();
   }
@@ -173,6 +180,11 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
   }
 
 
+  /**
+   * Sets the current state stack
+   * 
+   * @param stateStack
+   */
   public void setStateStack ( final LRStateStack stateStack )
   {
     this.stateStack = stateStack;

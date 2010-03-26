@@ -1,11 +1,15 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import de.unisiegen.gtitool.core.i18n.Messages;
+
+
 /**
  * Represents the {@link ShiftAction} of a push down automaton
  */
 public class ShiftAction extends ShiftActionBase
 {
+
   /**
    * {@inheritDoc}
    * 
@@ -25,6 +29,6 @@ public class ShiftAction extends ShiftActionBase
   @Override
   public String toString ()
   {
-    return "Shift"; //$NON-NLS-1$
+    return Messages.getString ( "Entities.Actions.Shift" ); //$NON-NLS-1$
   }
 }

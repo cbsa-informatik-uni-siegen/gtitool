@@ -1,11 +1,15 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import de.unisiegen.gtitool.core.i18n.Messages;
+
+
 /**
  * Represents a {@link ReverseReduceAction}
  */
 public class ReverseReduceAction extends ReplaceAction
 {
+
   /**
    * Allocates a new {@link ReverseReduceAction}
    * 
@@ -37,6 +41,6 @@ public class ReverseReduceAction extends ReplaceAction
   @Override
   public String toString ()
   {
-    return "Reverse-Reduce: " + this.production.toString (); //$NON-NLS-1$
+    return Messages.getString ( "Entities.Actions.ReverseReduce" ) + ": " + this.production.toString (); //$NON-NLS-1$ //$NON-NLS-2$
   }
 }

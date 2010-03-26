@@ -117,12 +117,6 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * calculated first sets (right side of a production)
-   */
-  private HashMap < NonterminalSymbol, FirstSet > firstSetR = null;
-
-
-  /**
    * calculated first sets
    */
   private HashMap < NonterminalSymbol, FirstSet > firstSets = null;
@@ -977,6 +971,12 @@ public abstract class AbstractGrammar implements Grammar
   }
 
 
+  /**
+   * Check if this grammar contains the nonterminal
+   * 
+   * @param ns
+   * @return if the grammar contains the nonterminal
+   */
   private final boolean validateNonterminalSymbol ( final NonterminalSymbol ns )
   {
     for ( NonterminalSymbol other : this.nonterminalSymbolSet )

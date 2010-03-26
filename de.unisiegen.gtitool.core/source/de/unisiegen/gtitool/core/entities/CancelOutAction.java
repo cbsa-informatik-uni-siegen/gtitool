@@ -1,34 +1,41 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import de.unisiegen.gtitool.core.i18n.Messages;
+
+
 /**
  * Represents the {@link CancelOutAction}
  */
 public class CancelOutAction extends ShiftActionBase
 {
+
   /**
    * The {@link Symbol} which was canceled out
    */
   private Symbol symbol;
-  
+
+
   /**
    * Allocates a new {@link CancelOutAction}
-   *
    */
-  public CancelOutAction()
+  public CancelOutAction ()
   {
     this.symbol = new DefaultSymbol ();
   }
-  
+
+
   /**
    * Allocates a new {@link CancelOutAction}
-   *
+   * 
    * @param symbol The {@link Symbol}
    */
-  public CancelOutAction(final Symbol symbol)
+  public CancelOutAction ( final Symbol symbol )
   {
     this.symbol = symbol;
   }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -38,18 +45,20 @@ public class CancelOutAction extends ShiftActionBase
   {
     return Action.TransitionType.CANCEL;
   }
-  
+
+
   /**
-   * 
    * {@inheritDoc}
    * 
    * @see java.lang.Object#toString()
    */
   @Override
-  public String toString()
+  public String toString ()
   {
-    if(this.symbol.getName ().equals ( "" )) //$NON-NLS-1$
-      return "CancleOut"; //$NON-NLS-1$
-    return "match " + this.symbol.getName (); //$NON-NLS-1$
+    if ( this.symbol.getName ().isEmpty () )
+      throw new RuntimeException ( "symbol is empty!" ); //$NON-NLS-1$
+
+    return Messages.getString (
+        "Entities.Actions.Match", this.symbol.getName () ); //$NON-NLS-1$
   }
 }

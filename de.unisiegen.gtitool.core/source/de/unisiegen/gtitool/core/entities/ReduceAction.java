@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import de.unisiegen.gtitool.core.i18n.Messages;
+
+
 /**
  * Represents a {@link ReduceAction}
  */
@@ -38,6 +41,6 @@ public class ReduceAction extends ReplaceAction
   @Override
   public String toString ()
   {
-    return "Reduce: " + this.production.toString (); //$NON-NLS-1$
+    return Messages.getString ( "Entities.Actions.Reduce" ) + " " + this.production.toString (); //$NON-NLS-1$ //$NON-NLS-2$
   }
 }

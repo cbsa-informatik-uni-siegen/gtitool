@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.core.entities;
 
 
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -60,7 +61,7 @@ public class AcceptAction implements Action
   @Override
   public String toString ()
   {
-    return "Accept"; //$NON-NLS-1$
+    return Messages.getString ( "Entities.Actions.Accept" ); //$NON-NLS-1$
   }
 
 

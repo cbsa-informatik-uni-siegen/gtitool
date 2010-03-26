@@ -247,16 +247,11 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
 
 
   /**
-   * TODO
-   * 
-   * @param state
-   * @param symbol
-   * @return
-   * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#actionPrettyString(de.unisiegen.gtitool.core.entities.LRState,
-   *      de.unisiegen.gtitool.core.entities.TerminalSymbol)
+   * {@inheritDoc}
    */
   @Override
-  protected ActionSet actionSetBase ( LRState state, TerminalSymbol symbol )
+  protected ActionSet actionSetBase ( final LRState state,
+      final TerminalSymbol symbol )
   {
     return actions ( ( ( LR1State ) state ).getLR1Items (), symbol );
   }

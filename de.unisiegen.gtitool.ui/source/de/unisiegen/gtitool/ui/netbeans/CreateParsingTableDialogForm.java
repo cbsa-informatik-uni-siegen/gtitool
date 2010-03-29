@@ -39,7 +39,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jGTIGrammarPanel = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jPanelGrammar = new javax.swing.JPanel();
         jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTILabelTerminalSymbols = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTILabelStartSymbol = new de.unisiegen.gtitool.ui.swing.JGTILabel();
@@ -72,6 +72,8 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        jPanelGrammar.setLayout(new java.awt.GridBagLayout());
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTILabelTerminalSymbols.setText(bundle.getString("CreateParsingTableDialog.LabelTerminalSymbols")); // NOI18N
@@ -139,7 +141,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jGTIGrammarPanel.add(jGTIPanel1, gridBagConstraints);
+        jPanelGrammar.add(jGTIPanel1, gridBagConstraints);
 
         jGTIGrammarTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -168,7 +170,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jGTIGrammarPanel.add(jGTIPanel2, gridBagConstraints);
+        jPanelGrammar.add(jGTIPanel2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -176,7 +178,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
-        getContentPane().add(jGTIGrammarPanel, gridBagConstraints);
+        getContentPane().add(jPanelGrammar, gridBagConstraints);
 
         jGTIToolBar.setRollover(true);
 
@@ -248,6 +250,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jGTIToolBar, gridBagConstraints);
 
@@ -391,7 +394,6 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTICurrentNonterminalLabel;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTICurrentTerminalLabel;
     public de.unisiegen.gtitool.ui.swing.JGTIList jGTIDescriptionList;
-    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIGrammarPanel;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIGrammarTable;
     private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabel3;
     private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabel4;
@@ -414,6 +416,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStart;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStop;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
+    public javax.swing.JPanel jPanelGrammar;
     public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledStartNonterminalSymbolParserPanel styledStartNonterminalSymbolParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel styledTerminalSymbolSetParserPanel;

@@ -72,11 +72,14 @@ public final class DefaultCFG extends AbstractGrammar implements CFG
 
 
   /**
-   * {@inheritDoc}
+   * Checks whether this {@link DefaultCFG} is in LL1
+   * 
+   * @return true if this {@link DefaultCFG} is in LL1, false otherwise
    * @throws TerminalSymbolSetException
    * @throws GrammarInvalidNonterminalException
    */
-  public final boolean isLL1 () throws GrammarInvalidNonterminalException, TerminalSymbolSetException
+  public final boolean isLL1 () throws GrammarInvalidNonterminalException,
+      TerminalSymbolSetException
   {
     final ParsingTable pt = new DefaultParsingTable ( this );
 

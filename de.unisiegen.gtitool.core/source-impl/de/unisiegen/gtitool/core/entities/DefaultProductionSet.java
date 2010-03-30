@@ -399,9 +399,9 @@ public class DefaultProductionSet implements ProductionSet
     if ( this.prettyString == null )
     {
       this.prettyString = new PrettyString ();
+      this.prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
       if ( !isEmpty () )
       {
-        this.prettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
         Iterator < Production > p = iterator ();
         this.prettyString.add ( p.next () );
         while ( p.hasNext () )
@@ -409,8 +409,10 @@ public class DefaultProductionSet implements ProductionSet
           this.prettyString.add ( new PrettyToken ( ",", Style.NONE ) ); //$NON-NLS-1$
           this.prettyString.add ( p.next () );
         }
-        this.prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
       }
+      else
+        this.prettyString.add ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
+      this.prettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
     }
     return this.prettyString;
   }
@@ -545,13 +547,13 @@ public class DefaultProductionSet implements ProductionSet
    */
   public int compareTo ( ProductionSet o )
   {
-    if ( this.size () < o.size () )
+    if ( size () < o.size () )
       return -1;
-    if ( this.size () > o.size () )
+    if ( size () > o.size () )
       return 1;
-    for ( int i = 0 ; i < this.size () ; ++i )
+    for ( int i = 0 ; i < size () ; ++i )
     {
-      final int comp = this.get ( i ).compareTo ( o.get ( i ) );
+      final int comp = get ( i ).compareTo ( o.get ( i ) );
 
       if ( comp != 0 )
         return comp;

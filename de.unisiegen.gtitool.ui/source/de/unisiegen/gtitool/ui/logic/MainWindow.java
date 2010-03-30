@@ -387,6 +387,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_CREATE_PT,
 
     /**
+     * The Find Parsing Table button state
+     */
+    ENABLED_FIND_PT_ENTRIES,
+
+    /**
      * The machine table selected button state.
      */
     SELECTED_MACHINE_TABLE,
@@ -572,6 +577,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
     removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
     removeButtonState ( ButtonState.ENABLED_CREATE_PT );
+    removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -1342,6 +1348,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_CREATE_PT );
       this.gui.getJMenuItemCreateParsingTableStepwise ().setEnabled ( true );
     }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_FIND_PT_ENTRIES ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_FIND_PT_ENTRIES ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+      this.gui.getJMenuItemFindParsingTableEntries ().setEnabled ( true );
+    }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REGEX_INFO ) ) )
     {
@@ -1818,6 +1831,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       final GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       gp.handleCreateParsingTableStepwise ();
+    }
+    else
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * handles the 'find parsing table entries' button pressed
+   */
+  public final void handleFindParsingTableEntries ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      final GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      // TODO: Implement a choose dialog
+      gp
+          .handleFindParsingTableEntries ( CreateParsingTableGameDialog.GameType.GUESS_SINGLE_ENTRY );
     }
     else
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
@@ -6050,6 +6082,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_CREATE_PT );
       this.gui.getJMenuItemCreateParsingTableStepwise ().setEnabled ( true );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_FIND_PT_ENTRIES ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+      this.gui.getJMenuItemFindParsingTableEntries ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
     {

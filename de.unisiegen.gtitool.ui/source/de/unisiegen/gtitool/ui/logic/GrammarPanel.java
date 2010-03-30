@@ -36,6 +36,7 @@ import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
@@ -668,11 +669,10 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    */
   public final void handleCreateParsingTableStepwise ()
   {
-    CreateParsingTableDialog cptd;
     try
     {
-      cptd = new CreateParsingTableDialog ( this.mainWindowForm,
-          ( CFG ) getGrammar () );
+      CreateParsingTableDialog cptd = new CreateParsingTableDialog (
+          this.mainWindowForm, ( CFG ) getGrammar () );
       cptd.show ();
     }
     catch ( TerminalSymbolSetException exc )
@@ -681,6 +681,32 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       System.exit ( 1 );
     }
     catch ( NonterminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
+
+
+  /**
+   * handles the 'find parsing table entries' button presse
+   * @param gameType The {@link CreateParsingTableGameDialog.GameType}
+   */
+  public final void handleFindParsingTableEntries (
+      final CreateParsingTableGameDialog.GameType gameType )
+  {
+    try
+    {
+      final CreateParsingTableGameDialog cptgd = new CreateParsingTableGameDialog (
+          this.mainWindowForm, ( CFG ) getGrammar (), gameType );
+      cptgd.show ();
+    }
+    catch ( final GrammarInvalidNonterminalException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( final TerminalSymbolSetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );

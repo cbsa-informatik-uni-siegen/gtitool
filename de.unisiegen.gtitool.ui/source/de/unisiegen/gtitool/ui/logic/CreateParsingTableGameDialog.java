@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.event.MouseEvent;
 
+import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -10,12 +11,14 @@ import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
+import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.GrammarColumnModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
@@ -101,13 +104,15 @@ public class CreateParsingTableGameDialog implements
   /**
    * Allocates a new {@link CreateParsingTableGameDialog}
    * 
+   * @param frame The {@link JFrame}
    * @param cfg The {@link CFG}
    * @param gameType The {@link GameType}
    * @throws TerminalSymbolSetException
    * @throws GrammarInvalidNonterminalException
    */
-  public CreateParsingTableGameDialog ( final CFG cfg, final GameType gameType )
-      throws GrammarInvalidNonterminalException, TerminalSymbolSetException
+  public CreateParsingTableGameDialog ( final JFrame frame, final CFG cfg,
+      final GameType gameType ) throws GrammarInvalidNonterminalException,
+      TerminalSymbolSetException
   {
     this.gameType = gameType;
     this.nonterminals = cfg.getNonterminalSymbolSet ();
@@ -115,6 +120,7 @@ public class CreateParsingTableGameDialog implements
     //
     // setup the gui
     //
+    this.gui = new CreateParsingTableGameDialogForm ( frame, this );
 
     // setup the grammar panel
     this.gui.styledNonterminalSymbolSetParserPanel.setText ( cfg
@@ -152,6 +158,12 @@ public class CreateParsingTableGameDialog implements
     DefaultTableModel tableModel = new DefaultTableModel ( this.parsingTable
         .getRowCount (), this.parsingTable.getColumnCount () )
     {
+
+      /**
+       * The generated serial
+       */
+      private static final long serialVersionUID = 609495296202823939L;
+
 
       /**
        * {@inheritDoc}
@@ -227,14 +239,39 @@ public class CreateParsingTableGameDialog implements
         this.existingCorrectAnswers = answers;
         this.existingWrongAnswers = possibleAnswers
             - this.existingCorrectAnswers;
-        break;
+        return;
       case GUESS_MULTI_ENTRY :
         // ...otherwise empty + answers is the amount of wrong answers and the
         // rest of entries are the number of correct answers
         this.existingWrongAnswers = empty + answers;
         this.existingCorrectAnswers = possibleAnswers
             - this.existingWrongAnswers;
-        break;
+        return;
+    }
+  }
+
+
+  /**
+   * updates the game statistics
+   * 
+   * @param entry The {@link ProductionSet} entry which was just uncovered
+   */
+  private void updateStats ( final ProductionSet entry )
+  {
+    switch ( this.gameType )
+    {
+      case GUESS_SINGLE_ENTRY :
+        if ( entry.size () == 1 )
+          ++this.userCorrectAnswers;
+        else
+          ++this.userWrongAnswers;
+        return;
+      case GUESS_MULTI_ENTRY :
+        if ( entry.size () > 1 )
+          ++this.userCorrectAnswers;
+        else
+          ++this.userWrongAnswers;
+        return;
     }
   }
 
@@ -259,10 +296,28 @@ public class CreateParsingTableGameDialog implements
 
   /**
    * handles the uncover of a parsing table cell
+   * 
+   * @param evt The {@link MouseEvent}
    */
-  public void handleUncover ( MouseEvent evt )
+  public void handleUncover ( final MouseEvent evt )
   {
-
+    if ( evt.getClickCount () >= 2 )
+    {
+      int row = this.gui.jGTIParsingTable.getSelectedRow ();
+      int col = this.gui.jGTIParsingTable.getSelectedColumn ();
+      // col > 1 cause the first column is the NonterminalSymbol-column
+      if ( ( row == -1 || col == -1 ) && col > 1 )
+        return;
+      PrettyStringTableCellRenderer cell = ( PrettyStringTableCellRenderer ) this.gui.jGTIParsingTable
+          .getCellRenderer ( row, col );
+      // if the cell is not empty we've already uncovered this cell
+      if ( !cell.getText ().isEmpty () )
+        return;
+      ProductionSet parsingTableEntry = this.parsingTable.get ( row, col );
+      cell.setText ( parsingTableEntry.toString () );
+      updateStats ( parsingTableEntry );
+      updateAnswers ();
+    }
   }
 
 

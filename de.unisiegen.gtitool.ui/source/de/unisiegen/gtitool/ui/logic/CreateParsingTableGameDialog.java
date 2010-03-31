@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -131,7 +132,7 @@ public class CreateParsingTableGameDialog implements
     // setup the gui
     //
     this.gui = new CreateParsingTableGameDialogForm ( parent, this );
-    //center the dialog
+    // center the dialog
     int x = parent.getBounds ().x + ( parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = parent.getBounds ().y + ( parent.getHeight () / 2 )
@@ -301,6 +302,9 @@ public class CreateParsingTableGameDialog implements
           ++this.userWrongAnswers;
         return;
     }
+    if ( this.userCorrectAnswers == this.existingCorrectAnswers )
+      JOptionPane.showMessageDialog ( this.gui, Messages
+          .getString ( "CreateParsingTableGameDialog.AllFound" ) ); //$NON-NLS-1$
   }
 
 

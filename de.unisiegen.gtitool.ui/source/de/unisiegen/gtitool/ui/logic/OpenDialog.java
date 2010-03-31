@@ -10,6 +10,7 @@ import javax.swing.plaf.basic.BasicFileChooserUI;
 
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.StateMachine;
+import de.unisiegen.gtitool.core.machines.StatelessMachine;
 import de.unisiegen.gtitool.core.regex.DefaultRegex.RegexType;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -75,6 +76,14 @@ public final class OpenDialog implements LogicClass < OpenDialogForm >
           return true;
         }
         for ( String current : StateMachine.AVAILABLE_MACHINES )
+        {
+          if ( file.getName ().toLowerCase ().matches (
+              ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
+          {
+            return true;
+          }
+        }
+        for ( String current : StatelessMachine.AVAILABLE_MACHINES )
         {
           if ( file.getName ().toLowerCase ().matches (
               ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$

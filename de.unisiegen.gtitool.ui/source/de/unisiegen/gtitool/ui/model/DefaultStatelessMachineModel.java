@@ -3,7 +3,17 @@ package de.unisiegen.gtitool.ui.model;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
+import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
+import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
+import de.unisiegen.gtitool.core.machines.lr.DefaultLR0Parser;
+import de.unisiegen.gtitool.core.machines.lr.DefaultLR1Parser;
+import de.unisiegen.gtitool.core.machines.lr.SLRParser;
+import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
+import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 
 
@@ -35,6 +45,68 @@ public class DefaultStatelessMachineModel extends DefaultMachineModel
   public DefaultStatelessMachineModel ( final StatelessMachine machine )
   {
     this.machine = machine;
+  }
+
+
+  /**
+   * Constructs a new DefaultStatelessMachineModel that has been previously
+   * saved to an XML Element.
+   * 
+   * @param element
+   * @param overwrittenMachineType
+   * @throws Exception
+   */
+  public DefaultStatelessMachineModel ( final Element element,
+      final String overwrittenMachineType ) throws Exception
+  {
+    final String machineName = overwrittenMachineType != null ? overwrittenMachineType
+        : element.getAttributeByName ( "machineType" ).getValue (); //$NON-NLS-1$
+
+    final Element grammarElement = element.getElementByName ( "Grammar" ); //$NON-NLS-1$
+
+    if ( machineName.equals ( "LR0Parser" ) //$NON-NLS-1$
+        || machineName.equals ( "LR1Parser" ) || machineName.equals ( "SLR" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+    {
+      try
+      {
+        Grammar tempGrammar = new DefaultCFG ( grammarElement );
+        //this.grammar = new ExtendedGrammar ( tempGrammar. );
+      }
+      catch ( Exception e )
+      {
+        e.printStackTrace ();
+        throw e;
+      }
+    }
+    else if ( machineName.equals ( "TDP" ) ) //$NON-NLS-1$
+    {
+      this.grammar = new DefaultCFG ( grammarElement );
+    }
+    else
+    {
+      throw new RuntimeException ( "Unknown parser to load!" ); //$NON-NLS-1$
+    }
+
+    if ( machineName.equals ( "LR0Parser" ) ) //$NON-NLS-1$
+    {
+      this.machine = new DefaultLR0Parser ( new LR0Grammar ( this.grammar ) );
+    }
+    else if ( machineName.equals ( "LR1Parser" ) ) //$NON-NLS-1$
+    {
+      this.machine = new DefaultLR1Parser ( new LR1Grammar ( this.grammar ) );
+    }
+    else if ( machineName.equals ( "SLR" ) ) //$NON-NLS-1$
+    {
+      this.machine = new SLRParser ( new LR0Grammar ( this.grammar ) );
+    }
+    else if ( machineName.equals ( "TDP" ) ) //$NON-NLS-1$
+    {
+      this.machine = new DefaultTDP ( ( CFG ) this.grammar );
+    }
+    else
+    {
+      throw new RuntimeException ( "Cannot create the machine!" ); //$NON-NLS-1$
+    }
   }
 
 
@@ -80,7 +152,14 @@ public class DefaultStatelessMachineModel extends DefaultMachineModel
   @Override
   public Element getElement ()
   {
-    return null;
+    final Element newElement = new Element ( "StatelessMachineModel" ); //$NON-NLS-1$
+
+    newElement.addAttribute ( new Attribute ( "machineType", this.machine //$NON-NLS-1$
+        .getMachineType ().toString () ) );
+
+    newElement.addElement ( this.getGrammar ().getElement () );
+
+    return newElement;
   }
 
 

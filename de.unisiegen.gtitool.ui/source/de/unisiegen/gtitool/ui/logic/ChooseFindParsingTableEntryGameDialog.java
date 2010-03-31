@@ -42,6 +42,12 @@ public class ChooseFindParsingTableEntryGameDialog implements
   public ChooseFindParsingTableEntryGameDialog ( final JFrame parent )
   {
     this.gui = new ChooseFindParsingTableEntryGameDialogForm ( parent, this );
+    //center this dialog
+    int x = parent.getBounds ().x + ( parent.getWidth () / 2 )
+        - ( this.gui.getWidth () / 2 );
+    int y = parent.getBounds ().y + ( parent.getHeight () / 2 )
+        - ( this.gui.getHeight () / 2 );
+    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
   }
 
 

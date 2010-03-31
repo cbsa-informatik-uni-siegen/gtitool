@@ -112,14 +112,14 @@ public class CreateParsingTableGameDialog implements
   /**
    * Allocates a new {@link CreateParsingTableGameDialog}
    * 
-   * @param frame The {@link JFrame}
+   * @param parent The {@link JFrame}
    * @param cfg The {@link CFG}
    * @param gameType The {@link GameType}
    * @throws TerminalSymbolSetException
    * @throws GrammarInvalidNonterminalException
    * @throws NonterminalSymbolSetException
    */
-  public CreateParsingTableGameDialog ( final JFrame frame, final CFG cfg,
+  public CreateParsingTableGameDialog ( final JFrame parent, final CFG cfg,
       final GameType gameType ) throws GrammarInvalidNonterminalException,
       TerminalSymbolSetException, NonterminalSymbolSetException
   {
@@ -130,7 +130,13 @@ public class CreateParsingTableGameDialog implements
     //
     // setup the gui
     //
-    this.gui = new CreateParsingTableGameDialogForm ( frame, this );
+    this.gui = new CreateParsingTableGameDialogForm ( parent, this );
+    //center the dialog
+    int x = parent.getBounds ().x + ( parent.getWidth () / 2 )
+        - ( this.gui.getWidth () / 2 );
+    int y = parent.getBounds ().y + ( parent.getHeight () / 2 )
+        - ( this.gui.getHeight () / 2 );
+    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
 
     // setup the grammar panel
     this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.cfg

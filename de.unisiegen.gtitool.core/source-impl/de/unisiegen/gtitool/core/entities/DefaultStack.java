@@ -343,4 +343,30 @@ public final class DefaultStack implements Stack
   {
     return this.symbolList.isEmpty ();
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Stack#pop_front()
+   */
+  public Symbol pop_front ()
+  {
+    final Symbol ret = this.symbolList.get ( 0 );
+
+    this.symbolList.remove ( 0 );
+
+    return ret;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Stack#push_front(de.unisiegen.gtitool.core.entities.Symbol)
+   */
+  public void push_front ( final Symbol symbol )
+  {
+    this.symbolList.add ( 0, symbol );
+  }
 }

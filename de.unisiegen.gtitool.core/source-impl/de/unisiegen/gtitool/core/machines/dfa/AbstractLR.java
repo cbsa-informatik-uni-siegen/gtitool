@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultLRStateStack;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.LRStateStack;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
@@ -202,7 +203,7 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
 
   /**
    * {@inheritDoc}
-   *
+   * 
    * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#onStart()
    */
   @Override

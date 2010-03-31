@@ -81,7 +81,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
     /**
      * TODO
-     *
+     * 
      * @return
      */
     public LRStateStack getStateStack ()
@@ -245,12 +245,14 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   @Override
   public final void start ( final Word word )
   {
-    Symbol endMarkerSymbol = new DefaultSymbol (
+    final Symbol endMarkerSymbol = new DefaultSymbol (
         DefaultTerminalSymbol.EndMarker.getName () );
     word.add ( endMarkerSymbol );
     super.start ( word );
 
     this.getAutomaton ().start ( word );
+
+    this.getStack ().push ( endMarkerSymbol );
   }
 
 

@@ -1096,6 +1096,9 @@ public abstract class AbstractGrammar implements Grammar
       System.exit ( 1 );
     }
 
+    final Element elemStartSymbol = new Element ( "StartSymbol" ); //$NON-NLS-1$
+    elemStartSymbol.addElement ( getStartSymbol ().getElement () );
+    newElement.addElement ( elemStartSymbol );
     newElement.addElement ( getTerminalSymbolSet ().getElement () );
     newElement.addElement ( getNonterminalSymbolSet ().getElement () );
     newElement.addElement ( getProduction () );

@@ -117,7 +117,7 @@ public interface StateMachine extends Machine, InputEntity, Serializable,
    * The available machines.
    */
   public static final String [] AVAILABLE_MACHINES =
-  { "DFA", "NFA", "ENFA", "PDA", "LR0" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
+  { "DFA", "NFA", "ENFA", "PDA", "LR0", "LR1" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
 
   /**

@@ -145,6 +145,21 @@ public final class Element implements Serializable
 
 
   /**
+   * Searches for a given attribute by name
+   * 
+   * @param searchName The name
+   * @return The attribute, if found, null otherwise
+   */
+  public final Attribute getAttributeByName ( final String searchName )
+  {
+    for ( Attribute attribute : this.attributeList )
+      if ( attribute.getName ().equals ( searchName ) )
+        return attribute;
+    return null;
+  }
+
+
+  /**
    * Returns the element list.
    * 
    * @return The element list.

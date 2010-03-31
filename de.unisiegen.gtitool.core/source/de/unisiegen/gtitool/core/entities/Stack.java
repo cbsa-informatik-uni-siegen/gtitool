@@ -65,6 +65,22 @@ public interface Stack extends Entity < Stack >, Iterable < Symbol >
 
 
   /**
+   * Removes the {@link Symbol} from the front.
+   * 
+   * @return the current front
+   */
+  public Symbol pop_front ();
+
+
+  /**
+   * Pushes the {@link Symbol} to the front
+   * 
+   * @param symbol
+   */
+  public void push_front ( Symbol symbol );
+
+
+  /**
    * Returns the number of {@link Symbol}s in this {@link Stack}.
    * 
    * @return The number of {@link Symbol}s in this {@link Stack}.
@@ -74,7 +90,7 @@ public interface Stack extends Entity < Stack >, Iterable < Symbol >
 
   /**
    * Returns whether this {@link Stack} is empty or not
-   *
+   * 
    * @return true if the {@link Stack} is empty
    */
   public boolean isEmpty ();

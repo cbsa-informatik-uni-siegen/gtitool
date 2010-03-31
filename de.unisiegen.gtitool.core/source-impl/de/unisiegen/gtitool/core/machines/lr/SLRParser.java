@@ -49,6 +49,6 @@ public class SLRParser extends DefaultLR0Parser
   @Override
   public MachineType getMachineType ()
   {
-    return MachineType.LR0Parser;
+    return MachineType.SLR;
   }
 }

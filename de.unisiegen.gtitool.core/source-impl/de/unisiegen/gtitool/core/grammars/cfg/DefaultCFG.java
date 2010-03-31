@@ -12,6 +12,8 @@ import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymb
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
 import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -41,6 +43,23 @@ public final class DefaultCFG extends AbstractGrammar implements CFG
   {
     super ( nonterminalSymbolSet, terminalSymbolSet, startSymbol,
         ValidationElement.DUPLICATE_PRODUCTION,
+        ValidationElement.NONTERMINAL_NOT_REACHABLE );
+  }
+
+
+  /**
+   * Constructs a new {@link DefaultCFG} from a stored element
+   * 
+   * @param element
+   * @throws NonterminalSymbolSetException
+   * @throws TerminalSymbolSetException
+   * @throws StoreException
+   */
+  public DefaultCFG ( final Element element )
+      throws NonterminalSymbolSetException, TerminalSymbolSetException,
+      StoreException
+  {
+    super ( element, ValidationElement.DUPLICATE_PRODUCTION,
         ValidationElement.NONTERMINAL_NOT_REACHABLE );
   }
 

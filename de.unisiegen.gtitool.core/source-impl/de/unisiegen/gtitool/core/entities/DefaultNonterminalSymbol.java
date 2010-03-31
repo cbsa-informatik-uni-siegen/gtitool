@@ -87,7 +87,7 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   public DefaultNonterminalSymbol ( Element element ) throws StoreException
   {
     // Check if the element is correct
-    if ( !element.getName ().equals ( "NonterminalSymbol" ) )
+    if ( !element.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
       throw new IllegalArgumentException (
           "element " + Messages.QUOTE + element.getName () //$NON-NLS-1$
               + Messages.QUOTE + " is not a nonterminal symbol" ); //$NON-NLS-1$
@@ -100,9 +100,9 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
         setName ( current.getValue () );
         foundName = true;
       }
-      else
-        throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
+      //else
+      //  throw new StoreException ( Messages
+       //     .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
 
     // Not all attribute values found
     if ( !foundName )
@@ -219,7 +219,7 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   {
     Element newElement = new Element ( "NonterminalSymbol" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "name", this.name ) ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "isStart", isStart () ) ); //$NON-NLS-1$
+    //newElement.addAttribute ( new Attribute ( "isStart", isStart () ) ); //$NON-NLS-1$
     return newElement;
   }
 

@@ -421,7 +421,7 @@ public class CreateParsingTableDialog implements
    */
   public void handleOk ()
   {
-    this.gui.setVisible ( false );
+    this.gui.dispose ();
   }
 
 

@@ -690,6 +690,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
   /**
    * handles the 'find parsing table entries' button presse
+   * 
    * @param gameType The {@link CreateParsingTableGameDialog.GameType}
    */
   public final void handleFindParsingTableEntries (
@@ -707,6 +708,11 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       System.exit ( 1 );
     }
     catch ( final TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( NonterminalSymbolSetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );

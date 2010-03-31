@@ -1847,9 +1847,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       final GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
-      // TODO: Implement a choose dialog
-      gp
-          .handleFindParsingTableEntries ( CreateParsingTableGameDialog.GameType.GUESS_SINGLE_ENTRY );
+      final ChooseFindParsingTableEntryGameDialog chooseDialog = new ChooseFindParsingTableEntryGameDialog (
+          this.gui );
+      chooseDialog.show ();
+      if ( chooseDialog.isConfirmed () )
+        gp.handleFindParsingTableEntries ( chooseDialog.getChosenGameType () );
     }
     else
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
@@ -4588,6 +4590,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
           removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
           removeButtonState ( ButtonState.ENABLED_CREATE_PT );
+          removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
@@ -4601,6 +4604,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
           addButtonState ( ButtonState.ENABLED_CREATE_TDP );
           addButtonState ( ButtonState.ENABLED_CREATE_PT );
+          addButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
         }
         else
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$

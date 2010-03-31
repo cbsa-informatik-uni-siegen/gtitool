@@ -2205,6 +2205,11 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
 
         jMenuItemParsingTableFindEntries.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ParsingTableFindEntriesMnemonic").charAt(0));
         jMenuItemParsingTableFindEntries.setText(bundle.getString("MainWindow.ParsingTableFindEntries")); // NOI18N
+        jMenuItemParsingTableFindEntries.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemParsingTableFindEntriesActionPerformed(evt);
+            }
+        });
         jMenuExecute.add(jMenuItemParsingTableFindEntries);
 
         jMenuBarMain.add(jMenuExecute);
@@ -2270,6 +2275,10 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
 
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemParsingTableFindEntriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemParsingTableFindEntriesActionPerformed
+        this.logic.handleFindParsingTableEntries();
+    }//GEN-LAST:event_jMenuItemParsingTableFindEntriesActionPerformed
 
 
   private void jMenuItemReorderStateNamesActionPerformed (

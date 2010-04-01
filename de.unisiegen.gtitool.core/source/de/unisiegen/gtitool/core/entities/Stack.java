@@ -94,4 +94,12 @@ public interface Stack extends Entity < Stack >, Iterable < Symbol >
    * @return true if the {@link Stack} is empty
    */
   public boolean isEmpty ();
+
+
+  /**
+   * Returns the string in reverse
+   * 
+   * @return the string
+   */
+  public String reverseString ();
 }

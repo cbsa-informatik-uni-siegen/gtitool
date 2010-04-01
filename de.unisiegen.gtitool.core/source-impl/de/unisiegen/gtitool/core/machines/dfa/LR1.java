@@ -169,7 +169,7 @@ public class LR1 extends AbstractLR
   {
     LR1 ret = new LR1 ( this.grammar, new DontConstructTheStates () );
 
-    int stateIndex = 1;
+    int stateIndex = 0;
 
     for ( int index = 0 ; index < this.getState ().size () ; ++index )
     {

@@ -369,4 +369,15 @@ public final class DefaultStack implements Stack
   {
     this.symbolList.add ( 0, symbol );
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Stack#reverseString()
+   */
+  public String reverseString ()
+  {
+    return new StringBuffer ( toString () ).reverse ().toString ();
+  }
 }

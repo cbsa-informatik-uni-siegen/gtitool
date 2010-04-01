@@ -5,7 +5,6 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
-import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
@@ -64,32 +63,24 @@ public class DefaultStatelessMachineModel extends DefaultMachineModel
 
     final Element grammarElement = element.getElementByName ( "Grammar" ); //$NON-NLS-1$
 
-    if ( machineName.equals ( "LR0Parser" ) //$NON-NLS-1$
-        || machineName.equals ( "LR1Parser" ) || machineName.equals ( "SLR" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+    this.grammar = new DefaultCFG ( grammarElement );
+
+    if ( machineName.equals ( "LR0Parser" ) || machineName.equals ( "SLR" ) ) //$NON-NLS-1$ //$NON-NLS-2$
     {
-      try
-      {
-        Grammar tempGrammar = new DefaultCFG ( grammarElement );
-        //this.grammar = new ExtendedGrammar ( tempGrammar. );
-      }
-      catch ( Exception e )
-      {
-        e.printStackTrace ();
-        throw e;
-      }
+      this.grammar = new LR0Grammar ( this.grammar.getNonterminalSymbolSet (),
+          this.grammar.getTerminalSymbolSet (), this.grammar.getStartSymbol (),
+          this.grammar.getProduction () );
     }
-    else if ( machineName.equals ( "TDP" ) ) //$NON-NLS-1$
+    else if ( machineName.equals ( "LR1Parser" ) ) //$NON-NLS-1$
     {
-      this.grammar = new DefaultCFG ( grammarElement );
-    }
-    else
-    {
-      throw new RuntimeException ( "Unknown parser to load!" ); //$NON-NLS-1$
+      this.grammar = new LR1Grammar ( this.grammar.getNonterminalSymbolSet (),
+          this.grammar.getTerminalSymbolSet (), this.grammar.getStartSymbol (),
+          this.grammar.getProduction () );
     }
 
     if ( machineName.equals ( "LR0Parser" ) ) //$NON-NLS-1$
     {
-      this.machine = new DefaultLR0Parser ( new LR0Grammar ( this.grammar ) );
+      this.machine = new DefaultLR0Parser ( ( LR0Grammar ) this.grammar );
     }
     else if ( machineName.equals ( "LR1Parser" ) ) //$NON-NLS-1$
     {
@@ -97,7 +88,7 @@ public class DefaultStatelessMachineModel extends DefaultMachineModel
     }
     else if ( machineName.equals ( "SLR" ) ) //$NON-NLS-1$
     {
-      this.machine = new SLRParser ( new LR0Grammar ( this.grammar ) );
+      this.machine = new SLRParser ( ( LR0Grammar ) this.grammar );
     }
     else if ( machineName.equals ( "TDP" ) ) //$NON-NLS-1$
     {

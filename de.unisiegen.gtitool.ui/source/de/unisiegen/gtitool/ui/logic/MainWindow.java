@@ -53,6 +53,7 @@ import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultRegexModel;
 import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultStatelessMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu.TabPopupMenuType;
@@ -5871,6 +5872,28 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_PRINT );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_VALIDATE );
+        removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+      }
+      else if ( element instanceof DefaultStatelessMachineModel )
+      {
+        DefaultStatelessMachineModel model = ( DefaultStatelessMachineModel ) element;
+        EditorPanel newEditorPanel = new StatelessMachinePanel ( this.gui,
+            model, file );
+
+        jGTIEditorPanelTabbedPane.addEditorPanel ( newEditorPanel );
+        newEditorPanel
+            .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+        jGTIEditorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
+        jGTIEditorPanelTabbedPane.setEditorPanelTitle ( newEditorPanel, file
+            .getName () );
+
+        addButtonState ( ButtonState.ENABLED_SAVE_AS );
+        addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+        addButtonState ( ButtonState.ENABLED_CLOSE );
+        addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+        //addButtonState ( ButtonState.ENABLED_PRINT );
+        //addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+        //addButtonState ( ButtonState.ENABLED_VALIDATE );
         removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       }
       else

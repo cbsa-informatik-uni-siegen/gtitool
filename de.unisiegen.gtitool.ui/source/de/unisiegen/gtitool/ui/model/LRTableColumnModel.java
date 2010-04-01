@@ -37,6 +37,11 @@ public class LRTableColumnModel extends DefaultTableColumnModel
   private TableColumn lrColumnTable;
 
 
+  /**
+   * TODO
+   *
+   * @param terminals
+   */
   public LRTableColumnModel ( final TerminalSymbolSet terminals )
   {
     /*

@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.ui.model;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -41,9 +40,8 @@ public class LRTableModel extends StatelessMachineTableModel
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see javax.swing.table.TableModel#getColumnCount()
    */
   public int getColumnCount ()
@@ -53,11 +51,11 @@ public class LRTableModel extends StatelessMachineTableModel
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see javax.swing.table.TableModel#getRowCount()
    */
+  @Override
   public int getRowCount ()
   {
     return this.states.size ();

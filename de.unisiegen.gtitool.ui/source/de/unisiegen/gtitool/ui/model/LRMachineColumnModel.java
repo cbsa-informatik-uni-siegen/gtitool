@@ -54,48 +54,59 @@ public class LRMachineColumnModel extends StatelessMachineTableColumnModel
    */
   public LRMachineColumnModel ()
   {
-    TableColumn symbolColumn = null;
-    
-    symbolColumn = new TableColumn ( STATE_STACK_COLUMN );
-    symbolColumn
-        .setHeaderValue ( new PrettyString (
-            new PrettyToken (
-                Messages
-                    .getString ( "StatelessMachineColumnModel.StateStackColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
-    symbolColumn
-        .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
-    addColumn ( symbolColumn );
+    {
+      final TableColumn symbolColumn = new TableColumn ( STATE_STACK_COLUMN );
+      symbolColumn
+          .setHeaderValue ( new PrettyString (
+              new PrettyToken (
+                  Messages
+                      .getString ( "StatelessMachineColumnModel.StateStackColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
+      symbolColumn
+          .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+      symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+      addColumn ( symbolColumn );
+    }
 
-    symbolColumn = new TableColumn ( STACK_COLUMN );
-    symbolColumn
-        .setHeaderValue ( new PrettyString (
-            new PrettyToken (
-                Messages.getString ( "StatelessMachineColumnModel.StackColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
-    symbolColumn
-        .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
-    addColumn ( symbolColumn );
-    
-    symbolColumn = new TableColumn ( INPUT_COLUMN );
-    symbolColumn
-        .setHeaderValue ( new PrettyString (
-            new PrettyToken (
-                Messages.getString ( "StatelessMachineColumnModel.InputColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
-    symbolColumn
-        .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
-    addColumn ( symbolColumn );
+    {
+      final TableColumn stackColumn = new TableColumn ( STACK_COLUMN );
+      stackColumn
+          .setHeaderValue ( new PrettyString (
+              new PrettyToken (
+                  Messages
+                      .getString ( "StatelessMachineColumnModel.StackColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
+      stackColumn
+          .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+      stackColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+      PrettyStringTableCellRenderer pstcr = new PrettyStringTableCellRenderer ();
+      pstcr.setRightHorizontal ( true );
+      stackColumn.setCellRenderer ( pstcr );
+      addColumn ( stackColumn );
+    }
 
-    symbolColumn = new TableColumn ( ACTION_COLUMN );
-    symbolColumn
-        .setHeaderValue ( new PrettyString (
-            new PrettyToken (
-                Messages
-                    .getString ( "StatelessMachineColumnModel.ActionColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
-    symbolColumn
-        .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
-    addColumn ( symbolColumn );
+    {
+      final TableColumn inputColumn = new TableColumn ( INPUT_COLUMN );
+      inputColumn
+          .setHeaderValue ( new PrettyString (
+              new PrettyToken (
+                  Messages
+                      .getString ( "StatelessMachineColumnModel.InputColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
+      inputColumn
+          .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+      inputColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+      addColumn ( inputColumn );
+    }
+
+    {
+      TableColumn actionColumn = new TableColumn ( ACTION_COLUMN );
+      actionColumn
+          .setHeaderValue ( new PrettyString (
+              new PrettyToken (
+                  Messages
+                      .getString ( "StatelessMachineColumnModel.ActionColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
+      actionColumn
+          .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+      actionColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+      addColumn ( actionColumn );
+    }
   }
 }

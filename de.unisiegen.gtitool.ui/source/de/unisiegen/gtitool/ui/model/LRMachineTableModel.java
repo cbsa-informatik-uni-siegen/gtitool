@@ -177,7 +177,8 @@ public class LRMachineTableModel extends StatelessMachineTableModel
       case LRMachineTableModel.INPUT_COLUMN :
         return this.inputData.get ( rowIndex );
       case LRMachineTableModel.STACK_COLUMN :
-        return this.stackData.get ( rowIndex );
+        return new PrettyString ( new PrettyToken ( this.stackData.get (
+            rowIndex ).reverseString (), Style.NONE ) );
       case LRMachineTableModel.STATE_STACK_COLUMN :
         return new PrettyString ( new PrettyToken ( this.lrStateStackData.get (
             rowIndex ).toString (), Style.NONE ) );

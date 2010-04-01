@@ -63,8 +63,6 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
       // no nothing
     }
 
-    // this.getNonterminalSymbolSet ().add ( newSymbol );
-
     this.setStartSymbol ( new DefaultNonterminalSymbol ( startSymbol
         .toString ()
         + "'" ) ); //$NON-NLS-1$

@@ -55,7 +55,7 @@ public class CancelOutAction extends ShiftActionBase
   @Override
   public String toString ()
   {
-    if ( this.symbol.getName ().isEmpty () )
+    if ( this.symbol.getName ().length () == 0 )
       throw new RuntimeException ( "symbol is empty!" ); //$NON-NLS-1$
 
     return Messages.getString (

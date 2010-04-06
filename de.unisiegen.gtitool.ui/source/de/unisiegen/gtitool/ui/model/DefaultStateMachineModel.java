@@ -390,13 +390,10 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
   {
     this.machine = machine;
 
-    if ( ! ( machine instanceof DefaultTDP ) )
-    {
-      this.pdaTableModel = new PDATableModel ();
-      initializeModifyStatusChangedListener ();
-      initializeStatePositionChangedListener ();
-      initializeGraph ();
-    }
+    this.pdaTableModel = new PDATableModel ();
+    initializeModifyStatusChangedListener ();
+    initializeStatePositionChangedListener ();
+    initializeGraph ();
     initializeMachineChangedListener ();
 
     // Reset modify

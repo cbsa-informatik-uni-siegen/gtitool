@@ -140,18 +140,18 @@ public class CreateParsingTableGameDialog implements
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
 
     // setup the grammar panel
-    this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.cfg
-        .getNonterminalSymbolSet () );
-    this.gui.styledStartNonterminalSymbolParserPanel.setText ( this.cfg
-        .getStartSymbol () );
-    this.gui.styledTerminalSymbolSetParserPanel.setText ( this.cfg
-        .getTerminalSymbolSet () );
-
-    this.gui.jGTIGrammarTable.setModel ( this.cfg );
-    this.gui.jGTIGrammarTable.setColumnModel ( new GrammarColumnModel () );
-    this.gui.jGTIGrammarTable
-        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jGTIGrammarTable.getTableHeader ().setReorderingAllowed ( false );
+//    this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.cfg
+//        .getNonterminalSymbolSet () );
+//    this.gui.styledStartNonterminalSymbolParserPanel.setText ( this.cfg
+//        .getStartSymbol () );
+//    this.gui.styledTerminalSymbolSetParserPanel.setText ( this.cfg
+//        .getTerminalSymbolSet () );
+//
+//    this.gui.jGTIGrammarTable.setModel ( this.cfg );
+//    this.gui.jGTIGrammarTable.setColumnModel ( new GrammarColumnModel () );
+//    this.gui.jGTIGrammarTable
+//        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+//    this.gui.jGTIGrammarTable.getTableHeader ().setReorderingAllowed ( false );
 
     // setup the parsing table (backend)
     this.parsingTable = new DefaultParsingTable ( this.cfg );

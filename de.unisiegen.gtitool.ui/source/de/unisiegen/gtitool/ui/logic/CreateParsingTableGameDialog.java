@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
@@ -22,7 +21,10 @@ import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
-import de.unisiegen.gtitool.ui.model.GrammarColumnModel;
+import de.unisiegen.gtitool.ui.model.FirstSetTableColumnModel;
+import de.unisiegen.gtitool.ui.model.FirstSetTableModel;
+import de.unisiegen.gtitool.ui.model.FollowSetTableColumnModel;
+import de.unisiegen.gtitool.ui.model.FollowSetTableModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
 import de.unisiegen.gtitool.ui.netbeans.CreateParsingTableGameDialogForm;
 
@@ -139,19 +141,21 @@ public class CreateParsingTableGameDialog implements
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
 
-    // setup the grammar panel
-//    this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.cfg
-//        .getNonterminalSymbolSet () );
-//    this.gui.styledStartNonterminalSymbolParserPanel.setText ( this.cfg
-//        .getStartSymbol () );
-//    this.gui.styledTerminalSymbolSetParserPanel.setText ( this.cfg
-//        .getTerminalSymbolSet () );
-//
-//    this.gui.jGTIGrammarTable.setModel ( this.cfg );
-//    this.gui.jGTIGrammarTable.setColumnModel ( new GrammarColumnModel () );
-//    this.gui.jGTIGrammarTable
-//        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-//    this.gui.jGTIGrammarTable.getTableHeader ().setReorderingAllowed ( false );
+    // setup the first and follow table
+    // FirstSetTable
+    this.gui.jGTIFirstSetTable.setModel ( new FirstSetTableModel ( this.cfg ) );
+    this.gui.jGTIFirstSetTable
+        .setColumnModel ( new FirstSetTableColumnModel () );
+    this.gui.jGTIFirstSetTable.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTIFirstSetTable.setCellSelectionEnabled ( false );
+
+    // FollowSetTable
+    this.gui.jGTIFollowSetTable
+        .setModel ( new FollowSetTableModel ( this.cfg ) );
+    this.gui.jGTIFollowSetTable
+        .setColumnModel ( new FollowSetTableColumnModel () );
+    this.gui.jGTIFollowSetTable.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTIFollowSetTable.setCellSelectionEnabled ( false );
 
     // setup the parsing table (backend)
     this.parsingTable = new DefaultParsingTable ( this.cfg );

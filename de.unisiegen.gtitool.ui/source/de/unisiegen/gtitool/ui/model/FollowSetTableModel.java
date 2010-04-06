@@ -71,6 +71,8 @@ public class FollowSetTableModel extends AbstractTableModel
     if ( cfg == null )
       throw new NullPointerException ( "cfg is null" ); //$NON-NLS-1$
 
+    this.followSets = new ArrayList < TerminalSymbolSet > ();
+
     this.nonterminals = cfg.getNonterminalSymbolSet ();
     for ( NonterminalSymbol ns : this.nonterminals )
       this.followSets.add ( cfg.follow ( ns ) );

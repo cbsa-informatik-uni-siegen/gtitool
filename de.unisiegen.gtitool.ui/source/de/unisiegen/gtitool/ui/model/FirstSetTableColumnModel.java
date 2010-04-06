@@ -47,11 +47,12 @@ public class FirstSetTableColumnModel extends DefaultTableColumnModel
         .getString ( "FirstSetColumnModel.DerivationColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-
+    addColumn ( symbolColumn );
     symbolColumn = new TableColumn ( FIRST_SET_COLUMN );
     symbolColumn.setHeaderValue ( new PrettyString ( new PrettyToken ( Messages
         .getString ( "FirstSetColumnModel.FirstSetColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+    addColumn ( symbolColumn );
   }
 }

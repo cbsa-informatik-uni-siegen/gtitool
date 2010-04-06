@@ -70,6 +70,12 @@ public class FirstSetTableModel extends AbstractTableModel
   public FirstSetTableModel ( final CFG cfg )
       throws GrammarInvalidNonterminalException, TerminalSymbolSetException
   {
+    if(cfg == null)
+      throw new NullPointerException ( "cfg is null" ); //$NON-NLS-1$
+    
+    this.productionWordData = new ArrayList < ProductionWord > ();
+    this.firstSetData = new ArrayList < FirstSet > ();
+    
     for ( Production p : cfg.getProduction () )
       this.productionWordData.add ( p.getProductionWord () );
 

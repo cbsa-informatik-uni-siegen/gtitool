@@ -49,11 +49,12 @@ public class FollowSetTableColumnModel extends DefaultTableColumnModel
                     .getString ( "FollowSetColumnModel.NonterminalSymbolColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-
+    addColumn ( symbolColumn );
     symbolColumn = new TableColumn ( FOLLOW_SET_COLUMN );
     symbolColumn.setHeaderValue ( new PrettyString ( new PrettyToken ( Messages
         .getString ( "FollowSetColumnModel.FollowSetColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+    addColumn ( symbolColumn );
   }
 }

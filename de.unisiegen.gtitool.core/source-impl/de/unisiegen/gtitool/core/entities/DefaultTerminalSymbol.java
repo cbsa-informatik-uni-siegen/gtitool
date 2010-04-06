@@ -82,7 +82,7 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   public DefaultTerminalSymbol ( Element element ) throws StoreException
   {
     // Check if the element is correct
-    if ( !element.getName ().equals ( "TerminalSymbol" ) )
+    if ( !element.getName ().equals ( "TerminalSymbol" ) ) //$NON-NLS-1$
       throw new IllegalArgumentException (
           "element " + Messages.QUOTE + element.getName () //$NON-NLS-1$
               + Messages.QUOTE + " is not a terminal symbol" ); //$NON-NLS-1$

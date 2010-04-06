@@ -40,17 +40,11 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanelGrammar = new javax.swing.JPanel();
-        jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTILabelTerminalSymbols = new de.unisiegen.gtitool.ui.swing.JGTILabel();
-        jGTILabelStartSymbol = new de.unisiegen.gtitool.ui.swing.JGTILabel();
-        jGTILabelNonterminalSymbols = new de.unisiegen.gtitool.ui.swing.JGTILabel();
-        styledNonterminalSymbolSetParserPanel = new de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel();
-        styledStartNonterminalSymbolParserPanel = new de.unisiegen.gtitool.ui.style.StyledStartNonterminalSymbolParserPanel();
-        styledTerminalSymbolSetParserPanel = new de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel();
-        jGTIPanel2 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIScrollPane1 = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        jGTIGrammarTable = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        jGTIFirstFollowPanel = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jGTIFirstSetTable = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jGTIFollowSetTable = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTISeparator1 = new de.unisiegen.gtitool.ui.swing.JGTISeparator();
         jGTIPanel4 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIExistingCorrectAnswersLabel = new de.unisiegen.gtitool.ui.swing.JGTILabel();
@@ -65,77 +59,7 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanelGrammar.setLayout(new java.awt.GridBagLayout());
-
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        jGTILabelTerminalSymbols.setText(bundle.getString("CreateParsingTableDialog.LabelTerminalSymbols")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        jGTIPanel1.add(jGTILabelTerminalSymbols, gridBagConstraints);
-
-        jGTILabelStartSymbol.setText(bundle.getString("CreateParsingTableDialog.LabelStartSymbol")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        jGTIPanel1.add(jGTILabelStartSymbol, gridBagConstraints);
-
-        jGTILabelNonterminalSymbols.setText(bundle.getString("CreateParsingTableDialog.LabelNonterminalSymbols")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        jGTIPanel1.add(jGTILabelNonterminalSymbols, gridBagConstraints);
-
-        styledNonterminalSymbolSetParserPanel.setCopyable(true);
-        styledNonterminalSymbolSetParserPanel.setEditable(false);
-        styledNonterminalSymbolSetParserPanel.setMinimumSize(new java.awt.Dimension(49, 29));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
-        jGTIPanel1.add(styledNonterminalSymbolSetParserPanel, gridBagConstraints);
-
-        styledStartNonterminalSymbolParserPanel.setCopyable(true);
-        styledStartNonterminalSymbolParserPanel.setEditable(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
-        jGTIPanel1.add(styledStartNonterminalSymbolParserPanel, gridBagConstraints);
-
-        styledTerminalSymbolSetParserPanel.setCopyable(true);
-        styledTerminalSymbolSetParserPanel.setEditable(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 16, 16);
-        jGTIPanel1.add(styledTerminalSymbolSetParserPanel, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanelGrammar.add(jGTIPanel1, gridBagConstraints);
-
-        jGTIGrammarTable.setModel(new javax.swing.table.DefaultTableModel(
+        jGTIFirstSetTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -146,7 +70,7 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
 
             }
         ));
-        jGTIScrollPane1.setViewportView(jGTIGrammarTable);
+        jScrollPane1.setViewportView(jGTIFirstSetTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -154,7 +78,20 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jGTIPanel2.add(jGTIScrollPane1, gridBagConstraints);
+        jGTIFirstFollowPanel.add(jScrollPane1, gridBagConstraints);
+
+        jGTIFollowSetTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(jGTIFollowSetTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -162,14 +99,15 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelGrammar.add(jGTIPanel2, gridBagConstraints);
+        jGTIFirstFollowPanel.add(jScrollPane2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        getContentPane().add(jPanelGrammar, gridBagConstraints);
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(jGTIFirstFollowPanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -283,23 +221,17 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTICorrectAnswersLabel;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTIExistingCorrectAnswersLabel;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTIExistingWrongAnswersLabel;
-    public de.unisiegen.gtitool.ui.swing.JGTITable jGTIGrammarTable;
-    private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelNonterminalSymbols;
-    private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelStartSymbol;
-    private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelTerminalSymbols;
-    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel1;
-    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel2;
+    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIFirstFollowPanel;
+    public de.unisiegen.gtitool.ui.swing.JGTITable jGTIFirstSetTable;
+    public de.unisiegen.gtitool.ui.swing.JGTITable jGTIFollowSetTable;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel3;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel4;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIParsingTable;
-    private de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPane1;
     private de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPane2;
     private de.unisiegen.gtitool.ui.swing.JGTISeparator jGTISeparator1;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTIWrongAnswersLabel;
-    public javax.swing.JPanel jPanelGrammar;
-    public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel;
-    public de.unisiegen.gtitool.ui.style.StyledStartNonterminalSymbolParserPanel styledStartNonterminalSymbolParserPanel;
-    public de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel styledTerminalSymbolSetParserPanel;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 
     public CreateParsingTableGameDialog getLogic() {

@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 

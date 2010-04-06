@@ -21,7 +21,7 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
      */
     private static final long serialVersionUID = -6408224101983628704L;
 
-    /**
+    /**re
      * The {@link MachinePanel}.
      */
     private MachinePanel logic;

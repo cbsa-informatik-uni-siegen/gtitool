@@ -186,7 +186,7 @@ public class LRMachineTableModel extends StatelessMachineTableModel
         // the action should be displayed in the row where it
         // takes place and *not* a row after that
         // but the action can only be determined after the user
-        // hits the 'next' button. (then the machine determine
+        // hits the 'next' button. (then the machine determines
         // the action corresponding to its internal state)
         if ( getRowCount () > rowIndex + 1 )
         {

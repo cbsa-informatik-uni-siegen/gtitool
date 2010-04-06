@@ -21,6 +21,7 @@ import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.machines.AbstractStatelessMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.StatelessMachine;
+import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -32,6 +33,7 @@ import de.unisiegen.gtitool.ui.model.LRMachineColumnModel;
 import de.unisiegen.gtitool.ui.model.LRMachineTableModel;
 import de.unisiegen.gtitool.ui.model.LRTableColumnModel;
 import de.unisiegen.gtitool.ui.model.LRTableModel;
+import de.unisiegen.gtitool.ui.model.PDATableModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
 import de.unisiegen.gtitool.ui.model.PTTableModel;
 import de.unisiegen.gtitool.ui.model.StatelessMachineTableModel;
@@ -203,12 +205,19 @@ public class StatelessMachinePanel extends MachinePanel
     }
     else if ( this.machine instanceof AbstractLRMachine )
     {
-      AbstractLRMachine lrMachine = ( AbstractLRMachine ) this.machine;
+      final AbstractLRMachine lrMachine = ( AbstractLRMachine ) this.machine;
+
+      final AbstractLR automaton = lrMachine.getAutomaton ();
+
       this.gui.jGTITableMachine.setModel ( new LRTableModel ( lrMachine
           .getAutomaton ().getStates (), this.model.getGrammar ()
           .getTerminalSymbolSet (), lrMachine.getTableCellStrings () ) );
       this.gui.jGTITableMachine.setColumnModel ( new LRTableColumnModel (
           this.model.getGrammar ().getTerminalSymbolSet () ) );
+
+      this.gui.jGTITableMachinePDA.setModel ( automaton );
+      this.gui.jGTITableMachinePDA.setColumnModel ( automaton
+          .getTableColumnModel () );
     }
     this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableMachine

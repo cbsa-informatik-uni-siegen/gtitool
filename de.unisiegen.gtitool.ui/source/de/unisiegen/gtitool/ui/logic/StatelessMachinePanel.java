@@ -198,6 +198,8 @@ public class StatelessMachinePanel extends MachinePanel
           ( CFG ) this.model.getGrammar () ) );
       this.gui.jGTITableMachine.setColumnModel ( new PTTableColumnModel (
           this.model.getGrammar ().getTerminalSymbolSet () ) );
+      // we don't need the pda stack operation table
+      setVisiblePDATable ( false );
     }
     else if ( this.machine instanceof AbstractLRMachine )
     {
@@ -212,9 +214,6 @@ public class StatelessMachinePanel extends MachinePanel
     this.gui.jGTITableMachine
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.gui.jGTITableMachine.setCellSelectionEnabled ( true );
-
-    // we don't need the pda stack operation table
-    setVisiblePDATable ( false );
   }
 
 

@@ -1438,11 +1438,12 @@ public abstract class AbstractStateMachine implements StateMachine
    * 
    * @see TableModel#getValueAt(int, int)
    */
-  public final Object getValueAt ( int rowIndex, int columnIndex )
+  public Object getValueAt ( int rowIndex, int columnIndex )
   {
     // State column
     if ( columnIndex == STATE_COLUMN )
     {
+
       for ( int i = 0 ; i < this.cachedValueList.size () ; i++ )
       {
         ObjectTriple < Integer, Integer, Object > cache = this.cachedValueList
@@ -1966,7 +1967,7 @@ public abstract class AbstractStateMachine implements StateMachine
 
   /**
    * Pushes the current state on the internal history stack
-   *
+   * 
    * @return the old state set
    */
   private TreeSet < State > pushCurrentState ()
@@ -2858,15 +2859,15 @@ public abstract class AbstractStateMachine implements StateMachine
     for ( State current : this.stateList )
       if ( current.isStartState () )
         current.setActive ( true );
-    
-    onStart();
+
+    onStart ();
   }
-  
+
+
   /**
    * Does a custom start action
-   *
    */
-  protected void onStart()
+  protected void onStart ()
   {
     // do nothing
   }

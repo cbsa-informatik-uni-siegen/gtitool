@@ -179,6 +179,21 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#getValueAt(int,
+   *      int)
+   */
+  @Override
+  public final Object getValueAt ( final int rowIndex, final int columnIndex )
+  {
+    if ( columnIndex == STATE_COLUMN )
+      return this.getState ().get ( rowIndex );
+    return super.getValueAt ( rowIndex, columnIndex );
+  }
+
+
+  /**
    * Get the current state stack
    * 
    * @return the state stack

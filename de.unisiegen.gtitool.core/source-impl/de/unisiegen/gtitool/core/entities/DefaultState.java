@@ -388,6 +388,11 @@ public class DefaultState implements State
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.State#addStateSelectedListener(de.unisiegen.gtitool.core.entities.listener.StateSelectionChangedListener)
+   */
   public final void addStateSelectedListener (
       final StateSelectionChangedListener listener )
   {
@@ -523,6 +528,7 @@ public class DefaultState implements State
   {
     StateSelectionChangedListener [] listeners = this.listenerList
         .getListeners ( StateSelectionChangedListener.class );
+
     for ( StateSelectionChangedListener current : listeners )
     {
       current.stateSelectionChanged ( this );

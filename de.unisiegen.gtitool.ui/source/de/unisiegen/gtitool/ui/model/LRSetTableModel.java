@@ -1,12 +1,7 @@
 package de.unisiegen.gtitool.ui.model;
 
 
-import java.util.ArrayList;
-
 import javax.swing.table.AbstractTableModel;
-
-import de.unisiegen.gtitool.core.entities.LRState;
-import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
 
 
 /**
@@ -21,58 +16,52 @@ public class LRSetTableModel extends AbstractTableModel
   private static final long serialVersionUID = 6968918861124621294L;
 
 
-  public LRSetTableModel ( final AbstractLR automaton )
+  /**
+   * TODO
+   *
+   * @param columnModel
+   */
+  public LRSetTableModel ( final LRSetTableColumnModel columnModel )
   {
-    this.automaton = automaton;
+    this.columnModel = columnModel;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see javax.swing.table.TableModel#getColumnCount()
    */
   public int getColumnCount ()
   {
-    return this.activeStates.size ();
+    return this.columnModel.getColumnCount ();
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see javax.swing.table.TableModel#getRowCount()
    */
   public int getRowCount ()
   {
-    int result = 0;
+    return this.columnModel.getRowCount ();
+  }
 
-    for ( LRState state : this.activeStates )
-      result = Math.max ( state.getItems ().size (), result );
 
-    return result;
+  /**
+   * {@inheritDoc}
+   * 
+   * @see javax.swing.table.TableModel#getValueAt(int, int)
+   */
+  public Object getValueAt ( final int rowIndex, final int columnIndex )
+  {
+    return this.columnModel.getEntry ( rowIndex, columnIndex );
   }
 
 
   /**
    * TODO
-   * 
-   * @param rowIndex
-   * @param columnIndex
-   * @return
-   * @see javax.swing.table.TableModel#getValueAt(int, int)
    */
-  public Object getValueAt ( int rowIndex, int columnIndex )
-  {
-    return this.activeStates.get ( columnIndex ).getItems ().stringEntries ()
-        .get ( rowIndex );
-  }
-
-
-  private AbstractLR automaton;
-
-
-  private ArrayList < LRState > activeStates = new ArrayList < LRState > ();
+  private final LRSetTableColumnModel columnModel;
 }

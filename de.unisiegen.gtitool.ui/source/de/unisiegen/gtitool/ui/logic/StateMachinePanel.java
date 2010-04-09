@@ -53,6 +53,7 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.StateSelectionChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TransitionSelectionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
@@ -979,13 +980,13 @@ public final class StateMachinePanel extends MachinePanel
   public final void handleMachinePDATableValueChanged (
       @SuppressWarnings ( "unused" ) ListSelectionEvent event )
   {
-    if(!(this.machine instanceof LRMachine))
+    if ( ! ( this.machine instanceof LRMachine ) )
     {
       if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
           && !this.cellEditingMode )
       {
         clearHighlight ();
-  
+
         int index = this.gui.jGTITableMachinePDA.getSelectedRow ();
         if ( index != -1 )
         {
@@ -993,7 +994,7 @@ public final class StateMachinePanel extends MachinePanel
               1 );
           Transition transition = this.model.getPDATableModel ().getTransition (
               index );
-  
+
           transitionList.add ( transition );
           if ( transition.getStateBegin () == transition.getStateEnd () )
             for ( Transition current : transition.getStateBegin ()
@@ -1002,11 +1003,11 @@ public final class StateMachinePanel extends MachinePanel
                   && ( current.getStateEnd () == transition.getStateEnd () )
                   && ( current != transition ) )
                 transitionList.add ( current );
-  
+
           highlightTransitionActive ( transitionList );
-  
-          ArrayList < Symbol > symbolList = new ArrayList < Symbol > ( transition
-              .size () );
+
+          ArrayList < Symbol > symbolList = new ArrayList < Symbol > (
+              transition.size () );
           symbolList.addAll ( transition.getSymbol () );
           highlightSymbolActive ( symbolList );
         }
@@ -1626,8 +1627,11 @@ public final class StateMachinePanel extends MachinePanel
     {
       final LRSetTableColumnModel columnModel = new LRSetTableColumnModel ();
 
-      TransitionSelectionChangedListener listener = new TransitionSelectionChangedListener ()
+      final LRSetTableModel tableModel = new LRSetTableModel ( columnModel );
+
+      final TransitionSelectionChangedListener transitionListener = new TransitionSelectionChangedListener ()
       {
+
         public void transitionSelectionChanged ( Transition newTransition )
         {
           columnModel.transitionChanged ( newTransition );
@@ -1635,11 +1639,22 @@ public final class StateMachinePanel extends MachinePanel
       };
 
       for ( Transition transition : this.machine.getTransition () )
-        transition.addTransitionSelectedListener ( listener );
+        transition.addTransitionSelectedListener ( transitionListener );
+
+      final StateSelectionChangedListener stateListener = new StateSelectionChangedListener ()
+      {
+
+        public void stateSelectionChanged ( final State state )
+        {
+          columnModel.stateChanged ( state );
+        }
+      };
+
+      for ( State state : this.machine.getState () )
+        state.addStateSelectedListener ( stateListener );
 
       this.pdaTableColumnModel = columnModel;
-      this.gui.jGTITableMachinePDA.setModel ( new LRSetTableModel (
-          ( AbstractLR ) ( this.machine ) ) );
+      this.gui.jGTITableMachinePDA.setModel ( tableModel );
     }
     else
     {

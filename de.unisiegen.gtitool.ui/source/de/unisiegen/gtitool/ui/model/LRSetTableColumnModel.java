@@ -1,7 +1,10 @@
 package de.unisiegen.gtitool.ui.model;
 
 
+import java.util.ArrayList;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
@@ -24,7 +27,7 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
   public LRSetTableColumnModel ()
   {
-    // TODO!
+    // nothing to do here
   }
 
 
@@ -60,7 +63,8 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
             Style.NONE ) ) );
         column.setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
         column.setCellRenderer ( new PrettyStringTableCellRenderer () );
-        this.columns.put ( stateName, new ColumnEntry ( column ) );
+        this.columns.put ( stateName, new ColumnEntry ( this.columns.size (),
+            lrstate, column ) );
 
         addColumn ( column );
       }
@@ -76,12 +80,60 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
     }
   }
 
+  @Override
+  public int getColumnCount()
+  {
+    return this.columns.size();
+  }
+
+  public int getRowCount ()
+  {
+    int rowCount = 0;
+
+    final Set < Entry < String, ColumnEntry >> entries = this.columns
+        .entrySet ();
+
+    for ( Entry < String, ColumnEntry > entry : entries )
+      rowCount = Math.max ( rowCount, entry.getValue ().getState ().getItems ()
+          .size () );
+
+    return rowCount;
+  }
+
+
+  public PrettyString getEntry ( final int rowIndex, final int columnIndex )
+  {
+    System.out.println ( columnIndex );
+
+    final Set < Entry < String, ColumnEntry >> entries = this.columns
+        .entrySet ();
+
+    for ( Entry < String, ColumnEntry > entry : entries )
+    {
+      final ColumnEntry columnEntry = entry.getValue ();
+
+      if ( columnEntry.getIndex () == columnIndex )
+      {
+        final ArrayList < PrettyString > stringEntries = columnEntry
+            .getState ().getItems ().stringEntries ();
+
+        return rowIndex < stringEntries.size () ? stringEntries.get ( rowIndex )
+            : new PrettyString ();
+      }
+    }
+
+    throw new RuntimeException ( "Column not found!" ); //$NON-NLS-1$
+  }
+
 
   private class ColumnEntry
   {
 
-    public ColumnEntry ( final TableColumn column )
+    public ColumnEntry ( final int index, final LRState state,
+        final TableColumn column )
     {
+      this.index = index;
+      this.state = state;
       this.refcount = 1;
       this.column = column;
     }
@@ -105,6 +157,24 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
     {
       return this.column;
     }
+
+
+    LRState getState ()
+    {
+      return this.state;
+    }
+
+
+    public int getIndex ()
+    {
+      return this.index;
+    }
+
+
+    private int index;
+
+
+    private LRState state;
 
 
     private TableColumn column;

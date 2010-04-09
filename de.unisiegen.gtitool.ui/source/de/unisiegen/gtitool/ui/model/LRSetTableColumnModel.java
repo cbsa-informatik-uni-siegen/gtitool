@@ -58,13 +58,15 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
         previousEntry.addRef ();
       else
       {
-        final TableColumn column = new TableColumn ( 0 );
+        final int index = this.columns.size ();
+
+        final TableColumn column = new TableColumn ( index );
         column.setHeaderValue ( new PrettyString ( new PrettyToken ( stateName,
             Style.NONE ) ) );
         column.setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
         column.setCellRenderer ( new PrettyStringTableCellRenderer () );
-        this.columns.put ( stateName, new ColumnEntry ( this.columns.size (),
-            lrstate, column ) );
+        this.columns
+            .put ( stateName, new ColumnEntry ( index, lrstate, column ) );
 
         addColumn ( column );
       }
@@ -80,11 +82,6 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
     }
   }
 
-  @Override
-  public int getColumnCount()
-  {
-    return this.columns.size();
-  }
 
   public int getRowCount ()
   {

@@ -32,6 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.jgraph.event.GraphSelectionEvent;
@@ -57,6 +58,7 @@ import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
+import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
 import de.unisiegen.gtitool.core.machines.dfa.LR1;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
@@ -72,6 +74,8 @@ import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultStateMachineModel;
+import de.unisiegen.gtitool.ui.model.LRSetTableColumnModel;
+import de.unisiegen.gtitool.ui.model.LRSetTableModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.PDATableColumnModel;
 import de.unisiegen.gtitool.ui.model.PDATableModel;
@@ -201,7 +205,7 @@ public final class StateMachinePanel extends MachinePanel
   /**
    * The {@link PDATableColumnModel}.
    */
-  private PDATableColumnModel pdaTableColumnModel = new PDATableColumnModel ();
+  private TableColumnModel pdaTableColumnModel;
 
 
   /**
@@ -675,7 +679,7 @@ public final class StateMachinePanel extends MachinePanel
    * @return The pdaTableColumnModel.
    * @see #pdaTableColumnModel
    */
-  public final PDATableColumnModel getPdaTableColumnModel ()
+  public final TableColumnModel getPdaTableColumnModel ()
   {
     return this.pdaTableColumnModel;
   }
@@ -686,7 +690,7 @@ public final class StateMachinePanel extends MachinePanel
    * 
    * @return The {@link PDATableModel}.
    */
-  public final PDATableModel getPDATableModel ()
+  public final TableModel getPDATableModel ()
   {
     return this.model.getPDATableModel ();
   }
@@ -1613,7 +1617,18 @@ public final class StateMachinePanel extends MachinePanel
    */
   private final void initializePDATable ()
   {
-    this.gui.jGTITableMachinePDA.setModel ( this.model.getPDATableModel () );
+    if ( this.machine instanceof AbstractLR )
+    {
+      this.pdaTableColumnModel = new LRSetTableColumnModel ();
+      this.gui.jGTITableMachinePDA.setModel ( new LRSetTableModel (
+          ( AbstractLR ) ( this.machine ) ) );
+    }
+    else
+    {
+      this.pdaTableColumnModel = new PDATableColumnModel ();
+      this.gui.jGTITableMachinePDA.setModel ( this.model.getPDATableModel () );
+    }
+
     this.gui.jGTITableMachinePDA.setColumnModel ( this.pdaTableColumnModel );
     this.gui.jGTITableMachinePDA.getTableHeader ()
         .setReorderingAllowed ( false );

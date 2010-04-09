@@ -181,8 +181,6 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
       AlphabetException, TransitionException,
       TransitionSymbolOnlyOneTimeException
   {
-    this.pdaTableModel = new PDATableModel ();
-
     // Check if the element is correct
     if ( !element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
       throw new IllegalArgumentException ( "element " + Messages.QUOTE //$NON-NLS-1$
@@ -279,6 +277,7 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
 
     if ( ! ( this.machine instanceof DefaultTDP ) )
     {
+      initializePDATAbleModel ();
       initializeModifyStatusChangedListener ();
       initializeStatePositionChangedListener ();
       initializeGraph ();
@@ -390,7 +389,7 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
   {
     this.machine = machine;
 
-    this.pdaTableModel = new PDATableModel ();
+    initializePDATAbleModel ();
     initializeModifyStatusChangedListener ();
     initializeStatePositionChangedListener ();
     initializeGraph ();
@@ -398,6 +397,16 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
 
     // Reset modify
     resetModify ();
+  }
+
+
+  /**
+   * Initializes the pda table model
+   *
+   */
+  private void initializePDATAbleModel ()
+  {
+     this.pdaTableModel = new PDATableModel();
   }
 
 

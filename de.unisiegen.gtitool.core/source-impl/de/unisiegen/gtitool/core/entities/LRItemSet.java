@@ -20,4 +20,12 @@ public interface LRItemSet extends PrettyPrintable
    * @return the strings
    */
   public ArrayList < PrettyString > stringEntries ();
+
+
+  /**
+   * The number of elements
+   * 
+   * @return the size
+   */
+  public int size ();
 }

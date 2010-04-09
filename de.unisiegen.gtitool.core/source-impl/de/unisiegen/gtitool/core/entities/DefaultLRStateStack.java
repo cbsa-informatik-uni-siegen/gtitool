@@ -57,9 +57,8 @@ public class DefaultLRStateStack implements LRStateStack
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return
    * @see de.unisiegen.gtitool.core.entities.LRStateStack#pop()
    */
   public LRState pop ()

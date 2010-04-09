@@ -1964,6 +1964,11 @@ public abstract class AbstractStateMachine implements StateMachine
   }
 
 
+  /**
+   * Pushes the current state on the internal history stack
+   *
+   * @return the old state set
+   */
   private TreeSet < State > pushCurrentState ()
   {
     final StateMachineHistoryItem historyItem = makeCurrentHistoryItem ();
@@ -2189,7 +2194,7 @@ public abstract class AbstractStateMachine implements StateMachine
 
 
   /**
-   * TODO
+   * Restores the whole history
    * 
    * @param historyItem
    */
@@ -2216,9 +2221,9 @@ public abstract class AbstractStateMachine implements StateMachine
 
 
   /**
-   * TODO
+   * Restores the previous history item
    * 
-   * @return
+   * @return the restored history item
    */
   private final StateMachineHistoryItem restorePreviousHistoryItem ()
   {
@@ -2963,6 +2968,6 @@ public abstract class AbstractStateMachine implements StateMachine
    */
   public Element getElement ()
   {
-    return null; // TODO
+    return null; // nothing to return
   }
 }

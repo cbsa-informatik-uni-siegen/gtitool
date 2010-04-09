@@ -100,8 +100,6 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
   public PrettyString getEntry ( final int rowIndex, final int columnIndex )
   {
-    System.out.println ( columnIndex );
-
     final Set < Entry < String, ColumnEntry >> entries = this.columns
         .entrySet ();
 

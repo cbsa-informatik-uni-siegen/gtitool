@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.TransitionSelectionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -106,6 +107,15 @@ public interface Transition extends Entity < Transition >, Storable,
    * @param listener The {@link TransitionChangedListener}.
    */
   public void addTransitionChangedListener ( TransitionChangedListener listener );
+
+
+  /**
+   * Adds the given {@link TransitionSelectionChangedListener}.
+   * 
+   * @param listener
+   */
+  public void addTransitionSelectedListener (
+      TransitionSelectionChangedListener listener );
 
 
   /**

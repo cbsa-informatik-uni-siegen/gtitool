@@ -11,6 +11,7 @@ import javax.swing.event.EventListenerList;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.TransitionSelectionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
@@ -183,14 +184,7 @@ public final class DefaultTransition implements Transition
    */
   public DefaultTransition ()
   {
-    this.prettyStringChangedListener = new PrettyStringChangedListener ()
-    {
-
-      public void prettyStringChanged ()
-      {
-        firePrettyStringChanged ();
-      }
-    };
+    initializeListeners ();
 
     this.symbolSet = new TreeSet < Symbol > ();
 
@@ -237,14 +231,7 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    this.prettyStringChangedListener = new PrettyStringChangedListener ()
-    {
-
-      public void prettyStringChanged ()
-      {
-        firePrettyStringChanged ();
-      }
-    };
+    initializeListeners ();
 
     this.symbolSet = new TreeSet < Symbol > ();
     this.initialSymbolSet = new TreeSet < Symbol > ();
@@ -297,14 +284,7 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    this.prettyStringChangedListener = new PrettyStringChangedListener ()
-    {
-
-      public void prettyStringChanged ()
-      {
-        firePrettyStringChanged ();
-      }
-    };
+    initializeListeners ();
 
     this.symbolSet = new TreeSet < Symbol > ();
     this.initialSymbolSet = new TreeSet < Symbol > ();
@@ -340,14 +320,7 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException, StoreException
   {
-    this.prettyStringChangedListener = new PrettyStringChangedListener ()
-    {
-
-      public void prettyStringChanged ()
-      {
-        firePrettyStringChanged ();
-      }
-    };
+    initializeListeners ();
 
     // Check if the element is correct
     if ( !element.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
@@ -453,14 +426,7 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    this.prettyStringChangedListener = new PrettyStringChangedListener ()
-    {
-
-      public void prettyStringChanged ()
-      {
-        firePrettyStringChanged ();
-      }
-    };
+    initializeListeners ();
 
     this.symbolSet = new TreeSet < Symbol > ();
     this.initialSymbolSet = new TreeSet < Symbol > ();
@@ -495,14 +461,7 @@ public final class DefaultTransition implements Transition
       Symbol ... symbols ) throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    this.prettyStringChangedListener = new PrettyStringChangedListener ()
-    {
-
-      public void prettyStringChanged ()
-      {
-        firePrettyStringChanged ();
-      }
-    };
+    initializeListeners ();
 
     this.symbolSet = new TreeSet < Symbol > ();
     this.initialSymbolSet = new TreeSet < Symbol > ();
@@ -517,6 +476,19 @@ public final class DefaultTransition implements Transition
     add ( symbols );
 
     resetModify ();
+  }
+
+
+  private void initializeListeners ()
+  {
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
   }
 
 
@@ -654,6 +626,13 @@ public final class DefaultTransition implements Transition
   }
 
 
+  public final void addTransitionSelectedListener (
+      TransitionSelectionChangedListener listener )
+  {
+    this.listenerList.add ( TransitionSelectionChangedListener.class, listener );
+  }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -726,6 +705,20 @@ public final class DefaultTransition implements Transition
     for ( PrettyStringChangedListener current : listeners )
     {
       current.prettyStringChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the isSelected() has changed.
+   */
+  protected final void fireSelectionChanged ()
+  {
+    TransitionSelectionChangedListener [] listeners = this.listenerList
+        .getListeners ( TransitionSelectionChangedListener.class );
+    for ( TransitionSelectionChangedListener current : listeners )
+    {
+      current.transitionSelectionChanged ( this );
     }
   }
 
@@ -1397,12 +1390,13 @@ public final class DefaultTransition implements Transition
    * 
    * @see Transition#setSelected(boolean)
    */
-  public final void setSelected ( boolean selected )
+  public final void setSelected ( final boolean selected )
   {
     if ( this.selected != selected )
     {
       this.selected = selected;
       firePrettyStringChanged ();
+      fireSelectionChanged ();
     }
   }
 

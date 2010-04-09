@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.StateSelectionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -31,6 +32,10 @@ public interface State extends Entity < State >, Storable, Modifyable
    * @param listener The {@link StateChangedListener}.
    */
   public void addStateChangedListener ( StateChangedListener listener );
+
+
+  public void addStateSelectedListener (
+      final StateSelectionChangedListener listener );
 
 
   /**

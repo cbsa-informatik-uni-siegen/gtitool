@@ -627,7 +627,7 @@ public final class DefaultTransition implements Transition
 
 
   public final void addTransitionSelectedListener (
-      TransitionSelectionChangedListener listener )
+      final TransitionSelectionChangedListener listener )
   {
     this.listenerList.add ( TransitionSelectionChangedListener.class, listener );
   }

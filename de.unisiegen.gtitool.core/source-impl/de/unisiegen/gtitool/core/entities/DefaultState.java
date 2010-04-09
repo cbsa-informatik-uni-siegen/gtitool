@@ -8,6 +8,7 @@ import javax.swing.event.EventListenerList;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.StateSelectionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -387,6 +388,13 @@ public class DefaultState implements State
   }
 
 
+  public final void addStateSelectedListener (
+      final StateSelectionChangedListener listener )
+  {
+    this.listenerList.add ( StateSelectionChangedListener.class, listener );
+  }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -504,6 +512,20 @@ public class DefaultState implements State
     for ( PrettyStringChangedListener current : listeners )
     {
       current.prettyStringChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the isSelected() has changed.
+   */
+  protected final void fireSelectionChanged ()
+  {
+    StateSelectionChangedListener [] listeners = this.listenerList
+        .getListeners ( StateSelectionChangedListener.class );
+    for ( StateSelectionChangedListener current : listeners )
+    {
+      current.stateSelectionChanged ( this );
     }
   }
 
@@ -1116,6 +1138,7 @@ public class DefaultState implements State
     {
       this.selected = selected;
       firePrettyStringChanged ();
+      fireSelectionChanged ();
     }
   }
 

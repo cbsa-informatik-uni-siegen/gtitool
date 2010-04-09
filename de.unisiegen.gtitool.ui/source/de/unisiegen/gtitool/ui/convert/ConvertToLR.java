@@ -72,7 +72,7 @@ public abstract class ConvertToLR extends AbstractConvertGrammarStateMachine
   @Override
   protected void createMachinePanel ( Machine machine )
   {
-    doCreateMachinePanel ( machine, false );
+    doCreateMachinePanel ( machine, true );
   }
 
 

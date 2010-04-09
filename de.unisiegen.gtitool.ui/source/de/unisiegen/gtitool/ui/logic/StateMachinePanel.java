@@ -53,6 +53,7 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.TransitionSelectionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
@@ -1623,7 +1624,20 @@ public final class StateMachinePanel extends MachinePanel
   {
     if ( this.machine instanceof AbstractLR )
     {
-      this.pdaTableColumnModel = new LRSetTableColumnModel ();
+      final LRSetTableColumnModel columnModel = new LRSetTableColumnModel ();
+
+      TransitionSelectionChangedListener listener = new TransitionSelectionChangedListener ()
+      {
+        public void transitionSelectionChanged ( Transition newTransition )
+        {
+          columnModel.transitionChanged ( newTransition );
+        }
+      };
+
+      for ( Transition transition : this.machine.getTransition () )
+        transition.addTransitionSelectedListener ( listener );
+
+      this.pdaTableColumnModel = columnModel;
       this.gui.jGTITableMachinePDA.setModel ( new LRSetTableModel (
           ( AbstractLR ) ( this.machine ) ) );
     }

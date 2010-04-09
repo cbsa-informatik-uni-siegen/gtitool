@@ -49,22 +49,70 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
     final String stateName = lrstate.getName ();
     if ( selected )
     {
-      final TableColumn column = new TableColumn ( 0 );
-      column.setHeaderValue ( new PrettyString ( new PrettyToken ( stateName,
-          Style.NONE ) ) );
-      column.setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-      column.setCellRenderer ( new PrettyStringTableCellRenderer () );
+      final ColumnEntry previousEntry = this.columns.get ( stateName );
 
-      this.columns.put ( stateName, column );
+      if ( previousEntry != null )
+        previousEntry.addRef ();
+      else
+      {
+        final TableColumn column = new TableColumn ( 0 );
+        column.setHeaderValue ( new PrettyString ( new PrettyToken ( stateName,
+            Style.NONE ) ) );
+        column.setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+        column.setCellRenderer ( new PrettyStringTableCellRenderer () );
+        this.columns.put ( stateName, new ColumnEntry ( column ) );
 
-      addColumn ( column );
+        addColumn ( column );
+      }
     }
     else
     {
-      this.removeColumn ( this.columns.get ( stateName ) );
+      final ColumnEntry entry = this.columns.get ( stateName );
+      if ( entry.Release () )
+      {
+        this.columns.remove ( stateName );
+        this.removeColumn ( entry.getColumn () );
+      }
     }
   }
 
 
-  private TreeMap < String, TableColumn > columns = new TreeMap < String, TableColumn > ();
+  private class ColumnEntry
+  {
+
+    public ColumnEntry ( final TableColumn column )
+    {
+      this.refcount = 1;
+      this.column = column;
+    }
+
+
+    void addRef ()
+    {
+      ++this.refcount;
+    }
+
+
+    boolean Release ()
+    {
+      --this.refcount;
+
+      return this.refcount == 0;
+    }
+
+
+    TableColumn getColumn ()
+    {
+      return this.column;
+    }
+
+
+    private TableColumn column;
+
+
+    private int refcount;
+  }
+
+
+  private TreeMap < String, ColumnEntry > columns = new TreeMap < String, ColumnEntry > ();
 }

@@ -33,7 +33,6 @@ import de.unisiegen.gtitool.ui.model.LRMachineColumnModel;
 import de.unisiegen.gtitool.ui.model.LRMachineTableModel;
 import de.unisiegen.gtitool.ui.model.LRTableColumnModel;
 import de.unisiegen.gtitool.ui.model.LRTableModel;
-import de.unisiegen.gtitool.ui.model.PDATableModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
 import de.unisiegen.gtitool.ui.model.PTTableModel;
 import de.unisiegen.gtitool.ui.model.StatelessMachineTableModel;

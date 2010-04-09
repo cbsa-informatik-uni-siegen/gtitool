@@ -60,6 +60,7 @@ import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
 import de.unisiegen.gtitool.core.machines.dfa.LR1;
+import de.unisiegen.gtitool.core.machines.lr.LRMachine;
 import de.unisiegen.gtitool.core.machines.pda.DefaultTDP;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -977,34 +978,37 @@ public final class StateMachinePanel extends MachinePanel
   public final void handleMachinePDATableValueChanged (
       @SuppressWarnings ( "unused" ) ListSelectionEvent event )
   {
-    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
-        && !this.cellEditingMode )
+    if(!(this.machine instanceof LRMachine))
     {
-      clearHighlight ();
-
-      int index = this.gui.jGTITableMachinePDA.getSelectedRow ();
-      if ( index != -1 )
+      if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+          && !this.cellEditingMode )
       {
-        ArrayList < Transition > transitionList = new ArrayList < Transition > (
-            1 );
-        Transition transition = this.model.getPDATableModel ().getTransition (
-            index );
-
-        transitionList.add ( transition );
-        if ( transition.getStateBegin () == transition.getStateEnd () )
-          for ( Transition current : transition.getStateBegin ()
-              .getTransitionBegin () )
-            if ( ( current.getStateBegin () == transition.getStateBegin () )
-                && ( current.getStateEnd () == transition.getStateEnd () )
-                && ( current != transition ) )
-              transitionList.add ( current );
-
-        highlightTransitionActive ( transitionList );
-
-        ArrayList < Symbol > symbolList = new ArrayList < Symbol > ( transition
-            .size () );
-        symbolList.addAll ( transition.getSymbol () );
-        highlightSymbolActive ( symbolList );
+        clearHighlight ();
+  
+        int index = this.gui.jGTITableMachinePDA.getSelectedRow ();
+        if ( index != -1 )
+        {
+          ArrayList < Transition > transitionList = new ArrayList < Transition > (
+              1 );
+          Transition transition = this.model.getPDATableModel ().getTransition (
+              index );
+  
+          transitionList.add ( transition );
+          if ( transition.getStateBegin () == transition.getStateEnd () )
+            for ( Transition current : transition.getStateBegin ()
+                .getTransitionBegin () )
+              if ( ( current.getStateBegin () == transition.getStateBegin () )
+                  && ( current.getStateEnd () == transition.getStateEnd () )
+                  && ( current != transition ) )
+                transitionList.add ( current );
+  
+          highlightTransitionActive ( transitionList );
+  
+          ArrayList < Symbol > symbolList = new ArrayList < Symbol > ( transition
+              .size () );
+          symbolList.addAll ( transition.getSymbol () );
+          highlightSymbolActive ( symbolList );
+        }
       }
     }
   }

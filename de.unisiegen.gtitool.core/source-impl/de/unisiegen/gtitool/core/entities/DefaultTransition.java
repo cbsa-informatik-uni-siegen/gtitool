@@ -479,6 +479,9 @@ public final class DefaultTransition implements Transition
   }
 
 
+  /**
+   * Initializes all default listeners
+   */
   private void initializeListeners ()
   {
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
@@ -626,6 +629,11 @@ public final class DefaultTransition implements Transition
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Transition#addTransitionSelectedListener(de.unisiegen.gtitool.core.entities.listener.TransitionSelectionChangedListener)
+   */
   public final void addTransitionSelectedListener (
       final TransitionSelectionChangedListener listener )
   {

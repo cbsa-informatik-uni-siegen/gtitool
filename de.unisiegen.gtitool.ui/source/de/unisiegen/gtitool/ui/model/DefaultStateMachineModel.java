@@ -351,6 +351,17 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
         transition.setAlphabet ( alphabet );
         transition.setPushDownAlphabet ( pushDownAlphabet );
 
+        // get the real transition out of this automaton instead
+        if ( lrAutomaton )
+        {
+          for ( Transition trans : this.machine.getTransition () )
+            if ( trans.equals ( transition ) )
+            {
+              transition = trans;
+              break;
+            }
+        }
+
         DefaultStateView source = getStateById ( transition.getStateBeginId () );
         DefaultStateView target = getStateById ( transition.getStateEndId () );
 
@@ -402,11 +413,10 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
 
   /**
    * Initializes the pda table model
-   *
    */
   private void initializePDATAbleModel ()
   {
-     this.pdaTableModel = new PDATableModel();
+    this.pdaTableModel = new PDATableModel ();
   }
 
 

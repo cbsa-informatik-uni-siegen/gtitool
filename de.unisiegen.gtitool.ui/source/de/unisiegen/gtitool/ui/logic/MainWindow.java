@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.JTableHeader;
@@ -308,6 +309,41 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_CONVERT_TO_COMPLETE_SOURCE_REGEX,
 
     /**
+     * The convert to lr0 automaton enabled button state.
+     */
+    ENABLED_CONVERT_TO_LR0_AUTOMATON,
+
+    /**
+     * The convert to lr1 automaton enabled button state.
+     */
+    ENABLED_CONVERT_TO_LR1_AUTOMATON,
+
+    /**
+     * The convert to lrlr1 automaton enabled button state.
+     */
+    ENABLED_CONVERT_TO_LALR1_AUTOMATON,
+
+    /**
+     * The convert to lr0 parser enabled button state.
+     */
+    ENABLED_CONVERT_TO_LR0_PARSER,
+
+    /**
+     * The convert to lr1 parser enabled button state.
+     */
+    ENABLED_CONVERT_TO_LR1_PARSER,
+
+    /**
+     * The convert to lalr1 parser enabled button state.
+     */
+    ENABLED_CONVERT_TO_LALR1_PARSER,
+
+    /**
+     * The convert to slr parser enabled button state.
+     */
+    ENABLED_CONVERT_TO_SLR_PARSER,
+
+    /**
      * The minimize enabled button state.
      */
     ENABLED_MINIMIZE,
@@ -579,6 +615,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
     removeButtonState ( ButtonState.ENABLED_CREATE_PT );
     removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -1436,6 +1479,40 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( ( buttonState.equals ( ButtonState.VISIBLE_REGEX ) )
         && ( !this.buttonStateList.contains ( ButtonState.VISIBLE_REGEX ) ) )
       this.buttonStateList.add ( ButtonState.VISIBLE_REGEX );
+
+    handleAddButtonState ( this.gui.getJMenuItemConvertToLR0Automaton (),
+        ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+    handleAddButtonState ( this.gui.getJMenuItemConvertToLR1Automaton (),
+        ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
+    handleAddButtonState ( this.gui.getJMenuItemConvertToLR0Automaton (),
+        ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+    handleAddButtonState ( this.gui.getJMenuItemConvertToLR0Parser (),
+        ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
+    handleAddButtonState ( this.gui.getJMenuItemConvertToLR1Parser (),
+        ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
+    handleAddButtonState ( this.gui.getJMenuItemConvertToLALR1Parser (),
+        ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
+    handleAddButtonState ( this.gui.getJMenuItemConvertToSLRParser (),
+        ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
+  }
+
+
+  /**
+   * Adds a button state if it isn't added already, and activates the given
+   * control
+   * 
+   * @param item
+   * @param state
+   */
+  private void handleAddButtonState ( final JMenuItem item,
+      final ButtonState state )
+  {
+    if ( ( state.equals ( state ) )
+        && ( !this.buttonStateList.contains ( state ) ) )
+    {
+      this.buttonStateList.add ( state );
+      item.setEnabled ( true );
+    }
   }
 
 
@@ -4343,6 +4420,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
       removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
       removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
     }
     // MachinePanel
     else
@@ -4363,12 +4447,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
 
         final MachineType machineType = machinePanel.getMachine ()
             .getMachineType ();
-        if ( machineType.equals ( MachineType.DFA )
-            || machineType.equals ( MachineType.LR0 )
-            || machineType.equals ( MachineType.LR1 ) )
+        if ( machineType.equals ( MachineType.DFA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
@@ -4383,6 +4472,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             removeButtonState ( ButtonState.ENABLED_MINIMIZE );
             removeButtonState ( ButtonState.ENABLED_CONVERT_DFA_TO_REGEX );
           }
+        }
+        else if ( machineType.equals ( MachineType.LR0 )
+            || machineType.equals ( MachineType.LR1 ) )
+        {
+          // removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+        }
+        else if ( machineType.equals ( MachineType.LR1 ) )
+        {
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
         }
         else if ( machineType.equals ( MachineType.NFA ) )
         {
@@ -4531,6 +4629,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
 
         addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
 
@@ -4590,6 +4695,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
           removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
           removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
           removeButtonState ( ButtonState.ENABLED_CREATE_PT );
           removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
         }
@@ -4606,6 +4718,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CREATE_TDP );
           addButtonState ( ButtonState.ENABLED_CREATE_PT );
           addButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
         }
         else
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
@@ -4704,6 +4823,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
 
         if ( regexPanel.isUndoAble () )
           addButtonState ( ButtonState.ENABLED_UNDO );
@@ -5891,9 +6017,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_SAVE_ALL );
         addButtonState ( ButtonState.ENABLED_CLOSE );
         addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
-        //addButtonState ( ButtonState.ENABLED_PRINT );
-        //addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
-        //addButtonState ( ButtonState.ENABLED_VALIDATE );
+        // addButtonState ( ButtonState.ENABLED_PRINT );
+        // addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+        // addButtonState ( ButtonState.ENABLED_VALIDATE );
         removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       }
       else
@@ -6104,6 +6230,48 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_CREATE_TDP );
       this.gui.getJMenuItemCreateTDP ().setEnabled ( false );
+    }
+    else if ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+      this.gui.getJMenuItemConvertToLR0Automaton ().setEnabled ( false );
+    }
+    else if ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
+      this.gui.getJMenuItemConvertToLR1Automaton ().setEnabled ( false );
+    }
+    else if ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
+      this.gui.getJMenuItemConvertToLALR1Automaton ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
+      this.gui.getJMenuItemConvertToLR0Parser ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
+      this.gui.getJMenuItemConvertToLR1Parser ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
+      this.gui.getJMenuItemConvertToLALR1Parser ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
+      this.gui.getJMenuItemConvertToSLRParser ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_CREATE_PT ) )
     {

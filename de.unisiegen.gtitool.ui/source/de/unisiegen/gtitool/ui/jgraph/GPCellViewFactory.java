@@ -62,7 +62,7 @@ public class GPCellViewFactory extends DefaultCellViewFactory
       if ( value instanceof DefaultStateView
           && ( ( DefaultStateView ) value ).getState () instanceof LRState )
       {
-        return new SimpleLRStateView(value); // LRStateView ( value ); 
+        return new LRStateView ( value ); //new SimpleLRStateView(value); // LRStateView ( value ); 
       }
 
       DefaultGraphCell cell = ( DefaultGraphCell ) value;

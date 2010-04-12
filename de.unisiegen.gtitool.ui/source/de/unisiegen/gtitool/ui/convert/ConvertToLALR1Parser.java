@@ -2,9 +2,12 @@ package de.unisiegen.gtitool.ui.convert;
 
 
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
+import de.unisiegen.gtitool.core.machines.dfa.LR1;
 import de.unisiegen.gtitool.core.machines.lr.DefaultLR1Parser;
-import de.unisiegen.gtitool.core.machines.lr.LR1Parser;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
@@ -19,22 +22,14 @@ public class ConvertToLALR1Parser extends ConvertToLRParser
    * TODO
    * 
    * @param mainWindow
-   * @param parser
+   * @param grammar
    * @throws AlphabetException
    */
   public ConvertToLALR1Parser ( final MainWindowForm mainWindow,
-      final LR1Parser parser ) throws AlphabetException
+      final Grammar grammar ) throws AlphabetException
   {
-    super ( mainWindow, parser.getGrammar () );
-
-    this.parser = parser;
+    super ( mainWindow, grammar );
   }
-
-
-  /**
-   * The source parser
-   */
-  private LR1Parser parser;
 
 
   /**
@@ -53,8 +48,14 @@ public class ConvertToLALR1Parser extends ConvertToLRParser
   {
     try
     {
-      this.result = new DefaultLR1Parser ( this.parser.getLR1 ().toLALR1 (),
-          this.parser.getGrammar () );
+      final LR1Grammar lr1Grammar = ConvertToLR1.convertGrammar ( this
+          .getGrammar () );
+
+      final LR1 oldAutomaton = new LR1 ( lr1Grammar );
+
+      final LR1 newAutomaton = oldAutomaton.toLALR1 ();
+
+      this.result = new DefaultLR1Parser ( newAutomaton, lr1Grammar );
     }
     catch ( AlphabetException exc )
     {
@@ -62,6 +63,11 @@ public class ConvertToLALR1Parser extends ConvertToLRParser
       System.exit ( 1 );
     }
     catch ( StateException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( NonterminalSymbolSetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );

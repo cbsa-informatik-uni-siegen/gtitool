@@ -23,7 +23,7 @@ public class ConvertToLR1 extends ConvertToLR
    * @return The grammar
    * @throws NonterminalSymbolSetException
    */
-  private static LR1Grammar convertGrammar ( final Grammar grammar )
+  public static LR1Grammar convertGrammar ( final Grammar grammar )
       throws NonterminalSymbolSetException
   {
     return new LR1Grammar ( grammar.getNonterminalSymbolSet (), grammar

@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.convert;
 
 
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.machines.dfa.LR1;
@@ -54,10 +53,6 @@ public class ConvertToLALR1 extends ConvertToLR
       createMachinePanel ( this.result );
     }
     catch ( StateException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( AlphabetException exc )
     {
       exc.printStackTrace ();
     }

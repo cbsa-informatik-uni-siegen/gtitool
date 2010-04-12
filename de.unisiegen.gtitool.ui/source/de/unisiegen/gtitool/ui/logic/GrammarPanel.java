@@ -49,6 +49,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.convert.ConvertContextFreeGrammar;
 import de.unisiegen.gtitool.ui.convert.ConvertRegularGrammar;
+import de.unisiegen.gtitool.ui.convert.ConvertToLALR1Parser;
 import de.unisiegen.gtitool.ui.convert.ConvertToLR0;
 import de.unisiegen.gtitool.ui.convert.ConvertToLR0Parser;
 import de.unisiegen.gtitool.ui.convert.ConvertToLR1;
@@ -402,12 +403,13 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
             return new ConvertToTDP ( this.mainWindowForm, ( CFG ) this.grammar );
           case SLR :
             return new ConvertToSLRParser ( this.mainWindowForm, this.grammar );
+          case LALR1Parser :
+            return new ConvertToLALR1Parser ( this.mainWindowForm, this.grammar );
           case PDA :
           case NFA :
           case LALR1 :
           case ENFA :
           case DFA :
-          case LALR1Parser :
             break;
         }
       }

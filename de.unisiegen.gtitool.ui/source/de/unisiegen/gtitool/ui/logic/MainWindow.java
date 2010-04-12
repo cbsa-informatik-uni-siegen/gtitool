@@ -4474,13 +4474,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           }
         }
         else if ( machineType.equals ( MachineType.LR0 )
-            || machineType.equals ( MachineType.LR1 ) )
+            || machineType.equals ( MachineType.LR1 )
+            || machineType.equals ( MachineType.SLR ) )
         {
-          // removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
-        }
-        else if ( machineType.equals ( MachineType.LR1 ) )
-        {
-          addButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
+
+          if ( machineType.equals ( MachineType.LR1 ) )
+            addButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
+          else
+            removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
         }
         else if ( machineType.equals ( MachineType.NFA ) )
         {
@@ -4719,7 +4726,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CREATE_PT );
           addButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
 
-          addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+          // addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );

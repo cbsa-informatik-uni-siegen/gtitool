@@ -4420,6 +4420,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
       removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
       removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+      removeButtonState ( ButtonState.ENABLED_CREATE_PT );
+      removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4447,6 +4449,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+        removeButtonState ( ButtonState.ENABLED_CREATE_PT );
+        removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4636,6 +4640,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+        removeButtonState ( ButtonState.ENABLED_CREATE_PT );
+        removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4702,6 +4708,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
           removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
           removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+          removeButtonState ( ButtonState.ENABLED_CREATE_PT );
+          removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4709,8 +4717,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
-          removeButtonState ( ButtonState.ENABLED_CREATE_PT );
-          removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
@@ -4830,6 +4836,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
+        removeButtonState ( ButtonState.ENABLED_CREATE_PT );
+        removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );

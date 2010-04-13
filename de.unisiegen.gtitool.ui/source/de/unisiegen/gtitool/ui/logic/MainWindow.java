@@ -1480,19 +1480,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         && ( !this.buttonStateList.contains ( ButtonState.VISIBLE_REGEX ) ) )
       this.buttonStateList.add ( ButtonState.VISIBLE_REGEX );
 
-    handleAddButtonState ( this.gui.getJMenuItemConvertToLR0Automaton (),
+    handleAddButtonState ( buttonState, this.gui
+        .getJMenuItemConvertToLR0Automaton (),
         ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
-    handleAddButtonState ( this.gui.getJMenuItemConvertToLR1Automaton (),
+    handleAddButtonState ( buttonState, this.gui
+        .getJMenuItemConvertToLR1Automaton (),
         ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
-    handleAddButtonState ( this.gui.getJMenuItemConvertToLR0Automaton (),
-        ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
-    handleAddButtonState ( this.gui.getJMenuItemConvertToLR0Parser (),
+    handleAddButtonState ( buttonState, this.gui
+        .getJMenuItemConvertToLALR1Automaton (),
+        ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
+    handleAddButtonState ( buttonState, this.gui
+        .getJMenuItemConvertToLR0Parser (),
         ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
-    handleAddButtonState ( this.gui.getJMenuItemConvertToLR1Parser (),
+    handleAddButtonState ( buttonState, this.gui
+        .getJMenuItemConvertToLR1Parser (),
         ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
-    handleAddButtonState ( this.gui.getJMenuItemConvertToLALR1Parser (),
+    handleAddButtonState ( buttonState, this.gui
+        .getJMenuItemConvertToLALR1Parser (),
         ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
-    handleAddButtonState ( this.gui.getJMenuItemConvertToSLRParser (),
+    handleAddButtonState ( buttonState, this.gui
+        .getJMenuItemConvertToSLRParser (),
         ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
   }
 
@@ -1501,13 +1508,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    * Adds a button state if it isn't added already, and activates the given
    * control
    * 
+   * @param buttonState
    * @param item
    * @param state
    */
-  private void handleAddButtonState ( final JMenuItem item,
-      final ButtonState state )
+  private void handleAddButtonState ( final ButtonState buttonState,
+      final JMenuItem item, final ButtonState state )
   {
-    if ( ( state.equals ( state ) )
+    if ( ( buttonState.equals ( state ) )
         && ( !this.buttonStateList.contains ( state ) ) )
     {
       this.buttonStateList.add ( state );

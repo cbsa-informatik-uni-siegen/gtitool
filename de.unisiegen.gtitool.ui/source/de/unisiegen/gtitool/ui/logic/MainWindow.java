@@ -4437,6 +4437,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
     }
     // MachinePanel
     else
@@ -4466,6 +4467,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
 
         final MachineType machineType = machinePanel.getMachine ()
             .getMachineType ();
@@ -4710,6 +4712,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
           removeButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
           removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
           removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
@@ -4729,6 +4732,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
         {
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
           addButtonState ( ButtonState.ENABLED_ELIMINATE_LEFT_RECURSION );
           addButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
           addButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
@@ -6447,6 +6451,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
     else if ( buttonState.equals ( ButtonState.VISIBLE_REGEX ) )
       this.buttonStateList.remove ( ButtonState.VISIBLE_REGEX );
+    else if (buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA ))
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+      this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
+    }
     else
       throw new IllegalArgumentException ( "unsupported button state: " //$NON-NLS-1$
           + buttonState );

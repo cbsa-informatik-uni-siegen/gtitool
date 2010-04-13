@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableHeaderCellRenderer;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 
@@ -49,12 +50,16 @@ public class FollowSetTableColumnModel extends DefaultTableColumnModel
                     .getString ( "FollowSetColumnModel.NonterminalSymbolColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     addColumn ( symbolColumn );
     symbolColumn = new TableColumn ( FOLLOW_SET_COLUMN );
     symbolColumn.setHeaderValue ( new PrettyString ( new PrettyToken ( Messages
         .getString ( "FollowSetColumnModel.FollowSetColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     addColumn ( symbolColumn );
   }
 }

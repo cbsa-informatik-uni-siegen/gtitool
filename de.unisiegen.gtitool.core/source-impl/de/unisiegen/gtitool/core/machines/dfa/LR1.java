@@ -143,16 +143,14 @@ public class LR1 extends AbstractLR
 
   /**
    * Constructs the LR1 parser without constructing its states
-   * 
+   * @param alphabet 
    * @param grammar
    * @param temp The tag
-   * @throws AlphabetException
    */
-  private LR1 ( final LR1Grammar grammar,
+  private LR1 ( final Alphabet alphabet, final LR1Grammar grammar,
       @SuppressWarnings ( "unused" ) final DontConstructTheStates temp )
-      throws AlphabetException
   {
-    super ( grammar );
+    super ( alphabet, grammar );
 
     this.grammar = grammar;
   }
@@ -163,11 +161,11 @@ public class LR1 extends AbstractLR
    * 
    * @return the new automaton
    * @throws StateException
-   * @throws AlphabetException
    */
-  public LR1 toLALR1 () throws StateException, AlphabetException
+  public LR1 toLALR1 () throws StateException
   {
-    LR1 ret = new LR1 ( this.grammar, new DontConstructTheStates () );
+    LR1 ret = new LR1 ( this.getAlphabet (), this.grammar,
+        new DontConstructTheStates () );
 
     int stateIndex = 0;
 

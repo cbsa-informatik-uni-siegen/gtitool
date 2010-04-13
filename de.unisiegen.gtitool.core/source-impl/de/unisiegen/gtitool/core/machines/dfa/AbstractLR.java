@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.machines.dfa;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultLRStateStack;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
@@ -39,7 +40,19 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
   protected AbstractLR ( final ExtendedGrammar grammar )
       throws AlphabetException
   {
-    super ( grammar.getAlphabet (), new DefaultAlphabet (), false,
+    this ( grammar.getAlphabet (), grammar );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param alphabet
+   * @param grammar
+   */
+  protected AbstractLR ( final Alphabet alphabet, final ExtendedGrammar grammar )
+  {
+    super ( alphabet, new DefaultAlphabet (), false,
         ValidationElement.FINAL_STATE, ValidationElement.STATE_NAME,
         ValidationElement.SYMBOL_ONLY_ONE_TIME );
 

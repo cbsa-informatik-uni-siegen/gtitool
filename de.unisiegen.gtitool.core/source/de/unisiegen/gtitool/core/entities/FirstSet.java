@@ -33,47 +33,47 @@ public interface FirstSet extends Entity < TerminalSymbolSet >, Storable,
 
 
   /**
-   * TODO
-   *
+   * Adds {@link TerminalSymbol}s to the set
+   * 
    * @param terminalSymbols
-   * @throws TerminalSymbolSetException
+   * @return true, if set was modified
    */
-  public void add ( Iterable < TerminalSymbol > terminalSymbols )
-      throws TerminalSymbolSetException;
+  public boolean add ( Iterable < TerminalSymbol > terminalSymbols );
 
 
   /**
-   * TODO
-   *
+   * Adds a {@link TerminalSymbol} to the set
+   * 
    * @param terminalSymbol
-   * @throws TerminalSymbolSetException
+   * @return true, if set was modified
    */
-  public void add ( TerminalSymbol terminalSymbol )
-      throws TerminalSymbolSetException;
+  public boolean add ( TerminalSymbol terminalSymbol );
+
 
   /**
    * TODO
-   *
+   * 
    * @param listener
    */
   public void addTerminalSymbolSetChangedListener (
       TerminalSymbolSetChangedListener listener );
-  
+
+
   /**
    * clears the set
-   *
    */
   public void clear ();
-  
+
+
   /**
    * checks whether terminalSymbol is in this set or not
    * 
-   * @param terminalSymbol the symbol we're checking against
-   *                       the other ones
+   * @param terminalSymbol the symbol we're checking against the other ones
    * @return true if terminalSymbol is in the set, false otherwise
    */
   public boolean contains ( TerminalSymbol terminalSymbol );
-  
+
+
   /**
    * Returns the {@link TerminalSymbol}s.
    * 
@@ -135,13 +135,12 @@ public interface FirstSet extends Entity < TerminalSymbolSet >, Storable,
    *         {@link TerminalSymbolSet}.
    */
   public int size ();
-  
-  
+
+
   /**
-   * 
    * returns if last set-operation modified the set
-   *
+   * 
    * @return true, if last set-operation modified the set
    */
-  public boolean modified();
+  public boolean modified ();
 }

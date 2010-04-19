@@ -58,9 +58,10 @@ public class DefaultFirstSet implements FirstSet
    * 
    * @see de.unisiegen.gtitool.core.entities.FirstSet#add(java.lang.Iterable)
    */
-  public void add ( Iterable < TerminalSymbol > terminalSymbols )
+  public boolean add ( Iterable < TerminalSymbol > terminalSymbols )
   {
     this.modified = this.terminalSymbolSet.addIfNonexistent ( terminalSymbols );
+    return this.modified;
   }
 
 
@@ -69,9 +70,10 @@ public class DefaultFirstSet implements FirstSet
    * 
    * @see de.unisiegen.gtitool.core.entities.FirstSet#add(de.unisiegen.gtitool.core.entities.TerminalSymbol)
    */
-  public void add ( TerminalSymbol terminalSymbol )
+  public boolean add ( TerminalSymbol terminalSymbol )
   {
     this.modified = this.terminalSymbolSet.addIfNonexistent ( terminalSymbol );
+    return this.modified;
   }
 
 

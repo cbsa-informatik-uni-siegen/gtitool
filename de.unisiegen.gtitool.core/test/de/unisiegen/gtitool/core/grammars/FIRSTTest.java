@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
@@ -26,9 +27,10 @@ public class FIRSTTest
 
   /**
    * the program entry point
-   *
+   * 
    * @param arguments command line arguments
    */
+  @SuppressWarnings ( "nls" )
   public static void main ( final String [] arguments )
   {
     NonterminalSymbol E = new DefaultNonterminalSymbol ( "E" ); //$NON-NLS-1$
@@ -90,27 +92,40 @@ public class FIRSTTest
     grammar.addProduction ( new DefaultProduction ( F,
         new DefaultProductionWord ( lparen, E, rparen ) ) );
 
+    System.out.print ( F.getName () + ": " );
+    printFirstSet ( grammar.first ( F ) );
+    System.out.println ();
+    System.out.print ( T.getName () + ": " );
+    printFirstSet ( grammar.first ( T ) );
+    System.out.println ();
+    System.out.print ( E.getName () + ": " );
+    printFirstSet ( grammar.first ( E ) );
+    System.out.println ();
+    System.out.print ( grammar.getProductionAt ( 0 ).getProductionWord ()
+        + ": " );
     try
     {
-      printFirstSet ( (DefaultFirstSet)grammar.first ( F ) );
+      printFirstSet ( grammar.first ( grammar.getProductionAt ( 0 ).getProductionWord () ) );
     }
     catch ( GrammarInvalidNonterminalException exc )
     {
       exc.printStackTrace();
     }
   }
-  
+
+
   /**
    * prints a first set
-   *
+   * 
    * @param fs the first set
    */
-  private static void printFirstSet(final DefaultFirstSet fs)
+  @SuppressWarnings ( "nls" )
+  private static void printFirstSet ( final FirstSet fs )
   {
-    for(TerminalSymbol ts : fs)
+    for ( TerminalSymbol ts : fs )
     {
-      DefaultTerminalSymbol dts = (DefaultTerminalSymbol)ts;
-      System.out.println(dts);
+      DefaultTerminalSymbol dts = ( DefaultTerminalSymbol ) ts;
+      System.out.print ( dts + " " );
     }
   }
 }

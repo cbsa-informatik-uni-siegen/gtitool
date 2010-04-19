@@ -119,7 +119,7 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * calculated first sets
    */
-  private HashMap < NonterminalSymbol, FirstSet > firstSets = null;
+  private HashMap < ProductionWordMember, FirstSet > firstSets = null;
 
 
   /**
@@ -847,67 +847,127 @@ public abstract class AbstractGrammar implements Grammar
   {
     DefaultFirstSet firstSet = new DefaultFirstSet ();
 
-    if ( pw.epsilon () )
-      firstSet.epsilon ( true );
-    /*
-     * ProductionWord starts with a TerminalSymbol => we can derive a word from
-     * pw that starts with that TerminalSymbol
-     */
-    else if ( pw.get ().size () >= 1 && pw.get ( 0 ) instanceof TerminalSymbol )
-      firstSet.add ( ( TerminalSymbol ) pw.get ( 0 ) );
-    else
-    /*
-     * pw is a Nonterminal X of the form X -> X_1\dots X_nnow search for an
-     * index i such that j < i.(\epsilon \in X_j) andif terminalsymbol a \in X_i
-     * we can derive a word form pw thatstarts with a (add it to the firstSet)
-     */
-    {
-      ProductionWordMember X = pw.get ( 0 );
-      if ( X instanceof NonterminalSymbol )
+    if ( this.firstSets == null )
+      calculateAllFirstSets ();
+
+    for ( ProductionWordMember pwm : pw )
+      if ( !this.firstSets.get ( pwm ).epsilon () )
       {
-        NonterminalSymbol x = ( NonterminalSymbol ) X;
-        if ( !this.nonterminalSymbolSet.contains ( x ) )
-          throw new GrammarInvalidNonterminalException ( x,
-              this.nonterminalSymbolSet );
-        ArrayList < ProductionWord > prodWords = getProductionForNonterminal ( x );
-        for ( ProductionWord p : prodWords )
-        {
-          if ( p.epsilon () )
-            firstSet.epsilon ( true );
-          for ( ProductionWordMember pwm : p )
-          {
-            if ( pwm.getName ().equals ( x.getName () ) )
-              break;
-            DefaultFirstSet fsX = ( DefaultFirstSet ) first ( new DefaultProductionWord (
-                pwm ) );
-            if ( fsX.epsilon () )
-              break;
-            firstSet.add ( fsX );
-            break;
-          }// end inner for
-        }// end outer for
-      }// end if
-    }// end else
+        firstSet.add ( this.firstSets.get ( pwm ) );
+        break;
+      }
+    // if ( pw.epsilon () )
+    // firstSet.epsilon ( true );
+    // /*
+    // * ProductionWord starts with a TerminalSymbol => we can derive a word
+    // from
+    // * pw that starts with that TerminalSymbol
+    // */
+    // else if ( pw.get ().size () >= 1 && pw.get ( 0 ) instanceof
+    // TerminalSymbol )
+    // firstSet.add ( ( TerminalSymbol ) pw.get ( 0 ) );
+    // else
+    // /*
+    // * pw is a Nonterminal X of the form X -> X_1\dots X_nnow search for an
+    // * index i such that j < i.(\epsilon \in X_j) andif terminalsymbol a \in
+    // X_i
+    // * we can derive a word form pw thatstarts with a (add it to the firstSet)
+    // */
+    // {
+    // ProductionWordMember X = pw.get ( 0 );
+    // if ( X instanceof NonterminalSymbol )
+    // {
+    // NonterminalSymbol x = ( NonterminalSymbol ) X;
+    // if ( !this.nonterminalSymbolSet.contains ( x ) )
+    // throw new GrammarInvalidNonterminalException ( x,
+    // this.nonterminalSymbolSet );
+    // ArrayList < ProductionWord > prodWords = getProductionForNonterminal ( x
+    // );
+    // for ( ProductionWord p : prodWords )
+    // {
+    // if ( p.epsilon () )
+    // firstSet.epsilon ( true );
+    // for ( ProductionWordMember pwm : p )
+    // {
+    // if ( pwm.getName ().equals ( x.getName () ) )
+    // break;
+    // DefaultFirstSet fsX = ( DefaultFirstSet ) first ( new
+    // DefaultProductionWord (
+    // pwm ) );
+    // if ( fsX.epsilon () )
+    // break;
+    // firstSet.add ( fsX );
+    // break;
+    // }// end inner for
+    // }// end outer for
+    // }// end if
+    // }// end else
     return firstSet;
   }
 
 
   /**
-   * calculates all first sets for the nonterminals
+   * initializes the first sets
+   */
+  private final void initializeFirstSets ()
+  {
+    this.firstSets = new HashMap < ProductionWordMember, FirstSet > ();
+    for ( final TerminalSymbol ts : this.terminalSymbolSet )
+      this.firstSets.put ( ts, new DefaultFirstSet () );
+    for ( final NonterminalSymbol ns : this.nonterminalSymbolSet )
+      this.firstSets.put ( ns, new DefaultFirstSet () );
+  }
+
+
+  /**
+   * TODO
    * 
-   * @throws GrammarInvalidNonterminalException
+   * @param ns
+   * @return
+   */
+  private final boolean hasEpsilonProduction ( final NonterminalSymbol ns )
+  {
+    ProductionSet ps = getProductionForNonTerminal ( ns );
+    for ( Production p : ps )
+      if ( p.getProductionWord ().epsilon () )
+        return true;
+    return false;
+  }
+
+
+  /**
+   * calculates all first sets for the nonterminals
    */
   private final void calculateAllFirstSets ()
-      throws GrammarInvalidNonterminalException
   {
-    for ( NonterminalSymbol ns : this.nonterminalSymbolSet )
+    initializeFirstSets ();
+    for ( TerminalSymbol ts : this.terminalSymbolSet )
+      this.firstSets.get ( ts ).add ( ts );
+    boolean modified;
+    do
     {
-      ProductionSet prods = getProductionForNonTerminal ( ns );
-      DefaultFirstSet fs = new DefaultFirstSet ();
-      for ( Production p : prods )
-        fs.add ( first ( p.getProductionWord () ) );
-      this.firstSets.put ( ns, fs );
+      modified = false;
+      for ( Production p : this.productions )
+      {
+        FirstSet firstSet = this.firstSets.get ( p.getNonterminalSymbol () );
+
+        if ( p.getProductionWord ().epsilon () )
+          firstSet.epsilon ( true );
+
+        // run through all elements of the right side
+        for ( ProductionWordMember pwm : p.getProductionWord () )
+          // if ( ( pwm instanceof NonterminalSymbol && !this.firstSets.get (
+          // pwm )
+          // .epsilon () )
+          // || ( pwm instanceof TerminalSymbol ) )
+          if ( !this.firstSets.get ( pwm ).epsilon () )
+          {
+            modified = firstSet.add ( this.firstSets.get ( pwm ) ) || modified;
+            break;
+          }
+      }
     }
+    while ( modified );
   }
 
 
@@ -917,13 +977,9 @@ public abstract class AbstractGrammar implements Grammar
    * @see de.unisiegen.gtitool.core.grammars.Grammar#first(de.unisiegen.gtitool.core.entities.NonterminalSymbol)
    */
   public FirstSet first ( final NonterminalSymbol ns )
-      throws GrammarInvalidNonterminalException
   {
     if ( this.firstSets == null )
-    {
-      this.firstSets = new HashMap < NonterminalSymbol, FirstSet > ();
       calculateAllFirstSets ();
-    }
     return this.firstSets.get ( ns );
   }
 

@@ -178,6 +178,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jPanelGrammar, gridBagConstraints);
 
         jGTIToolBar.setRollover(true);
@@ -260,6 +261,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         jGTIParsingTablePanel.add(jGTICurrentNonterminalLabel, gridBagConstraints);
 
         jGTICurrentTerminalLabel.setText(bundle.getString("CreateParsingTableDialog.CurrentTerminal")); // NOI18N

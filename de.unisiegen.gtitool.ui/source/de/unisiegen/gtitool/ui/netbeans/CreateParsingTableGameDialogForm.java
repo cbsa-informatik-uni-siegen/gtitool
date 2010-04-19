@@ -78,6 +78,7 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         jGTIFirstFollowPanel.add(jScrollPane1, gridBagConstraints);
 
         jGTIFollowSetTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -107,6 +108,7 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jGTIFirstFollowPanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -122,6 +124,7 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         jGTIPanel4.add(jGTIExistingCorrectAnswersLabel, gridBagConstraints);
 
         jGTIExistingWrongAnswersLabel.setText("jGTILabel2");
@@ -183,6 +186,7 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         jGTIPanel3.add(jGTIScrollPane2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

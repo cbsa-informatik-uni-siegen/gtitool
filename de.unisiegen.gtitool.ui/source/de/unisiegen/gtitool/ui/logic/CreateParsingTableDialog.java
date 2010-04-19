@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
-import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
@@ -24,6 +23,7 @@ import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.GrammarColumnModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
@@ -184,29 +184,21 @@ public class CreateParsingTableDialog implements
       final EntryCause cause )
   {
     PrettyString description = new PrettyString ();
-    description.add ( new PrettyToken ( "Production ", Style.NONE ) ); //$NON-NLS-1$
-    description.add ( p );
-    description.add ( new PrettyToken ( " cause ", Style.NONE ) ); //$NON-NLS-1$
 
     switch ( cause )
     {
       case EPSILON_DERIVATION_AND_FOLLOWSET :
-        description.add ( new PrettyToken ( "FIRST(", Style.NONE ) ); //$NON-NLS-1$
-        description.add ( p.getProductionWord () );
-        description.add ( new PrettyToken ( ") contains ", Style.NONE ) ); //$NON-NLS-1$
-        description.add ( new DefaultSymbol ( "epsilon" ) ); //$NON-NLS-1$
-        description.add ( new PrettyToken ( " and FOLLOW(", Style.NONE ) ); //$NON-NLS-1$
-        description.add ( p.getNonterminalSymbol () );
-        description.add ( new PrettyToken ( ") contains ", Style.NONE ) ); //$NON-NLS-1$
-        description.add ( ts );
+        description.add ( new PrettyToken ( Messages.getString (
+            "CreateParsingTableDialog.EpsilonDerivationAndFollowSet", p //$NON-NLS-1$
+                .getProductionWord (), ts, p.getNonterminalSymbol () ),
+            Style.NONE ) );
         break;
       case NOCAUSE :
         return;
       case TERMINAL_IN_FIRSTSET :
-        description.add ( new PrettyToken ( "FIRST(", Style.NONE ) ); //$NON-NLS-1$
-        description.add ( p.getProductionWord () );
-        description.add ( new PrettyToken ( ") contains ", Style.NONE ) ); //$NON-NLS-1$
-        description.add ( ts );
+        description.add ( new PrettyToken ( Messages.getString (
+            "CreateParsingTableDialog.TerminalInFirstSet", ts, p //$NON-NLS-1$
+                .getProductionWord () ), Style.NONE ) );
         break;
     }
 

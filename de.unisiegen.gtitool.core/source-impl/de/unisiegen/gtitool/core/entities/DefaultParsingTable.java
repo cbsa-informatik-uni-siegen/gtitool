@@ -176,6 +176,9 @@ public class DefaultParsingTable implements ParsingTable
   {
     if ( !isPreviousStepAvailable () )
       return;
+    
+    if ( !isNextStepAvailable () )
+      this.currentTerminalIndex = this.terminals.size () - 1;
 
     // calculate indices of the last round (cause the indices are already
     // incremented)
@@ -231,7 +234,6 @@ public class DefaultParsingTable implements ParsingTable
    */
   private boolean nonterminalSymbolNext ()
   {
-    // ++this.currentNonterminalIndex;
     boolean nextAvailable = true;
     if ( this.currentNonterminalIndex + 1 == this.nonterminals.size () )
       nextAvailable = false;
@@ -280,10 +282,7 @@ public class DefaultParsingTable implements ParsingTable
    */
   private void startTerminalSymbolRound ()
   {
-    // this.currentTerminalIndex = 0;
     this.isTerminalSymbolNextStepAvailable = true;
-    this.parsingTable.get ( this.currentNonterminalIndex ).add (
-        new DefaultProductionSet () );
   }
 
 

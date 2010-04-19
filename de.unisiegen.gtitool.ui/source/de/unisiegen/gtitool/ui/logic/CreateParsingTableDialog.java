@@ -352,6 +352,7 @@ public class CreateParsingTableDialog implements
         updateStatus ();
       }
 
+      this.gui.jGTIParsingTable.repaint ();
       updateWordNavigation ();
     }
     catch ( GrammarInvalidNonterminalException exc )
@@ -373,10 +374,10 @@ public class CreateParsingTableDialog implements
   public void handlePrevious ()
   {
     this.parsingTable.createParsingTablePreviousStep ();
-    enableButton ( Action.PREVIOUS, this.parsingTable
-        .isPreviousStepAvailable () );
+    this.gui.jGTIParsingTable.repaint ();
     setCurrentSymbols ();
     updateStatus ();
+    updateWordNavigation ();
   }
 
 

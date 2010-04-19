@@ -126,24 +126,16 @@ public class LR1Grammar extends ExtendedGrammar
           remainingPart.add ( item.getLookAhead () );
 
           FirstSet firstElements;
-          try
-          {
-            firstElements = super.first ( remainingPart );
+          firstElements = super.first ( remainingPart );
 
-            for ( TerminalSymbol symbol : firstElements )
-            {
-              final LR1Item newProduction = new LR1Item ( production
-                  .getNonterminalSymbol (), production.getProductionWord (), 0,
-                  symbol );
-
-              if ( !ret.contains ( newProduction ) )
-                ret.add ( newProduction );
-            }
-          }
-          catch ( GrammarInvalidNonterminalException exc )
+          for ( TerminalSymbol symbol : firstElements )
           {
-            exc.printStackTrace ();
-            System.exit ( 1 );
+            final LR1Item newProduction = new LR1Item ( production
+                .getNonterminalSymbol (), production.getProductionWord (), 0,
+                symbol );
+
+            if ( !ret.contains ( newProduction ) )
+              ret.add ( newProduction );
           }
         }
       }

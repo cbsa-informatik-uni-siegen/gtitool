@@ -103,14 +103,7 @@ public class FIRSTTest
     System.out.println ();
     System.out.print ( grammar.getProductionAt ( 0 ).getProductionWord ()
         + ": " );
-    try
-    {
-      printFirstSet ( grammar.first ( grammar.getProductionAt ( 0 ).getProductionWord () ) );
-    }
-    catch ( GrammarInvalidNonterminalException exc )
-    {
-      exc.printStackTrace();
-    }
+    printFirstSet ( grammar.first ( grammar.getProductionAt ( 0 ).getProductionWord () ) );
   }
 
 

@@ -28,8 +28,9 @@ public interface FirstSet extends Entity < TerminalSymbolSet >, Storable,
    * sets epsilon to be in this set
    * 
    * @param epsilon true to add epsilon to this FirstSet
+   * @return true if set was modified
    */
-  public void epsilon ( boolean epsilon );
+  public boolean epsilon ( boolean epsilon );
 
 
   /**

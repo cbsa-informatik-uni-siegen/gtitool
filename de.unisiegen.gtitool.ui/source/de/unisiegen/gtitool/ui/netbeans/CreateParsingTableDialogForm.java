@@ -380,7 +380,7 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
 }//GEN-LAST:event_jGTIToolBarButtonNextStepActionPerformed
 
     private void jGTIToolBarToggleButtonAutoStepItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToolBarToggleButtonAutoStepItemStateChanged
-        this.logic.handleAutoStep();
+        
 }//GEN-LAST:event_jGTIToolBarToggleButtonAutoStepItemStateChanged
 
     private void jGTIToolBarButtonStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonStopActionPerformed

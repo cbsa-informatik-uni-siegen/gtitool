@@ -138,9 +138,15 @@ public class DefaultFirstSet implements FirstSet
    * 
    * @see de.unisiegen.gtitool.core.entities.FirstSet#epsilon(boolean)
    */
-  public void epsilon ( @SuppressWarnings ( "hiding" ) final boolean epsilon )
+  public boolean epsilon ( @SuppressWarnings ( "hiding" ) final boolean epsilon )
   {
-    this.epsilon = epsilon;
+    if(this.epsilon != epsilon)
+    {
+      this.epsilon = epsilon;
+      this.modified = true;
+      return true;
+    }
+    return false;
   }
 
 

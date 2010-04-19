@@ -819,31 +819,12 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * returns a list of productions for a given nonterminal
-   * 
-   * @param X the nonterminal
-   * @return list of productions which belongs to X
-   */
-  private ArrayList < ProductionWord > getProductionForNonterminal (
-      final NonterminalSymbol X )
-  {
-    ArrayList < ProductionWord > prodWords = new ArrayList < ProductionWord > ();
-    for ( Production p : this.productions )
-      if ( p.getNonterminalSymbol ().equals ( X ) )
-        prodWords.add ( p.getProductionWord () );
-    return prodWords;
-  }
-
-
-  /**
    * calculates first set for a ProductionWord
    * 
    * @param pw the ProductionWord
    * @return the first set for the given ProductionWord
-   * @throws GrammarInvalidNonterminalException
    */
   public final FirstSet first ( final ProductionWord pw )
-      throws GrammarInvalidNonterminalException
   {
     DefaultFirstSet firstSet = new DefaultFirstSet ();
 
@@ -856,52 +837,7 @@ public abstract class AbstractGrammar implements Grammar
         firstSet.add ( this.firstSets.get ( pwm ) );
         break;
       }
-    // if ( pw.epsilon () )
-    // firstSet.epsilon ( true );
-    // /*
-    // * ProductionWord starts with a TerminalSymbol => we can derive a word
-    // from
-    // * pw that starts with that TerminalSymbol
-    // */
-    // else if ( pw.get ().size () >= 1 && pw.get ( 0 ) instanceof
-    // TerminalSymbol )
-    // firstSet.add ( ( TerminalSymbol ) pw.get ( 0 ) );
-    // else
-    // /*
-    // * pw is a Nonterminal X of the form X -> X_1\dots X_nnow search for an
-    // * index i such that j < i.(\epsilon \in X_j) andif terminalsymbol a \in
-    // X_i
-    // * we can derive a word form pw thatstarts with a (add it to the firstSet)
-    // */
-    // {
-    // ProductionWordMember X = pw.get ( 0 );
-    // if ( X instanceof NonterminalSymbol )
-    // {
-    // NonterminalSymbol x = ( NonterminalSymbol ) X;
-    // if ( !this.nonterminalSymbolSet.contains ( x ) )
-    // throw new GrammarInvalidNonterminalException ( x,
-    // this.nonterminalSymbolSet );
-    // ArrayList < ProductionWord > prodWords = getProductionForNonterminal ( x
-    // );
-    // for ( ProductionWord p : prodWords )
-    // {
-    // if ( p.epsilon () )
-    // firstSet.epsilon ( true );
-    // for ( ProductionWordMember pwm : p )
-    // {
-    // if ( pwm.getName ().equals ( x.getName () ) )
-    // break;
-    // DefaultFirstSet fsX = ( DefaultFirstSet ) first ( new
-    // DefaultProductionWord (
-    // pwm ) );
-    // if ( fsX.epsilon () )
-    // break;
-    // firstSet.add ( fsX );
-    // break;
-    // }// end inner for
-    // }// end outer for
-    // }// end if
-    // }// end else
+
     return firstSet;
   }
 
@@ -916,22 +852,6 @@ public abstract class AbstractGrammar implements Grammar
       this.firstSets.put ( ts, new DefaultFirstSet () );
     for ( final NonterminalSymbol ns : this.nonterminalSymbolSet )
       this.firstSets.put ( ns, new DefaultFirstSet () );
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param ns
-   * @return
-   */
-  private final boolean hasEpsilonProduction ( final NonterminalSymbol ns )
-  {
-    ProductionSet ps = getProductionForNonTerminal ( ns );
-    for ( Production p : ps )
-      if ( p.getProductionWord ().epsilon () )
-        return true;
-    return false;
   }
 
 
@@ -951,20 +871,24 @@ public abstract class AbstractGrammar implements Grammar
       {
         FirstSet firstSet = this.firstSets.get ( p.getNonterminalSymbol () );
 
+        // case 3
         if ( p.getProductionWord ().epsilon () )
-          firstSet.epsilon ( true );
+          modified = firstSet.epsilon ( true );
 
         // run through all elements of the right side
+        boolean lastContainsEpsilon = true;
         for ( ProductionWordMember pwm : p.getProductionWord () )
-          // if ( ( pwm instanceof NonterminalSymbol && !this.firstSets.get (
-          // pwm )
-          // .epsilon () )
-          // || ( pwm instanceof TerminalSymbol ) )
+          // case 1 and 2.1
           if ( !this.firstSets.get ( pwm ).epsilon () )
           {
             modified = firstSet.add ( this.firstSets.get ( pwm ) ) || modified;
+            lastContainsEpsilon = false;
             break;
           }
+
+        // case 2.2
+        if ( lastContainsEpsilon )
+          modified = firstSet.epsilon ( true );
       }
     }
     while ( modified );

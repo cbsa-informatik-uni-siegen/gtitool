@@ -348,7 +348,6 @@ public class CreateParsingTableDialog implements
 
       if ( !this.parsingTable.isNextStepAvailable () )
       {
-        // enableButton ( Action.NEXT, false );
         clearCurrentSymbols ();
         updateStatus ();
       }
@@ -396,15 +395,6 @@ public class CreateParsingTableDialog implements
     this.gui.jGTIParsingTable.repaint ();
     ( ( DefaultListModel ) this.gui.jGTIDescriptionList.getModel () )
         .removeAllElements ();
-  }
-
-
-  /**
-   * handles the {@link JGTIToolBarButton} auto step
-   */
-  public void handleAutoStep ()
-  {
-
   }
 
 

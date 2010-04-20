@@ -169,6 +169,9 @@ public class CreateParsingTableDialog implements
         } );
 
     updateStatus ();
+
+    this.gui
+        .setTitle ( Messages.getString ( "CreateParsingTableDialog.Title" ) ); //$NON-NLS-1$
   }
 
 

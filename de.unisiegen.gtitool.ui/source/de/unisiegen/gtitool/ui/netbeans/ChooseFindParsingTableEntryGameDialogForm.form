@@ -40,6 +40,7 @@
       <SubComponents>
         <Component class="de.unisiegen.gtitool.ui.swing.JGTIRadioButton" name="jGTIRadioButtonFindSingleEntry">
           <Properties>
+            <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
               <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="ChooseFindParsingTableEntryGameDialog.RadioButtonFindSingleEntry" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
             </Property>

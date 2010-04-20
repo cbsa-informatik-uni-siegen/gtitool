@@ -58,6 +58,7 @@ public class ChooseFindParsingTableEntryGameDialogForm extends javax.swing.JDial
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
+        jGTIRadioButtonFindSingleEntry.setSelected(true);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTIRadioButtonFindSingleEntry.setText(bundle.getString("ChooseFindParsingTableEntryGameDialog.RadioButtonFindSingleEntry")); // NOI18N
         jGTIRadioButtonFindSingleEntry.addActionListener(new java.awt.event.ActionListener() {

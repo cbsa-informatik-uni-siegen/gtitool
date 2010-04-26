@@ -216,7 +216,7 @@ public class LR0ItemSet implements LRItemSet, Entity < LR0ItemSet >, Storable,
     ArrayList < PrettyString > ret = new ArrayList < PrettyString > ();
 
     for ( LR0Item item : this.rep )
-      ret.add ( item.toPrettyString () );
+      ret.add ( item.itemPrettyString () );
 
     return ret;
   }

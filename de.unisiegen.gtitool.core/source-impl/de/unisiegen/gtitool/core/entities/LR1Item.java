@@ -42,9 +42,15 @@ public class LR1Item extends LRItem
   }
 
 
-  public String toString ()
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.LRItem#itemString()
+   */
+  @Override
+  public String itemString ()
   {
-    return "[" + super.toString () + "," + getLookAhead ().toString () + "]";
+    return "[" + super.toString () + "," + getLookAhead ().toString () + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
   }
 
 

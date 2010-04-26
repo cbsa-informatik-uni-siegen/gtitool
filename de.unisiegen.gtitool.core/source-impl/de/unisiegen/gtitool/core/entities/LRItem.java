@@ -84,13 +84,11 @@ public class LRItem extends DefaultProduction
 
 
   /**
-   * TODO
+   * The string for the item, not the production
    * 
-   * @return
-   * @see de.unisiegen.gtitool.core.entities.DefaultProduction#toString()
+   * @return the string
    */
-  @Override
-  public String toString ()
+  public String itemString ()
   {
     final String leftSide = this.getNonterminalSymbol ().toString ()
         + " \u2192 "; //$NON-NLS-1$
@@ -105,6 +103,17 @@ public class LRItem extends DefaultProduction
 
     return leftSide + rightSide.substring ( 0, stringDotIndex ) + dotString ()
         + rightSide.substring ( stringDotIndex );
+  }
+
+
+  /**
+   * The pretty string version of the item string
+   * 
+   * @return the string
+   */
+  public PrettyString itemPrettyString ()
+  {
+    return new PrettyString ( new PrettyToken ( itemString (), Style.NONE ) );
   }
 
 

@@ -103,11 +103,27 @@ public class LRItem extends DefaultProduction
       stringDotIndex += this.getProductionWord ().get ( i ).toString ()
           .length ();
 
-    return leftSide + rightSide.substring ( 0, stringDotIndex ) + "\u2022" //$NON-NLS-1$
+    return leftSide + rightSide.substring ( 0, stringDotIndex ) + dotString ()
         + rightSide.substring ( stringDotIndex );
   }
 
 
+  /**
+   * Returns a string that contains the dot
+   * 
+   * @return the string
+   */
+  public static String dotString ()
+  {
+    return "\u2022"; //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.DefaultProduction#toPrettyString()
+   */
   @Override
   public PrettyString toPrettyString ()
   {

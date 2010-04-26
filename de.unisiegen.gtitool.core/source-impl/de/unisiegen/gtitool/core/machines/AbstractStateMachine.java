@@ -1355,8 +1355,8 @@ public abstract class AbstractStateMachine implements StateMachine
     DefaultTableColumnModel columnModel = new DefaultTableColumnModel ();
 
     TableColumn stateColumn = new TableColumn ( STATE_COLUMN );
-    stateColumn.setHeaderValue ( new PrettyString ( new PrettyToken ( "", //$NON-NLS-1$
-        Style.NONE ) ) );
+    stateColumn.setHeaderValue ( new PrettyString ( new PrettyToken (
+        getTableCaption (), Style.NONE ) ) );
     stateColumn.setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
     stateColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     columnModel.addColumn ( stateColumn );
@@ -1383,6 +1383,17 @@ public abstract class AbstractStateMachine implements StateMachine
     }
 
     return columnModel;
+  }
+
+
+  /**
+   * The caption for the table
+   * 
+   * @return the table
+   */
+  protected String getTableCaption ()
+  {
+    return ""; //$NON-NLS-1$
   }
 
 

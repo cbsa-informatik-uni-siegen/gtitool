@@ -15,6 +15,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.storage.Element;
 
@@ -237,6 +238,18 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
   protected void onStart ()
   {
     this.pushCurrentStateToStack ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#getTableCaption()
+   */
+  @Override
+  protected String getTableCaption ()
+  {
+    return Messages.getString ( "Machines.LR.TableCaption" ); //$NON-NLS-1$
   }
 
 

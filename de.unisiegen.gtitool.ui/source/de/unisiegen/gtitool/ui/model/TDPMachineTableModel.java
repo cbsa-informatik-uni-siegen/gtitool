@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.model;
 
 import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
+import de.unisiegen.gtitool.core.entities.RejectAction;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
@@ -70,8 +71,16 @@ public class TDPMachineTableModel extends StatelessMachineTableModel
   @Override
   public void accept ( final AcceptAction action )
   {
-    addRow ( this.stackData.get ( getRowCount () - 1), this.inputData
-        .get ( getRowCount () - 1), action );
+    addRow ( this.stackData.get ( getRowCount () - 1 ), this.inputData
+        .get ( getRowCount () - 1 ), action );
+  }
+
+
+  @Override
+  public void reject ( final RejectAction action )
+  {
+    addRow ( this.stackData.get ( getRowCount () - 1 ), this.inputData
+        .get ( getRowCount () - 1 ), action );
   }
 
 

@@ -733,6 +733,8 @@ public class StatelessMachinePanel extends MachinePanel
       case STOP :
         smtm.clearData ();
         break;
+      case REJECT :
+        break;
     }
     this.jGTIStatelessMachineTable.repaint ();
   }

@@ -9,6 +9,7 @@ import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
+import de.unisiegen.gtitool.core.entities.RejectAction;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Word;
 
@@ -101,6 +102,16 @@ public abstract class StatelessMachineTableModel extends AbstractTableModel
    * @param action The {@link AcceptAction}
    */
   public void accept ( final AcceptAction action )
+  {
+    this.actionData.set ( this.actionData.size () - 1, action );
+  }
+
+
+  /**
+   * Input word is rejected
+   * @param action The {@link RejectAction}
+   */
+  public void reject ( final RejectAction action )
   {
     this.actionData.set ( this.actionData.size () - 1, action );
   }

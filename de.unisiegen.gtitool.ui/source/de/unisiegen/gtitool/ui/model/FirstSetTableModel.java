@@ -85,7 +85,7 @@ public class FirstSetTableModel extends AbstractTableModel
       // add the epsilon element explicit to the
       // set if there is one
       if ( fs.epsilon () )
-        fs.add ( new DefaultTerminalSymbol ( new DefaultSymbol ( "epsilon" ) ) ); //$NON-NLS-1$
+        fs.add ( new DefaultTerminalSymbol ( new DefaultSymbol () ) );
       this.firstSetData.add ( fs );
     }
   }

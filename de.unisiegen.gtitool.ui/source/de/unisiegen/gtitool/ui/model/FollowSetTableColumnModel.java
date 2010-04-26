@@ -51,14 +51,12 @@ public class FollowSetTableColumnModel extends DefaultTableColumnModel
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
     symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
-    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     addColumn ( symbolColumn );
     symbolColumn = new TableColumn ( FOLLOW_SET_COLUMN );
     symbolColumn.setHeaderValue ( new PrettyString ( new PrettyToken ( Messages
         .getString ( "FollowSetColumnModel.FollowSetColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     addColumn ( symbolColumn );
   }

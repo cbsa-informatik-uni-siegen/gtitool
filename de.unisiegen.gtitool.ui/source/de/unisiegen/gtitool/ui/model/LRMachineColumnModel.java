@@ -76,9 +76,8 @@ public class LRMachineColumnModel extends StatelessMachineTableColumnModel
                       .getString ( "StatelessMachineColumnModel.StackColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
       stackColumn
           .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-      stackColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
       PrettyStringTableCellRenderer pstcr = new PrettyStringTableCellRenderer ();
-      pstcr.setRightHorizontal ( true );
+      //pstcr.setRightHorizontal ( true );
       stackColumn.setCellRenderer ( pstcr );
       addColumn ( stackColumn );
     }
@@ -92,7 +91,9 @@ public class LRMachineColumnModel extends StatelessMachineTableColumnModel
                       .getString ( "StatelessMachineColumnModel.InputColumn" ), Style.NONE ) ) ); //$NON-NLS-1$
       inputColumn
           .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-      inputColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+      PrettyStringTableCellRenderer pstcr = new PrettyStringTableCellRenderer ();
+      pstcr.setRightHorizontal ( true );
+      inputColumn.setCellRenderer ( pstcr );
       addColumn ( inputColumn );
     }
 

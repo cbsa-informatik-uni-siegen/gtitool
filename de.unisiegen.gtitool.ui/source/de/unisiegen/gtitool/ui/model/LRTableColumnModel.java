@@ -1,6 +1,5 @@
 package de.unisiegen.gtitool.ui.model;
 
-
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
@@ -11,6 +10,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableHeaderCellRenderer;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 
 
 /**
@@ -39,7 +39,7 @@ public class LRTableColumnModel extends DefaultTableColumnModel
 
   /**
    * TODO
-   *
+   * 
    * @param terminals
    */
   public LRTableColumnModel ( final TerminalSymbolSet terminals )
@@ -49,7 +49,7 @@ public class LRTableColumnModel extends DefaultTableColumnModel
      */
     this.lrColumnTable = new TableColumn ( LRITEM_COLUMN );
     this.lrColumnTable.setHeaderValue ( new PrettyString ( new PrettyToken (
-        "", //$NON-NLS-1$
+        Messages.getString ( "LRTableColumnModel.Caption" ), //$NON-NLS-1$
         Style.NONE ) ) );
     this.lrColumnTable
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );

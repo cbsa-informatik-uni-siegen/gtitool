@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableHeaderCellRenderer;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 
 
 /**
@@ -51,7 +52,7 @@ public class PTTableColumnModel extends DefaultTableColumnModel
      */
     this.nonTerminalColumn = new TableColumn ( NONTERMINAL_COLUMN );
     this.nonTerminalColumn.setHeaderValue ( new PrettyString ( new PrettyToken (
-        "", //$NON-NLS-1$
+        Messages.getString ( "PTTableColumnModel.Caption" ), //$NON-NLS-1$
         Style.NONE ) ) );
     this.nonTerminalColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );

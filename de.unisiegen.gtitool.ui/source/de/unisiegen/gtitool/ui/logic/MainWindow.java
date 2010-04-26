@@ -2757,11 +2757,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               .doLayout ();
         }
       }
-      else if ( element.getName ().equals ( "GrammarModel" ) )
+      else if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
       {
         defaultModel = new DefaultGrammarModel ( element, null );
       }
-      else if ( element.getName ().equals ( "RegexModel" ) )
+      else if ( element.getName ().equals ( "RegexModel" ) ) //$NON-NLS-1$
       {
         defaultModel = new DefaultRegexModel ( element, true );
       }
@@ -5034,7 +5034,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CREATE_PT );
           addButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
 
-          // addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_PARSER );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );

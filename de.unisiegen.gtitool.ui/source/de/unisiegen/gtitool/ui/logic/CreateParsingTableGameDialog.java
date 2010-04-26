@@ -128,7 +128,7 @@ public class CreateParsingTableGameDialog implements
   {
     this.gameType = gameType;
     this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
-    this.cfg.getTerminalSymbolSet ().add ( DefaultTerminalSymbol.EndMarker );
+    this.cfg.getTerminalSymbolSet ().addIfNonexistent ( DefaultTerminalSymbol.EndMarker );
 
     //
     // setup the gui

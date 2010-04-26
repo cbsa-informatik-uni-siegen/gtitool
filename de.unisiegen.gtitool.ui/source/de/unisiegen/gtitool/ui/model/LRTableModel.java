@@ -77,19 +77,19 @@ public class LRTableModel extends StatelessMachineTableModel
 
 
   /**
-   * TODO
+   * The states
    */
   private ArrayList < LRState > states;
 
 
   /**
-   * TODO
+   * The terminals
    */
   private TerminalSymbolSet terminals;
 
 
   /**
-   * TODO
+   * The entries for the table
    */
   private ArrayList < ArrayList < PrettyString > > entries;
 }

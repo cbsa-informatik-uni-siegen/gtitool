@@ -831,12 +831,16 @@ public abstract class AbstractGrammar implements Grammar
     if ( this.firstSets == null )
       calculateAllFirstSets ();
 
+    boolean t = true;
     for ( ProductionWordMember pwm : pw )
       if ( !this.firstSets.get ( pwm ).epsilon () )
       {
         firstSet.add ( this.firstSets.get ( pwm ) );
+        t = false;
         break;
       }
+    if(t)
+      firstSet.epsilon ( true );
 
     return firstSet;
   }

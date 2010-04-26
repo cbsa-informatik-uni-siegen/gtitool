@@ -36,7 +36,11 @@ public interface Action extends Comparable < Action >, PrettyPrintable
     /**
      * Accept the whole input
      */
-    ACCEPT
+    ACCEPT,
+    /**
+     * Reject the input
+     */
+    REJECTED
   }
 
 

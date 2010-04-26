@@ -11,6 +11,7 @@ import javax.swing.ListSelectionModel;
 import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
+import de.unisiegen.gtitool.core.entities.RejectAction;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
@@ -501,6 +502,8 @@ public class StatelessMachinePanel extends MachinePanel
 
     if ( action instanceof AcceptAction )
       performMachineTableChanged ( MachineActionType.ACCEPT, action );
+    else if ( action instanceof RejectAction )
+      performMachineTableChanged ( MachineActionType.REJECT, action );
     else
       performMachineTableChanged ( MachineActionType.STEPNEXT, action );
 
@@ -734,6 +737,7 @@ public class StatelessMachinePanel extends MachinePanel
         smtm.clearData ();
         break;
       case REJECT :
+        smtm.reject ( ( RejectAction ) action );
         break;
     }
     this.jGTIStatelessMachineTable.repaint ();

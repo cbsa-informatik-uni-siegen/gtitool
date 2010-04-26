@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
+import de.unisiegen.gtitool.core.entities.RejectAction;
 import de.unisiegen.gtitool.core.entities.ReverseReduceAction;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Word;
@@ -66,7 +67,7 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
     super ( cfg.getAlphabet () );
     this.cfg = cfg;
     this.parsingTable = new DefaultParsingTable ( this.cfg );
-    this.parsingTable.create();
+    this.parsingTable.create ();
   }
 
 
@@ -115,6 +116,11 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
     }
     else if ( inputSymbol.equals ( stackSymbol ) )
       actions.add ( new CancelOutAction ( inputSymbol ) );
+    else
+      actions.add ( new RejectAction () );
+
+    if ( actions.size () == 0 )
+      actions.add ( new RejectAction () );
 
     return actions;
   }
@@ -209,11 +215,6 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   @Override
   public boolean isNextSymbolAvailable ()
   {
-//    final boolean result = super.isNextSymbolAvailable ();
-//    Symbol symbol = getStack ().peak ();
-//    return result
-//        && !symbol.getName ().equals (
-//            DefaultTerminalSymbol.EndMarker.getName () );
     return !isWordAccepted ();
   }
 }

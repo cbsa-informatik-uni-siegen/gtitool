@@ -377,6 +377,8 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
         return onReduce ( transition );
       case ACCEPT :
         return onAccept ( transition );
+      case REJECTED:
+        break;
     }
     return true;
   }

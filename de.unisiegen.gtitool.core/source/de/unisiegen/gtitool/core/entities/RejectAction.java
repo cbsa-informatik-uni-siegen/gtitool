@@ -33,8 +33,7 @@ public class RejectAction implements Action
    */
   public TransitionType getTransitionType ()
   {
-    throw new RuntimeException (
-        "accept action cannot be used as a reduce action" ); //$NON-NLS-1$
+    return Action.TransitionType.REJECTED;
   }
 
 

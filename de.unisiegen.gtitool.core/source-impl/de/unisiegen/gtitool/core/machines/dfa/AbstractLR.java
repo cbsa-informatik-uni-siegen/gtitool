@@ -243,7 +243,19 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
 
   /**
    * {@inheritDoc}
-   *
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#onStop()
+   */
+  @Override
+  protected void onStop ()
+  {
+    this.stateStack.clear ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.gtitool.core.machines.AbstractStateMachine#getTableCaption()
    */
   @Override

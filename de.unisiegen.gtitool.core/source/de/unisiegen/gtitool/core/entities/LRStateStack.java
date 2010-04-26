@@ -34,4 +34,10 @@ public interface LRStateStack extends Entity < LRStateStack >,
    * @param state
    */
   public void push ( LRState state );
+
+
+  /**
+   * Clears the stack
+   */
+  public void clear ();
 }

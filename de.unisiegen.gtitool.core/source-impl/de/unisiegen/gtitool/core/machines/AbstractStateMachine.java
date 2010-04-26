@@ -2899,6 +2899,17 @@ public abstract class AbstractStateMachine implements StateMachine
     this.stack.clear ();
 
     clearHistory ();
+
+    onStop ();
+  }
+
+
+  /**
+   * Extra stop action
+   */
+  protected void onStop ()
+  {
+    // nothing to do here
   }
 
 

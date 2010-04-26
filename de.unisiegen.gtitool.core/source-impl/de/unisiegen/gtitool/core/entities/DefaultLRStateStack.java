@@ -24,7 +24,6 @@ public class DefaultLRStateStack implements LRStateStack
 
   /**
    * Constructs an empty stack
-   *
    */
   public DefaultLRStateStack ()
   {
@@ -34,7 +33,7 @@ public class DefaultLRStateStack implements LRStateStack
 
   /**
    * Copies the given stack
-   *
+   * 
    * @param stack
    */
   public DefaultLRStateStack ( final LRStateStack stack )
@@ -161,5 +160,19 @@ public class DefaultLRStateStack implements LRStateStack
   }
 
 
+  /**
+   * The internal representation
+   */
   private java.util.Stack < LRState > rep = new java.util.Stack < LRState > ();
+
+
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.gtitool.core.entities.LRStateStack#clear()
+   */
+  public void clear ()
+  {
+    this.rep.clear ();
+  }
 }

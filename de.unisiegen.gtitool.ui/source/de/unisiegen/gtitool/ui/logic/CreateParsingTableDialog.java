@@ -192,16 +192,20 @@ public class CreateParsingTableDialog implements
     {
       case EPSILON_DERIVATION_AND_FOLLOWSET :
         description.add ( new PrettyToken ( Messages.getString (
-            "CreateParsingTableDialog.EpsilonDerivationAndFollowSet", p //$NON-NLS-1$
-                .getProductionWord (), ts, p.getNonterminalSymbol () ),
+            "CreateParsingTableDialog.EpsilonDerivationAndFollowSet", p, p //$NON-NLS-1$
+                .getNonterminalSymbol (), ts, p.getProductionWord () ),
             Style.NONE ) );
         break;
       case NOCAUSE :
         return;
       case TERMINAL_IN_FIRSTSET :
+        // description.add ( new PrettyToken ( Messages.getString (
+        //            "CreateParsingTableDialog.TerminalInFirstSet", ts, p //$NON-NLS-1$
+        // .getProductionWord () ), Style.NONE ) );
         description.add ( new PrettyToken ( Messages.getString (
-            "CreateParsingTableDialog.TerminalInFirstSet", ts, p //$NON-NLS-1$
-                .getProductionWord () ), Style.NONE ) );
+            "CreateParsingTableDialog.TerminalInFirstSet", p, p //$NON-NLS-1$
+                .getNonterminalSymbol (), ts, p.getProductionWord () ),
+            Style.NONE ) );
         break;
     }
 

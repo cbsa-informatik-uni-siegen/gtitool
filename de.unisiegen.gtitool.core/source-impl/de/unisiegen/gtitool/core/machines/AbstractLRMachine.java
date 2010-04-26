@@ -167,7 +167,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
     getAutomaton ().nextSymbol ( symbol );
     nextSymbol ();
 
-    this.getStack ().push ( new DefaultSymbol ( symbol ) );
+    getStack ().push ( new DefaultSymbol ( symbol ) );
 
     return true;
   }
@@ -191,7 +191,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
       for ( ; unwind < action.getReduceAction ().getProductionWord ().size () ; ++unwind )
       {
         automaton.previousSymbol ();
-        cachedSymbols.add ( this.getStack ().pop () );
+        cachedSymbols.add ( getStack ().pop () );
       }
     }
     catch ( RuntimeException e )
@@ -199,7 +199,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
       for ( int i = 0 ; i < unwind ; ++i )
       {
         automaton.nextSymbol ();
-        this.getStack ().push ( cachedSymbols.get ( i ) );
+        getStack ().push ( cachedSymbols.get ( i ) );
       }
       return false;
     }
@@ -208,7 +208,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
     automaton.nextSymbol ( nextSymbol );
 
-    this.getStack ().push ( new DefaultSymbol ( nextSymbol ) );
+    getStack ().push ( new DefaultSymbol ( nextSymbol ) );
 
     return true;
   }
@@ -224,8 +224,8 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   {
     try
     {
-      this.getWord ().nextSymbol ();
-      this.getStack ().clear ();
+      getWord ().nextSymbol ();
+      getStack ().clear ();
     }
     catch ( WordFinishedException exc )
     {
@@ -250,9 +250,9 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
     word.add ( endMarkerSymbol );
     super.start ( word );
 
-    this.getAutomaton ().start ( word );
+    getAutomaton ().start ( word );
 
-    this.getStack ().push ( endMarkerSymbol );
+    getStack ().push ( endMarkerSymbol );
   }
 
 
@@ -264,7 +264,8 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   @Override
   protected void onStop ()
   {
-    this.getAutomaton ().stop ();
+    getAutomaton ().stop ();
+    this.history.clear ();
   }
 
 
@@ -276,7 +277,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   public ArrayList < LRItemSet > getItems ()
   {
     final ArrayList < LRItemSet > ret = new ArrayList < LRItemSet > ();
-    for ( State state : this.getAutomaton ().getState () )
+    for ( State state : getAutomaton ().getState () )
     {
       final LRState lrstate = ( LRState ) state;
 
@@ -294,11 +295,11 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   {
     final ArrayList < ArrayList < PrettyString >> ret = new ArrayList < ArrayList < PrettyString >> ();
 
-    for ( TerminalSymbol symbol : this.getGrammar ().getTerminalSymbolSet () )
+    for ( TerminalSymbol symbol : getGrammar ().getTerminalSymbolSet () )
     {
       final ArrayList < PrettyString > temp = new ArrayList < PrettyString > ();
 
-      for ( State state : this.getAutomaton ().getState () )
+      for ( State state : getAutomaton ().getState () )
         temp.add ( actionSetBase ( ( LRState ) state, symbol )
             .toPrettyString () );
 
@@ -318,10 +319,9 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   {
     super.createHistoryEntry ();
 
-    this.history.add ( new HistoryEntry ( this.getAutomaton ()
+    this.history.add ( new HistoryEntry ( getAutomaton ()
         .makeCurrentHistoryItem (), new ArrayList < StateMachineHistoryItem > (
-        this.getAutomaton ().getHistory () ), new DefaultLRStateStack ( this
-        .getAutomaton ().getStateStack () ) ) );
+        getAutomaton ().getHistory () ), new DefaultLRStateStack ( getAutomaton ().getStateStack () ) ) );
   }
 
 
@@ -337,11 +337,11 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
     final HistoryEntry entry = this.history.pop ();
 
-    this.getAutomaton ().setHistory ( entry.getMachineHistory () );
+    getAutomaton ().setHistory ( entry.getMachineHistory () );
 
-    this.getAutomaton ().restoreHistoryItem ( entry.getCurrentState () );
+    getAutomaton ().restoreHistoryItem ( entry.getCurrentState () );
 
-    this.getAutomaton ().setStateStack ( entry.getStateStack () );
+    getAutomaton ().setStateStack ( entry.getStateStack () );
   }
 
 

@@ -54,7 +54,6 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIToolBarButtonPreviousStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
         jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIParsingTablePanel = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTICurrentNonterminalLabel = new de.unisiegen.gtitool.ui.swing.JGTILabel();
@@ -221,19 +220,6 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         });
         jGTIToolBar.add(jGTIToolBarButtonNextStep);
 
-        jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/autostep.png"))); // NOI18N
-        jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("MachinePanel.WordModeAutoStep")); // NOI18N
-        jGTIToolBarToggleButtonAutoStep.setEnabled(false);
-        jGTIToolBarToggleButtonAutoStep.setFocusable(false);
-        jGTIToolBarToggleButtonAutoStep.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jGTIToolBarToggleButtonAutoStep.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jGTIToolBarToggleButtonAutoStep.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jGTIToolBarToggleButtonAutoStepItemStateChanged(evt);
-            }
-        });
-        jGTIToolBar.add(jGTIToolBarToggleButtonAutoStep);
-
         jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/stop.png"))); // NOI18N
         jGTIToolBarButtonStop.setToolTipText(bundle.getString("MachinePanel.WordModeStop")); // NOI18N
         jGTIToolBarButtonStop.setEnabled(false);
@@ -380,10 +366,6 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         this.logic.handleNext();
 }//GEN-LAST:event_jGTIToolBarButtonNextStepActionPerformed
 
-    private void jGTIToolBarToggleButtonAutoStepItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToolBarToggleButtonAutoStepItemStateChanged
-        
-}//GEN-LAST:event_jGTIToolBarToggleButtonAutoStepItemStateChanged
-
     private void jGTIToolBarButtonStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonStopActionPerformed
         this.logic.handleStop();
 }//GEN-LAST:event_jGTIToolBarButtonStopActionPerformed
@@ -418,7 +400,6 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonPreviousStep;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStart;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStop;
-    public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
     public javax.swing.JPanel jPanelGrammar;
     public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledStartNonterminalSymbolParserPanel styledStartNonterminalSymbolParserPanel;

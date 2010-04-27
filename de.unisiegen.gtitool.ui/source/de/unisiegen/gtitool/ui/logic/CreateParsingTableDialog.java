@@ -65,12 +65,7 @@ public class CreateParsingTableDialog implements
     /**
      * stop button
      */
-    STOP,
-
-    /**
-     * autostep button
-     */
-    AUTOSTEP;
+    STOP;
   }
 
 
@@ -266,9 +261,6 @@ public class CreateParsingTableDialog implements
       case STOP :
         this.gui.jGTIToolBarButtonStop.setEnabled ( enabled );
         break;
-      case AUTOSTEP :
-        this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( enabled );
-        break;
     }
   }
 
@@ -397,7 +389,6 @@ public class CreateParsingTableDialog implements
     enableButton ( Action.NEXT, false );
     enableButton ( Action.PREVIOUS, false );
     enableButton ( Action.STOP, false );
-    enableButton ( Action.AUTOSTEP, false );
     clearCurrentSymbols ();
     this.parsingTable.clear ();
     this.gui.jGTIParsingTable.repaint ();

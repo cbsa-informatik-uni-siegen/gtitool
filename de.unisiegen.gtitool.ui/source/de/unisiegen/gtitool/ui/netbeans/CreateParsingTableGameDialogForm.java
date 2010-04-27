@@ -80,6 +80,7 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jGTIFirstFollowPanel.add(jScrollPane1, gridBagConstraints);
 
         jGTIFollowSetTable.setModel(new javax.swing.table.DefaultTableModel(

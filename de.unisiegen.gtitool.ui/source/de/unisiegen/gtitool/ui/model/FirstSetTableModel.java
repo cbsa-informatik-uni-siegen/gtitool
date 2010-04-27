@@ -5,13 +5,10 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import de.unisiegen.gtitool.core.entities.DefaultSymbol;
-import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
@@ -65,10 +62,9 @@ public class FirstSetTableModel extends AbstractTableModel
    * 
    * @param cfg The {@link CFG}
    * @throws GrammarInvalidNonterminalException
-   * @throws TerminalSymbolSetException
    */
   public FirstSetTableModel ( final CFG cfg )
-      throws GrammarInvalidNonterminalException, TerminalSymbolSetException
+      throws GrammarInvalidNonterminalException
   {
     if(cfg == null)
       throw new NullPointerException ( "cfg is null" ); //$NON-NLS-1$
@@ -82,10 +78,6 @@ public class FirstSetTableModel extends AbstractTableModel
     for ( ProductionWord pw : this.productionWordData )
     {
       FirstSet fs = cfg.first ( pw );
-      // add the epsilon element explicit to the
-      // set if there is one
-      if ( fs.epsilon () )
-        fs.add ( new DefaultTerminalSymbol ( new DefaultSymbol () ) );
       this.firstSetData.add ( fs );
     }
   }

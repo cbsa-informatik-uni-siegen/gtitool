@@ -9,6 +9,8 @@ import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Element;
 
 
@@ -144,7 +146,16 @@ public class DefaultFirstSet implements FirstSet
     {
       this.epsilon = epsilon;
       this.modified = true;
-      add ( new DefaultTerminalSymbol ( new DefaultSymbol () ) );
+      if ( this.epsilon )
+        add ( new DefaultTerminalSymbol ( new DefaultSymbol () ) );
+      else
+      {
+        TerminalSymbol epsilonSymbol = new DefaultTerminalSymbol (
+            new DefaultSymbol () );
+        for ( TerminalSymbol ts : this.terminalSymbolSet )
+          if ( ts.getName ().equals ( epsilonSymbol.getName () ) )
+            this.terminalSymbolSet.remove ( ts );
+      }
       return true;
     }
     return false;
@@ -372,7 +383,7 @@ public class DefaultFirstSet implements FirstSet
       result.append ( "," );
       deleteLast = true;
     }
-    if(deleteLast)
+    if ( deleteLast )
       result.deleteCharAt ( result.length () - 1 );
     else
       result.append ( " " );
@@ -386,8 +397,23 @@ public class DefaultFirstSet implements FirstSet
    * 
    * @see de.unisiegen.gtitool.core.parser.style.PrettyPrintable#toPrettyString()
    */
+  @SuppressWarnings ( "nls" )
   public PrettyString toPrettyString ()
   {
-    return this.terminalSymbolSet.toPrettyString ();
+    PrettyString ps = new PrettyString();
+      ps.add ( new PrettyToken("{", Style.NONE) );
+      boolean deleteLast = false;
+      for(TerminalSymbol ts : this.terminalSymbolSet)
+      {
+        ps.add ( ts );
+        ps.add ( new PrettyToken(",", Style.NONE) );
+        deleteLast = true;
+      }
+      if(deleteLast)
+        ps.removeLastPrettyToken ();
+      else
+        ps.add ( new PrettyToken(" ", Style.NONE) );
+      ps.add ( new PrettyToken("}", Style.NONE) );
+    return ps;
   }
 }

@@ -215,6 +215,6 @@ public class DefaultTDP extends AbstractStatelessMachine implements TDP
   @Override
   public boolean isNextSymbolAvailable ()
   {
-    return !isWordAccepted ();
+    return !isWordAccepted () && !isWordRejected();
   }
 }

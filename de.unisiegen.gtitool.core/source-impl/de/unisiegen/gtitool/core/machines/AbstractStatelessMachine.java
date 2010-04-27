@@ -63,6 +63,12 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
 
 
   /**
+   * Word is rejected
+   */
+  private boolean rejected;
+
+
+  /**
    * the history {@link java.util.Stack}
    */
   private java.util.Stack < StatelessMachineHistoryItem > history;
@@ -157,7 +163,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
   protected void createHistoryEntry ()
   {
     this.history.add ( new StatelessMachineHistoryItem ( this.word, this.stack,
-        this.wordAccepted ) );
+        this.wordAccepted, this.rejected ) );
   }
 
 
@@ -173,6 +179,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
     this.word = historyItem.getWord ();
     this.stack = historyItem.getStack ();
     this.wordAccepted = historyItem.getWordAccepted ();
+    this.rejected = historyItem.getRejected ();
   }
 
 
@@ -219,6 +226,18 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
   {
     return this.wordAccepted;
   }
+  
+  
+  /**
+   * 
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.StatelessMachine#isWordRejected()
+   */
+  public final boolean isWordRejected()
+  {
+    return this.rejected;
+  }
 
 
   /**
@@ -227,6 +246,17 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
   public void accept ()
   {
     this.wordAccepted = true;
+    this.rejected = false;
+  }
+
+
+  /**
+   * reject the input
+   */
+  public void reject ()
+  {
+    this.rejected = true;
+    this.wordAccepted = false;
   }
 
 
@@ -377,7 +407,8 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
         return onReduce ( transition );
       case ACCEPT :
         return onAccept ( transition );
-      case REJECTED:
+      case REJECTED :
+        reject ();
         break;
     }
     return true;
@@ -427,7 +458,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
    */
   public boolean isNextSymbolAvailable ()
   {
-    return !this.word.isFinished ();
+    return !this.word.isFinished () && !this.rejected;
   }
 
 

@@ -29,6 +29,11 @@ public final class StatelessMachineHistoryItem
    * the accept status
    */
   private boolean wordAccepted;
+  
+  /**
+   * the rejected status
+   */
+  private boolean rejected;
 
 
   /**
@@ -37,13 +42,15 @@ public final class StatelessMachineHistoryItem
    * @param input the {@link Word}
    * @param stack the {@link Stack}
    * @param wordAccepted the actual accepted status
+   * @param rejected the actual rejected status
    */
   public StatelessMachineHistoryItem ( final Word input, final Stack stack,
-      final boolean wordAccepted )
+      final boolean wordAccepted, final boolean rejected )
   {
     this.input = new DefaultWord ( input );
     this.stack = new DefaultStack ( stack );
     this.wordAccepted = wordAccepted;
+    this.rejected = rejected;
   }
 
 
@@ -77,5 +84,17 @@ public final class StatelessMachineHistoryItem
   public boolean getWordAccepted ()
   {
     return this.wordAccepted;
+  }
+  
+  
+  /**
+   * 
+   * retrieves the rejected status
+   *
+   * @return the rejected status
+   */
+  public boolean getRejected()
+  {
+    return this.rejected;
   }
 }

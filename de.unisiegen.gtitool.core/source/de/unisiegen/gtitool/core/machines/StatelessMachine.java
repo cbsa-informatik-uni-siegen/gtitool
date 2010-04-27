@@ -20,6 +20,15 @@ public interface StatelessMachine extends Machine
    *         otherwise false.
    */
   public boolean isWordAccepted ();
+  
+  
+  /**
+   * 
+   * Returns true if the input is rejected
+   *
+   * @return true if the input is rejected, false otherwise
+   */
+  public boolean isWordRejected ();
 
 
   /**

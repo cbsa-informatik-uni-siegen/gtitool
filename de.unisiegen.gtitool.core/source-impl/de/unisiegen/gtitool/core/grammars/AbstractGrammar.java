@@ -880,19 +880,13 @@ public abstract class AbstractGrammar implements Grammar
           modified = firstSet.epsilon ( true );
 
         // run through all elements of the right side
-        boolean lastContainsEpsilon = true;
         for ( ProductionWordMember pwm : p.getProductionWord () )
-          // case 1 and 2.1
-          if ( !this.firstSets.get ( pwm ).epsilon () )
-          {
-            modified = firstSet.add ( this.firstSets.get ( pwm ) ) || modified;
-            lastContainsEpsilon = false;
+        {
+          //case 1, 2.1, 2.2
+          modified = firstSet.add ( this.firstSets.get ( pwm ) ) || modified;
+          if(this.firstSets.get ( pwm ).epsilon ())
             break;
-          }
-
-        // case 2.2
-        if ( lastContainsEpsilon )
-          modified = firstSet.epsilon ( true );
+        }
       }
     }
     while ( modified );

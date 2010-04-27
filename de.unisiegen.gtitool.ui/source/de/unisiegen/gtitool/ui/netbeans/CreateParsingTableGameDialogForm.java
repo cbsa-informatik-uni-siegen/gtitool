@@ -57,6 +57,8 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
+        setTitle(bundle.getString("CreateParsingTableGameDialog.Caption")); // NOI18N
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jGTIFirstSetTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -78,7 +80,6 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         jGTIFirstFollowPanel.add(jScrollPane1, gridBagConstraints);
 
         jGTIFollowSetTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -124,7 +125,6 @@ public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         jGTIPanel4.add(jGTIExistingCorrectAnswersLabel, gridBagConstraints);
 
         jGTIExistingWrongAnswersLabel.setText("jGTILabel2");

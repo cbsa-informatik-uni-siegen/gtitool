@@ -140,10 +140,11 @@ public class DefaultFirstSet implements FirstSet
    */
   public boolean epsilon ( @SuppressWarnings ( "hiding" ) final boolean epsilon )
   {
-    if(this.epsilon != epsilon)
+    if ( this.epsilon != epsilon )
     {
       this.epsilon = epsilon;
       this.modified = true;
+      add ( new DefaultTerminalSymbol ( new DefaultSymbol () ) );
       return true;
     }
     return false;
@@ -358,10 +359,25 @@ public class DefaultFirstSet implements FirstSet
    * 
    * @see java.lang.Object#toString()
    */
+  @SuppressWarnings ( "nls" )
   @Override
   public String toString ()
   {
-    return this.terminalSymbolSet.toString ();
+    StringBuilder result = new StringBuilder ();
+    result.append ( "{" );
+    boolean deleteLast = false;
+    for ( TerminalSymbol ts : this.terminalSymbolSet )
+    {
+      result.append ( ts );
+      result.append ( "," );
+      deleteLast = true;
+    }
+    if(deleteLast)
+      result.deleteCharAt ( result.length () - 1 );
+    else
+      result.append ( " " );
+    result.append ( "}" );
+    return result.toString ();
   }
 
 

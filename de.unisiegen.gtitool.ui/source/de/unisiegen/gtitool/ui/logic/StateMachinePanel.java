@@ -44,6 +44,7 @@ import org.jgraph.graph.GraphSelectionModel;
 import org.jgraph.graph.PortView;
 
 import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultStateSet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.State;
@@ -1044,27 +1045,82 @@ public final class StateMachinePanel extends MachinePanel
   public final void handleMachineTableValueChanged (
       @SuppressWarnings ( "unused" ) ListSelectionEvent event )
   {
-    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
-        && !this.cellEditingMode )
+    if ( ! ( this.machineMode.equals ( MachineMode.EDIT_MACHINE ) && !this.cellEditingMode ) )
+      return;
+
+    clearHighlight ();
+
+    if ( this.machine instanceof AbstractLR )
+      return;
+
+    int index = this.gui.jGTITableMachine.getSelectedRow ();
+    if ( index != -1 )
     {
-      clearHighlight ();
+      State state = this.machine.getState ( index );
+      ArrayList < State > stateList = new ArrayList < State > ( 1 );
+      stateList.add ( state );
+      highlightStateActive ( stateList );
 
-      int index = this.gui.jGTITableMachine.getSelectedRow ();
-      if ( index != -1 )
-      {
-        State state = this.machine.getState ( index );
-        ArrayList < State > stateList = new ArrayList < State > ( 1 );
-        stateList.add ( state );
-        highlightStateActive ( stateList );
-
-        ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
-        highlightTransitionActive ( state.getTransitionBegin () );
-        for ( Transition currentTransition : state.getTransitionBegin () )
-          for ( Symbol currentSymbol : currentTransition )
-            symbolList.add ( currentSymbol );
-        highlightSymbolActive ( symbolList );
-      }
+      ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
+      highlightTransitionActive ( state.getTransitionBegin () );
+      for ( Transition currentTransition : state.getTransitionBegin () )
+        for ( Symbol currentSymbol : currentTransition )
+          symbolList.add ( currentSymbol );
+      highlightSymbolActive ( symbolList );
     }
+  }
+
+
+  /**
+   * Handles a change in the LR Table
+   */
+  final void handleMachineLRTableValueChanged ()
+  {
+    for ( State state : this.machine.getState () )
+      state.setSelected ( false );
+
+    final int row = this.gui.jGTITableMachine.getSelectedRow ();
+    final int column = this.gui.jGTITableMachine.getSelectedColumn ();
+
+    changeTableState ( row, column, true );
+
+    this.gui.jGTITableMachine.repaint ();
+    this.gui.jGTIPanelGraph.repaint ();
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param row
+   * @param column
+   * @param selected
+   */
+  private void changeTableState ( final int row, final int column,
+      final boolean selected )
+  {
+    if ( column == 0 )
+    {
+      this.machine.getState ( row ).setSelected ( selected );
+      return;
+    }
+
+    final Object entry = this.gui.jGTITableMachine.getValueAt ( row, column );
+
+    if ( entry == null || ! ( entry instanceof DefaultStateSet ) )
+      return;
+
+    final StateSet states = ( StateSet ) entry;
+
+    if ( states.size () == 0 )
+      return;
+
+    final State state = states.get ( 0 );
+
+    this.machine.getState ( new Integer ( state.toString () ).intValue () )
+        .setSelected ( selected );
+
+    this.machine.getState ( row ).setSelected ( selected );
   }
 
 
@@ -1554,8 +1610,28 @@ public final class StateMachinePanel extends MachinePanel
     this.gui.jGTITableMachine.setColumnModel ( this.machine
         .getTableColumnModel () );
     this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
+
     this.gui.jGTITableMachine
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+
+    if ( this.machine instanceof AbstractLR )
+    {
+      this.gui.jGTITableMachine.setCellSelectionEnabled ( true );
+      this.gui.jGTITableMachine.setRowSelectionAllowed ( false );
+      this.gui.jGTITableMachine.setColumnSelectionAllowed ( false );
+
+      this.gui.jGTITableMachine.addMouseListener ( new MouseAdapter ()
+      {
+
+        @Override
+        public void mouseClicked ( @SuppressWarnings ( "unused" ) MouseEvent e )
+        {
+          handleMachineLRTableValueChanged ();
+        }
+
+      } );
+      return;
+    }
 
     for ( int i = 1 ; i < this.gui.jGTITableMachine.getColumnModel ()
         .getColumnCount () ; i++ )

@@ -155,6 +155,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
     this.word = word;
     this.word.start ();
     this.wordAccepted = false;
+    this.rejected = false;
   }
 
 
@@ -294,6 +295,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
     this.stack.clear ();
     this.history.clear ();
     this.wordAccepted = false;
+    this.rejected = false;
 
     onStop ();
   }

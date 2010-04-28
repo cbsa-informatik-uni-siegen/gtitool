@@ -105,19 +105,19 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
 
     /**
-     * TODO
+     * The current history of the LR automaton
      */
     private StateMachineHistoryItem currentState;
 
 
     /**
-     * TODO
+     * The history of the LR automaton's history
      */
     private ArrayList < StateMachineHistoryItem > stateMachineHistory;
 
 
     /**
-     * TODO
+     * The state stack
      */
     private LRStateStack stateStack;
   }
@@ -268,7 +268,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   {
     finishAction ();
 
-    return super.onAccept ( action );
+    return super.onReject ( action );
   }
 
 

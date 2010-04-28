@@ -63,7 +63,7 @@ public final class PrettyStringTableCellRenderer extends
     else if ( value instanceof PrettyString )
       prettyString = ( PrettyString ) value;
     else
-      throw new IllegalArgumentException ( "the value can not be renderer" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "the value can not be rendered" ); //$NON-NLS-1$
 
     this.prettyStringComponent.setPrettyString ( prettyString );
 
@@ -85,14 +85,14 @@ public final class PrettyStringTableCellRenderer extends
 
     return this.prettyStringComponent;
   }
-  
+
+
   /**
-   * 
    * Sets the right horizontal
-   *
+   * 
    * @param rightHorizontal The right horizontal
    */
-  public final void setRightHorizontal(final boolean rightHorizontal)
+  public final void setRightHorizontal ( final boolean rightHorizontal )
   {
     this.prettyStringComponent.setRightHorizontal ( rightHorizontal );
   }

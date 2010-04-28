@@ -44,7 +44,10 @@ public class RejectAction implements Action
    */
   public int compareTo ( Action o )
   {
-    return 0;
+    // RejectActions are below everything
+    if ( o instanceof RejectAction )
+      return 0;
+    return -1;
   }
 
 
@@ -79,6 +82,17 @@ public class RejectAction implements Action
   {
     return new PrettyString ( new PrettyToken ( Messages
         .getString ( "RejectAction" ), Style.NONE ) ); //$NON-NLS-1$
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString ()
+  {
+    return "BLABLABLA";
   }
 
 }

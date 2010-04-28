@@ -2,7 +2,6 @@ package de.unisiegen.gtitool.core.machines.lr;
 
 
 import de.unisiegen.gtitool.core.entities.AcceptAction;
-import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
@@ -12,12 +11,10 @@ import de.unisiegen.gtitool.core.entities.LR0State;
 import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.ShiftAction;
-import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
@@ -46,55 +43,14 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
 
 
   /**
-   * {@inheritDoc}
-   */
-  @Override
-  public boolean transit ( Action action )
-  {
-    ActionSet possibleActions = actions ( currentItems (), currentTerminal () );
-
-    if ( !possibleActions.contains ( action ) )
-      return false;
-
-    return super.transit ( action );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#autoTransit()
-   */
-  @Override
-  public Action autoTransit () throws MachineAmbigiousActionException
-  {
-    return assertTransit ( actions ( currentItems (), currentTerminal () ) );
-  }
-
-
-  /**
-   * The current LR0ItemSet pointed to by the LR0 automaton
-   * 
-   * @return the lr0 item set
-   */
-  private LR0ItemSet currentItems ()
-  {
-    final State state = this.lr0Automaton.getCurrentState ();
-
-    final LR0State lr0state = ( LR0State ) state;
-
-    return lr0state.getLR0Items ();
-  }
-
-
-  /**
    * Calculate the actions set
    * 
    * @param items - The LR0 item set
    * @param symbol - The current terminal symbol
    * @return The actions set
    */
-  public ActionSet actions ( final LR0ItemSet items, final TerminalSymbol symbol )
+  private ActionSet actions ( final LR0ItemSet items,
+      final TerminalSymbol symbol )
   {
     ActionSet ret = new DefaultActionSet ();
 
@@ -185,18 +141,6 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getPossibleActions()
-   */
-  @Override
-  public ActionSet getPossibleActions ()
-  {
-    return actions ( currentItems (), currentTerminal () );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#getAutomaton()
    */
   @Override
@@ -208,12 +152,11 @@ public class DefaultLR0Parser extends AbstractLRMachine implements LR0Parser
 
   /**
    * {@inheritDoc}
-   * 
    */
   @Override
-  protected ActionSet actionSetBase ( LRState state, TerminalSymbol symbol )
+  protected ActionSet actionSetBase ( final LRState state,
+      final TerminalSymbol symbol )
   {
     return actions ( ( ( LR0State ) state ).getLR0Items (), symbol );
   }
-
 }

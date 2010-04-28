@@ -14,10 +14,12 @@ import de.unisiegen.gtitool.core.entities.LRItemSet;
 import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.LRStateStack;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.RejectAction;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.grammars.cfg.ExtendedGrammar;
@@ -35,13 +37,13 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 {
 
   /**
-   * TODO
+   * Represents the whole history of the LR automaton
    */
   private class HistoryEntry
   {
 
     /**
-     * TODO
+     * Creates a new history element
      * 
      * @param currentState
      * @param stateMachineHistory
@@ -58,9 +60,9 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
 
     /**
-     * TODO
+     * Returns the entire machine history
      * 
-     * @return
+     * @return the history
      */
     public ArrayList < StateMachineHistoryItem > getMachineHistory ()
     {
@@ -69,9 +71,9 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
 
     /**
-     * TODO
+     * Returns the current active history item
      * 
-     * @return
+     * @return the item
      */
     public StateMachineHistoryItem getCurrentState ()
     {
@@ -80,9 +82,9 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
 
     /**
-     * TODO
+     * Returns the LR state stack
      * 
-     * @return
+     * @return the stack
      */
     public LRStateStack getStateStack ()
     {
@@ -91,9 +93,8 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
 
     /**
-     * TODO
+     * {@inheritDoc}
      * 
-     * @return
      * @see java.lang.Object#toString()
      */
     @Override
@@ -138,7 +139,36 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
    * 
    * @see de.unisiegen.gtitool.core.machines.StatelessMachine#autoTransit()
    */
-  public abstract Action autoTransit () throws MachineAmbigiousActionException;
+  public final Action autoTransit () throws MachineAmbigiousActionException
+  {
+    return assertTransit ( this.getPossibleActions () );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public final boolean transit ( final Action action )
+  {
+    final ActionSet possibleActions = this.getPossibleActions ();
+
+    if ( !possibleActions.contains ( action ) )
+      return false;
+
+    return super.transit ( action );
+  }
+
+
+  /**
+   * The current LR automaton's state
+   * 
+   * @return the state
+   */
+  private LRState currentState ()
+  {
+    return ( LRState ) this.getAutomaton ().getCurrentState ();
+  }
 
 
   /**
@@ -222,6 +252,31 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
   @Override
   protected boolean onAccept ( final Action action )
   {
+    finishAction ();
+
+    return super.onAccept ( action );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#onReject(de.unisiegen.gtitool.core.entities.Action)
+   */
+  @Override
+  protected boolean onReject ( final Action action )
+  {
+    finishAction ();
+
+    return super.onAccept ( action );
+  }
+
+
+  /**
+   * Extra work to do if this is the last action
+   */
+  private void finishAction ()
+  {
     try
     {
       getWord ().nextSymbol ();
@@ -232,8 +287,6 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-
-    return super.onAccept ( action );
   }
 
 
@@ -289,7 +342,9 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
 
   /**
-   * @return
+   * Returns the contents for the parsing table
+   * 
+   * @return the strings
    */
   public ArrayList < ArrayList < PrettyString >> getTableCellStrings ()
   {
@@ -310,7 +365,7 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#createHistoryEntry()
    */
@@ -321,12 +376,13 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
     this.history.add ( new HistoryEntry ( getAutomaton ()
         .makeCurrentHistoryItem (), new ArrayList < StateMachineHistoryItem > (
-        getAutomaton ().getHistory () ), new DefaultLRStateStack ( getAutomaton ().getStateStack () ) ) );
+        getAutomaton ().getHistory () ), new DefaultLRStateStack (
+        getAutomaton ().getStateStack () ) ) );
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#restoreHistoryEntry()
    */
@@ -346,11 +402,46 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param state
-   * @param symbol
-   * @return
+   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getPossibleActions()
+   */
+  @Override
+  public ActionSet getPossibleActions ()
+  {
+    return handleEmptyActionSet ( actionSetBase ( currentState (),
+        currentTerminal () ) );
+  }
+
+
+  /**
+   * Handles an empty action set. Currently, if no action is possible, we have
+   * to insert a RejectAction instead.
+   * 
+   * @param set The set (possibly empty)
+   * @return A new set containing a RejectAction if it was previously empty
+   */
+  static private ActionSet handleEmptyActionSet ( final ActionSet set )
+  {
+    if ( set.size () == 0 )
+      try
+      {
+        set.add ( new RejectAction () );
+      }
+      catch ( ActionSetException exc )
+      {
+        exc.printStackTrace ();
+      }
+    return set;
+  }
+
+
+  /**
+   * Returns the action set for a given LR automaton state and a terminal
+   * 
+   * @param state the current LR automaton's state
+   * @param symbol the current terminal symbol
+   * @return the possible actions
    */
   protected abstract ActionSet actionSetBase ( LRState state,
       TerminalSymbol symbol );

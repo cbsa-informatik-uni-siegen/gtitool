@@ -165,17 +165,17 @@ public class DefaultActionSet implements ActionSet
   {
     final PrettyString ret = new PrettyString ();
 
-    ret.add ( new PrettyToken ( "{", Style.NONE ) );
+    ret.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
 
     for ( int i = 0 ; i < size () ; ++i )
     {
       ret.add ( get ( i ).toPrettyString () );
 
       if ( i < size () - 1 )
-        ret.add ( new PrettyToken ( ",", Style.NONE ) );
+        ret.add ( new PrettyToken ( ",", Style.NONE ) ); //$NON-NLS-1$
     }
 
-    ret.add ( new PrettyToken ( "}", Style.NONE ) );
+    ret.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
     return ret;
   }
 

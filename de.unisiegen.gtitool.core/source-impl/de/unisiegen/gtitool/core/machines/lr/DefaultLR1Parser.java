@@ -4,7 +4,6 @@ package de.unisiegen.gtitool.core.machines.lr;
 import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.AcceptAction;
-import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
@@ -18,7 +17,6 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
@@ -66,57 +64,13 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.lr.LRMachine#transit(de.unisiegen.gtitool.core.entities.Action)
-   */
-  @Override
-  public boolean transit ( Action action )
-  {
-    ActionSet possibleActions = actions ( currentItems (), currentTerminal () );
-
-    if ( !possibleActions.contains ( action ) )
-      return false;
-
-    return super.transit ( action );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractLRMachine#autoTransit()
-   */
-  @Override
-  public Action autoTransit () throws MachineAmbigiousActionException
-  {
-    return assertTransit ( actions ( currentItems (), currentTerminal () ) );
-  }
-
-
-  /**
-   * Get the current LR1 items
-   * 
-   * @return The items
-   */
-  private LR1ItemSet currentItems ()
-  {
-    final State state = this.lr1Automaton.getCurrentState ();
-
-    final LR1State lr1state = ( LR1State ) state;
-
-    return lr1state.getLR1Items ();
-  }
-
-
-  /**
    * Calculate the actions set
    * 
    * @param items - The LR0 item set
    * @param symbol - The current terminal symbol
    * @return The actions set
    */
-  public ActionSet actions ( LR1ItemSet items, TerminalSymbol symbol )
+  private ActionSet actions ( LR1ItemSet items, TerminalSymbol symbol )
   {
     ActionSet ret = new DefaultActionSet ();
 
@@ -181,18 +135,6 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
    * The {@link LR1} automaton
    */
   private LR1 lr1Automaton;
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.machines.AbstractStatelessMachine#getPossibleActions()
-   */
-  @Override
-  public ActionSet getPossibleActions ()
-  {
-    return actions ( currentItems (), currentTerminal () );
-  }
 
 
   /**

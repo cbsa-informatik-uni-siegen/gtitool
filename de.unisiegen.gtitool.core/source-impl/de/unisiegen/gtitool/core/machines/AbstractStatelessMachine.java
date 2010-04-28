@@ -9,6 +9,7 @@ import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.RejectAction;
 import de.unisiegen.gtitool.core.entities.ReplaceAction;
 import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.ShiftActionBase;
@@ -226,15 +227,14 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
   {
     return this.wordAccepted;
   }
-  
-  
+
+
   /**
-   * 
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.machines.StatelessMachine#isWordRejected()
    */
-  public final boolean isWordRejected()
+  public final boolean isWordRejected ()
   {
     return this.rejected;
   }
@@ -389,6 +389,20 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
 
 
   /**
+   * handles the {@link RejectAction}
+   * 
+   * @param action The {@link Action}
+   * @return true if accept could be applied
+   */
+  protected boolean onReject (
+      @SuppressWarnings ( "unused" ) final Action action )
+  {
+    reject ();
+    return true;
+  }
+
+
+  /**
    * carry out a {@link Action}
    * 
    * @param transition the {@link Action}
@@ -408,8 +422,7 @@ public abstract class AbstractStatelessMachine implements StatelessMachine
       case ACCEPT :
         return onAccept ( transition );
       case REJECTED :
-        reject ();
-        break;
+        return onReject ( transition );
     }
     return true;
   }

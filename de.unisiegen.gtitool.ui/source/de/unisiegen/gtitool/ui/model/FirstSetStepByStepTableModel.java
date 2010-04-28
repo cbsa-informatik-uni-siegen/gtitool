@@ -2,12 +2,17 @@ package de.unisiegen.gtitool.ui.model;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.table.AbstractTableModel;
 
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionWordMember;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
@@ -63,7 +68,7 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
   /**
    * The {@link FirstSet}s
    */
-  private ArrayList < FirstSet > firstSets;
+  private HashMap < ProductionWordMember, FirstSet > firstSets;
 
 
   /**
@@ -80,11 +85,25 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
    * @param reasons The reasons
    */
   public FirstSetStepByStepTableModel ( final CFG cfg,
-      final ArrayList < FirstSet > firstSets,
+      final HashMap < ProductionWordMember, FirstSet > firstSets,
       final ArrayList < PrettyString > reasons )
   {
     this.cfg = cfg;
-    this.nonterminals = this.cfg.getNonterminalSymbolSet ();
+    /*
+     * Use the order of NonterminalSymbols as they appear in the list of
+     * productions cause this is the order used by the calculation of FIRST(X) X
+     * \in N
+     */
+    this.nonterminals = new DefaultNonterminalSymbolSet ();
+    for ( Production p : this.cfg.getProduction () )
+      try
+      {
+        this.nonterminals.add ( p.getNonterminalSymbol () );
+      }
+      catch ( NonterminalSymbolSetException exc )
+      {
+        continue;
+      }
     this.firstSets = firstSets;
     this.reasons = reasons;
   }
@@ -140,7 +159,7 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
       case FirstSetStepByStepTableModel.NONTERMINALCOLUMN :
         return this.nonterminals.get ( rowIndex );
       case FirstSetStepByStepTableModel.FIRSTCOLUMN :
-        return this.firstSets.get ( rowIndex );
+        return this.firstSets.get ( this.nonterminals.get ( rowIndex ) );
       case FirstSetStepByStepTableModel.REASONCOLUMN :
         return this.reasons.get ( rowIndex );
     }

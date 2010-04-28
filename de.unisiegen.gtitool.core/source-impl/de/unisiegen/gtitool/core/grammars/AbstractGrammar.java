@@ -879,7 +879,7 @@ public abstract class AbstractGrammar implements Grammar
 
         // case 3
         if ( p.getProductionWord ().epsilon () )
-          modified = firstSet.epsilon ( true );
+          modified = firstSet.epsilon ( true ) || modified;
 
         // run through all elements of the right side
         for ( ProductionWordMember pwm : p.getProductionWord () )
@@ -968,11 +968,8 @@ public abstract class AbstractGrammar implements Grammar
 
   /**
    * calculates follow sets for each NonterminalSymbol
-   * 
-   * @throws GrammarInvalidNonterminalException
    */
   private final void calculateAllFollowSets ()
-      throws GrammarInvalidNonterminalException
   {
     boolean modified;
     do

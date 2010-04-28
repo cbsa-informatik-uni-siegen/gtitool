@@ -7,6 +7,7 @@ import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.DefaultLRStateStack;
 import de.unisiegen.gtitool.core.entities.LRStateStack;
+import de.unisiegen.gtitool.core.entities.RejectAction;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -69,7 +70,7 @@ public class LRMachineTableModel extends StatelessMachineTableModel
    * added, but "Accepted" will be put into the last row of the actions column
    * When this is undone, no row may be removed, but "Accepted" is erased.
    */
-  private boolean isAccepted = false;
+  private boolean isFinished = false;
 
 
   /**
@@ -86,7 +87,8 @@ public class LRMachineTableModel extends StatelessMachineTableModel
    * 
    * @param stack the {@link Stack}
    * @param input the {@link Word}
-   * @param action the {@link Action}
+   * @param action the {@link Action} (can be null), for example, if the machine
+   *          has just been started
    * @param stateStack the state stack
    */
   public final void addRow ( final Stack stack, final Word input,
@@ -117,7 +119,7 @@ public class LRMachineTableModel extends StatelessMachineTableModel
   @Override
   public final void removeLastRow ()
   {
-    if ( this.isAccepted )
+    if ( this.isFinished )
       this.actionData.remove ( this.actionData.size () - 1 );
     else
     {
@@ -125,7 +127,7 @@ public class LRMachineTableModel extends StatelessMachineTableModel
       this.lrStateStackData.remove ( this.lrStateStackData.size () - 1 );
     }
 
-    this.isAccepted = false;
+    this.isFinished = false;
   }
 
 
@@ -137,6 +139,7 @@ public class LRMachineTableModel extends StatelessMachineTableModel
   {
     super.clearData ();
     this.lrStateStackData.clear ();
+    this.isFinished = false;
   }
 
 
@@ -161,7 +164,21 @@ public class LRMachineTableModel extends StatelessMachineTableModel
   public void accept ( final AcceptAction action )
   {
     this.actionData.add ( action );
-    this.isAccepted = true;
+    this.isFinished = true;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param action
+   * @see de.unisiegen.gtitool.ui.model.StatelessMachineTableModel#reject(de.unisiegen.gtitool.core.entities.RejectAction)
+   */
+  @Override
+  public void reject ( final RejectAction action )
+  {
+    this.actionData.add ( action );
+    this.isFinished = true;
   }
 
 
@@ -170,12 +187,12 @@ public class LRMachineTableModel extends StatelessMachineTableModel
    * 
    * @see javax.swing.table.TableModel#getValueAt(int, int)
    */
-  public Object getValueAt ( int rowIndex, int columnIndex )
+  public PrettyString getValueAt ( int rowIndex, int columnIndex )
   {
     switch ( columnIndex )
     {
       case LRMachineTableModel.INPUT_COLUMN :
-        return this.inputData.get ( rowIndex );
+        return this.inputData.get ( rowIndex ).toPrettyString ();
       case LRMachineTableModel.STACK_COLUMN :
         return new PrettyString ( new PrettyToken ( this.stackData.get (
             rowIndex ).reverseString (), Style.NONE ) );
@@ -192,10 +209,12 @@ public class LRMachineTableModel extends StatelessMachineTableModel
         {
           Action action = this.actionData.get ( rowIndex + 1 );
           if ( action != null )
-            return action;
+            return action.toPrettyString ();
         }
-        else if ( this.isAccepted )
-          return this.actionData.get ( rowIndex + 1 );
+        else if ( this.isFinished )
+        {
+          return this.actionData.get ( rowIndex + 1 ).toPrettyString ();
+        }
     }
     return new PrettyString ();
   }

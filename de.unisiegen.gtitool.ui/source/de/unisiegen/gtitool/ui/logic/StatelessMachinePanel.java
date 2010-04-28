@@ -454,7 +454,7 @@ public class StatelessMachinePanel extends MachinePanel
   @Override
   public void handleWordNextStep ()
   {
-    Action action;
+    Action action = null;
     try
     {
       action = this.machine.autoTransit ();
@@ -491,8 +491,7 @@ public class StatelessMachinePanel extends MachinePanel
         }
         catch ( IllegalArgumentException e )
         {
-          performMachineTableChanged ( MachineActionType.REJECT, null );
-          return;
+          e.printStackTrace ();
         }
       }
       else

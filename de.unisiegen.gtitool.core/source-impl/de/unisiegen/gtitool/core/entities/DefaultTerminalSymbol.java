@@ -71,6 +71,20 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * The {@link EventListenerList}.
    */
   private final EventListenerList listenerList = new EventListenerList ();
+  
+  
+  /**
+   * Copy-CTor
+   *
+   * @param o The other {@link TerminalSymbol}
+   */
+  public DefaultTerminalSymbol(final TerminalSymbol o)
+  {
+    DefaultTerminalSymbol other = (DefaultTerminalSymbol)o;
+    this.name = new String(other.name);
+    this.error = other.error;
+    this.parserOffset = other.parserOffset.clone ();
+  }
 
 
   /**

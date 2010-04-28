@@ -112,6 +112,31 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
+   * copy-CTor
+   * 
+   * @param o The other {@link TerminalSymbolSet}
+   */
+  public DefaultTerminalSymbolSet ( final TerminalSymbolSet o )
+  {
+    DefaultTerminalSymbolSet other = ( DefaultTerminalSymbolSet ) o;
+    this.parserOffset = other.parserOffset.clone ();
+    this.terminalSymbolSet = new TreeSet < TerminalSymbol > ();
+    for ( TerminalSymbol ts : other.terminalSymbolSet )
+      this.terminalSymbolSet.add ( new DefaultTerminalSymbol ( ts ) );
+    this.initialTerminalSymbolSet = new TreeSet < TerminalSymbol > ();
+    for ( TerminalSymbol ts : other.initialTerminalSymbolSet )
+      this.initialTerminalSymbolSet.add ( new DefaultTerminalSymbol ( ts ) );
+    this.prettyStringChangedListener = new PrettyStringChangedListener ()
+    {
+      public void prettyStringChanged ()
+      {
+        firePrettyStringChanged ();
+      }
+    };
+  }
+
+
+  /**
    * Allocates a new {@link DefaultTerminalSymbolSet}.
    */
   public DefaultTerminalSymbolSet ()

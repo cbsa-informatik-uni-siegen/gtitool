@@ -56,6 +56,21 @@ public class DefaultFirstSet implements FirstSet
 
 
   /**
+   * default ctor
+   * 
+   * @param o The other {@link FirstSet}
+   */
+  public DefaultFirstSet ( final FirstSet o )
+  {
+    DefaultFirstSet other = ( DefaultFirstSet ) o;
+    this.terminalSymbolSet = new DefaultTerminalSymbolSet (
+        other.terminalSymbolSet );
+    this.epsilon = other.epsilon;
+    this.modified = other.modified;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.entities.FirstSet#add(java.lang.Iterable)
@@ -400,20 +415,20 @@ public class DefaultFirstSet implements FirstSet
   @SuppressWarnings ( "nls" )
   public PrettyString toPrettyString ()
   {
-    PrettyString ps = new PrettyString();
-      ps.add ( new PrettyToken("{", Style.NONE) );
-      boolean deleteLast = false;
-      for(TerminalSymbol ts : this.terminalSymbolSet)
-      {
-        ps.add ( ts );
-        ps.add ( new PrettyToken(",", Style.NONE) );
-        deleteLast = true;
-      }
-      if(deleteLast)
-        ps.removeLastPrettyToken ();
-      else
-        ps.add ( new PrettyToken(" ", Style.NONE) );
-      ps.add ( new PrettyToken("}", Style.NONE) );
+    PrettyString ps = new PrettyString ();
+    ps.add ( new PrettyToken ( "{", Style.NONE ) );
+    boolean deleteLast = false;
+    for ( TerminalSymbol ts : this.terminalSymbolSet )
+    {
+      ps.add ( ts );
+      ps.add ( new PrettyToken ( ",", Style.NONE ) );
+      deleteLast = true;
+    }
+    if ( deleteLast )
+      ps.removeLastPrettyToken ();
+    else
+      ps.add ( new PrettyToken ( " ", Style.NONE ) );
+    ps.add ( new PrettyToken ( "}", Style.NONE ) );
     return ps;
   }
 }

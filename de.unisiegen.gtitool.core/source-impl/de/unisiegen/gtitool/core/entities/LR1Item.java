@@ -5,19 +5,39 @@ import java.util.ArrayList;
 
 
 /**
- * TODO
+ * An LR1 item
  */
 public class LR1Item extends LRItem
 {
 
-  public LR1Item ( NonterminalSymbol nonterminalSymbol,
-      ProductionWord productionWord, int dotPosition, TerminalSymbol lookAhead )
+  /**
+   * The serial version
+   */
+  private static final long serialVersionUID = 4240776560497597943L;
+
+
+  /**
+   * Constructs the LR1 item
+   * 
+   * @param nonterminalSymbol
+   * @param productionWord
+   * @param dotPosition
+   * @param lookAhead
+   */
+  public LR1Item ( final NonterminalSymbol nonterminalSymbol,
+      final ProductionWord productionWord, final int dotPosition,
+      final TerminalSymbol lookAhead )
   {
     super ( nonterminalSymbol, productionWord, dotPosition );
     this.lookAhead = lookAhead;
   }
 
 
+  /**
+   * Increments the dot
+   * 
+   * @return the new item
+   */
   public LR1Item incDot ()
   {
     return new LR1Item ( getNonterminalSymbol (), getProductionWord (),
@@ -25,6 +45,11 @@ public class LR1Item extends LRItem
   }
 
 
+  /**
+   * Returns the production word after the dot
+   * 
+   * @return the production word
+   */
   public ProductionWord getRemainingProductionWord ()
   {
     ArrayList < ProductionWordMember > members = new ArrayList < ProductionWordMember > ();
@@ -36,6 +61,11 @@ public class LR1Item extends LRItem
   }
 
 
+  /**
+   * Returns the lookahead token
+   * 
+   * @return the lookahead
+   */
   public TerminalSymbol getLookAhead ()
   {
     return this.lookAhead;
@@ -45,12 +75,12 @@ public class LR1Item extends LRItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.entities.LRItem#itemString()
+   * @see de.unisiegen.gtitool.core.entities.LRItem#toString()
    */
   @Override
-  public String itemString ()
+  public String toString ()
   {
-    return "[" + super.itemString () + "," + getLookAhead ().toString () + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return "[" + super.toString () + "," + getLookAhead ().toString () + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
   }
 
 
@@ -72,10 +102,8 @@ public class LR1Item extends LRItem
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param other
-   * @return
    * @see de.unisiegen.gtitool.core.entities.DefaultProduction#equals(java.lang.Object)
    */
   @Override
@@ -88,5 +116,8 @@ public class LR1Item extends LRItem
   }
 
 
+  /**
+   * The additional lookahead
+   */
   private TerminalSymbol lookAhead;
 }

@@ -597,6 +597,16 @@ public class DefaultProduction implements Production
   @Override
   public String toString ()
   {
+    return myToString ();
+  }
+
+
+  /**
+   * @return the string
+   * @see DefaultProduction#toString()
+   */
+  protected String myToString ()
+  {
     return this.nonterminalSymbol.toString () + " \u2192 " //$NON-NLS-1$
         + this.productionWord.toString ();
   }

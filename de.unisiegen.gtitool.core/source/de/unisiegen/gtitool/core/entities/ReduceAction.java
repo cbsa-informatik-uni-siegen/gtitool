@@ -41,10 +41,8 @@ public class ReduceAction extends ReplaceAction
   @Override
   public String toString ()
   {
-    // strip the dot from the production
-    String prodName = this.production.toString ();
-    prodName = prodName.replace ( LRItem.dotString (), "" ); //$NON-NLS-1$
-
-    return Messages.getString ( "Entities.Actions.Reduce" ) + " " + prodName; //$NON-NLS-1$ //$NON-NLS-2$
+    return Messages.getString ( "Entities.Actions.Reduce" ) //$NON-NLS-1$
+        + " " //$NON-NLS-1$
+        + ( ( DefaultProduction ) this.production ).myToString ();
   }
 }

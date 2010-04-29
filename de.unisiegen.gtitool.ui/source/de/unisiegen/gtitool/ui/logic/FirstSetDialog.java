@@ -11,11 +11,14 @@ import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
@@ -24,6 +27,7 @@ import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.FirstSetStepByStepTableColumnModel;
@@ -94,7 +98,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
   /**
    * The reasons
    */
-  private ArrayList < PrettyString > reasons;
+  private HashMap < NonterminalSymbol, PrettyString > reasons;
 
 
   /**
@@ -112,7 +116,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
   /**
    * indicates if we're finished creating the first sets
    */
-  private boolean finished;
+  private boolean modified;
 
 
   /**
@@ -157,7 +161,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
 
     // setup the step by step data
     this.firstSets = new HashMap < ProductionWordMember, FirstSet > ();
-    this.reasons = new ArrayList < PrettyString > ();
+    this.reasons = new HashMap < NonterminalSymbol, PrettyString > ();
 
     for ( TerminalSymbol ts : this.cfg.getTerminalSymbolSet () )
     {
@@ -167,14 +171,14 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
     for ( NonterminalSymbol ns : this.cfg.getNonterminalSymbolSet () )
     {
       this.firstSets.put ( ns, new DefaultFirstSet () );
-      this.reasons.add ( new PrettyString () );
+      this.reasons.put ( ns, new PrettyString () );
     }
 
     this.currentProductionWordMemberIndex = 0;
     this.currentProductionIndex = 0;
 
-    this.finished = false;
-    this.nextProduction = true;
+    this.modified = false;
+    this.nextProduction = false;
     this.lastWasEpsilon = true;
 
     this.history = new Stack < ArrayList < Object > > ();
@@ -221,9 +225,12 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
             ( DefaultTerminalSymbol ) e.getKey () ), new DefaultFirstSet ( e
             .getValue () ) );
     entry.add ( currentFirstSets );
-    ArrayList < PrettyString > currentReasons = new ArrayList < PrettyString > ();
-    for ( PrettyString p : this.reasons )
-      currentReasons.add ( new PrettyString ( p ) );
+    HashMap < NonterminalSymbol, PrettyString > currentReasons = new HashMap < NonterminalSymbol, PrettyString > ();
+    for ( Entry < NonterminalSymbol, PrettyString > e : this.reasons
+        .entrySet () )
+      currentReasons.put ( new DefaultNonterminalSymbol (
+          ( DefaultNonterminalSymbol ) e.getKey () ), new PrettyString ( e
+          .getValue () ) );
     entry.add ( currentReasons );
     entry.add ( new Integer ( this.currentProductionWordMemberIndex ) );
     entry.add ( new Integer ( this.currentProductionIndex ) );
@@ -242,15 +249,16 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
     ArrayList < Object > entry = this.history.pop ();
     this.firstSets = ( HashMap < ProductionWordMember, FirstSet > ) entry
         .get ( 0 );
-    this.reasons = ( ArrayList < PrettyString > ) entry.get ( 1 );
+    this.reasons = ( HashMap < NonterminalSymbol, PrettyString > ) entry
+        .get ( 1 );
     this.currentProductionWordMemberIndex = ( ( Integer ) entry.get ( 2 ) )
         .intValue ();
     this.currentProductionIndex = ( ( Integer ) entry.get ( 3 ) ).intValue ();
     this.nextProduction = ( ( Boolean ) entry.get ( 4 ) ).booleanValue ();
     this.lastWasEpsilon = ( ( Boolean ) entry.get ( 5 ) ).booleanValue ();
 
-    if ( this.finished )
-      this.finished = false;
+    if ( this.modified )
+      this.modified = false;
 
     ( ( FirstSetStepByStepTableModel ) this.gui.jGTIFirstTable.getModel () )
         .setAll ( this.firstSets, this.reasons );
@@ -291,7 +299,9 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
   private void updateWordNavigation ()
   {
     enableButton ( Action.PREVIOUS, !this.history.isEmpty () );
-    enableButton ( Action.NEXT, this.finished );
+    boolean allFinished = this.modified
+        || this.currentProductionIndex != this.cfg.getProduction ().size () - 1;
+    enableButton ( Action.NEXT, allFinished );
   }
 
 
@@ -326,8 +336,8 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
     this.history.clear ();
     this.currentProductionIndex = 0;
     this.currentProductionWordMemberIndex = 0;
-    this.finished = false;
-    this.nextProduction = true;
+    this.modified = false;
+    this.nextProduction = false;
   }
 
 
@@ -336,84 +346,107 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
    */
   public void handleNext ()
   {
-    // TODO: check if this condition is enough (check with this.roundFinished)
-    if ( !this.finished )
+    createHistoryEntry ();
+    Production p = null;
+    if ( this.nextProduction )
     {
-      createHistoryEntry ();
-      Production p = null;
-      if ( this.nextProduction )
+      /*
+       * if we ran through all productions so far reset this counter. if we're
+       * not finished calculating the first sets we're going to run through all
+       * productions again.
+       */
+      if ( this.currentProductionIndex == this.cfg.getProduction ().size () - 1 )
       {
-        /*
-         * during the next few 'next'-steps we're maybe going through all
-         * elements of the right side of the production. So reset this counter
-         */
-        this.currentProductionWordMemberIndex = 0;
-        // the next production we're going to process
-        p = this.cfg.getProductionAt ( this.currentProductionIndex );
-        ++this.currentProductionIndex;
-        /*
-         * as long as we're not finished processing the next production we will
-         * not proceed to the next one
-         */
-        this.nextProduction = false;
-        /*
-         * if we ran through all productions so far reset this counter. if we're
-         * not finished calculating the first sets we're going to run through
-         * all productions again.
-         */
-        if ( this.currentProductionIndex == this.cfg.getProduction ().size () - 1 )
-          this.currentProductionIndex = 0;
+        this.currentProductionIndex = -1;
+        this.modified = false;
+      }
+      /*
+       * during the next few 'next'-steps we're maybe going through all elements
+       * of the right side of the production. So reset this counter
+       */
+      this.currentProductionWordMemberIndex = 0;
+      // the next production we're going to process
+      ++this.currentProductionIndex;
+      p = this.cfg.getProductionAt ( this.currentProductionIndex );
+      /*
+       * as long as we're not finished processing the next production we will
+       * not proceed to the next one
+       */
+      this.nextProduction = false;
+    }
+    else
+      p = this.cfg.getProductionAt ( this.currentProductionIndex );
+
+    FirstSet firstSet = this.firstSets.get ( p.getNonterminalSymbol () );
+    if ( p.getProductionWord ().epsilon () )
+    {
+      this.modified = firstSet.epsilon ( true ) || this.modified;
+      this.nextProduction = true;
+    }
+    else
+    {
+      ProductionWordMember pwm = p.getProductionWord ().get (
+          this.currentProductionWordMemberIndex );
+      FirstSet firstSetToAdd = this.firstSets.get ( pwm );
+      // color all new added symbols red
+      firstSet.unmarkAll ();
+      for ( TerminalSymbol ts : firstSetToAdd )
+        if ( firstSet.size () != 0 )
+        {
+          if ( !firstSet.contains ( ts ) )
+            for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
+              pt.setOverwrittenColor ( Color.red );
+        }
+        else
+          for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
+            pt.setOverwrittenColor ( Color.red );
+
+      if ( !firstSetToAdd.epsilon () )
+      {
+        this.modified = firstSet.add ( firstSetToAdd ) || this.modified;
+        this.lastWasEpsilon = false;
       }
       else
-        p = this.cfg.getProductionAt ( this.currentProductionIndex );
+        for ( TerminalSymbol ts : firstSetToAdd )
+          if ( !ts.equals ( new DefaultTerminalSymbol ( new DefaultSymbol () ) ) )
+            this.modified = firstSet.add ( ts ) || this.modified;
 
-      FirstSet firstSet = this.firstSets.get ( p.getNonterminalSymbol () );
-      if ( p.getProductionWord ().epsilon () )
+      // setup the reason
+      this.reasons.put ( p.getNonterminalSymbol (), new PrettyString (
+          new PrettyToken ( Messages.getString (
+              "FirstSetDialog.ReasonDesc", p.getNonterminalSymbol (), //$NON-NLS-1$
+              firstSetToAdd, p, getAlpha ( p.getProductionWord () ), pwm ),
+              Style.NONE ) ) );
+
+      if ( this.currentProductionWordMemberIndex == p.getProductionWord ()
+          .size () - 1 )
       {
-        this.finished = firstSet.epsilon ( true ) || this.finished;
+        if ( this.lastWasEpsilon )
+          this.modified = firstSet.epsilon ( true ) || this.modified;
+        else
+          this.lastWasEpsilon = true;
         this.nextProduction = true;
       }
       else
-      {
-        ProductionWordMember pwm = p.getProductionWord ().get (
-            this.currentProductionWordMemberIndex );
-        FirstSet firstSetToAdd = this.firstSets.get ( pwm );
-        // color all new added symbols red
-        firstSet.unmarkAll ();
-        for ( TerminalSymbol ts : firstSetToAdd )
-          if ( firstSet.size () != 0 )
-            for ( TerminalSymbol otherTS : firstSet )
-              if ( !ts.equals ( otherTS ) )
-                for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
-                  pt.setOverwrittenColor ( Color.red );
-              else
-                for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
-                  pt.setOverwrittenColor ( Color.red );
-
-        if ( !firstSetToAdd.epsilon () )
-        {
-          this.finished = firstSet.add ( firstSetToAdd ) || this.finished;
-          this.lastWasEpsilon = false;
-        }
-
-        if ( this.currentProductionWordMemberIndex == p.getProductionWord ()
-            .size () - 1 )
-        {
-          if ( this.lastWasEpsilon )
-            this.finished = firstSet.epsilon ( true ) || this.finished;
-          else
-            this.lastWasEpsilon = true;
-          this.nextProduction = true;
-        }
-        // this.finished = firstSet.add ( firstSetToAdd );
-        // if ( !firstSetToAdd.epsilon ()
-        // || this.currentProductionWordMemberIndex == p.getProductionWord ()
-        // .size () - 1 )
-        // this.nextProduction = true;
-      }
+        ++this.currentProductionWordMemberIndex;
     }
     updateWordNavigation ();
     this.gui.jGTIFirstTable.repaint ();
+  }
+
+
+  /**
+   * Production A -> \alphaD returns \alpha
+   * 
+   * @param pw The {@link ProductionWord}
+   * @return Return \alpha for a production A -> \alphaD
+   */
+  private ProductionWord getAlpha ( final ProductionWord pw )
+  {
+    ArrayList < ProductionWordMember > pwm = new ArrayList < ProductionWordMember > ();
+    for ( int i = 0 ; i < this.currentProductionWordMemberIndex ; ++i )
+      pwm.add ( pw.get ( i ) );
+    return new DefaultProductionWord ( pwm );
   }
 
 
@@ -440,10 +473,11 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
     enableButton ( Action.STOP, false );
 
     for ( NonterminalSymbol ns : this.cfg.getNonterminalSymbolSet () )
+    {
       this.firstSets.put ( ns, new DefaultFirstSet () );
-    int reasonSize = this.reasons.size ();
-    this.reasons.clear ();
-    for ( int i = 0 ; i < reasonSize ; ++i )
-      this.reasons.add ( new PrettyString () );
+      this.reasons.put ( ns, new PrettyString () );
+    }
+
+    this.gui.jGTIFirstTable.repaint ();
   }
 }

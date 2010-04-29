@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.model;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.table.AbstractTableModel;
@@ -74,7 +73,7 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
   /**
    * The reasons
    */
-  private ArrayList < PrettyString > reasons;
+  private HashMap < NonterminalSymbol, PrettyString > reasons;
 
 
   /**
@@ -86,7 +85,7 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
    */
   public FirstSetStepByStepTableModel ( final CFG cfg,
       final HashMap < ProductionWordMember, FirstSet > firstSets,
-      final ArrayList < PrettyString > reasons )
+      final HashMap < NonterminalSymbol, PrettyString > reasons )
   {
     this.cfg = cfg;
     /*
@@ -107,35 +106,20 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
     this.firstSets = firstSets;
     this.reasons = reasons;
   }
-  
+
+
   /**
-   * 
    * Set all
-   *
+   * 
    * @param firstSets as it says
    * @param reasons as it says
    */
-  public final void setAll(final HashMap < ProductionWordMember, FirstSet > firstSets,
-      final ArrayList < PrettyString > reasons)
+  public final void setAll (
+      final HashMap < ProductionWordMember, FirstSet > firstSets,
+      final HashMap < NonterminalSymbol, PrettyString > reasons )
   {
     this.firstSets = firstSets;
     this.reasons = reasons;
-  }
-
-
-  /**
-   * Sets a new reason
-   * 
-   * @param ns The {@link NonterminalSymbol}
-   * @param reason The {@link PrettyString}
-   */
-  public void setReason ( final NonterminalSymbol ns, final PrettyString reason )
-  {
-    int idx = 0;
-    for ( int i = 0 ; i < this.nonterminals.size () ; ++i )
-      if ( this.nonterminals.get ( i ).getName ().equals ( ns.getName () ) )
-        idx = i;
-    this.reasons.set ( idx, reason );
   }
 
 
@@ -175,7 +159,7 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
       case FirstSetStepByStepTableModel.FIRSTCOLUMN :
         return this.firstSets.get ( this.nonterminals.get ( rowIndex ) );
       case FirstSetStepByStepTableModel.REASONCOLUMN :
-        return this.reasons.get ( rowIndex );
+        return this.reasons.get ( this.nonterminals.get ( rowIndex ) );
     }
     return new PrettyString ();
   }

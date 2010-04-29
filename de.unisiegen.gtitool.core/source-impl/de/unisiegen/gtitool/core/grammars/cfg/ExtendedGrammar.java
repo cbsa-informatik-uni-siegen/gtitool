@@ -10,6 +10,7 @@ import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
@@ -71,6 +72,15 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
         new DefaultProductionWord ( startSymbol ) );
 
     this.addProduction ( this.startProduction );
+
+    try
+    {
+      this.getTerminalSymbolSet ().add ( DefaultTerminalSymbol.EndMarker );
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+    }
   }
 
 

@@ -50,19 +50,17 @@ public class LR1Item extends LRItem
   @Override
   public String itemString ()
   {
-    return "[" + super.toString () + "," + getLookAhead ().toString () + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return "[" + super.itemString () + "," + getLookAhead ().toString () + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param other
-   * @return
    * @see de.unisiegen.gtitool.core.entities.DefaultProduction#compareTo(de.unisiegen.gtitool.core.entities.Production)
    */
   @Override
-  public int compareTo ( Production other )
+  public int compareTo ( final Production other )
   {
     int compare = super.compareTo ( other );
 

@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.grammars.cfg;
 
 
+import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.FirstSet;
 import de.unisiegen.gtitool.core.entities.LR1Item;
@@ -13,7 +14,6 @@ import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 
@@ -125,8 +125,7 @@ public class LR1Grammar extends ExtendedGrammar
 
           remainingPart.add ( item.getLookAhead () );
 
-          FirstSet firstElements;
-          firstElements = super.first ( remainingPart );
+          final FirstSet firstElements = this.getFirst ( remainingPart );
 
           for ( TerminalSymbol symbol : firstElements )
           {
@@ -142,6 +141,27 @@ public class LR1Grammar extends ExtendedGrammar
     }
 
     return ret;
+  }
+
+
+  /**
+   * Special case for FIRST($)
+   * 
+   * @param remainingPart
+   * @return the first set
+   */
+  private FirstSet getFirst ( final ProductionWord remainingPart )
+  {
+    if ( remainingPart.size () == 1
+        && remainingPart.get ( 0 ).equals ( DefaultTerminalSymbol.EndMarker ) )
+    {
+      FirstSet firstElements = new DefaultFirstSet ();
+      firstElements.add ( DefaultTerminalSymbol.EndMarker );
+      return firstElements;
+
+    }
+
+    return super.first ( remainingPart );
   }
 
 

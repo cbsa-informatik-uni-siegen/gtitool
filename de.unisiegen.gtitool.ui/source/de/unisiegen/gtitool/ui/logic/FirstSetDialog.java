@@ -22,9 +22,9 @@ import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymb
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
-import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.FirstSetStepByStepTableColumnModel;
 import de.unisiegen.gtitool.ui.model.FirstSetStepByStepTableModel;
@@ -122,6 +122,12 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
 
 
   /**
+   * last was epsilon
+   */
+  private boolean lastWasEpsilon;
+
+
+  /**
    * The step by step history
    */
   private Stack < ArrayList < Object > > history;
@@ -142,6 +148,12 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
     this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
 
     this.gui = new FirstSetDialogForm ( this.parent, this );
+    // center the dialog
+    int x = parent.getBounds ().x + ( parent.getWidth () / 2 )
+        - ( this.gui.getWidth () / 2 );
+    int y = parent.getBounds ().y + ( parent.getHeight () / 2 )
+        - ( this.gui.getHeight () / 2 );
+    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
 
     // setup the step by step data
     this.firstSets = new HashMap < ProductionWordMember, FirstSet > ();
@@ -163,6 +175,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
 
     this.finished = false;
     this.nextProduction = true;
+    this.lastWasEpsilon = true;
 
     this.history = new Stack < ArrayList < Object > > ();
 
@@ -215,6 +228,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
     entry.add ( new Integer ( this.currentProductionWordMemberIndex ) );
     entry.add ( new Integer ( this.currentProductionIndex ) );
     entry.add ( new Boolean ( this.nextProduction ) );
+    entry.add ( new Boolean ( this.lastWasEpsilon ) );
     this.history.add ( entry );
   }
 
@@ -233,6 +247,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
         .intValue ();
     this.currentProductionIndex = ( ( Integer ) entry.get ( 3 ) ).intValue ();
     this.nextProduction = ( ( Boolean ) entry.get ( 4 ) ).booleanValue ();
+    this.lastWasEpsilon = ( ( Boolean ) entry.get ( 5 ) ).booleanValue ();
 
     if ( this.finished )
       this.finished = false;
@@ -333,6 +348,8 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
          * elements of the right side of the production. So reset this counter
          */
         this.currentProductionWordMemberIndex = 0;
+        // the next production we're going to process
+        p = this.cfg.getProductionAt ( this.currentProductionIndex );
         ++this.currentProductionIndex;
         /*
          * as long as we're not finished processing the next production we will
@@ -347,8 +364,9 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
         if ( this.currentProductionIndex == this.cfg.getProduction ().size () - 1 )
           this.currentProductionIndex = 0;
       }
-      // the next production we're going to process
-      p = this.cfg.getProductionAt ( this.currentProductionIndex );
+      else
+        p = this.cfg.getProductionAt ( this.currentProductionIndex );
+
       FirstSet firstSet = this.firstSets.get ( p.getNonterminalSymbol () );
       if ( p.getProductionWord ().epsilon () )
       {
@@ -360,19 +378,38 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
         ProductionWordMember pwm = p.getProductionWord ().get (
             this.currentProductionWordMemberIndex );
         FirstSet firstSetToAdd = this.firstSets.get ( pwm );
-        //color all new added symbols red
+        // color all new added symbols red
         firstSet.unmarkAll ();
         for ( TerminalSymbol ts : firstSetToAdd )
-          for ( TerminalSymbol otherTS : firstSet )
-            if ( !ts.equals ( otherTS ) )
-              for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
-                pt.setOverwrittenColor ( Color.red );
+          if ( firstSet.size () != 0 )
+            for ( TerminalSymbol otherTS : firstSet )
+              if ( !ts.equals ( otherTS ) )
+                for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
+                  pt.setOverwrittenColor ( Color.red );
+              else
+                for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
+                  pt.setOverwrittenColor ( Color.red );
 
-        this.finished = firstSet.add ( firstSetToAdd );
-        if ( !firstSetToAdd.epsilon ()
-            || this.currentProductionWordMemberIndex == p.getProductionWord ()
-                .size () - 1 )
+        if ( !firstSetToAdd.epsilon () )
+        {
+          this.finished = firstSet.add ( firstSetToAdd ) || this.finished;
+          this.lastWasEpsilon = false;
+        }
+
+        if ( this.currentProductionWordMemberIndex == p.getProductionWord ()
+            .size () - 1 )
+        {
+          if ( this.lastWasEpsilon )
+            this.finished = firstSet.epsilon ( true ) || this.finished;
+          else
+            this.lastWasEpsilon = true;
           this.nextProduction = true;
+        }
+        // this.finished = firstSet.add ( firstSetToAdd );
+        // if ( !firstSetToAdd.epsilon ()
+        // || this.currentProductionWordMemberIndex == p.getProductionWord ()
+        // .size () - 1 )
+        // this.nextProduction = true;
       }
     }
     updateWordNavigation ();

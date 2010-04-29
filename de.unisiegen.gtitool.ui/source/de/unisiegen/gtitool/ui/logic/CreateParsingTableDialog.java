@@ -194,9 +194,6 @@ public class CreateParsingTableDialog implements
       case NOCAUSE :
         return;
       case TERMINAL_IN_FIRSTSET :
-        // description.add ( new PrettyToken ( Messages.getString (
-        //            "CreateParsingTableDialog.TerminalInFirstSet", ts, p //$NON-NLS-1$
-        // .getProductionWord () ), Style.NONE ) );
         description.add ( new PrettyToken ( Messages.getString (
             "CreateParsingTableDialog.TerminalInFirstSet", p, p //$NON-NLS-1$
                 .getNonterminalSymbol (), ts, p.getProductionWord () ),

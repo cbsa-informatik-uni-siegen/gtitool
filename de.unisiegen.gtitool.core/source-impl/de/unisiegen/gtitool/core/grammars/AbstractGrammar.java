@@ -838,12 +838,17 @@ public abstract class AbstractGrammar implements Grammar
 
     boolean lastContainsEpsilon = true;
     for ( ProductionWordMember pwm : pw )
+    {
       if ( !this.firstSets.get ( pwm ).epsilon () )
       {
         firstSet.add ( this.firstSets.get ( pwm ) );
         lastContainsEpsilon = false;
         break;
       }
+      for ( TerminalSymbol ts : this.firstSets.get ( pwm ) )
+        if ( !ts.equals ( new DefaultTerminalSymbol ( new DefaultSymbol () ) ) )
+          firstSet.add ( ts );
+    }
     if ( lastContainsEpsilon )
       firstSet.epsilon ( true );
 
@@ -887,6 +892,7 @@ public abstract class AbstractGrammar implements Grammar
         // run through all elements of the right side
         boolean lastContainsEpsilon = true;
         for ( ProductionWordMember pwm : p.getProductionWord () )
+        {
           // case 1, 2.1, 2.2
           if ( !this.firstSets.get ( pwm ).epsilon () )
           {
@@ -894,6 +900,13 @@ public abstract class AbstractGrammar implements Grammar
             lastContainsEpsilon = false;
             break;
           }
+          TerminalSymbol epsilon = new DefaultTerminalSymbol (
+              new DefaultSymbol () );
+          for ( TerminalSymbol ts : this.firstSets.get ( pwm ) )
+            if ( !ts.equals ( epsilon ) )
+              modified = firstSet.add ( this.firstSets.get ( pwm ) )
+                  || modified;
+        }
 
         if ( lastContainsEpsilon )
           modified = firstSet.epsilon ( true ) || modified;

@@ -723,6 +723,30 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
+   * handles the 'calculate first sets' button pressed
+   */
+  public final void handleCalculateFirstSets ()
+  {
+    try
+    {
+      FirstSetDialog fsd = new FirstSetDialog ( this.mainWindowForm,
+          ( CFG ) getGrammar () );
+      fsd.show ();
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 0 );
+    }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 0 );
+    }
+  }
+
+
+  /**
    * Handle delete production button pressed.
    */
   public final void handleDeleteProduction ()

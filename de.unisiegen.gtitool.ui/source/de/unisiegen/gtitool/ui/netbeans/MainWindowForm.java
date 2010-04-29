@@ -1229,6 +1229,12 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
   }
 
 
+  public JMenuItem getJMenuItemCalculateFirstSets ()
+  {
+      return this.jMenuItemCalculateFirstSets;
+  }
+
+
   /**
    * This method is called from within the constructor to initialize the form.
    * WARNING: Do NOT modify this code. The content of this method is always
@@ -1348,6 +1354,7 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
         jMenuItemCreateTDP = new javax.swing.JMenuItem();
         jMenuItemCreateParsingTableStepwise = new javax.swing.JMenuItem();
         jMenuItemParsingTableFindEntries = new javax.swing.JMenuItem();
+        jMenuItemCalculateFirstSets = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
@@ -2215,6 +2222,15 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
         });
         jMenuExecute.add(jMenuItemParsingTableFindEntries);
 
+        jMenuItemCalculateFirstSets.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CalculateFirstSetsMnemonic").charAt(0));
+        jMenuItemCalculateFirstSets.setText(bundle.getString("MainWindow.CalculateFirstSets")); // NOI18N
+        jMenuItemCalculateFirstSets.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCalculateFirstSetsActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemCalculateFirstSets);
+
         jMenuBarMain.add(jMenuExecute);
 
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
@@ -2278,6 +2294,10 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
 
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemCalculateFirstSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCalculateFirstSetsActionPerformed
+        this.logic.handleCalculateFirstSets();
+    }//GEN-LAST:event_jMenuItemCalculateFirstSetsActionPerformed
 
 
   private void jMenuItemParsingTableFindEntriesActionPerformed (
@@ -2895,6 +2915,7 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemAutoLayout;
     private javax.swing.JMenuItem jMenuItemCFG;
+    public javax.swing.JMenuItem jMenuItemCalculateFirstSets;
     private javax.swing.JMenuItem jMenuItemClose;
     private javax.swing.JMenuItem jMenuItemCloseAll;
     private javax.swing.JMenuItem jMenuItemConvertToCompleteDFA;

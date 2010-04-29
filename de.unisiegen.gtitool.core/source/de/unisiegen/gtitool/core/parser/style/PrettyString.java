@@ -133,6 +133,20 @@ public final class PrettyString implements Iterable < PrettyToken >
   {
     this.prettyTokenList = new ArrayList < PrettyToken > ();
   }
+  
+  
+  /**
+   * 
+   * copy ctor
+   *
+   * @param p foobar
+   */
+  public PrettyString(final PrettyString p)
+  {
+    this();
+    for(PrettyToken pt : p.prettyTokenList)
+      this.prettyTokenList.add ( pt.clone () );
+  }
 
 
   /**
@@ -155,9 +169,7 @@ public final class PrettyString implements Iterable < PrettyToken >
   public final void add ( PrettyPrintable prettyPrintable )
   {
     for ( PrettyToken current : prettyPrintable.toPrettyString () )
-    {
       this.prettyTokenList.add ( current.clone () );
-    }
   }
 
 
@@ -169,9 +181,7 @@ public final class PrettyString implements Iterable < PrettyToken >
   public final void add ( PrettyString prettyString )
   {
     for ( PrettyToken current : prettyString )
-    {
       this.prettyTokenList.add ( current );
-    }
   }
 
 
@@ -281,9 +291,7 @@ public final class PrettyString implements Iterable < PrettyToken >
   public final PrettyToken removeLastPrettyToken ()
   {
     if ( this.prettyTokenList.size () == 0 )
-    {
       throw new RuntimeException ( "list is empty" ); //$NON-NLS-1$
-    }
 
     return this.prettyTokenList.remove ( this.prettyTokenList.size () - 1 );
   }
@@ -334,10 +342,8 @@ public final class PrettyString implements Iterable < PrettyToken >
   public final void setOverwrittenColor ( Style newStyle )
   {
     for ( PrettyToken current : this.prettyTokenList )
-    {
       current.setOverwrittenColor ( newStyle == null ? null : newStyle
           .getColor () );
-    }
   }
 
 
@@ -383,26 +389,18 @@ public final class PrettyString implements Iterable < PrettyToken >
       boolean italic = style.isItalic ();
 
       if ( bold )
-      {
         result.append ( BOLD_BEGIN );
-      }
       if ( italic )
-      {
         result.append ( ITALIC_BEGIN );
-      }
       result.append ( FONT_BEGIN );
       result.append ( getHexadecimalColor ( color ) );
       result.append ( FONT_AFTER_COLOR );
       result.append ( text );
       result.append ( FONT_END );
       if ( italic )
-      {
         result.append ( ITALIC_END );
-      }
       if ( bold )
-      {
         result.append ( BOLD_END );
-      }
     }
     result.append ( HTML_END );
 
@@ -420,9 +418,7 @@ public final class PrettyString implements Iterable < PrettyToken >
   {
     StringBuilder result = new StringBuilder ();
     for ( PrettyToken current : this.prettyTokenList )
-    {
       result.append ( current.getText () );
-    }
     return result.toString ();
   }
 }

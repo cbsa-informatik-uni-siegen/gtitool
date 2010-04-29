@@ -4,7 +4,6 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 
@@ -52,7 +51,7 @@ public interface FirstSet extends Entity < TerminalSymbolSet >, Storable,
 
 
   /**
-   * TODO
+   * blub
    * 
    * @param listener
    */
@@ -144,4 +143,10 @@ public interface FirstSet extends Entity < TerminalSymbolSet >, Storable,
    * @return true, if last set-operation modified the set
    */
   public boolean modified ();
+
+
+  /**
+   * blub
+   */
+  public void unmarkAll ();
 }

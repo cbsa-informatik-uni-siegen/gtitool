@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.awt.Color;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -67,6 +68,17 @@ public class DefaultFirstSet implements FirstSet
         other.terminalSymbolSet );
     this.epsilon = other.epsilon;
     this.modified = other.modified;
+  }
+
+
+  /**
+   * blub
+   */
+  public void unmarkAll ()
+  {
+    for ( TerminalSymbol ts : this.terminalSymbolSet )
+      for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
+        pt.setOverwrittenColor ( Color.black );
   }
 
 

@@ -107,6 +107,20 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
     this.firstSets = firstSets;
     this.reasons = reasons;
   }
+  
+  /**
+   * 
+   * Set all
+   *
+   * @param firstSets as it says
+   * @param reasons as it says
+   */
+  public final void setAll(final HashMap < ProductionWordMember, FirstSet > firstSets,
+      final ArrayList < PrettyString > reasons)
+  {
+    this.firstSets = firstSets;
+    this.reasons = reasons;
+  }
 
 
   /**

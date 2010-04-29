@@ -837,12 +837,16 @@ public abstract class AbstractGrammar implements Grammar
       return firstSet;
     }
 
+    boolean lastContainsEpsilon = true;
     for ( ProductionWordMember pwm : pw )
-    {
-      firstSet.add ( this.firstSets.get ( pwm ) );
       if ( !this.firstSets.get ( pwm ).epsilon () )
+      {
+        firstSet.add ( this.firstSets.get ( pwm ) );
+        lastContainsEpsilon = false;
         break;
-    }
+      }
+    if ( lastContainsEpsilon )
+      firstSet.epsilon ( true );
 
     return firstSet;
   }
@@ -882,13 +886,18 @@ public abstract class AbstractGrammar implements Grammar
           modified = firstSet.epsilon ( true ) || modified;
 
         // run through all elements of the right side
+        boolean lastContainsEpsilon = true;
         for ( ProductionWordMember pwm : p.getProductionWord () )
-        {
           // case 1, 2.1, 2.2
-          modified = firstSet.add ( this.firstSets.get ( pwm ) ) || modified;
           if ( !this.firstSets.get ( pwm ).epsilon () )
+          {
+            modified = firstSet.add ( this.firstSets.get ( pwm ) ) || modified;
+            lastContainsEpsilon = false;
             break;
-        }
+          }
+
+        if ( lastContainsEpsilon )
+          modified = firstSet.epsilon ( true ) || modified;
       }
     }
     while ( modified );
@@ -905,6 +914,15 @@ public abstract class AbstractGrammar implements Grammar
     if ( this.firstSets == null )
       calculateAllFirstSets ();
     return this.firstSets.get ( ns );
+  }
+
+
+  /**
+   * reset first
+   */
+  public void resetFirst ()
+  {
+    this.firstSets = null;
   }
 
 

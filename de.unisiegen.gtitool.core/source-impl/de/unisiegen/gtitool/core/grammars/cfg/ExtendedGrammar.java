@@ -73,14 +73,8 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
 
     this.addProduction ( this.startProduction );
 
-    try
-    {
-      this.getTerminalSymbolSet ().add ( DefaultTerminalSymbol.EndMarker );
-    }
-    catch ( TerminalSymbolSetException exc )
-    {
-      exc.printStackTrace ();
-    }
+    this.getTerminalSymbolSet ().addIfNonexistent (
+        DefaultTerminalSymbol.EndMarker );
   }
 
 
@@ -94,7 +88,7 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
     super ( grammar.getNonterminalSymbolSet (),
         grammar.getTerminalSymbolSet (), grammar.getStartSymbol (),
         ValidationElement.DUPLICATE_PRODUCTION,
-        ValidationElement.NONTERMINAL_NOT_REACHABLE ); // TODO!
+        ValidationElement.NONTERMINAL_NOT_REACHABLE );
 
     for ( Production prod : grammar.getProduction () )
     {

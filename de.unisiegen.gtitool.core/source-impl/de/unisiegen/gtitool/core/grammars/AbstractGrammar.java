@@ -202,11 +202,10 @@ public abstract class AbstractGrammar implements Grammar
    * Copy constructor
    * 
    * @param other The {@link AbstractGrammar}
-   * @throws TerminalSymbolSetException
    * @throws NonterminalSymbolSetException
    */
   public AbstractGrammar ( final AbstractGrammar other )
-      throws TerminalSymbolSetException, NonterminalSymbolSetException
+      throws NonterminalSymbolSetException
   {
     this.initialProductions = new DefaultProductionSet (
         other.initialProductions );

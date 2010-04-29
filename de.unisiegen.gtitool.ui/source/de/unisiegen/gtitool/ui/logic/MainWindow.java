@@ -429,6 +429,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_FIND_PT_ENTRIES,
 
     /**
+     * Calculate first sets button state
+     */
+    ENABLED_CALCULATE_FIRSTSETS,
+
+    /**
      * The machine table selected button state.
      */
     SELECTED_MACHINE_TABLE,
@@ -622,6 +627,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_PARSER );
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
+    removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -1398,6 +1404,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_FIND_PT_ENTRIES );
       this.gui.getJMenuItemFindParsingTableEntries ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CALCULATE_FIRSTSETS ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CALCULATE_FIRSTSETS ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
+      this.gui.getJMenuItemCalculateFirstSets ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REGEX_INFO ) ) )
@@ -2606,9 +2619,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           new LayoutManager ( ( DefaultStateMachineModel ) defaultModel, null )
               .doLayout ();
       }
-      else if ( element.getName ().equals ( "GrammarModel" ) )
+      else if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
         defaultModel = new DefaultGrammarModel ( element, null );
-      else if ( element.getName ().equals ( "RegexModel" ) )
+      else if ( element.getName ().equals ( "RegexModel" ) ) //$NON-NLS-1$
         defaultModel = new DefaultRegexModel ( element, true );
       else
         throw new IllegalArgumentException ( "unsupported model" ); //$NON-NLS-1$
@@ -4447,6 +4460,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
       removeButtonState ( ButtonState.ENABLED_CREATE_PT );
       removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+      removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4477,6 +4491,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
         removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+        removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4669,6 +4684,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
         removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+        removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4738,6 +4754,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
           removeButtonState ( ButtonState.ENABLED_CREATE_PT );
           removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+          removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4760,6 +4777,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CREATE_TDP );
           addButtonState ( ButtonState.ENABLED_CREATE_PT );
           addButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+          addButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
 
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
@@ -4867,6 +4885,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
         removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+        removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -6326,6 +6345,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_FIND_PT_ENTRIES );
       this.gui.getJMenuItemFindParsingTableEntries ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CALCULATE_FIRSTSETS ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
+      this.gui.getJMenuItemCalculateFirstSets ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
     {

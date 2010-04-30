@@ -346,12 +346,15 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
    * 
    * @return the strings
    */
-  public ArrayList < ArrayList < PrettyString >> getTableCellStrings ()
+  public final ArrayList < ArrayList < PrettyString >> getTableCellStrings ()
   {
     final ArrayList < ArrayList < PrettyString >> ret = new ArrayList < ArrayList < PrettyString >> ();
 
     for ( TerminalSymbol symbol : getGrammar ().getTerminalSymbolSet () )
     {
+      if ( symbol.equals ( DefaultTerminalSymbol.EndMarker ) )
+        continue;
+
       final ArrayList < PrettyString > temp = new ArrayList < PrettyString > ();
 
       for ( State state : getAutomaton ().getState () )

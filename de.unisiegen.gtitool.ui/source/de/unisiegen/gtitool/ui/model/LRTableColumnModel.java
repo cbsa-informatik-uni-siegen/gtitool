@@ -65,9 +65,7 @@ public class LRTableColumnModel extends DefaultTableColumnModel
     for ( int i = 0 ; i < terminals.size () ; i++ )
     {
       final TerminalSymbol symbol = terminals.get ( i );
-      if ( symbol.equals ( DefaultTerminalSymbol.EndMarker ) )
-        continue;
-      TableColumn symbolColumn = new TableColumn ( i + 1 );
+      final TableColumn symbolColumn = new TableColumn ( i + 1 );
       symbolColumn.setHeaderValue ( symbol );
       symbolColumn
           .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );

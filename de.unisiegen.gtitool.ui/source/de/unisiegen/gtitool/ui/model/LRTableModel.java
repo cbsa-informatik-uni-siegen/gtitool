@@ -46,7 +46,7 @@ public class LRTableModel extends StatelessMachineTableModel
    */
   public int getColumnCount ()
   {
-    return this.terminals.size ();// + 1;
+    return this.terminals.size () + 1;
   }
 
 
@@ -70,7 +70,7 @@ public class LRTableModel extends StatelessMachineTableModel
   public PrettyString getValueAt ( final int rowIndex, final int columnIndex )
   {
     return columnIndex == 0 ? this.states.get ( rowIndex ).shortName ()
-        : this.entries.get ( columnIndex - 2 ).get ( rowIndex );
+        : this.entries.get ( columnIndex - 1 ).get ( rowIndex );
   }
 
 

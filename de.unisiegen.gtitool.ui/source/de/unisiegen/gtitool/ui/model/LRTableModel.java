@@ -46,7 +46,7 @@ public class LRTableModel extends StatelessMachineTableModel
    */
   public int getColumnCount ()
   {
-    return this.terminals.size () + 1;
+    return this.terminals.size ();// + 1;
   }
 
 
@@ -67,12 +67,10 @@ public class LRTableModel extends StatelessMachineTableModel
    * 
    * @see javax.swing.table.TableModel#getValueAt(int, int)
    */
-  public Object getValueAt ( final int rowIndex, final int columnIndex )
+  public PrettyString getValueAt ( final int rowIndex, final int columnIndex )
   {
-    final PrettyString ret = columnIndex == 0 ? this.states.get ( rowIndex )
-        .shortName () : this.entries.get ( columnIndex - 1 ).get ( rowIndex );
-
-    return ret;
+    return columnIndex == 0 ? this.states.get ( rowIndex ).shortName ()
+        : this.entries.get ( columnIndex - 2 ).get ( rowIndex );
   }
 
 

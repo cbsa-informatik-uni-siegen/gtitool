@@ -1,9 +1,12 @@
 package de.unisiegen.gtitool.ui.model;
 
+
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
@@ -61,8 +64,11 @@ public class LRTableColumnModel extends DefaultTableColumnModel
      */
     for ( int i = 0 ; i < terminals.size () ; i++ )
     {
+      final TerminalSymbol symbol = terminals.get ( i );
+      if ( symbol.equals ( DefaultTerminalSymbol.EndMarker ) )
+        continue;
       TableColumn symbolColumn = new TableColumn ( i + 1 );
-      symbolColumn.setHeaderValue ( terminals.get ( i ) );
+      symbolColumn.setHeaderValue ( symbol );
       symbolColumn
           .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
       symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );

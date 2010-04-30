@@ -352,9 +352,6 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
     for ( TerminalSymbol symbol : getGrammar ().getTerminalSymbolSet () )
     {
-      if ( symbol.equals ( DefaultTerminalSymbol.EndMarker ) )
-        continue;
-
       final ArrayList < PrettyString > temp = new ArrayList < PrettyString > ();
 
       for ( State state : getAutomaton ().getState () )

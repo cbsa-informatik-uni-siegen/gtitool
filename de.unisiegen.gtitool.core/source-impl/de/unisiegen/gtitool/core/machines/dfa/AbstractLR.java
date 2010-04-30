@@ -7,6 +7,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultLRStateStack;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.LRStateStack;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
@@ -57,6 +58,8 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
         ValidationElement.FINAL_STATE, ValidationElement.STATE_NAME,
         ValidationElement.SYMBOL_ONLY_ONE_TIME );
 
+    this.getAlphabet ().remove (
+        new DefaultSymbol ( DefaultTerminalSymbol.EndMarker.toString () ) );
     this.grammar = grammar;
   }
 

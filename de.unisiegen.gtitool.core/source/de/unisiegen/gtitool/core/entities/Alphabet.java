@@ -113,6 +113,14 @@ public interface Alphabet extends Entity < Alphabet >, Storable, Modifyable,
    * @param symbols The {@link Symbol}s to remove.
    */
   public void remove ( Symbol ... symbols );
+  
+  /**
+   * Remove the given {@link Symbol} from this {@link Alphabet}.
+   * 
+   * @param symbol The {@link Symbol} to remove.
+   * @return true if the symbol was removed, false otherwise
+   */
+  public boolean removeIfExistent(Symbol symbol);
 
 
   /**

@@ -58,7 +58,7 @@ public abstract class AbstractLR extends AbstractStateMachine implements DFA
         ValidationElement.FINAL_STATE, ValidationElement.STATE_NAME,
         ValidationElement.SYMBOL_ONLY_ONE_TIME );
 
-    this.getAlphabet ().remove (
+    this.getAlphabet ().removeIfExistent (
         new DefaultSymbol ( DefaultTerminalSymbol.EndMarker.toString () ) );
     this.grammar = grammar;
   }

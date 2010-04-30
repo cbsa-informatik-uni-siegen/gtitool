@@ -800,4 +800,15 @@ public class DefaultAlphabet implements Alphabet
     result.append ( "}" ); //$NON-NLS-1$
     return result.toString ();
   }
+
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.gtitool.core.entities.Alphabet#removeIfExistent(de.unisiegen.gtitool.core.entities.Symbol)
+   */
+  public boolean removeIfExistent ( final Symbol symbol )
+  {
+    return this.symbolSet.remove ( symbol );
+  }
 }

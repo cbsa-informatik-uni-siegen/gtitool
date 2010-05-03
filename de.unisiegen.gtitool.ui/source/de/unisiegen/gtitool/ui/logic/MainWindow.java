@@ -434,6 +434,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_CALCULATE_FIRSTSETS,
 
     /**
+     * Calculate first sets button state
+     */
+    ENABLED_CALCULATE_FOLLOWSETS,
+
+    /**
      * The machine table selected button state.
      */
     SELECTED_MACHINE_TABLE,
@@ -628,6 +633,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_PARSER );
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO_SLR_PARSER );
     removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
+    removeButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -1412,6 +1418,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
       this.gui.getJMenuItemCalculateFirstSets ().setEnabled ( true );
     }
+    else if ((buttonState.equals ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS )) && (!this.buttonStateList.contains ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS )))
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
+      //TODO: enable jmenu entry
+    }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REGEX_INFO ) ) )
     {
@@ -1968,6 +1979,23 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       final GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       gp.handleCalculateFirstSets ();
+    }
+    else
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * handles the 'calculate follow set' button pressed
+   */
+  public final void handleCalculateFollowSets ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      final GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      gp.handleCalculateFollowSets ();
     }
     else
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
@@ -4461,6 +4489,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_CREATE_PT );
       removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
       removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
+      removeButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4492,6 +4521,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
         removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
         removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
+        removeButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4685,6 +4715,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
         removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
         removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
+        removeButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4755,6 +4786,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_CREATE_PT );
           removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
           removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
+          removeButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -4778,6 +4810,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CREATE_PT );
           addButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
           addButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
+          addButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
 
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
@@ -4886,6 +4919,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
         removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
         removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
+        removeButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -6350,6 +6384,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
       this.gui.getJMenuItemCalculateFirstSets ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS ))
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
+      //TODO: disable jmenu entry
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
     {

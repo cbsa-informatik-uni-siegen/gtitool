@@ -744,6 +744,15 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       System.exit ( 0 );
     }
   }
+  
+  
+  public final void handleCalculateFollowSets ()
+  {
+    /*
+     * Do nothing so far
+     * TODO: implement
+     */
+  }
 
 
   /**

@@ -350,6 +350,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
     Production p = null;
     if ( this.nextProduction )
     {
+      int old = this.currentProductionIndex;
       /*
        * if we ran through all productions so far reset this counter. if we're
        * not finished calculating the first sets we're going to run through all
@@ -365,6 +366,9 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
        * of the right side of the production. So reset this counter
        */
       this.currentProductionWordMemberIndex = 0;
+      //remove the old reason
+      p = this.cfg.getProductionAt ( old );
+      this.reasons.put ( p.getNonterminalSymbol (), new PrettyString () );
       // the next production we're going to process
       ++this.currentProductionIndex;
       p = this.cfg.getProductionAt ( this.currentProductionIndex );
@@ -378,6 +382,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
       p = this.cfg.getProductionAt ( this.currentProductionIndex );
 
     FirstSet firstSet = this.firstSets.get ( p.getNonterminalSymbol () );
+    //case 3
     if ( p.getProductionWord ().epsilon () )
     {
       this.modified = firstSet.epsilon ( true ) || this.modified;
@@ -401,6 +406,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
           for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
             pt.setOverwrittenColor ( Color.red );
 
+      //case 1 and 2
       if ( !firstSetToAdd.epsilon () )
       {
         this.modified = firstSet.add ( firstSetToAdd ) || this.modified;
@@ -418,12 +424,18 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
               firstSetToAdd, p, getAlpha ( p.getProductionWord () ), pwm ),
               Style.NONE ) ) );
 
+      /*
+       * break condition
+       */
       if ( this.currentProductionWordMemberIndex == p.getProductionWord ()
-          .size () - 1 )
+          .size () - 1
+          || !this.lastWasEpsilon )
       {
         if ( this.lastWasEpsilon )
+          //case 2.2
           this.modified = firstSet.epsilon ( true ) || this.modified;
         else
+          //case 2.1
           this.lastWasEpsilon = true;
         this.nextProduction = true;
       }

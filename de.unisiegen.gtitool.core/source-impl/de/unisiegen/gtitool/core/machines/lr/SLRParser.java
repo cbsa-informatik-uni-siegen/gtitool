@@ -33,9 +33,13 @@ public class SLRParser extends DefaultLR0Parser
    *      de.unisiegen.gtitool.core.entities.TerminalSymbol)
    */
   @Override
-  protected boolean followCondition ( LR0Item item, TerminalSymbol symbol )
-      throws GrammarInvalidNonterminalException
+  protected boolean followCondition ( final LR0Item item,
+      final TerminalSymbol symbol ) throws GrammarInvalidNonterminalException
   {
+    System.out.println ( "terminal: " + symbol + ", nonterminal: "
+        + item.getNonterminalSymbol () + ", : "
+        + getGrammar ().follow ( item.getNonterminalSymbol () ) );
+
     return getGrammar ().follow ( item.getNonterminalSymbol () ).contains (
         symbol );
   }

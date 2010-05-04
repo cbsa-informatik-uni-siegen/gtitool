@@ -942,22 +942,17 @@ public abstract class AbstractGrammar implements Grammar
    * extracts the rest of the {@link ProductionWord} right after the
    * {@link NonterminalSymbol} {@code ns}
    * 
-   * @param ns the {@link NonterminalSymbol}
+   * @param index the index to start copying from
    * @param pw the {@link ProductionWord}
    * @return rest of the the {@link ProductionWord} right after the
    *         {@link NonterminalSymbol}
    */
-  private final ProductionWord getProductionWordAfter (
-      final NonterminalSymbol ns, final ProductionWord pw )
+  private final ProductionWord getProductionWordAfter ( final int index,
+      final ProductionWord pw )
   {
-    ArrayList < ProductionWordMember > rest = new ArrayList < ProductionWordMember > ();
-    for ( int i = 0 ; i < pw.size () ; ++i )
-      if ( pw.get ( i ).equals ( ns ) )
-      {
-        for ( int j = i + 1 ; j < pw.size () ; ++j )
-          rest.add ( pw.get ( j ) );
-        break;
-      }
+    final ArrayList < ProductionWordMember > rest = new ArrayList < ProductionWordMember > ();
+    for ( int i = index + 1 ; i < pw.size () ; ++i )
+      rest.add ( pw.get ( i ) );
     return new DefaultProductionWord ( rest );
   }
 
@@ -1013,22 +1008,33 @@ public abstract class AbstractGrammar implements Grammar
               DefaultTerminalSymbol.EndMarker );
 
         // case 2 and 3
-        ProductionSet prods = getProductionContainingNonterminal ( ns );
+        final ProductionSet prods = getProductionContainingNonterminal ( ns );
+
         for ( Production p : prods )
         {
-          ProductionWord rest = getProductionWordAfter ( ns, p
-              .getProductionWord () );
+          final ProductionWord rightSide = p.getProductionWord ();
 
-          // case 2
-          if ( rest.size () > 0 )
-            modified = this.followSets.get ( ns ).addIfNonexistent (
-                first ( rest ) )
-                || modified;
-          // case 3
-          if ( rest.size () == 0 || first ( rest ).epsilon () )
-            modified = this.followSets.get ( ns ).addIfNonexistent (
-                this.followSets.get ( p.getNonterminalSymbol () ) )
-                || modified;
+          for ( int index = 0 ; index < rightSide.size () ; ++index )
+          {
+            final ProductionWordMember member = rightSide.get ( index );
+
+            if ( !member.equals ( ns ) )
+              continue;
+
+            final ProductionWord rest = getProductionWordAfter ( index,
+                rightSide );
+
+            // case 2
+            if ( rest.size () > 0 )
+              modified = this.followSets.get ( ns ).addIfNonexistent (
+                  first ( rest ) )
+                  || modified;
+            // case 3
+            if ( rest.size () == 0 || first ( rest ).epsilon () )
+              modified = this.followSets.get ( ns ).addIfNonexistent (
+                  this.followSets.get ( p.getNonterminalSymbol () ) )
+                  || modified;
+          }
         }
       }
     }

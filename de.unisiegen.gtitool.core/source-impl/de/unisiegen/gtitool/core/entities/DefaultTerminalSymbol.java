@@ -65,8 +65,8 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * The cached {@link PrettyString}.
    */
   private PrettyString cachedPrettyString = null;
-  
-  
+
+
   /**
    * The highlighted status
    */
@@ -77,18 +77,19 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * The {@link EventListenerList}.
    */
   private final EventListenerList listenerList = new EventListenerList ();
-  
-  
+
+
   /**
    * Copy-CTor
-   *
+   * 
    * @param o The other {@link TerminalSymbol}
    */
-  public DefaultTerminalSymbol(final TerminalSymbol o)
+  public DefaultTerminalSymbol ( final TerminalSymbol o )
   {
-    DefaultTerminalSymbol other = (DefaultTerminalSymbol)o;
-    this.name = new String(other.name);
+    DefaultTerminalSymbol other = ( DefaultTerminalSymbol ) o;
+    this.name = new String ( other.name );
     this.error = other.error;
+    this.highlighted = other.highlighted;
     this.parserOffset = other.parserOffset.clone ();
   }
 
@@ -144,7 +145,7 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
   /**
    * Allocates a new {@link DefaultTerminalSymbol}
-   *
+   * 
    * @param symbol The {@link Symbol}
    */
   public DefaultTerminalSymbol ( final Symbol symbol )
@@ -319,9 +320,9 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   {
     this.parserOffset = parserOffset;
   }
-  
+
+
   /**
-   * 
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.entities.TerminalSymbol#setHighlighted(boolean)
@@ -334,8 +335,8 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
       firePrettyStringChanged ();
     }
   }
-  
-  
+
+
   /**
    * {@inheritDoc}
    * 

@@ -1,12 +1,12 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Map.Entry;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.DefaultFirstSet;
@@ -96,12 +96,6 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
 
 
   /**
-   * The reasons
-   */
-  private HashMap < NonterminalSymbol, PrettyString > reasons;
-
-
-  /**
    * The current index of the production we're currently processing
    */
   private int currentProductionIndex;
@@ -137,6 +131,9 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
   private Stack < ArrayList < Object > > history;
 
 
+  private DefaultListModel reasonListModel;
+
+
   /**
    * Allocates a new {@link FirstSetDialog}
    * 
@@ -161,7 +158,6 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
 
     // setup the step by step data
     this.firstSets = new HashMap < ProductionWordMember, FirstSet > ();
-    this.reasons = new HashMap < NonterminalSymbol, PrettyString > ();
 
     for ( TerminalSymbol ts : this.cfg.getTerminalSymbolSet () )
     {
@@ -169,10 +165,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
       this.firstSets.get ( ts ).add ( ts );
     }
     for ( NonterminalSymbol ns : this.cfg.getNonterminalSymbolSet () )
-    {
       this.firstSets.put ( ns, new DefaultFirstSet () );
-      this.reasons.put ( ns, new PrettyString () );
-    }
 
     this.currentProductionWordMemberIndex = 0;
     this.currentProductionIndex = 0;
@@ -188,10 +181,13 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
 
     // setup the table
     this.gui.jGTIFirstTable.setModel ( new FirstSetStepByStepTableModel (
-        this.cfg, this.firstSets, this.reasons ) );
+        this.cfg, this.firstSets ) );
     this.gui.jGTIFirstTable
         .setColumnModel ( new FirstSetStepByStepTableColumnModel () );
     this.gui.jGTIFirstTable.getTableHeader ().setReorderingAllowed ( false );
+
+    this.reasonListModel = new DefaultListModel ();
+    this.gui.jGTIReasonList.setModel ( this.reasonListModel );
   }
 
 
@@ -225,13 +221,6 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
             ( DefaultTerminalSymbol ) e.getKey () ), new DefaultFirstSet ( e
             .getValue () ) );
     entry.add ( currentFirstSets );
-    HashMap < NonterminalSymbol, PrettyString > currentReasons = new HashMap < NonterminalSymbol, PrettyString > ();
-    for ( Entry < NonterminalSymbol, PrettyString > e : this.reasons
-        .entrySet () )
-      currentReasons.put ( new DefaultNonterminalSymbol (
-          ( DefaultNonterminalSymbol ) e.getKey () ), new PrettyString ( e
-          .getValue () ) );
-    entry.add ( currentReasons );
     entry.add ( new Integer ( this.currentProductionWordMemberIndex ) );
     entry.add ( new Integer ( this.currentProductionIndex ) );
     entry.add ( new Boolean ( this.nextProduction ) );
@@ -249,19 +238,17 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
     ArrayList < Object > entry = this.history.pop ();
     this.firstSets = ( HashMap < ProductionWordMember, FirstSet > ) entry
         .get ( 0 );
-    this.reasons = ( HashMap < NonterminalSymbol, PrettyString > ) entry
-        .get ( 1 );
-    this.currentProductionWordMemberIndex = ( ( Integer ) entry.get ( 2 ) )
+    this.currentProductionWordMemberIndex = ( ( Integer ) entry.get ( 1 ) )
         .intValue ();
-    this.currentProductionIndex = ( ( Integer ) entry.get ( 3 ) ).intValue ();
-    this.nextProduction = ( ( Boolean ) entry.get ( 4 ) ).booleanValue ();
-    this.lastWasEpsilon = ( ( Boolean ) entry.get ( 5 ) ).booleanValue ();
+    this.currentProductionIndex = ( ( Integer ) entry.get ( 2 ) ).intValue ();
+    this.nextProduction = ( ( Boolean ) entry.get ( 3 ) ).booleanValue ();
+    this.lastWasEpsilon = ( ( Boolean ) entry.get ( 4 ) ).booleanValue ();
 
     if ( this.modified )
       this.modified = false;
 
     ( ( FirstSetStepByStepTableModel ) this.gui.jGTIFirstTable.getModel () )
-        .setAll ( this.firstSets, this.reasons );
+        .setAll ( this.firstSets );
     this.gui.jGTIFirstTable.repaint ();
   }
 
@@ -366,9 +353,8 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
        * of the right side of the production. So reset this counter
        */
       this.currentProductionWordMemberIndex = 0;
-      //remove the old reason
+      // remove the old reason
       p = this.cfg.getProductionAt ( old );
-      this.reasons.put ( p.getNonterminalSymbol (), new PrettyString () );
       // the next production we're going to process
       ++this.currentProductionIndex;
       p = this.cfg.getProductionAt ( this.currentProductionIndex );
@@ -382,31 +368,43 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
       p = this.cfg.getProductionAt ( this.currentProductionIndex );
 
     FirstSet firstSet = this.firstSets.get ( p.getNonterminalSymbol () );
-    //case 3
+    FirstSet firstSetToAdd;
+    // case 3
     if ( p.getProductionWord ().epsilon () )
     {
+      firstSetToAdd = new DefaultFirstSet ();
+      firstSetToAdd.add ( new DefaultTerminalSymbol ( new DefaultSymbol () ) );
+
       this.modified = firstSet.epsilon ( true ) || this.modified;
+      firstSet.get ( firstSet.size () - 1 ).setHighlighted ( true );
       this.nextProduction = true;
+
+      // setup the reason
+      this.reasonListModel
+          .addElement ( new PrettyString ( new PrettyToken ( Messages
+              .getString (
+                  "FirstSetDialog.ReasonDesc", p.getNonterminalSymbol (), //$NON-NLS-1$
+                  firstSetToAdd, p, getAlpha ( p.getProductionWord () ),
+                  new DefaultTerminalSymbol ( new DefaultSymbol () ) ),
+              Style.NONE ) ) );
     }
     else
     {
       ProductionWordMember pwm = p.getProductionWord ().get (
           this.currentProductionWordMemberIndex );
-      FirstSet firstSetToAdd = this.firstSets.get ( pwm );
+      firstSetToAdd = this.firstSets.get ( pwm );
       // color all new added symbols red
       firstSet.unmarkAll ();
       for ( TerminalSymbol ts : firstSetToAdd )
         if ( firstSet.size () != 0 )
         {
           if ( !firstSet.contains ( ts ) )
-            for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
-              pt.setOverwrittenColor ( Color.red );
+            ts.setHighlighted ( true );
         }
         else
-          for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
-            pt.setOverwrittenColor ( Color.red );
+          ts.setHighlighted ( true );
 
-      //case 1 and 2
+      // case 1 and 2
       if ( !firstSetToAdd.epsilon () )
       {
         this.modified = firstSet.add ( firstSetToAdd ) || this.modified;
@@ -418,11 +416,11 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
             this.modified = firstSet.add ( ts ) || this.modified;
 
       // setup the reason
-      this.reasons.put ( p.getNonterminalSymbol (), new PrettyString (
-          new PrettyToken ( Messages.getString (
+      this.reasonListModel.addElement ( new PrettyString ( new PrettyToken (
+          Messages.getString (
               "FirstSetDialog.ReasonDesc", p.getNonterminalSymbol (), //$NON-NLS-1$
               firstSetToAdd, p, getAlpha ( p.getProductionWord () ), pwm ),
-              Style.NONE ) ) );
+          Style.NONE ) ) );
 
       /*
        * break condition
@@ -432,10 +430,10 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
           || !this.lastWasEpsilon )
       {
         if ( this.lastWasEpsilon )
-          //case 2.2
+          // case 2.2
           this.modified = firstSet.epsilon ( true ) || this.modified;
         else
-          //case 2.1
+          // case 2.1
           this.lastWasEpsilon = true;
         this.nextProduction = true;
       }
@@ -468,7 +466,10 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
   public void handlePrevious ()
   {
     if ( !this.history.isEmpty () )
+    {
       restoreHistoryEntry ();
+      this.reasonListModel.remove ( this.reasonListModel.size () - 1 );
+    }
     updateWordNavigation ();
     this.gui.jGTIFirstTable.repaint ();
   }
@@ -485,10 +486,8 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
     enableButton ( Action.STOP, false );
 
     for ( NonterminalSymbol ns : this.cfg.getNonterminalSymbolSet () )
-    {
       this.firstSets.put ( ns, new DefaultFirstSet () );
-      this.reasons.put ( ns, new PrettyString () );
-    }
+    this.reasonListModel.removeAllElements ();
 
     this.gui.jGTIFirstTable.repaint ();
   }

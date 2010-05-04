@@ -154,6 +154,12 @@ public class StatelessMachinePanel extends MachinePanel
    * the {@link JGTITable}
    */
   private JGTITable jGTIStatelessMachineTable;
+  
+  
+  /**
+   * the active state of the choose dialog
+   */
+  private boolean chooseDialogActive = false;
 
 
   /**
@@ -479,7 +485,9 @@ public class StatelessMachinePanel extends MachinePanel
         {
           ChooseNextActionDialog cnad = new ChooseNextActionDialog (
               this.mainWindowForm, actions );
+          this.chooseDialogActive = true;
           cnad.show ();
+          this.chooseDialogActive = false;
 
           if ( cnad.isConfirmed () )
           {
@@ -782,7 +790,8 @@ public class StatelessMachinePanel extends MachinePanel
   void autoStepTimerRun ()
   {
     if ( StatelessMachinePanel.this.machine.isNextSymbolAvailable () )
-      handleWordNextStep ();
+      if(!this.chooseDialogActive)
+        handleWordNextStep ();
     else
     {
       StatelessMachinePanel.this.mainWindowForm.getLogic ().removeButtonState (

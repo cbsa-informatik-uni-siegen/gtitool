@@ -37,6 +37,7 @@ public class FirstSetDialogForm extends javax.swing.JDialog implements GUIClass<
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jGTIPanel4 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIToolBar = new de.unisiegen.gtitool.ui.swing.JGTIToolBar();
         jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
@@ -46,6 +47,9 @@ public class FirstSetDialogForm extends javax.swing.JDialog implements GUIClass<
         jGTIPanel2 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jGTIFirstTable = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        jGTIPanel3 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jGTIReasonList = new de.unisiegen.gtitool.ui.swing.JGTIList();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -112,6 +116,7 @@ public class FirstSetDialogForm extends javax.swing.JDialog implements GUIClass<
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jGTIPanel1.add(jGTIToolBar, gridBagConstraints);
 
         jGTIFirstTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -141,7 +146,35 @@ public class FirstSetDialogForm extends javax.swing.JDialog implements GUIClass<
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jGTIPanel1.add(jGTIPanel2, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weighty = 1.0;
+        jGTIPanel4.add(jGTIPanel1, gridBagConstraints);
+
+        jScrollPane2.setViewportView(jGTIReasonList);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        jGTIPanel3.add(jScrollPane2, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.7;
+        gridBagConstraints.weighty = 1.0;
+        jGTIPanel4.add(jGTIPanel3, gridBagConstraints);
 
         jGTIButtonOk.setText("Ok");
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
@@ -150,10 +183,10 @@ public class FirstSetDialogForm extends javax.swing.JDialog implements GUIClass<
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jGTIPanel1.add(jGTIButtonOk, gridBagConstraints);
+        jGTIPanel4.add(jGTIButtonOk, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -162,7 +195,7 @@ public class FirstSetDialogForm extends javax.swing.JDialog implements GUIClass<
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 15, 5, 15);
-        getContentPane().add(jGTIPanel1, gridBagConstraints);
+        getContentPane().add(jGTIPanel4, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -193,12 +226,16 @@ public class FirstSetDialogForm extends javax.swing.JDialog implements GUIClass<
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIFirstTable;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel1;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel2;
+    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel3;
+    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel4;
+    public de.unisiegen.gtitool.ui.swing.JGTIList jGTIReasonList;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBar jGTIToolBar;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonNextStep;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonPreviousStep;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStart;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStop;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 
     private FirstSetDialog logic;

@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import java.awt.Color;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -46,6 +45,12 @@ public class DefaultFirstSet implements FirstSet
 
 
   /**
+   * Cached {@link PrettyString}
+   */
+  private PrettyString cachedPrettyString = null;
+
+
+  /**
    * default ctor
    */
   public DefaultFirstSet ()
@@ -77,8 +82,8 @@ public class DefaultFirstSet implements FirstSet
   public void unmarkAll ()
   {
     for ( TerminalSymbol ts : this.terminalSymbolSet )
-      for ( PrettyToken pt : ts.toPrettyString ().getPrettyToken () )
-        pt.setOverwrittenColor ( Color.black );
+      ts.setHighlighted ( false );
+    this.cachedPrettyString = null;
   }
 
 
@@ -90,6 +95,7 @@ public class DefaultFirstSet implements FirstSet
   public boolean add ( Iterable < TerminalSymbol > terminalSymbols )
   {
     this.modified = this.terminalSymbolSet.addIfNonexistent ( terminalSymbols );
+    this.cachedPrettyString = null;
     return this.modified;
   }
 
@@ -102,6 +108,7 @@ public class DefaultFirstSet implements FirstSet
   public boolean add ( TerminalSymbol terminalSymbol )
   {
     this.modified = this.terminalSymbolSet.addIfNonexistent ( terminalSymbol );
+    this.cachedPrettyString = null;
     return this.modified;
   }
 
@@ -137,6 +144,7 @@ public class DefaultFirstSet implements FirstSet
   public void clear ()
   {
     this.terminalSymbolSet.clear ();
+    this.cachedPrettyString = null;
   }
 
 
@@ -183,6 +191,7 @@ public class DefaultFirstSet implements FirstSet
           if ( ts.getName ().equals ( epsilonSymbol.getName () ) )
             this.terminalSymbolSet.remove ( ts );
       }
+      this.cachedPrettyString = null;
       return true;
     }
     return false;
@@ -219,6 +228,7 @@ public class DefaultFirstSet implements FirstSet
   public void remove ( Iterable < TerminalSymbol > terminalSymbols )
   {
     this.terminalSymbolSet.remove ( terminalSymbols );
+    this.cachedPrettyString = null;
   }
 
 
@@ -230,6 +240,7 @@ public class DefaultFirstSet implements FirstSet
   public void remove ( TerminalSymbol terminalSymbol )
   {
     this.terminalSymbolSet.remove ( terminalSymbol );
+    this.cachedPrettyString = null;
   }
 
 
@@ -241,6 +252,7 @@ public class DefaultFirstSet implements FirstSet
   public void remove ( TerminalSymbol ... terminalSymbols )
   {
     this.terminalSymbolSet.remove ( terminalSymbols );
+    this.cachedPrettyString = null;
   }
 
 
@@ -427,20 +439,23 @@ public class DefaultFirstSet implements FirstSet
   @SuppressWarnings ( "nls" )
   public PrettyString toPrettyString ()
   {
-    PrettyString ps = new PrettyString ();
-    ps.add ( new PrettyToken ( "{", Style.NONE ) );
-    boolean deleteLast = false;
-    for ( TerminalSymbol ts : this.terminalSymbolSet )
+    if ( this.cachedPrettyString == null )
     {
-      ps.add ( ts );
-      ps.add ( new PrettyToken ( ",", Style.NONE ) );
-      deleteLast = true;
+      this.cachedPrettyString = new PrettyString ();
+      this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) );
+      boolean deleteLast = false;
+      for ( TerminalSymbol ts : this.terminalSymbolSet )
+      {
+        this.cachedPrettyString.add ( ts );
+        this.cachedPrettyString.add ( new PrettyToken ( ",", Style.NONE ) );
+        deleteLast = true;
+      }
+      if ( deleteLast )
+        this.cachedPrettyString.removeLastPrettyToken ();
+      else
+        this.cachedPrettyString.add ( new PrettyToken ( " ", Style.NONE ) );
+      this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) );
     }
-    if ( deleteLast )
-      ps.removeLastPrettyToken ();
-    else
-      ps.add ( new PrettyToken ( " ", Style.NONE ) );
-    ps.add ( new PrettyToken ( "}", Style.NONE ) );
-    return ps;
+    return this.cachedPrettyString;
   }
 }

@@ -1418,11 +1418,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
       this.gui.getJMenuItemCalculateFirstSets ().setEnabled ( true );
     }
-    else if ((buttonState.equals ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS )) && (!this.buttonStateList.contains ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS )))
-    {
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS ) ) )
       this.buttonStateList.add ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
-      //TODO: enable jmenu entry
-    }
+    // TODO: enable jmenu entry
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REGEX_INFO ) ) )
     {
@@ -4453,6 +4453,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_SAVE_ALL );
       }
 
+      removeButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
+
       removeButtonState ( ButtonState.ENABLED_SAVE_AS );
       removeButtonState ( ButtonState.ENABLED_CLOSE );
       removeButtonState ( ButtonState.ENABLED_PRINT );
@@ -4502,6 +4504,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // MachinePanel
     else
     {
+      removeButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
       if ( panel instanceof StateMachinePanel )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
@@ -6385,11 +6388,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
       this.gui.getJMenuItemCalculateFirstSets ().setEnabled ( false );
     }
-    else if ( buttonState.equals ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS ))
-    {
+    else if ( buttonState.equals ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS ) )
       this.buttonStateList.remove ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
-      //TODO: disable jmenu entry
-    }
+    // TODO: disable jmenu entry
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
@@ -6516,6 +6517,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( buttonState.equals ( ButtonState.VISIBLE_STATELESS_MACHINE ) )
     {
       this.buttonStateList.remove ( ButtonState.VISIBLE_STATELESS_MACHINE );
+      this.gui.getJGTIToolBarButtonEditDocument ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( false );
       this.gui.getJGTIToolBarButtonStart ().setVisible ( false );

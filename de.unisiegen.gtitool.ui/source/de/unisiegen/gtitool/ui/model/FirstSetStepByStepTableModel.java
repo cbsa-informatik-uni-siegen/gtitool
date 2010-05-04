@@ -31,7 +31,7 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
   /**
    * The column count
    */
-  private static final int COLUMN_COUNT = 3;
+  private static final int COLUMN_COUNT = 2;
 
 
   /**
@@ -44,12 +44,6 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
    * The first set column
    */
   private static final int FIRSTCOLUMN = 1;
-
-
-  /**
-   * The reason column
-   */
-  private static final int REASONCOLUMN = 2;
 
 
   /**
@@ -71,21 +65,13 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
 
 
   /**
-   * The reasons
-   */
-  private HashMap < NonterminalSymbol, PrettyString > reasons;
-
-
-  /**
    * Allocates a new {@link FirstSetStepByStepTableModel}
    * 
    * @param cfg The {@link CFG}
    * @param firstSets The {@link FirstSet}s
-   * @param reasons The reasons
    */
   public FirstSetStepByStepTableModel ( final CFG cfg,
-      final HashMap < ProductionWordMember, FirstSet > firstSets,
-      final HashMap < NonterminalSymbol, PrettyString > reasons )
+      final HashMap < ProductionWordMember, FirstSet > firstSets)
   {
     this.cfg = cfg;
     /*
@@ -104,7 +90,6 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
         continue;
       }
     this.firstSets = firstSets;
-    this.reasons = reasons;
   }
 
 
@@ -112,14 +97,11 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
    * Set all
    * 
    * @param firstSets as it says
-   * @param reasons as it says
    */
   public final void setAll (
-      final HashMap < ProductionWordMember, FirstSet > firstSets,
-      final HashMap < NonterminalSymbol, PrettyString > reasons )
+      final HashMap < ProductionWordMember, FirstSet > firstSets)
   {
     this.firstSets = firstSets;
-    this.reasons = reasons;
   }
 
 
@@ -158,8 +140,6 @@ public class FirstSetStepByStepTableModel extends AbstractTableModel
         return this.nonterminals.get ( rowIndex );
       case FirstSetStepByStepTableModel.FIRSTCOLUMN :
         return this.firstSets.get ( this.nonterminals.get ( rowIndex ) );
-      case FirstSetStepByStepTableModel.REASONCOLUMN :
-        return this.reasons.get ( this.nonterminals.get ( rowIndex ) );
     }
     return new PrettyString ();
   }

@@ -7,6 +7,7 @@ import javax.swing.table.TableColumn;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableHeaderCellRenderer;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 
@@ -36,12 +37,6 @@ public class FirstSetStepByStepTableColumnModel extends DefaultTableColumnModel
 
 
   /**
-   * The reason column
-   */
-  private static int REASONCOLUMN = 2;
-
-
-  /**
    * 
    * Allocates a new {@link FirstSetStepByStepTableColumnModel}
    *
@@ -53,18 +48,14 @@ public class FirstSetStepByStepTableColumnModel extends DefaultTableColumnModel
         .getString ( "FirstSetDialog.Nonterminal" ), Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     addColumn ( symbolColumn );
     symbolColumn = new TableColumn ( FIRSTCOLUMN );
     symbolColumn.setHeaderValue ( new PrettyString ( new PrettyToken (
         "FIRST", Style.NONE ) ) ); //$NON-NLS-1$
     symbolColumn
         .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-    addColumn ( symbolColumn );
-    symbolColumn = new TableColumn ( REASONCOLUMN );
-    symbolColumn.setHeaderValue ( new PrettyString ( new PrettyToken ( Messages
-        .getString ( "FirstSetDialog.Reason" ), Style.NONE ) ) ); //$NON-NLS-1$
-    symbolColumn
-        .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+    symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     addColumn ( symbolColumn );
   }
 }

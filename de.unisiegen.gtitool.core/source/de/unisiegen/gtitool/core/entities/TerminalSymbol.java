@@ -38,4 +38,23 @@ public interface TerminalSymbol extends Entity < TerminalSymbol >,
    * @param error The error value to set.
    */
   public void setError ( boolean error );
+  
+  
+  /**
+   * 
+   * Sets this {@link TerminalSymbol} as highlighted
+   *
+   * @param highlighted The highlighted status
+   */
+  public void setHighlighted(boolean highlighted);
+  
+  
+  /**
+   * 
+   * Returns if this {@link TerminalSymbol} is highlighted
+   * or not
+   *
+   * @return true if this {@link TerminalSymbol} is highlighted
+   */
+  public boolean isHighlighted();
 }

@@ -82,6 +82,18 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
   {
     // Override this method if needed
   }
+  
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedNonterminalSymbolHighlight(Color)
+   */
+  public void colorChangedTerminalSymbolHighlight (
+      @SuppressWarnings ( "unused" ) Color newColor )
+  {
+    // Override this method if needed
+  }
 
 
   /**

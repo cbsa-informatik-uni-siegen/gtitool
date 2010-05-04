@@ -50,6 +50,15 @@ public interface ColorChangedListener extends EventListener
    * @param newColor The new color of the highlighted {@link NonterminalSymbol}.
    */
   public void colorChangedNonterminalSymbolHighlight ( Color newColor );
+  
+  
+  /**
+   * Invoked when the color of the highlighted {@link TerminalSymbol}
+   * changed.
+   * 
+   * @param newColor The new color of the highlighted {@link TerminalSymbol}.
+   */
+  public void colorChangedTerminalSymbolHighlight ( Color newColor );
 
 
   /**

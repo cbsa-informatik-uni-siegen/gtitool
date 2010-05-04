@@ -287,6 +287,13 @@ public class PreferenceManager
 
 
   /**
+   * The default {@link Color} of the error {@link TerminalSymbol}.
+   */
+  public static final Color DEFAULT_TERMINAL_SYMBOL_HIGHLIGHT_COLOR = new Color (
+      0, 255, 0 );
+
+
+  /**
    * The default {@link TerminalSymbolSet}.
    */
   public static TerminalSymbolSet DEFAULT_TERMINAL_SYMBOL_SET;
@@ -390,9 +397,7 @@ public class PreferenceManager
   public static PreferenceManager getInstance ()
   {
     if ( preferenceManager == null )
-    {
       preferenceManager = new PreferenceManager ();
-    }
     return preferenceManager;
   }
 
@@ -500,6 +505,24 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedNonterminalSymbolHighlight ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the error
+   * {@link NonterminalSymbol} has changed.
+   * 
+   * @param newColor The new color of the error {@link NonterminalSymbol}.
+   */
+  public final void fireColorChangedTerminalSymbolHighlight ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedTerminalSymbolHighlight ( newColor );
       current.colorChanged ();
     }
   }
@@ -1045,9 +1068,7 @@ public class PreferenceManager
     LanguageChangedListener [] listeners = this.listenerList
         .getListeners ( LanguageChangedListener.class );
     for ( LanguageChangedListener current : listeners )
-    {
       current.languageChanged ();
-    }
   }
 
 
@@ -1066,17 +1087,13 @@ public class PreferenceManager
       String symbol = this.preferences.get ( "DefaultAlphabet" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
-      {
         break;
-      }
       symbols.add ( new DefaultSymbol ( symbol ) );
       count++ ;
     }
     // Return the default alphabet if no alphabet is found.
     if ( symbols.size () == 0 )
-    {
       return new AlphabetItem ( DEFAULT_ALPHABET, DEFAULT_ALPHABET );
-    }
     try
     {
       return new AlphabetItem ( new DefaultAlphabet ( symbols ),
@@ -1144,6 +1161,25 @@ public class PreferenceManager
         .getString ( "Preferences.ColorNonterminalSymbolHighlightDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_NONTERMINAL_SYMBOL_HIGHLIGHT_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final ColorItem getColorItemTerminalSymbolHighlight ()
+  {
+    int rgb = this.preferences.getInt (
+        "Preferences.ColorTerminalSymbolHighlight", //$NON-NLS-1$
+        DEFAULT_TERMINAL_SYMBOL_HIGHLIGHT_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorTerminalSymbolHighlightCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorTerminalSymbolHighlightDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_TERMINAL_SYMBOL_HIGHLIGHT_COLOR );
   }
 
 
@@ -1846,9 +1882,7 @@ public class PreferenceManager
           "DefaultNonterminalSymbolSet" + count, //$NON-NLS-1$
           end );
       if ( nonterminalSymbol.equals ( end ) )
-      {
         break;
-      }
       nonterminalSymbols
           .add ( new DefaultNonterminalSymbol ( nonterminalSymbol ) );
       count++ ;
@@ -1858,10 +1892,8 @@ public class PreferenceManager
      * found.
      */
     if ( nonterminalSymbols.size () == 0 )
-    {
       return new NonterminalSymbolSetItem ( DEFAULT_NONTERMINAL_SYMBOL_SET,
           DEFAULT_NONTERMINAL_SYMBOL_SET );
-    }
     try
     {
       return new NonterminalSymbolSetItem ( new DefaultNonterminalSymbolSet (
@@ -1891,18 +1923,14 @@ public class PreferenceManager
       String symbol = this.preferences.get ( "DefaultPushDownAlphabet" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
-      {
         break;
-      }
       symbols.add ( new DefaultSymbol ( symbol ) );
       count++ ;
     }
     // Return the default alphabet if no alphabet is found.
     if ( symbols.size () == 0 )
-    {
       return new AlphabetItem ( DEFAULT_PUSH_DOWN_ALPHABET,
           DEFAULT_PUSH_DOWN_ALPHABET );
-    }
     try
     {
       return new AlphabetItem ( new DefaultAlphabet ( symbols ),
@@ -1932,17 +1960,13 @@ public class PreferenceManager
       String symbol = this.preferences.get ( "DefaultRegexAlphabet" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
-      {
         break;
-      }
       symbols.add ( new DefaultSymbol ( symbol ) );
       count++ ;
     }
     // Return the default alphabet if no alphabet is found.
     if ( symbols.size () == 0 )
-    {
       return new AlphabetItem ( DEFAULT_REGEX_ALPHABET, DEFAULT_REGEX_ALPHABET );
-    }
     try
     {
       return new AlphabetItem ( new DefaultRegexAlphabet ( symbols ),
@@ -1998,9 +2022,7 @@ public class PreferenceManager
           "DefaultTerminalSymbolSet" + count, //$NON-NLS-1$
           end );
       if ( terminalSymbol.equals ( end ) )
-      {
         break;
-      }
       terminalSymbols.add ( new DefaultTerminalSymbol ( terminalSymbol ) );
       count++ ;
     }
@@ -2009,10 +2031,8 @@ public class PreferenceManager
      * found.
      */
     if ( terminalSymbols.size () == 0 )
-    {
       return new TerminalSymbolSetItem ( DEFAULT_TERMINAL_SYMBOL_SET,
           DEFAULT_TERMINAL_SYMBOL_SET );
-    }
     try
     {
       return new TerminalSymbolSetItem ( new DefaultTerminalSymbolSet (
@@ -2080,23 +2100,17 @@ public class PreferenceManager
       String symbol = this.preferences.get ( "DefaultAlphabet" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
-      {
         break loop;
-      }
       count++ ;
     }
     for ( int i = 0 ; i < count ; i++ )
-    {
       this.preferences.remove ( "DefaultAlphabet" + i ); //$NON-NLS-1$
-    }
 
     // Set the new data
     for ( int i = 0 ; i < alphabetItem.getAlphabet ().size () ; i++ )
-    {
       this.preferences.put (
           "DefaultAlphabet" + i, alphabetItem.getAlphabet ().get ( i ) //$NON-NLS-1$
               .getName () );
-    }
   }
 
 
@@ -2119,23 +2133,17 @@ public class PreferenceManager
       String symbol = this.preferences.get ( "DefaultRegexAlphabet" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
-      {
         break loop;
-      }
       count++ ;
     }
     for ( int i = 0 ; i < count ; i++ )
-    {
       this.preferences.remove ( "DefaultRegexAlphabet" + i ); //$NON-NLS-1$
-    }
 
     // Set the new data
     for ( int i = 0 ; i < alphabetItem.getAlphabet ().size () ; i++ )
-    {
       this.preferences.put (
           "DefaultRegexAlphabet" + i, alphabetItem.getAlphabet ().get ( i ) //$NON-NLS-1$
               .getName () );
-    }
   }
 
 
@@ -2209,6 +2217,26 @@ public class PreferenceManager
     this.preferences.putBoolean (
         "Preferences.ColorNonterminalSymbolGroupExpanded", colorItem //$NON-NLS-1$
             .isExpanded () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the highlight {@link TerminalSymbol}.
+   * 
+   * @param colorItem The {@link ColorItem} of the highlighted
+   *          {@link TerminalSymbol}.
+   */
+  public final void setColorItemTerminalSymbolHighlight ( ColorItem colorItem )
+  {
+    logger
+        .debug (
+            "setColorItemTerminalSymbolHighlight",//$NON-NLS-1$
+            "set color of the highlight terminal symbol to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$
+                + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$
+                + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$
+                + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.putInt ( "Preferences.ColorTerminalSymbolHighlight", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -2884,24 +2912,18 @@ public class PreferenceManager
           "DefaultNonterminalSymbolSet" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
-      {
         break loop;
-      }
       count++ ;
     }
     for ( int i = 0 ; i < count ; i++ )
-    {
       this.preferences.remove ( "DefaultNonterminalSymbolSet" + i ); //$NON-NLS-1$
-    }
 
     // Set new data
     for ( int i = 0 ; i < nonterminalSymbolSetItem.getNonterminalSymbolSet ()
         .size () ; i++ )
-    {
       this.preferences.put ( "DefaultNonterminalSymbolSet" + i, //$NON-NLS-1$
           nonterminalSymbolSetItem.getNonterminalSymbolSet ().get ( i )
               .getName () );
-    }
   }
 
 
@@ -2926,22 +2948,16 @@ public class PreferenceManager
       String symbol = this.preferences.get ( "DefaultPushDownAlphabet" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
-      {
         break loop;
-      }
       count++ ;
     }
     for ( int i = 0 ; i < count ; i++ )
-    {
       this.preferences.remove ( "DefaultPushDownAlphabet" + i ); //$NON-NLS-1$
-    }
 
     // Set new data
     for ( int i = 0 ; i < pushDownAlphabetItem.getAlphabet ().size () ; i++ )
-    {
       this.preferences.put ( "DefaultPushDownAlphabet" + i, //$NON-NLS-1$
           pushDownAlphabetItem.getAlphabet ().get ( i ).getName () );
-    }
   }
 
 
@@ -2994,22 +3010,16 @@ public class PreferenceManager
           "DefaultTerminalSymbolSet" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
-      {
         break loop;
-      }
       count++ ;
     }
     for ( int i = 0 ; i < count ; i++ )
-    {
       this.preferences.remove ( "DefaultTerminalSymbolSet" + i ); //$NON-NLS-1$
-    }
 
     // Set new data
     for ( int i = 0 ; i < terminalSymbolSetItem.getTerminalSymbolSet ().size () ; i++ )
-    {
       this.preferences.put ( "DefaultTerminalSymbolSet" + i, //$NON-NLS-1$
           terminalSymbolSetItem.getTerminalSymbolSet ().get ( i ).getName () );
-    }
   }
 
 

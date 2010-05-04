@@ -65,6 +65,12 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * The cached {@link PrettyString}.
    */
   private PrettyString cachedPrettyString = null;
+  
+  
+  /**
+   * The highlighted status
+   */
+  private boolean highlighted = false;
 
 
   /**
@@ -313,6 +319,32 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   {
     this.parserOffset = parserOffset;
   }
+  
+  /**
+   * 
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.TerminalSymbol#setHighlighted(boolean)
+   */
+  public void setHighlighted ( boolean highlighted )
+  {
+    if ( this.highlighted != highlighted )
+    {
+      this.highlighted = highlighted;
+      firePrettyStringChanged ();
+    }
+  }
+  
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.TerminalSymbol#isHighlighted()
+   */
+  public boolean isHighlighted ()
+  {
+    return this.highlighted;
+  }
 
 
   /**
@@ -329,6 +361,9 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
       if ( this.error )
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.TERMINAL_SYMBOL_ERROR ) );
+      else if ( this.highlighted )
+        this.cachedPrettyString.add ( new PrettyToken ( this.name,
+            Style.TERMINAL_SYMBOL_HIGHLIGHT ) );
       else
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.TERMINAL_SYMBOL ) );

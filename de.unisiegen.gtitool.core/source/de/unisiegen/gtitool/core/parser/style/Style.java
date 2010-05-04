@@ -114,6 +114,11 @@ public enum Style
    * Style of error {@link TerminalSymbol}s.
    */
   TERMINAL_SYMBOL_ERROR ( true, false ),
+  
+  /**
+   * Style of highlighted {@link TerminalSymbol}s.
+   */
+  TERMINAL_SYMBOL_HIGHLIGHT ( true, false ),
 
   /**
    * Style of RegexTokens
@@ -241,6 +246,9 @@ public enum Style
         return PreferenceManager.getInstance ()
             .getColorItemTerminalSymbolError ().getColor ();
       }
+      case TERMINAL_SYMBOL_HIGHLIGHT :
+        return PreferenceManager.getInstance ()
+            .getColorItemTerminalSymbolHighlight ().getColor ();
       case KEYWORD :
       {
         return PreferenceManager.getInstance ().getColorItemParserKeyword ()

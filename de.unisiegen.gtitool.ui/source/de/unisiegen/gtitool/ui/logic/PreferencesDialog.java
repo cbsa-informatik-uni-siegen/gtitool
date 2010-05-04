@@ -740,6 +740,12 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The {@link ColorItem} of the highlighted {@link TerminalSymbol}
+   */
+  private ColorItem colorItemTerminalSymbolHighlight;
+
+
+  /**
    * The {@link PreferencesDialogForm}.
    */
   private PreferencesDialogForm gui;
@@ -785,6 +791,12 @@ public final class PreferencesDialog implements
    * The initial {@link ColorItem} of the error {@link NonterminalSymbol}.
    */
   private ColorItem initialColorItemNonterminalSymbolHighlight;
+
+
+  /**
+   * The initial {@link ColorItem} of the highlighted {@link TerminalSymbol}
+   */
+  private ColorItem initialColorItemTerminalSymbolHighlight;
 
 
   /**
@@ -1544,9 +1556,7 @@ public final class PreferencesDialog implements
           {
             setButtonStatus ();
             if ( newAlphabet != null )
-            {
               PreferencesDialog.this.alphabetItem.setAlphabet ( newAlphabet );
-            }
           }
         } );
 
@@ -1562,10 +1572,8 @@ public final class PreferencesDialog implements
           {
             setButtonStatus ();
             if ( newAlphabet != null )
-            {
               PreferencesDialog.this.regexAlphabetItem
                   .setAlphabet ( newAlphabet );
-            }
           }
         } );
   }
@@ -1622,10 +1630,8 @@ public final class PreferencesDialog implements
       public void mousePressed ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuAutoStep.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
 
 
@@ -1634,10 +1640,8 @@ public final class PreferencesDialog implements
       public void mouseReleased ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuAutoStep.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
     } );
   }
@@ -1767,6 +1771,8 @@ public final class PreferencesDialog implements
     this.colorItemTerminalSymbolError = PreferenceManager.getInstance ()
         .getColorItemTerminalSymbolError ();
     this.initialColorItemTerminalSymbolError = this.colorItemTerminalSymbolError
+        .clone ();
+    this.initialColorItemTerminalSymbolHighlight = this.colorItemTerminalSymbolHighlight
         .clone ();
 
     // Parser keyword
@@ -1949,45 +1955,29 @@ public final class PreferencesDialog implements
     this.gui.jGTITreeColors.setModel ( model );
     // Expand the items
     if ( this.stateNode.isExpanded () )
-    {
       this.gui.jGTITreeColors.expandPath ( new TreePath ( this.stateNode
           .getPath () ) );
-    }
     if ( this.regexNode.isExpanded () )
-    {
       this.gui.jGTITreeColors.expandPath ( new TreePath ( this.regexNode
           .getPath () ) );
-    }
     if ( this.transitionNode.isExpanded () )
-    {
       this.gui.jGTITreeColors.expandPath ( new TreePath ( this.transitionNode
           .getPath () ) );
-    }
     if ( this.symbolNode.isExpanded () )
-    {
       this.gui.jGTITreeColors.expandPath ( new TreePath ( this.symbolNode
           .getPath () ) );
-    }
     if ( this.productionNode.isExpanded () )
-    {
       this.gui.jGTITreeColors.expandPath ( new TreePath ( this.productionNode
           .getPath () ) );
-    }
     if ( this.nonterminalSymbolNode.isExpanded () )
-    {
       this.gui.jGTITreeColors.expandPath ( new TreePath (
           this.nonterminalSymbolNode.getPath () ) );
-    }
     if ( this.terminalSymbolNode.isExpanded () )
-    {
       this.gui.jGTITreeColors.expandPath ( new TreePath (
           this.terminalSymbolNode.getPath () ) );
-    }
     if ( this.parserNode.isExpanded () )
-    {
       this.gui.jGTITreeColors.expandPath ( new TreePath ( this.parserNode
           .getPath () ) );
-    }
 
     this.gui.jGTITreeColors.setRowHeight ( 0 );
     this.gui.jGTITreeColors.getSelectionModel ().setSelectionMode (
@@ -2019,9 +2009,7 @@ public final class PreferencesDialog implements
     this.languageComboBoxModel.addElement ( new LanguageItem (
         "Default", PreferenceManager.getInstance ().getSystemLocale () ) ); //$NON-NLS-1$
     for ( LanguageItem current : Messages.getLanguageItems () )
-    {
       this.languageComboBoxModel.addElement ( current );
-    }
     this.gui.jGTIComboBoxLanguage.setModel ( this.languageComboBoxModel );
     this.initialLanguageItem = PreferenceManager.getInstance ()
         .getLanguageItem ();
@@ -2058,10 +2046,8 @@ public final class PreferencesDialog implements
       public void mousePressed ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuLanguage.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
 
 
@@ -2070,10 +2056,8 @@ public final class PreferencesDialog implements
       public void mouseReleased ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuLanguage.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
     } );
     PreferenceManager.getInstance ().addLanguageChangedListener (
@@ -2112,20 +2096,16 @@ public final class PreferencesDialog implements
     String name = "System"; //$NON-NLS-1$
     String className = UIManager.getSystemLookAndFeelClassName ();
     loop : for ( LookAndFeelInfo current : lookAndFeels )
-    {
       if ( current.getClassName ().equals ( className ) )
       {
         name += " (" + current.getName () + ")"; //$NON-NLS-1$//$NON-NLS-2$
         break loop;
       }
-    }
     this.lookAndFeelComboBoxModel.addElement ( new LookAndFeelItem ( name,
         className ) );
     for ( LookAndFeelInfo current : lookAndFeels )
-    {
       this.lookAndFeelComboBoxModel.addElement ( new LookAndFeelItem ( current
           .getName (), current.getClassName () ) );
-    }
     this.gui.jGTIComboBoxLookAndFeel.setModel ( this.lookAndFeelComboBoxModel );
     this.initialLookAndFeel = PreferenceManager.getInstance ()
         .getLookAndFeelItem ();
@@ -2161,10 +2141,8 @@ public final class PreferencesDialog implements
       public void mousePressed ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuLookAndFeel.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
 
 
@@ -2173,11 +2151,8 @@ public final class PreferencesDialog implements
       public void mouseReleased ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
-
           PreferencesDialog.this.jPopupMenuLookAndFeel.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
     } );
     PreferenceManager.getInstance ().addLanguageChangedListener (
@@ -2241,10 +2216,8 @@ public final class PreferencesDialog implements
       public void mousePressed ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuMouseSelection.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
 
 
@@ -2253,10 +2226,8 @@ public final class PreferencesDialog implements
       public void mouseReleased ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuMouseSelection.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
     } );
     PreferenceManager.getInstance ().addLanguageChangedListener (
@@ -2339,10 +2310,8 @@ public final class PreferencesDialog implements
           {
             setButtonStatus ();
             if ( newNonterminalSymbolSet != null )
-            {
               PreferencesDialog.this.nonterminalSymbolSetItem
                   .setNonterminalSymbolSet ( newNonterminalSymbolSet );
-            }
           }
         } );
   }
@@ -2391,10 +2360,8 @@ public final class PreferencesDialog implements
       public void mousePressed ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuPDAMode.show (
               event.getComponent (), event.getX (), event.getY () );
-        }
       }
 
 
@@ -2403,10 +2370,8 @@ public final class PreferencesDialog implements
       public void mouseReleased ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuPDAMode.show (
               event.getComponent (), event.getX (), event.getY () );
-        }
       }
     } );
     PreferenceManager.getInstance ().addLanguageChangedListener (
@@ -2488,10 +2453,8 @@ public final class PreferencesDialog implements
           {
             setButtonStatus ();
             if ( newAlphabet != null )
-            {
               PreferencesDialog.this.pushDownAlphabetItem
                   .setAlphabet ( newAlphabet );
-            }
           }
         } );
 
@@ -2527,10 +2490,8 @@ public final class PreferencesDialog implements
           public void mousePressed ( MouseEvent event )
           {
             if ( event.isPopupTrigger () )
-            {
               PreferencesDialog.this.jPopupMenuUsePushDownAlphabet.show ( event
                   .getComponent (), event.getX (), event.getY () );
-            }
           }
 
 
@@ -2539,10 +2500,8 @@ public final class PreferencesDialog implements
           public void mouseReleased ( MouseEvent event )
           {
             if ( event.isPopupTrigger () )
-            {
               PreferencesDialog.this.jPopupMenuUsePushDownAlphabet.show ( event
                   .getComponent (), event.getX (), event.getY () );
-            }
           }
         } );
   }
@@ -2608,10 +2567,8 @@ public final class PreferencesDialog implements
           {
             setButtonStatus ();
             if ( newNonterminalSymbol != null )
-            {
               PreferencesDialog.this.startSymbolItem
                   .setNonterminalSymbol ( newNonterminalSymbol );
-            }
           }
         } );
   }
@@ -2678,10 +2635,8 @@ public final class PreferencesDialog implements
           {
             setButtonStatus ();
             if ( newTerminalSymbolSet != null )
-            {
               PreferencesDialog.this.terminalSymbolSetItem
                   .setTerminalSymbolSet ( newTerminalSymbolSet );
-            }
           }
         } );
   }
@@ -2730,10 +2685,8 @@ public final class PreferencesDialog implements
       public void mousePressed ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuTransition.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
 
 
@@ -2742,10 +2695,8 @@ public final class PreferencesDialog implements
       public void mouseReleased ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuTransition.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
     } );
     PreferenceManager.getInstance ().addLanguageChangedListener (
@@ -2806,10 +2757,8 @@ public final class PreferencesDialog implements
       public void mousePressed ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuWordMode.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
 
 
@@ -2818,10 +2767,8 @@ public final class PreferencesDialog implements
       public void mouseReleased ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuWordMode.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
     } );
     PreferenceManager.getInstance ().addLanguageChangedListener (
@@ -2876,10 +2823,8 @@ public final class PreferencesDialog implements
       public void mousePressed ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuZoomFactor.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
 
 
@@ -2888,10 +2833,8 @@ public final class PreferencesDialog implements
       public void mouseReleased ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           PreferencesDialog.this.jPopupMenuZoomFactor.show ( event
               .getComponent (), event.getX (), event.getY () );
-        }
       }
     } );
     PreferenceManager.getInstance ().addLanguageChangedListener (
@@ -3249,9 +3192,7 @@ public final class PreferencesDialog implements
     ( ( DefaultTreeModel ) this.gui.jGTITreeColors.getModel () )
         .nodeChanged ( node );
     for ( int i = 0 ; i < node.getChildCount () ; i++ )
-    {
       nodeChanged ( node.getChildAt ( i ) );
-    }
   }
 
 
@@ -3656,6 +3597,12 @@ public final class PreferencesDialog implements
         this.terminalSymbolNode.getPath () ) ) != this.terminalSymbolNode
         .isExpanded () )
     {
+      this.initialColorItemTerminalSymbolHighlight = this.colorItemTerminalSymbolHighlight
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemTerminalSymbolHighlight (
+          this.colorItemNonterminalSymbolHighlight );
+      PreferenceManager.getInstance ().fireColorChangedTerminalSymbolHighlight (
+          this.colorItemTerminalSymbolHighlight.getColor () );
       this.terminalSymbolNode.setExpanded ( this.gui.jGTITreeColors
           .isExpanded ( new TreePath ( this.terminalSymbolNode.getPath () ) ) );
       PreferenceManager.getInstance ().setColorItemTerminalSymbolGroup (
@@ -3749,10 +3696,8 @@ public final class PreferencesDialog implements
       PreferenceManager.getInstance ().setLanguageItem ( selectedLanguageItem );
       if ( !this.initialLanguageItem.getLocale ().getLanguage ().equals (
           selectedLanguageItem.getLocale ().getLanguage () ) )
-      {
         PreferenceManager.getInstance ().fireLanguageChanged (
             selectedLanguageItem.getLocale () );
-      }
       this.initialLanguageItem = selectedLanguageItem;
     }
   }
@@ -3786,7 +3731,6 @@ public final class PreferencesDialog implements
           selectedLookAndFeelItem );
       if ( !this.initialLookAndFeel.getClassName ().equals (
           selectedLookAndFeelItem.getClassName () ) )
-      {
         try
         {
           UIManager.setLookAndFeel ( selectedLookAndFeelItem.getClassName () );
@@ -3795,9 +3739,7 @@ public final class PreferencesDialog implements
           {
             SwingUtilities.updateComponentTreeUI ( current );
             for ( Window w : current.getOwnedWindows () )
-            {
               SwingUtilities.updateComponentTreeUI ( w );
-            }
           }
         }
         catch ( ClassNotFoundException exc )
@@ -3817,7 +3759,6 @@ public final class PreferencesDialog implements
           logger.error ( "saveLookAndFeel",//$NON-NLS-1$
               "unsupported look and feel exception", exc );//$NON-NLS-1$
         }
-      }
       this.initialLookAndFeel = selectedLookAndFeelItem;
     }
   }
@@ -4011,9 +3952,7 @@ public final class PreferencesDialog implements
       this.gui.jGTITabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, Color.RED );
     }
     else
-    {
       this.gui.jGTITabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, null );
-    }
 
     // Grammar
     if ( ( this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
@@ -4027,9 +3966,7 @@ public final class PreferencesDialog implements
       this.gui.jGTITabbedPane.setForegroundAt ( GRAMMAR_TAB_INDEX, Color.RED );
     }
     else
-    {
       this.gui.jGTITabbedPane.setForegroundAt ( GRAMMAR_TAB_INDEX, null );
-    }
 
     // Enable or disable the buttons
     this.gui.jGTIButtonOk.setEnabled ( enabled );

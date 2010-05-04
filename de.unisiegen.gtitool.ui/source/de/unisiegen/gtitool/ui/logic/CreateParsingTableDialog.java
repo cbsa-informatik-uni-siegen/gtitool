@@ -157,9 +157,9 @@ public class CreateParsingTableDialog implements
           }
 
 
-          public void previousStepRemoveEntry ()
+          public void previousStepRemoveEntry (int amount)
           {
-            removeDescription ();
+            removeDescription (amount);
           }
         } );
 
@@ -204,23 +204,20 @@ public class CreateParsingTableDialog implements
     DefaultListModel model = ( DefaultListModel ) this.gui.jGTIDescriptionList
         .getModel ();
     model.addElement ( description );
-
-    this.gui.jGTIParsingTable.repaint ();
   }
 
 
   /**
    * Remove the last description row
+   * @param amount
    */
-  void removeDescription ()
+  void removeDescription (int amount)
   {
     // remove the last description
     final DefaultListModel model = ( DefaultListModel ) this.gui.jGTIDescriptionList
         .getModel ();
-    model.remove ( model.size () - 1 );
-
-    // repaint the parsing table cause it was modified
-    this.gui.jGTIParsingTable.repaint ();
+    while(amount-- > 0)
+      model.remove ( model.size () - 1 );
   }
 
 
@@ -274,6 +271,11 @@ public class CreateParsingTableDialog implements
     this.gui.jGTICurrentTerminalLabel.setText ( this.bundle
         .getString ( "CreateParsingTableDialog.CurrentTerminal" ) //$NON-NLS-1$
         + " " + this.parsingTable.getCurrentTerminalSymbol () ); //$NON-NLS-1$
+
+    this.parsingTable.getCurrentNonterminalSymbol ().setHighlighted ( true );
+    this.parsingTable.getCurrentTerminalSymbol ().setHighlighted ( true );
+    
+    this.gui.jGTIParsingTable.getTableHeader ().repaint ();
   }
 
 
@@ -286,6 +288,11 @@ public class CreateParsingTableDialog implements
         .getString ( "CreateParsingTableDialog.CurrentNonterminal" ) ); //$NON-NLS-1$
     this.gui.jGTICurrentTerminalLabel.setText ( this.bundle
         .getString ( "CreateParsingTableDialog.CurrentTerminal" ) ); //$NON-NLS-1$
+
+    this.parsingTable.getCurrentNonterminalSymbol ().setHighlighted ( false );
+    this.parsingTable.getCurrentTerminalSymbol ().setHighlighted ( false );
+    
+    this.gui.jGTIParsingTable.getTableHeader ().repaint ();
   }
 
 
@@ -339,6 +346,7 @@ public class CreateParsingTableDialog implements
   {
     try
     {
+      clearCurrentSymbols ();
       this.parsingTable.createParsingTableNextStep ();
       setCurrentSymbols ();
 
@@ -369,9 +377,10 @@ public class CreateParsingTableDialog implements
    */
   public void handlePrevious ()
   {
+    clearCurrentSymbols ();
     this.parsingTable.createParsingTablePreviousStep ();
-    this.gui.jGTIParsingTable.repaint ();
     setCurrentSymbols ();
+    this.gui.jGTIParsingTable.repaint ();
     updateStatus ();
     updateWordNavigation ();
   }

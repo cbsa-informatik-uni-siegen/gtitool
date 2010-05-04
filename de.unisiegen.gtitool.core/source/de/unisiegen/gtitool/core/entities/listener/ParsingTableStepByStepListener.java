@@ -33,5 +33,5 @@ public interface ParsingTableStepByStepListener extends EventListener
   /**
    * Invoked when an entry got removed during the previous step
    */
-  public void previousStepRemoveEntry ();
+  public void previousStepRemoveEntry (int amount);
 }

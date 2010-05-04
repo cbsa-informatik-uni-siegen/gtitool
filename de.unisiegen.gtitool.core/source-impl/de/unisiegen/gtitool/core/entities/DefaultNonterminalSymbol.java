@@ -390,12 +390,12 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
       if ( this.error )
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.NONTERMINAL_SYMBOL_ERROR ) );
-      else if ( this.start )
-        this.cachedPrettyString.add ( new PrettyToken ( this.name,
-            Style.START_NONTERMINAL_SYMBOL ) );
       else if ( this.highlighted )
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.NONTERMINAL_SYMBOL_HIGHLIGHT ) );
+      else if ( this.start )
+        this.cachedPrettyString.add ( new PrettyToken ( this.name,
+            Style.START_NONTERMINAL_SYMBOL ) );
       else
         this.cachedPrettyString.add ( new PrettyToken ( this.name,
             Style.NONTERMINAL_SYMBOL ) );

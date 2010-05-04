@@ -981,37 +981,38 @@ public final class StateMachinePanel extends MachinePanel
   public final void handleMachinePDATableValueChanged (
       @SuppressWarnings ( "unused" ) ListSelectionEvent event )
   {
-    if ( ! ( this.machine instanceof LRMachine ) )
+    if ( this.machine instanceof LRMachine
+        || this.machine instanceof AbstractLR )
+      return;
+
+    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+        && !this.cellEditingMode )
     {
-      if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
-          && !this.cellEditingMode )
+      clearHighlight ();
+
+      int index = this.gui.jGTITableMachinePDA.getSelectedRow ();
+      if ( index != -1 )
       {
-        clearHighlight ();
+        ArrayList < Transition > transitionList = new ArrayList < Transition > (
+            1 );
+        Transition transition = this.model.getPDATableModel ().getTransition (
+            index );
 
-        int index = this.gui.jGTITableMachinePDA.getSelectedRow ();
-        if ( index != -1 )
-        {
-          ArrayList < Transition > transitionList = new ArrayList < Transition > (
-              1 );
-          Transition transition = this.model.getPDATableModel ().getTransition (
-              index );
+        transitionList.add ( transition );
+        if ( transition.getStateBegin () == transition.getStateEnd () )
+          for ( Transition current : transition.getStateBegin ()
+              .getTransitionBegin () )
+            if ( ( current.getStateBegin () == transition.getStateBegin () )
+                && ( current.getStateEnd () == transition.getStateEnd () )
+                && ( current != transition ) )
+              transitionList.add ( current );
 
-          transitionList.add ( transition );
-          if ( transition.getStateBegin () == transition.getStateEnd () )
-            for ( Transition current : transition.getStateBegin ()
-                .getTransitionBegin () )
-              if ( ( current.getStateBegin () == transition.getStateBegin () )
-                  && ( current.getStateEnd () == transition.getStateEnd () )
-                  && ( current != transition ) )
-                transitionList.add ( current );
+        highlightTransitionActive ( transitionList );
 
-          highlightTransitionActive ( transitionList );
-
-          ArrayList < Symbol > symbolList = new ArrayList < Symbol > (
-              transition.size () );
-          symbolList.addAll ( transition.getSymbol () );
-          highlightSymbolActive ( symbolList );
-        }
+        ArrayList < Symbol > symbolList = new ArrayList < Symbol > ( transition
+            .size () );
+        symbolList.addAll ( transition.getSymbol () );
+        highlightSymbolActive ( symbolList );
       }
     }
   }

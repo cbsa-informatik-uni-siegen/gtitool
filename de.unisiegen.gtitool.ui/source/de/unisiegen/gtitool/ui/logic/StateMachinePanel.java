@@ -382,18 +382,6 @@ public final class StateMachinePanel extends MachinePanel
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
-   */
-  public final void addModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
-  }
-
-
-  /**
    * Add a new {@link Transition}.
    * 
    * @param event The {@link MouseEvent}.
@@ -2456,18 +2444,6 @@ public final class StateMachinePanel extends MachinePanel
     if ( this.graphModel != null )
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
-   */
-  public final void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
 
 

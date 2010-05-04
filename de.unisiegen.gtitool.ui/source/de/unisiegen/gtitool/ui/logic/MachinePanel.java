@@ -26,6 +26,7 @@ import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
@@ -304,6 +305,30 @@ public abstract class MachinePanel implements LogicClass < MachinePanelForm >,
       return true;
     }
     return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
 
 

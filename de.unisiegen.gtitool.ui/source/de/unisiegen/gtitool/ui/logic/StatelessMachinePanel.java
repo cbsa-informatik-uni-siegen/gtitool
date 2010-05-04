@@ -13,7 +13,6 @@ import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.RejectAction;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
-import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
@@ -175,6 +174,8 @@ public class StatelessMachinePanel extends MachinePanel
     super ( mainWindowForm, file, model );
     this.model = model;
     this.machine = this.model.getMachine ();
+
+    this.modified = true;
 
     initializeMachineTable ();
     initializeStatelessMachineTable ();
@@ -605,35 +606,11 @@ public class StatelessMachinePanel extends MachinePanel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#addModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
-   */
-  public void addModifyStatusChangedListener (
-      @SuppressWarnings ( "unused" ) ModifyStatusChangedListener listener )
-  {
-    // do nothing
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see de.unisiegen.gtitool.core.storage.Modifyable#isModified()
    */
   public boolean isModified ()
   {
-    return false;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.storage.Modifyable#removeModifyStatusChangedListener(de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener)
-   */
-  public void removeModifyStatusChangedListener (
-      @SuppressWarnings ( "unused" ) ModifyStatusChangedListener listener )
-  {
-    // do nothing
+    return this.modified;
   }
 
 
@@ -644,7 +621,7 @@ public class StatelessMachinePanel extends MachinePanel
    */
   public void resetModify ()
   {
-    // do nothing
+    this.modified = false;
   }
 
 
@@ -801,4 +778,11 @@ public class StatelessMachinePanel extends MachinePanel
       cancelAutoStepTimer ();
     }
   }
+
+
+  /**
+   * Tells if this machine is modified Initialilly all parsers are modified. If
+   * they are saved, the flag is set to false.
+   */
+  private boolean modified;
 }

@@ -129,6 +129,12 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
+   * history of all follow sets after each step
+   */
+  private ArrayList < ArrayList < Object > > followSetsHistory = null;
+
+
+  /**
    * Allocate a new {@link AbstractGrammar}.
    * 
    * @param nonterminalSymbolSet The {@link NonterminalSymbolSet}.
@@ -168,6 +174,8 @@ public abstract class AbstractGrammar implements Grammar
 
     // reset modify
     resetModify ();
+
+    this.followSetsHistory = new ArrayList < ArrayList < Object > > ();
   }
 
 
@@ -992,20 +1000,63 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
+   * creates a new history entry per round
+   * 
+   * @param ns The {@link NonterminalSymbol}
+   * @param p The {@link Production}
+   * @param rightSide The {@link ProductionWord}
+   * @param rightSideIndex the current rightSideIndex
+   * @param rest The {@link ProductionWord}
+   * @param cause The case which cases the last action to take place
+   */
+  private final void createFollowSetHistoryEntry ( final NonterminalSymbol ns,
+      final Production p, final ProductionWord rightSide,
+      final int rightSideIndex, final ProductionWord rest, final int cause )
+  {
+    HashMap < NonterminalSymbol, TerminalSymbolSet > tmp = new HashMap < NonterminalSymbol, TerminalSymbolSet > ();
+    ArrayList < Object > entry = new ArrayList < Object > ();
+    entry.add ( tmp );
+    entry.add ( ns );
+    entry.add ( p );
+    entry.add ( rightSide );
+    entry.add ( new Integer ( rightSideIndex ) );
+    entry.add ( rest );
+    entry.add ( new Integer ( cause ) );
+    this.followSetsHistory.add ( entry );
+  }
+
+
+  /**
+   * Returns the follow set history
+   * 
+   * @return the follow set history
+   */
+  public final ArrayList < ArrayList < Object >> getFollowHistory ()
+  {
+    return this.followSetsHistory;
+  }
+
+
+  /**
    * calculates follow sets for each NonterminalSymbol
    */
   private final void calculateAllFollowSets ()
   {
     boolean modified;
+    boolean start = false;
     do
     {
       modified = false;
       for ( NonterminalSymbol ns : this.nonterminalSymbolSet )
       {
         // case 1
-        if ( ns.isStart () )
+        if ( ns.isStart () && !start )
+        {
           this.followSets.get ( ns ).addIfNonexistent (
               DefaultTerminalSymbol.EndMarker );
+          start = true;
+          createFollowSetHistoryEntry ( ns, null, null, -1, null, 1 );
+        }
 
         // case 2 and 3
         final ProductionSet prods = getProductionContainingNonterminal ( ns );
@@ -1026,14 +1077,20 @@ public abstract class AbstractGrammar implements Grammar
 
             // case 2
             if ( rest.size () > 0 )
+            {
               modified = this.followSets.get ( ns ).addIfNonexistent (
                   first ( rest ) )
                   || modified;
+              createFollowSetHistoryEntry ( ns, p, rightSide, index, rest, 2 );
+            }
             // case 3
             if ( rest.size () == 0 || first ( rest ).epsilon () )
+            {
               modified = this.followSets.get ( ns ).addIfNonexistent (
                   this.followSets.get ( p.getNonterminalSymbol () ) )
                   || modified;
+              createFollowSetHistoryEntry ( ns, p, rightSide, index, rest, 3 );
+            }
           }
         }
       }

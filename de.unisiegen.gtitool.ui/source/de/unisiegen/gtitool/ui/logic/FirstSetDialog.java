@@ -420,63 +420,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
 
       // setup the reason
       ProductionWord prefixOfPWM = getAlpha(p.getProductionWord ());
-      if(!prefixOfPWM.epsilon () && pwm instanceof NonterminalSymbol)
-        this.reasonListModel.addElement(
-            new PrettyString(
-                new PrettyToken(
-                      Messages.getString(
-                            "FirstSetDialog.ReasonX", //$NON-NLS-1$
-                            p.getNonterminalSymbol (),
-                            pwm,
-                            p,
-                            prefixOfPWM,
-                            firstSetToAdd
-                          ), Style.NONE
-                    )
-                )
-            );
-      else if(pwm instanceof NonterminalSymbol)
-        this.reasonListModel.addElement(
-            new PrettyString(
-                new PrettyToken(
-                      Messages.getString(
-                            "FirstSetDialog.ReasonXEpsilon", //$NON-NLS-1$
-                            p.getNonterminalSymbol (),
-                            pwm,
-                            p,
-                            prefixOfPWM,
-                            firstSetToAdd
-                          ), Style.NONE
-                    )
-                )
-            );
-      else if(!prefixOfPWM.epsilon ())
-        this.reasonListModel.addElement(
-            new PrettyString(
-                new PrettyToken(
-                      Messages.getString(
-                            "FirstSetDialog.Reasona", //$NON-NLS-1$
-                            p.getNonterminalSymbol (),
-                            firstSetToAdd,
-                            p,
-                            prefixOfPWM
-                          ), Style.NONE
-                    )
-                )
-            );
-      else
-        this.reasonListModel.addElement(
-            new PrettyString(
-                new PrettyToken(
-                      Messages.getString(
-                            "FirstSetDialog.ReasonaEpsilon", //$NON-NLS-1$
-                            p.getNonterminalSymbol (),
-                            firstSetToAdd,
-                            p
-                          ), Style.NONE
-                    )
-                )
-            );
+      printReason(p.getNonterminalSymbol (), pwm, p, prefixOfPWM, firstSetToAdd);
 
       /*
        * break condition
@@ -498,6 +442,78 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
     }
     updateWordNavigation ();
     this.gui.jGTIFirstTable.repaint ();
+  }
+  
+  
+  /**
+   * prints a reason that causes an action to take place
+   *
+   * @param ns The {@link NonterminalSymbol}
+   * @param pwm The {@link ProductionWordMember}
+   * @param p The {@link Production}
+   * @param prefixOfPWM The {@link ProductionWord}
+   * @param firstSetToAdd The {@link FirstSet}
+   */
+  private void printReason(final NonterminalSymbol ns, final ProductionWordMember pwm,
+      final Production p, final ProductionWord prefixOfPWM, final FirstSet firstSetToAdd)
+  {
+    if(!prefixOfPWM.epsilon () && pwm instanceof NonterminalSymbol)
+      this.reasonListModel.addElement(
+          new PrettyString(
+              new PrettyToken(
+                    Messages.getString(
+                          "FirstSetDialog.ReasonX", //$NON-NLS-1$
+                          ns,
+                          pwm,
+                          p,
+                          prefixOfPWM,
+                          firstSetToAdd
+                        ), Style.NONE
+                  )
+              )
+          );
+    else if(pwm instanceof NonterminalSymbol)
+      this.reasonListModel.addElement(
+          new PrettyString(
+              new PrettyToken(
+                    Messages.getString(
+                          "FirstSetDialog.ReasonXEpsilon", //$NON-NLS-1$
+                          ns,
+                          pwm,
+                          p,
+                          prefixOfPWM,
+                          firstSetToAdd
+                        ), Style.NONE
+                  )
+              )
+          );
+    else if(!prefixOfPWM.epsilon ())
+      this.reasonListModel.addElement(
+          new PrettyString(
+              new PrettyToken(
+                    Messages.getString(
+                          "FirstSetDialog.Reasona", //$NON-NLS-1$
+                          ns,
+                          firstSetToAdd,
+                          p,
+                          prefixOfPWM
+                        ), Style.NONE
+                  )
+              )
+          );
+    else
+      this.reasonListModel.addElement(
+          new PrettyString(
+              new PrettyToken(
+                    Messages.getString(
+                          "FirstSetDialog.ReasonaEpsilon", //$NON-NLS-1$
+                          ns,
+                          firstSetToAdd,
+                          p
+                        ), Style.NONE
+                  )
+              )
+          );
   }
 
 

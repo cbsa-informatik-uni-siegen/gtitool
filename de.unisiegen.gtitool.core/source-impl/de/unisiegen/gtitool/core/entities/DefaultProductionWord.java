@@ -508,7 +508,9 @@ public final class DefaultProductionWord implements ProductionWord
    */
   public final boolean epsilon ()
   {
-    return this.productionWordMemberList.size () == 0;
+    return this.productionWordMemberList.size () == 0
+        || this.productionWordMemberList.get ( 0 ).equals (
+            new DefaultTerminalSymbol ( new DefaultSymbol () ) );
   }
 
 

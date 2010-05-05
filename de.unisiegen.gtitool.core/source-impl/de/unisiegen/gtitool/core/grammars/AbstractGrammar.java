@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.grammars;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TableModelEvent;
@@ -1014,6 +1015,9 @@ public abstract class AbstractGrammar implements Grammar
       final int rightSideIndex, final ProductionWord rest, final int cause )
   {
     HashMap < NonterminalSymbol, TerminalSymbolSet > tmp = new HashMap < NonterminalSymbol, TerminalSymbolSet > ();
+    for ( Entry < NonterminalSymbol, TerminalSymbolSet > e : this.followSets
+        .entrySet () )
+      tmp.put ( e.getKey (), e.getValue () );
     ArrayList < Object > entry = new ArrayList < Object > ();
     entry.add ( tmp );
     entry.add ( ns );
@@ -1040,7 +1044,7 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * calculates follow sets for each NonterminalSymbol
    */
-  private final void calculateAllFollowSets ()
+  public final void calculateAllFollowSets ()
   {
     boolean modified;
     boolean start = false;

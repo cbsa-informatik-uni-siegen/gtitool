@@ -11,6 +11,10 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
+import de.unisiegen.gtitool.core.entities.DefaultMultiProduction;
+import de.unisiegen.gtitool.core.entities.MultiProduction;
+import de.unisiegen.gtitool.core.entities.DefaultProductionWordSet;
+import de.unisiegen.gtitool.core.entities.ProductionWordSet;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
@@ -35,7 +39,8 @@ non terminal 							white_space_list;
 non terminal ProductionWordMember		member;
 non terminal ProductionWordMember[]		member_list;
 non terminal ProductionWord				production_word;
-non terminal Production					production;
+non terminal ProductionWordSet          production_word_list;
+non terminal MultiProduction            multi_production;
 
 
 /*********
@@ -43,20 +48,34 @@ non terminal Production					production;
  *********/
 
 non terminal 					epsilon;
+terminal                        VDASH;
 
 
 /**************
  * Production *
  **************/
 
-production						::= member:m white_space_list ARROW white_space_list production_word:pw
+multi_production                 ::= member:m white_space_list ARROW white_space_list production_word_list:pwl
 									{:
 									   NonterminalSymbol nonterminal = new DefaultNonterminalSymbol(m.getName());
 									   nonterminal.setParserOffset(new ParserOffset(mleft,mright));
-									   RESULT = new DefaultProduction(nonterminal, pw);
-									   RESULT.setParserOffset(new ParserOffset(mleft,pwright));
+									   RESULT = new DefaultMultiProduction(nonterminal, pwl);
+									   RESULT.setParserOffset(new ParserOffset(mleft,pwlright));
 									:}
 								;
+
+production_word_list             ::= production_word_list:pwl VDASH:v production_word:pw
+                                  {:
+                                       RESULT = new DefaultProductionWordSet();
+                                       RESULT.add(pwl);
+                                       RESULT.add(pw);
+								  :}
+								  | production_word:pw
+								  {:
+									   RESULT = new DefaultProductionWordSet();
+									   RESULT.add(pw);
+							      :}
+                                ;
 
 production_word					::= member_list:ml
 									{:

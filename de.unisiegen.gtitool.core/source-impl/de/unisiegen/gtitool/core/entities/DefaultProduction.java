@@ -607,7 +607,18 @@ public class DefaultProduction implements Production
    */
   protected String myToString ()
   {
-    return this.nonterminalSymbol.toString () + " \u2192 " //$NON-NLS-1$
+    return this.nonterminalSymbol.toString () + " " + arrowString () + " " //$NON-NLS-1$ //$NON-NLS-2$
         + this.productionWord.toString ();
+  }
+
+
+  /**
+   * Returns the -> symbol
+   * 
+   * @return the string
+   */
+  public static String arrowString ()
+  {
+    return "\u2192"; //$NON-NLS-1$
   }
 }

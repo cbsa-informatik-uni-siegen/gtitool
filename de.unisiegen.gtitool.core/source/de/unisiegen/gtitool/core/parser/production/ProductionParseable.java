@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.parser.production;
 import java.io.StringReader;
 
 import java_cup.runtime.lr_parser;
+import de.unisiegen.gtitool.core.entities.MultiProduction;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.parser.GTIParser;
 import de.unisiegen.gtitool.core.parser.Parseable;
@@ -36,9 +37,9 @@ public final class ProductionParseable implements Parseable
     return new GTIParser ()
     {
 
-      public Production parse () throws Exception
+      public MultiProduction parse () throws Exception
       {
-        return ( Production ) parser.parse ().value;
+        return ( MultiProduction ) parser.parse ().value;
       }
     };
   }

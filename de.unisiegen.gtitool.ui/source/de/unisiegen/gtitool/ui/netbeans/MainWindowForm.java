@@ -1234,6 +1234,11 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
       return this.jMenuItemCalculateFirstSets;
   }
 
+  public JMenuItem getJMenuItemCalculateFollowSets ()
+  {
+      return this.jMenuItemCalculateFollowSets;
+  }
+
 
   /**
    * This method is called from within the constructor to initialize the form.
@@ -1355,6 +1360,7 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
         jMenuItemCreateParsingTableStepwise = new javax.swing.JMenuItem();
         jMenuItemParsingTableFindEntries = new javax.swing.JMenuItem();
         jMenuItemCalculateFirstSets = new javax.swing.JMenuItem();
+        jMenuItemCalculateFollowSets = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
@@ -2231,6 +2237,15 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
         });
         jMenuExecute.add(jMenuItemCalculateFirstSets);
 
+        jMenuItemCalculateFollowSets.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CalculateFollowSetsMnemonic").charAt(0));
+        jMenuItemCalculateFollowSets.setText(bundle.getString("MainWindow.CalculateFollowSets")); // NOI18N
+        jMenuItemCalculateFollowSets.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCalculateFollowSetsActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemCalculateFollowSets);
+
         jMenuBarMain.add(jMenuExecute);
 
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
@@ -2298,6 +2313,10 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
     private void jMenuItemCalculateFirstSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCalculateFirstSetsActionPerformed
         this.logic.handleCalculateFirstSets();
     }//GEN-LAST:event_jMenuItemCalculateFirstSetsActionPerformed
+
+    private void jMenuItemCalculateFollowSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCalculateFollowSetsActionPerformed
+        this.logic.handleCalculateFollowSets();// TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemCalculateFollowSetsActionPerformed
 
 
   private void jMenuItemParsingTableFindEntriesActionPerformed (
@@ -2916,6 +2935,7 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
     private javax.swing.JMenuItem jMenuItemAutoLayout;
     private javax.swing.JMenuItem jMenuItemCFG;
     public javax.swing.JMenuItem jMenuItemCalculateFirstSets;
+    public javax.swing.JMenuItem jMenuItemCalculateFollowSets;
     private javax.swing.JMenuItem jMenuItemClose;
     private javax.swing.JMenuItem jMenuItemCloseAll;
     private javax.swing.JMenuItem jMenuItemConvertToCompleteDFA;

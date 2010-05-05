@@ -1983,12 +1983,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
   }
-
-
+  
+  
   /**
-   * handles the 'calculate follow set' button pressed
+   * 
+   * blub
+   *
    */
-  public final void handleCalculateFollowSets ()
+  public final void handleCalculateFollowSets()
   {
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () instanceof GrammarPanel )

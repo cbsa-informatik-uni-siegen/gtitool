@@ -744,14 +744,18 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       System.exit ( 0 );
     }
   }
-  
-  
+
+
+  /**
+   * 
+   * blub
+   *
+   */
   public final void handleCalculateFollowSets ()
   {
-    /*
-     * Do nothing so far
-     * TODO: implement
-     */
+    final FollowSetDialog fsd = new FollowSetDialog ( this.mainWindowForm,
+        ( CFG ) getGrammar () );
+    fsd.show ();
   }
 
 

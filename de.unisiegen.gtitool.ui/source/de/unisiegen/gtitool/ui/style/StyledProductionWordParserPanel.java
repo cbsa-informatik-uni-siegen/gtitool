@@ -5,12 +5,14 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
+import de.unisiegen.gtitool.core.entities.DefaultProductionWordSet;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
+import de.unisiegen.gtitool.core.entities.ProductionWordSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
@@ -29,7 +31,7 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  *          fehler $
  */
 public final class StyledProductionWordParserPanel extends
-    StyledParserPanel < ProductionWord >
+    StyledParserPanel < ProductionWordSet >
 {
 
   /**
@@ -71,8 +73,8 @@ public final class StyledProductionWordParserPanel extends
    * @see StyledParserPanel#checkParsedObject(Entity)
    */
   @Override
-  protected final ProductionWord checkParsedObject (
-      ProductionWord productionWord )
+  protected final ProductionWordSet checkParsedObject (
+      final ProductionWordSet productionWordSet )
   {
     if ( this.nonterminalSymbolSet == null )
     {
@@ -83,13 +85,18 @@ public final class StyledProductionWordParserPanel extends
       throw new RuntimeException ( "terminal symbol set is not set" ); //$NON-NLS-1$
     }
 
-    if ( productionWord != null )
+    if ( productionWordSet == null )
+      return null;
+
+    ProductionWordSet newProductionWordSet = null;
+
+    final ArrayList < ProductionWord > wordList = new ArrayList < ProductionWord > ();
+
+    final ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
+
+    for ( ProductionWord productionWord : productionWordSet )
     {
-      ProductionWord newProductionWord = null;
-
-      ArrayList < ProductionWordMember > memberList = new ArrayList < ProductionWordMember > ();
-
-      ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
+      final ArrayList < ProductionWordMember > memberList = new ArrayList < ProductionWordMember > ();
       for ( ProductionWordMember current : productionWord )
       {
         // Nonterminal
@@ -129,19 +136,20 @@ public final class StyledProductionWordParserPanel extends
                   current.toPrettyString () ).toHTMLString () ) );
         }
       }
-
-      if ( exceptionList.size () > 0 )
-      {
-        setException ( exceptionList );
-        return null;
-      }
-
-      newProductionWord = new DefaultProductionWord ( memberList );
-      newProductionWord.setParserOffset ( productionWord.getParserOffset () );
-
-      return newProductionWord;
+      wordList.add ( new DefaultProductionWord ( memberList ) );
     }
-    return productionWord;
+
+    if ( exceptionList.size () > 0 )
+    {
+      setException ( exceptionList );
+      return null;
+    }
+
+    newProductionWordSet = new DefaultProductionWordSet ( wordList );
+    newProductionWordSet
+        .setParserOffset ( productionWordSet.getParserOffset () );
+
+    return newProductionWordSet;
   }
 
 

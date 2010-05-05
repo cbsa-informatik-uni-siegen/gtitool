@@ -14,7 +14,11 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
+import de.unisiegen.gtitool.core.entities.ProductionWordSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
@@ -257,24 +261,13 @@ public final class ProductionDialog implements
     this.gui.jGTIList.setSelectedIndex ( 0 );
 
     this.gui.styledProductionWordParserPanel
-        .addParseableChangedListener ( new ParseableChangedListener < ProductionWord > ()
+        .addParseableChangedListener ( new ParseableChangedListener < ProductionWordSet > ()
         {
 
-          public void parseableChanged ( ProductionWord newProductionWord )
+          public void parseableChanged (
+              final ProductionWordSet newProductionWord )
           {
-            if ( newProductionWord == null )
-            {
-              setButtonStatus ( false );
-              getGui ().styledProductionParserPanel.setText ( null );
-            }
-            else
-            {
-              setButtonStatus ( true );
-              getGui ().styledProductionParserPanel
-                  .setText ( new DefaultProduction (
-                      ( NonterminalSymbol ) getGui ().jGTIList
-                          .getSelectedValue (), newProductionWord ) );
-            }
+            changeText ( newProductionWord );
           }
         } );
 
@@ -296,9 +289,20 @@ public final class ProductionDialog implements
 
     this.gui.styledProductionWordParserPanel.parse ();
 
-    ProductionWord productionWord = this.gui.styledProductionWordParserPanel
-        .getParsedObject ();
-    if ( productionWord == null )
+    changeText ( this.gui.styledProductionWordParserPanel.getParsedObject () );
+
+    this.gui.jGTIList.setCellRenderer ( new PrettyStringListCellRenderer () );
+  }
+
+
+  /**
+   * Changes the text of the control
+   * 
+   * @param productionWordSet
+   */
+  void changeText ( final ProductionWordSet productionWordSet )
+  {
+    if ( productionWordSet == null )
     {
       setButtonStatus ( false );
       getGui ().styledProductionParserPanel.setText ( null );
@@ -307,12 +311,20 @@ public final class ProductionDialog implements
     else
     {
       setButtonStatus ( true );
-      getGui ().styledProductionParserPanel.setText ( new DefaultProduction (
-          ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
-          productionWord ) );
-    }
 
-    this.gui.jGTIList.setCellRenderer ( new PrettyStringListCellRenderer () );
+      PrettyString string = new PrettyString ();
+
+      for ( ProductionWord productionWord : productionWordSet )
+      {
+        string.add ( new DefaultProduction (
+            ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
+            productionWord ) );
+
+        string.add ( new PrettyString ( new PrettyToken ( " ", Style.NONE ) ) ); //$NON-NLS-1$
+      }
+
+      getGui ().styledProductionParserPanel.setText ( string );
+    }
   }
 
 
@@ -355,21 +367,7 @@ public final class ProductionDialog implements
 
     this.gui.styledProductionWordParserPanel.parse ();
 
-    ProductionWord productionWord = this.gui.styledProductionWordParserPanel
-        .getParsedObject ();
-    if ( productionWord == null )
-    {
-      setButtonStatus ( false );
-      getGui ().styledProductionParserPanel.setText ( null );
-    }
-
-    else
-    {
-      setButtonStatus ( true );
-      getGui ().styledProductionParserPanel.setText ( new DefaultProduction (
-          ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
-          productionWord ) );
-    }
+    changeText ( this.gui.styledProductionWordParserPanel.getParsedObject () );
   }
 
 
@@ -378,9 +376,27 @@ public final class ProductionDialog implements
    */
   public final void handleOk ()
   {
-    Production production = new DefaultProduction (
-        ( NonterminalSymbol ) this.gui.jGTIList.getSelectedValue (),
-        this.gui.styledProductionWordParserPanel.getParsedObject () );
+    final NonterminalSymbol nonterminal = ( NonterminalSymbol ) this.gui.jGTIList
+        .getSelectedValue ();
+
+    final ProductionWordSet productionWords = this.gui.styledProductionWordParserPanel
+        .getParsedObject ();
+
+    for ( ProductionWord productionWord : productionWords )
+      handleOkForOne ( nonterminal, productionWord );
+  }
+
+
+  /**
+   * Handles one production
+   * 
+   * @param nonterminal
+   * @param productionWord
+   */
+  private final void handleOkForOne ( final NonterminalSymbol nonterminal,
+      final ProductionWord productionWord )
+  {
+    Production production = new DefaultProduction ( nonterminal, productionWord );
 
     if ( this.oldProduction != null )
     {

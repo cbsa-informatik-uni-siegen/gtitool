@@ -9,7 +9,7 @@ import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.ProductionWord;
+import de.unisiegen.gtitool.core.entities.ProductionWordSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
@@ -51,14 +51,14 @@ public class StyledProductionWordParserPanelTest
       styledProductionWordParserPanel.setTerminalSymbolSet ( terminalSymbolSet );
 
       styledProductionWordParserPanel
-          .addParseableChangedListener ( new ParseableChangedListener < ProductionWord > ()
+          .addParseableChangedListener ( new ParseableChangedListener < ProductionWordSet > ()
           {
 
-            public void parseableChanged ( ProductionWord newProductionWord )
+            public void parseableChanged ( ProductionWordSet newProductionWords )
             {
-              if ( newProductionWord != null )
+              if ( newProductionWords != null )
               {
-                System.out.println ( newProductionWord.toString () );
+                System.out.println ( newProductionWords.toString () );
               }
             }
           } );

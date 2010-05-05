@@ -380,23 +380,15 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
       this.nextProduction = true;
 
       // setup the reason
-      this.reasonListModel.addElement(
-          new PrettyString(
-              new PrettyToken(
-                    Messages.getString(
-                          "FirstSetDialog.ReasonEpsilon", //$NON-NLS-1$
-                          p.getNonterminalSymbol (),
-                          p
-                        ), Style.NONE
-                  )
-              )
-          );
+      this.reasonListModel.addElement ( new PrettyString ( new PrettyToken (
+          Messages.getString ( "FirstSetDialog.ReasonEpsilon", //$NON-NLS-1$
+              p.getNonterminalSymbol (), p ), Style.NONE ) ) );
     }
     else
     {
       ProductionWordMember pwm = p.getProductionWord ().get (
           this.currentProductionWordMemberIndex );
-      firstSetToAdd = new DefaultFirstSet(this.firstSets.get ( pwm ));
+      firstSetToAdd = new DefaultFirstSet ( this.firstSets.get ( pwm ) );
       // color all new added symbols red
       firstSet.unmarkAll ();
       for ( TerminalSymbol ts : firstSetToAdd )
@@ -415,7 +407,7 @@ public class FirstSetDialog implements LogicClass < FirstSetDialogForm >
         for ( TerminalSymbol ts : firstSetToAdd )
           if ( ts.equals ( new DefaultTerminalSymbol ( new DefaultSymbol () ) ) )
             firstSetToAdd.remove ( ts );
-      
+
       this.modified = firstSet.add ( firstSetToAdd ) || this.modified;
 
       // setup the reason

@@ -3,11 +3,13 @@ package de.unisiegen.gtitool.ui.style;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.DefaultMultiProduction;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
-import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
+import de.unisiegen.gtitool.core.entities.DefaultProductionWordSet;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Entity;
+import de.unisiegen.gtitool.core.entities.MultiProduction;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
@@ -31,7 +33,7 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  *          fehler $
  */
 public final class StyledProductionParserPanel extends
-    StyledParserPanel < Production >
+    StyledParserPanel < MultiProduction >
 {
 
   /**
@@ -73,7 +75,8 @@ public final class StyledProductionParserPanel extends
    * @see StyledParserPanel#checkParsedObject(Entity)
    */
   @Override
-  protected final Production checkParsedObject ( Production production )
+  protected final MultiProduction checkParsedObject (
+      final MultiProduction multiProduction )
   {
     if ( this.nonterminalSymbolSet == null )
     {
@@ -84,30 +87,38 @@ public final class StyledProductionParserPanel extends
       throw new RuntimeException ( "terminal symbol set is not set" ); //$NON-NLS-1$
     }
 
-    if ( production != null )
+    if ( multiProduction == null )
+      return multiProduction;
+
+    ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
+
+    /*
+     * NonterminalSymbol
+     */
+    if ( !this.nonterminalSymbolSet.contains ( multiProduction
+        .getNonterminalSymbol () ) )
     {
-      ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
+      exceptionList
+          .add ( new ParserException ( multiProduction.getNonterminalSymbol ()
+              .getParserOffset ().getStart (), multiProduction
+              .getNonterminalSymbol ().getParserOffset ().getEnd (), Messages
+              .getPrettyString (
+                  "Production.NonterminalSymbol", multiProduction //$NON-NLS-1$
+                      .getNonterminalSymbol ().toPrettyString () )
+              .toHTMLString () ) );
+    }
 
-      /*
-       * NonterminalSymbol
-       */
-      if ( !this.nonterminalSymbolSet.contains ( production
-          .getNonterminalSymbol () ) )
-      {
-        exceptionList.add ( new ParserException ( production
-            .getNonterminalSymbol ().getParserOffset ().getStart (), production
-            .getNonterminalSymbol ().getParserOffset ().getEnd (), Messages
-            .getPrettyString ( "Production.NonterminalSymbol", production //$NON-NLS-1$
-                .getNonterminalSymbol ().toPrettyString () ).toHTMLString () ) );
-      }
+    /*
+     * ProductionWord
+     */
+    MultiProduction newMultiProduction = null;
 
-      /*
-       * ProductionWord
-       */
-      ProductionWord newProductionWord = null;
-      ArrayList < ProductionWordMember > memberList = new ArrayList < ProductionWordMember > ();
+    final ArrayList < ProductionWord > wordList = new ArrayList < ProductionWord > ();
 
-      for ( ProductionWordMember current : production.getProductionWord () )
+    for ( ProductionWord productionWord : multiProduction.getProductionWords () )
+    {
+      final ArrayList < ProductionWordMember > memberList = new ArrayList < ProductionWordMember > ();
+      for ( ProductionWordMember current : productionWord )
       {
         // Nonterminal
         boolean foundNonterminal = false;
@@ -146,21 +157,21 @@ public final class StyledProductionParserPanel extends
                   current.toPrettyString () ).toHTMLString () ) );
         }
       }
-
-      newProductionWord = new DefaultProductionWord ( memberList );
-      newProductionWord.setParserOffset ( production.getProductionWord ()
-          .getParserOffset () );
-
-      if ( exceptionList.size () > 0 )
-      {
-        setException ( exceptionList );
-        return null;
-      }
-      Production newProduction = new DefaultProduction ( production
-          .getNonterminalSymbol (), newProductionWord );
-      return newProduction;
+      wordList.add ( new DefaultProductionWord ( memberList ) );
     }
-    return production;
+
+    newMultiProduction = new DefaultMultiProduction ( multiProduction
+        .getNonterminalSymbol (), new DefaultProductionWordSet ( wordList ) );
+
+    newMultiProduction.setParserOffset ( multiProduction.getParserOffset () );
+
+    if ( exceptionList.size () > 0 )
+    {
+      setException ( exceptionList );
+      return null;
+    }
+
+    return newMultiProduction;
   }
 
 

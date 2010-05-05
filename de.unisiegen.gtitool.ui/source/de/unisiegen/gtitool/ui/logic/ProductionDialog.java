@@ -9,6 +9,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.JFrame;
 import javax.swing.ListModel;
 
+import de.unisiegen.gtitool.core.entities.DefaultMultiProduction;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
@@ -16,9 +17,6 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.parser.style.PrettyString;
-import de.unisiegen.gtitool.core.parser.style.PrettyToken;
-import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
@@ -312,18 +310,10 @@ public final class ProductionDialog implements
     {
       setButtonStatus ( true );
 
-      PrettyString string = new PrettyString ();
-
-      for ( ProductionWord productionWord : productionWordSet )
-      {
-        string.add ( new DefaultProduction (
-            ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
-            productionWord ) );
-
-        string.add ( new PrettyString ( new PrettyToken ( " ", Style.NONE ) ) ); //$NON-NLS-1$
-      }
-
-      getGui ().styledProductionParserPanel.setText ( string );
+      getGui ().styledProductionParserPanel
+          .setText ( new DefaultMultiProduction (
+              ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
+              productionWordSet ).toPrettyString () );
     }
   }
 

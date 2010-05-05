@@ -8,8 +8,8 @@ import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.MultiProduction;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
@@ -51,10 +51,10 @@ public class StyledProductionParserPanelTest
       styledProductionParserPanel.setTerminalSymbolSet ( terminalSymbolSet );
 
       styledProductionParserPanel
-          .addParseableChangedListener ( new ParseableChangedListener < Production > ()
+          .addParseableChangedListener ( new ParseableChangedListener < MultiProduction > ()
           {
 
-            public void parseableChanged ( Production newProduction )
+            public void parseableChanged ( MultiProduction newProduction )
             {
               if ( newProduction != null )
               {

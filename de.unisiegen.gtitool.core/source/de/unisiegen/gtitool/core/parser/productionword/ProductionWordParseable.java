@@ -5,6 +5,7 @@ import java.io.StringReader;
 
 import java_cup.runtime.lr_parser;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
+import de.unisiegen.gtitool.core.entities.ProductionWordSet;
 import de.unisiegen.gtitool.core.parser.GTIParser;
 import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
@@ -36,9 +37,9 @@ public final class ProductionWordParseable implements Parseable
     return new GTIParser ()
     {
 
-      public ProductionWord parse () throws Exception
+      public ProductionWordSet parse () throws Exception
       {
-        return ( ProductionWord ) parser.parse ().value;
+        return ( ProductionWordSet ) parser.parse ().value;
       }
     };
   }

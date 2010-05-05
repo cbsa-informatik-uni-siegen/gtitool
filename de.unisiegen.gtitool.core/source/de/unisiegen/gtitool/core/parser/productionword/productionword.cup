@@ -7,6 +7,8 @@
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
+import de.unisiegen.gtitool.core.entities.ProductionWordSet;
+import de.unisiegen.gtitool.core.entities.DefaultProductionWordSet;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
@@ -19,6 +21,7 @@ import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
  
 terminal String					MEMBER;
 terminal						EPSILON;
+terminal                        VDASH;
 
 
 /****************
@@ -28,6 +31,7 @@ terminal						EPSILON;
 non terminal ProductionWordMember		member;
 non terminal ProductionWordMember[]		member_list;
 non terminal ProductionWord				production_word;
+non terminal ProductionWordSet          production_word_list;
 
 
 /*********
@@ -40,6 +44,19 @@ non terminal 					epsilon;
 /******************
  * ProductionWord *
  ******************/
+
+production_word_list             ::= production_word_list:pwl VDASH:v production_word:pw
+                                  {:
+                                       RESULT = new DefaultProductionWordSet();
+                                       RESULT.add(pwl);
+                                       RESULT.add(pw);
+								  :}
+								  | production_word:pw
+								  {:
+									   RESULT = new DefaultProductionWordSet();
+									   RESULT.add(pw);
+							      :}
+                                ;
 
 production_word					::= member_list:ml
 									{:

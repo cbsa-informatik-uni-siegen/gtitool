@@ -48,6 +48,18 @@ public class FollowSetStepByStepTableModel extends AbstractTableModel
     this.followSets = followSets;
     this.cfg = cfg;
   }
+  
+  
+  /**
+   * 
+   * resets the follow sets
+   *
+   * @param followSets The follow sets
+   */
+  public void setFollowSet(final HashMap<NonterminalSymbol,TerminalSymbolSet> followSets)
+  {
+    this.followSets = followSets;
+  }
 
 
   /**

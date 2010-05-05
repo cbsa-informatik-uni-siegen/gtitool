@@ -90,6 +90,12 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
 
 
   /**
+   * follow set table model
+   */
+  private FollowSetStepByStepTableModel followSetsTableModel;
+
+
+  /**
    * Allocates a new {@link FollowSetDialog}
    * 
    * @param parent The {@link JFrame}
@@ -115,8 +121,9 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
 
     // setup the table
-    this.gui.jGTIFollowTable.setModel ( new FollowSetStepByStepTableModel (
-        this.followSets, this.cfg ) );
+    this.followSetsTableModel = new FollowSetStepByStepTableModel (
+        this.followSets, this.cfg );
+    this.gui.jGTIFollowTable.setModel ( this.followSetsTableModel );
     this.gui.jGTIFollowTable
         .setColumnModel ( new FollowSetStepByStepTableColumnModel () );
     this.gui.jGTIFollowTable.getTableHeader ().setReorderingAllowed ( false );
@@ -124,6 +131,8 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
     // reason list
     this.reasonModel = new DefaultListModel ();
     this.gui.jGTIReasonList.setModel ( this.reasonModel );
+
+    System.err.println ( "Steps: " + this.followHistory.size () );
   }
 
 
@@ -168,10 +177,6 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
     enableButton ( Action.STOP, true );
 
     this.historyIndex = 0;
-    ArrayList < Object > previousEntry = this.followHistory
-        .get ( this.historyIndex );
-    this.followSets = ( HashMap < NonterminalSymbol, TerminalSymbolSet > ) previousEntry
-        .get ( 0 );
   }
 
 
@@ -194,7 +199,9 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
     final ProductionWord rest = ( ProductionWord ) followData.get ( 5 );
     final int cause = ( ( Integer ) followData.get ( 6 ) ).intValue ();
 
+    this.followSetsTableModel.setFollowSet ( this.followSets );
     updateWordNavigation ();
+    this.gui.jGTIFollowTable.repaint ();
   }
 
 
@@ -208,12 +215,16 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
     {
       --this.historyIndex;
 
-      this.reasonModel.remove ( this.reasonModel.size () - 1 );
+      //TODO: works if the rest of this.reasonModel is implemented
+      //this.reasonModel.remove ( this.reasonModel.size () - 1 );
 
       ArrayList < Object > previousEntry = this.followHistory
           .get ( this.historyIndex );
       this.followSets = ( HashMap < NonterminalSymbol, TerminalSymbolSet > ) previousEntry
           .get ( 0 );
+      this.followSetsTableModel.setFollowSet ( this.followSets );
+      
+      this.gui.jGTIFollowTable.repaint ();
     }
     updateWordNavigation ();
   }

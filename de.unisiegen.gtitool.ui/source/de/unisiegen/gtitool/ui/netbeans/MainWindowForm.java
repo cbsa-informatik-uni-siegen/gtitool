@@ -2315,7 +2315,7 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
     }//GEN-LAST:event_jMenuItemCalculateFirstSetsActionPerformed
 
     private void jMenuItemCalculateFollowSetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCalculateFollowSetsActionPerformed
-        this.logic.handleCalculateFollowSets();// TODO add your handling code here:
+        this.logic.handleCalculateFollowSets();
     }//GEN-LAST:event_jMenuItemCalculateFollowSetsActionPerformed
 
 

@@ -11,15 +11,19 @@
 
 package de.unisiegen.gtitool.ui.netbeans;
 
+import de.unisiegen.gtitool.ui.logic.FollowSetDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
+
 /**
  *
  * @author christian
  */
-public class FollowSetDialogForm extends javax.swing.JDialog {
+public class FollowSetDialogForm extends javax.swing.JDialog implements GUIClass<FollowSetDialog> {
 
     /** Creates new form FollowSetDialogForm */
-    public FollowSetDialogForm(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public FollowSetDialogForm(java.awt.Frame parent, FollowSetDialog logic) {
+        super(parent, true);
+        this.logic = logic;
         initComponents();
     }
 
@@ -33,77 +37,77 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jGTIPanel4 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIToolBar = new de.unisiegen.gtitool.ui.swing.JGTIToolBar();
-        jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonPreviousStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIPanel2 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jGTIFollowTable = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        jGTIPanel3 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jGTIReasonList = new de.unisiegen.gtitool.ui.swing.JGTIList();
-        jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        this.jGTIPanel4 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        this.jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        this.jGTIToolBar = new de.unisiegen.gtitool.ui.swing.JGTIToolBar();
+        this.jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIToolBarButtonPreviousStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        this.jGTIPanel2 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        this.jScrollPane1 = new javax.swing.JScrollPane();
+        this.jGTIFollowTable = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        this.jGTIPanel3 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        this.jScrollPane2 = new javax.swing.JScrollPane();
+        this.jGTIReasonList = new de.unisiegen.gtitool.ui.swing.JGTIList();
+        this.jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jGTIToolBar.setRollover(true);
+        this.jGTIToolBar.setRollover(true);
 
-        jGTIToolBarButtonStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/start.png"))); // NOI18N
+        this.jGTIToolBarButtonStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/start.png"))); // NOI18N
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        jGTIToolBarButtonStart.setToolTipText(bundle.getString("MachinePanel.WordModeStart")); // NOI18N
-        jGTIToolBarButtonStart.setFocusable(false);
-        jGTIToolBarButtonStart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jGTIToolBarButtonStart.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jGTIToolBarButtonStart.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonStart.setToolTipText(bundle.getString("MachinePanel.WordModeStart")); // NOI18N
+        this.jGTIToolBarButtonStart.setFocusable(false);
+        this.jGTIToolBarButtonStart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        this.jGTIToolBarButtonStart.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        this.jGTIToolBarButtonStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonStartActionPerformed(evt);
             }
         });
-        jGTIToolBar.add(jGTIToolBarButtonStart);
+        this.jGTIToolBar.add(this.jGTIToolBarButtonStart);
 
-        jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"))); // NOI18N
-        jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("MachinePanel.WordModePreviousStep")); // NOI18N
-        jGTIToolBarButtonPreviousStep.setEnabled(false);
-        jGTIToolBarButtonPreviousStep.setFocusable(false);
-        jGTIToolBarButtonPreviousStep.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jGTIToolBarButtonPreviousStep.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jGTIToolBarButtonPreviousStep.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/backward.png"))); // NOI18N
+        this.jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("MachinePanel.WordModePreviousStep")); // NOI18N
+        this.jGTIToolBarButtonPreviousStep.setEnabled(false);
+        this.jGTIToolBarButtonPreviousStep.setFocusable(false);
+        this.jGTIToolBarButtonPreviousStep.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        this.jGTIToolBarButtonPreviousStep.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        this.jGTIToolBarButtonPreviousStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonPreviousStepActionPerformed(evt);
             }
         });
-        jGTIToolBar.add(jGTIToolBarButtonPreviousStep);
+        this.jGTIToolBar.add(this.jGTIToolBarButtonPreviousStep);
 
-        jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/forward.png"))); // NOI18N
-        jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("MachinePanel.WordModeNextStep")); // NOI18N
-        jGTIToolBarButtonNextStep.setEnabled(false);
-        jGTIToolBarButtonNextStep.setFocusable(false);
-        jGTIToolBarButtonNextStep.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jGTIToolBarButtonNextStep.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jGTIToolBarButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/forward.png"))); // NOI18N
+        this.jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("MachinePanel.WordModeNextStep")); // NOI18N
+        this.jGTIToolBarButtonNextStep.setEnabled(false);
+        this.jGTIToolBarButtonNextStep.setFocusable(false);
+        this.jGTIToolBarButtonNextStep.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        this.jGTIToolBarButtonNextStep.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        this.jGTIToolBarButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonNextStepActionPerformed(evt);
             }
         });
-        jGTIToolBar.add(jGTIToolBarButtonNextStep);
+        this.jGTIToolBar.add(this.jGTIToolBarButtonNextStep);
 
-        jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/stop.png"))); // NOI18N
-        jGTIToolBarButtonStop.setToolTipText(bundle.getString("MachinePanel.WordModeStop")); // NOI18N
-        jGTIToolBarButtonStop.setEnabled(false);
-        jGTIToolBarButtonStop.setFocusable(false);
-        jGTIToolBarButtonStop.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jGTIToolBarButtonStop.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jGTIToolBarButtonStop.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/stop.png"))); // NOI18N
+        this.jGTIToolBarButtonStop.setToolTipText(bundle.getString("MachinePanel.WordModeStop")); // NOI18N
+        this.jGTIToolBarButtonStop.setEnabled(false);
+        this.jGTIToolBarButtonStop.setFocusable(false);
+        this.jGTIToolBarButtonStop.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        this.jGTIToolBarButtonStop.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        this.jGTIToolBarButtonStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonStopActionPerformed(evt);
             }
         });
-        jGTIToolBar.add(jGTIToolBarButtonStop);
+        this.jGTIToolBar.add(this.jGTIToolBarButtonStop);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -112,9 +116,9 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jGTIPanel1.add(jGTIToolBar, gridBagConstraints);
+        this.jGTIPanel1.add(this.jGTIToolBar, gridBagConstraints);
 
-        jGTIFollowTable.setModel(new javax.swing.table.DefaultTableModel(
+        this.jGTIFollowTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -125,7 +129,7 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
 
             }
         ));
-        jScrollPane1.setViewportView(jGTIFollowTable);
+        this.jScrollPane1.setViewportView(this.jGTIFollowTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -133,7 +137,7 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jGTIPanel2.add(jScrollPane1, gridBagConstraints);
+        this.jGTIPanel2.add(this.jScrollPane1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -142,7 +146,7 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jGTIPanel1.add(jGTIPanel2, gridBagConstraints);
+        this.jGTIPanel1.add(this.jGTIPanel2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -150,9 +154,9 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.3;
         gridBagConstraints.weighty = 1.0;
-        jGTIPanel4.add(jGTIPanel1, gridBagConstraints);
+        this.jGTIPanel4.add(this.jGTIPanel1, gridBagConstraints);
 
-        jScrollPane2.setViewportView(jGTIReasonList);
+        this.jScrollPane2.setViewportView(this.jGTIReasonList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -161,7 +165,7 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        jGTIPanel3.add(jScrollPane2, gridBagConstraints);
+        this.jGTIPanel3.add(this.jScrollPane2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -169,10 +173,10 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.7;
         gridBagConstraints.weighty = 1.0;
-        jGTIPanel4.add(jGTIPanel3, gridBagConstraints);
+        this.jGTIPanel4.add(this.jGTIPanel3, gridBagConstraints);
 
-        jGTIButtonOk.setText("Ok");
-        jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
+        this.jGTIButtonOk.setText("Ok");
+        this.jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonOkActionPerformed(evt);
             }
@@ -181,7 +185,7 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jGTIPanel4.add(jGTIButtonOk, gridBagConstraints);
+        this.jGTIPanel4.add(this.jGTIButtonOk, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -191,7 +195,7 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 15, 5, 15);
-        getContentPane().add(jGTIPanel4, gridBagConstraints);
+        getContentPane().add(this.jGTIPanel4, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -216,23 +220,6 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
         this.logic.handleOk();
 }//GEN-LAST:event_jGTIButtonOkActionPerformed
 
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                FollowSetDialogForm dialog = new FollowSetDialogForm(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIFollowTable;
@@ -250,4 +237,15 @@ public class FollowSetDialogForm extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 
+    private FollowSetDialog logic;
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass#getLogic()
+     */
+    public FollowSetDialog getLogic ()
+    {
+      return this.logic;
+    }
 }

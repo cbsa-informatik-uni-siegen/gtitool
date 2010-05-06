@@ -4436,11 +4436,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // stop the auto step
     removeButtonState ( ButtonState.SELECTED_AUTO_STEP );
     for ( EditorPanel current : this.jGTIMainSplitPane )
-      if ( current instanceof StateMachinePanel )
-      {
-        StateMachinePanel machinePanel = ( StateMachinePanel ) current;
-        machinePanel.cancelAutoStepTimer ();
-      }
+      if ( current instanceof MachinePanel )
+        ( ( MachinePanel ) current ).cancelAutoStepTimer ();
 
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();

@@ -1017,7 +1017,8 @@ public abstract class AbstractGrammar implements Grammar
     HashMap < NonterminalSymbol, TerminalSymbolSet > tmp = new HashMap < NonterminalSymbol, TerminalSymbolSet > ();
     for ( Entry < NonterminalSymbol, TerminalSymbolSet > e : this.followSets
         .entrySet () )
-      tmp.put ( e.getKey (), new DefaultTerminalSymbolSet ( e.getValue () ) );
+      tmp.put ( new DefaultNonterminalSymbol ( ( DefaultNonterminalSymbol ) e
+          .getKey () ), new DefaultTerminalSymbolSet ( e.getValue () ) );
     ArrayList < Object > entry = new ArrayList < Object > ();
     entry.add ( tmp );
     entry.add ( ns );
@@ -1094,12 +1095,15 @@ public abstract class AbstractGrammar implements Grammar
             }
             // else
             // case 3
-            if ( rest.size () == 0 || first ( rest ).epsilon () )
+            boolean isEmpty = rest.size () == 0;
+            boolean betaIsEpsilon = first ( rest ).epsilon ();
+            if ( isEmpty || betaIsEpsilon )
             {
               modified = this.followSets.get ( ns ).addIfNonexistent (
                   this.followSets.get ( p.getNonterminalSymbol () ) )
                   || modified;
-              createFollowSetHistoryEntry ( ns, p, rightSide, index, rest, 3 );
+              createFollowSetHistoryEntry ( ns, p, rightSide, index, rest, 
+                  isEmpty ? 3 : 4);
             }
           }
         }

@@ -119,6 +119,15 @@ public interface FirstSet extends Entity < TerminalSymbolSet >, Storable,
 
 
   /**
+   * Removes the TerminalSymbol only if it is in the set
+   * 
+   * @param terminalSymbol
+   * @return true if the TerminalSymbol was removed
+   */
+  public boolean removeIfExistent ( TerminalSymbol terminalSymbol );
+
+
+  /**
    * Removes the given {@link TerminalSymbolSetChangedListener}.
    * 
    * @param listener The {@link TerminalSymbolSetChangedListener}.

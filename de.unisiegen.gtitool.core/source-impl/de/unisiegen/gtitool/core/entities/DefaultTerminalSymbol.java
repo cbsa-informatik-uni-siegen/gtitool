@@ -40,6 +40,13 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
 
   /**
+   * The special epsilon terminal symbol
+   */
+  public static final DefaultTerminalSymbol Epsilon = new DefaultTerminalSymbol (
+      new DefaultSymbol () );
+
+
+  /**
    * The name of this state.
    */
   private String name;

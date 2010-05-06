@@ -135,6 +135,12 @@ public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
   public TerminalSymbol get ( int index );
 
 
+  /**
+   * Returns a TerminalSymbol by name
+   * 
+   * @param name
+   * @return the symbol or null
+   */
   public TerminalSymbol get ( String name );
 
 
@@ -154,6 +160,16 @@ public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
    * @param terminalSymbol The {@link TerminalSymbol} to remove.
    */
   public void remove ( TerminalSymbol terminalSymbol );
+
+
+  /**
+   * Removes the given {@link TerminalSymbol} from this
+   * {@link TerminalSymbolSet} only if it is already in it.
+   * 
+   * @param terminalSymbol The {@link TerminalSymbol} to remove.
+   * @return true if the terminalSymbol was removed
+   */
+  public boolean removeIfExistent ( TerminalSymbol terminalSymbol );
 
 
   /**

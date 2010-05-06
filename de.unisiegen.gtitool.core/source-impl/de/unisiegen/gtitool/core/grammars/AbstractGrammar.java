@@ -1082,13 +1082,17 @@ public abstract class AbstractGrammar implements Grammar
                 rightSide );
 
             // case 2
-            if ( rest.size () > 0 )
+            if ( rest.size () > 0 && !rest.epsilon () )
             {
+              final FirstSet firstRest = first ( rest );
+              firstRest.removeIfExistent ( DefaultTerminalSymbol.Epsilon );
+
               modified = this.followSets.get ( ns ).addIfNonexistent (
-                  first ( rest ) )
+                  firstRest )
                   || modified;
               createFollowSetHistoryEntry ( ns, p, rightSide, index, rest, 2 );
             }
+            // else
             // case 3
             if ( rest.size () == 0 || first ( rest ).epsilon () )
             {

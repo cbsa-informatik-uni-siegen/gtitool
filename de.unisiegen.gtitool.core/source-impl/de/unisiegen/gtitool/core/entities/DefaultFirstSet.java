@@ -29,7 +29,7 @@ public class DefaultFirstSet implements FirstSet
   /**
    * set of terminal symbols
    */
-  private final DefaultTerminalSymbolSet terminalSymbolSet;
+  private final TerminalSymbolSet terminalSymbolSet;
 
 
   /**
@@ -241,6 +241,18 @@ public class DefaultFirstSet implements FirstSet
   {
     this.terminalSymbolSet.remove ( terminalSymbol );
     this.cachedPrettyString = null;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.FirstSet#removeIfExistent(de.unisiegen.gtitool.core.entities.TerminalSymbol)
+   */
+  public boolean removeIfExistent ( final TerminalSymbol terminalSymbol )
+  {
+    this.cachedPrettyString = null;
+    return this.terminalSymbolSet.removeIfExistent ( terminalSymbol );
   }
 
 

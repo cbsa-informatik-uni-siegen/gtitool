@@ -128,6 +128,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
       this.initialTerminalSymbolSet.add ( new DefaultTerminalSymbol ( ts ) );
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
     {
+
       public void prettyStringChanged ()
       {
         firePrettyStringChanged ();
@@ -647,11 +648,23 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
    */
   public final void remove ( TerminalSymbol terminalSymbol )
   {
+    if ( removeIfExistent ( terminalSymbol ) == false )
+      throw new IllegalArgumentException (
+          "terminal symbol is not in this terminal symbol set" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.TerminalSymbolSet#removeIfExistent(de.unisiegen.gtitool.core.entities.TerminalSymbol)
+   */
+  public final boolean removeIfExistent ( final TerminalSymbol terminalSymbol )
+  {
     if ( terminalSymbol == null )
       throw new NullPointerException ( "terminal symbol is null" ); //$NON-NLS-1$
     if ( !this.terminalSymbolSet.contains ( terminalSymbol ) )
-      throw new IllegalArgumentException (
-          "terminal symbol is not in this terminal symbol set" ); //$NON-NLS-1$
+      return false;
 
     terminalSymbol
         .removePrettyStringChangedListener ( this.prettyStringChangedListener );
@@ -661,6 +674,8 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     fireTerminalSymbolSetChanged ();
     fireModifyStatusChanged ();
     firePrettyStringChanged ();
+
+    return true;
   }
 
 

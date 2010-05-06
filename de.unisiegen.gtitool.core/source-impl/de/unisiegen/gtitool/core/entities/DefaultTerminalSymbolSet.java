@@ -112,6 +112,13 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
+   * shall we display all elements comma seperated or should we use character
+   * class style
+   */
+  private boolean displayAll = false;
+
+
+  /**
    * copy-CTor
    * 
    * @param o The other {@link TerminalSymbolSet}
@@ -126,6 +133,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     this.initialTerminalSymbolSet = new TreeSet < TerminalSymbol > ();
     for ( TerminalSymbol ts : other.initialTerminalSymbolSet )
       this.initialTerminalSymbolSet.add ( new DefaultTerminalSymbol ( ts ) );
+    this.displayAll = other.displayAll;
     this.prettyStringChangedListener = new PrettyStringChangedListener ()
     {
 
@@ -765,6 +773,76 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
+   * display the {@link PrettyString} in character class style
+   */
+  private void displayCharacterClassStyle ()
+  {
+    this.cachedPrettyString = new PrettyString ();
+    this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+    boolean first = true;
+    ArrayList < TerminalSymbol > t = new ArrayList < TerminalSymbol > ();
+    t.addAll ( this.terminalSymbolSet );
+    while ( !t.isEmpty () )
+    {
+      ArrayList < TerminalSymbol > a = checkForClass ( t );
+
+      if ( !first )
+        this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+      first = false;
+
+      if ( a.size () == 1 )
+        this.cachedPrettyString.add ( a.get ( 0 ) );
+      else if ( a.size () == 2 )
+      {
+
+        this.cachedPrettyString.add ( a.get ( 0 ) );
+        this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        this.cachedPrettyString.add ( a.get ( 1 ) );
+      }
+      else
+      {
+        this.cachedPrettyString.add ( a.get ( 0 ) );
+        this.cachedPrettyString.add ( new PrettyToken ( "..", Style.NONE ) ); //$NON-NLS-1$
+        this.cachedPrettyString.add ( a.get ( a.size () - 1 ) );
+      }
+      t.removeAll ( a );
+    }
+    this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * display all elements in the {@link PrettyString} comma seperated
+   */
+  public void displayAllStyle ()
+  {
+    this.cachedPrettyString = new PrettyString ();
+    this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+    boolean deleteLast = false;
+    for ( TerminalSymbol ts : this.terminalSymbolSet )
+    {
+      this.cachedPrettyString.add ( ts );
+      this.cachedPrettyString.add ( new PrettyToken ( ",", Style.NONE ) ); //$NON-NLS-1$
+      deleteLast = true;
+    }
+    if ( deleteLast )
+      this.cachedPrettyString.removeLastPrettyToken ();
+    else
+      this.cachedPrettyString.add ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
+    this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public void setDisplayAll ( final boolean displayAll )
+  {
+    this.displayAll = displayAll;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see PrettyPrintable#toPrettyString()
@@ -774,37 +852,11 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     if ( ( this.cachedPrettyString == null )
         || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
     {
-      this.cachedPrettyString = new PrettyString ();
-      this.cachedPrettyString.add ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-      boolean first = true;
-      ArrayList < TerminalSymbol > t = new ArrayList < TerminalSymbol > ();
-      t.addAll ( this.terminalSymbolSet );
-      while ( !t.isEmpty () )
-      {
-        ArrayList < TerminalSymbol > a = checkForClass ( t );
+      if ( !this.displayAll )
+        displayCharacterClassStyle ();
+      else
+        displayAllStyle ();
 
-        if ( !first )
-          this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-        first = false;
-
-        if ( a.size () == 1 )
-          this.cachedPrettyString.add ( a.get ( 0 ) );
-        else if ( a.size () == 2 )
-        {
-
-          this.cachedPrettyString.add ( a.get ( 0 ) );
-          this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-          this.cachedPrettyString.add ( a.get ( 1 ) );
-        }
-        else
-        {
-          this.cachedPrettyString.add ( a.get ( 0 ) );
-          this.cachedPrettyString.add ( new PrettyToken ( "..", Style.NONE ) ); //$NON-NLS-1$
-          this.cachedPrettyString.add ( a.get ( a.size () - 1 ) );
-        }
-        t.removeAll ( a );
-      }
-      this.cachedPrettyString.add ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
     }
 
     return this.cachedPrettyString;

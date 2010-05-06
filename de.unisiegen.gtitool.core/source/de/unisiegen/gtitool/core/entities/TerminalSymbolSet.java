@@ -198,4 +198,13 @@ public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
    *         {@link TerminalSymbolSet}.
    */
   public int size ();
+  
+  
+  /**
+   * 
+   * sets wheather to display all elements or not
+   *
+   * @param displayAll
+   */
+  public void setDisplayAll ( final boolean displayAll );
 }

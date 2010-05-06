@@ -134,8 +134,6 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
     // reason list
     this.reasonModel = new DefaultListModel ();
     this.gui.jGTIReasonList.setModel ( this.reasonModel );
-
-    System.err.println ( "Steps: " + this.followHistory.size () );
   }
 
 
@@ -171,7 +169,6 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
   /**
    * start calculating the follow sets
    */
-  @SuppressWarnings ( "unchecked" )
   public void handleStart ()
   {
     enableButton ( Action.START, false );

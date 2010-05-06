@@ -1125,6 +1125,7 @@ public abstract class AbstractGrammar implements Grammar
       newTerminalSymbolSet.setDisplayAll ( true );
       this.followSets.put ( ns, newTerminalSymbolSet );
     }
+    createFollowSetHistoryEntry ( null, null, null, -1, null, -1 );
   }
 
 

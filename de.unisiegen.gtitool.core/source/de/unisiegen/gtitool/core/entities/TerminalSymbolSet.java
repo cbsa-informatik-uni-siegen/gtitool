@@ -202,7 +202,7 @@ public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
   
   /**
    * 
-   * sets wheather to display all elements or not
+   * sets whether to display all elements or not
    *
    * @param displayAll
    */

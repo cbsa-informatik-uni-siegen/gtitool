@@ -169,6 +169,7 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
   /**
    * start calculating the follow sets
    */
+  @SuppressWarnings ( "unchecked" )
   public void handleStart ()
   {
     enableButton ( Action.START, false );
@@ -177,6 +178,28 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
     enableButton ( Action.STOP, true );
 
     this.historyIndex = 0;
+
+    ArrayList < Object > followData = this.followHistory.get ( 0 );
+    this.followSets = ( HashMap < NonterminalSymbol, TerminalSymbolSet > ) followData
+        .get ( 0 );
+    this.followSetsTableModel.setFollowSet ( this.followSets );
+    this.gui.jGTIFollowTable.repaint ();
+  }
+
+
+  /**
+   * hightlights the current processed nonterminal
+   */
+  private void hightlightCurrentProcessedNonterminal ()
+  {
+    final NonterminalSymbol currentNonterminal = ( NonterminalSymbol ) this.followHistory
+        .get ( this.historyIndex ).get ( 1 );
+    for ( NonterminalSymbol ns : this.cfg.getNonterminalSymbolSet () )
+      if ( ns.equals ( currentNonterminal ) )
+        ns.setHighlighted ( true );
+      else
+        ns.setHighlighted ( false );
+    this.gui.jGTIFollowTable.repaint ();
   }
 
 
@@ -186,6 +209,8 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
   @SuppressWarnings ( "unchecked" )
   public void handleNext ()
   {
+    ++this.historyIndex;
+    hightlightCurrentProcessedNonterminal ();
     ArrayList < Object > followData = this.followHistory
         .get ( this.historyIndex );
 
@@ -200,7 +225,6 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
     printReason ( ns, p, rightSide, rightSideIndex, rest, cause );
 
     this.followSetsTableModel.setFollowSet ( this.followSets );
-    ++this.historyIndex;
     updateWordNavigation ();
     this.gui.jGTIFollowTable.repaint ();
   }
@@ -273,21 +297,17 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
   @SuppressWarnings ( "unchecked" )
   public void handlePrevious ()
   {
-    if ( this.historyIndex > 0 )
-    {
-      --this.historyIndex;
+    --this.historyIndex;
+    this.reasonModel.remove ( this.reasonModel.size () - 1 );
 
-      // TODO: works if the rest of this.reasonModel is implemented
-      // this.reasonModel.remove ( this.reasonModel.size () - 1 );
+    ArrayList < Object > previousEntry = this.followHistory
+        .get ( this.historyIndex );
+    this.followSets = ( HashMap < NonterminalSymbol, TerminalSymbolSet > ) previousEntry
+        .get ( 0 );
+    this.followSetsTableModel.setFollowSet ( this.followSets );
+    hightlightCurrentProcessedNonterminal ();
 
-      ArrayList < Object > previousEntry = this.followHistory
-          .get ( this.historyIndex );
-      this.followSets = ( HashMap < NonterminalSymbol, TerminalSymbolSet > ) previousEntry
-          .get ( 0 );
-      this.followSetsTableModel.setFollowSet ( this.followSets );
-
-      this.gui.jGTIFollowTable.repaint ();
-    }
+    this.gui.jGTIFollowTable.repaint ();
     updateWordNavigation ();
   }
 

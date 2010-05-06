@@ -23,7 +23,7 @@ public class ChooseFindParsingTableEntryGameDialog implements
 
 
   /**
-   * Indicates wheather a selection got confirmed or not
+   * Indicates whether a selection got confirmed or not
    */
   private boolean confirmed = false;
 

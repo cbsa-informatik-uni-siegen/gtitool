@@ -1421,8 +1421,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( ( buttonState.equals ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS ) )
         && ( !this.buttonStateList
             .contains ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS ) ) )
+    {
       this.buttonStateList.add ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
-    // TODO: enable jmenu entry
+      this.gui.getJMenuItemCalculateFollowSets ().setEnabled ( true );
+    }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_REGEX_INFO ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REGEX_INFO ) ) )
     {
@@ -6388,8 +6390,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJMenuItemCalculateFirstSets ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS ) )
+    {
       this.buttonStateList.remove ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
-    // TODO: disable jmenu entry
+      this.gui.getJMenuItemCalculateFollowSets ().setEnabled ( false );
+    }
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );

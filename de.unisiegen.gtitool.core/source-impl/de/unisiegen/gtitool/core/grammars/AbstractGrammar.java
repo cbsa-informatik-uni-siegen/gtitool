@@ -1060,8 +1060,8 @@ public abstract class AbstractGrammar implements Grammar
         // case 1
         if ( ns.isStart () && !start )
         {
-          this.followSets.get ( ns ).addIfNonexistent (
-              DefaultTerminalSymbol.EndMarker );
+          modified = this.followSets.get ( ns ).addIfNonexistent (
+              DefaultTerminalSymbol.EndMarker ) || modified;
           start = true;
           createFollowSetHistoryEntry ( ns, null, null, -1, null, 1 );
         }

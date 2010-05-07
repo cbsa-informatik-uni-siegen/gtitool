@@ -20,9 +20,10 @@ public class SLRParser extends DefaultLR0Parser
    * @param grammar The {@link LR0Grammar}
    * @throws AlphabetException
    */
-  public SLRParser ( LR0Grammar grammar ) throws AlphabetException
+  public SLRParser ( final LR0Grammar grammar ) throws AlphabetException
   {
     super ( grammar );
+    getGrammar ().calculateAllFollowSets (); // reicht nicht?
   }
 
 
@@ -36,6 +37,11 @@ public class SLRParser extends DefaultLR0Parser
   protected boolean followCondition ( final LR0Item item,
       final TerminalSymbol symbol ) throws GrammarInvalidNonterminalException
   {
+    // getGrammar ().calculateAllFollowSets (); // dann funktioniert es
+    System.out.println ( item.getNonterminalSymbol ().toString () + ' '
+        + symbol + ' ' + getGrammar ().follow ( item.getNonterminalSymbol () ) );
+    System.out.println ( getGrammar ().getNonterminalSymbolSet () );
+    System.out.println ( getGrammar ().getProduction () );
     return getGrammar ().follow ( item.getNonterminalSymbol () ).contains (
         symbol );
   }

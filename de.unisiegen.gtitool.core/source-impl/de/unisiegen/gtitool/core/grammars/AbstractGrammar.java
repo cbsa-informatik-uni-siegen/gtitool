@@ -229,6 +229,7 @@ public abstract class AbstractGrammar implements Grammar
     this.startSymbol = new DefaultNonterminalSymbol (
         ( DefaultNonterminalSymbol ) other.getStartSymbol () );
     this.productions = new DefaultProductionSet ( other.productions );
+    this.followSetsHistory = new ArrayList < ArrayList<Object> > ();
   }
 
 

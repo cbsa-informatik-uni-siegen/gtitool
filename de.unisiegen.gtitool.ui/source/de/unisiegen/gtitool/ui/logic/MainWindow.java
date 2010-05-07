@@ -612,6 +612,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
     removeButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
+    removeButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
     removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
     removeButtonState ( ButtonState.VISIBLE_REGEX );
     removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
@@ -1487,6 +1488,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         && ( !this.buttonStateList
             .contains ( ButtonState.VISIBLE_STATELESS_MACHINE ) ) )
     {
+      this.buttonStateList.add ( ButtonState.VISIBLE_STATELESS_MACHINE );
       this.gui.getJGTIToolBarButtonEditDocument ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( true );
@@ -1495,6 +1497,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarButtonNextStep ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setVisible ( true );
       this.gui.getJGTIToolBarButtonStop ().setVisible ( true );
+
+      this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonStartState ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( false );
+
     }
     else if ( ( buttonState.equals ( ButtonState.VISIBLE_GRAMMAR ) )
         && ( !this.buttonStateList.contains ( ButtonState.VISIBLE_GRAMMAR ) ) )
@@ -1985,14 +1993,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
   }
-  
-  
+
+
   /**
-   * 
    * blub
-   *
    */
-  public final void handleCalculateFollowSets()
+  public final void handleCalculateFollowSets ()
   {
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () instanceof GrammarPanel )
@@ -4454,8 +4460,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_SAVE_ALL );
       }
 
-      removeButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
-
       removeButtonState ( ButtonState.ENABLED_SAVE_AS );
       removeButtonState ( ButtonState.ENABLED_CLOSE );
       removeButtonState ( ButtonState.ENABLED_PRINT );
@@ -4469,6 +4473,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_REDO );
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
       removeButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
+      removeButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
       removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
       removeButtonState ( ButtonState.VISIBLE_REGEX );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
@@ -4505,11 +4510,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // MachinePanel
     else
     {
-      removeButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
       if ( panel instanceof StateMachinePanel )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
 
+        removeButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
         addButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         removeButtonState ( ButtonState.VISIBLE_REGEX );
@@ -4700,8 +4705,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
         removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
 
+        removeButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
         addButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
-
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         removeButtonState ( ButtonState.VISIBLE_REGEX );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
@@ -4829,6 +4834,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
             .isSelected () );
 
+        removeButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
         addButtonState ( ButtonState.VISIBLE_GRAMMAR );
         removeButtonState ( ButtonState.VISIBLE_REGEX );
@@ -4886,6 +4892,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_TO_CORE_SYNTAX );
         addButtonState ( ButtonState.ENABLED_REGEX_INFO );
 
+        removeButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         addButtonState ( ButtonState.VISIBLE_REGEX );

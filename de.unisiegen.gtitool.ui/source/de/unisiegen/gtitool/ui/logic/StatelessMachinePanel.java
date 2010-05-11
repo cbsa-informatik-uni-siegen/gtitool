@@ -153,8 +153,8 @@ public class StatelessMachinePanel extends MachinePanel
    * the {@link JGTITable}
    */
   private JGTITable jGTIStatelessMachineTable;
-  
-  
+
+
   /**
    * the active state of the choose dialog
    */
@@ -485,14 +485,16 @@ public class StatelessMachinePanel extends MachinePanel
         try
         {
           ChooseNextActionDialog cnad = new ChooseNextActionDialog (
-              this.mainWindowForm, actions );
+              this.mainWindowForm, actions,
+              ChooseNextActionDialog.SelectionMode.SINGLE_SELECTION );
           this.chooseDialogActive = true;
           cnad.show ();
           this.chooseDialogActive = false;
 
           if ( cnad.isConfirmed () )
           {
-            action = cnad.getChosenAction ();
+            // we only allow single selection so the result is the first entry
+            action = cnad.getChosenAction ().get ( 0 );
             ( ( AbstractStatelessMachine ) this.machine ).transit ( action );
           }
           else
@@ -501,6 +503,12 @@ public class StatelessMachinePanel extends MachinePanel
         catch ( IllegalArgumentException e )
         {
           e.printStackTrace ();
+          System.exit ( 1 );
+        }
+        catch ( ActionSetException ase )
+        {
+          ase.printStackTrace ();
+          System.exit ( 1 );
         }
       }
       else
@@ -767,16 +775,16 @@ public class StatelessMachinePanel extends MachinePanel
   void autoStepTimerRun ()
   {
     if ( StatelessMachinePanel.this.machine.isNextSymbolAvailable () )
-      if(!this.chooseDialogActive)
+      if ( !this.chooseDialogActive )
         handleWordNextStep ();
-    else
-    {
-      StatelessMachinePanel.this.mainWindowForm.getLogic ().removeButtonState (
-          ButtonState.SELECTED_AUTO_STEP );
-      StatelessMachinePanel.this.mainWindowForm.getLogic ()
-          .updateWordNavigationStates ();
-      cancelAutoStepTimer ();
-    }
+      else
+      {
+        StatelessMachinePanel.this.mainWindowForm.getLogic ()
+            .removeButtonState ( ButtonState.SELECTED_AUTO_STEP );
+        StatelessMachinePanel.this.mainWindowForm.getLogic ()
+            .updateWordNavigationStates ();
+        cancelAutoStepTimer ();
+      }
   }
 
 

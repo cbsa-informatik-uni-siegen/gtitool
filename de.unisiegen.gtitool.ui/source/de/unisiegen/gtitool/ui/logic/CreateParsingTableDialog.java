@@ -114,7 +114,14 @@ public class CreateParsingTableDialog implements
     this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
     this.cfg.getTerminalSymbolSet ().add ( DefaultTerminalSymbol.EndMarker );
     this.parsingTable = new DefaultParsingTable ( this.cfg );
+
     this.gui = new CreateParsingTableDialogForm ( this.parent, this );
+    // center the dialog
+    int x = parent.getBounds ().x + ( parent.getWidth () / 2 )
+        - ( this.gui.getWidth () / 2 );
+    int y = parent.getBounds ().y + ( parent.getHeight () / 2 )
+        - ( this.gui.getHeight () / 2 );
+    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
 
     this.bundle = java.util.ResourceBundle
         .getBundle ( "de/unisiegen/gtitool/ui/i18n/messages" ); //$NON-NLS-1$
@@ -157,9 +164,9 @@ public class CreateParsingTableDialog implements
           }
 
 
-          public void previousStepRemoveEntry (int amount)
+          public void previousStepRemoveEntry ( int amount )
           {
-            removeDescription (amount);
+            removeDescription ( amount );
           }
         } );
 
@@ -209,14 +216,15 @@ public class CreateParsingTableDialog implements
 
   /**
    * Remove the last description row
+   * 
    * @param amount
    */
-  void removeDescription (int amount)
+  void removeDescription ( int amount )
   {
     // remove the last description
     final DefaultListModel model = ( DefaultListModel ) this.gui.jGTIDescriptionList
         .getModel ();
-    while(amount-- > 0)
+    while ( amount-- > 0 )
       model.remove ( model.size () - 1 );
   }
 
@@ -274,7 +282,7 @@ public class CreateParsingTableDialog implements
 
     this.parsingTable.getCurrentNonterminalSymbol ().setHighlighted ( true );
     this.parsingTable.getCurrentTerminalSymbol ().setHighlighted ( true );
-    
+
     this.gui.jGTIParsingTable.getTableHeader ().repaint ();
   }
 
@@ -291,7 +299,7 @@ public class CreateParsingTableDialog implements
 
     this.parsingTable.getCurrentNonterminalSymbol ().setHighlighted ( false );
     this.parsingTable.getCurrentTerminalSymbol ().setHighlighted ( false );
-    
+
     this.gui.jGTIParsingTable.getTableHeader ().repaint ();
   }
 

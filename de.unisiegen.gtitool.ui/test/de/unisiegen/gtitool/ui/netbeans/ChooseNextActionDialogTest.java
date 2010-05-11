@@ -28,6 +28,7 @@ import de.unisiegen.gtitool.ui.logic.ChooseNextActionDialog;
 
 /**
  * Test class for the {@link ChooseNextActionDialog}
+ * 
  * @author Christian Uhrhan
  */
 public final class ChooseNextActionDialogTest
@@ -119,14 +120,25 @@ public final class ChooseNextActionDialogTest
     frame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
     frame.setVisible ( true );
 
-    ChooseNextActionDialog cnad = new ChooseNextActionDialog ( frame, actions );
+    ChooseNextActionDialog cnad = new ChooseNextActionDialog ( frame, actions,
+        ChooseNextActionDialog.SelectionMode.SINGLE_SELECTION );
     cnad.show ();
     if ( cnad.isConfirmed () )
     {
-      Action chosenAction = cnad.getChosenAction ();
-      System.out.println ( chosenAction );
-    } else
-      System.out.println ( "ChooseNextActionDialog was canceled"); //$NON-NLS-1$
+      Action chosenAction;
+      try
+      {
+        chosenAction = cnad.getChosenAction ().get ( 0 );
+        System.out.println ( chosenAction );
+      }
+      catch ( ActionSetException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 0 );
+      }
+    }
+    else
+      System.out.println ( "ChooseNextActionDialog was canceled" ); //$NON-NLS-1$
   }
 
 }

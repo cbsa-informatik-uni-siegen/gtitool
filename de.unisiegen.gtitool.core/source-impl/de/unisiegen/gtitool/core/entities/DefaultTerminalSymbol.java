@@ -136,6 +136,8 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
     if ( element.getElement ().size () > 0 )
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
+    
+    this.highlighted = false;
   }
 
 
@@ -147,6 +149,7 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   public DefaultTerminalSymbol ( String name )
   {
     setName ( name );
+    this.highlighted = false;
   }
 
 

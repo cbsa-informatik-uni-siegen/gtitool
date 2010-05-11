@@ -113,6 +113,8 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
     if ( element.getElement ().size () > 0 )
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
+    
+    this.highlighted = false;
   }
 
 
@@ -124,6 +126,7 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   public DefaultNonterminalSymbol ( String name )
   {
     setName ( name );
+    this.highlighted = false;
   }
 
 
@@ -143,16 +146,18 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
    *
    * @param symbol The {@link NonterminalSymbol}
    */
-  public DefaultNonterminalSymbol ( final DefaultNonterminalSymbol symbol )
+  public DefaultNonterminalSymbol ( final NonterminalSymbol symbol )
   {
     if(symbol == null)
       throw new NullPointerException("symbol is null"); //$NON-NLS-1$
     
-    this.name = symbol.name;
-    this.start = symbol.start;
-    this.error = symbol.error;
-    this.highlighted = symbol.highlighted;
-    this.parserOffset = symbol.parserOffset.clone ();
+    DefaultNonterminalSymbol other = (DefaultNonterminalSymbol)symbol;
+    
+    this.name = other.name;
+    this.start = other.start;
+    this.error = other.error;
+    this.highlighted = other.highlighted;
+    this.parserOffset = other.parserOffset.clone ();
   }
 
 

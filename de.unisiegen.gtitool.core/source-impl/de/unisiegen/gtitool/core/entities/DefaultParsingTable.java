@@ -91,6 +91,12 @@ public class DefaultParsingTable implements ParsingTable
 
 
   /**
+   * history of each step
+   */
+  private ArrayList < ArrayList < Object >> history;
+
+
+  /**
    * allocates a new {@link DefaultParsingTable}
    * 
    * @param cfg the CFG from which we're creating the parsing table
@@ -109,6 +115,8 @@ public class DefaultParsingTable implements ParsingTable
     this.currentProductionSet = null;
     this.isTerminalSymbolNextStepAvailable = false;
     this.isNonterminalSymbolNextStepAvailable = false;
+
+    this.history = new ArrayList < ArrayList < Object > > ();
   }
 
 
@@ -341,6 +349,35 @@ public class DefaultParsingTable implements ParsingTable
 
 
   /**
+   * returns the history of this parsing table
+   * 
+   * @return the history of this parsing table
+   */
+  public ArrayList < ArrayList < Object >> getHistory ()
+  {
+    return this.history;
+  }
+
+
+  /**
+   * creates a history entry
+   * 
+   * @param ns The {@link NonterminalSymbol}
+   * @param ts The {@link TerminalSymbol}
+   * @param cause The {@link ParsingTable.EntryCause}
+   */
+  private void createHistoryEntry ( final NonterminalSymbol ns,
+      final TerminalSymbol ts, final EntryCause cause )
+  {
+    ArrayList < Object > entry = new ArrayList < Object > ();
+    entry.add ( new DefaultNonterminalSymbol ( ns ) );
+    entry.add ( new DefaultTerminalSymbol ( ts ) );
+    entry.add ( cause );
+    this.history.add ( entry );
+  }
+
+
+  /**
    * creates the parsing table out of a context free grammar
    * 
    * @throws GrammarInvalidNonterminalException
@@ -363,10 +400,27 @@ public class DefaultParsingTable implements ParsingTable
       {
         this.parsingTable.get ( row ).add ( new DefaultProductionSet () );
         for ( Production p : ps )
-          if ( this.cfg.first ( p.getProductionWord () ).contains ( ts )
-              || ( this.cfg.first ( p.getProductionWord () ).epsilon () && this.cfg
-                  .follow ( ns ).contains ( ts ) ) )
-            this.parsingTable.get ( row ).get ( col ).add ( p );
+        {
+          boolean tsInFirstProductionWord = this.cfg.first (
+              p.getProductionWord () ).contains ( ts );
+          boolean productionWordDerivesToEpsilon = this.cfg.first (
+              p.getProductionWord () ).epsilon ();
+          boolean tsInFollowNS = this.cfg.follow ( ns ).contains ( ts );
+
+          if ( tsInFirstProductionWord )
+            createHistoryEntry ( ns, ts,
+                ParsingTable.EntryCause.TERMINAL_IN_FIRSTSET );
+          else if ( productionWordDerivesToEpsilon && tsInFollowNS )
+            createHistoryEntry ( ns, ts,
+                ParsingTable.EntryCause.EPSILON_DERIVATION_AND_FOLLOWSET );
+          else
+            continue;
+          // if ( this.cfg.first ( p.getProductionWord () ).contains ( ts )
+          // || ( this.cfg.first ( p.getProductionWord () ).epsilon () &&
+          // this.cfg
+          // .follow ( ns ).contains ( ts ) ) )
+          this.parsingTable.get ( row ).get ( col ).add ( p );
+        }
         ++col;
       }
       ++row;

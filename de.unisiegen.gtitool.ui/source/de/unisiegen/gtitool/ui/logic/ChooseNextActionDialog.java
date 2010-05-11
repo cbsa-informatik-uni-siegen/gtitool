@@ -3,9 +3,12 @@ package de.unisiegen.gtitool.ui.logic;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.ListSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
+import de.unisiegen.gtitool.core.entities.DefaultActionSet;
+import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.ChooseNextActionDialogForm;
 
@@ -16,6 +19,23 @@ import de.unisiegen.gtitool.ui.netbeans.ChooseNextActionDialogForm;
 public final class ChooseNextActionDialog implements
     LogicClass < ChooseNextActionDialogForm >
 {
+
+  /**
+   * In which mode do we want to select the listed {@link Action}s
+   */
+  public enum SelectionMode
+  {
+    /**
+     * single selection
+     */
+    SINGLE_SELECTION,
+
+    /**
+     * selection of more than one {@link Action} at a time is possible
+     */
+    MULTIPLE_SELECTION;
+  }
+
 
   /**
    * The {@link ChooseNextActionDialogForm}
@@ -42,12 +62,20 @@ public final class ChooseNextActionDialog implements
 
 
   /**
+   * The {@link DefaultListModel}
+   */
+  private DefaultListModel listModel;
+
+
+  /**
    * Allocates a new {@link ChooseNextActionDialog}
    * 
    * @param parent The parent {link JFrame}
    * @param actions The {@link Action}s
+   * @param selectionMode The {@link SelectionMode}
    */
-  public ChooseNextActionDialog ( final JFrame parent, final ActionSet actions )
+  public ChooseNextActionDialog ( final JFrame parent, final ActionSet actions,
+      final SelectionMode selectionMode )
   {
     if ( parent == null )
       throw new NullPointerException ( "parent is null" ); //$NON-NLS-1$
@@ -60,24 +88,36 @@ public final class ChooseNextActionDialog implements
     this.actions = actions;
     this.gui = new ChooseNextActionDialogForm ( this, parent );
 
-    DefaultListModel model = new DefaultListModel ();
+    this.listModel = new DefaultListModel ();
     for ( Action a : this.actions )
-      model.addElement ( a.toPrettyString () );
-    this.gui.jGTIListActionList.setModel ( model );
+      this.listModel.addElement ( a.toPrettyString () );
+
+    if ( selectionMode == SelectionMode.SINGLE_SELECTION )
+      this.gui.jGTIListActionList
+          .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    else
+      this.gui.jGTIListActionList
+          .setSelectionMode ( ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
+    this.gui.jGTIListActionList.setModel ( this.listModel );
   }
 
 
   /**
-   * Returns the chosen {@link Action}
+   * Returns the chosen {@link Action}s
    * 
-   * @return The chosen {@link Action}
+   * @return The chosen {@link Action}s
+   * @throws ActionSetException 
    */
-  public final Action getChosenAction ()
+  public final ActionSet getChosenAction () throws ActionSetException
   {
     if ( this.gui.jGTIListActionList.isSelectionEmpty () )
       throw new RuntimeException ( "No action was chosen." ); //$NON-NLS-1$
-    System.out.println(this.gui.jGTIListActionList.getSelectedIndex ());
-    return this.actions.get ( this.gui.jGTIListActionList.getSelectedIndex () );
+    final int[] chosenActionIndices = this.gui.jGTIListActionList.getSelectedIndices ();
+    @SuppressWarnings ( "hiding" )
+    final ActionSet actions = new DefaultActionSet();
+    for(int idx : chosenActionIndices)
+      actions.add ( this.actions.get ( idx ) );
+    return actions;
   }
 
 

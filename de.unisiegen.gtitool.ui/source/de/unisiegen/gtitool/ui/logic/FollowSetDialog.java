@@ -323,7 +323,10 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
     enableButton ( Action.STOP, false );
 
     for ( NonterminalSymbol ns : this.cfg.getNonterminalSymbolSet () )
+    {
       this.followSets.put ( ns, new DefaultTerminalSymbolSet () );
+      ns.setHighlighted ( false );
+    }
     this.reasonModel.removeAllElements ();
 
     this.historyIndex = 0;

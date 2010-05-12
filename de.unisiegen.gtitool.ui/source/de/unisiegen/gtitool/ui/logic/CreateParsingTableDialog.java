@@ -273,13 +273,6 @@ public class CreateParsingTableDialog implements
    */
   private void setCurrentSymbols ()
   {
-    this.gui.jGTICurrentNonterminalLabel.setText ( this.bundle
-        .getString ( "CreateParsingTableDialog.CurrentNonterminal" ) //$NON-NLS-1$
-        + " " + this.parsingTable.getCurrentNonterminalSymbol () ); //$NON-NLS-1$
-    this.gui.jGTICurrentTerminalLabel.setText ( this.bundle
-        .getString ( "CreateParsingTableDialog.CurrentTerminal" ) //$NON-NLS-1$
-        + " " + this.parsingTable.getCurrentTerminalSymbol () ); //$NON-NLS-1$
-
     this.parsingTable.getCurrentNonterminalSymbol ().setHighlighted ( true );
     this.parsingTable.getCurrentTerminalSymbol ().setHighlighted ( true );
 
@@ -292,11 +285,6 @@ public class CreateParsingTableDialog implements
    */
   private void clearCurrentSymbols ()
   {
-    this.gui.jGTICurrentNonterminalLabel.setText ( this.bundle
-        .getString ( "CreateParsingTableDialog.CurrentNonterminal" ) ); //$NON-NLS-1$
-    this.gui.jGTICurrentTerminalLabel.setText ( this.bundle
-        .getString ( "CreateParsingTableDialog.CurrentTerminal" ) ); //$NON-NLS-1$
-
     this.parsingTable.getCurrentNonterminalSymbol ().setHighlighted ( false );
     this.parsingTable.getCurrentTerminalSymbol ().setHighlighted ( false );
 

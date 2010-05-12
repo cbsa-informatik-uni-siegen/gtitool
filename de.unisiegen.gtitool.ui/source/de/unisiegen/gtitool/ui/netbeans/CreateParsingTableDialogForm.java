@@ -56,8 +56,6 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIParsingTablePanel = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTICurrentNonterminalLabel = new de.unisiegen.gtitool.ui.swing.JGTILabel();
-        jGTICurrentTerminalLabel = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIPanel3 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTILabel3 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIScrollPane2 = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
@@ -241,23 +239,6 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jGTIToolBar, gridBagConstraints);
 
-        jGTICurrentNonterminalLabel.setText(bundle.getString("CreateParsingTableDialog.CurrentNonterminal")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        jGTIParsingTablePanel.add(jGTICurrentNonterminalLabel, gridBagConstraints);
-
-        jGTICurrentTerminalLabel.setText(bundle.getString("CreateParsingTableDialog.CurrentTerminal")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        jGTIParsingTablePanel.add(jGTICurrentTerminalLabel, gridBagConstraints);
-
         jGTILabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jGTILabel3.setText(bundle.getString("CreateParsingTableDialog.LabelParsingTable")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -376,8 +357,6 @@ public class CreateParsingTableDialogForm extends javax.swing.JDialog implements
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
-    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTICurrentNonterminalLabel;
-    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTICurrentTerminalLabel;
     public de.unisiegen.gtitool.ui.swing.JGTIList jGTIDescriptionList;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIGrammarTable;
     private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabel3;

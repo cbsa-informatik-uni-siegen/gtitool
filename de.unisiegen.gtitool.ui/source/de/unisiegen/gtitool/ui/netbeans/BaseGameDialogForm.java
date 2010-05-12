@@ -18,13 +18,13 @@ import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
  *
  * @author christian
  */
-public class CreateParsingTableGameDialogForm extends javax.swing.JDialog
+public class BaseGameDialogForm extends javax.swing.JDialog
     implements GUIClass<CreateParsingTableGameDialog> {
 
     private CreateParsingTableGameDialog logic;
 
     /** Creates new form CreateParsingTableGameDialogForm */
-    public CreateParsingTableGameDialogForm(java.awt.Frame parent, CreateParsingTableGameDialog logic) {
+    public BaseGameDialogForm(java.awt.Frame parent, CreateParsingTableGameDialog logic) {
         super(parent, true);
         this.logic = logic;
         initComponents();

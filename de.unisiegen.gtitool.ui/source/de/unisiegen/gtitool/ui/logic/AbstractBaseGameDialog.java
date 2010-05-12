@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
-import de.unisiegen.gtitool.ui.netbeans.CreateParsingTableGameDialogForm;
+import de.unisiegen.gtitool.ui.netbeans.BaseGameDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.FollowSetDialogForm;
 
 
@@ -53,9 +53,9 @@ public abstract class AbstractBaseGameDialog
 
 
   /**
-   * The {@link CreateParsingTableGameDialogForm}
+   * The {@link BaseGameDialogForm}
    */
-  private CreateParsingTableGameDialogForm gui;
+  private BaseGameDialogForm gui;
 
 
   /**
@@ -120,7 +120,7 @@ public abstract class AbstractBaseGameDialog
    * 
    * @see de.unisiegen.gtitool.ui.logic.interfaces.LogicClass#getGUI()
    */
-  public CreateParsingTableGameDialogForm getGUI ()
+  public BaseGameDialogForm getGUI ()
   {
     return this.gui;
   }

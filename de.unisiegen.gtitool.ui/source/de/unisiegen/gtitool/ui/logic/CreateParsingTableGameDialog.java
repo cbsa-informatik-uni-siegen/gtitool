@@ -26,16 +26,16 @@ import de.unisiegen.gtitool.ui.model.FirstSetTableModel;
 import de.unisiegen.gtitool.ui.model.FollowSetTableColumnModel;
 import de.unisiegen.gtitool.ui.model.FollowSetTableModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
-import de.unisiegen.gtitool.ui.netbeans.CreateParsingTableGameDialogForm;
+import de.unisiegen.gtitool.ui.netbeans.BaseGameDialogForm;
 
 
 /**
- * Implements the logic of the {@link CreateParsingTableGameDialogForm}
+ * Implements the logic of the {@link BaseGameDialogForm}
  * 
  * @author Christian Uhrhan
  */
 public class CreateParsingTableGameDialog implements
-    LogicClass < CreateParsingTableGameDialogForm >
+    LogicClass < BaseGameDialogForm >
 {
 
   /**
@@ -58,9 +58,9 @@ public class CreateParsingTableGameDialog implements
 
 
   /**
-   * The {@link CreateParsingTableGameDialogForm}
+   * The {@link BaseGameDialogForm}
    */
-  private CreateParsingTableGameDialogForm gui;
+  private BaseGameDialogForm gui;
 
 
   /**
@@ -133,7 +133,7 @@ public class CreateParsingTableGameDialog implements
     //
     // setup the gui
     //
-    this.gui = new CreateParsingTableGameDialogForm ( parent, this );
+    this.gui = new BaseGameDialogForm ( parent, this );
     // center the dialog
     int x = parent.getBounds ().x + ( parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
@@ -358,7 +358,7 @@ public class CreateParsingTableGameDialog implements
    * 
    * @see de.unisiegen.gtitool.ui.logic.interfaces.LogicClass#getGUI()
    */
-  public CreateParsingTableGameDialogForm getGUI ()
+  public BaseGameDialogForm getGUI ()
   {
     return this.gui;
   }

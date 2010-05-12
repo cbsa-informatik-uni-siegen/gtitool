@@ -41,6 +41,7 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarRegularGrammarExcepti
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.machines.StateMachine;
 import de.unisiegen.gtitool.core.storage.Element;
@@ -229,7 +230,7 @@ public abstract class AbstractGrammar implements Grammar
     this.startSymbol = new DefaultNonterminalSymbol (
         ( DefaultNonterminalSymbol ) other.getStartSymbol () );
     this.productions = new DefaultProductionSet ( other.productions );
-    this.followSetsHistory = new ArrayList < ArrayList<Object> > ();
+    this.followSetsHistory = new ArrayList < ArrayList < Object > > ();
   }
 
 
@@ -1002,6 +1003,23 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
+   * A -> \alphaB\beta => returns \alpha
+   * 
+   * @param rightSide The {@link ProductionWord}
+   * @param indexOfProcessedNonterminal
+   * @return A -> \alphaB\beta => returns \alpha
+   */
+  private ProductionWord getAlpha ( final ProductionWord rightSide,
+      final int indexOfProcessedNonterminal )
+  {
+    ArrayList < ProductionWordMember > pwm = new ArrayList < ProductionWordMember > ();
+    for ( int i = 0 ; i < indexOfProcessedNonterminal ; ++i )
+      pwm.add ( rightSide.get ( i ) );
+    return new DefaultProductionWord ( pwm );
+  }
+
+
+  /**
    * creates a new history entry per round
    * 
    * @param ns The {@link NonterminalSymbol}
@@ -1018,8 +1036,8 @@ public abstract class AbstractGrammar implements Grammar
     HashMap < NonterminalSymbol, TerminalSymbolSet > tmp = new HashMap < NonterminalSymbol, TerminalSymbolSet > ();
     for ( Entry < NonterminalSymbol, TerminalSymbolSet > e : this.followSets
         .entrySet () )
-      tmp.put ( new DefaultNonterminalSymbol ( ( DefaultNonterminalSymbol ) e
-          .getKey () ), new DefaultTerminalSymbolSet ( e.getValue () ) );
+      tmp.put ( new DefaultNonterminalSymbol ( e.getKey () ),
+          new DefaultTerminalSymbolSet ( e.getValue () ) );
     ArrayList < Object > entry = new ArrayList < Object > ();
     entry.add ( tmp );
     entry.add ( ns );
@@ -1028,6 +1046,30 @@ public abstract class AbstractGrammar implements Grammar
     entry.add ( new Integer ( rightSideIndex ) );
     entry.add ( rest );
     entry.add ( new Integer ( cause ) );
+    switch ( cause )
+    {
+      case 1 :
+        entry.add ( Messages.getString ( "FollowSetDialog.ReasonCaseOne", ns ) ); //$NON-NLS-1$
+        break;
+      case 2 :
+        entry.add ( Messages.getString (
+            "FollowReasonCaseTwo", //$NON-NLS-1$
+            p.getNonterminalSymbol (), ns,
+            getAlpha ( rightSide, rightSideIndex ), rest ) );
+        break;
+      case 3 :
+        entry.add ( Messages.getString (
+            "FollowReasonCaseThree", //$NON-NLS-1$
+            p.getNonterminalSymbol (), ns,
+            getAlpha ( rightSide, rightSideIndex ) ) );
+        break;
+      case 4 :
+        entry.add ( Messages.getString (
+            "FollowReasonCaseFour", //$NON-NLS-1$
+            p.getNonterminalSymbol (), ns,
+            getAlpha ( rightSide, rightSideIndex ), rest ) );
+        break;
+    }
     this.followSetsHistory.add ( entry );
   }
 
@@ -1061,7 +1103,8 @@ public abstract class AbstractGrammar implements Grammar
         if ( ns.isStart () && !start )
         {
           modified = this.followSets.get ( ns ).addIfNonexistent (
-              DefaultTerminalSymbol.EndMarker ) || modified;
+              DefaultTerminalSymbol.EndMarker )
+              || modified;
           start = true;
           createFollowSetHistoryEntry ( ns, null, null, -1, null, 1 );
         }
@@ -1096,6 +1139,96 @@ public abstract class AbstractGrammar implements Grammar
             }
             // else
             // case 3
+            boolean isEmpty = rest.size () == 0;
+            boolean betaIsEpsilon = first ( rest ).epsilon ();
+            if ( isEmpty || betaIsEpsilon )
+            {
+              modified = this.followSets.get ( ns ).addIfNonexistent (
+                  this.followSets.get ( p.getNonterminalSymbol () ) )
+                  || modified;
+              createFollowSetHistoryEntry ( ns, p, rightSide, index, rest,
+                  isEmpty ? 3 : 4 );
+            }
+          }
+        }
+      }
+    }
+    while ( modified );
+  }
+
+
+  /**
+   * calculates follow sets for each {@link NonterminalSymbol} (second version;
+   * until this works we keep the first one too)
+   */
+  public final void calculateAllFollowSets2 ()
+  {
+    if ( this.followSets == null )
+      initFollowSets ();
+
+    /*
+     * run through all nonterminals and handle case 1 and 2 first (cause the
+     * action which is taken in these cases apply ony once)
+     */
+    for ( NonterminalSymbol ns : this.nonterminalSymbolSet )
+    {
+      // case 1
+      if ( ns.isStart () )
+      {
+        this.followSets.get ( ns ).addIfNonexistent (
+            DefaultTerminalSymbol.EndMarker );
+        createFollowSetHistoryEntry ( ns, null, null, -1, null, 1 );
+      }
+
+      // case 2
+      final ProductionSet prods = getProductionContainingNonterminal ( ns );
+      for ( Production p : prods )
+      {
+        final ProductionWord rightSide = p.getProductionWord ();
+
+        for ( int index = 0 ; index < rightSide.size () ; ++index )
+        {
+          final ProductionWordMember member = rightSide.get ( index );
+
+          if ( !member.equals ( ns ) )
+            continue;
+
+          final ProductionWord rest = getProductionWordAfter ( index, rightSide );
+
+          // case 2
+          if ( rest.size () > 0 && !rest.epsilon () )
+          {
+            final FirstSet firstRest = first ( rest );
+            firstRest.removeIfExistent ( DefaultTerminalSymbol.Epsilon );
+
+            this.followSets.get ( ns ).addIfNonexistent ( firstRest );
+            createFollowSetHistoryEntry ( ns, p, rightSide, index, rest, 2 );
+          }
+        }// end for idx : rightSide
+      }// end for p : prods
+    }// end for ns : nonterminals
+
+    // handle case 3
+    boolean modified;
+    do
+    {
+      modified = false;
+      for ( NonterminalSymbol ns : this.nonterminalSymbolSet )
+      {
+        final ProductionSet prods = getProductionContainingNonterminal ( ns );
+        for ( Production p : prods )
+        {
+          final ProductionWord rightSide = p.getProductionWord ();
+
+          for ( int index = 0 ; index < rightSide.size () ; ++index )
+          {
+            final ProductionWordMember member = rightSide.get ( index );
+
+            if ( !member.equals ( ns ) )
+              continue;
+
+            final ProductionWord rest = getProductionWordAfter ( index,
+                rightSide );
             boolean isEmpty = rest.size () == 0;
             boolean betaIsEpsilon = first ( rest ).epsilon ();
             if ( isEmpty || betaIsEpsilon )

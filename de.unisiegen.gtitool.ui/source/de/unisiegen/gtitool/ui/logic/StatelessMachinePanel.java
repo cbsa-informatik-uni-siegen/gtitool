@@ -450,6 +450,7 @@ public class StatelessMachinePanel extends MachinePanel
     super.handleWordStop ();
 
     performMachineTableChanged ( MachineActionType.STOP, null );
+    updateAcceptedState ();
   }
 
 

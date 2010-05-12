@@ -130,6 +130,10 @@ erreicht man über das Kontextmenü oder über den Menüpunkt "`Ausführen"'.
 
 \section{Umwandeln und Validieren}
 
+Es ist zu beachten, dass beim Umwandeln einer Grammatik keine
+Validierungsfehler vorhanden sein dürfen. Bei der Funktion "`Vorlage
+für\ldots"' spielen Fehler allerdings keine Rolle.
+
 \subsection{Vorlage f"ur eine andere Grammatik}
 Eine Grammatik kann als Vorlage für eine neue Grammatik benutzt werden.
 Das ist zum Beispiel sinnvoll, wenn wir eine kontextfreie Grammatik
@@ -155,11 +159,18 @@ Im Untermenü "`Umwandeln in"' unter dem Menü "`Ausführen"' befinden sich die 
 "`LALR1-Parser erstellen"'.
 
 \subsection{Erzeugen der FIRST- und FOLLOW-Mengen}
-TODO!
+Zu einer kontextfreien Grammatik können die FIRST- und FOLLOW-Mengen 
+berechnet werden. Hierzu wählt man im Menü "`Ausführen"' "`First-Menge berechnen"'
+bzw. "`Follow-Menge berechnen"'. Danach wird ein Dialog angezeigt, in dem die
+entsprechende Menge schrittweise berechnet wird, wobei links der aktuelle Fortschritt
+und rechts die Gründe für das Vergrößern einer der Mengen angezeigt werden.
 
-Es ist zu beachten, dass beim Umwandeln einer Grammatik keine
-Validierungsfehler vorhanden sein dürfen. Bei der Funktion "`Vorlage
-für\ldots"' spielen Fehler allerdings keine Rolle.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=12cm]{../images/follow.png}
+\caption{Grammatik - Follow berechnen}
+\end{center}
+\end{figure}
 
 \subsection{Einheitsproduktionen entfernen}
 

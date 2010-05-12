@@ -6,11 +6,10 @@
 %%
 
 
-\chapter{Wie erstelle ich eine neue Grammatik?}\label{Grammar}
+\chapter{Grammatiken}\label{Grammar}
 
-Wir wollen das jetzt einmal an Hand folgenden Beispiels aus den
-Vorlesungsunterlagen durchgehen:\vspace{10pt}
-
+Folgende Grammatik soll uns im Folgenden als Beispiel dienen:
+\vspace{10pt}
 
 \begin{tabular}{lcr}
 G = ($\Sigma, N, S, P )\ mit $\\
@@ -26,9 +25,9 @@ $\ \ \ \ \ \ \ \ \StartSymbol{E} \to (\StartSymbol{E} \TerminalSymbol{+}
 \StartSymbol{E} \to (\StartSymbol{E} \TerminalSymbol{*} \StartSymbol{E})\}$\\
 \end{tabular}
 
-\section{Neue Grammatik Datei anlegen}
+\section{Neue Grammatik-Datei anlegen}
 
-Am Anfang müssen wir dazu erst einmal den "`Neu\ldots"' Dialog öffnen. Zu finden
+Am Anfang müssen wir dazu erst einmal den "`Neu\ldots"'-Dialog öffnen. Zu finden
 ist dieser in der Toolbar oder im Menüeintrag "`Datei"'. Dort wählen wir aus,
 dass wir eine Grammatik erstellen wollen und klicken auf "`Weiter"'.\vspace{10pt}
 
@@ -39,7 +38,7 @@ Grammatik"', welche wir auswählen und mit "`Weiter"' bestätigen.\vspace{10pt}
 Als nächstes müssen wir die benötigten Nichtterminalzeichen (N),
 Terminalzeichen ($\Sigma$) und das Startzeichen (S) angeben.  Als Zeichen
 können alle Symbole werwendet werden, die nicht zur Syntax der Eingabe gehören.
-Das bedeutet \Symbol{,}, \Symbol{\{}, \Symbol{\}} und \SymbolEmpty{}
+Das bedeutet \Symbol{,}, \Symbol{\{}, \Symbol{\}}, \Symbol{$\vert$} und \SymbolEmpty{}
 können hier nicht verwendet werden. Symbole, welche länger als ein Zeichen sind,
 müssen in Anführungszeichen angegeben werden.\vspace{10pt}
 
@@ -57,9 +56,9 @@ Nun legen wir das Startzeichen fest. Das ist bei uns das \StartSymbol{E},
 welches wir in das Feld für das Startzeichen schreiben.\\
 Zum Schluss müssen wir noch die Terminalzeichen festlegen. Dazu tragen
 wir in das entsprechende Feld "`\{\TerminalSymbol{0}, \TerminalSymbol{1},
-\TerminalSymbol{x}, \TerminalSymbol{y}, \TerminalSymbol{-}, \TerminalSymbol{+},
+\TerminalSymbol{x}, \TerminalSymbol{y}, \TerminalSymbol{+},
 \TerminalSymbol{*}, \TerminalSymbol{(}, \TerminalSymbol{)}\}"' ein.\\ Damit
-haben wir alle benötigten Information eingegeben und können die neue Grammatik
+haben wir alle benötigten Informationen eingegeben und können die neue Grammatik
 durch Klick auf "`Fertig"' erstellen.\vspace{10pt}
 
 \begin{figure}[h]
@@ -95,7 +94,7 @@ Produktion erscheint in unserer Liste.\vspace{10pt}
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=8cm]{../images/production_dialog.png}
-\caption{Grammatik - Produktions Dialog}
+\caption{Grammatik - Produktionsdialog}
 \end{center}
 \end{figure}
 
@@ -103,8 +102,21 @@ Wir können die Produktion selbstverständlich auch editieren und wieder lösche
 Beide Funktionen sind über das Kontextmenü für die ausgewählte Produktion
 verfügbar.\vspace{10pt}
 
-Diesen Vorgang wiederholen wir jetzt für unsere komplette Menge "`P"'. Wenn wir
-alle Produktionen angelegt haben, sind wir auch mit dem Anlegen der Grammatik
+Diesen Vorgang wiederholen wir jetzt für unsere komplette Menge "`P"'.
+Alternativ k"onnen gleich mehrere Produktionen, die auf der linken Seite dasselbe
+Nichterminalzeichen haben, auf einmal eingegeben werden: Die Produktionswörter müssen
+in diesem Fall durch ein $\vert$ getrennt eingegeben werden. \vspace{10pt}
+
+\newpage
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=8cm]{../images/production_dialog_multi.png}
+\caption{Grammatik - Produktionsdialog}
+\end{center}
+\end{figure}
+
+Wenn wir alle Produktionen angelegt haben, sind wir auch mit dem Anlegen der Grammatik
 fertig. Es besteht jetzt noch die Möglichkeit, die Grammatik zu validieren, um
 zu sehen, ob man beim Erstellen irgendwelche Fehler gemacht hat. Diese Funktion
 erreicht man über das Kontextmenü oder über den Menüpunkt "`Ausführen"'.
@@ -116,26 +128,34 @@ erreicht man über das Kontextmenü oder über den Menüpunkt "`Ausführen"'.
 \end{center}
 \end{figure}
 
-\section{Was fange ich mit einer Grammatik an?}
+\section{Umwandeln und Validieren}
 
-Wir haben jetzt eine Grammatik angelegt und stellen uns jetzt vielleicht die
-Frage, was wir damit eigentlich anfangen können. Es bestehen zur Zeit zwei
-Verwendungsmöglichkeiten für eine Grammatik.\vspace{10pt}
-
-Zunächst einmal kann man die Grammatik als Vorlage für eine neue Grammatik
-nutzen. Das ist zum Beispiel sinnvoll, wenn wir eine kontextfreie Grammatik
+\subsection{Vorlage f"ur eine andere Grammatik}
+Eine Grammatik kann als Vorlage für eine neue Grammatik benutzt werden.
+Das ist zum Beispiel sinnvoll, wenn wir eine kontextfreie Grammatik
 haben und jetzt eine reguläre Grammatik mit den gleichen Produktionen
 erstellen wollen. Dazu öffnet man den Menüpunkt "`Ausführen"' und wählt unter
 "`Vorlage für\ldots"' den gewünschten Typ der neuen Datei aus.
 Dabei ist zu beachten, dass die Grammatik nicht konvertiert wird,
 sondern nur als Vorlage verwendet wird.\vspace{10pt}
 
-Die andere Verwendungsmöglichkeit beinhaltet, sich aus der Grammatik einen
-ent\-sprechen\-den Automaten generieren zu lassen. Es besteht die Möglichkeit,
+\subsection{Umwandeln in Automaten}
+Aus einer Grammatik kann der ent\-sprechen\-de Automat generiert werden.
+Es besteht die Möglichkeit,
 sich für eine reguläre Grammatik den entsprechenden NDEA, und für eine
-kontextfreie Grammatik den entsprechenden Kellerautomat erzeugen zu
-lassen. Zu finden ist die Umwandlung im Menüeintrag "`Ausführen"'
+kontextfreie Grammatik den entsprechenden Kellerautomaten, LR0-Automaten und
+LR1-Automaten erzeugen zu lassen. Zu finden ist die Umwandlung im Menüeintrag "`Ausführen"'
 unter "`Umwandeln in\ldots"'.\vspace{10pt}
+
+\subsection{Umwandeln in Parser}
+Es können die entsprechenden Parser aus einer kontextfreien Grammatik generiert werden.
+Im Menü "`Ausführen"' befindet sich der Eintrag "`Top-Down-Parser erstellen"'.
+Im Untermenü "`Umwandeln in"' unter dem Menü "`Ausführen"' befinden sich die Einträge:
+"`LR0-Parser erstellen"', "`LR1-Parser erstellen"', "`SLR-Parser erstellen"' und
+"`LALR1-Parser erstellen"'.
+
+\subsection{Erzeugen der FIRST- und FOLLOW-Mengen}
+TODO!
 
 Es ist zu beachten, dass beim Umwandeln einer Grammatik keine
 Validierungsfehler vorhanden sein dürfen. Bei der Funktion "`Vorlage

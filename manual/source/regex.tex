@@ -1,14 +1,14 @@
-\chapter{Wie erstelle ich einen regulären Ausdruck?}
+\chapter{Reguläre Ausdrücke}
 
-Wir wollen uns dies anhand des folgenden Beispiels anschauen: \Symbol{(a$|$b)*abb}
+Wir wollen uns reguläre Ausdrücke anhand des folgenden Beispiels anschauen: \Symbol{(a$|$b)*abb}
 
-\section{Neue .regex Datei anlegen}
+\section{Neue .regex-Datei anlegen}
 
-Zu Beginn müssen wir dazu, wie auch beim Automat und bei Grammatiken, den "`Neu\ldots"' Dialog öffnen. Zu finden ist dieser in der Toolbar oder im Menüeintrag "`Datei"'. Dort wählen wir "`Regulärer Ausdruck"' an und klicken auf "`Weiter"'.\vspace{10pt}
+Zu Beginn müssen wir dazu, wie auch beim Automat und bei Grammatiken, den "`Neu\ldots"'-Dialog öffnen. Zu finden ist dieser in der Toolbar oder im Menüeintrag "`Datei"'. Dort wählen wir "`Regulärer Ausdruck"' an und klicken auf "`Weiter"'.\vspace{10pt}
 
 Danach müssen wir im nächsten Dialog nur noch ein Alphabet festlegen, auf welchem der reguläre Ausdruck definiert ist. Hier ist es auch möglich eine Klasse von Zeichen anzugeben, zum Beispiel \Symbol{[a-z]}.\vspace{10pt}
 
-In unserem Beispiel würde also ein Alphabet bestehend aus \Symbol{a} und \Symbol{b} genügen. Man kann dieses Alphabet auch im Nachhinein noch über den Button "`Dokument editieren"' verändern. Nachdem wir ein Alphabet festgelegt haben bestätigen wir dies mit "`Fertig"'.\vspace{10pt}
+In unserem Beispiel würde also ein Alphabet bestehend aus \Symbol{a} und \Symbol{b} genügen. Man kann dieses Alphabet auch im Nachhinein noch über den Button "`Dokument editieren"' verändern. Nachdem wir ein Alphabet festgelegt haben, bestätigen wir dies mit "`Fertig"'.\vspace{10pt}
 
 \section{Regulären Ausdruck eingeben}
 
@@ -22,19 +22,17 @@ Nun ist ein Bildschirm wie in Abbildung \ref{regex} zu sehen.
 \end{center}
 \end{figure}
 
-Oben rechts ist das Eingabefeld für den regulären Ausdruck. Darunter findet man nochmal zur Orientierung das Alphabet, dass wir gerade eingegeben haben. Wie bereits oben erwähnt kann das Alphabet nur über den Button "`Dokument editieren"' verändert werden. Im Eingabefeld tragen wir nun unseren Beispielausdruck \Symbol{(a$|$b)*abb} ein.
+Oben rechts ist das Eingabefeld für den regulären Ausdruck. Darunter findet man nochmal zur Orientierung das Alphabet, das wir gerade eingegeben haben. Wie bereits oben erwähnt kann das Alphabet nur über den Button "`Dokument editieren"' verändert werden. Im Eingabefeld tragen wir nun unseren Beispielausdruck \Symbol{(a$|$b)*abb} ein.
 
 Direkt bei der Eingabe wird im Graph-Fenster in der Mitte der reguläre Ausdruck als Baum dargestellt.
 
-\paragraph*{Beachte:} Um ein $\epsilon$ einzugeben kann man sowohl das Zeichen an sich eingeben, aber, da die meisten Anwender nicht über ein griechisches Tastaturlayout verfügen, auch indem man die Zeichenfolge epsilon eingibt.
+\paragraph*{Beachte:} Um ein $\epsilon$ einzugeben, kann man sowohl das Zeichen an sich eingeben, als auch epsilon (da die meisten Anwender nicht über ein griechisches Tastaturlayout verfügen).
 
 \section{Das Informationsfenster}
 
 Im Menü findet sich unter "`Ansicht"' der Eintrag "`Regulärer Ausdruck Info"'. Wenn dieser Punkt aktiviert wird, erscheint auf der rechten Seite, neben dem Graph-Fenster, ein Informationsfenster.
 
-Dieses Informationsfenster beinhaltet die Informationen zum aktuell ausgewählten Knoten im Graph-Fenster. Diese Informationen bestehen aus den in der Vorlesung Compilerbau I definierten Funktionen nullable, firstpos, lastpos und followpos. Außerdem wird jetzt auch unter den Blattknoten die jeweilige Position angegeben.
-
-\section{Was macht man mit regulären Ausdrücken?}
+Dieses Informationsfenster beinhaltet die Informationen zum aktuell ausgewählten Knoten im Graph-Fenster. Diese Informationen bestehen aus den in der Vorlesung "`Compilerbau I"' definierten Funktionen nullable, firstpos, lastpos und followpos. Außerdem wird jetzt auch unter den Blattknoten die jeweilige Position angegeben.
 
 \subsection{Übersetzen in Kernsyntax}
 

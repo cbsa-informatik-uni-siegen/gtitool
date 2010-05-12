@@ -40,6 +40,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIFirstFollowPanel = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jGTIFirstSetTable = new de.unisiegen.gtitool.ui.swing.JGTITable();
@@ -55,10 +56,11 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         jGTIScrollPane2 = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIParsingTable = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonShowAll = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        setTitle(bundle.getString("CreateParsingTableGameDialog.Caption")); // NOI18N
+        setTitle(bundle.getString("BaseGameDialog.Caption")); // NOI18N
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jGTIFirstSetTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -110,8 +112,16 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        jGTIPanel1.add(jGTIFirstFollowPanel, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        getContentPane().add(jGTIFirstFollowPanel, gridBagConstraints);
+        getContentPane().add(jGTIPanel1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -208,7 +218,16 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 14);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
+
+        jGTIButtonShowAll.setText("jGTIButton1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 120);
+        getContentPane().add(jGTIButtonShowAll, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -223,12 +242,14 @@ public class BaseGameDialogForm extends javax.swing.JDialog
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonShowAll;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTICorrectAnswersLabel;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTIExistingCorrectAnswersLabel;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTIExistingWrongAnswersLabel;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIFirstFollowPanel;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIFirstSetTable;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIFollowSetTable;
+    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel1;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel3;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel4;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIParsingTable;

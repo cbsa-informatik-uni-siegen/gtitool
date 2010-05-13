@@ -40,7 +40,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIDataPresentationPanel = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIFirstFollowPanel = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jGTIFirstSetTable = new de.unisiegen.gtitool.ui.swing.JGTITable();
@@ -112,7 +112,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jGTIPanel1.add(jGTIFirstFollowPanel, gridBagConstraints);
+        jGTIDataPresentationPanel.add(jGTIFirstFollowPanel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -121,7 +121,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        getContentPane().add(jGTIPanel1, gridBagConstraints);
+        getContentPane().add(jGTIDataPresentationPanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -244,12 +244,12 @@ public class BaseGameDialogForm extends javax.swing.JDialog
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonShowAll;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTICorrectAnswersLabel;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIDataPresentationPanel;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTIExistingCorrectAnswersLabel;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTIExistingWrongAnswersLabel;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIFirstFollowPanel;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIFirstSetTable;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIFollowSetTable;
-    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel1;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel3;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel4;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIParsingTable;

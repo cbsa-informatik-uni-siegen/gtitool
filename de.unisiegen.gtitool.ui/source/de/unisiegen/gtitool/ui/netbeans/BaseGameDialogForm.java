@@ -11,7 +11,7 @@
 
 package de.unisiegen.gtitool.ui.netbeans;
 
-import de.unisiegen.gtitool.ui.logic.CreateParsingTableGameDialog;
+import de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
@@ -19,12 +19,12 @@ import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
  * @author christian
  */
 public class BaseGameDialogForm extends javax.swing.JDialog
-    implements GUIClass<CreateParsingTableGameDialog> {
+    implements GUIClass<AbstractBaseGameDialog> {
 
-    private CreateParsingTableGameDialog logic;
+    private AbstractBaseGameDialog logic;
 
     /** Creates new form CreateParsingTableGameDialogForm */
-    public BaseGameDialogForm(java.awt.Frame parent, CreateParsingTableGameDialog logic) {
+    public BaseGameDialogForm(java.awt.Frame parent, AbstractBaseGameDialog logic) {
         super(parent, true);
         this.logic = logic;
         initComponents();
@@ -136,6 +136,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         jGTIPanel4.add(jGTIExistingCorrectAnswersLabel, gridBagConstraints);
 
         jGTIExistingWrongAnswersLabel.setText("jGTILabel2");
@@ -153,6 +154,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         jGTIPanel4.add(jGTICorrectAnswersLabel, gridBagConstraints);
 
         jGTIWrongAnswersLabel.setText("jGTILabel4");
@@ -221,7 +223,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 14);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
-        jGTIButtonShowAll.setText("jGTIButton1");
+        jGTIButtonShowAll.setText(bundle.getString("BaseGameDialog.ShowAll")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -260,7 +262,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 
-    public CreateParsingTableGameDialog getLogic() {
+    public AbstractBaseGameDialog getLogic() {
         return this.logic;
     }
 

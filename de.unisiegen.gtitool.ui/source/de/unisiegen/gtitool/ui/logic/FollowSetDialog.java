@@ -7,16 +7,11 @@ import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 
-import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
-import de.unisiegen.gtitool.core.entities.Production;
-import de.unisiegen.gtitool.core.entities.ProductionWord;
-import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
-import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.FollowSetStepByStepTableColumnModel;
 import de.unisiegen.gtitool.ui.model.FollowSetStepByStepTableModel;
@@ -107,7 +102,7 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
   public FollowSetDialog ( final JFrame parent, final CFG cfg )
   {
     this.cfg = ( DefaultCFG ) cfg;
-    this.cfg.calculateAllFollowSets ();
+    this.cfg.calculateAllFollowSets2 ();
     this.gui = new FollowSetDialogForm ( parent, this );
     this.historyIndex = 0;
     this.followHistory = this.cfg.getFollowHistory ();
@@ -216,78 +211,12 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
 
     this.followSets = ( HashMap < NonterminalSymbol, TerminalSymbolSet > ) followData
         .get ( 0 );
-    final NonterminalSymbol ns = ( NonterminalSymbol ) followData.get ( 1 );
-    final Production p = ( Production ) followData.get ( 2 );
-    final ProductionWord rightSide = ( ProductionWord ) followData.get ( 3 );
-    final int rightSideIndex = ( ( Integer ) followData.get ( 4 ) ).intValue ();
-    final ProductionWord rest = ( ProductionWord ) followData.get ( 5 );
-    final int cause = ( ( Integer ) followData.get ( 6 ) ).intValue ();
-    printReason ( ns, p, rightSide, rightSideIndex, rest, cause );
+    final String reason = ( String ) followData.get ( 7 );
+    this.reasonModel.addElement ( reason );
 
     this.followSetsTableModel.setFollowSet ( this.followSets );
     updateWordNavigation ();
     this.gui.jGTIFollowTable.repaint ();
-  }
-
-
-  /**
-   * prints the reason that causes the last action in calculating the follow
-   * sets to take place
-   * 
-   * @param ns The {@link NonterminalSymbol} currently processed
-   * @param p The {@link Production}
-   * @param rightSide The {@link ProductionWord}
-   * @param rightSideIndex Index of currently processed element of the right
-   *          side of p
-   * @param beta The {@link ProductionWord}
-   * @param cause Which cases causes the last action to take place
-   */
-  private void printReason ( final NonterminalSymbol ns, final Production p,
-      final ProductionWord rightSide, final int rightSideIndex,
-      final ProductionWord beta, final int cause )
-  {
-    switch ( cause )
-    {
-      case 1 :
-        this.reasonModel.addElement ( Messages.getString (
-            "FollowSetDialog.ReasonCaseOne", ns ) ); //$NON-NLS-1$
-        break;
-      case 2 :
-        this.reasonModel.addElement ( Messages.getString (
-            "FollowSetDialog.ReasonCaseTwo", //$NON-NLS-1$
-            p.getNonterminalSymbol (), ns,
-            getAlpha ( rightSide, rightSideIndex ), beta ) );
-        break;
-      case 3 :
-        this.reasonModel.addElement ( Messages.getString (
-            "FollowSetDialog.ReasonCaseThree", //$NON-NLS-1$
-            p.getNonterminalSymbol (), ns,
-            getAlpha ( rightSide, rightSideIndex ) ) );
-        break;
-      case 4 :
-        this.reasonModel.addElement ( Messages.getString (
-            "FollowSetDialog.ReasonCaseFour", //$NON-NLS-1$
-            p.getNonterminalSymbol (), ns,
-            getAlpha ( rightSide, rightSideIndex ), beta ) );
-        break;
-    }
-  }
-
-
-  /**
-   * A -> \alphaB\beta => returns \alpha
-   * 
-   * @param rightSide The {@link ProductionWord}
-   * @param indexOfProcessedNonterminal
-   * @return A -> \alphaB\beta => returns \alpha
-   */
-  private ProductionWord getAlpha ( final ProductionWord rightSide,
-      final int indexOfProcessedNonterminal )
-  {
-    ArrayList < ProductionWordMember > pwm = new ArrayList < ProductionWordMember > ();
-    for ( int i = 0 ; i < indexOfProcessedNonterminal ; ++i )
-      pwm.add ( rightSide.get ( i ) );
-    return new DefaultProductionWord ( pwm );
   }
 
 

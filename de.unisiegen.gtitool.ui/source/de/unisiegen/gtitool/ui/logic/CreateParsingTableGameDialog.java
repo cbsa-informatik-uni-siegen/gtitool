@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
-import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultProductionSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.entities.ProductionSet;
@@ -17,10 +17,8 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalExc
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
-import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.ui.i18n.Messages;
-import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.FirstSetTableColumnModel;
 import de.unisiegen.gtitool.ui.model.FirstSetTableModel;
 import de.unisiegen.gtitool.ui.model.FollowSetTableColumnModel;
@@ -34,46 +32,8 @@ import de.unisiegen.gtitool.ui.netbeans.BaseGameDialogForm;
  * 
  * @author Christian Uhrhan
  */
-public class CreateParsingTableGameDialog implements
-    LogicClass < BaseGameDialogForm >
+public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
 {
-
-  /**
-   * Defines the type of our game
-   */
-  public enum GameType
-  {
-    /**
-     * The user should find the {@link ParsingTable} entry where only one item
-     * is recorded
-     */
-    GUESS_SINGLE_ENTRY,
-
-    /**
-     * The user should find the {@link ParsingTable} entry where multiple items
-     * are recoreded
-     */
-    GUESS_MULTI_ENTRY;
-  }
-
-
-  /**
-   * The {@link BaseGameDialogForm}
-   */
-  private BaseGameDialogForm gui;
-
-
-  /**
-   * The {@link GameType}
-   */
-  private GameType gameType;
-
-
-  /**
-   * The {@link DefaultCFG}
-   */
-  CFG cfg;
-
 
   /**
    * The {@link ParsingTable}
@@ -126,45 +86,33 @@ public class CreateParsingTableGameDialog implements
       final GameType gameType ) throws GrammarInvalidNonterminalException,
       TerminalSymbolSetException, NonterminalSymbolSetException
   {
-    this.gameType = gameType;
-    this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
-    this.cfg.getTerminalSymbolSet ().addIfNonexistent ( DefaultTerminalSymbol.EndMarker );
-
-    //
-    // setup the gui
-    //
-    this.gui = new BaseGameDialogForm ( parent, this );
-    // center the dialog
-    int x = parent.getBounds ().x + ( parent.getWidth () / 2 )
-        - ( this.gui.getWidth () / 2 );
-    int y = parent.getBounds ().y + ( parent.getHeight () / 2 )
-        - ( this.gui.getHeight () / 2 );
-    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
-
+    super ( parent, cfg, gameType );
     // setup the first and follow table
     // FirstSetTable
-    this.gui.jGTIFirstSetTable.setModel ( new FirstSetTableModel ( this.cfg ) );
-    this.gui.jGTIFirstSetTable
+    getGUI ().jGTIFirstSetTable.setModel ( new FirstSetTableModel (
+        getGrammar () ) );
+    getGUI ().jGTIFirstSetTable
         .setColumnModel ( new FirstSetTableColumnModel () );
-    this.gui.jGTIFirstSetTable.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTIFirstSetTable.setCellSelectionEnabled ( false );
+    getGUI ().jGTIFirstSetTable.getTableHeader ().setReorderingAllowed ( false );
+    getGUI ().jGTIFirstSetTable.setCellSelectionEnabled ( false );
 
     // FollowSetTable
-    this.gui.jGTIFollowSetTable
-        .setModel ( new FollowSetTableModel ( this.cfg ) );
-    this.gui.jGTIFollowSetTable
+    getGUI ().jGTIFollowSetTable.setModel ( new FollowSetTableModel (
+        getGrammar () ) );
+    getGUI ().jGTIFollowSetTable
         .setColumnModel ( new FollowSetTableColumnModel () );
-    this.gui.jGTIFollowSetTable.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTIFollowSetTable.setCellSelectionEnabled ( false );
+    getGUI ().jGTIFollowSetTable.getTableHeader ()
+        .setReorderingAllowed ( false );
+    getGUI ().jGTIFollowSetTable.setCellSelectionEnabled ( false );
 
     // setup the parsing table (backend)
-    this.parsingTable = new DefaultParsingTable ( this.cfg );
+    this.parsingTable = new DefaultParsingTable ( getGrammar () );
     this.parsingTable.create ();
 
     // setup the uncover matrix
-    this.uncoverMatrix = new Boolean [ this.cfg.getNonterminalSymbolSet ()
+    this.uncoverMatrix = new Boolean [ getGrammar ().getNonterminalSymbolSet ()
         .size () ] [];
-    int terminalSize = this.cfg.getTerminalSymbolSet ().size ();
+    int terminalSize = getGrammar ().getTerminalSymbolSet ().size ();
     for ( int row = 0 ; row < this.uncoverMatrix.length ; ++row )
     {
       this.uncoverMatrix [ row ] = new Boolean [ terminalSize ];
@@ -177,11 +125,11 @@ public class CreateParsingTableGameDialog implements
     this.userCorrectAnswers = 0;
     this.userWrongAnswers = 0;
 
-    this.gui.jGTIExistingCorrectAnswersLabel.setText ( Messages.getString (
+    getGUI ().jGTIExistingCorrectAnswersLabel.setText ( Messages.getString (
         "CreateParsingTableGameDialog.LabelAmountCorrect", new Integer ( //$NON-NLS-1$
             this.existingCorrectAnswers ) ) );
 
-    this.gui.jGTIExistingWrongAnswersLabel.setText ( Messages.getString (
+    getGUI ().jGTIExistingWrongAnswersLabel.setText ( Messages.getString (
         "CreateParsingTableGameDialog.LabelAmountWrong", new Integer ( //$NON-NLS-1$
             this.existingWrongAnswers ) ) );
     updateAnswers ();
@@ -201,8 +149,7 @@ public class CreateParsingTableGameDialog implements
       public Object getValueAt ( int row, int col )
       {
         if ( col == 0 )
-          return CreateParsingTableGameDialog.this.cfg
-              .getNonterminalSymbolSet ().get ( row );
+          return getGrammar ().getNonterminalSymbolSet ().get ( row );
         // col - 1 cause the first column are the nonterminals but they don't
         // count
         else if ( CreateParsingTableGameDialog.this.uncoverMatrix [ row ] [ col - 1 ]
@@ -221,11 +168,11 @@ public class CreateParsingTableGameDialog implements
         return false;
       }
     };
-    this.gui.jGTIParsingTable.setModel ( tableModel );
-    this.gui.jGTIParsingTable.setColumnModel ( new PTTableColumnModel (
-        this.cfg.getTerminalSymbolSet () ) );
-    this.gui.jGTIParsingTable.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTIParsingTable.setCellSelectionEnabled ( true );
+    getGUI ().jGTIParsingTable.setModel ( tableModel );
+    getGUI ().jGTIParsingTable.setColumnModel ( new PTTableColumnModel (
+        getGrammar ().getTerminalSymbolSet () ) );
+    getGUI ().jGTIParsingTable.getTableHeader ().setReorderingAllowed ( false );
+    getGUI ().jGTIParsingTable.setCellSelectionEnabled ( true );
 
   }
 
@@ -235,11 +182,11 @@ public class CreateParsingTableGameDialog implements
    */
   private void updateAnswers ()
   {
-    this.gui.jGTICorrectAnswersLabel.setText ( Messages.getString (
-        "CreateParsingTableGameDialog.LabelRight", new Integer ( //$NON-NLS-1$
+    getGUI ().jGTICorrectAnswersLabel.setText ( Messages.getString (
+        "BaseGameDialog.LabelRight", new Integer ( //$NON-NLS-1$
             this.userCorrectAnswers ) ) );
-    this.gui.jGTIWrongAnswersLabel.setText ( Messages.getString (
-        "CreateParsingTableGameDialog.LabelWrong", new Integer ( //$NON-NLS-1$
+    getGUI ().jGTIWrongAnswersLabel.setText ( Messages.getString (
+        "BaseGameDialog.LabelWrong", new Integer ( //$NON-NLS-1$
             this.userWrongAnswers ) ) );
   }
 
@@ -251,8 +198,8 @@ public class CreateParsingTableGameDialog implements
   {
     int answers = 0;
     int empty = 0;
-    for ( NonterminalSymbol ns : this.cfg.getNonterminalSymbolSet () )
-      for ( TerminalSymbol ts : this.cfg.getTerminalSymbolSet () )
+    for ( NonterminalSymbol ns : getGrammar ().getNonterminalSymbolSet () )
+      for ( TerminalSymbol ts : getGrammar ().getTerminalSymbolSet () )
       {
         int entrySize = this.parsingTable.get ( ns, ts ).size ();
         // count the entries with one item
@@ -262,9 +209,9 @@ public class CreateParsingTableGameDialog implements
           ++answers;
       }
     // there are #NonterminalSymbol * #TerminalSymbol possible answers
-    int possibleAnswers = this.cfg.getNonterminalSymbolSet ().size ()
-        * this.cfg.getTerminalSymbolSet ().size ();
-    switch ( this.gameType )
+    int possibleAnswers = getGrammar ().getNonterminalSymbolSet ().size ()
+        * getGrammar ().getTerminalSymbolSet ().size ();
+    switch ( getGameType () )
     {
       case GUESS_SINGLE_ENTRY :
         // user shall specify all parsing table entries with only one item in it
@@ -291,7 +238,7 @@ public class CreateParsingTableGameDialog implements
    */
   private void updateStats ( final ProductionSet entry )
   {
-    switch ( this.gameType )
+    switch ( getGameType () )
     {
       case GUESS_SINGLE_ENTRY :
         if ( entry.size () == 1 )
@@ -307,26 +254,8 @@ public class CreateParsingTableGameDialog implements
         return;
     }
     if ( this.userCorrectAnswers == this.existingCorrectAnswers )
-      JOptionPane.showMessageDialog ( this.gui, Messages
+      JOptionPane.showMessageDialog ( getGUI (), Messages
           .getString ( "CreateParsingTableGameDialog.AllFound" ) ); //$NON-NLS-1$
-  }
-
-
-  /**
-   * Shows the dialog
-   */
-  public void show ()
-  {
-    this.gui.setVisible ( true );
-  }
-
-
-  /**
-   * closes the dialog
-   */
-  public void handleOk ()
-  {
-    this.gui.dispose ();
   }
 
 
@@ -335,32 +264,40 @@ public class CreateParsingTableGameDialog implements
    * 
    * @param evt The {@link MouseEvent}
    */
+  @Override
   public void handleUncover ( final MouseEvent evt )
   {
     if ( evt.getClickCount () >= 2 )
     {
-      int row = this.gui.jGTIParsingTable.getSelectedRow ();
-      int col = this.gui.jGTIParsingTable.getSelectedColumn ();
+      int row = getGUI ().jGTIParsingTable.getSelectedRow ();
+      int col = getGUI ().jGTIParsingTable.getSelectedColumn ();
       // col > 1 cause the first column is the NonterminalSymbol-column
       if ( ( row == -1 || col == -1 )
           || this.uncoverMatrix [ row ] [ col - 1 ].booleanValue () || col == 0 )
         return;
+      
+      //determine the parsing table entries
+      final DefaultProductionSet dps = this.parsingTable.get ( row, col - 1 );
+//      final ActionSet actions = new DefaultActionSet();
+//      for(Production p : dps)
+//        actions.add ( new ReduceAction(p) );
+      
+      
       this.uncoverMatrix [ row ] [ col - 1 ] = new Boolean ( true );
-      updateStats ( this.parsingTable.get ( row, col - 1 ) );
+      updateStats ( dps );
       updateAnswers ();
-      this.gui.jGTIParsingTable.repaint ();
+      getGUI ().jGTIParsingTable.repaint ();
     }
   }
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.LogicClass#getGUI()
+   * TODO
+   *
+   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#handleShowAll()
    */
-  public BaseGameDialogForm getGUI ()
+  @Override
+  protected void handleShowAll ()
   {
-    return this.gui;
   }
-
 }

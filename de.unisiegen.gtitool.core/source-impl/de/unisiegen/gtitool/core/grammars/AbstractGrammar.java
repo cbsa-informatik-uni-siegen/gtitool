@@ -220,7 +220,7 @@ public abstract class AbstractGrammar implements Grammar
     this.initialProductions = new DefaultProductionSet (
         other.initialProductions );
     this.initialStartNonterminalSymbol = new DefaultNonterminalSymbol (
-        ( DefaultNonterminalSymbol ) other.getStartSymbol () );
+        other.getStartSymbol () );
     this.terminalSymbolSet = new DefaultTerminalSymbolSet ( other
         .getTerminalSymbolSet () );
     this.nonterminalSymbolSet = new DefaultNonterminalSymbolSet ( other
@@ -228,7 +228,7 @@ public abstract class AbstractGrammar implements Grammar
     this.validationElementList = other.validationElementList;
     this.modifyStatusChangedListener = null;
     this.startSymbol = new DefaultNonterminalSymbol (
-        ( DefaultNonterminalSymbol ) other.getStartSymbol () );
+        other.getStartSymbol () );
     this.productions = new DefaultProductionSet ( other.productions );
     this.followSetsHistory = new ArrayList < ArrayList < Object > > ();
   }
@@ -1049,7 +1049,7 @@ public abstract class AbstractGrammar implements Grammar
     switch ( cause )
     {
       case 1 :
-        entry.add ( Messages.getString ( "FollowSetDialog.ReasonCaseOne", ns ) ); //$NON-NLS-1$
+        entry.add ( Messages.getString ( "FollowReasonCaseOne", ns ) ); //$NON-NLS-1$
         break;
       case 2 :
         entry.add ( Messages.getString (
@@ -1277,7 +1277,7 @@ public abstract class AbstractGrammar implements Grammar
     if ( this.followSets == null )
     {
       initFollowSets ();
-      calculateAllFollowSets ();
+      calculateAllFollowSets2 ();
     }
     return this.followSets.get ( ns );
   }// end follow

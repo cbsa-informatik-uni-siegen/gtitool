@@ -5,10 +5,12 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.BaseGameDialogForm;
-import de.unisiegen.gtitool.ui.netbeans.FollowSetDialogForm;
 
 
 /**
@@ -16,33 +18,26 @@ import de.unisiegen.gtitool.ui.netbeans.FollowSetDialogForm;
  * 
  * @author Christian Uhrhan
  */
-public abstract class AbstractBaseGameDialog
+public abstract class AbstractBaseGameDialog implements
+    LogicClass < BaseGameDialogForm >
 {
 
   /**
-   * Which Button is pressed
+   * Defines the type of our game
    */
-  private enum Action
+  public enum GameType
   {
     /**
-     * start button
+     * The user should find the {@link ParsingTable} entry where only one item
+     * is recorded
      */
-    START,
+    GUESS_SINGLE_ENTRY,
 
     /**
-     * previous button
+     * The user should find the {@link ParsingTable} entry where multiple items
+     * are recoreded
      */
-    PREVIOUS,
-
-    /**
-     * next button
-     */
-    NEXT,
-
-    /**
-     * stop button
-     */
-    STOP;
+    GUESS_MULTI_ENTRY;
   }
 
 
@@ -53,32 +48,68 @@ public abstract class AbstractBaseGameDialog
 
 
   /**
+   * The {@link GameType}
+   */
+  private GameType gameType;
+
+
+  /**
    * The {@link BaseGameDialogForm}
    */
   private BaseGameDialogForm gui;
 
 
   /**
-   * 
    * Allocates a new {@link AbstractBaseGameDialog}
-   *
+   * 
    * @param parent The {@link JFrame}
    * @param cfg The {@link CFG}
+   * @param gameType The {@link GameType}
    */
-  public AbstractBaseGameDialog ( final JFrame parent, final CFG cfg )
+  public AbstractBaseGameDialog ( final JFrame parent, final CFG cfg,
+      final GameType gameType )
   {
     // setup grammar
     this.cfg = ( DefaultCFG ) cfg;
+    this.cfg.getTerminalSymbolSet ().addIfNonexistent (
+        DefaultTerminalSymbol.EndMarker );
+
+    // setup game type
+    this.gameType = gameType;
 
     // setup gui
-    //TODO: this.gui = new CreateParsingTableGameDialogForm ( parent, this );
+    this.gui = new BaseGameDialogForm ( parent, this );
     int x = parent.getBounds ().x + ( parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = parent.getBounds ().y + ( parent.getHeight () / 2 )
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
   }
+
+
+  /**
+   * Returns the {@link GameType}
+   * 
+   * @return The {@link GameType}
+   */
+  protected GameType getGameType ()
+  {
+    return this.gameType;
+  }
   
+  
+  /**
+   * 
+   * Returns the {@link DefaultCFG}
+   *
+   * @return The {@link DefaultCFG}
+   */
+  protected DefaultCFG getGrammar()
+  {
+    return this.cfg;
+  }
+
+
   /**
    * Shows the dialog
    */
@@ -95,26 +126,22 @@ public abstract class AbstractBaseGameDialog
   {
     this.gui.dispose ();
   }
-  
-  /**
-   * 
-   * implements the logic to handle a double click
-   * on a table cell
-   *
-   */
-  protected abstract void onHandleUncover();
-  
+
+
   /**
    * handles the uncover of a parsing table cell
    * 
    * @param evt The {@link MouseEvent}
    */
-  public void handleUncover ( final MouseEvent evt )
-  {
-    if ( evt.getClickCount () >= 2 )
-      onHandleUncover();
-  }
-  
+  public abstract void handleUncover ( final MouseEvent evt );
+
+
+  /**
+   * implements the logic to handle the 'show all' button
+   */
+  protected abstract void handleShowAll ();
+
+
   /**
    * {@inheritDoc}
    * 

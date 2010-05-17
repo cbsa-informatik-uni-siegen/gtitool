@@ -358,6 +358,19 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
+   * creates the deterministic recursive decent parser code
+   * 
+   * @return String of DRDP
+   */
+  private String createDRDP ( final Grammar grammar )
+  {
+    StringBuilder result = new StringBuilder ();
+    // TODO: implement me
+    return result.toString ();
+  }
+
+
+  /**
    * Let the listeners know that the modify status has changed.
    * 
    * @param forceModify True if the modify is forced, otherwise false.
@@ -662,6 +675,17 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   {
     TextWindow w = new TextWindow ( this.mainWindowForm,
         createRDP ( this.grammar ), false, null, getName () + "_RDP" ); //$NON-NLS-1$
+    w.show ();
+  }
+
+
+  /**
+   * Handles create deterministic rdp button pressed
+   */
+  public final void handleCreateDRDP ()
+  {
+    TextWindow w = new TextWindow ( this.mainWindowForm,
+        createDRDP ( this.grammar ), false, null, getName () + "_DRDP" ); //$NON-NLS-1$
     w.show ();
   }
 

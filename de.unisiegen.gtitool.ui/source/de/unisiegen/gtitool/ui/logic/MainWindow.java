@@ -414,6 +414,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_REGEX_INFO,
 
     /**
+     * The createDRDP button state
+     */
+    ENABLED_CREATE_DRDP,
+
+    /**
      * The createTDP button state
      */
     ENABLED_CREATE_TDP,
@@ -623,6 +628,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
     removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
     removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+    removeButtonState ( ButtonState.ENABLED_CREATE_DRDP );
     removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
     removeButtonState ( ButtonState.ENABLED_CREATE_PT );
     removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
@@ -1391,6 +1397,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_CREATE_RDP );
       this.gui.getJMenuItemCreateRDP ().setEnabled ( true );
     }
+    // create drdp
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CREATE_DRDP ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CREATE_DRDP ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CREATE_DRDP );
+      this.gui.getJMenuItemCreateDRDP ().setEnabled ( true );
+    }
     // create tdp
     else if ( ( buttonState.equals ( ButtonState.ENABLED_CREATE_TDP ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CREATE_TDP ) ) )
@@ -1934,6 +1947,23 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       gp.handleCreateRDP ();
+    }
+    else
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Handle the create RDP button clicked
+   */
+  public final void handleCreateDRDP ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      gp.handleCreateDRDP ();
     }
     else
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
@@ -4492,6 +4522,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
       removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
       removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+      removeButtonState ( ButtonState.ENABLED_CREATE_DRDP );
       removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
       removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
       removeButtonState ( ButtonState.ENABLED_CREATE_PT );
@@ -4525,6 +4556,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+        removeButtonState ( ButtonState.ENABLED_CREATE_DRDP );
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
@@ -4719,6 +4751,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+        removeButtonState ( ButtonState.ENABLED_CREATE_DRDP );
         removeButtonState ( ButtonState.ENABLED_REGEX_INFO );
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
@@ -4791,6 +4824,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
           removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
           removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+          removeButtonState ( ButtonState.ENABLED_CREATE_DRDP );
           removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
           removeButtonState ( ButtonState.ENABLED_CREATE_PT );
           removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
@@ -4813,6 +4847,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_ELIMINATE_EPSILON_PRODUCTIONS );
           addButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
           addButtonState ( ButtonState.ENABLED_CREATE_RDP );
+          addButtonState ( ButtonState.ENABLED_CREATE_DRDP );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
           addButtonState ( ButtonState.ENABLED_CREATE_TDP );
@@ -4926,6 +4961,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_ELIMINATE_ENTITY_PRODUCTIONS );
         removeButtonState ( ButtonState.ENABLED_LEFT_FACTORING );
         removeButtonState ( ButtonState.ENABLED_CREATE_RDP );
+        removeButtonState ( ButtonState.ENABLED_CREATE_DRDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
         removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
@@ -6323,6 +6359,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_CREATE_RDP );
       this.gui.getJMenuItemCreateRDP ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CREATE_DRDP ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CREATE_DRDP );
+      this.gui.getJMenuItemCreateDRDP ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_TO_CORE_SYNTAX ) )
     {

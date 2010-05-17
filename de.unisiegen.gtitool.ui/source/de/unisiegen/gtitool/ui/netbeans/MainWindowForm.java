@@ -1239,6 +1239,11 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
       return this.jMenuItemCalculateFollowSets;
   }
 
+  public JMenuItem getJMenuItemCreateDRDP()
+  {
+      return this.jMenuItemCreateDRDP;
+  }
+
 
   /**
    * This method is called from within the constructor to initialize the form.
@@ -1361,6 +1366,7 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
         jMenuItemParsingTableFindEntries = new javax.swing.JMenuItem();
         jMenuItemCalculateFirstSets = new javax.swing.JMenuItem();
         jMenuItemCalculateFollowSets = new javax.swing.JMenuItem();
+        jMenuItemCreateDRDP = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
@@ -2246,6 +2252,15 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
         });
         jMenuExecute.add(jMenuItemCalculateFollowSets);
 
+        jMenuItemCreateDRDP.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CreateDRDPMnemonic").charAt(0));
+        jMenuItemCreateDRDP.setText(bundle.getString("MainWindow.CreateDRDP")); // NOI18N
+        jMenuItemCreateDRDP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCreateDRDPActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemCreateDRDP);
+
         jMenuBarMain.add(jMenuExecute);
 
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
@@ -2318,6 +2333,9 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
         this.logic.handleCalculateFollowSets();
     }//GEN-LAST:event_jMenuItemCalculateFollowSetsActionPerformed
 
+    private void jMenuItemCreateDRDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCreateDRDPActionPerformed
+        this.logic.handleCreateDRDP();
+    }//GEN-LAST:event_jMenuItemCreateDRDPActionPerformed
 
   private void jMenuItemParsingTableFindEntriesActionPerformed (
       java.awt.event.ActionEvent evt )
@@ -2954,6 +2972,7 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
     private javax.swing.JMenuItem jMenuItemConvertToNFACB;
     private javax.swing.JMenuItem jMenuItemConvertToPDA;
     private javax.swing.JMenuItem jMenuItemConvertToRegex;
+    public javax.swing.JMenuItem jMenuItemCreateDRDP;
     private javax.swing.JMenuItem jMenuItemCreateParsingTableStepwise;
     private javax.swing.JMenuItem jMenuItemCreateRDP;
     private javax.swing.JMenuItem jMenuItemCreateTDP;

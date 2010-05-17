@@ -253,6 +253,7 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
       this.uncoverMatrix [ row ] [ col - 1 ] = new Boolean ( true );
       updateStats ( true );
       updateAnswers ();
+      updateReason ( this.parsingTable.getReasonFor ( row, col - 1 ) );
       getGUI ().jGTIParsingTable.repaint ();
     }
   }

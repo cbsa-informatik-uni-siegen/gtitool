@@ -2,8 +2,10 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Action;
@@ -102,6 +104,12 @@ public abstract class AbstractBaseGameDialog implements
 
 
   /**
+   * list model
+   */
+  private DefaultListModel reasonModel;
+
+
+  /**
    * Allocates a new {@link AbstractBaseGameDialog}
    * 
    * @param parent The {@link JFrame}
@@ -132,6 +140,22 @@ public abstract class AbstractBaseGameDialog implements
     this.existingWrongAnswers = 0;
     this.userCorrectAnswers = 0;
     this.userWrongAnswers = 0;
+
+    this.reasonModel = new DefaultListModel ();
+    this.gui.jGTIListReason.setModel ( this.reasonModel );
+  }
+
+
+  /**
+   * 
+   * update the reason list
+   *
+   * @param reasons list of reasons
+   */
+  protected void updateReason ( final ArrayList < String > reasons )
+  {
+    for ( String reason : reasons )
+      this.reasonModel.addElement ( reason );
   }
 
 

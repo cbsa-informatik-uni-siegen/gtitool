@@ -57,6 +57,9 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         jGTIParsingTable = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonShowAll = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jGTIListReason = new de.unisiegen.gtitool.ui.swing.JGTIList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
@@ -217,19 +220,39 @@ public class BaseGameDialogForm extends javax.swing.JDialog
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 14);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
         jGTIButtonShowAll.setText(bundle.getString("BaseGameDialog.ShowAll")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 120);
         getContentPane().add(jGTIButtonShowAll, gridBagConstraints);
+
+        jScrollPane3.setViewportView(jGTIListReason);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jGTIPanel1.add(jScrollPane3, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(15, 0, 5, 11);
+        getContentPane().add(jGTIPanel1, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -252,6 +275,8 @@ public class BaseGameDialogForm extends javax.swing.JDialog
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIFirstFollowPanel;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIFirstSetTable;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIFollowSetTable;
+    public de.unisiegen.gtitool.ui.swing.JGTIList jGTIListReason;
+    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel1;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel3;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel4;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIParsingTable;
@@ -260,6 +285,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTIWrongAnswersLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 
     public AbstractBaseGameDialog getLogic() {

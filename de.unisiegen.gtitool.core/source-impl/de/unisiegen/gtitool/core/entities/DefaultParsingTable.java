@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.Element;
@@ -51,6 +52,12 @@ public class DefaultParsingTable implements ParsingTable
    * TreeSet<Production>
    */
   private ArrayList < ArrayList < DefaultProductionSet >> parsingTable;
+
+
+  /**
+   * reasons
+   */
+  private ArrayList < ArrayList < ArrayList < String > > > reasons;
 
 
   // Data we need to create the {@link ParsingTable} step by step
@@ -117,6 +124,7 @@ public class DefaultParsingTable implements ParsingTable
     this.isNonterminalSymbolNextStepAvailable = false;
 
     this.history = new ArrayList < ArrayList < Object > > ();
+    this.reasons = new ArrayList < ArrayList < ArrayList < String >> > ();
   }
 
 
@@ -392,6 +400,7 @@ public class DefaultParsingTable implements ParsingTable
     for ( NonterminalSymbol ns : this.nonterminals )
     {
       this.parsingTable.add ( new ArrayList < DefaultProductionSet > () );
+      this.reasons.add ( new ArrayList < ArrayList < String > > () );
 
       ProductionSet ps = this.cfg.getProductionForNonTerminal ( ns );
 
@@ -399,6 +408,7 @@ public class DefaultParsingTable implements ParsingTable
       for ( TerminalSymbol ts : this.terminals )
       {
         this.parsingTable.get ( row ).add ( new DefaultProductionSet () );
+        this.reasons.get ( row ).add ( new ArrayList < String > () );
         for ( Production p : ps )
         {
           boolean tsInFirstProductionWord = this.cfg.first (
@@ -408,23 +418,39 @@ public class DefaultParsingTable implements ParsingTable
           boolean tsInFollowNS = this.cfg.follow ( ns ).contains ( ts );
 
           if ( tsInFirstProductionWord )
+          {
             createHistoryEntry ( ns, ts,
                 ParsingTable.EntryCause.TERMINAL_IN_FIRSTSET );
+            this.reasons.get ( row ).get ( col ).add (
+                Messages.getString ( "ParsingTable.TerminalInFirstSet", p, p //$NON-NLS-1$
+                    .getNonterminalSymbol (), ts, p.getProductionWord () ) );
+          }
           else if ( productionWordDerivesToEpsilon && tsInFollowNS )
+          {
             createHistoryEntry ( ns, ts,
                 ParsingTable.EntryCause.EPSILON_DERIVATION_AND_FOLLOWSET );
+            this.reasons.get ( row ).get ( col ).add (
+                Messages.getString (
+                    "ParsingTable.EpsilonDerivationAndFollowSet", p, p //$NON-NLS-1$
+                        .getNonterminalSymbol (), ts, p.getProductionWord () ) );
+          }
           else
             continue;
-          // if ( this.cfg.first ( p.getProductionWord () ).contains ( ts )
-          // || ( this.cfg.first ( p.getProductionWord () ).epsilon () &&
-          // this.cfg
-          // .follow ( ns ).contains ( ts ) ) )
           this.parsingTable.get ( row ).get ( col ).add ( p );
         }
         ++col;
       }
       ++row;
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public ArrayList < String > getReasonFor ( int row, int col )
+  {
+    return this.reasons.get ( row ).get ( col );
   }
 
 

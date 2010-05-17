@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.util.ArrayList;
+
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
@@ -181,4 +183,15 @@ public interface ParsingTable extends Entity < ParsingTable >, Storable
    * clears the current parsing table entries
    */
   public void clear ();
+
+
+  /**
+   * Returns the reasons why a {@link Production} was added to the
+   * parsingTable[row][col]
+   * 
+   * @param row the row
+   * @param col the col
+   * @return Reason list
+   */
+  public ArrayList < String > getReasonFor ( int row, int col );
 }

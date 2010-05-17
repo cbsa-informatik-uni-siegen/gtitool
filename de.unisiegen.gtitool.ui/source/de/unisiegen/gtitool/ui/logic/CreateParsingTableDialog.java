@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.ListSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
@@ -25,7 +24,10 @@ import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
-import de.unisiegen.gtitool.ui.model.GrammarColumnModel;
+import de.unisiegen.gtitool.ui.model.FirstSetTableColumnModel;
+import de.unisiegen.gtitool.ui.model.FirstSetTableModel;
+import de.unisiegen.gtitool.ui.model.FollowSetTableColumnModel;
+import de.unisiegen.gtitool.ui.model.FollowSetTableModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
 import de.unisiegen.gtitool.ui.model.PTTableModel;
 import de.unisiegen.gtitool.ui.netbeans.CreateParsingTableDialogForm;
@@ -106,9 +108,11 @@ public class CreateParsingTableDialog implements
    * @param cfg
    * @throws TerminalSymbolSetException
    * @throws NonterminalSymbolSetException
+   * @throws GrammarInvalidNonterminalException
    */
   public CreateParsingTableDialog ( final JFrame parent, final CFG cfg )
-      throws TerminalSymbolSetException, NonterminalSymbolSetException
+      throws TerminalSymbolSetException, NonterminalSymbolSetException,
+      GrammarInvalidNonterminalException
   {
     this.parent = parent;
     this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
@@ -126,20 +130,21 @@ public class CreateParsingTableDialog implements
     this.bundle = java.util.ResourceBundle
         .getBundle ( "de/unisiegen/gtitool/ui/i18n/messages" ); //$NON-NLS-1$
 
-    // setup the displayed nonterminals,terminals and start symbol
-    this.gui.styledNonterminalSymbolSetParserPanel.setText ( this.cfg
-        .getNonterminalSymbolSet () );
-    this.gui.styledStartNonterminalSymbolParserPanel.setText ( this.cfg
-        .getStartSymbol () );
-    this.gui.styledTerminalSymbolSetParserPanel.setText ( this.cfg
-        .getTerminalSymbolSet () );
+    // setup displayed follow/first sets
+    getGUI ().jGTIFirstSetTable.setModel ( new FirstSetTableModel ( this.cfg ) );
+    getGUI ().jGTIFirstSetTable
+        .setColumnModel ( new FirstSetTableColumnModel () );
+    getGUI ().jGTIFirstSetTable.getTableHeader ().setReorderingAllowed ( false );
+    getGUI ().jGTIFirstSetTable.setCellSelectionEnabled ( false );
 
-    // setup the grammar table
-    this.gui.jGTIGrammarTable.setModel ( this.cfg );
-    this.gui.jGTIGrammarTable.setColumnModel ( new GrammarColumnModel () );
-    this.gui.jGTIGrammarTable
-        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jGTIGrammarTable.getTableHeader ().setReorderingAllowed ( false );
+    // FollowSetTable
+    getGUI ().jGTIFollowSetTable
+        .setModel ( new FollowSetTableModel ( this.cfg ) );
+    getGUI ().jGTIFollowSetTable
+        .setColumnModel ( new FollowSetTableColumnModel () );
+    getGUI ().jGTIFollowSetTable.getTableHeader ()
+        .setReorderingAllowed ( false );
+    getGUI ().jGTIFollowSetTable.setCellSelectionEnabled ( false );
 
     // setup the parsing table model
     this.gui.jGTIParsingTable.setModel ( new PTTableModel ( this.cfg,

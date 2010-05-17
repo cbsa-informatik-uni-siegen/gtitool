@@ -687,6 +687,11 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+    catch ( GrammarInvalidNonterminalException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 
 
@@ -742,9 +747,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
-   * 
    * blub
-   *
    */
   public final void handleCalculateFollowSets ()
   {

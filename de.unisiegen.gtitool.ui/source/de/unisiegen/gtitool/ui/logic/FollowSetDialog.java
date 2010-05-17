@@ -211,7 +211,7 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
 
     this.followSets = ( HashMap < NonterminalSymbol, TerminalSymbolSet > ) followData
         .get ( 0 );
-    final String reason = ( String ) followData.get ( 7 );
+    final String reason = ( String ) followData.get ( 8 );
     this.reasonModel.addElement ( reason );
 
     this.followSetsTableModel.setFollowSet ( this.followSets );

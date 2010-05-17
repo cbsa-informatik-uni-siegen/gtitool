@@ -219,16 +219,15 @@ public abstract class AbstractGrammar implements Grammar
   {
     this.initialProductions = new DefaultProductionSet (
         other.initialProductions );
-    this.initialStartNonterminalSymbol = new DefaultNonterminalSymbol (
-        other.getStartSymbol () );
+    this.initialStartNonterminalSymbol = new DefaultNonterminalSymbol ( other
+        .getStartSymbol () );
     this.terminalSymbolSet = new DefaultTerminalSymbolSet ( other
         .getTerminalSymbolSet () );
     this.nonterminalSymbolSet = new DefaultNonterminalSymbolSet ( other
         .getNonterminalSymbolSet () );
     this.validationElementList = other.validationElementList;
     this.modifyStatusChangedListener = null;
-    this.startSymbol = new DefaultNonterminalSymbol (
-        other.getStartSymbol () );
+    this.startSymbol = new DefaultNonterminalSymbol ( other.getStartSymbol () );
     this.productions = new DefaultProductionSet ( other.productions );
     this.followSetsHistory = new ArrayList < ArrayList < Object > > ();
   }
@@ -1027,11 +1026,13 @@ public abstract class AbstractGrammar implements Grammar
    * @param rightSide The {@link ProductionWord}
    * @param rightSideIndex the current rightSideIndex
    * @param rest The {@link ProductionWord}
+   * @param fsToAdd {@link FirstSet}
    * @param cause The case which cases the last action to take place
    */
   private final void createFollowSetHistoryEntry ( final NonterminalSymbol ns,
       final Production p, final ProductionWord rightSide,
-      final int rightSideIndex, final ProductionWord rest, final int cause )
+      final int rightSideIndex, final ProductionWord rest,
+      final FirstSet fsToAdd, final int cause )
   {
     HashMap < NonterminalSymbol, TerminalSymbolSet > tmp = new HashMap < NonterminalSymbol, TerminalSymbolSet > ();
     for ( Entry < NonterminalSymbol, TerminalSymbolSet > e : this.followSets
@@ -1045,6 +1046,7 @@ public abstract class AbstractGrammar implements Grammar
     entry.add ( rightSide );
     entry.add ( new Integer ( rightSideIndex ) );
     entry.add ( rest );
+    entry.add ( fsToAdd );
     entry.add ( new Integer ( cause ) );
     switch ( cause )
     {
@@ -1052,22 +1054,21 @@ public abstract class AbstractGrammar implements Grammar
         entry.add ( Messages.getString ( "FollowReasonCaseOne", ns ) ); //$NON-NLS-1$
         break;
       case 2 :
-        entry.add ( Messages.getString (
-            "FollowReasonCaseTwo", //$NON-NLS-1$
-            p.getNonterminalSymbol (), ns,
-            getAlpha ( rightSide, rightSideIndex ), rest ) );
+        entry.add ( Messages.getString ( "FollowReasonCaseTwo", //$NON-NLS-1$
+            ns, rest.get ( 0 ) ) );
         break;
       case 3 :
-        entry.add ( Messages.getString (
-            "FollowReasonCaseThree", //$NON-NLS-1$
-            p.getNonterminalSymbol (), ns,
-            getAlpha ( rightSide, rightSideIndex ) ) );
+        entry.add ( Messages.getString ( "FollowReasonCaseThree", //$NON-NLS-1$
+            ns, fsToAdd, rest.get ( 0 ) ) );
         break;
       case 4 :
+        entry.add ( Messages.getString ( "FollowReasonCaseFour", //$NON-NLS-1$
+            ns, rest.get ( 0 ) ) );
+        break;
+      case 5 :
         entry.add ( Messages.getString (
-            "FollowReasonCaseFour", //$NON-NLS-1$
-            p.getNonterminalSymbol (), ns,
-            getAlpha ( rightSide, rightSideIndex ), rest ) );
+            "FollowReasonCaseFive", //$NON-NLS-1$
+            ns, p.getNonterminalSymbol () ) );
         break;
     }
     this.followSetsHistory.add ( entry );
@@ -1106,7 +1107,7 @@ public abstract class AbstractGrammar implements Grammar
               DefaultTerminalSymbol.EndMarker )
               || modified;
           start = true;
-          createFollowSetHistoryEntry ( ns, null, null, -1, null, 1 );
+          createFollowSetHistoryEntry ( ns, null, null, -1, null, null, 1 );
         }
 
         // case 2 and 3
@@ -1135,7 +1136,8 @@ public abstract class AbstractGrammar implements Grammar
               modified = this.followSets.get ( ns ).addIfNonexistent (
                   firstRest )
                   || modified;
-              createFollowSetHistoryEntry ( ns, p, rightSide, index, rest, 2 );
+              createFollowSetHistoryEntry ( ns, p, rightSide, index, rest,
+                  firstRest, 2 );
             }
             // else
             // case 3
@@ -1147,7 +1149,7 @@ public abstract class AbstractGrammar implements Grammar
                   this.followSets.get ( p.getNonterminalSymbol () ) )
                   || modified;
               createFollowSetHistoryEntry ( ns, p, rightSide, index, rest,
-                  isEmpty ? 3 : 4 );
+                  null, isEmpty ? 3 : 4 );
             }
           }
         }
@@ -1177,7 +1179,7 @@ public abstract class AbstractGrammar implements Grammar
       {
         this.followSets.get ( ns ).addIfNonexistent (
             DefaultTerminalSymbol.EndMarker );
-        createFollowSetHistoryEntry ( ns, null, null, -1, null, 1 );
+        createFollowSetHistoryEntry ( ns, null, null, -1, null, null, 1 );
       }
 
       // case 2
@@ -1202,7 +1204,12 @@ public abstract class AbstractGrammar implements Grammar
             firstRest.removeIfExistent ( DefaultTerminalSymbol.Epsilon );
 
             this.followSets.get ( ns ).addIfNonexistent ( firstRest );
-            createFollowSetHistoryEntry ( ns, p, rightSide, index, rest, 2 );
+            if ( rest.get ( 0 ) instanceof TerminalSymbol )
+              createFollowSetHistoryEntry ( ns, p, rightSide, index, rest,
+                  firstRest, 2 );
+            else
+              createFollowSetHistoryEntry ( ns, p, rightSide, index, rest,
+                  firstRest, 3 );
           }
         }// end for idx : rightSide
       }// end for p : prods
@@ -1237,7 +1244,7 @@ public abstract class AbstractGrammar implements Grammar
                   this.followSets.get ( p.getNonterminalSymbol () ) )
                   || modified;
               createFollowSetHistoryEntry ( ns, p, rightSide, index, rest,
-                  isEmpty ? 3 : 4 );
+                  null, isEmpty ? 5 : 4 );
             }
           }
         }
@@ -1259,7 +1266,7 @@ public abstract class AbstractGrammar implements Grammar
       newTerminalSymbolSet.setDisplayAll ( true );
       this.followSets.put ( ns, newTerminalSymbolSet );
     }
-    createFollowSetHistoryEntry ( null, null, null, -1, null, -1 );
+    createFollowSetHistoryEntry ( null, null, null, -1, null, null, -1 );
   }
 
 

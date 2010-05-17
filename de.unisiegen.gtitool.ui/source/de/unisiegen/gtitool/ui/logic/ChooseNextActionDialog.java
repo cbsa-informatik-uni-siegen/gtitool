@@ -81,8 +81,8 @@ public final class ChooseNextActionDialog implements
       throw new NullPointerException ( "parent is null" ); //$NON-NLS-1$
     if ( actions == null )
       throw new NullPointerException ( "actions is null" ); //$NON-NLS-1$
-    if ( actions.size () < 2 )
-      throw new IllegalArgumentException ( "actions set size too small" ); //$NON-NLS-1$
+//    if ( actions.size () < 2 )
+//      throw new IllegalArgumentException ( "actions set size too small" ); //$NON-NLS-1$
 
     this.parent = parent;
     this.actions = actions;
@@ -106,7 +106,7 @@ public final class ChooseNextActionDialog implements
    * Returns the chosen {@link Action}s
    * 
    * @return The chosen {@link Action}s
-   * @throws ActionSetException 
+   * @throws ActionSetException
    */
   public final ActionSet getChosenAction () throws ActionSetException
   {

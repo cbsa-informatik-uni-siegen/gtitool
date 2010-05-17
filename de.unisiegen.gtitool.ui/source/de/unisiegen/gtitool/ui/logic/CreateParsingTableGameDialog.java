@@ -4,17 +4,19 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import de.unisiegen.gtitool.core.entities.ActionSet;
+import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.DefaultProductionSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
-import de.unisiegen.gtitool.core.entities.ProductionSet;
+import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -49,42 +51,17 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
 
 
   /**
-   * The amount of existing correct answers
-   */
-  private int existingCorrectAnswers;
-
-
-  /**
-   * The amount of existing wrong answers
-   */
-  private int existingWrongAnswers;
-
-
-  /**
-   * The amount of the correct answers given by the user so far
-   */
-  private int userCorrectAnswers;
-
-
-  /**
-   * The amount of the wrong answers given by the user so far
-   */
-  private int userWrongAnswers;
-
-
-  /**
    * Allocates a new {@link CreateParsingTableGameDialog}
    * 
    * @param parent The {@link JFrame}
    * @param cfg The {@link CFG}
-   * @param gameType The {@link GameType}
+   * @param gameType The {@link AbstractBaseGameDialog.GameType}
    * @throws TerminalSymbolSetException
    * @throws GrammarInvalidNonterminalException
-   * @throws NonterminalSymbolSetException
    */
   public CreateParsingTableGameDialog ( final JFrame parent, final CFG cfg,
       final GameType gameType ) throws GrammarInvalidNonterminalException,
-      TerminalSymbolSetException, NonterminalSymbolSetException
+      TerminalSymbolSetException
   {
     super ( parent, cfg, gameType );
     // setup the first and follow table
@@ -122,16 +99,14 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
 
     // setup the correct/wrong answers
     calculateCorrectWrongAnswers ();
-    this.userCorrectAnswers = 0;
-    this.userWrongAnswers = 0;
 
     getGUI ().jGTIExistingCorrectAnswersLabel.setText ( Messages.getString (
-        "CreateParsingTableGameDialog.LabelAmountCorrect", new Integer ( //$NON-NLS-1$
-            this.existingCorrectAnswers ) ) );
+        "BaseGameDialog.LabelAmountCorrect", new Integer ( //$NON-NLS-1$
+            getExistingCorrectAnswers () ) ) );
 
     getGUI ().jGTIExistingWrongAnswersLabel.setText ( Messages.getString (
-        "CreateParsingTableGameDialog.LabelAmountWrong", new Integer ( //$NON-NLS-1$
-            this.existingWrongAnswers ) ) );
+        "BaseGameDialog.LabelAmountWrong", new Integer ( //$NON-NLS-1$
+            getExistingWrongAnswers () ) ) );
     updateAnswers ();
 
     // setup the parsing table (frontend)
@@ -178,20 +153,6 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
 
 
   /**
-   * Updates the gui correct/wrong answer labels
-   */
-  private void updateAnswers ()
-  {
-    getGUI ().jGTICorrectAnswersLabel.setText ( Messages.getString (
-        "BaseGameDialog.LabelRight", new Integer ( //$NON-NLS-1$
-            this.userCorrectAnswers ) ) );
-    getGUI ().jGTIWrongAnswersLabel.setText ( Messages.getString (
-        "BaseGameDialog.LabelWrong", new Integer ( //$NON-NLS-1$
-            this.userWrongAnswers ) ) );
-  }
-
-
-  /**
    * Calculates the number of correct/wrong answers for the game
    */
   private void calculateCorrectWrongAnswers ()
@@ -216,46 +177,41 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
       case GUESS_SINGLE_ENTRY :
         // user shall specify all parsing table entries with only one item in it
         // so 'answer' is the amount of correct answers...
-        this.existingCorrectAnswers = answers;
-        this.existingWrongAnswers = possibleAnswers
-            - this.existingCorrectAnswers;
+        setExistingCorrectAnswers ( answers );
+        setExistingWrongAnswers ( possibleAnswers - answers );
         return;
       case GUESS_MULTI_ENTRY :
         // ...otherwise empty + answers is the amount of wrong answers and the
         // rest of entries are the number of correct answers
-        this.existingWrongAnswers = empty + answers;
-        this.existingCorrectAnswers = possibleAnswers
-            - this.existingWrongAnswers;
+        setExistingWrongAnswers ( empty + answers );
+        setExistingCorrectAnswers ( possibleAnswers - ( empty + answers ) );
         return;
     }
   }
 
 
   /**
-   * updates the game statistics
+   * blub
    * 
-   * @param entry The {@link ProductionSet} entry which was just uncovered
+   * @param row blub
+   * @param col blub
+   * @return {@link ActionSet}
    */
-  private void updateStats ( final ProductionSet entry )
+  private final ActionSet getActionSetAt ( final int row, final int col )
   {
-    switch ( getGameType () )
-    {
-      case GUESS_SINGLE_ENTRY :
-        if ( entry.size () == 1 )
-          ++this.userCorrectAnswers;
-        else
-          ++this.userWrongAnswers;
-        return;
-      case GUESS_MULTI_ENTRY :
-        if ( entry.size () > 1 )
-          ++this.userCorrectAnswers;
-        else
-          ++this.userWrongAnswers;
-        return;
-    }
-    if ( this.userCorrectAnswers == this.existingCorrectAnswers )
-      JOptionPane.showMessageDialog ( getGUI (), Messages
-          .getString ( "CreateParsingTableGameDialog.AllFound" ) ); //$NON-NLS-1$
+    final DefaultProductionSet dps = this.parsingTable.get ( row, col );
+    final ActionSet actions = new DefaultActionSet ();
+    for ( Production p : dps )
+      try
+      {
+        actions.add ( new ReduceAction ( p ) );
+      }
+      catch ( ActionSetException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
+    return actions;
   }
 
 
@@ -275,16 +231,27 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
       if ( ( row == -1 || col == -1 )
           || this.uncoverMatrix [ row ] [ col - 1 ].booleanValue () || col == 0 )
         return;
-      
-      //determine the parsing table entries
-      final DefaultProductionSet dps = this.parsingTable.get ( row, col - 1 );
-//      final ActionSet actions = new DefaultActionSet();
-//      for(Production p : dps)
-//        actions.add ( new ReduceAction(p) );
-      
-      
+
+      try
+      {
+        final ActionSet actions = getActionSetAt ( row, col - 1 );
+        final ActionSet selectableActions = getSelectableActions ( actions );
+        final ActionSet chosenActions = getUserSelection ( selectableActions );
+        if ( !actionSetsEquals ( actions, chosenActions ) )
+        {
+          updateStats ( false );
+          updateAnswers ();
+          return;
+        }
+      }
+      catch ( ActionSetException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
+
       this.uncoverMatrix [ row ] [ col - 1 ] = new Boolean ( true );
-      updateStats ( dps );
+      updateStats ( true );
       updateAnswers ();
       getGUI ().jGTIParsingTable.repaint ();
     }
@@ -293,7 +260,7 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
 
   /**
    * TODO
-   *
+   * 
    * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#handleShowAll()
    */
   @Override

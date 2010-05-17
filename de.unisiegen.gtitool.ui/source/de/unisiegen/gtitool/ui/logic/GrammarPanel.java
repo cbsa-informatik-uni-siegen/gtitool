@@ -751,9 +751,17 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    */
   public final void handleCalculateFollowSets ()
   {
-    final FollowSetDialog fsd = new FollowSetDialog ( this.mainWindowForm,
-        ( CFG ) getGrammar () );
-    fsd.show ();
+    FollowSetDialog fsd;
+    try
+    {
+      fsd = new FollowSetDialog ( this.mainWindowForm, ( CFG ) getGrammar () );
+      fsd.show ();
+    }
+    catch ( GrammarInvalidNonterminalException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 
 

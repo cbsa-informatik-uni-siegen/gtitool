@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 import de.unisiegen.gtitool.core.entities.FirstSet;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
@@ -52,6 +54,18 @@ public class FirstSetTableModel extends AbstractTableModel
 
 
   /**
+   * The {@link NonterminalSymbol}
+   */
+  private NonterminalSymbolSet nonterminals;
+
+
+  /**
+   * blub
+   */
+  private boolean sententialForm;
+
+
+  /**
    * The {@link FirstSet}s
    */
   private ArrayList < FirstSet > firstSetData;
@@ -61,25 +75,34 @@ public class FirstSetTableModel extends AbstractTableModel
    * Allocates a new {@link FirstSetTableModel}
    * 
    * @param cfg The {@link CFG}
+   * @param sententialForm blub
    * @throws GrammarInvalidNonterminalException
    */
-  public FirstSetTableModel ( final CFG cfg )
+  public FirstSetTableModel ( final CFG cfg, final boolean sententialForm )
       throws GrammarInvalidNonterminalException
   {
-    if(cfg == null)
+    if ( cfg == null )
       throw new NullPointerException ( "cfg is null" ); //$NON-NLS-1$
-    
-    this.productionWordData = new ArrayList < ProductionWord > ();
-    this.firstSetData = new ArrayList < FirstSet > ();
-    
-    for ( Production p : cfg.getProduction () )
-      this.productionWordData.add ( p.getProductionWord () );
 
-    for ( ProductionWord pw : this.productionWordData )
+    this.firstSetData = new ArrayList < FirstSet > ();
+    this.nonterminals = cfg.getNonterminalSymbolSet ();
+    this.sententialForm = sententialForm;
+
+    if ( this.sententialForm )
     {
-      FirstSet fs = cfg.first ( pw );
-      this.firstSetData.add ( fs );
+      this.productionWordData = new ArrayList < ProductionWord > ();
+      for ( Production p : cfg.getProduction () )
+        this.productionWordData.add ( p.getProductionWord () );
+
+      for ( ProductionWord pw : this.productionWordData )
+      {
+        FirstSet fs = cfg.first ( pw );
+        this.firstSetData.add ( fs );
+      }
     }
+    else
+      for ( NonterminalSymbol ns : this.nonterminals )
+        this.firstSetData.add ( cfg.first ( ns ) );
   }
 
 
@@ -101,7 +124,9 @@ public class FirstSetTableModel extends AbstractTableModel
    */
   public int getRowCount ()
   {
-    return this.productionWordData.size ();
+    if ( this.sententialForm )
+      return this.productionWordData.size ();
+    return this.nonterminals.size ();
   }
 
 
@@ -115,7 +140,9 @@ public class FirstSetTableModel extends AbstractTableModel
     switch ( columnIndex )
     {
       case DERIVATION_COLUMN :
-        return this.productionWordData.get ( rowIndex );
+        if ( this.sententialForm )
+          return this.productionWordData.get ( rowIndex );
+        return this.nonterminals.get ( rowIndex );
       case FIRST_SET_COLUMN :
         return this.firstSetData.get ( rowIndex );
     }

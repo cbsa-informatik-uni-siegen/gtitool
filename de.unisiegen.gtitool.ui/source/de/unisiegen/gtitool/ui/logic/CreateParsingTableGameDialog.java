@@ -67,7 +67,7 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
     // setup the first and follow table
     // FirstSetTable
     getGUI ().jGTIFirstSetTable.setModel ( new FirstSetTableModel (
-        getGrammar () ) );
+        getGrammar (), true ) );
     getGUI ().jGTIFirstSetTable
         .setColumnModel ( new FirstSetTableColumnModel () );
     getGUI ().jGTIFirstSetTable.getTableHeader ().setReorderingAllowed ( false );

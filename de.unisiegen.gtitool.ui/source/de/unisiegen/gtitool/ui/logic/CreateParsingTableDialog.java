@@ -131,7 +131,7 @@ public class CreateParsingTableDialog implements
         .getBundle ( "de/unisiegen/gtitool/ui/i18n/messages" ); //$NON-NLS-1$
 
     // setup displayed follow/first sets
-    getGUI ().jGTIFirstSetTable.setModel ( new FirstSetTableModel ( this.cfg ) );
+    getGUI ().jGTIFirstSetTable.setModel ( new FirstSetTableModel ( this.cfg, true ) );
     getGUI ().jGTIFirstSetTable
         .setColumnModel ( new FirstSetTableColumnModel () );
     getGUI ().jGTIFirstSetTable.getTableHeader ().setReorderingAllowed ( false );

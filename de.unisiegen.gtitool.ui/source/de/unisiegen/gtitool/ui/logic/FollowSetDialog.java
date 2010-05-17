@@ -10,9 +10,12 @@ import javax.swing.JFrame;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
+import de.unisiegen.gtitool.ui.model.FirstSetTableColumnModel;
+import de.unisiegen.gtitool.ui.model.FirstSetTableModel;
 import de.unisiegen.gtitool.ui.model.FollowSetStepByStepTableColumnModel;
 import de.unisiegen.gtitool.ui.model.FollowSetStepByStepTableModel;
 import de.unisiegen.gtitool.ui.netbeans.FollowSetDialogForm;
@@ -98,8 +101,10 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
    * 
    * @param parent The {@link JFrame}
    * @param cfg The {@link CFG}
+   * @throws GrammarInvalidNonterminalException
    */
   public FollowSetDialog ( final JFrame parent, final CFG cfg )
+      throws GrammarInvalidNonterminalException
   {
     this.cfg = ( DefaultCFG ) cfg;
     this.cfg.calculateAllFollowSets2 ();
@@ -117,6 +122,14 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
     int y = parent.getBounds ().y + ( parent.getHeight () / 2 )
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
+
+    getGUI ().jGTIFirstSetTable.setModel ( new FirstSetTableModel ( this.cfg,
+        false ) );
+    getGUI ().jGTIFirstSetTable
+        .setColumnModel ( new FirstSetTableColumnModel () );
+    getGUI ().jGTIFirstSetTable.getTableHeader ().setReorderingAllowed ( false );
+    getGUI ().jGTIFirstSetTable.setCellSelectionEnabled ( false );
+    getGUI ().jGTIFirstSetTable.repaint ();
 
     // setup the table
     this.followSetsTableModel = new FollowSetStepByStepTableModel (

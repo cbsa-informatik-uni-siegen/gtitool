@@ -210,7 +210,7 @@ public abstract class AbstractBaseGameDialog implements
   /**
    * implements the logic to handle the 'show all' button
    */
-  protected abstract void handleShowAll ();
+  public abstract void handleShowAll ();
 
 
   /**

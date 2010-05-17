@@ -260,12 +260,20 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#handleShowAll()
    */
   @Override
-  protected void handleShowAll ()
+  public void handleShowAll ()
   {
+    for ( int i = 0 ; i < this.parsingTable.getRowCount () ; ++i )
+      for ( int j = 0 ; j < this.parsingTable.getColumnCount () ; ++j )
+        if ( !this.uncoverMatrix [ i ] [ j ].booleanValue () )
+        {
+          this.uncoverMatrix [ i ] [ j ] = new Boolean(true);
+          updateReason ( this.parsingTable.getReasonFor ( i, j ) );
+        }
+    getGUI().jGTIParsingTable.repaint ();
   }
 }

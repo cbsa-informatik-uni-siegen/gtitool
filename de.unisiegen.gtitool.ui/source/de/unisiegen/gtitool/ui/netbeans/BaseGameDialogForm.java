@@ -227,6 +227,11 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
         jGTIButtonShowAll.setText(bundle.getString("BaseGameDialog.ShowAll")); // NOI18N
+        jGTIButtonShowAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIButtonShowAllActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
@@ -264,6 +269,10 @@ public class BaseGameDialogForm extends javax.swing.JDialog
     private void jGTIParsingTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTIParsingTableMouseClicked
         this.logic.handleUncover(evt);
     }//GEN-LAST:event_jGTIParsingTableMouseClicked
+
+    private void jGTIButtonShowAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonShowAllActionPerformed
+        this.logic.handleShowAll();
+    }//GEN-LAST:event_jGTIButtonShowAllActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;

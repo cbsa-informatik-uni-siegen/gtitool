@@ -743,6 +743,11 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      exc.printStackTrace();
+      System.exit ( 1 );
+    }
   }
 
 
@@ -784,6 +789,16 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     catch ( GrammarInvalidNonterminalException exc )
     {
       exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace();
+      System.exit ( 1 );
+    }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      exc.printStackTrace();
       System.exit ( 1 );
     }
   }

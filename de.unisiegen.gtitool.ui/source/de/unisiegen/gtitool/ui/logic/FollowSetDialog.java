@@ -11,6 +11,8 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
@@ -102,11 +104,14 @@ public class FollowSetDialog implements LogicClass < FollowSetDialogForm >
    * @param parent The {@link JFrame}
    * @param cfg The {@link CFG}
    * @throws GrammarInvalidNonterminalException
+   * @throws NonterminalSymbolSetException
+   * @throws TerminalSymbolSetException
    */
   public FollowSetDialog ( final JFrame parent, final CFG cfg )
-      throws GrammarInvalidNonterminalException
+      throws GrammarInvalidNonterminalException, TerminalSymbolSetException,
+      NonterminalSymbolSetException
   {
-    this.cfg = ( DefaultCFG ) cfg;
+    this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
     this.cfg.calculateAllFollowSets2 ();
     this.gui = new FollowSetDialogForm ( parent, this );
     this.historyIndex = 0;

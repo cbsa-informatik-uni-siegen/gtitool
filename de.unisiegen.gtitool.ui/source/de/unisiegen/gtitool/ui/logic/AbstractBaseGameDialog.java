@@ -19,6 +19,8 @@ import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.Action.TransitionType;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -115,13 +117,16 @@ public abstract class AbstractBaseGameDialog implements
    * @param parent The {@link JFrame}
    * @param cfg The {@link CFG}
    * @param gameType The {@link GameType}
+   * @throws NonterminalSymbolSetException
+   * @throws TerminalSymbolSetException
    */
   public AbstractBaseGameDialog ( final JFrame parent, final CFG cfg,
-      final GameType gameType )
+      final GameType gameType ) throws TerminalSymbolSetException,
+      NonterminalSymbolSetException
   {
     this.parent = parent;
     // setup grammar
-    this.cfg = ( DefaultCFG ) cfg;
+    this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
     this.cfg.getTerminalSymbolSet ().addIfNonexistent (
         DefaultTerminalSymbol.EndMarker );
 
@@ -147,9 +152,8 @@ public abstract class AbstractBaseGameDialog implements
 
 
   /**
-   * 
    * update the reason list
-   *
+   * 
    * @param reasons list of reasons
    */
   protected void updateReason ( final ArrayList < String > reasons )

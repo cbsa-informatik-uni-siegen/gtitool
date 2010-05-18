@@ -57,12 +57,13 @@ public class FollowSetDialogForm extends javax.swing.JDialog implements GUIClass
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
+        setTitle(bundle.getString("FollowSetDialog.Caption")); // NOI18N
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jGTIToolBar.setRollover(true);
 
         jGTIToolBarButtonStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/navigation/large/start.png"))); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTIToolBarButtonStart.setToolTipText(bundle.getString("MachinePanel.WordModeStart")); // NOI18N
         jGTIToolBarButtonStart.setFocusable(false);
         jGTIToolBarButtonStart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

@@ -359,12 +359,29 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
   /**
    * creates the deterministic recursive decent parser code
+   * @param grammar The {@link Grammar}
    * 
    * @return String of DRDP
    */
   private String createDRDP ( final Grammar grammar )
   {
     StringBuilder result = new StringBuilder ();
+    boolean first = true;
+    for ( NonterminalSymbol ns : grammar.getNonterminalSymbolSet () )
+    {
+      if ( !first )
+        result.append ( "\n\n" ); //$NON-NLS-1$
+      else
+        first = false;
+      
+      result.append ( "void " ); //$NON-NLS-1$
+      result.append ( ns );
+      result.append ( "() {\n" ); //$NON-NLS-1$
+      
+      //TODO: use parsing table to create the code
+      
+      result.append ( "}" ); //$NON-NLS-1$
+    }
     // TODO: implement me
     return result.toString ();
   }
@@ -745,7 +762,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     }
     catch ( NonterminalSymbolSetException exc )
     {
-      exc.printStackTrace();
+      exc.printStackTrace ();
       System.exit ( 1 );
     }
   }
@@ -793,12 +810,12 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     }
     catch ( TerminalSymbolSetException exc )
     {
-      exc.printStackTrace();
+      exc.printStackTrace ();
       System.exit ( 1 );
     }
     catch ( NonterminalSymbolSetException exc )
     {
-      exc.printStackTrace();
+      exc.printStackTrace ();
       System.exit ( 1 );
     }
   }

@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -26,8 +27,11 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.DefaultProductionSet;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
@@ -41,6 +45,7 @@ import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymb
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
@@ -359,30 +364,71 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
   /**
    * creates the deterministic recursive decent parser code
-   * @param grammar The {@link Grammar}
    * 
+   * @param cfg The {@link Grammar}
    * @return String of DRDP
    */
-  private String createDRDP ( final Grammar grammar )
+  private String createDRDP ( final CFG cfg )
   {
-    StringBuilder result = new StringBuilder ();
+    final StringBuilder result = new StringBuilder ();
+    final ParsingTable parsingTable = new DefaultParsingTable ( cfg );
+
+    try
+    {
+      parsingTable.create ();
+    }
+    catch ( GrammarInvalidNonterminalException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
     boolean first = true;
-    for ( NonterminalSymbol ns : grammar.getNonterminalSymbolSet () )
+    for ( NonterminalSymbol ns : cfg.getNonterminalSymbolSet () )
     {
       if ( !first )
         result.append ( "\n\n" ); //$NON-NLS-1$
       else
         first = false;
-      
+
       result.append ( "void " ); //$NON-NLS-1$
       result.append ( ns );
       result.append ( "() {\n" ); //$NON-NLS-1$
-      
-      //TODO: use parsing table to create the code
-      
+
+      for ( TerminalSymbol ts : cfg.getTerminalSymbolSet () )
+      {
+        final ProductionSet ps = parsingTable.get ( ns, ts );
+        if ( ps.isEmpty () )
+          continue;
+        // the first production is the one we want
+        final Production p = ps.get ( 0 );
+
+        result.append ( "   case " + ts + ":{\n" ); //$NON-NLS-1$ //$NON-NLS-2$
+        if(ts.equals ( DefaultTerminalSymbol.EndMarker ))
+          result.append ( "      accept();\n" ); //$NON-NLS-1$
+        else
+          for ( ProductionWordMember m : p.getProductionWord () )
+            if ( m instanceof NonterminalSymbol )
+            {
+              result.append ( "      " ); //$NON-NLS-1$
+              result.append ( m );
+              result.append ( "();\n" ); //$NON-NLS-1$
+            }
+            else if ( m instanceof TerminalSymbol )
+            {
+              result.append ( "      match(\"" ); //$NON-NLS-1$
+              result.append ( m );
+              result.append ( "\");\n" ); //$NON-NLS-1$
+            }
+        result.append ( "   }\n" ); //$NON-NLS-1$
+      }
+
       result.append ( "}" ); //$NON-NLS-1$
     }
-    // TODO: implement me
     return result.toString ();
   }
 
@@ -698,12 +744,40 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
   /**
    * Handles create deterministic rdp button pressed
+   * GrammarPanel.CFGAmbigiousErrorMsgTitle=CFG ambigious
+   * GrammarPanel.CFGAmbigiousErrorMsg=The CFG is ambigious (is not in LL1)
    */
   public final void handleCreateDRDP ()
   {
-    TextWindow w = new TextWindow ( this.mainWindowForm,
-        createDRDP ( this.grammar ), false, null, getName () + "_DRDP" ); //$NON-NLS-1$
-    w.show ();
+    try
+    {
+      DefaultCFG cfg = new DefaultCFG ( ( DefaultCFG ) this.grammar );
+      cfg.getTerminalSymbolSet ().addIfNonexistent (
+          DefaultTerminalSymbol.EndMarker );
+      if ( cfg.isLL1 () )
+      {
+        TextWindow w = new TextWindow ( this.mainWindowForm,
+            createDRDP ( cfg ), false, null, getName () + "_DRDP" ); //$NON-NLS-1$
+        w.show ();
+      }
+      else
+        JOptionPane.showMessageDialog ( this.mainWindowForm, Messages
+            .getString ( "GrammarPanel.CFGAmbigiousErrorMsg" ), Messages //$NON-NLS-1$
+            .getString ( "GrammarPanel.CFGAmbigiousErrorMsgTitle" ), //$NON-NLS-1$
+            JOptionPane.ERROR_MESSAGE );
+    }
+    catch ( GrammarInvalidNonterminalException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+    }
   }
 
 

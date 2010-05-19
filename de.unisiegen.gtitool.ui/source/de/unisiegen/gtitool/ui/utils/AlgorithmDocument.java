@@ -30,7 +30,7 @@ public class AlgorithmDocument extends DefaultStyledDocument
    */
   private String [] keyWords = new String []
   { "if", "else", "end", "for", "do", "begin", "while", "then", "case", "void", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
-      "match", "firstpos", "lastpos", "followpos" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+      "match", "firstpos", "lastpos", "followpos", "accept" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 
   /**
@@ -47,9 +47,7 @@ public class AlgorithmDocument extends DefaultStyledDocument
     super ();
     this.words = new ArrayList < String > ();
     for ( String keyWord : this.keyWords )
-    {
       this.words.add ( keyWord );
-    }
   }
 
 

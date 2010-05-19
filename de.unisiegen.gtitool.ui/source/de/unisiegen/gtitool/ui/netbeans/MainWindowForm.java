@@ -1244,6 +1244,26 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
       return this.jMenuItemCreateDRDP;
   }
 
+  public JMenuItem getJMenuItemFindActionTableEntriesLR0()
+  {
+      return this.jMenuItemFindActionTableEntriesLR0;
+  }
+
+  public JMenuItem getJMenuItemFindActionTableEntriesSLR()
+  {
+      return this.jMenuItemFindActionTableEntriesSLR;
+  }
+
+  public JMenuItem getJMenuItemFindActionTableEntriesLR1()
+  {
+      return this.jMenuItemFindActionTableEntriesLR1;
+  }
+
+  public JMenuItem getJMenuItemFindActionTableEntriesLALR1()
+  {
+      return this.jMenuItemFindParsingTableEntriesLALR1;
+  }
+
 
   /**
    * This method is called from within the constructor to initialize the form.
@@ -1361,12 +1381,16 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
         jMenuItemEliminateEpsilonProductions = new javax.swing.JMenuItem();
         jMenuItemLeftfactoring = new javax.swing.JMenuItem();
         jMenuItemCreateRDP = new javax.swing.JMenuItem();
+        jMenuItemCreateDRDP = new javax.swing.JMenuItem();
         jMenuItemCreateTDP = new javax.swing.JMenuItem();
         jMenuItemCreateParsingTableStepwise = new javax.swing.JMenuItem();
         jMenuItemParsingTableFindEntries = new javax.swing.JMenuItem();
+        jMenuItemFindActionTableEntriesLR0 = new javax.swing.JMenuItem();
+        jMenuItemFindActionTableEntriesSLR = new javax.swing.JMenuItem();
+        jMenuItemFindActionTableEntriesLR1 = new javax.swing.JMenuItem();
+        jMenuItemFindParsingTableEntriesLALR1 = new javax.swing.JMenuItem();
         jMenuItemCalculateFirstSets = new javax.swing.JMenuItem();
         jMenuItemCalculateFollowSets = new javax.swing.JMenuItem();
-        jMenuItemCreateDRDP = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
@@ -2206,6 +2230,15 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
         });
         jMenuExecute.add(jMenuItemCreateRDP);
 
+        jMenuItemCreateDRDP.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CreateDRDPMnemonic").charAt(0));
+        jMenuItemCreateDRDP.setText(bundle.getString("MainWindow.CreateDRDP")); // NOI18N
+        jMenuItemCreateDRDP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCreateDRDPActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemCreateDRDP);
+
         jMenuItemCreateTDP.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CreateTDPPDAMnemonic").charAt(0));
         jMenuItemCreateTDP.setText(bundle.getString("MainWindow.CreateTDPPDA")); // NOI18N
         jMenuItemCreateTDP.addActionListener(new java.awt.event.ActionListener() {
@@ -2235,6 +2268,42 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
         });
         jMenuExecute.add(jMenuItemParsingTableFindEntries);
 
+        jMenuItemFindActionTableEntriesLR0.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.FindActionTableEntriesLR0Mnemonic").charAt(0));
+        jMenuItemFindActionTableEntriesLR0.setText(bundle.getString("MainWindow.FindActionTableEntriesLR0")); // NOI18N
+        jMenuItemFindActionTableEntriesLR0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemFindActionTableEntriesLR0ActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemFindActionTableEntriesLR0);
+
+        jMenuItemFindActionTableEntriesSLR.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.FindActionTableEntriesSLRMnemonic").charAt(0));
+        jMenuItemFindActionTableEntriesSLR.setText(bundle.getString("MainWindow.FindActionTableEntriesSLR")); // NOI18N
+        jMenuItemFindActionTableEntriesSLR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemFindActionTableEntriesSLRActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemFindActionTableEntriesSLR);
+
+        jMenuItemFindActionTableEntriesLR1.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.FindActionTableEntriesLR1Mnemonic").charAt(0));
+        jMenuItemFindActionTableEntriesLR1.setText(bundle.getString("MainWindow.FindActionTableEntriesLR1")); // NOI18N
+        jMenuItemFindActionTableEntriesLR1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemFindActionTableEntriesLR1ActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemFindActionTableEntriesLR1);
+
+        jMenuItemFindParsingTableEntriesLALR1.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.FindActionTableEntriesLALR1Mnemonic").charAt(0));
+        jMenuItemFindParsingTableEntriesLALR1.setText(bundle.getString("MainWindow.FindActionTableEntriesLALR1")); // NOI18N
+        jMenuItemFindParsingTableEntriesLALR1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemFindParsingTableEntriesLALR1ActionPerformed(evt);
+            }
+        });
+        jMenuExecute.add(jMenuItemFindParsingTableEntriesLALR1);
+
         jMenuItemCalculateFirstSets.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CalculateFirstSetsMnemonic").charAt(0));
         jMenuItemCalculateFirstSets.setText(bundle.getString("MainWindow.CalculateFirstSets")); // NOI18N
         jMenuItemCalculateFirstSets.addActionListener(new java.awt.event.ActionListener() {
@@ -2252,15 +2321,6 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
             }
         });
         jMenuExecute.add(jMenuItemCalculateFollowSets);
-
-        jMenuItemCreateDRDP.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CreateDRDPMnemonic").charAt(0));
-        jMenuItemCreateDRDP.setText(bundle.getString("MainWindow.CreateDRDP")); // NOI18N
-        jMenuItemCreateDRDP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemCreateDRDPActionPerformed(evt);
-            }
-        });
-        jMenuExecute.add(jMenuItemCreateDRDP);
 
         jMenuBarMain.add(jMenuExecute);
 
@@ -2337,6 +2397,22 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
     private void jMenuItemCreateDRDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCreateDRDPActionPerformed
         this.logic.handleCreateDRDP();
     }//GEN-LAST:event_jMenuItemCreateDRDPActionPerformed
+
+    private void jMenuItemFindActionTableEntriesLR0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFindActionTableEntriesLR0ActionPerformed
+        this.logic.handleFindActionTableEntries(MachineType.LR0Parser);
+    }//GEN-LAST:event_jMenuItemFindActionTableEntriesLR0ActionPerformed
+
+    private void jMenuItemFindActionTableEntriesSLRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFindActionTableEntriesSLRActionPerformed
+        this.logic.handleFindActionTableEntries(MachineType.LR0Parser);
+    }//GEN-LAST:event_jMenuItemFindActionTableEntriesSLRActionPerformed
+
+    private void jMenuItemFindActionTableEntriesLR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFindActionTableEntriesLR1ActionPerformed
+        this.logic.handleFindActionTableEntries(MachineType.LR1Parser);
+    }//GEN-LAST:event_jMenuItemFindActionTableEntriesLR1ActionPerformed
+
+    private void jMenuItemFindParsingTableEntriesLALR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFindParsingTableEntriesLALR1ActionPerformed
+        this.logic.handleFindActionTableEntries(MachineType.LALR1Parser);
+    }//GEN-LAST:event_jMenuItemFindParsingTableEntriesLALR1ActionPerformed
 
   private void jMenuItemParsingTableFindEntriesActionPerformed (
       java.awt.event.ActionEvent evt )
@@ -2987,6 +3063,10 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
     private javax.swing.JMenuItem jMenuItemExchange;
     private javax.swing.JMenuItem jMenuItemExportLatex;
     private javax.swing.JMenuItem jMenuItemExportPicture;
+    private javax.swing.JMenuItem jMenuItemFindActionTableEntriesLR0;
+    private javax.swing.JMenuItem jMenuItemFindActionTableEntriesLR1;
+    private javax.swing.JMenuItem jMenuItemFindActionTableEntriesSLR;
+    private javax.swing.JMenuItem jMenuItemFindParsingTableEntriesLALR1;
     private javax.swing.JMenuItem jMenuItemHistory;
     private javax.swing.JMenuItem jMenuItemLeftfactoring;
     private javax.swing.JMenuItem jMenuItemMinimize;

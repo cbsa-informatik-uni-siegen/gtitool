@@ -434,6 +434,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_FIND_PT_ENTRIES,
 
     /**
+     * The Find Action Table LR0 button state
+     */
+    ENABLED_FIND_AT_ENTRIES_LR0,
+
+    /**
+     * The Find Action Table SLR button state
+     */
+    ENABLED_FIND_AT_ENTRIES_SLR,
+
+    /**
+     * The Find Action Table LR1 button state
+     */
+    ENABLED_FIND_AT_ENTRIES_LR1,
+
+    /**
+     * The Find Action Table LALR1 button state
+     */
+    ENABLED_FIND_AT_ENTRIES_LALR1,
+
+    /**
      * Calculate first sets button state
      */
     ENABLED_CALCULATE_FIRSTSETS,
@@ -632,6 +652,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
     removeButtonState ( ButtonState.ENABLED_CREATE_PT );
     removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+    removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 );
+    removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR );
+    removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 );
+    removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 );
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR1_AUTOMATON );
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LALR1_AUTOMATON );
@@ -1425,6 +1449,34 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_FIND_PT_ENTRIES );
       this.gui.getJMenuItemFindParsingTableEntries ().setEnabled ( true );
     }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 );
+      this.gui.getJMenuItemFindActionTableEntriesLR0 ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR );
+      this.gui.getJMenuItemFindActionTableEntriesSLR ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 );
+      this.gui.getJMenuItemFindActionTableEntriesLR1 ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 );
+      this.gui.getJMenuItemFindActionTableEntriesLALR1 ().setEnabled ( true );
+    }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_CALCULATE_FIRSTSETS ) )
         && ( !this.buttonStateList
             .contains ( ButtonState.ENABLED_CALCULATE_FIRSTSETS ) ) )
@@ -2005,6 +2057,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
     else
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * handles the find action table entries (machine type) button pressed
+   * 
+   * @param machineType The {@link Machine.MachineType}
+   */
+  public final void handleFindActionTableEntries (
+      final Machine.MachineType machineType )
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      final GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      // TODO: implementelse
+      ;
+    }
+    throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
   }
 
 
@@ -4527,6 +4599,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
       removeButtonState ( ButtonState.ENABLED_CREATE_PT );
       removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+      removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 );
+      removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR );
+      removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 );
+      removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 );
       removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
       removeButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
@@ -4561,6 +4637,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
         removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 );
         removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
         removeButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
@@ -4756,6 +4836,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
         removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 );
         removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
         removeButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
@@ -4828,6 +4912,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
           removeButtonState ( ButtonState.ENABLED_CREATE_PT );
           removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+          removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 );
+          removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR );
+          removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 );
+          removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 );
           removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
           removeButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
@@ -4853,6 +4941,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CREATE_TDP );
           addButtonState ( ButtonState.ENABLED_CREATE_PT );
           addButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+          addButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 );
+          addButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR );
+          addButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 );
+          addButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 );
           addButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
           addButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
 
@@ -4965,6 +5057,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_CREATE_TDP );
         removeButtonState ( ButtonState.ENABLED_CREATE_PT );
         removeButtonState ( ButtonState.ENABLED_FIND_PT_ENTRIES );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 );
+        removeButtonState ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 );
         removeButtonState ( ButtonState.ENABLED_CALCULATE_FIRSTSETS );
         removeButtonState ( ButtonState.ENABLED_CALCULATE_FOLLOWSETS );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO_LR0_AUTOMATON );
@@ -6431,6 +6527,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_FIND_PT_ENTRIES );
       this.gui.getJMenuItemFindParsingTableEntries ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR0 );
+      this.gui.getJMenuItemFindActionTableEntriesLR0 ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_FIND_AT_ENTRIES_SLR );
+      this.gui.getJMenuItemFindActionTableEntriesSLR ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_FIND_AT_ENTRIES_LR1 );
+      this.gui.getJMenuItemFindActionTableEntriesLR1 ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_FIND_AT_ENTRIES_LALR1 );
+      this.gui.getJMenuItemFindActionTableEntriesLALR1 ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_CALCULATE_FIRSTSETS ) )
     {

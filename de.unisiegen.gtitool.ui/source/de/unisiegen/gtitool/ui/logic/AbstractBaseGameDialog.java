@@ -112,6 +112,12 @@ public abstract class AbstractBaseGameDialog implements
 
 
   /**
+   * The uncover matrix indicates which data entries are already uncovered
+   */
+  private Boolean [][] uncoverMatrix;
+
+
+  /**
    * Allocates a new {@link AbstractBaseGameDialog}
    * 
    * @param parent The {@link JFrame}
@@ -148,6 +154,55 @@ public abstract class AbstractBaseGameDialog implements
 
     this.reasonModel = new DefaultListModel ();
     this.gui.jGTIListReason.setModel ( this.reasonModel );
+  }
+
+
+  /**
+   * Returns the uncover state of a table cell entry
+   * 
+   * @param row the row
+   * @param col the col
+   * @return uncover state of a table cell entry
+   */
+  protected boolean getUncoverMatrixEntry ( final int row, final int col )
+  {
+    return this.uncoverMatrix [ row ] [ col ].booleanValue ();
+  }
+
+
+  /**
+   * Set the uncover state of a table cell entry
+   * 
+   * @param row the row
+   * @param col the col
+   * @param value boolean value -> uncover state
+   */
+  protected void setUncoverMatrixEntry ( final int row, final int col,
+      final boolean value )
+  {
+    this.uncoverMatrix [ row ] [ col ] = new Boolean ( value );
+  }
+
+
+  /**
+   * sets the uncover matrix
+   * 
+   * @param uncoverMatrix new uncover matrix
+   */
+  protected void setUncoverMatrix ( final Boolean [][] uncoverMatrix )
+  {
+    this.uncoverMatrix = uncoverMatrix;
+  }
+  
+  /**
+   * 
+   * Returns the uncover matrix
+   *
+   * @return the uncover matrix
+   */
+  protected Boolean[][] getUncoverMatrix()
+  {
+    return this.uncoverMatrix;
   }
 
 

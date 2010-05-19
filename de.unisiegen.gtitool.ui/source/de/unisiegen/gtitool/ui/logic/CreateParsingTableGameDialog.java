@@ -45,13 +45,6 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
 
 
   /**
-   * The uncover matrix indicates which {@link ParsingTable} entries are already
-   * uncovered
-   */
-  Boolean [][] uncoverMatrix;
-
-
-  /**
    * Allocates a new {@link CreateParsingTableGameDialog}
    * 
    * @param parent The {@link JFrame}
@@ -89,15 +82,12 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
     this.parsingTable.create ();
 
     // setup the uncover matrix
-    this.uncoverMatrix = new Boolean [ getGrammar ().getNonterminalSymbolSet ()
-        .size () ] [];
     int terminalSize = getGrammar ().getTerminalSymbolSet ().size ();
-    for ( int row = 0 ; row < this.uncoverMatrix.length ; ++row )
-    {
-      this.uncoverMatrix [ row ] = new Boolean [ terminalSize ];
+    setUncoverMatrix ( new Boolean [ getGrammar ().getNonterminalSymbolSet ()
+        .size () ] [ terminalSize ] );
+    for ( int row = 0 ; row < getUncoverMatrix ().length ; ++row )
       for ( int col = 0 ; col < terminalSize ; ++col )
-        this.uncoverMatrix [ row ] [ col ] = new Boolean ( false );
-    }
+        setUncoverMatrixEntry ( row, col, false );
 
     // setup the correct/wrong answers
     calculateCorrectWrongAnswers ();
@@ -129,8 +119,7 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
           return getGrammar ().getNonterminalSymbolSet ().get ( row );
         // col - 1 cause the first column are the nonterminals but they don't
         // count
-        else if ( CreateParsingTableGameDialog.this.uncoverMatrix [ row ] [ col - 1 ]
-            .booleanValue () )
+        else if ( getUncoverMatrixEntry ( row, col - 1 ) )
           return CreateParsingTableGameDialog.this.parsingTable.get ( row,
               col - 1 );
         return new PrettyString ();
@@ -230,8 +219,8 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
       int row = getGUI ().jGTIParsingTable.getSelectedRow ();
       int col = getGUI ().jGTIParsingTable.getSelectedColumn ();
       // col > 1 cause the first column is the NonterminalSymbol-column
-      if ( ( row == -1 || col == -1 )
-          || this.uncoverMatrix [ row ] [ col - 1 ].booleanValue () || col == 0 )
+      if ( ( row == -1 || col == -1 ) || getUncoverMatrixEntry ( row, col - 1 )
+          || col == 0 )
         return;
 
       try
@@ -252,7 +241,7 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
         System.exit ( 1 );
       }
 
-      this.uncoverMatrix [ row ] [ col - 1 ] = new Boolean ( true );
+      setUncoverMatrixEntry ( row, col - 1, true );
       updateStats ( true );
       updateAnswers ();
       updateReason ( this.parsingTable.getReasonFor ( row, col - 1 ) );
@@ -271,11 +260,11 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
   {
     for ( int i = 0 ; i < this.parsingTable.getRowCount () ; ++i )
       for ( int j = 0 ; j < this.parsingTable.getColumnCount () ; ++j )
-        if ( !this.uncoverMatrix [ i ] [ j ].booleanValue () )
+        if(!getUncoverMatrixEntry ( i, j ))
         {
-          this.uncoverMatrix [ i ] [ j ] = new Boolean(true);
+          setUncoverMatrixEntry ( i, j, true );
           updateReason ( this.parsingTable.getReasonFor ( i, j ) );
         }
-    getGUI().jGTIParsingTable.repaint ();
+    getGUI ().jGTIParsingTable.repaint ();
   }
 }

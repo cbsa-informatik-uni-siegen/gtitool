@@ -292,7 +292,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
     private de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPane2;
     private de.unisiegen.gtitool.ui.swing.JGTISeparator jGTISeparator1;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTIWrongAnswersLabel;
-    private javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables

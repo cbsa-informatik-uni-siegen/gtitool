@@ -33,10 +33,13 @@ public class LR1Grammar extends ExtendedGrammar
    * Wrap an LR1 grammar from a grammar
    * 
    * @param grammar
+   * @throws NonterminalSymbolSetException
    */
   public LR1Grammar ( final Grammar grammar )
+      throws NonterminalSymbolSetException
   {
-    super ( grammar );
+    this ( grammar.getNonterminalSymbolSet (), grammar.getTerminalSymbolSet (),
+        grammar.getStartSymbol (), grammar.getProduction () );
   }
 
 
@@ -75,6 +78,27 @@ public class LR1Grammar extends ExtendedGrammar
 
     for ( Production production : productions )
       this.addProduction ( production );
+  }
+
+
+  /**
+   * TODO
+   */
+  public static class SerializedTag
+  {
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param grammar
+   * @param serialized
+   */
+  public LR1Grammar ( final Grammar grammar,
+      @SuppressWarnings ( "unused" ) SerializedTag serialized )
+  {
+    super ( grammar );
   }
 
 

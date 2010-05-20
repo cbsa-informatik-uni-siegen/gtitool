@@ -66,12 +66,34 @@ public class LR0Grammar extends ExtendedGrammar
 
   /**
    * TODO
+   */
+  public static class SerializedTag
+  {
+  }
+
+
+  /**
+   * TODO
    * 
    * @param grammar
    */
-  public LR0Grammar ( final Grammar grammar )
+  public LR0Grammar ( final Grammar grammar, SerializedTag serialized )
   {
     super ( grammar );
+  }
+
+
+  /**
+   * TODO
+   *
+   * @param grammar
+   * @throws NonterminalSymbolSetException
+   */
+  public LR0Grammar ( final Grammar grammar )
+      throws NonterminalSymbolSetException
+  {
+    this ( grammar.getNonterminalSymbolSet (), grammar.getTerminalSymbolSet (),
+        grammar.getStartSymbol (), grammar.getProduction () );
   }
 
 

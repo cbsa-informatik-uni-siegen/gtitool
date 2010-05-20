@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.machines.dfa.AbstractLR;
@@ -56,6 +57,21 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
     this.grammar = grammar;
 
     this.lr1Automaton = lr1;
+  }
+
+
+  /**
+   * Create an LALR1Parser from this LR1Parser
+   * 
+   * @return the new parser
+   * @throws AlphabetException
+   * @throws StateException
+   */
+  public DefaultLR1Parser toLALR1Parser () throws AlphabetException,
+      StateException
+  {
+    return new DefaultLR1Parser ( this.lr1Automaton.toLALR1 (), this
+        .getGrammar () );
   }
 
 

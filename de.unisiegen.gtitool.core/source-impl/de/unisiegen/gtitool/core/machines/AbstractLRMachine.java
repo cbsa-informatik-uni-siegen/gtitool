@@ -448,6 +448,22 @@ public abstract class AbstractLRMachine extends AbstractStatelessMachine
 
 
   /**
+   * Returns the ActionSet by indices
+   * 
+   * @param stateIndex
+   * @param terminalIndex
+   * @return the actionSet
+   */
+  public final ActionSet actionsByIndex ( final int stateIndex,
+      final int terminalIndex )
+  {
+    return this.actionSetBase ( ( LRState ) this.getAutomaton ().getState (
+        stateIndex ), this.getGrammar ().getTerminalSymbolSet ().get (
+        terminalIndex ) );
+  }
+
+
+  /**
    * Returns the ExtendedGrammar
    * 
    * @return the grammar

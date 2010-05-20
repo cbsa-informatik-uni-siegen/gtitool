@@ -2068,15 +2068,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void handleFindActionTableEntries (
       final Machine.MachineType machineType )
   {
-    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel () instanceof GrammarPanel )
-    {
-      final GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
-          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
-      // TODO: implementelse
-      ;
-    }
-    throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    if ( ! ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof GrammarPanel ) )
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+
+    final GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+    // TODO: implementelse
+    final ChooseFindParsingTableEntryGameDialog chooseDialog = new ChooseFindParsingTableEntryGameDialog (
+        this.gui );
+    chooseDialog.show ();
+    if ( chooseDialog.isConfirmed () )
+      gp.handleFindActionTableEntries ( chooseDialog.getChosenGameType (),
+          machineType );
   }
 
 

@@ -166,6 +166,7 @@ public abstract class AbstractBaseGameDialog implements
    */
   protected boolean getUncoverMatrixEntry ( final int row, final int col )
   {
+    System.err.println(row + " " + col);
     return this.uncoverMatrix [ row ] [ col ].booleanValue ();
   }
 

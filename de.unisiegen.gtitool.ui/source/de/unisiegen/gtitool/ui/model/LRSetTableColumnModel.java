@@ -25,12 +25,27 @@ import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableHeaderCe
 public class LRSetTableColumnModel extends DefaultTableColumnModel
 {
 
+  /**
+   * TODO
+   */
+  private static final long serialVersionUID = -1779133828069781598L;
+
+
+  /**
+   * TODO
+   *
+   */
   public LRSetTableColumnModel ()
   {
     // nothing to do here
   }
 
 
+  /**
+   * TODO
+   *
+   * @param transition
+   */
   public void transitionChanged ( final Transition transition )
   {
     stateSelectionChanged ( transition.getStateBegin (), transition
@@ -40,12 +55,23 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
   }
 
 
+  /**
+   * TODO
+   *
+   * @param state
+   */
   public void stateChanged ( final State state )
   {
     stateSelectionChanged ( state, state.isSelected () );
   }
 
 
+  /**
+   * TODO
+   *
+   * @param state
+   * @param selected
+   */
   private void stateSelectionChanged ( final State state, final boolean selected )
   {
     final LRState lrstate = ( LRState ) state;
@@ -83,6 +109,11 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
   }
 
 
+  /**
+   * TODO
+   *
+   * @return
+   */
   public int getRowCount ()
   {
     int rowCount = 0;
@@ -98,6 +129,13 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
   }
 
 
+  /**
+   * TODO
+   *
+   * @param rowIndex
+   * @param columnIndex
+   * @return
+   */
   public PrettyString getEntry ( final int rowIndex, final int columnIndex )
   {
     final Set < Entry < String, ColumnEntry >> entries = this.columns
@@ -121,9 +159,20 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
   }
 
 
+  /**
+   * TODO
+   *
+   */
   private class ColumnEntry
   {
 
+    /**
+     * TODO
+     *
+     * @param index
+     * @param state
+     * @param column
+     */
     public ColumnEntry ( final int index, final LRState state,
         final TableColumn column )
     {
@@ -134,12 +183,21 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
     }
 
 
+    /**
+     * TODO
+     *
+     */
     void addRef ()
     {
       ++this.refcount;
     }
 
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     boolean Release ()
     {
       --this.refcount;
@@ -148,36 +206,66 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
     }
 
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     TableColumn getColumn ()
     {
       return this.column;
     }
 
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     LRState getState ()
     {
       return this.state;
     }
 
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     public int getIndex ()
     {
       return this.index;
     }
 
 
+    /**
+     * TODO
+     */
     private int index;
 
 
+    /**
+     * TODO
+     */
     private LRState state;
 
 
+    /**
+     * TODO
+     */
     private TableColumn column;
 
 
+    /**
+     * TODO
+     */
     private int refcount;
   }
 
 
+  /**
+   * TODO
+   */
   private TreeMap < String, ColumnEntry > columns = new TreeMap < String, ColumnEntry > ();
 }

@@ -42,12 +42,19 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
+import de.unisiegen.gtitool.core.grammars.cfg.LR0Grammar;
+import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
+import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
+import de.unisiegen.gtitool.core.machines.lr.DefaultLR0Parser;
+import de.unisiegen.gtitool.core.machines.lr.DefaultLR1Parser;
+import de.unisiegen.gtitool.core.machines.lr.SLRParser;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -408,7 +415,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         final Production p = ps.get ( 0 );
 
         result.append ( "   case " + ts + ":{\n" ); //$NON-NLS-1$ //$NON-NLS-2$
-        if(ts.equals ( DefaultTerminalSymbol.EndMarker ))
+        if ( ts.equals ( DefaultTerminalSymbol.EndMarker ) )
           result.append ( "      accept();\n" ); //$NON-NLS-1$
         else
           for ( ProductionWordMember m : p.getProductionWord () )
@@ -839,6 +846,87 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+  }
+
+
+  /**
+   * @param gameType
+   * @param machineType
+   */
+  public final void handleFindActionTableEntries (
+      final CreateParsingTableGameDialog.GameType gameType,
+      final MachineType machineType )
+  {
+    CreateLRParserTableGameDialog dialog;
+    try
+    {
+      final CFG cfg = ( CFG ) getGrammar ();
+      dialog = new CreateLRParserTableGameDialog ( this.mainWindowForm, cfg,
+          gameType, createLRMachine ( cfg, machineType ) );
+      dialog.show ();
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+    }
+  }
+
+
+  /**
+   * Creates an LRParser from a grammar and a machine type
+   * 
+   * @param cfg
+   * @param machineType
+   * @return the parser
+   */
+  private static AbstractLRMachine createLRMachine ( final CFG cfg,
+      final MachineType machineType )
+  {
+    try
+    {
+      switch ( machineType )
+      {
+        case LR0Parser :
+          return new DefaultLR0Parser ( new LR0Grammar ( cfg ) );
+        case LR1Parser :
+          return new DefaultLR1Parser ( new LR1Grammar ( cfg ) );
+        case SLR :
+          return new SLRParser ( new LR0Grammar ( cfg ) );
+        case LALR1Parser :
+          return ( new DefaultLR1Parser ( new LR1Grammar ( cfg ) ) )
+              .toLALR1Parser ();
+        case TDP :
+        case PDA :
+        case NFA :
+        case DFA :
+        case ENFA :
+        case LALR1 :
+        case LR0 :
+        case LR1 :
+          break;
+      }
+    }
+    catch ( AlphabetException exception )
+    {
+      exception.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( StateException exception )
+    {
+      exception.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( NonterminalSymbolSetException exception )
+    {
+      exception.printStackTrace ();
+      System.exit ( 1 );
+    }
+
+    throw new IllegalArgumentException ( "Invalid parser!" ); //$NON-NLS-1$
   }
 
 

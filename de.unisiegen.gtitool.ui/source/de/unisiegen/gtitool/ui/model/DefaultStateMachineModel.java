@@ -262,12 +262,14 @@ public final class DefaultStateMachineModel extends DefaultMachineModel
     boolean lrAutomaton = false;
     if ( machineType != null && machineType.equals ( "LR0" ) ) //$NON-NLS-1$
     {
-      this.machine = new LR0 ( new LR0Grammar ( loadedGrammar ) );
+      this.machine = new LR0 ( new LR0Grammar ( loadedGrammar,
+          new LR0Grammar.SerializedTag () ) );
       lrAutomaton = true;
     }
     else if ( machineType != null && machineType.equals ( "LR1" ) ) //$NON-NLS-1$
     {
-      this.machine = new LR1 ( new LR1Grammar ( loadedGrammar ) );
+      this.machine = new LR1 ( new LR1Grammar ( loadedGrammar,
+          new LR1Grammar.SerializedTag () ) );
       lrAutomaton = true;
     }
     else

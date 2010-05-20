@@ -1555,7 +1555,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.VISIBLE_STATELESS_MACHINE );
       this.gui.getJGTIToolBarButtonEditDocument ().setVisible ( false );
-      this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( true );
+      this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( true );
       this.gui.getJGTIToolBarButtonStart ().setVisible ( true );
       this.gui.getJGTIToolBarButtonPreviousStep ().setVisible ( true );
@@ -6685,7 +6685,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.VISIBLE_STATELESS_MACHINE );
       this.gui.getJGTIToolBarButtonEditDocument ().setVisible ( true );
-      this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( false );
       this.gui.getJGTIToolBarButtonStart ().setVisible ( false );
       this.gui.getJGTIToolBarButtonPreviousStep ().setVisible ( false );

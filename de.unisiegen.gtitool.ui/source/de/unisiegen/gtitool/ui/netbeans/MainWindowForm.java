@@ -2403,7 +2403,7 @@ public class MainWindowForm extends JFrame implements GUIClass < MainWindow >
     }//GEN-LAST:event_jMenuItemFindActionTableEntriesLR0ActionPerformed
 
     private void jMenuItemFindActionTableEntriesSLRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFindActionTableEntriesSLRActionPerformed
-        this.logic.handleFindActionTableEntries(MachineType.LR0Parser);
+        this.logic.handleFindActionTableEntries(MachineType.SLR);
     }//GEN-LAST:event_jMenuItemFindActionTableEntriesSLRActionPerformed
 
     private void jMenuItemFindActionTableEntriesLR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFindActionTableEntriesLR1ActionPerformed

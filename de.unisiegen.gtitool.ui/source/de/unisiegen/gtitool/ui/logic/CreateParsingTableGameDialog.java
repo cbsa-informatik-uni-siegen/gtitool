@@ -230,10 +230,15 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
         {
           updateStats ( false );
           updateAnswers ();
+          setUncoverMatrixEntry ( row, col - 1, true );
+          getGUI().jGTIParsingTable.repaint ();
           return;
         }
         final ActionSet selectableActions = getSelectableActions ( actions );
         final ActionSet chosenActions = getUserSelection ( selectableActions );
+        // nothing selected => cancel was pressed
+        if(chosenActions.size () == 0)
+          return;
         if ( !actionSetsEquals ( actions, chosenActions ) )
         {
           updateStats ( false );

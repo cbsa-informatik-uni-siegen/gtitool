@@ -226,6 +226,12 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
       try
       {
         final ActionSet actions = getActionSetAt ( row, col - 1 );
+        if ( actions.size () == 0 )
+        {
+          updateStats ( false );
+          updateAnswers ();
+          return;
+        }
         final ActionSet selectableActions = getSelectableActions ( actions );
         final ActionSet chosenActions = getUserSelection ( selectableActions );
         if ( !actionSetsEquals ( actions, chosenActions ) )
@@ -260,7 +266,7 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
   {
     for ( int i = 0 ; i < this.parsingTable.getRowCount () ; ++i )
       for ( int j = 0 ; j < this.parsingTable.getColumnCount () ; ++j )
-        if(!getUncoverMatrixEntry ( i, j ))
+        if ( !getUncoverMatrixEntry ( i, j ) )
         {
           setUncoverMatrixEntry ( i, j, true );
           updateReason ( this.parsingTable.getReasonFor ( i, j ) );

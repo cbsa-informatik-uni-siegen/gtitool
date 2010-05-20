@@ -95,7 +95,7 @@ public class ChooseFindParsingTableEntryGameDialogForm extends javax.swing.JDial
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 5);
         getContentPane().add(jGTIPanel1, gridBagConstraints);
 
         jGTIInfoTextArea.setColumns(20);
@@ -116,7 +116,7 @@ public class ChooseFindParsingTableEntryGameDialogForm extends javax.swing.JDial
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 10);
         getContentPane().add(jGTIPanel2, gridBagConstraints);
 
         jGTIInfoLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);

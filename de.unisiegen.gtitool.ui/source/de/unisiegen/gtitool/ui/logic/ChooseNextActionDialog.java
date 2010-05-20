@@ -99,6 +99,8 @@ public final class ChooseNextActionDialog implements
       this.gui.jGTIListActionList
           .setSelectionMode ( ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
     this.gui.jGTIListActionList.setModel ( this.listModel );
+    
+    this.gui.jGTIListActionList.setSelectedIndex ( 0 );
   }
 
 

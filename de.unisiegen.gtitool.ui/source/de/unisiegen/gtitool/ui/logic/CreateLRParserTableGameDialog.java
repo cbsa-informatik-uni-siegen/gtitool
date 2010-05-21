@@ -95,7 +95,7 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
   @Override
   protected final ActionSet getActionSetAt ( final int row, final int col )
   {
-    return this.machine.actionsByIndex ( col, row );
+    return this.machine.actionsByIndex ( row, col );
   }
 
 

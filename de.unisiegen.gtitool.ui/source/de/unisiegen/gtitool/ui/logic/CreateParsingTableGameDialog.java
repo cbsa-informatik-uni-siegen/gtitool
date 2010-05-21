@@ -105,8 +105,6 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
   @Override
   protected final PrettyString getTableValueAt ( final int row, final int column )
   {
-    if ( column >= 6 )
-      return new PrettyString ();
     if ( column == 0 )
       return getGrammar ().getNonterminalSymbolSet ().get ( row )
           .toPrettyString ();

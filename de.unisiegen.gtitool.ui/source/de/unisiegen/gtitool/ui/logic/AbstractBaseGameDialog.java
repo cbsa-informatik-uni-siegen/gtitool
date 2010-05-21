@@ -349,8 +349,8 @@ public abstract class AbstractBaseGameDialog implements
     int row = getGUI ().jGTIParsingTable.getSelectedRow ();
     int col = getGUI ().jGTIParsingTable.getSelectedColumn ();
     // col > 1 cause the first column is the NonterminalSymbol-column
-    if ( ( row == -1 || col == -1 ) || getUncoverMatrixEntry ( row, col - 1 )
-        || col == 0 )
+    if ( col == 0 || ( row == -1 || col == -1 )
+        || getUncoverMatrixEntry ( row, col - 1 ) )
       return;
 
     try

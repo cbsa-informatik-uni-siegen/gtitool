@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.LRState;
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
@@ -14,6 +15,8 @@ import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.ui.model.LRSetTableColumnModel;
+import de.unisiegen.gtitool.ui.model.LRSetTableModel;
 import de.unisiegen.gtitool.ui.model.LRTableColumnModel;
 
 
@@ -40,11 +43,16 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
     super ( parent, cfg, gameType, machine.getAutomaton ().getState ().size (),
         machine.getGrammar ().getTerminalSymbolSet ().size () );
 
-    // this.getGUI ().jGTIFirstSetTable.setVisible ( false );
+    //this.getGUI ().jGTIFirstSetTable.setVisible ( false );
 
     this.machine = machine;
 
     this.strings = machine.getTableCellStrings ();
+
+    this.lrSetTableColumnModel = new LRSetTableColumnModel ();
+
+    getGUI ().jGTIFollowSetTable.setModel ( new LRSetTableModel (
+        this.lrSetTableColumnModel ) );
 
     getGUI ().jGTIParsingTable.setColumnModel ( new LRTableColumnModel ( this
         .getGrammar ().getTerminalSymbolSet () ) );
@@ -126,7 +134,27 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
 
 
   /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected void notifyClicked ( final int row,
+      @SuppressWarnings ( "unused" ) final int col )
+  {
+    final State state = this.machine.getAutomaton ().getState ( row );
+
+    state.setSelected ( !state.isSelected () );
+
+    this.lrSetTableColumnModel.stateChanged ( state );
+    
+    this.getGUI ().jGTIFollowSetTable.repaint ();
+  }
+
+
+  /**
    * The associated LR parser machine
    */
   private AbstractLRMachine machine;
+
+
+  private LRSetTableColumnModel lrSetTableColumnModel;
 }

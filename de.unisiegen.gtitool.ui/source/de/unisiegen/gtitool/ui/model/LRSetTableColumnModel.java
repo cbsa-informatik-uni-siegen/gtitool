@@ -33,7 +33,6 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
   /**
    * TODO
-   *
    */
   public LRSetTableColumnModel ()
   {
@@ -43,7 +42,7 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
   /**
    * TODO
-   *
+   * 
    * @param transition
    */
   public void transitionChanged ( final Transition transition )
@@ -57,7 +56,7 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
   /**
    * TODO
-   *
+   * 
    * @param state
    */
   public void stateChanged ( final State state )
@@ -68,7 +67,7 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
   /**
    * TODO
-   *
+   * 
    * @param state
    * @param selected
    */
@@ -110,9 +109,7 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
 
   /**
-   * TODO
-   *
-   * @return
+   * @return the row count
    */
   public int getRowCount ()
   {
@@ -131,7 +128,7 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
   /**
    * TODO
-   *
+   * 
    * @param rowIndex
    * @param columnIndex
    * @return
@@ -161,14 +158,13 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
   /**
    * TODO
-   *
    */
   private class ColumnEntry
   {
 
     /**
      * TODO
-     *
+     * 
      * @param index
      * @param state
      * @param column
@@ -185,7 +181,6 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
     /**
      * TODO
-     *
      */
     void addRef ()
     {
@@ -195,7 +190,7 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
     /**
      * TODO
-     *
+     * 
      * @return
      */
     boolean Release ()
@@ -208,7 +203,7 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
     /**
      * TODO
-     *
+     * 
      * @return
      */
     TableColumn getColumn ()
@@ -219,7 +214,7 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
     /**
      * TODO
-     *
+     * 
      * @return
      */
     LRState getState ()
@@ -230,7 +225,7 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
     /**
      * TODO
-     *
+     * 
      * @return
      */
     public int getIndex ()

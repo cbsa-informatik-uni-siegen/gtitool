@@ -18,7 +18,7 @@ public class LRSetTableModel extends AbstractTableModel
 
   /**
    * TODO
-   *
+   * 
    * @param columnModel
    */
   public LRSetTableModel ( final LRSetTableColumnModel columnModel )
@@ -58,7 +58,6 @@ public class LRSetTableModel extends AbstractTableModel
   {
     return this.columnModel.getEntry ( rowIndex, columnIndex );
   }
-
 
   /**
    * TODO

@@ -148,16 +148,14 @@ public abstract class AbstractBaseGameDialog implements
   {
     this.rowCount = rowCount;
 
-    //this.columnCount = columnCount;
-
     this.gameType = gameType;
 
     this.parent = parent;
 
     // setup grammar
     this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
-    if(this.cfg.getTerminalSymbolSet ().addIfNonexistent (
-        DefaultTerminalSymbol.EndMarker ))
+    if ( this.cfg.getTerminalSymbolSet ().addIfNonexistent (
+        DefaultTerminalSymbol.EndMarker ) )
       this.columnCount = columnCount + 1;
     else
       this.columnCount = columnCount;
@@ -346,11 +344,13 @@ public abstract class AbstractBaseGameDialog implements
    */
   public final void handleUncover ( final MouseEvent evt )
   {
+    final int row = getGUI ().jGTIParsingTable.getSelectedRow ();
+    final int col = getGUI ().jGTIParsingTable.getSelectedColumn ();
+
+    notifyClicked ( row, col );
+
     if ( evt.getClickCount () < 2 )
       return;
-
-    int row = getGUI ().jGTIParsingTable.getSelectedRow ();
-    int col = getGUI ().jGTIParsingTable.getSelectedColumn ();
     // col > 1 cause the first column is the NonterminalSymbol-column
     if ( col == 0 || ( row == -1 || col == -1 )
         || getUncoverMatrixEntry ( row, col - 1 ) )
@@ -391,6 +391,19 @@ public abstract class AbstractBaseGameDialog implements
     updateReason ( new ArrayList < String > () );
     // updateReason ( this.parsingTable.getReasonFor ( row, col - 1 ) );
     getGUI ().jGTIParsingTable.repaint ();
+  }
+
+
+  /**
+   * Notifies that the main table has been clicked
+   * 
+   * @param row
+   * @param col
+   */
+  protected void notifyClicked ( @SuppressWarnings ( "unused" ) final int row,
+      @SuppressWarnings ( "unused" ) final int col )
+  {
+    // do nothing
   }
 
 

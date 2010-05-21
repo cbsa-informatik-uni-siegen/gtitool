@@ -148,7 +148,7 @@ public abstract class AbstractBaseGameDialog implements
   {
     this.rowCount = rowCount;
 
-    this.columnCount = columnCount;
+    //this.columnCount = columnCount;
 
     this.gameType = gameType;
 
@@ -156,8 +156,11 @@ public abstract class AbstractBaseGameDialog implements
 
     // setup grammar
     this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
-    this.cfg.getTerminalSymbolSet ().addIfNonexistent (
-        DefaultTerminalSymbol.EndMarker );
+    if(this.cfg.getTerminalSymbolSet ().addIfNonexistent (
+        DefaultTerminalSymbol.EndMarker ))
+      this.columnCount = columnCount + 1;
+    else
+      this.columnCount = columnCount;
 
     // setup the uncover matrix
     setUncoverMatrix ( new Boolean [ this.rowCount ] [ this.columnCount ] );

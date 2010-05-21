@@ -43,7 +43,7 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
     super ( parent, cfg, gameType, machine.getAutomaton ().getState ().size (),
         machine.getGrammar ().getTerminalSymbolSet ().size () );
 
-    //this.getGUI ().jGTIFirstSetTable.setVisible ( false );
+    // this.getGUI ().jGTIFirstSetTable.setVisible ( false );
 
     this.machine = machine;
 
@@ -51,11 +51,13 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
 
     this.lrSetTableColumnModel = new LRSetTableColumnModel ();
 
+    getGUI ().jGTIParsingTable.setColumnModel ( new LRTableColumnModel (
+        getGrammar ().getTerminalSymbolSet () ) );
+
     getGUI ().jGTIFollowSetTable.setModel ( new LRSetTableModel (
         this.lrSetTableColumnModel ) );
 
-    getGUI ().jGTIFollowSetTable.setColumnModel ( new LRTableColumnModel ( this
-        .getGrammar ().getTerminalSymbolSet () ) );
+    getGUI ().jGTIFollowSetTable.setColumnModel ( this.lrSetTableColumnModel );
   }
 
 
@@ -137,15 +139,17 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
    * {@inheritDoc}
    */
   @Override
-  protected void notifyClicked ( final int row,
-      @SuppressWarnings ( "unused" ) final int col )
+  protected void notifyClicked ( final int row, final int col )
   {
+    if ( col != 0 )
+      return;
+
     final State state = this.machine.getAutomaton ().getState ( row );
 
     state.setSelected ( !state.isSelected () );
 
     this.lrSetTableColumnModel.stateChanged ( state );
-    
+
     this.getGUI ().jGTIFollowSetTable.repaint ();
   }
 

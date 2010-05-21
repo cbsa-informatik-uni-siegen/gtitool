@@ -74,6 +74,10 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.ConvertGrammarDialog.ConvertGrammarType;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
+import de.unisiegen.gtitool.ui.logic.lrreasons.LR0ReasonMaker;
+import de.unisiegen.gtitool.ui.logic.lrreasons.LR1ReasonMaker;
+import de.unisiegen.gtitool.ui.logic.lrreasons.LRReasonMaker;
+import de.unisiegen.gtitool.ui.logic.lrreasons.SLRReasonMaker;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
@@ -862,7 +866,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     {
       final CFG cfg = ( CFG ) getGrammar ();
       dialog = new CreateLRParserTableGameDialog ( this.mainWindowForm, cfg,
-          gameType, createLRMachine ( cfg, machineType ) );
+          gameType, createLRMachine ( cfg, machineType ),
+          createLRReasonMaker ( machineType ) );
       dialog.show ();
     }
     catch ( TerminalSymbolSetException exc )
@@ -924,6 +929,38 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     {
       exception.printStackTrace ();
       System.exit ( 1 );
+    }
+
+    throw new IllegalArgumentException ( "Invalid parser!" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Factory for creating an LR reason maker
+   * 
+   * @param machineType
+   * @return the reason maker
+   */
+  private LRReasonMaker createLRReasonMaker ( final MachineType machineType )
+  {
+    switch ( machineType )
+    {
+      case LR0Parser :
+        return new LR0ReasonMaker ();
+      case LR1Parser :
+      case LALR1Parser :
+        return new LR1ReasonMaker ();
+      case SLR :
+        return new SLRReasonMaker ( this.grammar );
+      case DFA :
+      case ENFA :
+      case LALR1 :
+      case LR0 :
+      case LR1 :
+      case NFA :
+      case PDA :
+      case TDP :
+        break;
     }
 
     throw new IllegalArgumentException ( "Invalid parser!" ); //$NON-NLS-1$

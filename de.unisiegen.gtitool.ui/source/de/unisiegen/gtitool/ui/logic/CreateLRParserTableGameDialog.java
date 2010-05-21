@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.State;
@@ -15,6 +16,7 @@ import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.ui.logic.lrreasons.LRReasonMaker;
 import de.unisiegen.gtitool.ui.model.LRSetTableColumnModel;
 import de.unisiegen.gtitool.ui.model.LRSetTableModel;
 import de.unisiegen.gtitool.ui.model.LRTableColumnModel;
@@ -33,12 +35,14 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
    * @param cfg
    * @param gameType
    * @param machine
+   * @param reasonMaker 
    * @throws TerminalSymbolSetException
    * @throws NonterminalSymbolSetException
    */
   public CreateLRParserTableGameDialog ( final JFrame parent, final CFG cfg,
-      final GameType gameType, final AbstractLRMachine machine )
-      throws TerminalSymbolSetException, NonterminalSymbolSetException
+      final GameType gameType, final AbstractLRMachine machine,
+      final LRReasonMaker reasonMaker ) throws TerminalSymbolSetException,
+      NonterminalSymbolSetException
   {
     super ( parent, cfg, gameType, machine.getAutomaton ().getState ().size (),
         machine.getGrammar ().getTerminalSymbolSet ().size () );
@@ -46,6 +50,8 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
     // this.getGUI ().jGTIFirstSetTable.setVisible ( false );
 
     this.machine = machine;
+
+    this.reasonMaker = reasonMaker;
 
     this.strings = machine.getTableCellStrings ();
 
@@ -118,7 +124,12 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
   @Override
   public ArrayList < String > getReasonFor ( final int row, final int column )
   {
-    return null;
+    final ArrayList < String > ret = new ArrayList < String > ();
+    for ( Action action : getActionSetAt ( row, column ) )
+      ret.add ( this.reasonMaker.reason ( ( LRState ) this.machine
+          .getAutomaton ().getState ( row ), getGrammar ()
+          .getTerminalSymbolSet ().get ( column ), action ) );
+    return ret;
   }
 
 
@@ -166,8 +177,20 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
   private AbstractLRMachine machine;
 
 
+  /**
+   * The reason maker
+   */
+  private LRReasonMaker reasonMaker;
+
+
+  /**
+   * The lr set table column model
+   */
   private LRSetTableColumnModel lrSetTableColumnModel;
 
 
+  /**
+   * The state that was last selected in the main table
+   */
   private State lastSelectedState = null;
 }

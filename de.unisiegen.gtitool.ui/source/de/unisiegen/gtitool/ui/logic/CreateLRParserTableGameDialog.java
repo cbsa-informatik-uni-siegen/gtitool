@@ -64,7 +64,7 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
       return new PrettyString ( new PrettyToken ( ( ( LRState ) getMachine ()
           .getAutomaton ().getState ( row ) ).getName (), Style.NONE ) );
     else if ( getUncoverMatrixEntry ( row, column - 1 ) )
-      return this.strings.get ( row ).get ( column - 1 );
+      return this.strings.get ( column - 1 ).get ( row );
     return new PrettyString ();
   }
 

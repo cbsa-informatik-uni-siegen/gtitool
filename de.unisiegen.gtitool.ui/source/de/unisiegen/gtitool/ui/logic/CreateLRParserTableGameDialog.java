@@ -54,7 +54,7 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
     getGUI ().jGTIFollowSetTable.setModel ( new LRSetTableModel (
         this.lrSetTableColumnModel ) );
 
-    getGUI ().jGTIParsingTable.setColumnModel ( new LRTableColumnModel ( this
+    getGUI ().jGTIFollowSetTable.setColumnModel ( new LRTableColumnModel ( this
         .getGrammar ().getTerminalSymbolSet () ) );
   }
 

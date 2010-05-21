@@ -1,20 +1,17 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.table.DefaultTableModel;
 
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.DefaultProductionSet;
-import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
-import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
@@ -58,7 +55,8 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
       final GameType gameType ) throws GrammarInvalidNonterminalException,
       TerminalSymbolSetException, NonterminalSymbolSetException
   {
-    super ( parent, cfg, gameType );
+    super ( parent, cfg, gameType, cfg.getNonterminalSymbolSet ().size (), cfg
+        .getTerminalSymbolSet ().size () );
     // setup the first and follow table
     // FirstSetTable
     getGUI ().jGTIFirstSetTable.setModel ( new FirstSetTableModel (
@@ -81,17 +79,6 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
     this.parsingTable = new DefaultParsingTable ( getGrammar () );
     this.parsingTable.create ();
 
-    // setup the uncover matrix
-    int terminalSize = getGrammar ().getTerminalSymbolSet ().size ();
-    setUncoverMatrix ( new Boolean [ getGrammar ().getNonterminalSymbolSet ()
-        .size () ] [ terminalSize ] );
-    for ( int row = 0 ; row < getUncoverMatrix ().length ; ++row )
-      for ( int col = 0 ; col < terminalSize ; ++col )
-        setUncoverMatrixEntry ( row, col, false );
-
-    // setup the correct/wrong answers
-    calculateCorrectWrongAnswers ();
-
     getGUI ().jGTIExistingCorrectAnswersLabel.setText ( Messages.getString (
         "BaseGameDialog.LabelAmountCorrect", new Integer ( //$NON-NLS-1$
             getExistingCorrectAnswers () ) ) );
@@ -99,96 +86,44 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
     getGUI ().jGTIExistingWrongAnswersLabel.setText ( Messages.getString (
         "BaseGameDialog.LabelAmountWrong", new Integer ( //$NON-NLS-1$
             getExistingWrongAnswers () ) ) );
-    updateAnswers ();
 
-    // setup the parsing table (frontend)
-    DefaultTableModel tableModel = new DefaultTableModel ( this.parsingTable
-        .getRowCount (), this.parsingTable.getColumnCount () )
-    {
-
-      /**
-       * The generated serial
-       */
-      private static final long serialVersionUID = 609495296202823939L;
-
-
-      @Override
-      public Object getValueAt ( int row, int col )
-      {
-        if ( col == 0 )
-          return getGrammar ().getNonterminalSymbolSet ().get ( row );
-        // col - 1 cause the first column are the nonterminals but they don't
-        // count
-        else if ( getUncoverMatrixEntry ( row, col - 1 ) )
-          return CreateParsingTableGameDialog.this.parsingTable.get ( row,
-              col - 1 );
-        return new PrettyString ();
-      }
-
-
-      @Override
-      public boolean isCellEditable (
-          @SuppressWarnings ( "unused" ) final int row,
-          @SuppressWarnings ( "unused" ) final int col )
-      {
-        return false;
-      }
-    };
-    getGUI ().jGTIParsingTable.setModel ( tableModel );
     getGUI ().jGTIParsingTable.setColumnModel ( new PTTableColumnModel (
         getGrammar ().getTerminalSymbolSet () ) );
     getGUI ().jGTIParsingTable.getTableHeader ().setReorderingAllowed ( false );
     getGUI ().jGTIParsingTable.setCellSelectionEnabled ( true );
 
+    init ();
   }
 
 
   /**
-   * Calculates the number of correct/wrong answers for the game
-   */
-  private void calculateCorrectWrongAnswers ()
-  {
-    int answers = 0;
-    int empty = 0;
-    for ( NonterminalSymbol ns : getGrammar ().getNonterminalSymbolSet () )
-      for ( TerminalSymbol ts : getGrammar ().getTerminalSymbolSet () )
-      {
-        int entrySize = this.parsingTable.get ( ns, ts ).size ();
-        // count the entries with one item
-        if ( entrySize == 0 )
-          ++empty;
-        else if ( entrySize == 1 )
-          ++answers;
-      }
-    // there are #NonterminalSymbol * #TerminalSymbol possible answers
-    int possibleAnswers = getGrammar ().getNonterminalSymbolSet ().size ()
-        * getGrammar ().getTerminalSymbolSet ().size ();
-    switch ( getGameType () )
-    {
-      case GUESS_SINGLE_ENTRY :
-        // user shall specify all parsing table entries with only one item in it
-        // so 'answer' is the amount of correct answers...
-        setExistingCorrectAnswers ( answers );
-        setExistingWrongAnswers ( possibleAnswers - answers );
-        return;
-      case GUESS_MULTI_ENTRY :
-        // ...otherwise empty + answers is the amount of wrong answers and the
-        // rest of entries are the number of correct answers
-        setExistingWrongAnswers ( empty + answers );
-        setExistingCorrectAnswers ( possibleAnswers - ( empty + answers ) );
-        return;
-    }
-  }
-
-
-  /**
-   * blub
+   * {@inheritDoc}
    * 
-   * @param row blub
-   * @param col blub
-   * @return {@link ActionSet}
+   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#getTableValueAt(int,
+   *      int)
    */
-  private final ActionSet getActionSetAt ( final int row, final int col )
+  @Override
+  protected final PrettyString getTableValueAt ( final int row, final int column )
+  {
+    if ( column >= 6 )
+      return new PrettyString ();
+    if ( column == 0 )
+      return getGrammar ().getNonterminalSymbolSet ().get ( row )
+          .toPrettyString ();
+    // col - 1 cause the first column are the nonterminals but they don't
+    // count
+    else if ( getUncoverMatrixEntry ( row, column - 1 ) )
+      return CreateParsingTableGameDialog.this.parsingTable.get ( row,
+          column - 1 ).toPrettyString ();
+    return new PrettyString ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected final ActionSet getActionSetAt ( final int row, final int col )
   {
     final DefaultProductionSet dps = this.parsingTable.get ( row, col );
     final ActionSet actions = new DefaultActionSet ();
@@ -207,75 +142,29 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
 
 
   /**
-   * handles the uncover of a parsing table cell
+   * {@inheritDoc}
    * 
-   * @param evt The {@link MouseEvent}
+   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#getReasonFor(int,
+   *      int)
    */
   @Override
-  public void handleUncover ( final MouseEvent evt )
+  public ArrayList < String > getReasonFor ( final int row, final int column )
   {
-    if ( evt.getClickCount () >= 2 )
-    {
-      int row = getGUI ().jGTIParsingTable.getSelectedRow ();
-      int col = getGUI ().jGTIParsingTable.getSelectedColumn ();
-      // col > 1 cause the first column is the NonterminalSymbol-column
-      if ( ( row == -1 || col == -1 ) || getUncoverMatrixEntry ( row, col - 1 )
-          || col == 0 )
-        return;
-
-      try
-      {
-        final ActionSet actions = getActionSetAt ( row, col - 1 );
-        if ( actions.size () == 0 )
-        {
-          updateStats ( false );
-          updateAnswers ();
-          setUncoverMatrixEntry ( row, col - 1, true );
-          getGUI().jGTIParsingTable.repaint ();
-          return;
-        }
-        final ActionSet selectableActions = getSelectableActions ( actions );
-        final ActionSet chosenActions = getUserSelection ( selectableActions );
-        // nothing selected => cancel was pressed
-        if(chosenActions.size () == 0)
-          return;
-        if ( !actionSetsEquals ( actions, chosenActions ) )
-        {
-          updateStats ( false );
-          updateAnswers ();
-          return;
-        }
-      }
-      catch ( ActionSetException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
-
-      setUncoverMatrixEntry ( row, col - 1, true );
-      updateStats ( true );
-      updateAnswers ();
-      updateReason ( this.parsingTable.getReasonFor ( row, col - 1 ) );
-      getGUI ().jGTIParsingTable.repaint ();
-    }
+    return this.parsingTable.getReasonFor ( row, column );
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#handleShowAll()
+   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#getEntrySize(int,
+   *      int)
    */
   @Override
-  public void handleShowAll ()
+  protected int getEntrySize ( final int row, final int column )
   {
-    for ( int i = 0 ; i < this.parsingTable.getRowCount () ; ++i )
-      for ( int j = 0 ; j < this.parsingTable.getColumnCount () ; ++j )
-        if ( !getUncoverMatrixEntry ( i, j ) )
-        {
-          setUncoverMatrixEntry ( i, j, true );
-          updateReason ( this.parsingTable.getReasonFor ( i, j ) );
-        }
-    getGUI ().jGTIParsingTable.repaint ();
+    return this.parsingTable.get (
+        getGrammar ().getNonterminalSymbolSet ().get ( row ),
+        getGrammar ().getTerminalSymbolSet ().get ( column ) ).size ();
   }
 }

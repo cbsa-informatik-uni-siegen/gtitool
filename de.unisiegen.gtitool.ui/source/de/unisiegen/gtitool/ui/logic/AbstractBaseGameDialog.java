@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
 
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
@@ -23,6 +24,7 @@ import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymb
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.ChooseNextActionDialog.SelectionMode;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
@@ -106,6 +108,18 @@ public abstract class AbstractBaseGameDialog implements
 
 
   /**
+   * The number of rows in the table
+   */
+  private final int rowCount;
+
+
+  /**
+   * The number of columns in the table minus the first "labeled" column
+   */
+  private final int columnCount;
+
+
+  /**
    * list model
    */
   private DefaultListModel reasonModel;
@@ -123,21 +137,33 @@ public abstract class AbstractBaseGameDialog implements
    * @param parent The {@link JFrame}
    * @param cfg The {@link CFG}
    * @param gameType The {@link GameType}
+   * @param rowCount
+   * @param columnCount
    * @throws NonterminalSymbolSetException
    * @throws TerminalSymbolSetException
    */
   public AbstractBaseGameDialog ( final JFrame parent, final CFG cfg,
-      final GameType gameType ) throws TerminalSymbolSetException,
-      NonterminalSymbolSetException
+      final GameType gameType, final int rowCount, final int columnCount )
+      throws TerminalSymbolSetException, NonterminalSymbolSetException
   {
+    this.rowCount = rowCount;
+
+    this.columnCount = columnCount;
+
+    this.gameType = gameType;
+
     this.parent = parent;
+
     // setup grammar
     this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
     this.cfg.getTerminalSymbolSet ().addIfNonexistent (
         DefaultTerminalSymbol.EndMarker );
 
-    // setup game type
-    this.gameType = gameType;
+    // setup the uncover matrix
+    setUncoverMatrix ( new Boolean [ this.rowCount ] [ this.columnCount ] );
+    for ( int row = 0 ; row < this.rowCount ; ++row )
+      for ( int col = 0 ; col < this.columnCount ; ++col )
+        setUncoverMatrixEntry ( row, col, false );
 
     // setup gui
     this.gui = new BaseGameDialogForm ( parent, this );
@@ -154,7 +180,59 @@ public abstract class AbstractBaseGameDialog implements
 
     this.reasonModel = new DefaultListModel ();
     this.gui.jGTIListReason.setModel ( this.reasonModel );
+
+    // setup the parsing table (frontend)
+    final DefaultTableModel tableModel = new DefaultTableModel ( this.rowCount,
+        this.columnCount )
+    {
+
+      /**
+       * The generated serial
+       */
+      private static final long serialVersionUID = 609495296202823939L;
+
+
+      @Override
+      public PrettyString getValueAt ( int row, int col )
+      {
+        return getTableValueAt ( row, col );
+      }
+
+
+      @Override
+      public boolean isCellEditable (
+          @SuppressWarnings ( "unused" ) final int row,
+          @SuppressWarnings ( "unused" ) final int col )
+      {
+        return false;
+      }
+    };
+    getGUI ().jGTIParsingTable.setModel ( tableModel );
   }
+
+
+  /**
+   * Initialize the class Note: The derived class may have to initialize members
+   * first before the base class can continue
+   */
+  protected void init ()
+  {
+    updateAnswers ();
+
+    // setup the correct/wrong answers
+    calculateCorrectWrongAnswers ();
+  }
+
+
+  /**
+   * Gets the table entry for a given row and column
+   * 
+   * @param row
+   * @param column
+   * @return the entry
+   */
+  protected abstract PrettyString getTableValueAt ( final int row,
+      final int column );
 
 
   /**
@@ -166,7 +244,6 @@ public abstract class AbstractBaseGameDialog implements
    */
   protected boolean getUncoverMatrixEntry ( final int row, final int col )
   {
-    System.err.println(row + " " + col);
     return this.uncoverMatrix [ row ] [ col ].booleanValue ();
   }
 
@@ -194,14 +271,14 @@ public abstract class AbstractBaseGameDialog implements
   {
     this.uncoverMatrix = uncoverMatrix;
   }
-  
+
+
   /**
-   * 
    * Returns the uncover matrix
-   *
+   * 
    * @return the uncover matrix
    */
-  protected Boolean[][] getUncoverMatrix()
+  protected Boolean [][] getUncoverMatrix ()
   {
     return this.uncoverMatrix;
   }
@@ -264,13 +341,64 @@ public abstract class AbstractBaseGameDialog implements
    * 
    * @param evt The {@link MouseEvent}
    */
-  public abstract void handleUncover ( final MouseEvent evt );
+  public final void handleUncover ( final MouseEvent evt )
+  {
+    if ( evt.getClickCount () < 2 )
+      return;
+
+    int row = getGUI ().jGTIParsingTable.getSelectedRow ();
+    int col = getGUI ().jGTIParsingTable.getSelectedColumn ();
+    // col > 1 cause the first column is the NonterminalSymbol-column
+    if ( ( row == -1 || col == -1 ) || getUncoverMatrixEntry ( row, col - 1 )
+        || col == 0 )
+      return;
+
+    try
+    {
+      final ActionSet actions = getActionSetAt ( row, col - 1 );
+      if ( actions.size () == 0 )
+      {
+        updateStats ( false );
+        updateAnswers ();
+        setUncoverMatrixEntry ( row, col - 1, true );
+        getGUI ().jGTIParsingTable.repaint ();
+        return;
+      }
+      final ActionSet selectableActions = getSelectableActions ( actions );
+      final ActionSet chosenActions = getUserSelection ( selectableActions );
+      // nothing selected => cancel was pressed
+      if ( chosenActions.size () == 0 )
+        return;
+      if ( !actionSetsEquals ( actions, chosenActions ) )
+      {
+        updateStats ( false );
+        updateAnswers ();
+        return;
+      }
+    }
+    catch ( ActionSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+
+    setUncoverMatrixEntry ( row, col - 1, true );
+    updateStats ( true );
+    updateAnswers ();
+    updateReason ( new ArrayList < String > () );
+    // updateReason ( this.parsingTable.getReasonFor ( row, col - 1 ) );
+    getGUI ().jGTIParsingTable.repaint ();
+  }
 
 
   /**
-   * implements the logic to handle the 'show all' button
+   * Returns the ActionSet for a given cell
+   * 
+   * @param row
+   * @param column
+   * @return the action set
    */
-  public abstract void handleShowAll ();
+  protected abstract ActionSet getActionSetAt ( int row, int column );
 
 
   /**
@@ -466,7 +594,7 @@ public abstract class AbstractBaseGameDialog implements
   /**
    * Updates the gui correct/wrong answer labels
    */
-  protected void updateAnswers ()
+  private void updateAnswers ()
   {
     getGUI ().jGTICorrectAnswersLabel.setText ( Messages.getString (
         "BaseGameDialog.LabelRight", new Integer ( //$NON-NLS-1$
@@ -475,4 +603,78 @@ public abstract class AbstractBaseGameDialog implements
         "BaseGameDialog.LabelWrong", new Integer ( //$NON-NLS-1$
             this.userWrongAnswers ) ) );
   }
+
+
+  /**
+   * Implements the logic of the "show all" button.
+   */
+  public final void handleShowAll ()
+  {
+    for ( int i = 0 ; i < this.rowCount ; ++i )
+      for ( int j = 0 ; j < this.columnCount ; ++j )
+        if ( !getUncoverMatrixEntry ( i, j ) )
+        {
+          setUncoverMatrixEntry ( i, j, true );
+          updateReason ( this.getReasonFor ( i, j ) );
+        }
+    getGUI ().jGTIParsingTable.repaint ();
+  }
+
+
+  /**
+   * Calculates the number of correct/wrong answers for the game
+   */
+  private void calculateCorrectWrongAnswers ()
+  {
+    int answers = 0;
+    int empty = 0;
+    for ( int row = 0 ; row < this.rowCount ; ++row )
+      for ( int column = 0 ; column < this.columnCount ; ++column )
+      {
+        final int entrySize = getEntrySize ( row, column );
+        // count the entries with one item
+        if ( entrySize == 0 )
+          ++empty;
+        else if ( entrySize == 1 )
+          ++answers;
+      }
+    // there are #NonterminalSymbol * #TerminalSymbol possible answers
+    int possibleAnswers = getGrammar ().getNonterminalSymbolSet ().size ()
+        * getGrammar ().getTerminalSymbolSet ().size ();
+    switch ( getGameType () )
+    {
+      case GUESS_SINGLE_ENTRY :
+        // user shall specify all parsing table entries with only one item in it
+        // so 'answer' is the amount of correct answers...
+        setExistingCorrectAnswers ( answers );
+        setExistingWrongAnswers ( possibleAnswers - answers );
+        return;
+      case GUESS_MULTI_ENTRY :
+        // ...otherwise empty + answers is the amount of wrong answers and the
+        // rest of entries are the number of correct answers
+        setExistingWrongAnswers ( empty + answers );
+        setExistingCorrectAnswers ( possibleAnswers - ( empty + answers ) );
+        return;
+    }
+  }
+
+
+  /**
+   * Returns the reason(s) for why an entry has been chosen
+   * 
+   * @param row
+   * @param column
+   * @return the reason(s)
+   */
+  public abstract ArrayList < String > getReasonFor ( int row, int column );
+
+
+  /**
+   * Returns how many entries are present in a given cell
+   * 
+   * @param row
+   * @param column
+   * @return the amount
+   */
+  protected abstract int getEntrySize ( int row, int column );
 }

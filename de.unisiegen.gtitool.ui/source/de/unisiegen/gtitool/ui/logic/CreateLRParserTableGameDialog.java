@@ -139,14 +139,20 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
    * {@inheritDoc}
    */
   @Override
-  protected void notifyClicked ( final int row, final int col )
+  protected void notifyClicked ( final int row,
+      @SuppressWarnings ( "unused" ) final int col )
   {
-    if ( col != 0 )
-      return;
+    if ( this.lastSelectedState != null )
+    {
+      this.lastSelectedState.setSelected ( false );
+      this.lrSetTableColumnModel.stateChanged ( this.lastSelectedState );
+    }
 
     final State state = this.machine.getAutomaton ().getState ( row );
 
-    state.setSelected ( !state.isSelected () );
+    state.setSelected ( true );
+
+    this.lastSelectedState = state;
 
     this.lrSetTableColumnModel.stateChanged ( state );
 
@@ -161,4 +167,7 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
 
 
   private LRSetTableColumnModel lrSetTableColumnModel;
+
+
+  private State lastSelectedState = null;
 }

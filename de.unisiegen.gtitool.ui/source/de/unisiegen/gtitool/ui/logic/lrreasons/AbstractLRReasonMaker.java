@@ -83,4 +83,12 @@ public abstract class AbstractLRReasonMaker implements LRReasonMaker
     throw new RuntimeException (
         "No reason for an Accept found! Shouldn't happen!" ); //$NON-NLS-1$
   }
+
+
+  static protected String actionString ( final LRState state,
+      final TerminalSymbol terminalSymbol, final Action action )
+  {
+    return action.toString () + " is in ACTIONS(" + state.getIndex () + ","
+        + terminalSymbol.toString () + ")";
+  }
 }

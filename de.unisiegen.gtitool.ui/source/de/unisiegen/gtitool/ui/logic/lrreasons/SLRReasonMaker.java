@@ -49,7 +49,7 @@ public class SLRReasonMaker extends AbstractLRReasonMaker
             && this.grammar.follow (
                 action.getReduceAction ().getNonterminalSymbol () ).contains (
                 terminalSymbol ) )
-          return item.toString ();
+          return actionString ( state, terminalSymbol, action );
     }
     catch ( TerminalSymbolSetException exn )
     {

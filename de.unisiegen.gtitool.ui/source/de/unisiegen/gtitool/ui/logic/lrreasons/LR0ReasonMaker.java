@@ -13,6 +13,7 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbol;
  */
 public class LR0ReasonMaker extends AbstractLRReasonMaker
 {
+
   /**
    * {@inheritDoc}
    * 
@@ -22,14 +23,15 @@ public class LR0ReasonMaker extends AbstractLRReasonMaker
    */
   @Override
   public String reduceReason ( final LRState state,
-      @SuppressWarnings ( "unused" ) TerminalSymbol terminalSymbol,
-      final ReduceAction action )
+      final TerminalSymbol terminalSymbol, final ReduceAction action )
   {
     final LR0ItemSet items = ( LR0ItemSet ) state.getItems ();
 
     for ( LR0Item item : items )
       if ( item.dotIsAtEnd () && action.getReduceAction ().equals ( item ) )
-        return item.toString ();
+        return actionString ( state, terminalSymbol, action )
+            + " because the item " + item.toString ()
+            + " has the dot at the end";
 
     throw new RuntimeException (
         "No reason for a Reduce found! Shouldn't happen!" ); //$NON-NLS-1$

@@ -1002,23 +1002,6 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * A -> \alphaB\beta => returns \alpha
-   * 
-   * @param rightSide The {@link ProductionWord}
-   * @param indexOfProcessedNonterminal
-   * @return A -> \alphaB\beta => returns \alpha
-   */
-  private ProductionWord getAlpha ( final ProductionWord rightSide,
-      final int indexOfProcessedNonterminal )
-  {
-    ArrayList < ProductionWordMember > pwm = new ArrayList < ProductionWordMember > ();
-    for ( int i = 0 ; i < indexOfProcessedNonterminal ; ++i )
-      pwm.add ( rightSide.get ( i ) );
-    return new DefaultProductionWord ( pwm );
-  }
-
-
-  /**
    * creates a new history entry per round
    * 
    * @param ns The {@link NonterminalSymbol}

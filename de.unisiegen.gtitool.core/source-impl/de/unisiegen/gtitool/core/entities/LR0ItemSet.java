@@ -202,9 +202,6 @@ public class LR0ItemSet implements LRItemSet, Entity < LR0ItemSet >, Storable,
   }
 
 
-  private TreeSet < LR0Item > rep = new TreeSet < LR0Item > ();
-
-
   /**
    * TODO
    * 
@@ -217,6 +214,16 @@ public class LR0ItemSet implements LRItemSet, Entity < LR0ItemSet >, Storable,
 
     for ( LR0Item item : this.rep )
       ret.add ( item.toPrettyString () );
+
+    return ret;
+  }
+
+
+  public ArrayList < LRItem > baseList ()
+  {
+    final ArrayList < LRItem > ret = new ArrayList < LRItem > ();
+    for ( LR0Item item : this.rep )
+      ret.add ( item );
 
     return ret;
   }
@@ -238,4 +245,7 @@ public class LR0ItemSet implements LRItemSet, Entity < LR0ItemSet >, Storable,
   {
     return this.rep.iterator ();
   }
+
+
+  private TreeSet < LR0Item > rep = new TreeSet < LR0Item > ();
 }

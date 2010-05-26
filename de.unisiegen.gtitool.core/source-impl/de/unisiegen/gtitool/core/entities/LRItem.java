@@ -26,7 +26,6 @@ public class LRItem extends DefaultProduction
    * @param nonterminalSymbol
    * @param productionWord
    * @param dotPosition
-   * @param baseSet
    */
   public LRItem ( final NonterminalSymbol nonterminalSymbol,
       final ProductionWord productionWord, final int dotPosition )
@@ -37,9 +36,9 @@ public class LRItem extends DefaultProduction
 
 
   /**
-   * TODO
+   * Returns the index of the dot
    * 
-   * @return
+   * @return the index
    */
   public int getDotPosition ()
   {
@@ -48,10 +47,8 @@ public class LRItem extends DefaultProduction
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param other
-   * @return
    * @see de.unisiegen.gtitool.core.entities.DefaultProduction#compareTo(de.unisiegen.gtitool.core.entities.Production)
    */
   @Override
@@ -67,10 +64,8 @@ public class LRItem extends DefaultProduction
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param other
-   * @return
    * @see de.unisiegen.gtitool.core.entities.DefaultProduction#equals(java.lang.Object)
    */
   @Override
@@ -131,9 +126,9 @@ public class LRItem extends DefaultProduction
 
 
   /**
-   * TODO
+   * Tells if the dot is at the end
    * 
-   * @return
+   * @return if the dot is at the end
    */
   public boolean dotIsAtEnd ()
   {
@@ -154,9 +149,7 @@ public class LRItem extends DefaultProduction
 
 
   /**
-   * TODO
-   * 
-   * @return
+   * @return true if the dot precedes a terminal
    */
   public boolean dotPrecedesTerminal ()
   {
@@ -166,9 +159,7 @@ public class LRItem extends DefaultProduction
 
 
   /**
-   * TODO
-   * 
-   * @return
+   * @return The terminal/nonterminal after the dot
    */
   public ProductionWordMember getProductionWordMemberAfterDot ()
   {
@@ -177,13 +168,20 @@ public class LRItem extends DefaultProduction
 
 
   /**
-   * TODO
-   * 
-   * @return
+   * @return The nonterminal after the dot
    */
   public NonterminalSymbol getNonterminalAfterDot ()
   {
     return ( NonterminalSymbol ) getProductionWordMemberAfterDot ();
+  }
+
+
+  /**
+   * @return The terminal after the dot
+   */
+  public TerminalSymbol getTerminalAfterDot ()
+  {
+    return ( TerminalSymbol ) getProductionWordMemberAfterDot ();
   }
 
 

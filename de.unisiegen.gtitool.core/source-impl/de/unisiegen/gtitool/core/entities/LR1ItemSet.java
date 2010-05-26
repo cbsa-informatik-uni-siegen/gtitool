@@ -62,10 +62,10 @@ public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
   public boolean addIfNonExistant ( final Iterable < LR1Item > items )
   {
     boolean ret = true;
-    
-    for(LR1Item item : items)
+
+    for ( LR1Item item : items )
       ret = this.addIfNonExistant ( item ) && ret;
-    
+
     return ret;
   }
 
@@ -245,6 +245,16 @@ public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
 
     for ( LR1Item item : this.rep )
       ret.add ( item.toPrettyString () );
+
+    return ret;
+  }
+
+
+  public ArrayList < LRItem > baseList ()
+  {
+    final ArrayList < LRItem > ret = new ArrayList < LRItem > ();
+    for ( LR1Item item : this.rep )
+      ret.add ( item );
 
     return ret;
   }

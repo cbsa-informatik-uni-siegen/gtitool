@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic.lrreasons;
 
 
+import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.LRState;
@@ -9,6 +10,7 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 
 
 /**
@@ -49,7 +51,10 @@ public class SLRReasonMaker extends AbstractLRReasonMaker
             && this.grammar.follow (
                 action.getReduceAction ().getNonterminalSymbol () ).contains (
                 terminalSymbol ) )
-          return actionString ( state, terminalSymbol, action );
+          return Messages.getString ( "SLRReduceReason", new DefaultProduction ( //$NON-NLS-1$
+              item.getNonterminalSymbol (), item.getProductionWord () ), state
+              .getName (), terminalSymbol, item, state.getName (), item
+              .getNonterminalSymbol () );
     }
     catch ( TerminalSymbolSetException exn )
     {

@@ -17,8 +17,8 @@ import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
-import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.model.FirstSetTableColumnModel;
 import de.unisiegen.gtitool.ui.model.FirstSetTableModel;
 import de.unisiegen.gtitool.ui.model.FollowSetTableColumnModel;
@@ -78,14 +78,6 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
     // setup the parsing table (backend)
     this.parsingTable = new DefaultParsingTable ( getGrammar () );
     this.parsingTable.create ();
-
-    getGUI ().jGTIExistingCorrectAnswersLabel.setText ( Messages.getString (
-        "BaseGameDialog.LabelAmountCorrect", new Integer ( //$NON-NLS-1$
-            getExistingCorrectAnswers () ) ) );
-
-    getGUI ().jGTIExistingWrongAnswersLabel.setText ( Messages.getString (
-        "BaseGameDialog.LabelAmountWrong", new Integer ( //$NON-NLS-1$
-            getExistingWrongAnswers () ) ) );
 
     getGUI ().jGTIParsingTable.setColumnModel ( new PTTableColumnModel (
         getGrammar ().getTerminalSymbolSet () ) );

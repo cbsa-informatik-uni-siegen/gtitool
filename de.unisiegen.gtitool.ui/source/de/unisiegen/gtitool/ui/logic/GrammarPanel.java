@@ -865,9 +865,9 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     try
     {
       final CFG cfg = ( CFG ) getGrammar ();
-      dialog = new CreateLRParserTableGameDialog ( this.mainWindowForm, cfg,
-          gameType, createLRMachine ( cfg, machineType ),
-          createLRReasonMaker ( machineType ) );
+      final AbstractLRMachine machine = createLRMachine ( cfg, machineType );
+      dialog = new CreateLRParserTableGameDialog ( this.mainWindowForm, machine
+          .getGrammar (), gameType, machine, createLRReasonMaker ( machineType ) );
       dialog.show ();
     }
     catch ( TerminalSymbolSetException exc )

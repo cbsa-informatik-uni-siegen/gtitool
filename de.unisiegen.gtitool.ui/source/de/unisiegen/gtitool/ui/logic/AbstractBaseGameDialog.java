@@ -22,6 +22,8 @@ import de.unisiegen.gtitool.core.entities.Action.TransitionType;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
+import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -62,7 +64,7 @@ public abstract class AbstractBaseGameDialog implements
   /**
    * The {@link CFG}
    */
-  private DefaultCFG cfg;
+  private AbstractGrammar cfg;
 
 
   /**
@@ -142,7 +144,7 @@ public abstract class AbstractBaseGameDialog implements
    * @throws NonterminalSymbolSetException
    * @throws TerminalSymbolSetException
    */
-  public AbstractBaseGameDialog ( final JFrame parent, final CFG cfg,
+  public AbstractBaseGameDialog ( final JFrame parent, final Grammar cfg,
       final GameType gameType, final int rowCount, final int columnCount )
       throws TerminalSymbolSetException, NonterminalSymbolSetException
   {
@@ -153,12 +155,18 @@ public abstract class AbstractBaseGameDialog implements
     this.parent = parent;
 
     // setup grammar
-    this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
-    if ( this.cfg.getTerminalSymbolSet ().addIfNonexistent (
+    if ( !cfg.getTerminalSymbolSet ().contains (
         DefaultTerminalSymbol.EndMarker ) )
+    {
+      this.cfg = new DefaultCFG ( ( DefaultCFG ) cfg );
+      this.cfg.getTerminalSymbolSet ().add ( DefaultTerminalSymbol.EndMarker );
       this.columnCount = columnCount + 1;
+    }
     else
+    {
+      this.cfg = ( AbstractGrammar ) cfg;
       this.columnCount = columnCount;
+    }
 
     // setup the uncover matrix
     setUncoverMatrix ( new Boolean [ this.rowCount ] [ this.columnCount ] );
@@ -222,6 +230,14 @@ public abstract class AbstractBaseGameDialog implements
 
     // setup the correct/wrong answers
     calculateCorrectWrongAnswers ();
+
+    getGUI ().jGTIExistingCorrectAnswersLabel.setText ( Messages.getString (
+        "BaseGameDialog.LabelAmountCorrect", new Integer ( //$NON-NLS-1$
+            getExistingCorrectAnswers () ) ) );
+
+    getGUI ().jGTIExistingWrongAnswersLabel.setText ( Messages.getString (
+        "BaseGameDialog.LabelAmountWrong", new Integer ( //$NON-NLS-1$
+            getExistingWrongAnswers () ) ) );
   }
 
 
@@ -313,7 +329,7 @@ public abstract class AbstractBaseGameDialog implements
    * 
    * @return The {@link DefaultCFG}
    */
-  protected DefaultCFG getGrammar ()
+  protected AbstractGrammar getGrammar ()
   {
     return this.cfg;
   }
@@ -388,8 +404,7 @@ public abstract class AbstractBaseGameDialog implements
     setUncoverMatrixEntry ( row, col - 1, true );
     updateStats ( true );
     updateAnswers ();
-    updateReason ( new ArrayList < String > () );
-    // updateReason ( this.parsingTable.getReasonFor ( row, col - 1 ) );
+    updateReason ( this.getReasonFor ( row, col - 1 ) );
     getGUI ().jGTIParsingTable.repaint ();
   }
 
@@ -655,8 +670,7 @@ public abstract class AbstractBaseGameDialog implements
           ++answers;
       }
     // there are #NonterminalSymbol * #TerminalSymbol possible answers
-    int possibleAnswers = getGrammar ().getNonterminalSymbolSet ().size ()
-        * getGrammar ().getTerminalSymbolSet ().size ();
+    final int possibleAnswers = this.rowCount * this.columnCount;
     switch ( getGameType () )
     {
       case GUESS_SINGLE_ENTRY :

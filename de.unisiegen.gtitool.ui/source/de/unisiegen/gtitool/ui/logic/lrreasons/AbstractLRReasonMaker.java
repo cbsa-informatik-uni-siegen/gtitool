@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 
 
 /**
@@ -29,7 +30,7 @@ public abstract class AbstractLRReasonMaker implements LRReasonMaker
     if ( action instanceof ShiftAction )
       return handleShift ( state, terminalSymbol );
     if ( action instanceof AcceptAction )
-      return handleAccept ( state );
+      return handleAccept ( state, terminalSymbol );
 
     return reduceReason ( state, terminalSymbol, ( ReduceAction ) action );
   }
@@ -52,7 +53,6 @@ public abstract class AbstractLRReasonMaker implements LRReasonMaker
    * 
    * @param state
    * @param terminalSymbol
-   * @param action
    * @return reason
    */
   private String handleShift ( final LRState state,
@@ -61,7 +61,8 @@ public abstract class AbstractLRReasonMaker implements LRReasonMaker
     for ( LRItem item : state.getItems ().baseList () )
       if ( item.dotPrecedesTerminal ()
           && item.getTerminalAfterDot ().equals ( terminalSymbol ) )
-        return item.toString () + " " + terminalSymbol.toString ();
+        return Messages.getString ( "LRShiftReason", state.getName (), //$NON-NLS-1$
+            terminalSymbol, item );
 
     throw new RuntimeException (
         "No reason for a Shift found! Shouldn't happen!" ); //$NON-NLS-1$
@@ -72,23 +73,18 @@ public abstract class AbstractLRReasonMaker implements LRReasonMaker
    * Returns the reason for why an accept action has been chosen
    * 
    * @param state
+   * @param terminalSymbol
    * @return reason
    */
-  private String handleAccept ( final LRState state )
+  private String handleAccept ( final LRState state,
+      final TerminalSymbol terminalSymbol )
   {
     for ( LRItem item : state.getItems ().baseList () )
       if ( item.dotIsAtEnd () && item.getNonterminalSymbol ().isStart () )
-        return item.toString ();
+        return Messages.getString ( "LRAcceptReason", state.getName (), //$NON-NLS-1$
+            terminalSymbol, item );
 
     throw new RuntimeException (
         "No reason for an Accept found! Shouldn't happen!" ); //$NON-NLS-1$
-  }
-
-
-  static protected String actionString ( final LRState state,
-      final TerminalSymbol terminalSymbol, final Action action )
-  {
-    return action.toString () + " is in ACTIONS(" + state.getIndex () + ","
-        + terminalSymbol.toString () + ")";
   }
 }

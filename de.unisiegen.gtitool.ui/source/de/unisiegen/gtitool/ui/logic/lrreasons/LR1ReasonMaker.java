@@ -1,11 +1,13 @@
 package de.unisiegen.gtitool.ui.logic.lrreasons;
 
 
+import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.LR1Item;
 import de.unisiegen.gtitool.core.entities.LR1ItemSet;
 import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 
 
 /**
@@ -30,8 +32,9 @@ public class LR1ReasonMaker extends AbstractLRReasonMaker
     for ( LR1Item item : items )
       if ( item.dotIsAtEnd () && action.getReduceAction ().equals ( item )
           && item.getLookAhead ().equals ( terminalSymbol ) )
-        return item.toString ();
-
+        return Messages.getString ( "LR1ReduceReason", new DefaultProduction ( //$NON-NLS-1$
+            item.getNonterminalSymbol (), item.getProductionWord () ), state
+            .getName (), terminalSymbol, item, state.getName () );
     throw new RuntimeException (
         "No reason for a Reduce found! Shouldn't happen!" ); //$NON-NLS-1$
   }

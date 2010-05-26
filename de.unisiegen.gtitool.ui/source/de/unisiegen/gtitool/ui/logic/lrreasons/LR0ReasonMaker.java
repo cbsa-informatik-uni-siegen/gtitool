@@ -1,11 +1,13 @@
 package de.unisiegen.gtitool.ui.logic.lrreasons;
 
 
+import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.LR0Item;
 import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 
 
 /**
@@ -29,9 +31,9 @@ public class LR0ReasonMaker extends AbstractLRReasonMaker
 
     for ( LR0Item item : items )
       if ( item.dotIsAtEnd () && action.getReduceAction ().equals ( item ) )
-        return actionString ( state, terminalSymbol, action )
-            + " because the item " + item.toString ()
-            + " has the dot at the end";
+        return Messages.getString ( "LR0ReduceReason", new DefaultProduction ( //$NON-NLS-1$
+            item.getNonterminalSymbol (), item.getProductionWord () ), state
+            .getName (), terminalSymbol, item, state.getName () );
 
     throw new RuntimeException (
         "No reason for a Reduce found! Shouldn't happen!" ); //$NON-NLS-1$

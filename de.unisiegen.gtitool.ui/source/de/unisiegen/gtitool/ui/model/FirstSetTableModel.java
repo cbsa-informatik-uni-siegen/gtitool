@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
+import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
@@ -78,7 +79,7 @@ public class FirstSetTableModel extends AbstractTableModel
    * @param sententialForm blub
    * @throws GrammarInvalidNonterminalException
    */
-  public FirstSetTableModel ( final CFG cfg, final boolean sententialForm )
+  public FirstSetTableModel ( final Grammar cfg, final boolean sententialForm )
       throws GrammarInvalidNonterminalException
   {
     if ( cfg == null )

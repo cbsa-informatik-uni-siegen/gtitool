@@ -46,15 +46,16 @@ public class SLRReasonMaker extends AbstractLRReasonMaker
     try
     {
       for ( LR0Item item : items )
+      {
         if ( item.dotIsAtEnd ()
             && action.getReduceAction ().equals ( item )
-            && this.grammar.follow (
-                action.getReduceAction ().getNonterminalSymbol () ).contains (
+
+            && this.grammar.follow ( item.getNonterminalSymbol () ).contains (
                 terminalSymbol ) )
           return Messages.getString ( "SLRReduceReason", new DefaultProduction ( //$NON-NLS-1$
               item.getNonterminalSymbol (), item.getProductionWord () ), state
-              .getName (), terminalSymbol, item, state.getName (), item
-              .getNonterminalSymbol () );
+              .getName (), terminalSymbol, item, item.getNonterminalSymbol () );
+      }
     }
     catch ( TerminalSymbolSetException exn )
     {

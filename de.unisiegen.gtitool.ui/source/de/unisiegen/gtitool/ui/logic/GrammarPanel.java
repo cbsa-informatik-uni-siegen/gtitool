@@ -44,6 +44,7 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalExc
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
@@ -867,7 +868,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       final CFG cfg = ( CFG ) getGrammar ();
       final AbstractLRMachine machine = createLRMachine ( cfg, machineType );
       dialog = new CreateLRParserTableGameDialog ( this.mainWindowForm, machine
-          .getGrammar (), gameType, machine, createLRReasonMaker ( machineType ) );
+          .getGrammar (), gameType, machine, createLRReasonMaker ( machineType,
+          machine.getGrammar () ) );
       dialog.show ();
     }
     catch ( TerminalSymbolSetException exc )
@@ -939,9 +941,11 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * Factory for creating an LR reason maker
    * 
    * @param machineType
+   * @param agrammar
    * @return the reason maker
    */
-  private LRReasonMaker createLRReasonMaker ( final MachineType machineType )
+  private LRReasonMaker createLRReasonMaker ( final MachineType machineType,
+      final AbstractGrammar agrammar )
   {
     switch ( machineType )
     {
@@ -951,7 +955,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       case LALR1Parser :
         return new LR1ReasonMaker ();
       case SLR :
-        return new SLRReasonMaker ( this.grammar );
+        return new SLRReasonMaker ( agrammar );
       case DFA :
       case ENFA :
       case LALR1 :

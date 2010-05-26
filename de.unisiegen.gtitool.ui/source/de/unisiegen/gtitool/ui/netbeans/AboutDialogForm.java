@@ -73,6 +73,8 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         jGTILabelDeveloper0 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTILabelDeveloper1 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTILabelDeveloper2 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelDeveloper3 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelDeveloper4 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTITabbedPaneLicenses = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
         jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
@@ -138,7 +140,7 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         jGTIPanelSouth.add(jGTILabelWebpage, gridBagConstraints);
 
         jGTILabelWebpageEntry.setForeground(java.awt.Color.blue);
-        jGTILabelWebpageEntry.setText("http://vcs.informatik.uni-siegen.de/projects/gtitool");
+        jGTILabelWebpageEntry.setText("http://theoinf.math.uni-siegen.de/gtitool");
         jGTILabelWebpageEntry.setToolTipText(bundle.getString("AboutDialog.WebpageEntryToolTip")); // NOI18N
         jGTILabelWebpageEntry.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -202,6 +204,22 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
         jGTIPanelSouth.add(jGTILabelDeveloper2, gridBagConstraints);
 
+        jGTILabelDeveloper3.setText("Philipp Reh");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        jGTIPanelSouth.add(jGTILabelDeveloper3, gridBagConstraints);
+
+        jGTILabelDeveloper4.setText("Christian Uhrhan");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        jGTIPanelSouth.add(jGTILabelDeveloper4, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -237,7 +255,7 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
         getContentPane().add(jGTIButtonClose, gridBagConstraints);
 
-        setSize(new java.awt.Dimension(560, 350));
+        setSize(new java.awt.Dimension(579, 415));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jGTILabelWebpageEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTILabelWebpageEntryMouseClicked
@@ -259,6 +277,8 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper0;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper1;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper2;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper3;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper4;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelName;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelVersion;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelVersionEntry;

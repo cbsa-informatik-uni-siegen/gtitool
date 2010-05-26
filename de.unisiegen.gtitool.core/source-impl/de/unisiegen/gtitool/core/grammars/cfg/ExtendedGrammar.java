@@ -58,9 +58,6 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
         ValidationElement.DUPLICATE_PRODUCTION,
         ValidationElement.NONTERMINAL_NOT_REACHABLE );
 
-    System.out.println ( terminalSymbolSet + ", "
-        + this.getTerminalSymbolSet () );
-
     NonterminalSymbol newSymbol = null;
     for ( newSymbol = new DefaultNonterminalSymbol ( startSymbol.toString ()
         + "'" ) ; getNonterminalSymbolSet ().contains ( newSymbol ) ; newSymbol = new DefaultNonterminalSymbol ( //$NON-NLS-1$

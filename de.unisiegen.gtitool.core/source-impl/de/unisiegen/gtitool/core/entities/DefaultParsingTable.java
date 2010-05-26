@@ -10,6 +10,7 @@ import de.unisiegen.gtitool.core.entities.listener.ParsingTableStepByStepListene
 import de.unisiegen.gtitool.core.entities.listener.PrettyStringChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
@@ -32,7 +33,7 @@ public class DefaultParsingTable implements ParsingTable
   /**
    * the {@link CFG}
    */
-  private final CFG cfg;
+  private final Grammar cfg;
 
 
   /**
@@ -108,7 +109,7 @@ public class DefaultParsingTable implements ParsingTable
    * 
    * @param cfg the CFG from which we're creating the parsing table
    */
-  public DefaultParsingTable ( final CFG cfg )
+  public DefaultParsingTable ( final Grammar cfg )
   {
     if ( cfg == null )
       throw new NullPointerException ( "cfg is null" ); //$NON-NLS-1$

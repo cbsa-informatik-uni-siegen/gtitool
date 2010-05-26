@@ -569,6 +569,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
    */
   public final TerminalSymbol get ( int index )
   {
+    System.out.println ( "index: " + index + " "
+        + this.terminalSymbolSet.size () );
+
     Iterator < TerminalSymbol > iterator = this.terminalSymbolSet.iterator ();
     for ( int i = 0 ; i < index ; i++ )
       iterator.next ();

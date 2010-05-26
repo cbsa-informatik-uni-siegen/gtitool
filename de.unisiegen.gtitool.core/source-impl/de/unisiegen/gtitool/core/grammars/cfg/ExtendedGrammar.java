@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
@@ -53,8 +54,12 @@ public class ExtendedGrammar extends AbstractGrammar implements CFG
       throws NonterminalSymbolSetException
   {
     super ( new DefaultNonterminalSymbolSet ( nonterminalSymbolSet ),
-        terminalSymbolSet, startSymbol, ValidationElement.DUPLICATE_PRODUCTION,
+        new DefaultTerminalSymbolSet ( terminalSymbolSet ), startSymbol,
+        ValidationElement.DUPLICATE_PRODUCTION,
         ValidationElement.NONTERMINAL_NOT_REACHABLE );
+
+    System.out.println ( terminalSymbolSet + ", "
+        + this.getTerminalSymbolSet () );
 
     NonterminalSymbol newSymbol = null;
     for ( newSymbol = new DefaultNonterminalSymbol ( startSymbol.toString ()

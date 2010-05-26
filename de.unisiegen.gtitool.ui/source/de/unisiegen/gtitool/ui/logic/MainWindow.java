@@ -4821,6 +4821,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
         removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
 
+        removeButtonState ( ButtonState.ENABLED_PRINT );
         removeButtonState ( ButtonState.VISIBLE_STATE_MACHINE );
         addButtonState ( ButtonState.VISIBLE_STATELESS_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );

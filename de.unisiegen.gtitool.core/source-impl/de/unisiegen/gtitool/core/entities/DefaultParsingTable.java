@@ -195,25 +195,30 @@ public class DefaultParsingTable implements ParsingTable
       return;
 
     if ( !isNextStepAvailable () )
-      this.currentTerminalIndex = this.terminals.size () - 1;
-
-    // calculate indices of the last round (cause the indices are already
-    // incremented)
-    if ( this.currentTerminalIndex == 0 )
     {
       this.currentTerminalIndex = this.terminals.size () - 1;
-      this.isTerminalSymbolNextStepAvailable = false;
-    }
-    else
-    {
-      --this.currentTerminalIndex;
+      this.currentNonterminalIndex = this.nonterminals.size () - 1;
       this.isTerminalSymbolNextStepAvailable = true;
-    }
-    if ( this.currentNonterminalIndex > 0
-        && !this.isTerminalSymbolNextStepAvailable )
+    } else
     {
-      --this.currentNonterminalIndex;
-      this.isNonterminalSymbolNextStepAvailable = true;
+      // calculate indices of the last round (cause the indices are already
+      // incremented)
+      if ( this.currentTerminalIndex == 0 )
+      {
+        this.currentTerminalIndex = this.terminals.size () - 1;
+        this.isTerminalSymbolNextStepAvailable = false;
+      }
+      else
+      {
+        --this.currentTerminalIndex;
+        this.isTerminalSymbolNextStepAvailable = true;
+      }
+      if ( this.currentNonterminalIndex > 0
+          && !this.isTerminalSymbolNextStepAvailable )
+      {
+        --this.currentNonterminalIndex;
+        this.isNonterminalSymbolNextStepAvailable = true;
+      }
     }
 
     if ( !this.parsingTable.get ( this.currentNonterminalIndex ).get (

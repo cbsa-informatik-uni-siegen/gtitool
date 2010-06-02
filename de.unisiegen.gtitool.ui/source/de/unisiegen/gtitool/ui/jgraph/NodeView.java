@@ -15,6 +15,7 @@ import org.jgraph.graph.CellViewRenderer;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
+import de.unisiegen.gtitool.core.entities.regex.EpsilonNode;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.RegexNode;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -185,7 +186,7 @@ public class NodeView extends VertexView
           g.drawString ( node.getNodeString ().toString (), dx, metrics
               .getHeight () );
 
-          if ( leaf.isPositionShown () )
+          if ( leaf.isPositionShown () && !(leaf instanceof EpsilonNode))
           {
             String position = String.valueOf ( leaf.getPosition () );
             dx = ( d.width / 2 ) - ( metrics.stringWidth ( position ) / 2 );

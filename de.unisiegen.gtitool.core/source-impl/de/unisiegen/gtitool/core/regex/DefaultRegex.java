@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.regex.CharacterClassNode;
 import de.unisiegen.gtitool.core.entities.regex.ConcatenationNode;
+import de.unisiegen.gtitool.core.entities.regex.EpsilonNode;
 import de.unisiegen.gtitool.core.entities.regex.KleeneNode;
 import de.unisiegen.gtitool.core.entities.regex.LeafNode;
 import de.unisiegen.gtitool.core.entities.regex.Regex;
@@ -363,8 +364,11 @@ public class DefaultRegex implements Regex
     int currentPosition = 1;
     for ( LeafNode current : this.regexNode.getTokenNodes () )
     {
-      current.setPosition ( currentPosition );
-      currentPosition++ ;
+      if(!(current instanceof EpsilonNode))
+      {
+        current.setPosition ( currentPosition );
+        currentPosition++ ;
+      }
     }
   }
 

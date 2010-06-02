@@ -194,7 +194,7 @@ public class EpsilonNode extends LeafNode
   @Override
   public int getPosition ()
   {
-    return this.position;
+    return -1;
   }
 
 
@@ -263,9 +263,9 @@ public class EpsilonNode extends LeafNode
    * @see LeafNode#setPosition(int)
    */
   @Override
-  public void setPosition ( int position )
+  public void setPosition ( @SuppressWarnings("unused") int position )
   {
-    this.position = position;
+    //Do nothing
   }
 
 

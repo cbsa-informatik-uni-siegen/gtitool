@@ -26,11 +26,9 @@ public class ConvertToSLRParser extends ConvertToLRParser
   public ConvertToSLRParser ( final MainWindowForm mwf, final Grammar grammar )
       throws AlphabetException, NonterminalSymbolSetException
   {
-    super ( mwf, grammar );
+    super ( mwf, new LR0Grammar ( grammar ) );
 
-    this.grammar = new LR0Grammar ( grammar.getNonterminalSymbolSet (), grammar
-        .getTerminalSymbolSet (), grammar.getStartSymbol (), grammar
-        .getProduction () );
+    this.grammar = ( LR0Grammar ) super.getGrammar ();
   }
 
 

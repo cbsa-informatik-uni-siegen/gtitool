@@ -27,11 +27,9 @@ public class ConvertToLR1Parser extends ConvertToLRParser
       final Grammar grammar ) throws AlphabetException,
       NonterminalSymbolSetException
   {
-    super ( mainWindowForm, grammar );
+    super ( mainWindowForm, new LR1Grammar ( grammar ) );
 
-    this.grammar = new LR1Grammar ( grammar.getNonterminalSymbolSet (), grammar
-        .getTerminalSymbolSet (), grammar.getStartSymbol (), grammar
-        .getProduction () );
+    this.grammar = ( LR1Grammar ) super.getGrammar ();
   }
 
 

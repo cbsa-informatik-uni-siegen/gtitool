@@ -24,11 +24,13 @@ public class ConvertToLALR1Parser extends ConvertToLRParser
    * @param mainWindow
    * @param grammar
    * @throws AlphabetException
+   * @throws NonterminalSymbolSetException
    */
   public ConvertToLALR1Parser ( final MainWindowForm mainWindow,
-      final Grammar grammar ) throws AlphabetException
+      final Grammar grammar ) throws AlphabetException,
+      NonterminalSymbolSetException
   {
-    super ( mainWindow, grammar );
+    super ( mainWindow, new LR1Grammar ( grammar ) );
   }
 
 
@@ -48,8 +50,7 @@ public class ConvertToLALR1Parser extends ConvertToLRParser
   {
     try
     {
-      final LR1Grammar lr1Grammar = ConvertToLR1.convertGrammar ( this
-          .getGrammar () );
+      final LR1Grammar lr1Grammar = ( LR1Grammar ) super.getGrammar ();
 
       final LR1 oldAutomaton = new LR1 ( lr1Grammar );
 
@@ -63,11 +64,6 @@ public class ConvertToLALR1Parser extends ConvertToLRParser
       System.exit ( 1 );
     }
     catch ( StateException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-    catch ( NonterminalSymbolSetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );

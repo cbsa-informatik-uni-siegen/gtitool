@@ -86,6 +86,7 @@ public class LR1Grammar extends ExtendedGrammar
    */
   public static class SerializedTag
   {
+    ///
   }
 
 

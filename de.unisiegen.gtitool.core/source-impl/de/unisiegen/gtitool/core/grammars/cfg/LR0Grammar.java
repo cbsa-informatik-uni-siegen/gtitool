@@ -77,7 +77,7 @@ public class LR0Grammar extends ExtendedGrammar
    * 
    * @param grammar
    */
-  public LR0Grammar ( final Grammar grammar, SerializedTag serialized )
+  public LR0Grammar ( final Grammar grammar, @SuppressWarnings ( "unused" ) SerializedTag serialized )
   {
     super ( grammar );
   }

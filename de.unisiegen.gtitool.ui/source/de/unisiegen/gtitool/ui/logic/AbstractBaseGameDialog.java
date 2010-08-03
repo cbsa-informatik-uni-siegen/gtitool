@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import de.unisiegen.gtitool.core.entities.Action;
@@ -22,6 +23,7 @@ import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.BaseGameDialogForm;
 
@@ -102,9 +104,15 @@ public abstract class AbstractBaseGameDialog implements
 
 
   /**
-   * blub
+   * User selected empty set
    */
   private boolean userSelectedEmpty = false;
+
+
+  /**
+   * partial equality
+   */
+  protected boolean actionSetsPartialEqual = false;
 
 
   /**
@@ -340,13 +348,20 @@ public abstract class AbstractBaseGameDialog implements
     try
     {
       final ActionSet actions = getActionSetAt ( row, col - 1 );
-      final ActionSet selectableActions = getSelectableActions ( );
+      final ActionSet selectableActions = getSelectableActions ();
       final ActionSet chosenActions = getUserSelection ( selectableActions );
       // nothing selected => cancel was pressed
       if ( !this.userSelectedEmpty && chosenActions.size () == 0 )
         return;
       if ( !actionSetsEquals ( actions, chosenActions ) )
       {
+        JOptionPane
+        .showMessageDialog ( this.parent,
+            Messages
+                .getString ( "BaseGameDialog.SelectionWrongDialog.Text" ), //$NON-NLS-1$
+            Messages
+                .getString ( "BaseGameDialog.SelectionWrongDialog.Title" ), //$NON-NLS-1$
+            JOptionPane.ERROR_MESSAGE );
         updateStats ( false );
         updateAnswers ();
         return;
@@ -358,11 +373,24 @@ public abstract class AbstractBaseGameDialog implements
       System.exit ( 1 );
     }
 
-    setUncoverMatrixEntry ( row, col - 1, true );
-    updateStats ( true );
-    updateAnswers ();
-    updateReason ( getReasonFor ( row, col - 1 ) );
-    getGUI ().jGTIParsingTable.repaint ();
+    if ( this.actionSetsPartialEqual )
+    {
+      JOptionPane
+          .showMessageDialog ( this.parent,
+              Messages
+                  .getString ( "BaseGameDialog.SelectionPartialCorrect.Text" ), //$NON-NLS-1$
+              Messages
+                  .getString ( "BaseGameDialog.SelectionPartialCorrect.Title" ), //$NON-NLS-1$
+              JOptionPane.INFORMATION_MESSAGE );
+    }
+    else
+    {
+      setUncoverMatrixEntry ( row, col - 1, true );
+      updateStats ( true );
+      updateAnswers ();
+      updateReason ( getReasonFor ( row, col - 1 ) );
+      getGUI ().jGTIParsingTable.repaint ();
+    }
   }
 
 
@@ -453,38 +481,40 @@ public abstract class AbstractBaseGameDialog implements
    * 
    * @return {@link ActionSet}
    */
-  protected abstract ActionSet getSelectableActions ( /*final ActionSet actions*/ );
-//  {
-//    final TreeSet < NonterminalSymbol > nss = new TreeSet < NonterminalSymbol > ();
-//    final ActionSet selectableActions = new DefaultActionSet ();
-//    try
-//    {
-//      for ( Action a : actions )
-//        if ( a.getTransitionType () == TransitionType.REDUCE )
-//        {
-//          final NonterminalSymbol ns = a.getReduceAction ()
-//              .getNonterminalSymbol ();
-//          if ( nss.add ( ns ) )
-//          {
-//            ProductionSet ps = this.cfg.getProductionForNonTerminal ( ns );
-//            for ( Production p : ps )
-//              if ( this instanceof CreateParsingTableGameDialog )
-//                selectableActions.add ( new ReverseReduceAction ( p ) );
-//              else
-//                selectableActions.add ( new ReduceAction ( p ) );
-//          }
-//        }
-//        else
-//          selectableActions.add ( a );
-//    }
-//    catch ( final ActionSetException a )
-//    {
-//      a.printStackTrace ();
-//      System.exit ( 1 );
-//    }
-//    return selectableActions;
-//  }
+  protected abstract ActionSet getSelectableActions ( /* final ActionSet actions */);
 
+
+  // {
+  // final TreeSet < NonterminalSymbol > nss = new TreeSet < NonterminalSymbol >
+  // ();
+  // final ActionSet selectableActions = new DefaultActionSet ();
+  // try
+  // {
+  // for ( Action a : actions )
+  // if ( a.getTransitionType () == TransitionType.REDUCE )
+  // {
+  // final NonterminalSymbol ns = a.getReduceAction ()
+  // .getNonterminalSymbol ();
+  // if ( nss.add ( ns ) )
+  // {
+  // ProductionSet ps = this.cfg.getProductionForNonTerminal ( ns );
+  // for ( Production p : ps )
+  // if ( this instanceof CreateParsingTableGameDialog )
+  // selectableActions.add ( new ReverseReduceAction ( p ) );
+  // else
+  // selectableActions.add ( new ReduceAction ( p ) );
+  // }
+  // }
+  // else
+  // selectableActions.add ( a );
+  // }
+  // catch ( final ActionSetException a )
+  // {
+  // a.printStackTrace ();
+  // System.exit ( 1 );
+  // }
+  // return selectableActions;
+  // }
 
   /**
    * updates the game statistics

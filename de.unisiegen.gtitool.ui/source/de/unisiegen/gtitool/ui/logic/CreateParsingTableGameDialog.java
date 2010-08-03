@@ -168,7 +168,8 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
   protected boolean actionSetsEquals ( final ActionSet actionSet1,
       final ActionSet actionSet2 )
   {
-    boolean partialEqual = false;
+    boolean totalEquality = false;
+    this.actionSetsPartialEqual = false;
     ActionSet cmpSource;
     ActionSet cmpTarget;
     if ( actionSet1.size () < actionSet2.size () )
@@ -185,7 +186,11 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
     {
       cmpSource = actionSet1;
       cmpTarget = actionSet2;
+      totalEquality = true;
     }
+    
+    if(cmpSource.size () == 0 && cmpTarget.size () > 0)
+      return false;
 
     for ( Action actionSrc : cmpSource )
     {
@@ -200,9 +205,10 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
       }
       if ( !contained )
         return false;
-      partialEqual = true;
     }
-    return partialEqual;
+    if(!totalEquality)
+      this.actionSetsPartialEqual = true;
+    return true;
   }
 
 

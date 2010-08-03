@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
@@ -119,7 +120,7 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
   {
     final ActionSet selectableActions = new DefaultActionSet ();
     final NonterminalSymbol ns = getGrammar ().getNonterminalSymbolSet ().get (
-        getGUI ().jGTIParsingTable.getSelectedRow());
+        getGUI ().jGTIParsingTable.getSelectedRow () );
     final ProductionSet dps = getGrammar ().getProductionForNonTerminal ( ns );
     for ( Production p : dps )
       try
@@ -154,6 +155,54 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
         System.exit ( 1 );
       }
     return actions;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#actionSetsEquals(de.unisiegen.gtitool.core.entities.ActionSet,
+   *      de.unisiegen.gtitool.core.entities.ActionSet)
+   */
+  @Override
+  protected boolean actionSetsEquals ( final ActionSet actionSet1,
+      final ActionSet actionSet2 )
+  {
+    boolean partialEqual = false;
+    ActionSet cmpSource;
+    ActionSet cmpTarget;
+    if ( actionSet1.size () < actionSet2.size () )
+    {
+      cmpSource = actionSet1;
+      cmpTarget = actionSet2;
+    }
+    else if ( actionSet2.size () < actionSet1.size () )
+    {
+      cmpSource = actionSet2;
+      cmpTarget = actionSet1;
+    }
+    else
+    {
+      cmpSource = actionSet1;
+      cmpTarget = actionSet2;
+    }
+
+    for ( Action actionSrc : cmpSource )
+    {
+      ReverseReduceAction rraSrc = ( ReverseReduceAction ) actionSrc;
+      boolean contained = false;
+      for ( Action actionTgt : cmpTarget )
+      {
+        ReverseReduceAction rraTgt = ( ReverseReduceAction ) actionTgt;
+        contained = contained
+            || rraSrc.getReduceAction ().getProductionWord ().equals (
+                rraTgt.getReduceAction ().getProductionWord () );
+      }
+      if ( !contained )
+        return false;
+      partialEqual = true;
+    }
+    return partialEqual;
   }
 
 

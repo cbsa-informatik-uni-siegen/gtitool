@@ -33,21 +33,19 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
    * 
    * @param parent
    * @param cfg
-   * @param gameType
    * @param machine
    * @param reasonMaker
    * @throws TerminalSymbolSetException
    * @throws NonterminalSymbolSetException
    */
   public CreateLRParserTableGameDialog ( final JFrame parent, final CFG cfg,
-      final GameType gameType, final AbstractLRMachine machine,
-      final LRReasonMaker reasonMaker ) throws TerminalSymbolSetException,
-      NonterminalSymbolSetException
+      final AbstractLRMachine machine, final LRReasonMaker reasonMaker )
+      throws TerminalSymbolSetException, NonterminalSymbolSetException
   {
-    super ( parent, cfg, gameType, machine.getAutomaton ().getState ().size (),
-        machine.getGrammar ().getTerminalSymbolSet ().size () );
+    super ( parent, cfg, machine.getAutomaton ().getState ().size (), machine
+        .getGrammar ().getTerminalSymbolSet ().size () );
 
-    this.getGUI ().jScrollPane1.setVisible ( false );
+    getGUI ().jScrollPane1.setVisible ( false );
 
     this.machine = machine;
 
@@ -169,7 +167,7 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
 
     this.lrSetTableColumnModel.stateChanged ( state );
 
-    this.getGUI ().jGTIFollowSetTable.repaint ();
+    getGUI ().jGTIFollowSetTable.repaint ();
   }
 
 

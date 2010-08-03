@@ -17,7 +17,6 @@ import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
-import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.ui.model.FirstSetTableColumnModel;
 import de.unisiegen.gtitool.ui.model.FirstSetTableModel;
@@ -46,16 +45,15 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
    * 
    * @param parent The {@link JFrame}
    * @param cfg The {@link CFG}
-   * @param gameType The {@link AbstractBaseGameDialog.GameType}
    * @throws TerminalSymbolSetException
    * @throws GrammarInvalidNonterminalException
    * @throws NonterminalSymbolSetException
    */
-  public CreateParsingTableGameDialog ( final JFrame parent, final CFG cfg,
-      final GameType gameType ) throws GrammarInvalidNonterminalException,
-      TerminalSymbolSetException, NonterminalSymbolSetException
+  public CreateParsingTableGameDialog ( final JFrame parent, final CFG cfg )
+      throws GrammarInvalidNonterminalException, TerminalSymbolSetException,
+      NonterminalSymbolSetException
   {
-    super ( parent, cfg, gameType, cfg.getNonterminalSymbolSet ().size (), cfg
+    super ( parent, cfg, cfg.getNonterminalSymbolSet ().size (), cfg
         .getTerminalSymbolSet ().size () );
     // setup the first and follow table
     // FirstSetTable

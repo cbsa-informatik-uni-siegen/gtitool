@@ -60,31 +60,34 @@ public class LR0Grammar extends ExtendedGrammar
     this ( nonterminalSymbolSet, terminalSymbolSet, startSymbol );
 
     for ( Production production : productions )
-      this.addProduction ( production );
+      addProduction ( production );
   }
 
 
   /**
-   * TODO
+   * SerializedTag
    */
   public static class SerializedTag
   {
+    //Nothing
   }
 
 
   /**
-   * TODO
+   * Allocates a new {@link LR0Grammar}
    * 
-   * @param grammar
+   * @param grammar The {@link Grammar}
+   * @param serialized The {@link SerializedTag}
    */
-  public LR0Grammar ( final Grammar grammar, @SuppressWarnings ( "unused" ) SerializedTag serialized )
+  @SuppressWarnings ( "unused" )
+  public LR0Grammar ( final Grammar grammar, SerializedTag serialized )
   {
     super ( grammar );
   }
 
 
   /**
-   * TODO
+   * Allocates a new {@link LR0Grammar}
    *
    * @param grammar
    * @throws NonterminalSymbolSetException
@@ -118,7 +121,7 @@ public class LR0Grammar extends ExtendedGrammar
         if ( !item.dotPrecedesNonterminal () )
           continue;
 
-        for ( Production production : this.getProduction () )
+        for ( Production production : getProduction () )
         {
           if ( !item.getNonterminalAfterDot ().equals (
               production.getNonterminalSymbol () ) )
@@ -145,8 +148,8 @@ public class LR0Grammar extends ExtendedGrammar
   public LR0ItemSet startProduction ()
   {
     LR0ItemSet ret = new LR0ItemSet ();
-    ret.add ( new LR0Item ( this.getStartProduction ().getNonterminalSymbol (),
-        this.getStartProduction ().getProductionWord (), 0 ) );
+    ret.add ( new LR0Item ( getStartProduction ().getNonterminalSymbol (),
+        getStartProduction ().getProductionWord (), 0 ) );
     return ret;
   }
 

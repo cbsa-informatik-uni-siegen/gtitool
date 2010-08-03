@@ -2049,11 +2049,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       final GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
-      final ChooseFindParsingTableEntryGameDialog chooseDialog = new ChooseFindParsingTableEntryGameDialog (
-          this.gui );
-      chooseDialog.show ();
-      if ( chooseDialog.isConfirmed () )
-        gp.handleFindParsingTableEntries ( chooseDialog.getChosenGameType () );
+      gp.handleFindParsingTableEntries ();
     }
     else
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
@@ -2075,12 +2071,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     final GrammarPanel gp = ( GrammarPanel ) this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
     // TODO: implementelse
-    final ChooseFindParsingTableEntryGameDialog chooseDialog = new ChooseFindParsingTableEntryGameDialog (
-        this.gui );
-    chooseDialog.show ();
-    if ( chooseDialog.isConfirmed () )
-      gp.handleFindActionTableEntries ( chooseDialog.getChosenGameType (),
-          machineType );
+    gp.handleFindActionTableEntries ( machineType );
   }
 
 

@@ -120,8 +120,9 @@ public final class ChooseNextActionDialogTest
     frame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
     frame.setVisible ( true );
 
-    ChooseNextActionDialog cnad = new ChooseNextActionDialog ( frame, actions,
-        ChooseNextActionDialog.SelectionMode.SINGLE_SELECTION );
+    ChooseNextActionDialog cnad = new ChooseNextActionDialog ( frame, actions );
+    cnad
+        .setSelectionMode ( ChooseNextActionDialog.SelectionMode.SINGLE_SELECTION );
     cnad.show ();
     if ( cnad.isConfirmed () )
     {

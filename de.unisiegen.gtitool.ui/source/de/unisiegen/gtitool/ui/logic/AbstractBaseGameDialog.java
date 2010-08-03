@@ -14,10 +14,10 @@ import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
-import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
+import de.unisiegen.gtitool.core.entities.ReverseReduceAction;
 import de.unisiegen.gtitool.core.entities.Action.TransitionType;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
@@ -28,7 +28,6 @@ import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.ui.i18n.Messages;
-import de.unisiegen.gtitool.ui.logic.ChooseNextActionDialog.SelectionMode;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.BaseGameDialogForm;
 
@@ -43,34 +42,9 @@ public abstract class AbstractBaseGameDialog implements
 {
 
   /**
-   * Defines the type of our game
-   */
-  public enum GameType
-  {
-    /**
-     * The user should find the {@link ParsingTable} entry where only one item
-     * is recorded
-     */
-    GUESS_SINGLE_ENTRY,
-
-    /**
-     * The user should find the {@link ParsingTable} entry where multiple items
-     * are recoreded
-     */
-    GUESS_MULTI_ENTRY;
-  }
-
-
-  /**
    * The {@link CFG}
    */
   private AbstractGrammar cfg;
-
-
-  /**
-   * The {@link GameType}
-   */
-  private GameType gameType;
 
 
   /**
@@ -138,19 +112,16 @@ public abstract class AbstractBaseGameDialog implements
    * 
    * @param parent The {@link JFrame}
    * @param cfg The {@link CFG}
-   * @param gameType The {@link GameType}
    * @param rowCount
    * @param columnCount
    * @throws NonterminalSymbolSetException
    * @throws TerminalSymbolSetException
    */
   public AbstractBaseGameDialog ( final JFrame parent, final Grammar cfg,
-      final GameType gameType, final int rowCount, final int columnCount )
+      final int rowCount, final int columnCount )
       throws TerminalSymbolSetException, NonterminalSymbolSetException
   {
     this.rowCount = rowCount;
-
-    this.gameType = gameType;
 
     this.parent = parent;
 
@@ -314,17 +285,6 @@ public abstract class AbstractBaseGameDialog implements
 
 
   /**
-   * Returns the {@link GameType}
-   * 
-   * @return The {@link GameType}
-   */
-  protected GameType getGameType ()
-  {
-    return this.gameType;
-  }
-
-
-  /**
    * Returns the {@link DefaultCFG}
    * 
    * @return The {@link DefaultCFG}
@@ -404,7 +364,7 @@ public abstract class AbstractBaseGameDialog implements
     setUncoverMatrixEntry ( row, col - 1, true );
     updateStats ( true );
     updateAnswers ();
-    updateReason ( this.getReasonFor ( row, col - 1 ) );
+    updateReason ( getReasonFor ( row, col - 1 ) );
     getGUI ().jGTIParsingTable.repaint ();
   }
 
@@ -453,10 +413,8 @@ public abstract class AbstractBaseGameDialog implements
   protected ActionSet getUserSelection ( final ActionSet actions )
       throws ActionSetException
   {
-    final SelectionMode selMode = this.gameType == GameType.GUESS_SINGLE_ENTRY ? SelectionMode.SINGLE_SELECTION
-        : SelectionMode.MULTIPLE_SELECTION;
     final ChooseNextActionDialog cnad = new ChooseNextActionDialog (
-        this.parent, actions, selMode );
+        this.parent, actions );
     cnad.show ();
     if ( cnad.isConfirmed () )
       return cnad.getChosenAction ();
@@ -504,7 +462,10 @@ public abstract class AbstractBaseGameDialog implements
           {
             ProductionSet ps = this.cfg.getProductionForNonTerminal ( ns );
             for ( Production p : ps )
-              selectableActions.add ( new ReduceAction ( p ) );
+              if ( this instanceof CreateParsingTableGameDialog )
+                selectableActions.add ( new ReverseReduceAction ( p ) );
+              else
+                selectableActions.add ( new ReduceAction ( p ) );
           }
         }
         else
@@ -530,7 +491,6 @@ public abstract class AbstractBaseGameDialog implements
       ++this.userCorrectAnswers;
     else
       ++this.userWrongAnswers;
-    return;
   }
 
 
@@ -627,12 +587,12 @@ public abstract class AbstractBaseGameDialog implements
    */
   private void updateAnswers ()
   {
-    getGUI ().jGTICorrectAnswersLabel.setText ( Messages.getString (
-        "BaseGameDialog.LabelRight", new Integer ( //$NON-NLS-1$
-            this.userCorrectAnswers ) ) );
-    getGUI ().jGTIWrongAnswersLabel.setText ( Messages.getString (
-        "BaseGameDialog.LabelWrong", new Integer ( //$NON-NLS-1$
-            this.userWrongAnswers ) ) );
+//    getGUI ().jGTICorrectAnswersLabel.setText ( Messages.getString (
+//        "BaseGameDialog.LabelRight", new Integer ( //$NON-NLS-1$
+//            this.userCorrectAnswers ) ) );
+//    getGUI ().jGTIWrongAnswersLabel.setText ( Messages.getString (
+//        "BaseGameDialog.LabelWrong", new Integer ( //$NON-NLS-1$
+//            this.userWrongAnswers ) ) );
   }
 
 
@@ -646,7 +606,7 @@ public abstract class AbstractBaseGameDialog implements
         if ( !getUncoverMatrixEntry ( i, j ) )
         {
           setUncoverMatrixEntry ( i, j, true );
-          updateReason ( this.getReasonFor ( i, j ) );
+          updateReason ( getReasonFor ( i, j ) );
         }
     getGUI ().jGTIParsingTable.repaint ();
   }
@@ -657,35 +617,8 @@ public abstract class AbstractBaseGameDialog implements
    */
   private void calculateCorrectWrongAnswers ()
   {
-    int answers = 0;
-    int empty = 0;
-    for ( int row = 0 ; row < this.rowCount ; ++row )
-      for ( int column = 0 ; column < this.columnCount ; ++column )
-      {
-        final int entrySize = getEntrySize ( row, column );
-        // count the entries with one item
-        if ( entrySize == 0 )
-          ++empty;
-        else if ( entrySize == 1 )
-          ++answers;
-      }
-    // there are #NonterminalSymbol * #TerminalSymbol possible answers
-    final int possibleAnswers = this.rowCount * this.columnCount;
-    switch ( getGameType () )
-    {
-      case GUESS_SINGLE_ENTRY :
-        // user shall specify all parsing table entries with only one item in it
-        // so 'answer' is the amount of correct answers...
-        setExistingCorrectAnswers ( answers );
-        setExistingWrongAnswers ( possibleAnswers - answers );
-        return;
-      case GUESS_MULTI_ENTRY :
-        // ...otherwise empty + answers is the amount of wrong answers and the
-        // rest of entries are the number of correct answers
-        setExistingWrongAnswers ( empty + answers );
-        setExistingCorrectAnswers ( possibleAnswers - ( empty + answers ) );
-        return;
-    }
+    setExistingCorrectAnswers ( 0 );
+    setExistingWrongAnswers ( 0 );
   }
 
 

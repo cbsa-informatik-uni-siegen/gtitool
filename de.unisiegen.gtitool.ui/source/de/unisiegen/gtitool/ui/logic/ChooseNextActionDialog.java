@@ -72,17 +72,13 @@ public final class ChooseNextActionDialog implements
    * 
    * @param parent The parent {link JFrame}
    * @param actions The {@link Action}s
-   * @param selectionMode The {@link SelectionMode}
    */
-  public ChooseNextActionDialog ( final JFrame parent, final ActionSet actions,
-      final SelectionMode selectionMode )
+  public ChooseNextActionDialog ( final JFrame parent, final ActionSet actions )
   {
     if ( parent == null )
       throw new NullPointerException ( "parent is null" ); //$NON-NLS-1$
     if ( actions == null )
       throw new NullPointerException ( "actions is null" ); //$NON-NLS-1$
-//    if ( actions.size () < 2 )
-//      throw new IllegalArgumentException ( "actions set size too small" ); //$NON-NLS-1$
 
     this.parent = parent;
     this.actions = actions;
@@ -92,15 +88,27 @@ public final class ChooseNextActionDialog implements
     for ( Action a : this.actions )
       this.listModel.addElement ( a.toPrettyString () );
 
-    if ( selectionMode == SelectionMode.SINGLE_SELECTION )
+    this.gui.jGTIListActionList
+        .setSelectionMode ( ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
+    this.gui.jGTIListActionList.setModel ( this.listModel );
+
+    this.gui.jGTIListActionList.setSelectedIndex ( 0 );
+  }
+
+
+  /**
+   * Sets the selection mode
+   * 
+   * @param mode the mode
+   */
+  public void setSelectionMode ( final SelectionMode mode )
+  {
+    if ( mode == SelectionMode.SINGLE_SELECTION )
       this.gui.jGTIListActionList
           .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     else
       this.gui.jGTIListActionList
           .setSelectionMode ( ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
-    this.gui.jGTIListActionList.setModel ( this.listModel );
-    
-    this.gui.jGTIListActionList.setSelectedIndex ( 0 );
   }
 
 
@@ -114,10 +122,11 @@ public final class ChooseNextActionDialog implements
   {
     if ( this.gui.jGTIListActionList.isSelectionEmpty () )
       throw new RuntimeException ( "No action was chosen." ); //$NON-NLS-1$
-    final int[] chosenActionIndices = this.gui.jGTIListActionList.getSelectedIndices ();
+    final int [] chosenActionIndices = this.gui.jGTIListActionList
+        .getSelectedIndices ();
     @SuppressWarnings ( "hiding" )
-    final ActionSet actions = new DefaultActionSet();
-    for(int idx : chosenActionIndices)
+    final ActionSet actions = new DefaultActionSet ();
+    for ( int idx : chosenActionIndices )
       actions.add ( this.actions.get ( idx ) );
     return actions;
   }

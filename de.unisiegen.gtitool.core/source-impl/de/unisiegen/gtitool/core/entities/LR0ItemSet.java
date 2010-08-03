@@ -17,30 +17,54 @@ import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
- * TODO
+ * Represents the {@link LR0ItemSet}
  */
 public class LR0ItemSet implements LRItemSet, Entity < LR0ItemSet >, Storable,
     Modifyable, Iterable < LR0Item >
 {
 
+  /**
+   * The serial
+   */
+  private static final long serialVersionUID = -7532179608903209213L;
+
+
+  /**
+   * Allocates a new {@link LR0ItemSet}
+   */
   public LR0ItemSet ()
   {
-
+    // Nothing
   }
 
 
+  /**
+   * Allocates a new {@link LR0ItemSet}
+   * 
+   * @param items The {@link LR0ItemSet}
+   */
   public LR0ItemSet ( LR0ItemSet items )
   {
     this.rep = new TreeSet < LR0Item > ( items.get () );
   }
 
-
+  /**
+   * 
+   * Allocates a new {@link LR0ItemSet}
+   *
+   * @param items The {@link LR0Item}s
+   */
   public LR0ItemSet ( Iterable < LR0Item > items )
   {
     add ( items );
   }
 
 
+  /**
+   * Adds the specified list of {@link LR0Item}s
+   * 
+   * @param items The {@link LR0Item}s
+   */
   public void add ( Iterable < LR0Item > items )
   {
     for ( LR0Item item : items )
@@ -48,18 +72,34 @@ public class LR0ItemSet implements LRItemSet, Entity < LR0ItemSet >, Storable,
   }
 
 
+  /**
+   * Adds the specified {@link LR0Item}
+   * 
+   * @param item The {@link LR0Item}
+   */
   public void add ( LR0Item item )
   {
     this.rep.add ( item );
   }
 
 
+  /**
+   * Returns the number of {@link LR0Item}s
+   * 
+   * @return the number of {@link LR0Item}s
+   */
   public int size ()
   {
     return this.rep.size ();
   }
 
 
+  /**
+   * Checks if the specified {@link LR0Item} is already in this list
+   * 
+   * @param item The {@link LR0Item}
+   * @return true if the item is already in the list, false otherwise
+   */
   public boolean contains ( LR0Item item )
   {
     return this.rep.contains ( item );
@@ -196,6 +236,7 @@ public class LR0ItemSet implements LRItemSet, Entity < LR0ItemSet >, Storable,
   }
 
 
+  @Override
   public String toString ()
   {
     return this.rep.toString ();

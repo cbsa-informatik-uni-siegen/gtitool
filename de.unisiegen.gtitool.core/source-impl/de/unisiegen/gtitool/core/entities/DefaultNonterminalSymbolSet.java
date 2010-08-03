@@ -116,33 +116,23 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     this ();
 
     // Check if the element is correct
-    if ( !element.getName ().equals ( "NonterminalSymbolSet" ) ) //$NON-NLS-1$
-    {
+    if ( !element.getName ().equals ( "NonterminalSymbolSet" ) )
       throw new IllegalArgumentException (
           "element " + Messages.QUOTE + element.getName () //$NON-NLS-1$
               + Messages.QUOTE + " is not a nonterminal symbol set" ); //$NON-NLS-1$
-    }
 
     // Attribute
     if ( element.getAttribute ().size () > 0 )
-    {
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-    }
 
     // Element
     for ( Element current : element.getElement () )
-    {
-      if ( current.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
-      {
+      if ( current.getName ().equals ( "NonterminalSymbol" ) )
         add ( new DefaultNonterminalSymbol ( current ) );
-      }
       else
-      {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-      }
-    }
 
     resetModify ();
   }
@@ -163,9 +153,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
     // NonterminalSymbols
     if ( nonterminalSymbols == null )
-    {
       throw new NullPointerException ( "nonterminal symbols is null" ); //$NON-NLS-1$
-    }
     add ( nonterminalSymbols );
 
     resetModify ();
@@ -186,9 +174,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
     // NonterminalSymbols
     if ( nonterminalSymbols == null )
-    {
       throw new NullPointerException ( "nonterminal symbols is null" ); //$NON-NLS-1$
-    }
     add ( nonterminalSymbols );
 
     resetModify ();
@@ -204,19 +190,13 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
       throws NonterminalSymbolSetException
   {
     if ( nonterminalSymbols == null )
-    {
       throw new NullPointerException ( "nonterminal symbols is null" ); //$NON-NLS-1$
-    }
     ArrayList < NonterminalSymbol > symbolList = new ArrayList < NonterminalSymbol > ();
     for ( NonterminalSymbol current : nonterminalSymbols )
-    {
       symbolList.add ( current );
-    }
     checkDuplicated ( symbolList );
     for ( NonterminalSymbol current : nonterminalSymbols )
-    {
       add ( current );
-    }
   }
 
 
@@ -230,9 +210,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   {
     // NonterminalSymbol
     if ( nonterminalSymbol == null )
-    {
       throw new NullPointerException ( "nonterminal symbol is null" ); //$NON-NLS-1$
-    }
     /*
      * Throws an NonterminalSymbolSetException if the symbol which should be
      * added is already in this NonterminalSymbolSet.
@@ -241,12 +219,8 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     {
       ArrayList < NonterminalSymbol > negativeSymbols = new ArrayList < NonterminalSymbol > ();
       for ( NonterminalSymbol current : this.nonterminalSymbolSet )
-      {
         if ( nonterminalSymbol.equals ( current ) )
-        {
           negativeSymbols.add ( current );
-        }
-      }
       negativeSymbols.add ( nonterminalSymbol );
       throw new NonterminalSymbolSetMoreThanOneSymbolException ( this,
           negativeSymbols );
@@ -272,19 +246,36 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
       throws NonterminalSymbolSetException
   {
     if ( nonterminalSymbols == null )
-    {
       throw new NullPointerException ( "nonterminal symbols is null" ); //$NON-NLS-1$
-    }
     ArrayList < NonterminalSymbol > symbolList = new ArrayList < NonterminalSymbol > ();
     for ( NonterminalSymbol current : nonterminalSymbols )
-    {
       symbolList.add ( current );
-    }
     checkDuplicated ( symbolList );
     for ( NonterminalSymbol current : nonterminalSymbols )
-    {
       add ( current );
+  }
+
+
+  /**
+   * blub
+   * 
+   * @param nonterminalSymbols blub
+   * @throws NonterminalSymbolSetMoreThanOneSymbolException
+   */
+  public final void add2 ( final NonterminalSymbol ... nonterminalSymbols )
+      throws NonterminalSymbolSetMoreThanOneSymbolException
+  {
+    if ( nonterminalSymbols == null )
+      throw new NullPointerException ( "nonterminal symbols is null" ); //$NON-NLS-1$
+    ArrayList < NonterminalSymbol > negativeSymbols = new ArrayList < NonterminalSymbol > ();
+    for ( NonterminalSymbol current : nonterminalSymbols )
+    {
+      boolean mod = this.nonterminalSymbolSet.add ( current );
+      if ( !mod )
+        negativeSymbols.add ( current );
     }
+    throw new NonterminalSymbolSetMoreThanOneSymbolException ( this,
+        negativeSymbols );
   }
 
 
@@ -339,27 +330,19 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   {
     NonterminalSymbol duplicated = null;
     loop : for ( int i = 0 ; i < nonterminalSymbols.size () ; i++ )
-    {
       for ( int j = i + 1 ; j < nonterminalSymbols.size () ; j++ )
-      {
         if ( nonterminalSymbols.get ( i )
             .equals ( nonterminalSymbols.get ( j ) ) )
         {
           duplicated = nonterminalSymbols.get ( i );
           break loop;
         }
-      }
-    }
     if ( duplicated != null )
     {
       ArrayList < NonterminalSymbol > negativeSymbols = new ArrayList < NonterminalSymbol > ();
       for ( NonterminalSymbol current : nonterminalSymbols )
-      {
         if ( duplicated.equals ( current ) )
-        {
           negativeSymbols.add ( current );
-        }
-      }
       throw new NonterminalSymbolSetMoreThanOneSymbolException ( this,
           negativeSymbols );
     }
@@ -374,10 +357,8 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   public final void clear ()
   {
     for ( NonterminalSymbol current : this.nonterminalSymbolSet )
-    {
       current
           .removePrettyStringChangedListener ( this.prettyStringChangedListener );
-    }
 
     fireNonterminalSymbolSetChanged ();
     fireModifyStatusChanged ();
@@ -404,15 +385,11 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     {
       int compare = firstList.get ( i ).compareTo ( secondList.get ( i ) );
       if ( compare != 0 )
-      {
         return compare;
-      }
     }
 
     if ( firstList.size () == secondList.size () )
-    {
       return 0;
-    }
 
     return firstList.size () < secondList.size () ? -1 : 1;
   }
@@ -456,9 +433,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
     for ( ModifyStatusChangedListener current : listeners )
-    {
       current.modifyStatusChanged ( newModifyStatus );
-    }
   }
 
 
@@ -470,9 +445,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     NonterminalSymbolSetChangedListener [] listeners = this.listenerList
         .getListeners ( NonterminalSymbolSetChangedListener.class );
     for ( NonterminalSymbolSetChangedListener current : listeners )
-    {
       current.nonterminalSymbolSetChanged ( this );
-    }
   }
 
 
@@ -486,9 +459,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     PrettyStringChangedListener [] listeners = this.listenerList
         .getListeners ( PrettyStringChangedListener.class );
     for ( PrettyStringChangedListener current : listeners )
-    {
       current.prettyStringChanged ();
-    }
   }
 
 
@@ -513,9 +484,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     Iterator < NonterminalSymbol > iterator = this.nonterminalSymbolSet
         .iterator ();
     for ( int i = 0 ; i < index ; i++ )
-    {
       iterator.next ();
-    }
     return iterator.next ();
   }
 
@@ -529,9 +498,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   {
     Element newElement = new Element ( "NonterminalSymbolSet" ); //$NON-NLS-1$
     for ( NonterminalSymbol current : this.nonterminalSymbolSet )
-    {
       newElement.addElement ( current );
-    }
     return newElement;
   }
 
@@ -589,13 +556,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   public final void remove ( Iterable < NonterminalSymbol > nonterminalSymbols )
   {
     if ( nonterminalSymbols == null )
-    {
       throw new NullPointerException ( "nonterminal symbols is null" ); //$NON-NLS-1$
-    }
     for ( NonterminalSymbol current : nonterminalSymbols )
-    {
       remove ( current );
-    }
   }
 
 
@@ -607,14 +570,10 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   public final void remove ( NonterminalSymbol nonterminalSymbol )
   {
     if ( nonterminalSymbol == null )
-    {
       throw new NullPointerException ( "nonterminal symbol is null" ); //$NON-NLS-1$
-    }
     if ( !this.nonterminalSymbolSet.contains ( nonterminalSymbol ) )
-    {
       throw new IllegalArgumentException (
           "nonterminal symbol is not in this nonterminal symbol set" ); //$NON-NLS-1$
-    }
 
     nonterminalSymbol
         .removePrettyStringChangedListener ( this.prettyStringChangedListener );
@@ -635,13 +594,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   public final void remove ( NonterminalSymbol ... nonterminalSymbols )
   {
     if ( nonterminalSymbols == null )
-    {
       throw new NullPointerException ( "nonterminal symbols is null" ); //$NON-NLS-1$
-    }
     for ( NonterminalSymbol current : nonterminalSymbols )
-    {
       remove ( current );
-    }
   }
 
 
@@ -734,9 +689,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
       while ( iterator.hasNext () )
       {
         if ( !first )
-        {
           this.cachedPrettyString.add ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-        }
         first = false;
         this.cachedPrettyString.add ( iterator.next () );
       }
@@ -763,9 +716,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     while ( iterator.hasNext () )
     {
       if ( !first )
-      {
         result.append ( ", " ); //$NON-NLS-1$
-      }
       first = false;
       result.append ( iterator.next () );
     }

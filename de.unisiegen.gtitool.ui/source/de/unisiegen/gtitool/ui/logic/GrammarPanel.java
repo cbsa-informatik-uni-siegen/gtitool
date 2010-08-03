@@ -825,15 +825,13 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   /**
    * handles the 'find parsing table entries' button presse
    * 
-   * @param gameType The {@link CreateParsingTableGameDialog.GameType}
    */
-  public final void handleFindParsingTableEntries (
-      final CreateParsingTableGameDialog.GameType gameType )
+  public final void handleFindParsingTableEntries ()
   {
     try
     {
       final CreateParsingTableGameDialog cptgd = new CreateParsingTableGameDialog (
-          this.mainWindowForm, ( CFG ) getGrammar (), gameType );
+          this.mainWindowForm, ( CFG ) getGrammar ());
       cptgd.show ();
     }
     catch ( final GrammarInvalidNonterminalException exc )
@@ -855,11 +853,9 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
 
 
   /**
-   * @param gameType
    * @param machineType
    */
   public final void handleFindActionTableEntries (
-      final CreateParsingTableGameDialog.GameType gameType,
       final MachineType machineType )
   {
     CreateLRParserTableGameDialog dialog;
@@ -868,7 +864,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       final CFG cfg = ( CFG ) getGrammar ();
       final AbstractLRMachine machine = createLRMachine ( cfg, machineType );
       dialog = new CreateLRParserTableGameDialog ( this.mainWindowForm, machine
-          .getGrammar (), gameType, machine, createLRReasonMaker ( machineType,
+          .getGrammar (), machine, createLRReasonMaker ( machineType,
           machine.getGrammar () ) );
       dialog.show ();
     }

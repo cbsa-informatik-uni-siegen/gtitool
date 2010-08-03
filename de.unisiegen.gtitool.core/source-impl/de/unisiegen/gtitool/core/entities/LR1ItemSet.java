@@ -80,6 +80,11 @@ public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
   {
     return this.rep.size ();
   }
+  
+  public boolean isEmpty()
+  {
+    return this.rep.isEmpty ();
+  }
 
 
   public boolean contains ( LR1Item item )

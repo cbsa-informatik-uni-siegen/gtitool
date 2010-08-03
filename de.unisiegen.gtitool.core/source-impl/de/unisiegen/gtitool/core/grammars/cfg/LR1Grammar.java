@@ -86,7 +86,7 @@ public class LR1Grammar extends ExtendedGrammar
    */
   public static class SerializedTag
   {
-    ///
+    // /
   }
 
 
@@ -128,16 +128,20 @@ public class LR1Grammar extends ExtendedGrammar
   {
     final LR1ItemSet ret = new LR1ItemSet ( items );
 
-    for ( int oldSize = ret.size (), newSize = 0 ; newSize != oldSize ; newSize = ret
-        .size () )
+    for ( LR1ItemSet currentItems = items ; !currentItems.isEmpty () ; )
     {
-      oldSize = ret.size ();
+      final LR1ItemSet newItems = new LR1ItemSet ();
 
-      LR1ItemSet currentItems = new LR1ItemSet ( ret );
       for ( LR1Item item : currentItems )
       {
         if ( !item.dotPrecedesNonterminal () )
           continue;
+
+        final ProductionWord remainingPart = item.getRemainingProductionWord ();
+
+        remainingPart.add ( item.getLookAhead () );
+
+        final FirstSet firstElements = first ( remainingPart );
 
         for ( Production production : getProduction () )
         {
@@ -145,23 +149,19 @@ public class LR1Grammar extends ExtendedGrammar
               production.getNonterminalSymbol () ) )
             continue;
 
-          ProductionWord remainingPart = item.getRemainingProductionWord ();
-
-          remainingPart.add ( item.getLookAhead () );
-
-          final FirstSet firstElements = first ( remainingPart );
-
           for ( TerminalSymbol symbol : firstElements )
           {
-            final LR1Item newProduction = new LR1Item ( production
+            final LR1Item newItem = new LR1Item ( production
                 .getNonterminalSymbol (), production.getProductionWord (), 0,
                 symbol );
 
-            if ( !ret.contains ( newProduction ) )
-              ret.add ( newProduction );
+            if ( ret.addIfNonExistant ( newItem ) )
+              newItems.add ( newItem );
           }
         }
       }
+
+      currentItems = newItems;
     }
 
     return ret;

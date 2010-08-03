@@ -9,9 +9,11 @@ import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
 import de.unisiegen.gtitool.core.entities.DefaultProductionSet;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.ParsingTable;
 import de.unisiegen.gtitool.core.entities.Production;
-import de.unisiegen.gtitool.core.entities.ReduceAction;
+import de.unisiegen.gtitool.core.entities.ProductionSet;
+import de.unisiegen.gtitool.core.entities.ReverseReduceAction;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
@@ -109,6 +111,32 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
 
   /**
    * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#getSelectableActions()
+   */
+  @Override
+  protected final ActionSet getSelectableActions ()
+  {
+    final ActionSet selectableActions = new DefaultActionSet ();
+    final NonterminalSymbol ns = getGrammar ().getNonterminalSymbolSet ().get (
+        getGUI ().jGTIParsingTable.getSelectedRow());
+    final ProductionSet dps = getGrammar ().getProductionForNonTerminal ( ns );
+    for ( Production p : dps )
+      try
+      {
+        selectableActions.add ( new ReverseReduceAction ( p ) );
+      }
+      catch ( ActionSetException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
+    return selectableActions;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @Override
   protected final ActionSet getActionSetAt ( final int row, final int col )
@@ -118,7 +146,7 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
     for ( Production p : dps )
       try
       {
-        actions.add ( new ReduceAction ( p ) );
+        actions.add ( new ReverseReduceAction ( p ) );
       }
       catch ( ActionSetException exc )
       {

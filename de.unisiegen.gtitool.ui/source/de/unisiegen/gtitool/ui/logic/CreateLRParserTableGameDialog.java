@@ -193,4 +193,17 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
    * The state that was last selected in the main table
    */
   private State lastSelectedState = null;
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#getSelectableActions()
+   */
+  @Override
+  protected ActionSet getSelectableActions ()
+  {
+    //TODO: implement
+    return null;
+  }
 }

@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-
-
 /**
  * Represents a {@link ReverseReduceAction}
  */
@@ -17,6 +15,12 @@ public class ReverseReduceAction extends ReplaceAction
   public ReverseReduceAction ( Production production )
   {
     super ( production );
+  }
+
+
+  public boolean equals ( final ReverseReduceAction other )
+  {
+    return this.production.equals ( other );
   }
 
 

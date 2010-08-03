@@ -9,6 +9,7 @@ import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.ChooseNextActionDialogForm;
 
@@ -93,6 +94,29 @@ public final class ChooseNextActionDialog implements
     this.gui.jGTIListActionList.setModel ( this.listModel );
 
     this.gui.jGTIListActionList.setSelectedIndex ( 0 );
+  }
+
+
+  /**
+   * blub
+   *
+   * @param le blub
+   */
+  public void setLastEntry ( final PrettyString le )
+  {
+    this.listModel.addElement ( le );
+  }
+  
+  
+  /**
+   * blub
+   *
+   * @return true
+   */
+  public boolean lastEntrySelected()
+  {
+    return this.gui.jGTIListActionList.getSelectedIndex () ==
+      this.listModel.getSize () - 1;
   }
 
 

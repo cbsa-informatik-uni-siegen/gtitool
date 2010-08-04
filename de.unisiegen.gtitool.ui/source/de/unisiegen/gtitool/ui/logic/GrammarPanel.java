@@ -44,6 +44,8 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalExc
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
@@ -927,6 +929,14 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     {
       exception.printStackTrace ();
       System.exit ( 1 );
+    }
+    catch ( TransitionSymbolNotInAlphabetException exc )
+    {
+      exc.printStackTrace();
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
+    {
+      exc.printStackTrace();
     }
 
     throw new IllegalArgumentException ( "Invalid parser!" ); //$NON-NLS-1$

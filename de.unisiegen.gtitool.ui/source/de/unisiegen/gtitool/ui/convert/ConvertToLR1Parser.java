@@ -3,6 +3,9 @@ package de.unisiegen.gtitool.ui.convert;
 
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 import de.unisiegen.gtitool.core.machines.lr.DefaultLR1Parser;
@@ -49,6 +52,18 @@ public class ConvertToLR1Parser extends ConvertToLRParser
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+    }
+    catch ( TransitionSymbolNotInAlphabetException exc )
+    {
+      exc.printStackTrace();
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
+    {
+      exc.printStackTrace();
+    }
+    catch ( StateException exc )
+    {
+      exc.printStackTrace();
     }
 
     createMachinePanel ( this.machine );

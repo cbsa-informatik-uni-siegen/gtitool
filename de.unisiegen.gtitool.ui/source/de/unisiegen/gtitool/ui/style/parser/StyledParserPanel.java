@@ -1242,7 +1242,11 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     if ( object == null )
       this.editor.setText ( "" ); //$NON-NLS-1$
     else
+    {
+      if ( object instanceof TerminalSymbolSet )
+        ( ( DefaultTerminalSymbolSet ) object ).setDisplayAll ( true );
       this.editor.setText ( object.toString () );
+    }
   }
 
 

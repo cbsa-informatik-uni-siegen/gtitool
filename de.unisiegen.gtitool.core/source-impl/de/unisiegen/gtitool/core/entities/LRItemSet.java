@@ -22,6 +22,11 @@ public interface LRItemSet extends PrettyPrintable
   public ArrayList < PrettyString > stringEntries ();
 
 
+  /**
+   * Returns the items as a list to LRItem
+   * 
+   * @return The items
+   */
   public ArrayList < LRItem > baseList ();
 
 

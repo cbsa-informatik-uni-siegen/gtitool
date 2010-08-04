@@ -8,7 +8,10 @@ import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAmbigiousActionException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.LR0Test;
 import de.unisiegen.gtitool.core.grammars.cfg.LR1Grammar;
 
@@ -27,10 +30,14 @@ public class LR1ParserTest
    * @throws NonterminalSymbolSetException
    * @throws TerminalSymbolSetException
    * @throws MachineAmbigiousActionException
+   * @throws StateException
+   * @throws TransitionSymbolOnlyOneTimeException
+   * @throws TransitionSymbolNotInAlphabetException
    */
   public static void main ( final String [] args ) throws AlphabetException,
       TerminalSymbolSetException, NonterminalSymbolSetException,
-      MachineAmbigiousActionException
+      MachineAmbigiousActionException, TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException, StateException
   {
     LR1Grammar testGrammar = new LR1Grammar ( LR0Test.testGrammar () );
 

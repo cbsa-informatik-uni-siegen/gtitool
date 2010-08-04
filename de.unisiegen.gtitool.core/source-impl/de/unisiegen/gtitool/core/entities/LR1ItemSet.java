@@ -80,8 +80,9 @@ public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
   {
     return this.rep.size ();
   }
-  
-  public boolean isEmpty()
+
+
+  public boolean isEmpty ()
   {
     return this.rep.isEmpty ();
   }
@@ -155,19 +156,6 @@ public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
   /**
    * TODO
    * 
-   * @param o
-   * @return
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
-  public int compareTo ( LR1ItemSet o )
-  {
-    return 0;
-  }
-
-
-  /**
-   * TODO
-   * 
    * @return
    * @see de.unisiegen.gtitool.core.storage.Storable#getElement()
    */
@@ -235,9 +223,6 @@ public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
   }
 
 
-  private TreeSet < LR1Item > rep = new TreeSet < LR1Item > ();
-
-
   /**
    * TODO
    * 
@@ -275,4 +260,35 @@ public class LR1ItemSet implements LRItemSet, Entity < LR1ItemSet >, Storable,
   {
     return this.rep.iterator ();
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo ( final LR1ItemSet o )
+  {
+    if ( this.rep.size () != o.size () )
+      return this.rep.size () - o.size ();
+
+    for ( Iterator < LR1Item > it1 = this.rep.iterator (), it2 = o.iterator () ; it1
+        .hasNext () ; )
+    {
+      final LR1Item item1 = it1.next ();
+      final LR1Item item2 = it2.next ();
+
+      final int comp = item1.compareTo ( item2 );
+      if ( comp != 0 )
+        return comp;
+    }
+
+    return 0;
+  }
+
+
+  /**
+   * TODO
+   */
+  private TreeSet < LR1Item > rep = new TreeSet < LR1Item > ();
 }

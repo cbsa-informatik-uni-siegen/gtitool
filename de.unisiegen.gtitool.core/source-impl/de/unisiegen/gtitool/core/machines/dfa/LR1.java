@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.core.machines.dfa;
 
 
-import java.util.ArrayList;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
@@ -12,6 +10,7 @@ import de.unisiegen.gtitool.core.entities.LR0ItemSet;
 import de.unisiegen.gtitool.core.entities.LR1Item;
 import de.unisiegen.gtitool.core.entities.LR1ItemSet;
 import de.unisiegen.gtitool.core.entities.LR1State;
+import de.unisiegen.gtitool.core.entities.LR1StateSet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
@@ -38,8 +37,13 @@ public class LR1 extends AbstractLR
    * 
    * @param grammar
    * @throws AlphabetException
+   * @throws TransitionSymbolOnlyOneTimeException
+   * @throws TransitionSymbolNotInAlphabetException
+   * @throws StateException
    */
-  public LR1 ( final LR1Grammar grammar ) throws AlphabetException
+  public LR1 ( final LR1Grammar grammar ) throws AlphabetException,
+      TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException, StateException
   {
     super ( grammar );
 
@@ -49,85 +53,67 @@ public class LR1 extends AbstractLR
 
     int index = 0;
 
-    try
+    // cache to look up already constructed states
+    final LR1StateSet allStates = new LR1StateSet ();
+
+    LR1StateSet currentStates = new LR1StateSet ();
+
     {
-      LR1State startState = new LR1State ( alphabet, true, grammar
+      final LR1State startState = new LR1State ( alphabet, true, grammar
           .closure ( grammar.startProduction () ) );
+
+      this.addState ( startState );
 
       startState.setIndex ( index++ );
 
-      addState ( startState );
-    }
-    catch ( StateException exc )
-    {
-      exc.printStackTrace ();
+      currentStates.add ( startState );
     }
 
-    for ( int oldSize = getState ().size (), newSize = 0 ; oldSize != newSize ; newSize = getState ()
-        .size () )
+    while ( !currentStates.isEmpty () )
     {
-      ArrayList < State > oldStates = new ArrayList < State > ( getState () );
+      final LR1StateSet newStates = new LR1StateSet ();
 
-      oldSize = oldStates.size ();
-
-      for ( State baseState : oldStates )
+      for ( LR1State currentState : currentStates )
       {
-        LR1State currentState = ( LR1State ) baseState;
-        LR1ItemSet currentItemSet = currentState.getLR1Items ();
+        final LR1ItemSet currentItemSet = currentState.getLR1Items ();
+
+        final LR1StateSet addedDesintations = new LR1StateSet ();
 
         for ( LR1Item item : currentItemSet )
         {
           if ( item.dotIsAtEnd () )
             continue;
 
-          LR1ItemSet newItemSet = grammar.closure ( grammar.move (
+          final LR1ItemSet destinationSet = grammar.closure ( grammar.move (
               currentItemSet, item.getProductionWordMemberAfterDot () ) );
-          try
+
+          final LR1StateSet.AddPair status = allStates
+              .addOrReturn ( new LR1State ( alphabet, false, destinationSet ) );
+
+          final LR1State newState = status.getState ();
+
+          if ( status.getIsNew () )
           {
-            LR1State newState = new LR1State ( alphabet, false, newItemSet );
+            newStates.add ( newState );
 
-            if ( !getState ().contains ( newState ) )
-            {
-              addState ( newState );
-              newState.setIndex ( index++ );
-            }
-            else
-              newState = ( LR1State ) getState ().get (
-                  getState ().indexOf ( newState ) );
+            newState.setIndex ( index++ );
 
-            Transition newTransition = new DefaultTransition ( alphabet,
-                new DefaultAlphabet (), new DefaultWord (), new DefaultWord (),
-                currentState, newState, new DefaultSymbol ( item
-                    .getProductionWordMemberAfterDot ().toString () ) );
-
-            boolean transitionAlreadyExists = false;
-
-            for ( Transition trans : getTransition () )
-            {
-              if ( trans.compareByStates ( newTransition ) )
-              {
-                transitionAlreadyExists = true;
-                break;
-              }
-            }
-
-            if ( !transitionAlreadyExists )
-              addTransition ( newTransition );
+            this.addState ( newState );
           }
-          catch ( StateException e )
-          {
-            e.printStackTrace (); // shouldn't happen
-          }
-          catch ( TransitionSymbolOnlyOneTimeException e )
-          {
-            e.printStackTrace ();
-          }
-          catch ( TransitionSymbolNotInAlphabetException e )
-          {
-            e.printStackTrace ();
-          }
+
+          if ( !addedDesintations.addIfNonExistant ( newState ) )
+            continue;
+
+          addTransition ( new DefaultTransition ( alphabet,
+              new DefaultAlphabet (), new DefaultWord (), new DefaultWord (),
+              currentState, newState, new DefaultSymbol ( item
+                  .getProductionWordMemberAfterDot ().toString () ) ) );
         }
       }
+
+      allStates.add ( newStates );
+
+      currentStates = newStates;
     }
   }
 
@@ -143,7 +129,8 @@ public class LR1 extends AbstractLR
 
   /**
    * Constructs the LR1 parser without constructing its states
-   * @param alphabet 
+   * 
+   * @param alphabet
    * @param grammar
    * @param temp The tag
    */

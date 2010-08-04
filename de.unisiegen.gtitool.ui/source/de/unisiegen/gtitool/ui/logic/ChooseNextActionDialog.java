@@ -10,6 +10,7 @@ import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.ChooseNextActionDialogForm;
 
@@ -35,6 +36,25 @@ public final class ChooseNextActionDialog implements
      * selection of more than one {@link Action} at a time is possible
      */
     MULTIPLE_SELECTION;
+  }
+  
+  
+  /**
+   * 
+   * Shall we speak of Actions or Productions?
+   *
+   */
+  public enum TitleForm
+  {
+    /**
+     * normal; means: Action
+     */
+    NORMAL,
+    
+    /**
+     * Production; means: Production
+     */
+    PRODUCTION;
   }
 
 
@@ -73,8 +93,9 @@ public final class ChooseNextActionDialog implements
    * 
    * @param parent The parent {link JFrame}
    * @param actions The {@link Action}s
+   * @param tf The {@link TitleForm}
    */
-  public ChooseNextActionDialog ( final JFrame parent, final ActionSet actions )
+  public ChooseNextActionDialog ( final JFrame parent, final ActionSet actions, final TitleForm tf )
   {
     if ( parent == null )
       throw new NullPointerException ( "parent is null" ); //$NON-NLS-1$
@@ -94,6 +115,15 @@ public final class ChooseNextActionDialog implements
     this.gui.jGTIListActionList.setModel ( this.listModel );
 
     this.gui.jGTIListActionList.setSelectedIndex ( 0 );
+    
+    if(tf == TitleForm.NORMAL)
+    {
+      getGUI().setTitle(Messages.getString("ChooseNextActionDialog.Title")); //$NON-NLS-1$
+      getGUI().jGTILabel1.setText(Messages.getString("ChooseNextActionDialog.Header")); //$NON-NLS-1$
+    } else {
+      getGUI().setTitle(Messages.getString("ChooseNextActionDialog.Title2")); //$NON-NLS-1$
+      getGUI().jGTILabel1.setText(Messages.getString("ChooseNextActionDialog.Header2")); //$NON-NLS-1$
+    }
   }
 
 

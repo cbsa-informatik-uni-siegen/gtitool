@@ -486,7 +486,8 @@ public class StatelessMachinePanel extends MachinePanel
         try
         {
           ChooseNextActionDialog cnad = new ChooseNextActionDialog (
-              this.mainWindowForm, actions);
+              this.mainWindowForm, actions,
+              ChooseNextActionDialog.TitleForm.NORMAL );
           cnad
               .setSelectionMode ( ChooseNextActionDialog.SelectionMode.SINGLE_SELECTION );
           this.chooseDialogActive = true;

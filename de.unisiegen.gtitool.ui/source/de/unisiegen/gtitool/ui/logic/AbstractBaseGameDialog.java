@@ -355,12 +355,9 @@ public abstract class AbstractBaseGameDialog implements
         return;
       if ( !actionSetsEquals ( actions, chosenActions ) )
       {
-        JOptionPane
-        .showMessageDialog ( this.parent,
-            Messages
-                .getString ( "BaseGameDialog.SelectionWrongDialog.Text" ), //$NON-NLS-1$
-            Messages
-                .getString ( "BaseGameDialog.SelectionWrongDialog.Title" ), //$NON-NLS-1$
+        JOptionPane.showMessageDialog ( this.parent, Messages
+            .getString ( "BaseGameDialog.SelectionWrongDialog.Text" ), //$NON-NLS-1$
+            Messages.getString ( "BaseGameDialog.SelectionWrongDialog.Title" ), //$NON-NLS-1$
             JOptionPane.ERROR_MESSAGE );
         updateStats ( false );
         updateAnswers ();
@@ -374,7 +371,6 @@ public abstract class AbstractBaseGameDialog implements
     }
 
     if ( this.actionSetsPartialEqual )
-    {
       JOptionPane
           .showMessageDialog ( this.parent,
               Messages
@@ -382,7 +378,6 @@ public abstract class AbstractBaseGameDialog implements
               Messages
                   .getString ( "BaseGameDialog.SelectionPartialCorrect.Title" ), //$NON-NLS-1$
               JOptionPane.INFORMATION_MESSAGE );
-    }
     else
     {
       setUncoverMatrixEntry ( row, col - 1, true );
@@ -438,8 +433,14 @@ public abstract class AbstractBaseGameDialog implements
   protected ActionSet getUserSelection ( final ActionSet actions )
       throws ActionSetException
   {
-    final ChooseNextActionDialog cnad = new ChooseNextActionDialog (
-        this.parent, actions );
+    final ChooseNextActionDialog cnad;
+    //TODO: not a good style :/
+    if ( this instanceof CreateParsingTableGameDialog )
+      cnad = new ChooseNextActionDialog ( this.parent, actions,
+          ChooseNextActionDialog.TitleForm.PRODUCTION );
+    else
+      cnad = new ChooseNextActionDialog ( this.parent, actions,
+          ChooseNextActionDialog.TitleForm.NORMAL );
     cnad.setLastEntry ( new PrettyString ( new PrettyToken ( "{ }", Style.NONE ) //$NON-NLS-1$
         ) );
     cnad.show ();

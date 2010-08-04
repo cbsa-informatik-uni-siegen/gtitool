@@ -47,6 +47,7 @@ public class ChooseNextActionDialogForm extends javax.swing.JDialog implements G
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("ChooseNextActionDialog.Title")); // NOI18N
+        setMinimumSize(new java.awt.Dimension(400, 300));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jGTILabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -121,7 +122,7 @@ public class ChooseNextActionDialogForm extends javax.swing.JDialog implements G
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
-    private de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabel1;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabel1;
     public de.unisiegen.gtitool.ui.swing.JGTIList jGTIListActionList;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanel1;
     private javax.swing.JScrollPane jScrollPane1;

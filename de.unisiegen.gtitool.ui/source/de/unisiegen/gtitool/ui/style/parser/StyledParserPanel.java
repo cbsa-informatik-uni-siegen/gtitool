@@ -28,7 +28,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Entity;
+import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.style.Style;
@@ -151,6 +153,8 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
      */
     public final void add ( E newObject )
     {
+      if ( newObject instanceof TerminalSymbolSet )
+        ( ( DefaultTerminalSymbolSet ) newObject ).setDisplayAll ( true );
       if ( this.addNextObject
           && ( ( this.list.size () == 0 ) || !this.list.get (
               this.list.size () - 1 ).toString ().equals (
@@ -528,9 +532,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
       public void mousePressed ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           showPopupMenu ( event );
-        }
       }
 
 
@@ -538,9 +540,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
       public void mouseReleased ( MouseEvent event )
       {
         if ( event.isPopupTrigger () )
-        {
           showPopupMenu ( event );
-        }
       }
     } );
 
@@ -577,10 +577,8 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
         try
         {
           while ( StyledParserPanel.this.document.getText (
-              index + countSpaces, 1 ).equals ( " " ) ) //$NON-NLS-1$
-          {
+              index + countSpaces, 1 ).equals ( " " ) )
             countSpaces++ ;
-          }
         }
         catch ( BadLocationException e )
         {
@@ -598,10 +596,8 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
             countSpaces-- ;
           }
           if ( ( countSpaces >= 1 )
-              && ( text.substring ( text.length () - 1 ).equals ( " " ) ) ) //$NON-NLS-1$
-          {
+              && ( text.substring ( text.length () - 1 ).equals ( " " ) ) )
             text = text.substring ( 0, text.length () - 1 );
-          }
           StyledParserPanel.this.document.insertString ( index + offset, text,
               null );
         }
@@ -623,13 +619,9 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
       {
         if ( ( StyledParserPanel.this.editor.getSelectionStart () == left )
             && ( StyledParserPanel.this.editor.getSelectionEnd () == right ) )
-        {
           StyledParserPanel.this.removeSelectedText ();
-        }
         else
-        {
           StyledParserPanel.this.selectErrorText ( left, right );
-        }
       }
     } );
     add ( this.sideBar, BorderLayout.WEST );
@@ -795,16 +787,12 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
 
     // History
     if ( checkedObject != null )
-    {
       this.history.add ( checkedObject );
-    }
 
     ParseableChangedListener [] listeners = this.listenerList
         .getListeners ( ParseableChangedListener.class );
     for ( ParseableChangedListener < E > current : listeners )
-    {
       current.parseableChanged ( checkedObject );
-    }
   }
 
 
@@ -849,9 +837,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   protected final void handleRedo ()
   {
     if ( this.history.canRedo () )
-    {
       this.editor.setText ( this.history.redo ().toString () );
-    }
   }
 
 
@@ -861,9 +847,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   protected final void handleUndo ()
   {
     if ( this.history.canUndo () )
-    {
       this.editor.setText ( this.history.undo ().toString () );
-    }
   }
 
 
@@ -996,13 +980,9 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     try
     {
       if ( start < end )
-      {
         this.document.remove ( start, ( end - start ) );
-      }
       else
-      {
         this.document.remove ( end, ( start - end ) );
-      }
     }
     catch ( BadLocationException e )
     {
@@ -1116,13 +1096,9 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     this.sideBar.setEnabled ( enabled );
     this.editor.setEnabled ( enabled );
     if ( enabled )
-    {
       this.editor.setBackground ( Color.WHITE );
-    }
     else
-    {
       this.editor.setBackground ( Theme.DISABLED_COMPONENT_COLOR );
-    }
     super.setEnabled ( enabled );
   }
 
@@ -1137,28 +1113,18 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     if ( this.acceptedStatus.equals ( AcceptedStatus.NONE ) )
     {
       if ( ( this.document.getParsedObject () == null ) || error )
-      {
         this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
-      }
       else
-      {
         this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
-      }
     }
     else if ( this.acceptedStatus.equals ( AcceptedStatus.ACCEPTED ) )
-    {
       this.jScrollPane.setBorder ( new LineBorder ( AcceptedStatus.ACCEPTED
           .getColor () ) );
-    }
     else if ( this.acceptedStatus.equals ( AcceptedStatus.NOT_ACCEPTED ) )
-    {
       this.jScrollPane.setBorder ( new LineBorder ( AcceptedStatus.NOT_ACCEPTED
           .getColor () ) );
-    }
     else
-    {
       throw new RuntimeException ( "unsupported accepted status" ); //$NON-NLS-1$
-    }
   }
 
 
@@ -1250,21 +1216,16 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   {
     this.editor.setEditable ( this.editable );
     if ( this.editable )
+      this.editor.setFocusable ( true );
+    else if ( this.copyable )
     {
       this.editor.setFocusable ( true );
+      this.editor.setCursor ( new Cursor ( Cursor.TEXT_CURSOR ) );
     }
     else
     {
-      if ( this.copyable )
-      {
-        this.editor.setFocusable ( true );
-        this.editor.setCursor ( new Cursor ( Cursor.TEXT_CURSOR ) );
-      }
-      else
-      {
-        this.editor.setFocusable ( false );
-        this.editor.setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) );
-      }
+      this.editor.setFocusable ( false );
+      this.editor.setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) );
     }
     // SideBar
     this.sideBar.setVisible ( this.sideBarVisible );
@@ -1279,13 +1240,9 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   public final void setText ( Object object )
   {
     if ( object == null )
-    {
       this.editor.setText ( "" ); //$NON-NLS-1$
-    }
     else
-    {
       this.editor.setText ( object.toString () );
-    }
   }
 
 
@@ -1298,9 +1255,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
   protected final void showPopupMenu ( MouseEvent event )
   {
     if ( !isEnabled () )
-    {
       return;
-    }
     if ( this.editable )
     {
       int start = this.editor.getSelectionStart ();

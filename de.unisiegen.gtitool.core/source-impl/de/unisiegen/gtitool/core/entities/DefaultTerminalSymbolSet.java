@@ -851,25 +851,21 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   {
     if ( ( this.cachedPrettyString == null )
         || PrettyString.MODE.equals ( PrettyStringMode.CACHING_OFF ) )
-    {
       if ( !this.displayAll )
         displayCharacterClassStyle ();
       else
         displayAllStyle ();
-
-    }
 
     return this.cachedPrettyString;
   }
 
 
   /**
-   * {@inheritDoc}
+   * use character class display style to represent the terminal symbols
    * 
-   * @see Entity#toString()
+   * @return The terminal symbol list
    */
-  @Override
-  public final String toString ()
+  private final String toStringCharacterClassStyle ()
   {
     StringBuilder result = new StringBuilder ();
     result.append ( "{" ); //$NON-NLS-1$
@@ -905,6 +901,42 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     }
     result.append ( "}" ); //$NON-NLS-1$
     return result.toString ();
+  }
+
+
+  /**
+   * do not use character class display style to represent the terminal symbols
+   * 
+   * @return The terminal symbol list
+   */
+  private final String toStringAllStyle ()
+  {
+    StringBuilder result = new StringBuilder ();
+    result.append ( "{" ); //$NON-NLS-1$
+    boolean first = true;
+    for ( TerminalSymbol ts : this.terminalSymbolSet )
+    {
+      if ( !first )
+        result.append ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+      result.append ( ts );
+      first = false;
+    }
+    result.append ( "}" ); //$NON-NLS-1$
+    return result.toString ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Entity#toString()
+   */
+  @Override
+  public final String toString ()
+  {
+    if ( !this.displayAll )
+      return toStringCharacterClassStyle ();
+    return toStringAllStyle ();
   }
 
 

@@ -48,10 +48,10 @@ public class LR0ItemSet implements LRItemSet, Entity < LR0ItemSet >, Storable,
     this.rep = new TreeSet < LR0Item > ( items.get () );
   }
 
+
   /**
-   * 
    * Allocates a new {@link LR0ItemSet}
-   *
+   * 
    * @param items The {@link LR0Item}s
    */
   public LR0ItemSet ( Iterable < LR0Item > items )
@@ -80,6 +80,16 @@ public class LR0ItemSet implements LRItemSet, Entity < LR0ItemSet >, Storable,
   public void add ( LR0Item item )
   {
     this.rep.add ( item );
+  }
+
+
+  public boolean addIfNonExistant ( final LR0Item item )
+  {
+    if ( this.rep.contains ( item ) )
+      return false;
+
+    this.rep.add ( item );
+    return true;
   }
 
 

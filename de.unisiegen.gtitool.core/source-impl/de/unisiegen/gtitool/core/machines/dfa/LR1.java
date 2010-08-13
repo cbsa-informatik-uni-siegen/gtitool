@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.machines.dfa;
 
 
+import java.util.Iterator;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
@@ -148,41 +150,48 @@ public class LR1 extends AbstractLR
    * 
    * @return the new automaton
    * @throws StateException
+   * @throws TransitionSymbolOnlyOneTimeException 
+   * @throws TransitionSymbolNotInAlphabetException 
    */
-  public LR1 toLALR1 () throws StateException
+  public LR1 toLALR1 () throws StateException, TransitionSymbolNotInAlphabetException, TransitionSymbolOnlyOneTimeException
   {
-    LR1 ret = new LR1 ( this.getAlphabet (), this.grammar,
+    final LR1 ret = new LR1 ( this.getAlphabet (), this.grammar,
         new DontConstructTheStates () );
+
+    final LR1StateSet currentStates = new LR1StateSet ();
+
+    for ( State state : this.getState () )
+      currentStates.add ( ( LR1State ) state );
 
     int stateIndex = 0;
 
-    for ( int index = 0 ; index < this.getState ().size () ; ++index )
+    while ( !currentStates.isEmpty () )
     {
-      final LR1State state = ( LR1State ) this.getState ( index );
+      final LR1State currentState = currentStates.front ();
 
-      final LR0ItemSet lr0part = state.getLR0Part ();
+      final LR0ItemSet lr0part = currentState.getLR0Part ();
 
-      LR1ItemSet resultItems = new LR1ItemSet ();
+      final LR1ItemSet resultItems = new LR1ItemSet ();
 
-      for ( int inner = 0 ; inner < this.getState ().size () ; ++inner )
+      for ( Iterator < LR1State > iterator = currentStates.iterator () ; iterator
+          .hasNext () ; )
       {
-        final LR1State otherState = ( LR1State ) this.getState ( inner );
+        final LR1State state = iterator.next ();
 
-        if ( otherState.getLR0Part ().equals ( lr0part ) )
-          resultItems.addIfNonExistant ( otherState.getLR1Items () );
+        if ( state.getLR0Part ().equals ( lr0part ) )
+        {
+          resultItems.addIfNonExistant ( state.getLR1Items () );
+          iterator.remove ();
+        }
       }
 
-      final LR1State newState = new LR1State ( this.getAlphabet (), state
-          .isStartState (), resultItems );
+      final LR1State newState = new LR1State ( this.getAlphabet (),
+          currentState.isStartState (), resultItems );
 
-      if ( !ret.getState ().contains ( newState ) )
-      {
-        ret.addState ( newState );
+      newState.setIndex ( stateIndex++ );
 
-        newState.setIndex ( stateIndex++ );
-      }
+      ret.addState ( newState );
     }
-
     // add all transitions
     for ( Transition transition : this.getTransition () )
     {
@@ -196,25 +205,14 @@ public class LR1 extends AbstractLR
       final LR1State realEndState = getEqualLALRState ( ret.getState (),
           endState );
 
-      try
-      {
-        final Transition newTransition = new DefaultTransition ( transition
-            .getAlphabet (), transition.getPushDownAlphabet (), transition
-            .getPushDownWordRead (), transition.getPushDownWordWrite (),
-            realBeginState, realEndState, transition.getSymbol () );
+      final Transition newTransition = new DefaultTransition ( transition
+          .getAlphabet (), transition.getPushDownAlphabet (), transition
+          .getPushDownWordRead (), transition.getPushDownWordWrite (),
+          realBeginState, realEndState, transition.getSymbol () );
 
-        if ( ret.hasTransition ( newTransition ) )
-          continue;
-        ret.addTransition ( newTransition );
-      }
-      catch ( TransitionSymbolNotInAlphabetException exc )
-      {
-        exc.printStackTrace ();
-      }
-      catch ( TransitionSymbolOnlyOneTimeException exc )
-      {
-        exc.printStackTrace ();
-      }
+      if ( ret.hasTransition ( newTransition ) )
+        continue;
+      ret.addTransition ( newTransition );
     }
 
     return ret;

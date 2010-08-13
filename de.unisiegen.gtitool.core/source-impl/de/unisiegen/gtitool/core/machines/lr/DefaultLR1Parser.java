@@ -71,9 +71,11 @@ public class DefaultLR1Parser extends AbstractLRMachine implements LR1Parser
    * @return the new parser
    * @throws AlphabetException
    * @throws StateException
+   * @throws TransitionSymbolOnlyOneTimeException 
+   * @throws TransitionSymbolNotInAlphabetException 
    */
   public DefaultLR1Parser toLALR1Parser () throws AlphabetException,
-      StateException
+      StateException, TransitionSymbolNotInAlphabetException, TransitionSymbolOnlyOneTimeException
   {
     return new DefaultLR1Parser ( this.lr1Automaton.toLALR1 (), this
         .getGrammar () );

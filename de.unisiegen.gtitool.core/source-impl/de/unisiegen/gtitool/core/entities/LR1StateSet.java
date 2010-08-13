@@ -103,6 +103,10 @@ public class LR1StateSet implements Iterable < LR1State >
     return this.rep.contains ( state );
   }
 
+  public int size()
+  {
+    return this.rep.size ();
+  }
 
   public boolean isEmpty ()
   {
@@ -119,6 +123,11 @@ public class LR1StateSet implements Iterable < LR1State >
   public Iterator < LR1State > iterator ()
   {
     return this.rep.iterator ();
+  }
+  
+  public LR1State front()
+  {
+    return this.rep.first ();
   }
 
 

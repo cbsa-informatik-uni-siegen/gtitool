@@ -55,12 +55,17 @@ public class LR1State extends LRState
    */
   public LR0ItemSet getLR0Part ()
   {
-    LR0ItemSet ret = new LR0ItemSet ();
-    for ( LRItem item : this.lr1Items )
-      ret.add ( new LR0Item ( item.getNonterminalSymbol (), item
-          .getProductionWord (), item.getDotPosition () ) );
+    if ( this.lr0ItemPart != null )
+      return this.lr0ItemPart;
 
-    return ret;
+    this.lr0ItemPart = new LR0ItemSet ();
+
+    for ( LRItem item : this.lr1Items )
+      this.lr0ItemPart.addIfNonExistant ( new LR0Item ( item
+          .getNonterminalSymbol (), item.getProductionWord (), item
+          .getDotPosition () ) );
+
+    return this.lr0ItemPart;
   }
 
 
@@ -106,4 +111,10 @@ public class LR1State extends LRState
    * The LR1 items belonging to this state
    */
   private LR1ItemSet lr1Items;
+
+
+  /**
+   * The LR0 items belonging to this state
+   */
+  private LR0ItemSet lr0ItemPart;
 }

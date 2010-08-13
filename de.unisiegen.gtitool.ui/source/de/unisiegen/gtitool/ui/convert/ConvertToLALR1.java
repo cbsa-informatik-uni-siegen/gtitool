@@ -2,6 +2,8 @@ package de.unisiegen.gtitool.ui.convert;
 
 
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.AbstractStateMachine;
 import de.unisiegen.gtitool.core.machines.dfa.LR1;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
@@ -55,6 +57,14 @@ public class ConvertToLALR1 extends ConvertToLR
     catch ( StateException exc )
     {
       exc.printStackTrace ();
+    }
+    catch ( TransitionSymbolNotInAlphabetException exc )
+    {
+      exc.printStackTrace();
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
+    {
+      exc.printStackTrace();
     }
   }
 

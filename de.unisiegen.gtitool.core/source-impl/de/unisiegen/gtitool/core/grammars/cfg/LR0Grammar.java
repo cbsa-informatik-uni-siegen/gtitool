@@ -108,14 +108,12 @@ public class LR0Grammar extends ExtendedGrammar
    */
   public LR0ItemSet closure ( final LR0ItemSet items )
   {
-    LR0ItemSet ret = new LR0ItemSet ( items );
+    final LR0ItemSet ret = new LR0ItemSet ( items );
 
-    for ( int oldSize = ret.size (), newSize = 0 ; newSize != oldSize ; newSize = ret
-        .size () )
+    for ( LR0ItemSet currentItems = items ; !currentItems.isEmpty () ; )
     {
-      oldSize = ret.size ();
+      final LR0ItemSet newItems = new LR0ItemSet ();
 
-      LR0ItemSet currentItems = new LR0ItemSet ( ret );
       for ( LR0Item item : currentItems )
       {
         if ( !item.dotPrecedesNonterminal () )
@@ -127,14 +125,16 @@ public class LR0Grammar extends ExtendedGrammar
               production.getNonterminalSymbol () ) )
             continue;
 
-          final LR0Item newProduction = new LR0Item ( production
+          final LR0Item newItem = new LR0Item ( production
               .getNonterminalSymbol (), production.getProductionWord (), 0 );
-          if ( !ret.contains ( newProduction ) )
-            ret.add ( newProduction );
+          
+          if ( ret.addIfNonExistant ( newItem ) )
+            newItems.add ( newItem );
         }
       }
+      currentItems = newItems;
     }
-
+    
     return ret;
   }
 

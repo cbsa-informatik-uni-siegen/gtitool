@@ -92,6 +92,10 @@ public class LR0ItemSet implements LRItemSet, Entity < LR0ItemSet >, Storable,
     return true;
   }
 
+  public boolean isEmpty()
+  {
+    return this.rep.isEmpty (); 
+  }
 
   /**
    * Returns the number of {@link LR0Item}s

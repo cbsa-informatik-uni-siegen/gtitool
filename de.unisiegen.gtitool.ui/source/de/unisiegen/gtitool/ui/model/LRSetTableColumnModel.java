@@ -2,9 +2,6 @@ package de.unisiegen.gtitool.ui.model;
 
 
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
@@ -47,6 +44,8 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
    */
   public void transitionChanged ( final Transition transition )
   {
+    this.clearSelections ();
+
     stateSelectionChanged ( transition.getStateBegin (), transition
         .isSelected () );
     stateSelectionChanged ( transition.getStateEnd (), transition.isSelected () );
@@ -61,6 +60,8 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
    */
   public void stateChanged ( final State state )
   {
+    this.clearSelections ();
+
     stateSelectionChanged ( state, state.isSelected () );
   }
 
@@ -74,37 +75,33 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
   private void stateSelectionChanged ( final State state, final boolean selected )
   {
     final LRState lrstate = ( LRState ) state;
+
+    if ( !selected )
+      return;
+
     final String stateName = lrstate.getName ();
-    if ( selected )
-    {
-      final ColumnEntry previousEntry = this.columns.get ( stateName );
+    final int index = this.columns.size ();
 
-      if ( previousEntry != null )
-        previousEntry.addRef ();
-      else
-      {
-        final int index = this.columns.size ();
+    final TableColumn column = new TableColumn ( index );
+    column.setHeaderValue ( new PrettyString ( new PrettyToken ( stateName,
+        Style.NONE ) ) );
+    column.setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+    column.setCellRenderer ( new PrettyStringTableCellRenderer () );
+    this.columns.add ( new ColumnEntry ( lrstate, column ) );
 
-        final TableColumn column = new TableColumn ( index );
-        column.setHeaderValue ( new PrettyString ( new PrettyToken ( stateName,
-            Style.NONE ) ) );
-        column.setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
-        column.setCellRenderer ( new PrettyStringTableCellRenderer () );
-        this.columns
-            .put ( stateName, new ColumnEntry ( index, lrstate, column ) );
+    addColumn ( column );
+  }
 
-        addColumn ( column );
-      }
-    }
-    else
-    {
-      final ColumnEntry entry = this.columns.get ( stateName );
-      if ( entry.Release () )
-      {
-        this.columns.remove ( stateName );
-        this.removeColumn ( entry.getColumn () );
-      }
-    }
+
+  /**
+   * Removes all previous selections
+   */
+  private void clearSelections ()
+  {
+    for ( ColumnEntry entry : this.columns )
+      this.removeColumn ( entry.getColumn () );
+
+    this.columns.clear ();
   }
 
 
@@ -115,44 +112,25 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
   {
     int rowCount = 0;
 
-    final Set < Entry < String, ColumnEntry >> entries = this.columns
-        .entrySet ();
-
-    for ( Entry < String, ColumnEntry > entry : entries )
-      rowCount = Math.max ( rowCount, entry.getValue ().getState ().getItems ()
-          .size () );
+    for ( ColumnEntry entry : this.columns )
+      rowCount = Math.max ( rowCount, entry.getState ().getItems ().size () );
 
     return rowCount;
   }
 
 
   /**
-   * TODO
-   * 
    * @param rowIndex
    * @param columnIndex
-   * @return
+   * @return The string
    */
   public PrettyString getEntry ( final int rowIndex, final int columnIndex )
   {
-    final Set < Entry < String, ColumnEntry >> entries = this.columns
-        .entrySet ();
+    final ArrayList < PrettyString > stringEntries = this.columns.get (
+        columnIndex ).getState ().getItems ().stringEntries ();
 
-    for ( Entry < String, ColumnEntry > entry : entries )
-    {
-      final ColumnEntry columnEntry = entry.getValue ();
-
-      if ( columnEntry.getIndex () == columnIndex )
-      {
-        final ArrayList < PrettyString > stringEntries = columnEntry
-            .getState ().getItems ().stringEntries ();
-
-        return rowIndex < stringEntries.size () ? stringEntries.get ( rowIndex )
-            : new PrettyString ();
-      }
-    }
-
-    throw new RuntimeException ( "Column not found!" ); //$NON-NLS-1$
+    return rowIndex < stringEntries.size () ? stringEntries.get ( rowIndex )
+        : new PrettyString ();
   }
 
 
@@ -165,46 +143,20 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
     /**
      * TODO
      * 
-     * @param index
      * @param state
      * @param column
      */
-    public ColumnEntry ( final int index, final LRState state,
-        final TableColumn column )
+    public ColumnEntry ( final LRState state, final TableColumn column )
     {
-      this.index = index;
       this.state = state;
-      this.refcount = 1;
       this.column = column;
     }
 
 
     /**
-     * TODO
-     */
-    void addRef ()
-    {
-      ++this.refcount;
-    }
-
-
-    /**
-     * TODO
+     * The column
      * 
-     * @return
-     */
-    boolean Release ()
-    {
-      --this.refcount;
-
-      return this.refcount == 0;
-    }
-
-
-    /**
-     * TODO
-     * 
-     * @return
+     * @return the column
      */
     TableColumn getColumn ()
     {
@@ -213,31 +165,14 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
 
 
     /**
-     * TODO
+     * The state
      * 
-     * @return
+     * @return the state
      */
     LRState getState ()
     {
       return this.state;
     }
-
-
-    /**
-     * TODO
-     * 
-     * @return
-     */
-    public int getIndex ()
-    {
-      return this.index;
-    }
-
-
-    /**
-     * TODO
-     */
-    private int index;
 
 
     /**
@@ -250,17 +185,11 @@ public class LRSetTableColumnModel extends DefaultTableColumnModel
      * TODO
      */
     private TableColumn column;
-
-
-    /**
-     * TODO
-     */
-    private int refcount;
   }
 
 
   /**
    * TODO
    */
-  private TreeMap < String, ColumnEntry > columns = new TreeMap < String, ColumnEntry > ();
+  private ArrayList < ColumnEntry > columns = new ArrayList < ColumnEntry > ();
 }

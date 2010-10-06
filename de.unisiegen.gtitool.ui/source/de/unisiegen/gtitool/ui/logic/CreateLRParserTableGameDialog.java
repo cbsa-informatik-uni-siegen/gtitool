@@ -2,13 +2,21 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
+import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.LRState;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionSet;
+import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Action.TransitionType;
+import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
@@ -198,12 +206,38 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#getSelectableActions()
+   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#getSelectableActions(int
+   *      row, int col)
    */
   @Override
-  protected ActionSet getSelectableActions ()
+  protected ActionSet getSelectableActions ( int row, int col )
   {
-    //TODO: implement
-    return null;
+    final TreeSet < NonterminalSymbol > nss = new TreeSet < NonterminalSymbol > ();
+    final ActionSet selectableActions = new DefaultActionSet ();
+    final ActionSet actions = getActionSetAt(row, col);
+    try
+    {
+      for ( Action a : actions )
+        if ( a.getTransitionType () == TransitionType.REDUCE )
+        {
+          final NonterminalSymbol ns = a.getReduceAction ()
+              .getNonterminalSymbol ();
+          if ( nss.add ( ns ) )
+          {
+            ProductionSet ps = this.getGrammar ().getProductionForNonTerminal (
+                ns );
+            for ( Production p : ps )
+              selectableActions.add ( new ReduceAction ( p ) );
+          }
+        }
+        else
+          selectableActions.add ( a );
+    }
+    catch ( final ActionSetException a )
+    {
+      a.printStackTrace ();
+      System.exit ( 1 );
+    }
+    return selectableActions;
   }
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultParsingTable;
@@ -113,10 +112,13 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#getSelectableActions()
+   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#getSelectableActions(int
+   *      row, int col)
    */
   @Override
-  protected final ActionSet getSelectableActions ()
+  protected final ActionSet getSelectableActions (
+      @SuppressWarnings ( "unused" ) int row,
+      @SuppressWarnings ( "unused" ) int col )
   {
     final ActionSet selectableActions = new DefaultActionSet ();
     final NonterminalSymbol ns = getGrammar ().getNonterminalSymbolSet ().get (
@@ -156,60 +158,60 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
       }
     return actions;
   }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#actionSetsEquals(de.unisiegen.gtitool.core.entities.ActionSet,
-   *      de.unisiegen.gtitool.core.entities.ActionSet)
-   */
-  @Override
-  protected boolean actionSetsEquals ( final ActionSet actionSet1,
-      final ActionSet actionSet2 )
-  {
-    boolean totalEquality = false;
-    this.actionSetsPartialEqual = false;
-    ActionSet cmpSource;
-    ActionSet cmpTarget;
-    if ( actionSet1.size () < actionSet2.size () )
-    {
-      cmpSource = actionSet1;
-      cmpTarget = actionSet2;
-    }
-    else if ( actionSet2.size () < actionSet1.size () )
-    {
-      cmpSource = actionSet2;
-      cmpTarget = actionSet1;
-    }
-    else
-    {
-      cmpSource = actionSet1;
-      cmpTarget = actionSet2;
-      totalEquality = true;
-    }
-    
-    if(cmpSource.size () == 0 && cmpTarget.size () > 0)
-      return false;
-
-    for ( Action actionSrc : cmpSource )
-    {
-      ReverseReduceAction rraSrc = ( ReverseReduceAction ) actionSrc;
-      boolean contained = false;
-      for ( Action actionTgt : cmpTarget )
-      {
-        ReverseReduceAction rraTgt = ( ReverseReduceAction ) actionTgt;
-        contained = contained
-            || rraSrc.getReduceAction ().getProductionWord ().equals (
-                rraTgt.getReduceAction ().getProductionWord () );
-      }
-      if ( !contained )
-        return false;
-    }
-    if(!totalEquality)
-      this.actionSetsPartialEqual = true;
-    return true;
-  }
+//
+//
+//  /**
+//   * {@inheritDoc}
+//   * 
+//   * @see de.unisiegen.gtitool.ui.logic.AbstractBaseGameDialog#actionSetsEquals(de.unisiegen.gtitool.core.entities.ActionSet,
+//   *      de.unisiegen.gtitool.core.entities.ActionSet)
+//   */
+//  @Override
+//  protected boolean actionSetsEquals ( final ActionSet actionSet1,
+//      final ActionSet actionSet2 )
+//  {
+//    boolean totalEquality = false;
+//    this.actionSetsPartialEqual = false;
+//    ActionSet cmpSource;
+//    ActionSet cmpTarget;
+//    if ( actionSet1.size () < actionSet2.size () )
+//    {
+//      cmpSource = actionSet1;
+//      cmpTarget = actionSet2;
+//    }
+//    else if ( actionSet2.size () < actionSet1.size () )
+//    {
+//      cmpSource = actionSet2;
+//      cmpTarget = actionSet1;
+//    }
+//    else
+//    {
+//      cmpSource = actionSet1;
+//      cmpTarget = actionSet2;
+//      totalEquality = true;
+//    }
+//
+//    if ( cmpSource.size () == 0 && cmpTarget.size () > 0 )
+//      return false;
+//
+//    for ( Action actionSrc : cmpSource )
+//    {
+//      ReverseReduceAction rraSrc = ( ReverseReduceAction ) actionSrc;
+//      boolean contained = false;
+//      for ( Action actionTgt : cmpTarget )
+//      {
+//        ReverseReduceAction rraTgt = ( ReverseReduceAction ) actionTgt;
+//        contained = contained
+//            || rraSrc.getReduceAction ().getProductionWord ().equals (
+//                rraTgt.getReduceAction ().getProductionWord () );
+//      }
+//      if ( !contained )
+//        return false;
+//    }
+//    if ( !totalEquality )
+//      this.actionSetsPartialEqual = true;
+//    return true;
+//  }
 
 
   /**

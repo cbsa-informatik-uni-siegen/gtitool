@@ -348,12 +348,13 @@ public abstract class AbstractBaseGameDialog implements
     try
     {
       final ActionSet actions = getActionSetAt ( row, col - 1 );
-      final ActionSet selectableActions = getSelectableActions ();
+      final ActionSet selectableActions = getSelectableActions ( row, col - 1 );
       final ActionSet chosenActions = getUserSelection ( selectableActions );
       // nothing selected => cancel was pressed
       if ( !this.userSelectedEmpty && chosenActions.size () == 0 )
         return;
-      if ( !actionSetsEquals ( actions, chosenActions ) )
+      if ( !actionSetsEquals ( actions, chosenActions )
+          && !this.actionSetsPartialEqual )
       {
         JOptionPane.showMessageDialog ( this.parent, Messages
             .getString ( "BaseGameDialog.SelectionWrongDialog.Text" ), //$NON-NLS-1$
@@ -434,7 +435,7 @@ public abstract class AbstractBaseGameDialog implements
       throws ActionSetException
   {
     final ChooseNextActionDialog cnad;
-    //TODO: not a good style :/
+    // TODO: not a good style :/
     if ( this instanceof CreateParsingTableGameDialog )
       cnad = new ChooseNextActionDialog ( this.parent, actions,
           ChooseNextActionDialog.TitleForm.PRODUCTION );
@@ -468,54 +469,29 @@ public abstract class AbstractBaseGameDialog implements
   protected boolean actionSetsEquals ( final ActionSet actionSet1,
       final ActionSet actionSet2 )
   {
-    if ( actionSet1.size () != actionSet2.size () )
-      return false;
-    boolean contains = true;
-    for ( Action p : actionSet2 )
-      contains = contains && actionSet1.contains ( p );
-    return contains;
+    boolean contained = true;
+
+    for ( Action a : actionSet2 )
+    {
+      contained = contained && actionSet1.contains ( a );
+    }
+
+    this.actionSetsPartialEqual = contained
+        && actionSet1.size () != actionSet2.size ();
+
+    return contained && actionSet1.size () == actionSet2.size ();
   }
 
 
   /**
    * Returns a reasonable set of {@link Action}s the user can select from
    * 
+   * @param row the row
+   * @param col the column
    * @return {@link ActionSet}
    */
-  protected abstract ActionSet getSelectableActions ( /* final ActionSet actions */);
+  protected abstract ActionSet getSelectableActions ( int row, int col );
 
-
-  // {
-  // final TreeSet < NonterminalSymbol > nss = new TreeSet < NonterminalSymbol >
-  // ();
-  // final ActionSet selectableActions = new DefaultActionSet ();
-  // try
-  // {
-  // for ( Action a : actions )
-  // if ( a.getTransitionType () == TransitionType.REDUCE )
-  // {
-  // final NonterminalSymbol ns = a.getReduceAction ()
-  // .getNonterminalSymbol ();
-  // if ( nss.add ( ns ) )
-  // {
-  // ProductionSet ps = this.cfg.getProductionForNonTerminal ( ns );
-  // for ( Production p : ps )
-  // if ( this instanceof CreateParsingTableGameDialog )
-  // selectableActions.add ( new ReverseReduceAction ( p ) );
-  // else
-  // selectableActions.add ( new ReduceAction ( p ) );
-  // }
-  // }
-  // else
-  // selectableActions.add ( a );
-  // }
-  // catch ( final ActionSetException a )
-  // {
-  // a.printStackTrace ();
-  // System.exit ( 1 );
-  // }
-  // return selectableActions;
-  // }
 
   /**
    * updates the game statistics

@@ -17,7 +17,8 @@ public class ReduceAction extends ReplaceAction
    */
   public ReduceAction ( final Production production )
   {
-    super ( production );
+    super ( new DefaultProduction ( production.getNonterminalSymbol (),
+        production.getProductionWord () )  );
   }
 
 

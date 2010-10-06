@@ -58,7 +58,7 @@ public class LRItem extends DefaultProduction
 
     if ( compare != 0 )
       return compare;
-
+    
     return ( ( LRItem ) ( other ) ).dotPosition - this.dotPosition;
   }
 

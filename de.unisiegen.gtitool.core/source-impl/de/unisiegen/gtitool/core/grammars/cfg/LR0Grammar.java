@@ -69,7 +69,7 @@ public class LR0Grammar extends ExtendedGrammar
    */
   public static class SerializedTag
   {
-    //Nothing
+    // Nothing
   }
 
 
@@ -88,7 +88,7 @@ public class LR0Grammar extends ExtendedGrammar
 
   /**
    * Allocates a new {@link LR0Grammar}
-   *
+   * 
    * @param grammar
    * @throws NonterminalSymbolSetException
    */
@@ -127,14 +127,14 @@ public class LR0Grammar extends ExtendedGrammar
 
           final LR0Item newItem = new LR0Item ( production
               .getNonterminalSymbol (), production.getProductionWord (), 0 );
-          
+
           if ( ret.addIfNonExistant ( newItem ) )
             newItems.add ( newItem );
         }
       }
       currentItems = newItems;
     }
-    
+
     return ret;
   }
 
@@ -162,9 +162,10 @@ public class LR0Grammar extends ExtendedGrammar
    * @param member - The item to move the dot over
    * @return MOVE(items, member)
    */
-  public LR0ItemSet move ( LR0ItemSet items, ProductionWordMember member )
+  public LR0ItemSet move ( final LR0ItemSet items,
+      final ProductionWordMember member )
   {
-    LR0ItemSet ret = new LR0ItemSet ();
+    final LR0ItemSet ret = new LR0ItemSet ();
 
     for ( LR0Item item : items )
       if ( !item.dotIsAtEnd ()

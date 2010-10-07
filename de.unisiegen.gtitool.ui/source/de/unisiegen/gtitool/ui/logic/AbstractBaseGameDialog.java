@@ -473,6 +473,9 @@ public abstract class AbstractBaseGameDialog implements
     this.actionSetsPartialEqual = contained
         && actionSet1.size () != actionSet2.size ();
 
+    if ( this.userSelectedEmpty && !actionSet1.isEmpty () )
+      this.actionSetsPartialEqual = false;
+
     return contained && actionSet1.size () == actionSet2.size ();
   }
 

@@ -8,6 +8,8 @@ import javax.swing.ListSelectionModel;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -37,12 +39,10 @@ public final class ChooseNextActionDialog implements
      */
     MULTIPLE_SELECTION;
   }
-  
-  
+
+
   /**
-   * 
    * Shall we speak of Actions or Productions?
-   *
    */
   public enum TitleForm
   {
@@ -50,7 +50,7 @@ public final class ChooseNextActionDialog implements
      * normal; means: Action
      */
     NORMAL,
-    
+
     /**
      * Production; means: Production
      */
@@ -88,6 +88,9 @@ public final class ChooseNextActionDialog implements
   private DefaultListModel listModel;
 
 
+  private TitleForm tf;
+
+
   /**
    * Allocates a new {@link ChooseNextActionDialog}
    * 
@@ -95,7 +98,8 @@ public final class ChooseNextActionDialog implements
    * @param actions The {@link Action}s
    * @param tf The {@link TitleForm}
    */
-  public ChooseNextActionDialog ( final JFrame parent, final ActionSet actions, final TitleForm tf )
+  public ChooseNextActionDialog ( final JFrame parent, final ActionSet actions,
+      final TitleForm tf )
   {
     if ( parent == null )
       throw new NullPointerException ( "parent is null" ); //$NON-NLS-1$
@@ -115,38 +119,71 @@ public final class ChooseNextActionDialog implements
     this.gui.jGTIListActionList.setModel ( this.listModel );
 
     this.gui.jGTIListActionList.setSelectedIndex ( 0 );
-    
-    if(tf == TitleForm.NORMAL)
+
+    this.tf = tf;
+
+    if ( tf == TitleForm.NORMAL )
     {
-      getGUI().setTitle(Messages.getString("ChooseNextActionDialog.Title")); //$NON-NLS-1$
-      getGUI().jGTILabel1.setText(Messages.getString("ChooseNextActionDialog.Header")); //$NON-NLS-1$
-    } else {
-      getGUI().setTitle(Messages.getString("ChooseNextActionDialog.Title2")); //$NON-NLS-1$
-      getGUI().jGTILabel1.setText(Messages.getString("ChooseNextActionDialog.Header2")); //$NON-NLS-1$
+      getGUI ()
+          .setTitle ( Messages.getString ( "ChooseNextActionDialog.Title" ) ); //$NON-NLS-1$
+      getGUI ().jGTILabel1.setText ( Messages
+          .getString ( "ChooseNextActionDialog.Header" ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      getGUI ().setTitle (
+          Messages.getString ( "ChooseNextActionDialog.Title2" ) ); //$NON-NLS-1$
+      getGUI ().jGTILabel1.setText ( Messages
+          .getString ( "ChooseNextActionDialog.Header2" ) ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * TODO
+   *
+   * @param ns
+   * @param ts
+   */
+  public void setTableEntry ( final NonterminalSymbol ns, final TerminalSymbol ts )
+  {
+    if ( this.tf == TitleForm.NORMAL )
+    {
+      getGUI ()
+          .setTitle ( Messages.getString ( "ChooseNextActionDialog.Title" ) ); //$NON-NLS-1$
+      getGUI ().jGTILabel1.setText ( Messages.getString (
+          "ChooseNextActionDialog.Header", ns, ts ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      getGUI ().setTitle (
+          Messages.getString ( "ChooseNextActionDialog.Title2" ) ); //$NON-NLS-1$
+      getGUI ().jGTILabel1.setText ( Messages
+          .getString ( "ChooseNextActionDialog.Header2", ns, ts ) ); //$NON-NLS-1$
     }
   }
 
 
   /**
    * blub
-   *
+   * 
    * @param le blub
    */
   public void setLastEntry ( final PrettyString le )
   {
     this.listModel.addElement ( le );
   }
-  
-  
+
+
   /**
    * blub
-   *
+   * 
    * @return true
    */
-  public boolean lastEntrySelected()
+  public boolean lastEntrySelected ()
   {
-    return this.gui.jGTIListActionList.getSelectedIndex () ==
-      this.listModel.getSize () - 1;
+    return this.gui.jGTIListActionList.getSelectedIndex () == this.listModel
+        .getSize () - 1;
   }
 
 

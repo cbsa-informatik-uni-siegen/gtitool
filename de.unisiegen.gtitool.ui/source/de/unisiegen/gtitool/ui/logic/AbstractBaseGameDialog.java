@@ -210,13 +210,6 @@ public abstract class AbstractBaseGameDialog implements
     // setup the correct/wrong answers
     calculateCorrectWrongAnswers ();
 
-    // getGUI ().jGTIExistingCorrectAnswersLabel.setText ( Messages.getString (
-    //        "BaseGameDialog.LabelAmountCorrect", new Integer ( //$NON-NLS-1$
-    // getExistingCorrectAnswers () ) ) );
-    //
-    // getGUI ().jGTIExistingWrongAnswersLabel.setText ( Messages.getString (
-    //        "BaseGameDialog.LabelAmountWrong", new Integer ( //$NON-NLS-1$
-    // getExistingWrongAnswers () ) ) );
     getGUI ().jGTIExistingCorrectAnswersLabel.setText ( "" ); //$NON-NLS-1$
     getGUI ().jGTIExistingWrongAnswersLabel.setText ( "" ); //$NON-NLS-1$
 
@@ -435,13 +428,16 @@ public abstract class AbstractBaseGameDialog implements
       throws ActionSetException
   {
     final ChooseNextActionDialog cnad;
-    // TODO: not a good style :/
+    final int row = getGUI ().jGTIParsingTable.getSelectedRow ();
+    final int col = getGUI ().jGTIParsingTable.getSelectedColumn () - 1;
     if ( this instanceof CreateParsingTableGameDialog )
       cnad = new ChooseNextActionDialog ( this.parent, actions,
           ChooseNextActionDialog.TitleForm.PRODUCTION );
     else
       cnad = new ChooseNextActionDialog ( this.parent, actions,
           ChooseNextActionDialog.TitleForm.NORMAL );
+    cnad.setTableEntry ( getGrammar ().getNonterminalSymbolSet ().get ( row ),
+        getGrammar ().getTerminalSymbolSet ().get ( col ) );
     cnad.setLastEntry ( new PrettyString ( new PrettyToken ( "{ }", Style.NONE ) //$NON-NLS-1$
         ) );
     cnad.show ();
@@ -472,9 +468,7 @@ public abstract class AbstractBaseGameDialog implements
     boolean contained = true;
 
     for ( Action a : actionSet2 )
-    {
       contained = contained && actionSet1.contains ( a );
-    }
 
     this.actionSetsPartialEqual = contained
         && actionSet1.size () != actionSet2.size ();
@@ -600,12 +594,7 @@ public abstract class AbstractBaseGameDialog implements
    */
   private void updateAnswers ()
   {
-    // getGUI ().jGTICorrectAnswersLabel.setText ( Messages.getString (
-    //        "BaseGameDialog.LabelRight", new Integer ( //$NON-NLS-1$
-    // this.userCorrectAnswers ) ) );
-    // getGUI ().jGTIWrongAnswersLabel.setText ( Messages.getString (
-    //        "BaseGameDialog.LabelWrong", new Integer ( //$NON-NLS-1$
-    // this.userWrongAnswers ) ) );
+
   }
 
 

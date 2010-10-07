@@ -48,6 +48,15 @@ public interface ActionSet extends Entity < ActionSet >, Storable, Modifyable,
 
 
   /**
+   * Appends a new action to this set if it doesn't exist already
+   * 
+   * @param action
+   * @return true if the action has been inserted
+   */
+  public boolean addIfNonExistant ( Action action );
+
+
+  /**
    * Returns true if this {@link ActionSet} contains the specified
    * {@link Action}.
    * 
@@ -56,6 +65,14 @@ public interface ActionSet extends Entity < ActionSet >, Storable, Modifyable,
    * @return true if the specified {@link Action} is present; false otherwise.
    */
   public boolean contains ( Action action );
+
+
+  /**
+   * Checks if this set is empty
+   *
+   * @return true if the set is empty
+   */
+  public boolean isEmpty ();
 
 
   /**

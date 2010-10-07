@@ -286,4 +286,26 @@ public class DefaultActionSet implements ActionSet
   {
     return this.rep.first ();
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ActionSet#addIfNonExistant(de.unisiegen.gtitool.core.entities.Action)
+   */
+  public boolean addIfNonExistant ( final Action action )
+  {
+    return this.rep.add ( action );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ActionSet#isEmpty()
+   */
+  public boolean isEmpty ()
+  {
+    return this.rep.isEmpty ();
+  }
 }

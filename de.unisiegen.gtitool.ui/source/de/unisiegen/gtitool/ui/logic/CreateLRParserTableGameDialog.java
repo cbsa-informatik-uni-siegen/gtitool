@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
@@ -14,6 +15,7 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
+import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Action.TransitionType;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
@@ -210,11 +212,11 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
    *      row, int col)
    */
   @Override
-  protected ActionSet getSelectableActions ( int row, int col )
+  protected ActionSet getSelectableActions ( final int row, final int col )
   {
     final TreeSet < NonterminalSymbol > nss = new TreeSet < NonterminalSymbol > ();
     final ActionSet selectableActions = new DefaultActionSet ();
-    final ActionSet actions = getActionSetAt(row, col);
+    final ActionSet actions = getActionSetAt ( row, col );
     try
     {
       for ( Action a : actions )
@@ -238,7 +240,14 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
       a.printStackTrace ();
       System.exit ( 1 );
     }
-    
+
+    // always add the shift action
+    selectableActions.addIfNonExistant ( new ShiftAction () );
+
+    // add the accept action if this is the "$ column"
+    if ( col == 0 ) // we should read the table's caption
+      selectableActions.addIfNonExistant ( new AcceptAction () );
+
     return selectableActions;
   }
 }

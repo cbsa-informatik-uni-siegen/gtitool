@@ -141,11 +141,11 @@ public final class ChooseNextActionDialog implements
 
   /**
    * TODO
-   *
+   * 
    * @param ns
    * @param ts
    */
-  public void setTableEntry ( final NonterminalSymbol ns, final TerminalSymbol ts )
+  public void setTableEntry ( final String ns, final String ts )
   {
     if ( this.tf == TitleForm.NORMAL )
     {
@@ -158,8 +158,8 @@ public final class ChooseNextActionDialog implements
     {
       getGUI ().setTitle (
           Messages.getString ( "ChooseNextActionDialog.Title2" ) ); //$NON-NLS-1$
-      getGUI ().jGTILabel1.setText ( Messages
-          .getString ( "ChooseNextActionDialog.Header2", ns, ts ) ); //$NON-NLS-1$
+      getGUI ().jGTILabel1.setText ( Messages.getString (
+          "ChooseNextActionDialog.Header2", ns, ts ) ); //$NON-NLS-1$
     }
   }
 

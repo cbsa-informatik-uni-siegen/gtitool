@@ -436,8 +436,13 @@ public abstract class AbstractBaseGameDialog implements
     else
       cnad = new ChooseNextActionDialog ( this.parent, actions,
           ChooseNextActionDialog.TitleForm.NORMAL );
-    cnad.setTableEntry ( getGrammar ().getNonterminalSymbolSet ().get ( row ),
-        getGrammar ().getTerminalSymbolSet ().get ( col ) );
+    if ( this instanceof CreateParsingTableGameDialog )
+      cnad.setTableEntry ( getGrammar ().getNonterminalSymbolSet ().get ( row )
+          .toString (), getGrammar ().getTerminalSymbolSet ().get ( col )
+          .toString () );
+    else
+      cnad.setTableEntry ( Integer.toString ( row ), getGrammar ()
+          .getTerminalSymbolSet ().get ( col ).toString () );
     cnad.setLastEntry ( new PrettyString ( new PrettyToken ( "{ }", Style.NONE ) //$NON-NLS-1$
         ) );
     cnad.show ();

@@ -238,6 +238,7 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
       a.printStackTrace ();
       System.exit ( 1 );
     }
+    
     return selectableActions;
   }
 }

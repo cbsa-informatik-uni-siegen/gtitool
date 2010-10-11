@@ -153,8 +153,10 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
      */
     public final void add ( E newObject )
     {
-      if ( newObject instanceof TerminalSymbolSet )
-        ( ( DefaultTerminalSymbolSet ) newObject ).setDisplayAll ( true );
+      //TODO: very dirty...
+      Object o = newObject;
+      if ( o instanceof TerminalSymbolSet )
+        ( ( DefaultTerminalSymbolSet ) o ).setDisplayAll ( true );
       if ( this.addNextObject
           && ( ( this.list.size () == 0 ) || !this.list.get (
               this.list.size () - 1 ).toString ().equals (

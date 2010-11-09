@@ -2,7 +2,6 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 import javax.swing.JFrame;
 
@@ -14,21 +13,19 @@ import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.LRItem;
 import de.unisiegen.gtitool.core.entities.LRItemSet;
 import de.unisiegen.gtitool.core.entities.LRState;
-import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
-import de.unisiegen.gtitool.core.entities.Production;
-import de.unisiegen.gtitool.core.entities.ProductionSet;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.core.entities.Action.TransitionType;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.AbstractLRMachine;
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.lrreasons.LRReasonMaker;
 import de.unisiegen.gtitool.ui.model.LRSetTableColumnModel;
 import de.unisiegen.gtitool.ui.model.LRSetTableModel;
@@ -48,12 +45,14 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
    * @param cfg
    * @param machine
    * @param reasonMaker
+   * @param machineType 
    * @throws TerminalSymbolSetException
    * @throws NonterminalSymbolSetException
    */
   public CreateLRParserTableGameDialog ( final JFrame parent, final CFG cfg,
-      final AbstractLRMachine machine, final LRReasonMaker reasonMaker )
-      throws TerminalSymbolSetException, NonterminalSymbolSetException
+      final AbstractLRMachine machine, final LRReasonMaker reasonMaker,
+      final MachineType machineType ) throws TerminalSymbolSetException,
+      NonterminalSymbolSetException
   {
     super ( parent, cfg, machine.getAutomaton ().getState ().size (), machine
         .getGrammar ().getTerminalSymbolSet ().size () );
@@ -76,11 +75,37 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
 
     getGUI ().jGTIFollowSetTable.setColumnModel ( this.lrSetTableColumnModel );
 
-    java.util.ResourceBundle bundle = java.util.ResourceBundle
-        .getBundle ( "de/unisiegen/gtitool/ui/i18n/messages" ); //$NON-NLS-1$
-    getGUI ().setTitle ( bundle.getString ( "BaseGameDialog.Caption2" ) ); //$NON-NLS-1$
+    getGUI ().setTitle (
+        Messages.getString (
+            "BaseGameDialog.Caption2", toLRCaption ( machineType ) ) ); //$NON-NLS-1$
 
     init ();
+  }
+
+
+  /**
+   * Converts the machineType to a readable title for the dialog
+   *
+   * @param machineType
+   * @return the title's part
+   */
+  private static String toLRCaption ( final MachineType machineType )
+  {
+    switch ( machineType )
+    {
+      case LR0Parser :
+        return "LR(0)"; //$NON-NLS-1$
+      case SLR :
+        return "SLR"; //$NON-NLS-1$
+      case LALR1Parser :
+        return "LALR(1)"; //$NON-NLS-1$
+      case LR1Parser :
+        return "LR(1)"; //$NON-NLS-1$
+      default :
+        System.err.println ( "Invalid LR game type!" ); //$NON-NLS-1$
+        System.exit ( 1 );
+        return ""; //$NON-NLS-1$
+    }
   }
 
 

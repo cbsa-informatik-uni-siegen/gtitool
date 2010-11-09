@@ -10,6 +10,9 @@ import de.unisiegen.gtitool.core.entities.AcceptAction;
 import de.unisiegen.gtitool.core.entities.Action;
 import de.unisiegen.gtitool.core.entities.ActionSet;
 import de.unisiegen.gtitool.core.entities.DefaultActionSet;
+import de.unisiegen.gtitool.core.entities.DefaultProduction;
+import de.unisiegen.gtitool.core.entities.LRItem;
+import de.unisiegen.gtitool.core.entities.LRItemSet;
 import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.Production;
@@ -72,10 +75,10 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
         this.lrSetTableColumnModel ) );
 
     getGUI ().jGTIFollowSetTable.setColumnModel ( this.lrSetTableColumnModel );
-    
+
     java.util.ResourceBundle bundle = java.util.ResourceBundle
-    .getBundle ( "de/unisiegen/gtitool/ui/i18n/messages" ); //$NON-NLS-1$
-    getGUI().setTitle ( bundle.getString ( "BaseGameDialog.Caption2" ) ); //$NON-NLS-1$
+        .getBundle ( "de/unisiegen/gtitool/ui/i18n/messages" ); //$NON-NLS-1$
+    getGUI ().setTitle ( bundle.getString ( "BaseGameDialog.Caption2" ) ); //$NON-NLS-1$
 
     init ();
   }
@@ -218,31 +221,29 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
   @Override
   protected ActionSet getSelectableActions ( final int row, final int col )
   {
-    final TreeSet < NonterminalSymbol > nss = new TreeSet < NonterminalSymbol > ();
+    // if (A \rightarrow \alpha \dot) \in I_{row} then add
+    // reduce (A \rightarrow \alpha) as a possible action
     final ActionSet selectableActions = new DefaultActionSet ();
-    final ActionSet actions = getActionSetAt ( row, col );
-    try
+
+    final LRState state = ( LRState ) this.machine.getAutomaton ().getState (
+        row );
+
+    final LRItemSet items = state.getItems ();
+
+    for ( LRItem item : items.baseList () )
     {
-      for ( Action a : actions )
-        if ( a.getTransitionType () == TransitionType.REDUCE )
+      if ( item.dotIsAtEnd () )
+        try
         {
-          final NonterminalSymbol ns = a.getReduceAction ()
-              .getNonterminalSymbol ();
-          if ( nss.add ( ns ) )
-          {
-            ProductionSet ps = getGrammar ().getProductionForNonTerminal (
-                ns );
-            for ( Production p : ps )
-              selectableActions.add ( new ReduceAction ( p ) );
-          }
+          selectableActions.add ( new ReduceAction ( new DefaultProduction (
+              item.getNonterminalSymbol (), item.getProductionWord () ) ) );
         }
-        else
-          selectableActions.add ( a );
-    }
-    catch ( final ActionSetException a )
-    {
-      a.printStackTrace ();
-      System.exit ( 1 );
+        catch ( ActionSetException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
+
     }
 
     // always add the shift action

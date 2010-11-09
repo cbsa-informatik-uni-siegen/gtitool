@@ -34,6 +34,8 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog.ConvertMachineType;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
+import de.unisiegen.gtitool.ui.model.LRTableModel;
+import de.unisiegen.gtitool.ui.model.PTTableModel;
 import de.unisiegen.gtitool.ui.netbeans.PrintDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
@@ -293,6 +295,16 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * The {@link RegexPanel}
    */
   private TextWindow textWindow;
+  
+  /**
+   * The {@link PTTableModel}
+   */
+  private PTTableModel parsingTableModel;
+  
+  /**
+   * The {@link LRTableModel}
+   */
+  private LRTableModel actionTableModel;
 
 
   /**
@@ -423,6 +435,44 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       else
         throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
 
+    initialize ();
+  }
+  
+  
+  /**
+   * Allocates a new {@link PrintDialog}.
+   *
+   * @param parent The {@link JFrame}
+   * @param parsingTableModel The {@link PTTableModel}
+   */
+  public PrintDialog ( JFrame parent, PTTableModel parsingTableModel )
+  {
+    logger.debug ( "PrintDialog", "allocate a new print dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.parentFrame = parent;
+    this.gui = new PrintDialogForm ( this, parent );
+    this.parsingTableModel = parsingTableModel;
+    
+    hideChooseComponents ();
+    
+    initialize ();
+  }
+  
+  
+  /**
+   * Allocates a new {@link PrintDialog}.
+   *
+   * @param parent The {@link JFrame}
+   * @param actionTableModel The {@link LRTableModel}
+   */
+  public PrintDialog ( JFrame parent, LRTableModel actionTableModel )
+  {
+    logger.debug ( "PrintDialog", "allocate a new print dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.parentFrame = parent;
+    this.gui = new PrintDialogForm ( this, parent );
+    this.actionTableModel = actionTableModel;
+    
+    hideChooseComponents ();
+    
     initialize ();
   }
 
@@ -1084,6 +1134,46 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
     }
     catch ( PrinterException exc )
+    {
+      InfoDialog dialog = new InfoDialog ( this.parentFrame, Messages
+          .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrint" ) ); //$NON-NLS-1$
+      dialog.show ();
+    }
+  }
+
+
+  /**
+   * handles print {@link PTTableModel}
+   */
+  private final void printParsingTable ()
+  {
+    try{
+      this.tableModel = this.parsingTableModel;
+      //TODO: implement me
+      
+      printTableModel ( this.parsingTableModel.getClass ().getName () );
+    }catch ( PrinterException exc )
+    {
+      InfoDialog dialog = new InfoDialog ( this.parentFrame, Messages
+          .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrint" ) ); //$NON-NLS-1$
+      dialog.show ();
+    }
+  }
+
+
+  /**
+   * handles print {@link LRTableModel}
+   */
+  private final void printActionTable ()
+  {
+    try{
+      this.tableModel = this.actionTableModel;
+      //TODO: implement me
+      
+      printTableModel ( this.actionTableModel.getClass ().getName () );
+    }catch ( PrinterException exc )
     {
       InfoDialog dialog = new InfoDialog ( this.parentFrame, Messages
           .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$

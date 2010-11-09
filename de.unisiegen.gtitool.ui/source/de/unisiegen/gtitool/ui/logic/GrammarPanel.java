@@ -878,6 +878,10 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     {
       exc.printStackTrace ();
     }
+    catch ( GrammarInvalidNonterminalException exc )
+    {
+      exc.printStackTrace();
+    }
   }
 
 

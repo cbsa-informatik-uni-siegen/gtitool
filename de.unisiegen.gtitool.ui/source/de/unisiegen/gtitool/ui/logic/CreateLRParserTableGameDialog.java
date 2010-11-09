@@ -16,6 +16,7 @@ import de.unisiegen.gtitool.core.entities.LRState;
 import de.unisiegen.gtitool.core.entities.ReduceAction;
 import de.unisiegen.gtitool.core.entities.ShiftAction;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarInvalidNonterminalException;
 import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
@@ -27,6 +28,8 @@ import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.lrreasons.LRReasonMaker;
+import de.unisiegen.gtitool.ui.model.FollowSetTableColumnModel;
+import de.unisiegen.gtitool.ui.model.FollowSetTableModel;
 import de.unisiegen.gtitool.ui.model.LRSetTableColumnModel;
 import de.unisiegen.gtitool.ui.model.LRSetTableModel;
 import de.unisiegen.gtitool.ui.model.LRTableColumnModel;
@@ -45,19 +48,18 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
    * @param cfg
    * @param machine
    * @param reasonMaker
-   * @param machineType 
+   * @param machineType
    * @throws TerminalSymbolSetException
    * @throws NonterminalSymbolSetException
+   * @throws GrammarInvalidNonterminalException
    */
   public CreateLRParserTableGameDialog ( final JFrame parent, final CFG cfg,
       final AbstractLRMachine machine, final LRReasonMaker reasonMaker,
       final MachineType machineType ) throws TerminalSymbolSetException,
-      NonterminalSymbolSetException
+      NonterminalSymbolSetException, GrammarInvalidNonterminalException
   {
     super ( parent, cfg, machine.getAutomaton ().getState ().size (), machine
         .getGrammar ().getTerminalSymbolSet ().size () );
-
-    getGUI ().jScrollPane1.setVisible ( false );
 
     this.machine = machine;
 
@@ -75,6 +77,16 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
 
     getGUI ().jGTIFollowSetTable.setColumnModel ( this.lrSetTableColumnModel );
 
+    if ( machineType.equals ( MachineType.SLR ) )
+    {
+      getGUI ().jGTIFirstSetTable.setModel ( new FollowSetTableModel (
+          getGrammar () ) );
+      getGUI ().jGTIFirstSetTable
+          .setColumnModel ( new FollowSetTableColumnModel () );
+    }
+    else
+      getGUI ().jScrollPane1.setVisible ( false );
+
     getGUI ().setTitle (
         Messages.getString (
             "BaseGameDialog.Caption2", toLRCaption ( machineType ) ) ); //$NON-NLS-1$
@@ -85,7 +97,7 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
 
   /**
    * Converts the machineType to a readable title for the dialog
-   *
+   * 
    * @param machineType
    * @return the title's part
    */

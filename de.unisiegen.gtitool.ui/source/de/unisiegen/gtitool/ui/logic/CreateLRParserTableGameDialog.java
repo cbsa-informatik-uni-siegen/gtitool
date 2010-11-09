@@ -72,6 +72,10 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
         this.lrSetTableColumnModel ) );
 
     getGUI ().jGTIFollowSetTable.setColumnModel ( this.lrSetTableColumnModel );
+    
+    java.util.ResourceBundle bundle = java.util.ResourceBundle
+    .getBundle ( "de/unisiegen/gtitool/ui/i18n/messages" ); //$NON-NLS-1$
+    getGUI().setTitle ( bundle.getString ( "BaseGameDialog.Caption2" ) ); //$NON-NLS-1$
 
     init ();
   }
@@ -226,7 +230,7 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
               .getNonterminalSymbol ();
           if ( nss.add ( ns ) )
           {
-            ProductionSet ps = this.getGrammar ().getProductionForNonTerminal (
+            ProductionSet ps = getGrammar ().getProductionForNonTerminal (
                 ns );
             for ( Production p : ps )
               selectableActions.add ( new ReduceAction ( p ) );

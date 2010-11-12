@@ -374,10 +374,15 @@ public final class DefaultStack implements Stack
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.entities.Stack#reverseString()
+   * @see de.unisiegen.gtitool.core.entities.Stack#reverseElementString()
    */
-  public String reverseString ()
+  public String reverseElementString ()
   {
-    return new StringBuffer ( toString () ).reverse ().toString ();
+    final StringBuffer buffer = new StringBuffer ();
+
+    for ( int index = this.symbolList.size () - 1 ; index >= 0 ; --index )
+      buffer.append ( this.symbolList.get ( index ).toString () );
+
+    return buffer.toString ();
   }
 }

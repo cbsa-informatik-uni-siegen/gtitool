@@ -97,9 +97,9 @@ public interface Stack extends Entity < Stack >, Iterable < Symbol >
 
 
   /**
-   * Returns the string in reverse
+   * Returns the element string in reverse
    * 
    * @return the string
    */
-  public String reverseString ();
+  public String reverseElementString ();
 }

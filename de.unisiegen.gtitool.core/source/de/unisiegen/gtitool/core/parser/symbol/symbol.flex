@@ -74,5 +74,5 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 {
 	{WhiteSpace}		{ }
 	.'*					{ return symbol(SYMBOL, yytext()); }
-	\".+\"				{ return symbol(SYMBOL, yytext()); }
+	\"[^\"]+\"			{ return symbol(SYMBOL, yytext()); }
 }

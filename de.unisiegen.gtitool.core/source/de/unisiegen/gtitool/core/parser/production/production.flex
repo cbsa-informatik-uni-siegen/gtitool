@@ -79,5 +79,5 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	{WhiteSpace}		{ return symbol(WHITESPACE); }
 	"\|"                { return symbol(VDASH); }
 	.'*					{ return symbol(MEMBER, yytext()); }
-	\".+\"				{ return symbol(MEMBER, yytext()); }
+	\"[^\"]+\"			{ return symbol(MEMBER, yytext()); }
 }

@@ -87,5 +87,5 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	"\u2193"			{ return symbol(ARROWDOWN); }
 	{WhiteSpace}		{ }
 	.'*					{ return symbol(SYMBOL, yytext()); }
-	\".+\"				{ return symbol(SYMBOL, yytext()); }
+	\"[^\"]+\"			{ return symbol(SYMBOL, yytext()); }
 }

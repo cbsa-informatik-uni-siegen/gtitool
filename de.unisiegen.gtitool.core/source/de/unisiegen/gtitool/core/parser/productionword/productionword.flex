@@ -78,5 +78,5 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	"\u03B5"			{ return symbol(EPSILON); }
 	"\|"                { return symbol(VDASH); }
 	.'*					{ return symbol(MEMBER, yytext()); }
-	\".+\"				{ return symbol(MEMBER, yytext()); }
+	\"[^\"]+\"			{ return symbol(MEMBER, yytext()); }
 }

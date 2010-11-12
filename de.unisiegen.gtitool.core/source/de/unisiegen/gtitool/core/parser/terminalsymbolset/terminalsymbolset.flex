@@ -80,5 +80,5 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 	"-"					{ return symbol(MINUS); }
 	{WhiteSpace}		{ }
 	.'*					{ return symbol(TERMINAL_SYMBOL, yytext()); }
-	\".+\"				{ return symbol(TERMINAL_SYMBOL, yytext()); }
+	\"[^\"]+\"			{ return symbol(TERMINAL_SYMBOL, yytext()); }
 }

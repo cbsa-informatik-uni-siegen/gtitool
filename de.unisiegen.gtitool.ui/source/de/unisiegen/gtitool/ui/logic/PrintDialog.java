@@ -295,12 +295,14 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * The {@link RegexPanel}
    */
   private TextWindow textWindow;
-  
+
+
   /**
-   * The {@link PTTableModel}
+   * The {@link AbstractBaseGameDialog}
    */
-  private PTTableModel parsingTableModel;
-  
+  private AbstractBaseGameDialog abgd;
+
+
   /**
    * The {@link LRTableModel}
    */
@@ -437,30 +439,30 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
     initialize ();
   }
-  
-  
+
+
   /**
    * Allocates a new {@link PrintDialog}.
-   *
+   * 
    * @param parent The {@link JFrame}
-   * @param parsingTableModel The {@link PTTableModel}
+   * @param abgd The {@link AbstractBaseGameDialog}
    */
-  public PrintDialog ( JFrame parent, PTTableModel parsingTableModel )
+  public PrintDialog ( final JFrame parent, final AbstractBaseGameDialog abgd )
   {
     logger.debug ( "PrintDialog", "allocate a new print dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parentFrame = parent;
     this.gui = new PrintDialogForm ( this, parent );
-    this.parsingTableModel = parsingTableModel;
-    
+    this.abgd = abgd;
+
     hideChooseComponents ();
-    
+
     initialize ();
   }
-  
-  
+
+
   /**
    * Allocates a new {@link PrintDialog}.
-   *
+   * 
    * @param parent The {@link JFrame}
    * @param actionTableModel The {@link LRTableModel}
    */
@@ -470,9 +472,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     this.parentFrame = parent;
     this.gui = new PrintDialogForm ( this, parent );
     this.actionTableModel = actionTableModel;
-    
+
     hideChooseComponents ();
-    
+
     initialize ();
   }
 
@@ -865,6 +867,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       printReachableStatesDialog ();
     else if ( this.textWindow != null )
       printTextWindow ();
+    else if ( this.abgd != null )
+      printAbstractBaseGameDialogTable ();
 
     logger.debug ( "handlePrint", "printed" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
@@ -1146,34 +1150,20 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
   /**
    * handles print {@link PTTableModel}
    */
-  private final void printParsingTable ()
+  private final void printAbstractBaseGameDialogTable ()
   {
-    try{
-      this.tableModel = this.parsingTableModel;
-      //TODO: implement me
-      
-      printTableModel ( this.parsingTableModel.getClass ().getName () );
-    }catch ( PrinterException exc )
+    try
     {
-      InfoDialog dialog = new InfoDialog ( this.parentFrame, Messages
-          .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$
-          .getString ( "PrintDialog.ErrorPrint" ) ); //$NON-NLS-1$
-      dialog.show ();
+      this.tableModel = this.abgd.getGUI ().jGTIParsingTable.getModel ();
+      this.tableColumnModel = this.abgd.getGUI ().jGTIParsingTable
+          .getColumnModel ();
+      this.table = new JGTITable ();
+      this.table.setModel ( this.tableModel );
+      this.table.setColumnModel ( this.tableColumnModel );
+
+      printTableModel ( this.abgd.getGUI ().jGTIParsingTable.getName () );
     }
-  }
-
-
-  /**
-   * handles print {@link LRTableModel}
-   */
-  private final void printActionTable ()
-  {
-    try{
-      this.tableModel = this.actionTableModel;
-      //TODO: implement me
-      
-      printTableModel ( this.actionTableModel.getClass ().getName () );
-    }catch ( PrinterException exc )
+    catch ( PrinterException exc )
     {
       InfoDialog dialog = new InfoDialog ( this.parentFrame, Messages
           .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$

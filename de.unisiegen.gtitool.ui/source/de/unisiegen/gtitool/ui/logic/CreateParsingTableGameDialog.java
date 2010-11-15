@@ -21,10 +21,8 @@ import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymb
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
-import de.unisiegen.gtitool.ui.model.FirstSetTableColumnModel;
-import de.unisiegen.gtitool.ui.model.FirstSetTableModel;
-import de.unisiegen.gtitool.ui.model.FollowSetTableColumnModel;
-import de.unisiegen.gtitool.ui.model.FollowSetTableModel;
+import de.unisiegen.gtitool.ui.model.FirstFollowSetTableColumnModel;
+import de.unisiegen.gtitool.ui.model.FirstFollowSetTableModel;
 import de.unisiegen.gtitool.ui.model.PTTableColumnModel;
 import de.unisiegen.gtitool.ui.netbeans.BaseGameDialogForm;
 
@@ -60,21 +58,12 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
         .getTerminalSymbolSet ().size () );
     // setup the first and follow table
     // FirstSetTable
-    getGUI ().jGTIFirstSetTable.setModel ( new FirstSetTableModel (
-        getGrammar (), true ) );
+    getGUI ().jScrollPane2.setVisible ( false );
+    getGUI ().jGTIFirstSetTable.setModel ( new FirstFollowSetTableModel(cfg) );
     getGUI ().jGTIFirstSetTable
-        .setColumnModel ( new FirstSetTableColumnModel () );
+        .setColumnModel ( new FirstFollowSetTableColumnModel () );
     getGUI ().jGTIFirstSetTable.getTableHeader ().setReorderingAllowed ( false );
     getGUI ().jGTIFirstSetTable.setCellSelectionEnabled ( false );
-
-    // FollowSetTable
-    getGUI ().jGTIFollowSetTable.setModel ( new FollowSetTableModel (
-        getGrammar () ) );
-    getGUI ().jGTIFollowSetTable
-        .setColumnModel ( new FollowSetTableColumnModel () );
-    getGUI ().jGTIFollowSetTable.getTableHeader ()
-        .setReorderingAllowed ( false );
-    getGUI ().jGTIFollowSetTable.setCellSelectionEnabled ( false );
 
     // setup the parsing table (backend)
     this.parsingTable = new DefaultParsingTable ( getGrammar () );

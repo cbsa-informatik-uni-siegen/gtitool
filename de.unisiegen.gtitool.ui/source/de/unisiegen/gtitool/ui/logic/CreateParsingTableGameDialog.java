@@ -20,6 +20,7 @@ import de.unisiegen.gtitool.core.exceptions.lractionset.ActionSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.ui.model.FirstFollowSetTableColumnModel;
 import de.unisiegen.gtitool.ui.model.FirstFollowSetTableModel;
@@ -59,8 +60,8 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
     // setup the first and follow table
     // FirstSetTable
     getGUI ().jScrollPane2.setVisible ( false );
-    getGUI ().jGTIButtonPrint.setVisible ( true );
-    getGUI ().jGTIFirstSetTable.setModel ( new FirstFollowSetTableModel(cfg) );
+    getGUI ().jGTIFirstSetTable
+        .setModel ( new FirstFollowSetTableModel ( cfg ) );
     getGUI ().jGTIFirstSetTable
         .setColumnModel ( new FirstFollowSetTableColumnModel () );
     getGUI ().jGTIFirstSetTable.getTableHeader ().setReorderingAllowed ( false );
@@ -74,7 +75,8 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
         getGrammar ().getTerminalSymbolSet () ) );
     getGUI ().jGTIParsingTable.getTableHeader ().setReorderingAllowed ( false );
     getGUI ().jGTIParsingTable.setCellSelectionEnabled ( true );
-    getGUI ().jGTIParsingTable.setName ( "Parsing Table" ); //$NON-NLS-1$
+    getGUI ().jGTIParsingTable.setName ( Messages
+        .getString ( "BaseGameDialog.printParsingTable" ) ); //$NON-NLS-1$
 
     init ();
   }

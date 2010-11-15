@@ -90,6 +90,9 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
     getGUI ().setTitle (
         Messages.getString (
             "BaseGameDialog.Caption2", toLRCaption ( machineType ) ) ); //$NON-NLS-1$
+    
+    getGUI ().jGTIParsingTable.setName ( Messages
+        .getString ( "BaseGameDialog.printActionTable" ) ); //$NON-NLS-1$
 
     init ();
   }
@@ -268,7 +271,6 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
     final LRItemSet items = state.getItems ();
 
     for ( LRItem item : items.baseList () )
-    {
       if ( item.dotIsAtEnd () )
         try
         {
@@ -280,8 +282,6 @@ public class CreateLRParserTableGameDialog extends AbstractBaseGameDialog
           exc.printStackTrace ();
           System.exit ( 1 );
         }
-
-    }
 
     // always add the shift action
     selectableActions.addIfNonExistant ( new ShiftAction () );

@@ -160,7 +160,6 @@ public abstract class AbstractBaseGameDialog implements
     int y = parent.getBounds ().y + ( parent.getHeight () / 2 )
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
-    this.gui.jGTIButtonPrint.setVisible ( false );
 
     this.existingCorrectAnswers = 0;
     this.existingWrongAnswers = 0;

@@ -60,6 +60,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         jGTIPanel1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jGTIListReason = new de.unisiegen.gtitool.ui.swing.JGTIList();
+        jGTIButtonPrint = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
@@ -259,6 +260,18 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         gridBagConstraints.insets = new java.awt.Insets(15, 0, 5, 11);
         getContentPane().add(jGTIPanel1, gridBagConstraints);
 
+        jGTIButtonPrint.setText(bundle.getString("BaseGameDialog.print")); // NOI18N
+        jGTIButtonPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIButtonPrintActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 135);
+        getContentPane().add(jGTIButtonPrint, gridBagConstraints);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -274,8 +287,13 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         this.logic.handleShowAll();
     }//GEN-LAST:event_jGTIButtonShowAllActionPerformed
 
+    private void jGTIButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonPrintActionPerformed
+        this.logic.handlePrint();
+    }//GEN-LAST:event_jGTIButtonPrintActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrint;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonShowAll;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTICorrectAnswersLabel;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIDataPresentationPanel;

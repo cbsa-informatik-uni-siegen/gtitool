@@ -74,6 +74,7 @@ public class CreateParsingTableGameDialog extends AbstractBaseGameDialog
         getGrammar ().getTerminalSymbolSet () ) );
     getGUI ().jGTIParsingTable.getTableHeader ().setReorderingAllowed ( false );
     getGUI ().jGTIParsingTable.setCellSelectionEnabled ( true );
+    getGUI ().jGTIParsingTable.setName ( "Parsing Table" ); //$NON-NLS-1$
 
     init ();
   }

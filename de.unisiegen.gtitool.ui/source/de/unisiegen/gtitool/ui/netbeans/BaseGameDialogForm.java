@@ -40,6 +40,8 @@ public class BaseGameDialogForm extends javax.swing.JDialog
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jGTITextAreaInfo = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
         jGTIDataPresentationPanel = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIFirstFollowPanel = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -66,6 +68,21 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("BaseGameDialog.Caption")); // NOI18N
         getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        jGTITextAreaInfo.setColumns(20);
+        jGTITextAreaInfo.setEditable(false);
+        jGTITextAreaInfo.setText(bundle.getString("BaseGameDialog.infoPT")); // NOI18N
+        jGTITextAreaInfo.setEnabled(false);
+        jGTITextAreaInfo.setMinimumSize(new java.awt.Dimension(100, 25));
+        jScrollPane4.setViewportView(jGTITextAreaInfo);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
+        gridBagConstraints.weighty = 0.1;
+        getContentPane().add(jScrollPane4, gridBagConstraints);
 
         jGTIFirstSetTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -120,15 +137,15 @@ public class BaseGameDialogForm extends javax.swing.JDialog
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(jGTIDataPresentationPanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jGTISeparator1, gridBagConstraints);
@@ -171,7 +188,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jGTIPanel4, gridBagConstraints);
@@ -208,7 +225,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -222,7 +239,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
@@ -235,7 +252,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 120);
         getContentPane().add(jGTIButtonShowAll, gridBagConstraints);
@@ -252,12 +269,12 @@ public class BaseGameDialogForm extends javax.swing.JDialog
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridheight = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.3;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(15, 0, 5, 11);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 11);
         getContentPane().add(jGTIPanel1, gridBagConstraints);
 
         jGTIButtonPrint.setText(bundle.getString("BaseGameDialog.print")); // NOI18N
@@ -268,7 +285,7 @@ public class BaseGameDialogForm extends javax.swing.JDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 135);
         getContentPane().add(jGTIButtonPrint, gridBagConstraints);
 
@@ -309,10 +326,12 @@ public class BaseGameDialogForm extends javax.swing.JDialog
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTIParsingTable;
     private de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPane2;
     private de.unisiegen.gtitool.ui.swing.JGTISeparator jGTISeparator1;
+    public de.unisiegen.gtitool.ui.swing.JGTITextArea jGTITextAreaInfo;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTIWrongAnswersLabel;
     public javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
 
     public AbstractBaseGameDialog getLogic() {

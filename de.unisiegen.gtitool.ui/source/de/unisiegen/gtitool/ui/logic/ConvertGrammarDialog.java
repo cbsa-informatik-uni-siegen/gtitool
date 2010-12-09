@@ -9,6 +9,7 @@ import java.util.TimerTask;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
@@ -88,13 +89,9 @@ public class ConvertGrammarDialog implements
         public void run ()
         {
           if ( ConvertGrammarDialog.this.endReached )
-          {
             handleStop ();
-          }
           else
-          {
             performNextStep ();
-          }
         }
       } );
     }
@@ -502,14 +499,11 @@ public class ConvertGrammarDialog implements
         exc.printStackTrace ();
       }
       if ( s.equals ( this.modelConverted.getGrammar ().getStartSymbol () ) )
-      {
         start = c;
-      }
     }
     TerminalSymbolSet terminals = new DefaultTerminalSymbolSet ();
     for ( TerminalSymbol s : this.modelConverted.getGrammar ()
         .getTerminalSymbolSet () )
-    {
       try
       {
         terminals.add ( new DefaultTerminalSymbol ( s.getName () ) );
@@ -518,35 +512,22 @@ public class ConvertGrammarDialog implements
       {
         exc.printStackTrace ();
       }
-    }
     CFG newCFG = new DefaultCFG ( nonterminalSet, terminals, start );
     for ( Production p : this.modelConverted.getGrammar ().getProduction () )
     {
       NonterminalSymbol nonterminal = null;
       for ( NonterminalSymbol s : nonterminalSet )
-      {
         if ( p.getNonterminalSymbol ().getName ().equals ( s.getName () ) )
-        {
           nonterminal = s;
-        }
-      }
       ProductionWord word = new DefaultProductionWord ();
       for ( ProductionWordMember m : p.getProductionWord () )
       {
         for ( NonterminalSymbol n : nonterminalSet )
-        {
           if ( m.getName ().equals ( n.getName () ) )
-          {
             word.add ( n );
-          }
-        }
         for ( TerminalSymbol t : terminals )
-        {
           if ( m.getName ().equals ( t.getName () ) )
-          {
             word.add ( t );
-          }
-        }
       }
       Production newProd = new DefaultProduction ( nonterminal, word );
       newProd.setHighlighted ( p.isHighlighted () );
@@ -566,34 +547,24 @@ public class ConvertGrammarDialog implements
     this.convertType = convertGrammarType;
     this.gui = new ConvertGrammarDialogForm ( this, this.parent );
     if ( this.convertType.equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
-    {
       this.gui.setTitle ( Messages
           .getString ( "ConvertGrammarDialog.TitleEliminateLeftRecursion" ) ); //$NON-NLS-1$
-    }
     else if ( this.convertType.equals ( ConvertGrammarType.LEFT_FACTORING ) )
-    {
       this.gui.setTitle ( Messages
           .getString ( "ConvertGrammarDialog.TitleFactoring" ) ); //$NON-NLS-1$
-    }
     else if ( this.convertType
         .equals ( ConvertGrammarType.ELIMINATE_ENTITY_PRODUCTIONS ) )
-    {
       this.gui
           .setTitle ( Messages
               .getString ( "ConvertGrammarDialog.TitleEliminateEntityProductions" ) ); //$NON-NLS-1$
-    }
     else if ( this.convertType
         .equals ( ConvertGrammarType.ELIMINATE_EPSILON_PRODUCTIONS ) )
-    {
       this.gui
           .setTitle ( Messages
               .getString ( "ConvertGrammarDialog.TitleEliminateEpsilonProductions" ) ); //$NON-NLS-1$
-    }
     else
-    {
       throw new IllegalArgumentException ( "illegal convert grammar type: " //$NON-NLS-1$
           + convertGrammarType );
-    }
     this.gui.styledNonterminalSymbolSetParserPanelConverted
         .setVisible ( !this.convertType
             .equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) );
@@ -699,14 +670,11 @@ public class ConvertGrammarDialog implements
         exc.printStackTrace ();
       }
       if ( s.equals ( this.modelOriginal.getGrammar ().getStartSymbol () ) )
-      {
         start = c;
-      }
     }
     TerminalSymbolSet terminals = new DefaultTerminalSymbolSet ();
     for ( TerminalSymbol s : this.modelOriginal.getGrammar ()
         .getTerminalSymbolSet () )
-    {
       try
       {
         terminals
@@ -716,43 +684,28 @@ public class ConvertGrammarDialog implements
       {
         exc.printStackTrace ();
       }
-    }
     CFG newCFG = new DefaultCFG ( nonterminalSet, terminals, start );
     for ( Production p : this.modelOriginal.getGrammar ().getProduction () )
     {
       NonterminalSymbol nonterminal = null;
       for ( NonterminalSymbol s : nonterminalSet )
-      {
         if ( p.getNonterminalSymbol ().getName ().equals (
             new String ( s.getName () ) ) )
-        {
           nonterminal = s;
-        }
-      }
       ProductionWord word = new DefaultProductionWord ();
       for ( ProductionWordMember m : p.getProductionWord () )
       {
         for ( NonterminalSymbol n : nonterminalSet )
-        {
           if ( m.getName ().equals ( n.getName () ) )
-          {
             word.add ( n );
-          }
-        }
         for ( TerminalSymbol t : terminals )
-        {
           if ( m.getName ().equals ( t.getName () ) )
-          {
             word.add ( t );
-          }
-        }
       }
       newCFG.addProduction ( new DefaultProduction ( nonterminal, word ) );
     }
     for ( NonterminalSymbol n : nonterminalSet.get () )
-    {
       this.nonterminals.addElement ( n );
-    }
     this.initialNonterminalSize = this.nonterminals.size ();
     this.gui.jGTIListNonterminalsConverted.setModel ( this.nonterminals );
     this.modelConverted = new DefaultGrammarModel ( newCFG );
@@ -785,9 +738,7 @@ public class ConvertGrammarDialog implements
       otherProductions.add ( cfg.getProductionForNonTerminal ( s ) );
       otherProductions.remove ( leftRecursions );
       for ( Production p : otherProductions )
-      {
         p.getProductionWord ().add ( otherS );
-      }
       for ( Production p : leftRecursions )
       {
         p.setNonterminalSymbol ( otherS );
@@ -820,16 +771,12 @@ public class ConvertGrammarDialog implements
         Production newProd = new DefaultProduction ( a, p2.getProductionWord () );
         newProd.setHighlighted ( true );
         if ( !cfg.getProduction ().contains ( newProd ) )
-        {
           cfg.addProduction ( newProd );
-        }
       }
       cfg.getProduction ().remove ( p );
     }
     if ( !getEntityProductions ( cfg ).isEmpty () )
-    {
       eliminateEntityProductions ( cfg );
-    }
   }
 
 
@@ -845,28 +792,20 @@ public class ConvertGrammarDialog implements
     {
       symbolsToEpsilon.add ( p.getNonterminalSymbol () );
       if ( !p.getNonterminalSymbol ().equals ( cfg.getStartSymbol () ) )
-      {
         cfg.getProduction ().remove ( p );
-      }
     }
     for ( NonterminalSymbol s : symbolsToEpsilon )
-    {
       for ( Production p : getProductionsForNonterminal ( s, cfg ) )
       {
         DefaultProductionWord w = new DefaultProductionWord ();
         for ( ProductionWordMember m : p.getProductionWord ().get () )
-        {
           if ( !m.equals ( s ) )
-          {
             w.add ( m );
-          }
-        }
         Production newProd = new DefaultProduction ( p.getNonterminalSymbol (),
             w );
         newProd.setHighlighted ( true );
         cfg.addProduction ( newProd );
       }
-    }
 
   }
 
@@ -896,13 +835,9 @@ public class ConvertGrammarDialog implements
   {
     ProductionSet productions = new DefaultProductionSet ();
     for ( Production p : cfg.getProductionForNonTerminal ( s ) )
-    {
       if ( ( p.getProductionWord ().size () > 0 )
           && p.getProductionWord ().get ( 0 ).getName ().equals ( s.getName () ) )
-      {
         productions.add ( p );
-      }
-    }
     return productions;
   }
 
@@ -917,13 +852,9 @@ public class ConvertGrammarDialog implements
   {
     ProductionSet productions = new DefaultProductionSet ();
     for ( Production p : cfg.getProduction () )
-    {
       if ( ( p.getProductionWord ().size () == 1 )
           && ( p.getProductionWord ().get ( 0 ) instanceof NonterminalSymbol ) )
-      {
         productions.add ( p );
-      }
-    }
     return productions;
   }
 
@@ -938,12 +869,8 @@ public class ConvertGrammarDialog implements
   {
     ProductionSet symbols = new DefaultProductionSet ();
     for ( Production p : cfg.getProduction () )
-    {
       if ( p.getProductionWord ().equals ( new DefaultProductionWord () ) )
-      {
         symbols.add ( p );
-      }
-    }
     return symbols;
   }
 
@@ -1031,12 +958,8 @@ public class ConvertGrammarDialog implements
   {
     ArrayList < Production > result = new ArrayList < Production > ();
     for ( Production p : cfg.getProduction () )
-    {
       if ( p.getProductionWord ().get ().contains ( s ) )
-      {
         result.add ( p );
-      }
-    }
     return result;
   }
 
@@ -1054,14 +977,10 @@ public class ConvertGrammarDialog implements
   {
     ProductionSet productions = new DefaultProductionSet ();
     for ( Production p : cfg.getProduction () )
-    {
       if ( p.getNonterminalSymbol ().getName ().equals ( a.getName () )
           && ( p.getProductionWord ().size () > 0 )
           && p.getProductionWord ().get ( 0 ).getName ().equals ( b.getName () ) )
-      {
         productions.add ( p );
-      }
-    }
     return productions;
   }
 
@@ -1082,18 +1001,11 @@ public class ConvertGrammarDialog implements
       ProductionWord word = p.getProductionWord ();
       boolean fit = true;
       for ( int k = 0 ; k < prefix.get ().size () ; k++ )
-      {
-
         if ( ( word.size () <= k )
             || !prefix.get ( k ).equals ( word.get ( k ) ) )
-        {
           fit = false;
-        }
-      }
       if ( fit )
-      {
         result.add ( p );
-      }
     }
     return result;
   }
@@ -1112,16 +1024,12 @@ public class ConvertGrammarDialog implements
     ProductionWord prefix = new DefaultProductionWord ();
     ArrayList < Production > productions = new ArrayList < Production > ();
     for ( Production p : cfg.getProductionForNonTerminal ( a ) )
-    {
       productions.add ( p );
-    }
     while ( !productions.isEmpty () )
     {
       Production p = productions.remove ( 0 );
       for ( ProductionWordMember m : p.getProductionWord () )
-      {
         prefix.add ( m );
-      }
 
       while ( !prefix.get ().isEmpty () )
       {
@@ -1167,18 +1075,12 @@ public class ConvertGrammarDialog implements
     }
 
     if ( this.algorithmWindow == null )
-    {
       this.algorithmWindow = new TextWindow ( this.gui, this.algorithm, true,
           this.gui.jGTIToggleButtonAlgorithm, this.convertType.toString () );
-    }
     if ( show )
-    {
       this.algorithmWindow.show ();
-    }
     else
-    {
       this.algorithmWindow.dispose ();
-    }
   }
 
 
@@ -1202,9 +1104,7 @@ public class ConvertGrammarDialog implements
   {
     logger.debug ( "handleBeginStep", "handle begin step" ); //$NON-NLS-1$ //$NON-NLS-2$
     while ( !this.stepItemList.isEmpty () )
-    {
       handlePreviousStep ();
-    }
   }
 
 
@@ -1225,9 +1125,7 @@ public class ConvertGrammarDialog implements
   {
     logger.debug ( "handleEndStep", "handle end step" ); //$NON-NLS-1$ //$NON-NLS-2$
     while ( !this.endReached )
-    {
       handleNextStep ();
-    }
   }
 
 
@@ -1251,9 +1149,7 @@ public class ConvertGrammarDialog implements
 
     cancelAutoStepTimer ();
     while ( !this.endReached )
-    {
       performNextStep ();
-    }
     this.gui.setVisible ( false );
 
     this.panel.getMainWindow ().handleNew ( this.modelConverted.getElement (),
@@ -1333,9 +1229,7 @@ public class ConvertGrammarDialog implements
         ProductionWord word = new DefaultProductionWord ();
         for ( int l = prefix.get ().size () ; l < p.getProductionWord ()
             .size () ; l++ )
-        {
           word.add ( p.getProductionWord ().get ( l ) );
-        }
         Production pr = new DefaultProduction ( newSymbol, word );
         pr.setHighlighted ( true );
         cfg.addProduction ( pr );
@@ -1358,9 +1252,7 @@ public class ConvertGrammarDialog implements
   {
     ArrayList < NonterminalSymbol > oldNonterminals = new ArrayList < NonterminalSymbol > ();
     for ( int n = 0 ; n < this.nonterminals.getSize () ; n++ )
-    {
       oldNonterminals.add ( ( NonterminalSymbol ) this.nonterminals.get ( n ) );
-    }
 
     ArrayList < NonterminalSymbol > nonterminalList = new ArrayList < NonterminalSymbol > ();
 
@@ -1369,9 +1261,7 @@ public class ConvertGrammarDialog implements
     int newTargetIndex = targetIndex;
 
     if ( ( indeces.length > 0 ) && ( indeces [ 0 ] < targetIndex ) )
-    {
       newTargetIndex++ ;
-    }
 
     for ( int index : indeces )
     {
@@ -1379,22 +1269,16 @@ public class ConvertGrammarDialog implements
           .getElementAt ( index ) );
 
       if ( index < targetIndex )
-      {
         newTargetIndex-- ;
-      }
     }
 
     for ( int n = indeces.length - 1 ; n > -1 ; n-- )
-    {
       this.nonterminals.remove ( indeces [ n ] );
-    }
 
     newTargetIndex = Math.min ( newTargetIndex, this.nonterminals.getSize () );
     Collections.reverse ( nonterminalList );
     for ( NonterminalSymbol s : nonterminalList )
-    {
       this.nonterminals.add ( newTargetIndex, s );
-    }
     this.gui.jGTIListNonterminalsConverted.getSelectionModel ()
         .setSelectionInterval ( newTargetIndex,
             newTargetIndex + indeces.length - 1 );
@@ -1411,47 +1295,31 @@ public class ConvertGrammarDialog implements
     boolean foundProduction = false;
     ProductionSet oldWorkingProductions = new DefaultProductionSet ();
     if ( this.workingProductions != null )
-    {
       oldWorkingProductions.add ( this.workingProductions );
-    }
 
     for ( Production p : cfg.getProduction () )
-    {
       p.setHighlighted ( false );
-    }
     for ( NonterminalSymbol s : cfg.getNonterminalSymbolSet () )
-    {
       s.setHighlighted ( false );
-    }
 
     if ( this.convertType.equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
     {
       DefaultListModel oldNonterminalModel = new DefaultListModel ();
       for ( int n = 0 ; n < this.nonterminals.size () ; n++ )
-      {
         oldNonterminalModel.addElement ( this.nonterminals.getElementAt ( n ) );
-      }
       int iNow = this.i;
       int jNow = this.j;
 
       ProductionSet entitiyProductions = new DefaultProductionSet ();
       if ( this.gui.jGTICheckBoxEntityProductions.isSelected () )
-      {
         entitiyProductions = getEntityProductions ( cfg );
-      }
       ProductionSet eProductions = new DefaultProductionSet ();
       if ( this.gui.jGTICheckBoxEpsilonProductions.isSelected () )
-      {
         eProductions = getEpsilonProductions ( cfg );
-      }
       if ( entitiyProductions.isEmpty () )
-      {
         this.initialEliminateEntityProductionsDone = true;
-      }
       if ( eProductions.isEmpty () )
-      {
         this.initialEliminateEpsilonProductionsDone = true;
-      }
 
       PrettyString line = new PrettyString ();
       if ( ( !this.initialEliminateEntityProductionsDone || !this.initialEliminateEpsilonProductionsDone ) )
@@ -1536,16 +1404,12 @@ public class ConvertGrammarDialog implements
             this.j = 1;
             this.i++ ;
             if ( this.i > this.initialNonterminalSize )
-            {
               this.endReached = true;
-            }
           }
 
         }
         else
-        {
           this.endReached = true;
-        }
       }
 
       addOutlineComment ( line );
@@ -1568,32 +1432,24 @@ public class ConvertGrammarDialog implements
         }
       }
       if ( a != null )
-      {
         leftFactore ( a, cfg );
-      }
       this.stepItemList.add ( new StepItem ( oldCFG, null, 0, 0, null,
           foundProduction, oldWorkingProductions ) );
       this.endReached = true;
       for ( NonterminalSymbol s : cfg.getNonterminalSymbolSet () )
-      {
         if ( getSamePrefixes ( s, cfg ).getFirst ().size () > 0 )
         {
           this.endReached = false;
           break;
         }
-      }
       PrettyString line = new PrettyString ();
       if ( ( a != null ) && ( prefix != null ) )
-      {
         line.add ( Messages.getPrettyString (
             "ConvertGrammarDialog.StepFactor", a.toPrettyString (), prefix //$NON-NLS-1$
                 .toPrettyString () ) );
-      }
       else
-      {
         line.add ( Messages
             .getPrettyString ( "ConvertGrammarDialog.StepNothingToDo" ) ); //$NON-NLS-1$
-      }
       addOutlineComment ( line );
     }
     // Eliminate Entity Productions
@@ -1647,9 +1503,7 @@ public class ConvertGrammarDialog implements
               cfg.addProduction ( newProd );
               if ( ( newProd.getProductionWord ().size () == 1 )
                   && ( newProd.getProductionWord ().get ( 0 ) instanceof NonterminalSymbol ) )
-              {
                 this.entityProductions.add ( newProd );
-              }
             }
             line.add ( Messages.getPrettyString (
                 "ConvertGrammarDialog.StepCreatedProduction", newProd //$NON-NLS-1$
@@ -1726,32 +1580,24 @@ public class ConvertGrammarDialog implements
             DefaultProductionWord w = new DefaultProductionWord ();
             Production p = this.workingProductions.get ( this.j++ );
             for ( ProductionWordMember m : p.getProductionWord ().get () )
-            {
               if ( !m.equals ( s ) )
-              {
                 w.add ( m );
-              }
-            }
             Production newProduction = new DefaultProduction ( p
                 .getNonterminalSymbol (), w );
             newProduction.setHighlighted ( true );
             if ( w.get ().isEmpty () )
-            {
               // If created an epsilon production add it to the arraylist
               if ( !this.epsilonProductions.contains ( newProduction ) )
               {
                 this.epsilonProductions.add ( newProduction );
                 addedEpsilonProduction = newProduction;
               }
-            }
 
             line.add ( Messages.getPrettyString (
                 "ConvertGrammarDialog.StepCreatedProduction", newProduction //$NON-NLS-1$
                     .toPrettyString () ) );
             if ( !cfg.getProduction ().contains ( newProduction ) )
-            {
               cfg.addProduction ( newProduction );
-            }
           }
           if ( this.j >= this.workingProductions.size () )
           {
@@ -1765,12 +1611,8 @@ public class ConvertGrammarDialog implements
               .add ( Messages
                   .getPrettyString ( "ConvertGrammarDialog.EliminatedEpsilonProductions" ) ); //$NON-NLS-1$
           for ( Production p : this.epsilonProductions )
-          {
             if ( !p.getNonterminalSymbol ().equals ( cfg.getStartSymbol () ) )
-            {
               cfg.getProduction ().remove ( p );
-            }
-          }
           this.endReached = true;
         }
       }
@@ -1815,13 +1657,9 @@ public class ConvertGrammarDialog implements
       if ( ( this.i == 1 ) && ( this.j == 1 ) )
       {
         if ( this.initialEliminateEntityProductionsDone )
-        {
           this.initialEliminateEntityProductionsDone = false;
-        }
         if ( this.initialEliminateEpsilonProductionsDone )
-        {
           this.initialEliminateEpsilonProductionsDone = false;
-        }
       }
 
       this.nonterminals = item.getOldNonterminalModel ();
@@ -1836,16 +1674,12 @@ public class ConvertGrammarDialog implements
       this.j = item.getJNow ();
       Production p = item.getAddedEpsilonProduction ();
       if ( p != null )
-      {
         this.modelConverted.getGrammar ().getProduction ().remove ( p );
-      }
     }
     this.workingProductions = new DefaultProductionSet ();
     this.workingProductions.add ( item.getWorkingProductions () );
     if ( item.isFoundProduction () )
-    {
       this.workingProductions.clear ();
-    }
     updateConverted ();
     this.convertMachineTableModel.removeLastRow ();
     this.endReached = false;
@@ -1905,6 +1739,12 @@ public class ConvertGrammarDialog implements
     }
     this.gui.setBounds ( rect );
     this.gui.setVisible ( true );
+    if ( this.convertType.equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
+      if ( !PreferenceManager.getInstance ().getLeftRecursionInfoShown () )
+      {
+        PreferenceManager.getInstance ().setLeftRecursionInfoShown ( true );
+        JOptionPane.showMessageDialog ( this.gui, "eliminate left recursion" );
+      }
   }
 
 
@@ -1930,11 +1770,9 @@ public class ConvertGrammarDialog implements
   {
     if ( !this.convertType
         .equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
-    {
       this.gui.styledNonterminalSymbolSetParserPanelConverted
           .setText ( this.modelConverted.getGrammar ()
               .getNonterminalSymbolSet () );
-    }
     this.gui.styledStartNonterminalSymbolParserPanelConverted
         .setText ( this.modelConverted.getGrammar ().getStartSymbol () );
     this.gui.styledTerminalSymbolSetParserPanelConverted

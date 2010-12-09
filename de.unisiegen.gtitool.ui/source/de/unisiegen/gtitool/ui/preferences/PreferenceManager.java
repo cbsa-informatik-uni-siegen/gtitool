@@ -57,6 +57,10 @@ import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane.ActiveEditor;
 public final class PreferenceManager extends
     de.unisiegen.gtitool.core.preferences.PreferenceManager
 {
+  /**
+   * leftfacInfoShown
+   */
+  private boolean leftRecursionInfoShown = false;
 
   /**
    * The default {@link MouseSelectionItem}.
@@ -1452,5 +1456,23 @@ public final class PreferenceManager extends
     logger.debug ( "setZoomFactorItem", "set zoom factor to " + Messages.QUOTE//$NON-NLS-1$//$NON-NLS-2$
         + zoomFactor.getFactor () + Messages.QUOTE );
     this.preferences.putInt ( "ZoomFactor", zoomFactor.getFactor () ); //$NON-NLS-1$
+  }
+  
+  /**
+   * info dialog was already displayed
+   *
+   * @return true if the info dialog was already displayed
+   */
+  public final boolean getLeftRecursionInfoShown() {
+    return this.leftRecursionInfoShown;
+  }
+  
+  /**
+   * sets the display-status of the info dialog for left factorisation
+   *
+   * @param b the {@link Boolean}
+   */
+  public final void setLeftRecursionInfoShown(final boolean b) {
+    this.leftRecursionInfoShown = b;
   }
 }

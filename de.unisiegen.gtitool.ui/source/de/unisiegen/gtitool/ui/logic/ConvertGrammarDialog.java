@@ -9,7 +9,6 @@ import java.util.TimerTask;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
@@ -1738,13 +1737,17 @@ public class ConvertGrammarDialog implements
           - ( this.gui.getHeight () / 2 );
     }
     this.gui.setBounds ( rect );
+    
+    //info text: result of eleminating left recursion depends on the order of the
+    //processed nonterminals
+    if ( this.convertType.equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) ){
+      this.gui.jGTILabelNonterminalSymbolsConverted.setText ( Messages
+          .getString ( "TerminalPanel.NonterminalSymbols2" ) ); //$NON-NLS-1$
+      this.gui.jGTILabelNonterminalSymbolsConverted.setToolTipText ( Messages
+          .getString ( "TerminalPanel.NonterminalSymbols2" ) ); //$NON-NLS-1$
+      
+    }
     this.gui.setVisible ( true );
-    if ( this.convertType.equals ( ConvertGrammarType.ELIMINATE_LEFT_RECURSION ) )
-      if ( !PreferenceManager.getInstance ().getLeftRecursionInfoShown () )
-      {
-        PreferenceManager.getInstance ().setLeftRecursionInfoShown ( true );
-        JOptionPane.showMessageDialog ( this.gui, "eliminate left recursion" );
-      }
   }
 
 

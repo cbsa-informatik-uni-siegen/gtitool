@@ -1,0 +1,3 @@
+# GTI Tool - Lernwerkzeug für die Grundlagen der theoretischen Informatik
+
+GTI Tool wurde als interaktives Lernwerkzeug zur Vorlesung Grundlagen der theoretischen Informatik entwickelt, das den Studierenden helfen soll, den Vorlesungs- und Übungsinhalt interaktiv zu erlernen, und damit eine solide Grundlage für das Verständnis der vermittelten Konzepte zu erwerben. Darüberhinaus soll es die Prüfungsvorbereitung erleichtern, da Studierende nun leicht selbst überprüfen können, ob sie ein bestimmtes Konzept verstanden haben, statt sich auf die in der Vorlesung und Übung besprochenen Beispiele als Referenz beschränken zu müssen.
